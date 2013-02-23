@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="AppboyTextAppearance">
+    <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    <item name="android:textColor">@android:color/black</item>
+  </style>
+
+  <style name="AppboyTextAppearanceButton">
+    <item name="android:textAppearance">?android:textAppearanceSmall</item>
+  </style>
+
+  <style name="AppboyEditTextStyle" parent="android:Widget.EditText">
+    <item name="android:background">@null</item>
+    <!-- http://stackoverflow.com/questions/7238450/set-edittext-cursor-color -->
+    <!--<item name="android:textCursorDrawable">@null</item>-->
+    <item name="android:paddingLeft">4dip</item>
+    <item name="android:paddingRight">4dip</item>
+    <item name="android:paddingTop">2dip</item>
+    <item name="android:paddingBottom">2dip</item>
+    <item name="android:textColor">#FF0000</item>
+    <item name="android:textColorHint">#00FF00</item>
+  </style>
+
+  <style name="AppboyCheckBoxStyle" parent="android:Widget.CompoundButton.CheckBox">
+    <item name="android:textColor">@android:color/black</item>
+  </style>
+
+  <style name="AppboyTextViewStyle" parent="android:Widget.TextView">
+    <item name="android:textAppearance">?android:textAppearanceLarge</item>
+    <item name="android:textColor">@android:color/black</item>
+  </style>
+</resources>

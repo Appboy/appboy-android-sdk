@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+  <EditText android:id="@+id/ab_share_message"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="5"
+            />
+  <CheckBox android:id="@+id/appboyFacebookShareCheckbox"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/ab_facebook_share"/>
+  <CheckBox android:id="@+id/appboyTwitterShareCheckbox"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/ab_twitter_share"/>
+  <Button android:id="@+id/appboyShareButton"
+          android:layout_height="wrap_content"
+          android:layout_width="fill_parent"
+          android:text="@string/ab_share_button"
+          />
+</LinearLayout>
