@@ -1,20 +1,31 @@
 package com.appboy.ui;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * A model class that contains the custom styling for the Feedback form.
  *
  * To create a custom style, use the FeedbackCustomStyle.Builder class to override any properties with custom
  * style values. All custom style attributes are optional.
  */
-// TODO(martin) - After seeing this approach in action, I realize that it's very restrictive. We should consider
-//                allowing users define a custom theme instead.
-public class FeedbackCustomStyle {
+public class FeedbackCustomStyle implements Parcelable {
   private final Integer mFontColor;
   private final Integer mNavigationBarColor;
   private final Integer mNavigationButtonsBackgroundEnabledColor;
   private final Integer mNavigationButtonsBackgroundDisabledColor;
   private final Integer mNavigationButtonsFontColor;
   private final Integer mHintColor;
+
+  public FeedbackCustomStyle(Parcel parcel) {
+    ClassLoader classLoader = Integer.class.getClassLoader();
+    mFontColor = (Integer) parcel.readValue(classLoader);
+    mNavigationBarColor = (Integer) parcel.readValue(classLoader);
+    mNavigationButtonsBackgroundEnabledColor = (Integer) parcel.readValue(classLoader);
+    mNavigationButtonsBackgroundDisabledColor = (Integer) parcel.readValue(classLoader);
+    mNavigationButtonsFontColor = (Integer) parcel.readValue(classLoader);
+    mHintColor = (Integer) parcel.readValue(classLoader);
+  }
 
   private FeedbackCustomStyle(Builder builder) {
     mHintColor = builder.mHintColor;
@@ -49,6 +60,21 @@ public class FeedbackCustomStyle {
     return mNavigationButtonsFontColor;
   }
 
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel parcel, int flags) {
+    parcel.writeValue(mFontColor);
+    parcel.writeValue(mNavigationBarColor);
+    parcel.writeValue(mNavigationButtonsBackgroundEnabledColor);
+    parcel.writeValue(mNavigationButtonsBackgroundDisabledColor);
+    parcel.writeValue(mNavigationButtonsFontColor);
+    parcel.writeValue(mHintColor);
+  }
+
   public static class Builder {
     private Integer mHintColor = null;
     private Integer mFontColor = null;
@@ -57,16 +83,25 @@ public class FeedbackCustomStyle {
     private Integer mNavigationButtonsBackgroundDisabledColor = null;
     private Integer mNavigationButtonsFontColor = null;
 
+    /**
+     * Sets the color of the Feedback hint text
+     */
     public Builder setHintColor(int hintColor) {
       mHintColor = hintColor;
       return this;
     }
 
+    /**
+     * Sets the color of the Feedback text
+     */
     public Builder setFontColor(int fontColor) {
       mFontColor = fontColor;
       return this;
     }
 
+    /**
+     * Sets the color of the
+     */
     public Builder setNavigationBarColor(int navigationBarColor) {
       mNavigationBarColor = navigationBarColor;
       return this;

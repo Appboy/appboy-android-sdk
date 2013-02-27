@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.appboy.Appboy;
 
-// TODO(martin) - Eclipse doesn't seem to like Honeycomb Fragments when building against a pre-Honeycomb target. Need
-//                to import the project into Eclipse and straighten this out soon.
 public class AppboyFeedFragment extends Fragment {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyFeedFragment.class.getName());
 

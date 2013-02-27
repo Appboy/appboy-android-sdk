@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="FeedbackTheme" parent="@android:style/Theme"/>
+
+  <style name="FeedbackTheme.NoTitleBar" parent="@android:style/Theme">
+    <item name="android:windowNoTitle">true</item>
+  </style>
+</resources>

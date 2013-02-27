@@ -20,9 +20,6 @@ import com.appboy.ui.support.ValidationUtils;
  * When integrating the feedback form into an existing activity, set the content view to the view returned by
  * inflateFeedbackUI and call wire to add functionality to the widgets.
  *
- * TODO(martin) - should the widget styles be customizable or just allow the widget font color to be changed?
- * TODO(martin) - switch from static methods to instance methods
- *
  * Activities vs Fragments
  * Fragments were introduced in the Honeycomb release allowing for reusable UI code (although you can create a
  * Fragment without a UI) in Android API version 3.0+. They were backported in the v4 support library. Although
