@@ -53,8 +53,8 @@ public class FeedbackHelper {
     container.addView(feedbackView);
   }
 
-  public static boolean wire(final View view, final IAppboy appboy, final FinishAction finishAction) {
-    return wire(view, appboy, new FeedbackCustomStyle.Builder().build(), finishAction);
+  public static boolean wire(final View feedbackView, final IAppboy appboy, final FinishAction finishAction) {
+    return wire(feedbackView, appboy, new FeedbackCustomStyle.Builder().build(), finishAction);
   }
 
   /**
@@ -62,14 +62,14 @@ public class FeedbackHelper {
    *
    * Use FinishAction to add code that should be executed post send/cancel
    */
-  public static boolean wire(final View view, final IAppboy appboy, final FeedbackCustomStyle feedbackCustomStyle, final FinishAction finishAction) {
-    checkParentViewsForScrollView(view);
+  public static boolean wire(final View feedbackView, final IAppboy appboy, final FeedbackCustomStyle feedbackCustomStyle, final FinishAction finishAction) {
+    checkParentViewsForScrollView(feedbackView);
 
-    final Button cancelButton = (Button) view.findViewById(R.id.com_appboy_ui_feedback_cancel);
-    final Button sendButton = (Button) view.findViewById(R.id.com_appboy_ui_feedback_send);
-    final CheckBox isBugCheckBox = (CheckBox) view.findViewById(R.id.com_appboy_ui_feedback_is_bug);
-    final EditText messageEditText = (EditText) view.findViewById(R.id.com_appboy_ui_feedback_message);
-    final EditText emailEditText = (EditText) view.findViewById(R.id.com_appboy_ui_feedback_email);
+    final Button cancelButton = (Button) feedbackView.findViewById(R.id.com_appboy_ui_feedback_cancel);
+    final Button sendButton = (Button) feedbackView.findViewById(R.id.com_appboy_ui_feedback_send);
+    final CheckBox isBugCheckBox = (CheckBox) feedbackView.findViewById(R.id.com_appboy_ui_feedback_is_bug);
+    final EditText messageEditText = (EditText) feedbackView.findViewById(R.id.com_appboy_ui_feedback_message);
+    final EditText emailEditText = (EditText) feedbackView.findViewById(R.id.com_appboy_ui_feedback_email);
 
     if (cancelButton == null || sendButton == null || isBugCheckBox == null || messageEditText == null || emailEditText == null) {
       Log.e(TAG, "Unable to find feedback views");
@@ -83,7 +83,7 @@ public class FeedbackHelper {
       public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
       @Override
       public void afterTextChanged(Editable sequence) {
-        ensureSendButton(view, sendButton, feedbackCustomStyle);
+        ensureSendButton(feedbackView, sendButton, feedbackCustomStyle);
       }
     };
     TextWatcher emailTextWatcher = new TextWatcher() {
@@ -93,16 +93,18 @@ public class FeedbackHelper {
       public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
       @Override
       public void afterTextChanged(Editable sequence) {
-        ensureSendButton(view, sendButton, feedbackCustomStyle);
+        ensureSendButton(feedbackView, sendButton, feedbackCustomStyle);
       }
     };
 
+    final
     View.OnClickListener cancelListener = new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         if (finishAction != null) {
           finishAction.onFinish();
         }
+        clearData(feedbackView);
       }
     };
     View.OnClickListener sendListener = new View.OnClickListener() {
@@ -121,6 +123,7 @@ public class FeedbackHelper {
         if (finishAction != null) {
           finishAction.onFinish();
         }
+        clearData(feedbackView);
       }
     };
 
@@ -129,9 +132,9 @@ public class FeedbackHelper {
     wireCancelButton(cancelButton, cancelListener);
     wireSendButton(sendButton, sendListener);
 
-    setStyle(view, feedbackCustomStyle);
+    setStyle(feedbackView, feedbackCustomStyle);
 
-    ensureSendButton(view, sendButton, feedbackCustomStyle);
+    ensureSendButton(feedbackView, sendButton, feedbackCustomStyle);
 
     return true;
   }
@@ -248,5 +251,14 @@ public class FeedbackHelper {
       }
       sendButton.setEnabled(false);
     }
+  }
+
+  private static void clearData(View view) {
+    EditText emailEditText = (EditText) view.findViewById(R.id.com_appboy_ui_feedback_email);
+    EditText messageEditText = (EditText) view.findViewById(R.id.com_appboy_ui_feedback_message);
+    CheckBox isBugCheckBox = (CheckBox) view.findViewById(R.id.com_appboy_ui_feedback_is_bug);
+    emailEditText.setText("");
+    messageEditText.setText("");
+    isBugCheckBox.setChecked(false);
   }
 }

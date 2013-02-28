@@ -1,5 +1,6 @@
 package com.appboy.sample;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
@@ -41,6 +42,7 @@ public class DroidBoyActivity extends FragmentActivity {
   private DroidBoyViewPager mViewPager;
 
   @Override
+
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.droid_boy);
@@ -50,7 +52,11 @@ public class DroidBoyActivity extends FragmentActivity {
     mViewPager.setPagingEnabled(false);
     mViewPager.setAdapter(pageAdapter);
     mViewPager.setCurrentItem(0);
+    setTitleOnActionBar();
+  }
 
+  @TargetApi(11)
+  private void setTitleOnActionBar() {
     if (android.os.Build.VERSION.SDK_INT >= 11) {
       ActionBar actionBar = getActionBar();
       actionBar.setTitle(null);
@@ -60,7 +66,7 @@ public class DroidBoyActivity extends FragmentActivity {
   @Override
   public void onStart() {
     super.onStart();
-    // Opens a new Appboy session. You can now start logging custom events.
+    // Opens a new Appboy session.
     Appboy.getInstance(this).openSession();
   }
 
@@ -105,9 +111,9 @@ public class DroidBoyActivity extends FragmentActivity {
       }
     };
 
-    // Create the AppboyFeedbackFragment. This helper class will style the AppboyFeedbackFragment with the style
-    // provided and attach the FinishAction.
-    return AppboyFeedbackFragment.newInstance(feedbackCustomStyle, finishAction);
+    // Sets the FeedbackCustomStyle and FinishAction that will be applied to the feedback form.
+    AppboyFeedbackFragment.configure(feedbackCustomStyle, finishAction);
+    return new AppboyFeedbackFragment();
   }
 
   private List<Fragment> initializeFragmentList() {
