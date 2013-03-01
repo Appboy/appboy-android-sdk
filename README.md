@@ -11,7 +11,7 @@ Integration instructions are available at http://appboy.github.com/appboy-androi
 Please *DO NOT* submit apps including the beta SDK to the Google Play Store (or other app stores).
 
 ### Supported OS Versions
-The SDK supports Android 2.2+ (Froyo and up).
+Android 2.2+ (Froyo and up).
 
 ### Features
 Currently supported in the private beta:
