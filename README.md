@@ -1,11 +1,11 @@
 appboy-android-sdk
 ==================
 
-Welcome to the public repo for the Appboy Android SDK!
+The public repo for the Appboy Android SDK
 
 ## Private Beta
 
-We're currently holding a private beta to test Android support the Appboy customer engagement platform.
+Welcome to our private beta.
 
 Integration instructions are available at http://appboy.github.com/appboy-android-sdk/ email android-beta@appboy.com with any questions on integration.
 
