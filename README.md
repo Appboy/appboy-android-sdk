@@ -7,9 +7,9 @@ The public repo for the Appboy Android SDK
 
 Welcome to our private beta.
 
-Integration instructions are available at http://appboy.github.com/appboy-android-sdk/ email android-beta@appboy.com with any questions on integration.
+Integration instructions are available at http://appboy.github.com/appboy-android-sdk/
 
-Please *DO NOT* submit apps including the beta SDK to the Play Store or other app distribution sites.
+Please *DO NOT* submit apps including the beta SDK to the Google Play Store (or other app stores).
 
 ### Supported OS Versions
 
