@@ -14,7 +14,6 @@ Please *DO NOT* submit apps including the beta SDK to the Google Play Store (or 
 Android 2.2+ (Froyo and up).
 
 ### Features
-Currently supported in the private beta:
 * Session Data - unique users, sessions, session length
 * Device Data - device type and Android version
 * User Feedback - we've developed an API and a customizable UI for collecting user feedback within your app
