@@ -15,19 +15,20 @@
         <li>Reference Appboy in your own project: Right-click on your own project > "Properties" > Library "Add..." > Select the Appboy project.</li>
       </ol>
       <h4>Integrating Without the UI Library</h4>
-        <p>If you want access to Appboy's analytics tracking features but don't want to use the Appboy UI elements, download the Appboy .jar and add it to the libs/ folder in your project (create the libs/ directory if it doesn't exist). Right-click on the Appboy .jar and select "Build Path" &gt; "Add to Build Path." Adding the Appboy .jar will give you access to Appboy's analytical tools. 
+      <p>If you want access to Appboy's analytics tracking features but don't want to use the Appboy UI elements, download the Appboy .jar and add it to the libs/ folder in your project (create the libs/ directory if it doesn't exist). Right-click on the Appboy .jar and select "Build Path" &gt; "Add to Build Path." Adding the Appboy .jar will give you access to Appboy's analytical tools. 
     </div>
     <div>
       <h2>Configuring Appboy</h2>
       <ol>
-         <li>Get an Appboy API Key. Log into the Appboy dashboard at <a href="http://www.appboy.com">appboy.com</a> and create an account / add an app if you don't have one already. Once you've created an app, navigate to the "Settings" page. You can use the default Debug API Key that will have been created for you for debugging. When you're ready to deploy your application, you should create a new Production key.</li> 
+        <li>Get an Appboy API Key. Log into the Appboy dashboard at <a href="http://www.appboy.com">appboy.com</a> and create an account / add an app if you don't have one already. Once you've created an app, navigate to the "Settings" page. You can use the default Debug API Key that will have been created for you for debugging. When you're ready to deploy your application, you should create a new Production key.</li>
         <li>Add your API key to your Android Manifest file. Within the &lt;application&gt; tag, add the following line: </br></br>&lt;meta-data android:name=&quot;com.appboy.APPBOY_API_KEY&quot; android:value=&quot;YOUR_API_KEY_HERE&quot; /&gt;.</li>
       </ol>
     </div>
     <div>
       <h2>Adding Appboy to Your Application</h2>
       <ul>
-        <li><strong>Tracking User Sessions:</strong>To track user sessions and gather basic user data, add the following methods to your Activity onStart() and onStop() methods. You should put these methods in the Activity where users will enter your app, or in a wrapper Activity that your other Activities inherit, if applicable:</br>
+        <li>
+          <strong>Tracking User Sessions:</strong>To track user sessions and gather basic user data, add the following methods to your Activity onStart() and onStop() methods. You should put these methods in the Activity where users will enter your app, or in a wrapper Activity that your other Activities inherit, if applicable:</br>
           <pre>
     public void onStart() {
       super.onStart();
@@ -37,10 +38,9 @@
     public void onStop() {
       super.onStop();
       Appboy.getInstance(this).closeSession();
-      Appboy.getInstance(BrewgeneActivity.this).flushImmediately();
     }
           </pre>
-        </li> 
+        </li>
         <li>
           <strong>Logging Custom Attributes:</strong> Appboy provides methods for assigning custom attributes to your users. You'll be able to filter users according to these attributes on the Dashboard:</br>
           <pre>
@@ -55,39 +55,162 @@
         </li>
         <li><strong>Logging Additional Events and Attributes:</strong> Appboy provides hooks to log additional attributes, such as In-App purchases and users' Names. View the <a href="javadocs/index.html">javadocs</a> for more information.
         </li>
-        <li>
-          <strong>Adding the Appboy Feedback Widget:</strong> The Appboy UI Project allows you to easily collect Feedback from your users. Appboy will insert a feedback form directly into a ViewGroup that you specify. Feedback can be viewed on our Developer Dashboard. An example of how to implement the Appboy UI is below:</br>
-          <pre>
-      // Add this code to your Activity's onCreate() method
-      mAppboy = Appboy.getInstance(this);
-      FinishAction finishAction = new FinishAction() {
-        public void onFinish() {
-          YOUR_ACTIVITY.this.finish();
-        }
-      };
-      // In your Activity's layout file, add a View with id APPBOY_FEEDBACK_FORM where the Appboy Feedback Widget will be inserted
-      ViewGroup container = (ViewGroup) findViewById(R.id.APPBOY_FEEDBACK_FORM);
+      </ul>
+    </div>
+    <div>
+      <h2>Adding the Appboy Feed and Appboy Feedback Form to your app</h2>
+      <p>The Appboy Android UI project provides the user interface elements for the Appboy Feed, Appboy Feedback Form, and Appboy Slideup Messages that you can easily integrate into your app.</p>
+      <p>The Appboy Feed and Appboy Feedback Form are implemented as a Android Fragments (<a href="http://developer.android.com/guide/components/fragments.html" class="external free" rel="nofollow">http://developer.android.com/guide/components/fragments.html</a>) which you can easily embed into any Activity. You can either attach them to an Activity
+        in XML using the &lt;fragment&gt; element or programmatically using the FragmentManager. For more information about adding a Fragment to an Activity, see <a href="http://developer.android.com/guide/components/fragments.html#Adding" class="external free" rel="nofollow">http://developer.android.com/guide/components/fragments.html#Adding</a>. 
+      </p>
+      <p>The AppboyFeedFragment makes the necessary calls to Appboy SDK Base in order to refresh and display the contents of the feed and collect feed analytics (cards shown, cards clicked, etc). The AppboyFeedFragment DOES NOT make any calls to IAppboy.openSession(). Instead, this must be called in the Activity containing the Fragment.</p>
+      <p>The AppboyFeedbackFragment makes the necessary calls to Appboy SDK Base in order to send feedback to Appboy. The AppboyFeedFragment DOES NOT make any calls to IAppboy.openSession(). Instead, this must be called in the Activity containing the Fragment.</p>
+      <h2>Adding Appboy Slideups to your app</h2>
+      <p>Appboy Slideups are managed by the AppboySlideupManager. It is responsible for attaching the slideup user interface to you Activity and for displaying the slideup messages that have been sent from the server. 
+        To show a slideup in any Activity, EVERY Activity must call AppboySlideupManager.registerSlideupUI(Activity) and AppboySlideupManager.registerSlideupUI(Activity) in the Activity's onResume() and onPause() lifecycle method respectively. Forgetting to include these method calls can result in the SlideupDrawerView not being attached to the current Activity's view and can also result in loss of slideup messages.
+      </p>
+      <p><b>OPTIONAL:</b> Appboy will broadcast intents whenever a slideup has been clicked. You can register a receiver to listen for an intent with action YOUR-APPLICATION-PACKAGE-NAME.intent.APPBOY_SLIDEUP_CLICKED.</p>
+      <pre>  private boolean mSlideupShouldBeRequested = false;
 
-      View feedbackView = FeedbackHelper.inflateFeedbackUI(YOUR_ACTIVITY.this);
-      FeedbackHelper.attachFeedbackUI(container, feedbackView);
-      
-      int navigationBarColor = getResources().getColor(R.color.com_appboy_sample_feedback_activity_navigation);
-      int navigationButtonColor = getResources().getColor(R.color.com_appboy_sample_feedback_activity_navigation_button);
-      int navigationButtonDisabledColor = getResources().getColor(R.color.com_appboy_sample_feedback_activity_navigation_button_disabled);
-      
-      FeedbackCustomStyle feedbackCustomStyle = new FeedbackCustomStyle.Builder().setFontColor(Color.BLACK).setHintColor(Color.DKGRAY)
-                                              .setNavigationBarColor(navigationBarColor).setNavigationButtonsBackgroundColors(navigationButtonColor, navigationButtonDisabledColor)
-                                              .setNavigationButtonsFontColor(Color.WHITE).build();
-      FeedbackHelper.wire(feedbackView, mAppboy, feedbackCustomStyle, finishAction);
-          </pre>
+  @Override
+  public void onStart() {
+    super.onStart();
+    // Opens a new Appboy session.
+    IAppboy appboy = Appboy.getInstance(this);
+    slideupShouldBeRequested = appboy.openSession();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    // Registers for Appboy slideup messages.
+    AppboySlideupManager.getInstance().registerSlideupUI(this);
+
+    // Requests a slideup from the Appboy server only when a new session has started.
+    if (slideupShouldBeRequested) {
+      Appboy.getInstance(this).requestSlideupRefresh();
+    }
+  }
+
+  @Override
+  public void onPause() {
+    // Unregisters from Appboy slideup messages.
+    AppboySlideupManager.getInstance().unregisterSlideupUI(this);
+    super.onPause();
+  }
+
+  @Override
+  public void onStop() {
+    // Closes the Appboy session.
+    Appboy.getInstance(this).closeSession();
+    super.onStop();
+  }
+</pre>
+    </div>
+    <div>
+      <h2>Integrating Appboy Push Notifications into your app</h2>
+      <p>Appboy allows you to send push notifications to Android devices using Google Cloud Messaging (GCM). In order to integrate Appboy push notifications into your app, you need to turn on GCM in your Google project, configure your app to receive Appboy push notifications, and set your API key on the Appboy dashboard.</p>
+      <p>If you don't already have a Google API project with GCM messaging enabled, follow the instructions from the Google GCM 'Getting Started' page (<a href="http://developer.android.com/google/gcm/gs.html" class="external free" rel="nofollow">http://developer.android.com/google/gcm/gs.html</a>). It will take you through the necessary steps to create a Google API project. The pieces of information you will need to turn on push notifications in Appboy are your 'Project Number' and 'API key'.</p>
+      <p>After you have setup your Google API project, it's time to configure your app. To use GCM, your app must require a few permissions. Add the following permissions to your AndroidManifest.xml file:</p>
+      <pre> &lt;uses-permission android:name="android.permission.INTERNET" /&gt; 
+ &lt;uses-permission android:name="android.permission.GET_ACCOUNTS" /&gt;
+ &lt;uses-permission android:name="android.permission.WAKE_LOCK" /&gt;
+ &lt;uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /&gt;
+</pre>
+      <p>A special permission is required to ensure that push notifications are being sent to your app and that no other app can receive the push notifications intended for your app. The name of the permission has the form 'applicationPackage + ".permission.C2D_MESSAGE'. Define and add this permission to your AndroidManifest.xml file as well.</p>
+      <pre> &lt;permission android:name="YOUR-APPLICATION-PACKAGE-NAME.permission.C2D_MESSAGE" android:protectionLevel="signature" /&gt;
+ &lt;uses-permission android:name="YOUR-APPLICATION-PACKAGE-NAME.permission.C2D_MESSAGE" /&gt;
+</pre>
+      <p>Registering devices and sending GCM messages:
+        In order for a device to receive push notifications, it must register with the Google GCM server. Appboy can take care of the registration process for you. To tell Appboy to handle GCM registration add the following meta-data elements as children of the application element.
+      </p>
+      <pre> &lt;meta-data android:name="com.appboy.GCM_MESSAGING_REGISTRATION_ENABLED" android:value="true" /&gt;
+ &lt;meta-data android:name="com.appboy.GCM_SENDER_ID" android:value="@string/gcm_sender_id" /&gt;
+</pre>
+      <p>Define a string resource in strings.xml that has the name gcm_sender_id. The value of this string needs to be the Google API project 'Project Number'.
+        &lt;string name="gcm_sender_id"&gt;YOUR-GOOGLE-API-PROJECT-NUMBER&lt;/string&gt;
+      </p>
+      <p>Add the AppboyGcmReceiver to the manifest. The category should be set your application package name.</p>
+      <pre> &lt;receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" &gt;
+   &lt;intent-filter&gt;
+     &lt;action android:name="com.google.android.c2dm.intent.RECEIVE" /&gt;
+     &lt;action android:name="com.google.android.c2dm.intent.REGISTRATION" /&gt;
+     &lt;category android:name="YOUR-APPLICATION-PACKAGE-NAME" /&gt;
+   &lt;/intent-filter&gt;
+ &lt;/receiver&gt;
+</pre>
+      <p><b>OPTIONAL:</b>
+        Appboy will broadcast intents whenever a push notification was received and opened. You can register a receiver to listen and action on those events. The names of the actions are: 
+      </p>
+      <ul>
+        <li> YOUR-APPLICATION-PACKAGE-NAME.intent.APPBOY_PUSH_RECEIVED</li>
+        <li> YOUR-APPLICATION-PACKAGE-NAME.intent.APPBOY_NOTIFICATION_OPENED</li>
+      </ul>
+      <p>Full sample AndroidManifest.xml file</p>
+      <pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  &lt;!-- Replace com.sample with the package name of your app --&gt;
+  package="com.sample" android:versionCode="1" android:versionName="0.0"&gt;
+
+  &lt;uses-sdk android:minSdkVersion="8" /&gt;
+
+  &lt;!-- Permissions for Appboy push notifications --&gt;
+  &lt;uses-permission android:name="android.permission.INTERNET" /&gt;
+  &lt;uses-permission android:name="android.permission.GET_ACCOUNTS" /&gt;
+  &lt;uses-permission android:name="android.permission.WAKE_LOCK" /&gt;
+  &lt;uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /&gt;
+  &lt;!-- Replace com.sample with the package name of your app --&gt;
+  &lt;permission android:name="com.sample.permission.C2D_MESSAGE" android:protectionLevel="signature" /&gt;
+  &lt;uses-permission android:name="com.sample.permission.C2D_MESSAGE" /&gt;
+
+  &lt;application android:icon="@drawable/icon" android:label="@string/app_name"&gt;
+    &lt;meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="APPBOY-API-KEY" /&gt;
+    &lt;meta-data android:name="com.appboy.GCM_MESSAGING_REGISTRATION_ENABLED" android:value="true" /&gt;
+    &lt;meta-data android:name="com.appboy.GCM_SENDER_ID" android:value="@string/gcm_sender_id" /&gt;
+
+    &lt;activity android:name=".MainActivity"&gt;
+      &lt;intent-filter&gt;
+        &lt;action android:name="android.intent.action.MAIN" /&gt;
+        &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+      &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+
+    &lt;receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" &gt;
+      &lt;intent-filter&gt;
+        &lt;action android:name="com.google.android.c2dm.intent.RECEIVE" /&gt;
+        &lt;action android:name="com.google.android.c2dm.intent.REGISTRATION" /&gt;
+        &lt;!-- Replace com.sample with the package name of your app --&gt;
+        &lt;category android:name="com.sample" /&gt;
+      &lt;/intent-filter&gt;
+    &lt;/receiver&gt;
+
+    &lt;!-- OPTIONAL: You can create and register your own receiver to listen for push received/opened events --&gt;
+    &lt;receiver android:name="com.sample.NotificationActionReceiver" &gt;
+      &lt;intent-filter&gt;
+        &lt;action android:name="com.sample.intent.APPBOY_PUSH_RECEIVED" /&gt;
+        &lt;action android:name="com.sample.intent.APPBOY_NOTIFICATION_OPENED" /&gt;
+      &lt;/intent-filter&gt;
+    &lt;/receiver&gt;
+&lt;/application&gt;
+&lt;/manifest&gt;
+</pre>
+      <p>For a complete working example, take a look at the DroidBoy project in the Appboy SDK repository.</p>
+      <h3>Issues</h3>
+      <ul>
+        <li>
+          I followed the integration instructions but I'm still not receiving any push notifications.
+          <ul>
+            <li> Not all devices can receive GCM messages. Please read through the GCM device requirements (<a href="http://developer.android.com/google/gcm/gcm.html" class="external free" rel="nofollow">http://developer.android.com/google/gcm/gcm.html</a>).</li>
+          </ul>
         </li>
         <li>
-          <strong>Submitting Feedback Without the Appboy UI:</strong> If you want to submit feedback but don't want to use Appboy's UI, you can send feedback directly using the Appboy instance:</br>
-          <pre>
-  Appboy.getInstance(YOUR_ACTIVITY.this).submitFeedback(REPLY_TO_EMAIL_STRING, MESSAGE_STRING, REPORTING_BUG_FLAG);
-          </pre>
+          Appboy cannot parse my GCM Sender ID.
+          <ul>
+            <li> We are aware of the issue. This is a problem with the way that Android parses the manifest metadata. For now, you must set the value as a String in your strings.xml file.</li>
+          </ul>
+        </li>
       </ul>
-    </div> 
+    </div>
     <div>
       <h2>Javadocs</h2>
       <p>Javadocs are available <a href="javadocs/index.html">here</a>.</p>
