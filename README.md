@@ -5,7 +5,7 @@ This is the public repo for the Appboy Android SDK.
 
 ## Android Testing Environment
 Full support for Android is currently running off Appboy's staging environment, which can be accessed http://sweeney.appboy.com. 
-We're making daily changes to this branch but will have a stable environment the week ending 4/29/13. We will migrate accounts to our production environment.
+We're making daily changes to this branch but will have a stable environment the week starting 6 May 13. We will migrate accounts to our production environment.
 
 **GETTING STARTED**:
 
