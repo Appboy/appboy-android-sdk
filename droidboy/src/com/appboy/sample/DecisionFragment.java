@@ -15,6 +15,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import com.appboy.Appboy;
 import com.appboy.ui.Constants;
 
 import java.util.Random;
@@ -90,6 +91,7 @@ public class DecisionFragment extends Fragment {
     }
     mSpinnerDuration = Integer.parseInt(sharedPreferences.getString("spinner.duration", getString(R.string.default_spinner_duration)));
     mSpinDirectionMultiplier = Float.parseFloat(sharedPreferences.getString("spin.direction", getString(R.string.default_spin_direction)));
+    resetSpinner();
   }
 
   private float getRotationInDegrees() {
@@ -108,6 +110,7 @@ public class DecisionFragment extends Fragment {
   }
 
   private void spin(Animation animation, float rotationDegrees) {
+    Appboy.getInstance(getActivity()).logCustomEvent("spin");
     mSpinner.startAnimation(animation);
     mCurrentSpinnerInDegrees += rotationDegrees;
     mCurrentSpinnerInDegrees %= 360f;
@@ -119,5 +122,10 @@ public class DecisionFragment extends Fragment {
     parent.removeView(mSelectedMode);
     parent.addView(secondView, index);
     mSelectedMode = secondView;
+  }
+
+  private void resetSpinner() {
+    mCurrentSpinnerInDegrees = 0;
+    mSpinner.clearAnimation();
   }
 }

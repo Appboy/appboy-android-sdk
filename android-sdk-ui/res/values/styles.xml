@@ -1,32 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="AppboyTextAppearance">
-    <item name="android:textAppearance">?android:textAppearanceMedium</item>
-    <item name="android:textColor">@android:color/black</item>
+  <style name="Appboy"/>
+
+  <!-- Feedback -->
+  <style name="Appboy.Feedback"/>
+  <style name="Appboy.Feedback.Layout"/>
+  <style name="Appboy.Feedback.NavigationBar">
+    <item name="android:padding">4dp</item>
+    <item name="android:background">@color/com_appboy_feedback_form_navigation_bar_background</item>
+  </style>
+  <style name="Appboy.Feedback.NavigationBarCancelButton">
+    <item name="android:layout_marginRight">2dp</item>
+    <item name="android:text">@string/com_appboy_feedback_form_cancel</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+  <style name="Appboy.Feedback.NavigationBarSendButton">
+    <item name="android:layout_marginLeft">2dp</item>
+    <item name="android:text">@string/com_appboy_feedback_form_send</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+  <style name="Appboy.Feedback.EmailEditText">
+    <item name="android:inputType">textEmailAddress</item>
+    <item name="android:hint">@string/com_appboy_feedback_form_email</item>
+  </style>
+  <style name="Appboy.Feedback.MessageEditText">
+    <item name="android:inputType">text|textMultiLine|textCapSentences</item>
+    <item name="android:gravity">top</item>
+    <item name="android:minLines">5</item>
+    <item name="android:maxLines">100</item>
+    <item name="android:hint">@string/com_appboy_feedback_form_message</item>
+  </style>
+  <style name="Appboy.Feedback.IsBugCheckBox">
+    <item name="android:text">@string/com_appboy_feedback_form_is_bug</item>
   </style>
 
-  <style name="AppboyTextAppearanceButton">
-    <item name="android:textAppearance">?android:textAppearanceSmall</item>
+  <!-- Slideup -->
+  <style name="Appboy.Slideup"/>
+  <style name="Appboy.Slideup.TopShadow">
+    <item name="android:background">@color/com_appboy_slideup_drawer_top_shadow</item>
+  </style>
+  <style name="Appboy.Slideup.Drawer">
+    <item name="android:background">@color/com_appboy_slideup_drawer_background</item>
+  </style>
+  <style name="Appboy.Slideup.DrawerMessage">
+    <item name="android:paddingLeft">8.0dp</item>
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+  <style name="Appboy.Slideup.DrawerArrow">
+    <item name="android:background">@drawable/com_appboy_slideup_drawer_arrow</item>
   </style>
 
-  <style name="AppboyEditTextStyle" parent="android:Widget.EditText">
-    <item name="android:background">@null</item>
-    <!-- http://stackoverflow.com/questions/7238450/set-edittext-cursor-color -->
-    <!--<item name="android:textCursorDrawable">@null</item>-->
-    <item name="android:paddingLeft">4dip</item>
-    <item name="android:paddingRight">4dip</item>
-    <item name="android:paddingTop">2dip</item>
-    <item name="android:paddingBottom">2dip</item>
-    <item name="android:textColor">#FF0000</item>
-    <item name="android:textColorHint">#00FF00</item>
+  <!-- Feed -->
+  <style name="Appboy.Feed"/>
+  <style name="Appboy.Feed.List">
+    <item name="android:background">@android:color/transparent</item>
+    <item name="android:divider">@android:color/transparent</item>
+    <item name="android:dividerHeight">16.0dp</item>
+    <item name="android:paddingLeft">12.5dp</item>
+    <item name="android:paddingRight">12.5dp</item>
+    <item name="android:scrollbarStyle">outsideInset</item>
+  </style>
+  <style name="Appboy.Feed.Empty">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:text">@string/com_appboy_feed_empty</item>
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">18.0sp</item>
+  </style>
+  <style name="Appboy.Feed.NetworkErrorTitle">
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:text">@string/com_appboy_feed_connection_error_title</item>
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">19.0sp</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+  <style name="Appboy.Feed.NetworkErrorBody">
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:text">@string/com_appboy_feed_connection_error_body</item>
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">15.0sp</item>
   </style>
 
-  <style name="AppboyCheckBoxStyle" parent="android:Widget.CompoundButton.CheckBox">
-    <item name="android:textColor">@android:color/black</item>
+  <!-- Cards -->
+  <style name="Appboy.Cards"/>
+
+  <!-- Text Announcement Card -->
+  <style name="Appboy.Cards.TextAnnouncement"/>
+  <style name="Appboy.Cards.TextAnnouncement.Title">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">16.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingBottom">8.0dp</item>
+  </style>
+  <style name="Appboy.Cards.TextAnnouncement.Description">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:maxLines">5</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:includeFontPadding">false</item>
+  </style>
+  <style name="Appboy.Cards.TextAnnouncement.Domain">
+    <item name="android:textColor">@color/com_appboy_domain</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingTop">8.0dp</item>
   </style>
 
-  <style name="AppboyTextViewStyle" parent="android:Widget.TextView">
-    <item name="android:textAppearance">?android:textAppearanceLarge</item>
-    <item name="android:textColor">@android:color/black</item>
+  <!-- Short News Card -->
+  <style name="Appboy.Cards.ShortNews"/>
+  <style name="Appboy.Cards.ShortNews.Image">
+    <item name="android:contentDescription">@string/com_appboy_short_news_card_image_content_description</item>
+  </style>
+  <style name="Appboy.Cards.ShortNews.Title">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">16.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:includeFontPadding">false</item>
+  </style>
+  <style name="Appboy.Cards.ShortNews.Description">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingTop">8.0dp</item>
+  </style>
+  <style name="Appboy.Cards.ShortNews.Domain">
+    <item name="android:textColor">@color/com_appboy_domain</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingTop">8.0dp</item>
+  </style>
+
+  <!-- Cross Promotion Small Card -->
+  <style name="Appboy.Cards.CrossPromotionSmall"/>
+  <style name="Appboy.Cards.CrossPromotionSmall.Layout">
+    <item name="android:background">@drawable/com_appboy_card_background</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionSmall.Title">
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">16.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:singleLine">false</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:includeFontPadding">false</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionSmall.Subtitle">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_subtitle</item>
+    <item name="android:textSize">9.0sp</item>
+    <item name="android:paddingTop">2.0dp</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionSmall.Image">
+    <item name="android:contentDescription">@string/com_appboy_cross_promotion_small_card_image_content_description</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionSmall.RatingBar">
+    <item name="android:paddingTop">2.0dp</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionSmall.ReviewCount">
+    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_review_count</item>
+    <item name="android:textSize">11.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:paddingLeft">.0dp</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionSmall.Price">
+    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_price</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionSmall.RecommendationTab">
+    <item name="android:background">@drawable/com_appboy_cross_promotion_small_card_recommended_tab_background</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_recommendation_tab_text</item>
+    <item name="android:textSize">12.0sp</item>
+    <item name="android:textStyle">bold</item>
   </style>
 </resources>

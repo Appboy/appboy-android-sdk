@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="DecisionOptionText">
+    <item name="android:inputType">textCapWords</item>
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+  <style name="DecisionSpinButton">
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:text">@string/spin</item>
+  </style>
+
+  <style name="Appboy.Feedback.Layout">
+    <item name="android:background">@color/mint</item>
+  </style>
+  <style name="Appboy.Feedback.NavigationBar">
+    <item name="android:background">@color/gray</item>
+  </style>
+
+  <style name="Appboy.Feed.List">
+    <item name="android:background">@color/mint</item>
+    <item name="android:divider">@android:color/transparent</item>
+    <item name="android:dividerHeight">16.0dp</item>
+    <item name="android:paddingLeft">12.5dp</item>
+    <item name="android:paddingRight">5.0dp</item>
+    <item name="android:scrollbarStyle">outsideInset</item>
+  </style>
+</resources>

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
+      android:id="@+id/feed"
+      android:title="@string/feed"
+      android:icon="@drawable/feed"
+      android:showAsAction="ifRoom"/>
+  <item
     android:id="@+id/settings"
     android:title="@string/settings"
     android:icon="@drawable/settings"
-    android:showAsAction="always"/>
+    android:showAsAction="ifRoom"/>
   <item
     android:id="@+id/feedback"
     android:title="@string/send_feedback"
     android:icon="@drawable/envelope"
-    android:showAsAction="always"/>
+    android:showAsAction="ifRoom"/>
 </menu>

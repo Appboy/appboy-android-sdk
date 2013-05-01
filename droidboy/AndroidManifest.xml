@@ -10,15 +10,53 @@
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-  <application android:icon="@drawable/icon" android:label="@string/app_name">
-    <meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="3b182e5f-5f3e-4bca-8924-155dc18251b3" />
+  <!-- Permissions for GCM -->
+  <!--<uses-permission android:name="android.permission.INTERNET" />  Already requested -->
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+  <permission android:name="com.appboy.sample.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+  <uses-permission android:name="com.appboy.sample.permission.C2D_MESSAGE" />
 
-    <activity android:name=".DroidBoyActivity" android:screenOrientation="portrait" android:theme="@style/FeedbackTheme">
+  <application android:icon="@drawable/icon" android:label="@string/app_name" android:allowBackup="true">
+    <!--<meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="3b182e5f-5f3e-4bca-8924-155dc18251b3" />--> <!-- PROD -->
+    <meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="4cc30eca-a79b-46eb-ae20-23982d1f18d7" /><!-- STAGING -->
+    <meta-data android:name="com.appboy.SERVER_TARGET" android:value="staging" />
+    <meta-data android:name="com.appboy.GCM_MESSAGING_REGISTRATION_ENABLED" android:value="true" />
+    <meta-data android:name="com.appboy.GCM_SENDER_ID" android:value="@string/gcm_sender_id" />
+
+    <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:theme="@style/FeedbackTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <activity android:name=".DroidGirlActivity" android:label="@string/droid_girl" android:theme="@style/FeedbackTheme">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
     <activity android:name=".PreferencesActivity" android:theme="@android:style/Theme.Black.NoTitleBar" />
+
+    <activity android:name="com.appboy.ui.AppboyFeedbackActivity" android:theme="@android:style/Theme.Black.NoTitleBar" />
+
+    <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+        <category android:name="com.appboy.sample" />
+      </intent-filter>
+    </receiver>
+
+    <receiver android:name="com.appboy.sample.NotificationActionReceiver" >
+      <intent-filter>
+        <action android:name="com.appboy.sample.intent.APPBOY_PUSH_RECEIVED" />
+        <action android:name="com.appboy.sample.intent.APPBOY_NOTIFICATION_OPENED" />
+        <action android:name="com.appboy.sample.intent.APPBOY_SLIDEUP_CLICKED" />
+      </intent-filter>
+    </receiver>
 </application>
 </manifest>

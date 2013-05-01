@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">DroidBoy</string>
+  <string name="app_name">@string/droid_boy</string>
+  <string name="droid_boy">DroidBoy</string>
+  <string name="droid_girl">DroidGirl</string>
+
+  <string name="feed">News</string>
   <string name="settings">Settings</string>
   <string name="send_feedback">Send Feedback</string>
 
@@ -15,4 +19,14 @@
   <string name="spin_direction_title">Spin direction</string>
   <string name="spin_direction_summary">Please select the spin direction</string>
   <string name="default_spin_direction">1</string>
+
+  <string name="spinner_content_description">Spinner</string>
+  <string name="spin">Spin!</string>
+
+  <string name="red">Red</string>
+  <string name="blue">Blue</string>
+  <string name="yellow">Yellow</string>
+  <string name="green">Green</string>
+
+  <string name="gcm_sender_id">134664038330</string>
 </resources>

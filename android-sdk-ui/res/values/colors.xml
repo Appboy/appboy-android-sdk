@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="com_appboy_ui_feedback_form_navigation_bar_background">#808080</color>
+  <color name="com_appboy_feedback_form_background">#F9F9F9</color>
+  <color name="com_appboy_feedback_form_navigation_bar_background">#808080</color>
+
+  <color name="com_appboy_slideup_drawer_top_shadow">#3F3F3F</color>
+  <color name="com_appboy_slideup_drawer_background">#CC1D1D1D</color>
+
+  <color name="com_appboy_title">#3F3F3F</color>
+  <color name="com_appboy_description">#666565</color>
+  <color name="com_appboy_domain">#3F3F3F</color>
+
+  <color name="com_appboy_cross_promotion_small_card_recommendation_tab_text">#404040</color>
+  <color name="com_appboy_cross_promotion_small_card_subtitle">#5E5E5E</color>
+  <color name="com_appboy_cross_promotion_small_card_review_count">#5E5E5E</color>
+  <color name="com_appboy_cross_promotion_small_card_price">#555555</color>
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="SlideupDrawerView">
+    <attr name="bottomOffset" format="dimension"/>
+    <attr name="topOffset" format="dimension"/>
+    <attr name="allowSingleTap" format="boolean"/>
+    <attr name="animateOnClick" format="boolean"/>
+    <attr name="handle" format="reference"/>
+    <attr name="content" format="reference"/>
+    <attr name="maxHeight" format="dimension"/>
+  </declare-styleable>
+
+  <declare-styleable name="StarRatingView">
+    <attr name="numStars" format="integer"/>
+    <attr name="defaultRating" format="float"/>
+  </declare-styleable>
+</resources>

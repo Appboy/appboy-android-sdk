@@ -10,6 +10,6 @@
   <!-- Required for Facebook SDK and obviously lots of other stuff. -->
   <uses-permission android:name="android.permission.INTERNET"/>
 
-  <application/>
+  <application android:allowBackup="false"/>
 </manifest>
 

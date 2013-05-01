@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <TextView
+      android:id="@+id/com_appboy_text_announcement_card_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentLeft="true"
+      style="@style/Appboy.Cards.TextAnnouncement.Title"/>
+
+  <TextView
+      android:id="@+id/com_appboy_text_announcement_card_description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_below="@id/com_appboy_text_announcement_card_title"
+      style="@style/Appboy.Cards.TextAnnouncement.Description"/>
+
+  <!-- Optional -->
+  <TextView
+      android:id="@+id/com_appboy_text_announcement_card_domain"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_below="@id/com_appboy_text_announcement_card_description"
+      style="@style/Appboy.Cards.TextAnnouncement.Domain"/>
+</merge>

@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ab_hello">Hello appboy-android-sdk!</string>
-  <string name="ab_welcome">Welcome to the Appboy library!</string>
+  <!-- Cards -->
+  <string name="com_appboy_cross_promotion_small_card_image_content_description">App image</string>
+  <string name="com_appboy_short_news_card_image_content_description">Image</string>
 
-  <!-- Login Page -->
-  <string name="ab_connect_facebook_button">Connect to facebook</string>
-  <string name="ab_connect_twitter_button">Connect to Twitter</string>
-  <string name="ab_sdk_hello">Welcome to the activity inside of the library.</string>
-  <string name="ab_app_name">Appboy SDK Library</string>
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Reporting an Issue?</string>
+  <string name="com_appboy_feedback_form_message">Message</string>
+  <string name="com_appboy_feedback_form_email">Email</string>
+  <string name="com_appboy_feedback_form_cancel">Cancel</string>
+  <string name="com_appboy_feedback_form_send">Send</string>
 
-  <string name="ab_facebook_share">Facebook</string>
-  <string name="ab_twitter_share">Twitter</string>
-  <string name="ab_share_button">Share Content</string>
-
-  <string name="ab_news_test">News Items</string>
-  <string name="ab_news_title_test">Test String</string>
-
-  <!-- Android Manifest -->
-  <string name="app_name">android-sdk-ui</string>
-
-  <string name="com_appboy_ui_feedback_form_title">Send Feedback</string>
-  <string name="com_appboy_ui_feedback_form_is_bug">Reporting an Issue?</string>
-  <string name="com_appboy_ui_feedback_form_message">Message</string>
-  <string name="com_appboy_ui_feedback_form_email">Email</string>
-  <string name="com_appboy_ui_feedback_form_cancel">Cancel</string>
-  <string name="com_appboy_ui_feedback_form_send">Send</string>
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">We have no updates.\nPlease check again later.</string>
+  <string name="com_appboy_feed_connection_error_title">Connection Error</string>
+  <string name="com_appboy_feed_connection_error_body">Cannot establish network connection.\nPlease try again later.
+  </string>
 </resources>
 
