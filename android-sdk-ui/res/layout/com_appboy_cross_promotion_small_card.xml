@@ -11,7 +11,7 @@
 
   <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:layout_below="@id/com_appboy_cross_promotion_small_card_recommendation_tab"
       style="@style/Appboy.Cards.CrossPromotionSmall.Layout">
 
@@ -26,10 +26,11 @@
 
     <Button
         android:id="@+id/com_appboy_cross_promotion_small_card_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70.0dp"
+        android:layout_height="27.0dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="10.0dp"
         style="@style/Appboy.Cards.CrossPromotionSmall.Price"/>
 
     <LinearLayout
@@ -51,9 +52,10 @@
           android:layout_height="wrap_content"
           style="@style/Appboy.Cards.CrossPromotionSmall.Subtitle"/>
 
-      <RelativeLayout
+      <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:orientation="horizontal"
           style="@style/Appboy.Cards.CrossPromotionSmall.RatingBar">
 
         <com.appboy.ui.widget.StarRatingView
@@ -65,9 +67,8 @@
             android:id="@+id/com_appboy_cross_promotion_small_card_review_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/com_appboy_cross_promotion_small_card_star_rating"
             style="@style/Appboy.Cards.CrossPromotionSmall.ReviewCount"/>
-      </RelativeLayout>
+      </LinearLayout>
     </LinearLayout>
   </RelativeLayout>
 </merge>

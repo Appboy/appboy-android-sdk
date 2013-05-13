@@ -2,32 +2,51 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
+  <com.appboy.sample.UserDialog
+      android:title="@string/user_dialog_title"
+      android:summary="@string/user_dialog_summary"
+      android:positiveButtonText="@string/user_dialog_okay"
+      android:negativeButtonText="@string/user_dialog_cancel"/>
+
   <PreferenceCategory
-    android:title="@string/settings"
-    android:summary="@string/settings">
+      android:title="@string/general_preferences_title">
 
     <ListPreference
-      android:key="board.choices"
-      android:title="@string/board_choices_title"
-      android:summary="@string/board_choices_summary"
-      android:entries="@array/boardOptions"
-      android:entryValues="@array/boardValues"
-      android:defaultValue="@string/default_board_choices"/>
+        android:key="board.choices"
+        android:title="@string/board_choices_title"
+        android:summary="@string/board_choices_summary"
+        android:entries="@array/boardOptions"
+        android:entryValues="@array/boardValues"
+        android:defaultValue="@string/default_board_choices"/>
 
     <ListPreference
-      android:key="spinner.duration"
-      android:title="@string/spinner_duration_title"
-      android:summary="@string/spinner_duration_summary"
-      android:entries="@array/spinnerDurationOptions"
-      android:entryValues="@array/spinnerDurationValues"
-      android:defaultValue="@string/default_spinner_duration"/>
+        android:key="spinner.duration"
+        android:title="@string/spinner_duration_title"
+        android:summary="@string/spinner_duration_summary"
+        android:entries="@array/spinnerDurationOptions"
+        android:entryValues="@array/spinnerDurationValues"
+        android:defaultValue="@string/default_spinner_duration"/>
 
     <ListPreference
-      android:key="spin.direction"
-      android:title="@string/spin_direction_title"
-      android:summary="@string/spin_direction_summary"
-      android:entries="@array/spinDirectionOptions"
-      android:entryValues="@array/spinDirectionValues"
-      android:defaultValue="@string/default_spin_direction"/>
+        android:key="spin.direction"
+        android:title="@string/spin_direction_title"
+        android:summary="@string/spin_direction_summary"
+        android:entries="@array/spinDirectionOptions"
+        android:entryValues="@array/spinDirectionValues"
+        android:defaultValue="@string/default_spin_direction"/>
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    android:title="@string/social_preferences_title">
+
+    <Preference
+        android:key="facebook_share"
+        android:title="@string/facebook_share_title"
+        android:summary="@string/facebook_share_summary"/>
+
+    <Preference
+        android:key="twitter_share"
+        android:title="@string/twitter_share_title"
+        android:summary="@string/twitter_share_summary"/>
   </PreferenceCategory>
 </PreferenceScreen>

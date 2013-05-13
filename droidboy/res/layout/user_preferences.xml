@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+  <TableLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="4.0dp"
+      android:paddingRight="4.0dp"
+      android:stretchColumns="*">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/user_dialog_first_name"/>
+
+      <EditText
+          android:id="@+id/first_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_span="3"
+          style="@style/UserSingleLineText"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/user_dialog_last_name"/>
+
+      <EditText
+          android:id="@+id/last_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_span="3"
+          style="@style/UserSingleLineText"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/user_dialog_email_address"/>
+
+      <EditText
+          android:id="@+id/email"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_span="3"
+          style="@style/UserEmailAddress"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/user_dialog_bio"/>
+
+      <EditText
+          android:id="@+id/bio"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_span="3"
+          style="@style/UserBio"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/user_dialog_gender"/>
+
+      <RadioGroup
+          android:id="@+id/gender"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/unspecified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unspecified"/>
+
+        <RadioButton
+            android:id="@+id/male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male"/>
+
+        <RadioButton
+            android:id="@+id/female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/female"/>
+      </RadioGroup>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/user_dialog_favorite_color"/>
+
+      <EditText
+          android:id="@+id/favorite_color"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_span="3"
+          style="@style/UserSingleLineText"/>
+    </TableRow>
+  </TableLayout>
+</ScrollView>

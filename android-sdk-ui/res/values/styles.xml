@@ -2,9 +2,18 @@
 <resources>
   <style name="Appboy"/>
 
+  <style name="Appboy.Button">
+    <!-- Overriding the Holo default behavior -->
+    <item name="android:minHeight">0.0dp</item>
+    <item name="android:minWidth">0.0dp</item>
+    <item name="android:textColor">@color/com_appboy_button</item>
+  </style>
+
   <!-- Feedback -->
   <style name="Appboy.Feedback"/>
-  <style name="Appboy.Feedback.Layout"/>
+  <style name="Appboy.Feedback.Layout">
+    <item name="android:background">@color/com_appboy_feedback_form_background</item>
+  </style>
   <style name="Appboy.Feedback.NavigationBar">
     <item name="android:padding">4dp</item>
     <item name="android:background">@color/com_appboy_feedback_form_navigation_bar_background</item>
@@ -40,12 +49,16 @@
     <item name="android:background">@color/com_appboy_slideup_drawer_top_shadow</item>
   </style>
   <style name="Appboy.Slideup.Drawer">
+    <item name="android:padding">12.0sp</item>
     <item name="android:background">@color/com_appboy_slideup_drawer_background</item>
   </style>
   <style name="Appboy.Slideup.DrawerMessage">
-    <item name="android:paddingLeft">8.0dp</item>
-    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:lineSpacingMultiplier">1.2</item>
     <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">14.0sp</item>
+    <item name="android:maxLines">3</item>
+    <item name="android:singleLine">false</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
   <style name="Appboy.Slideup.DrawerArrow">
     <item name="android:background">@drawable/com_appboy_slideup_drawer_arrow</item>
@@ -53,12 +66,15 @@
 
   <!-- Feed -->
   <style name="Appboy.Feed"/>
+  <!-- Styling the ListView background will require you to set the cacheColorHint, otherwise the
+   background may appear black on older versions of Android. For more information about the issue,
+   see http://android-developers.blogspot.com/2009/01/why-is-my-list-black-android.html -->
   <style name="Appboy.Feed.List">
     <item name="android:background">@android:color/transparent</item>
     <item name="android:divider">@android:color/transparent</item>
     <item name="android:dividerHeight">16.0dp</item>
     <item name="android:paddingLeft">12.5dp</item>
-    <item name="android:paddingRight">12.5dp</item>
+    <item name="android:paddingRight">5.0dp</item>
     <item name="android:scrollbarStyle">outsideInset</item>
   </style>
   <style name="Appboy.Feed.Empty">
@@ -142,6 +158,10 @@
   <!-- Cross Promotion Small Card -->
   <style name="Appboy.Cards.CrossPromotionSmall"/>
   <style name="Appboy.Cards.CrossPromotionSmall.Layout">
+    <item name="android:paddingTop">12.0dp</item>
+    <item name="android:paddingBottom">14.0dp</item>
+    <item name="android:paddingLeft">12.0dp</item>
+    <item name="android:paddingRight">12.0dp</item>
     <item name="android:background">@drawable/com_appboy_card_background</item>
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.Title">
@@ -169,18 +189,27 @@
     <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_review_count</item>
     <item name="android:textSize">11.0sp</item>
     <item name="android:textStyle">bold</item>
-    <item name="android:paddingLeft">.0dp</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:paddingLeft">2.0dp</item>
   </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.Price">
+  <style name="Appboy.Cards.CrossPromotionSmall.Price" parent="Appboy.Button">
+    <item name="android:padding">0.0dp</item>
     <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_price</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
+    <item name="android:background">@drawable/com_appboy_button</item>
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.RecommendationTab">
+    <item name="android:paddingTop">7.0dp</item>
+    <item name="android:paddingBottom">4.0dp</item>
+    <item name="android:paddingLeft">12.0dp</item>
+    <item name="android:paddingRight">12.0dp</item>
     <item name="android:background">@drawable/com_appboy_cross_promotion_small_card_recommended_tab_background</item>
     <item name="android:gravity">center</item>
     <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_recommendation_tab_text</item>
     <item name="android:textSize">12.0sp</item>
     <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 </resources>

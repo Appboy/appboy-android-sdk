@@ -1,6 +1,7 @@
 package com.appboy.ui.support;
 
 public final class StringUtils {
+  public static final String EMPTY_STRING = "";
 
   public static String checkNotNullOrEmpty(String reference) {
     if (reference == null) {

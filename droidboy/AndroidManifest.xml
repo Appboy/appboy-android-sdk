@@ -18,30 +18,31 @@
   <permission android:name="com.appboy.sample.permission.C2D_MESSAGE" android:protectionLevel="signature" />
   <uses-permission android:name="com.appboy.sample.permission.C2D_MESSAGE" />
 
-  <application android:icon="@drawable/icon" android:label="@string/app_name" android:allowBackup="true">
+  <application android:label="@string/app_name" android:icon="@drawable/droidboy" android:allowBackup="true">
     <!--<meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="3b182e5f-5f3e-4bca-8924-155dc18251b3" />--> <!-- PROD -->
     <meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="4cc30eca-a79b-46eb-ae20-23982d1f18d7" /><!-- STAGING -->
     <meta-data android:name="com.appboy.SERVER_TARGET" android:value="staging" />
     <meta-data android:name="com.appboy.GCM_MESSAGING_REGISTRATION_ENABLED" android:value="true" />
     <meta-data android:name="com.appboy.GCM_SENDER_ID" android:value="@string/gcm_sender_id" />
 
-    <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:theme="@style/FeedbackTheme">
+    <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:icon="@drawable/droidboy" android:theme="@style/Theme.Feedback">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
 
-    <activity android:name=".DroidGirlActivity" android:label="@string/droid_girl" android:theme="@style/FeedbackTheme">
+    <activity android:name=".DroidGirlActivity" android:label="@string/droid_girl" android:icon="@drawable/droidgirl" android:theme="@style/Theme.Feedback">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
 
-    <activity android:name=".PreferencesActivity" android:theme="@android:style/Theme.Black.NoTitleBar" />
+    <activity android:name=".PreferencesActivity" android:theme="@style/Theme.Preferences" />
 
-    <activity android:name="com.appboy.ui.AppboyFeedbackActivity" android:theme="@android:style/Theme.Black.NoTitleBar" />
+    <activity android:name="com.appboy.sample.AppboyFeedbackActivity" android:theme="@style/Theme.Feed" />
+    <activity android:name="com.appboy.sample.AppboyFeedActivity" android:theme="@style/Theme.Feed" />
 
     <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
       <intent-filter>
@@ -51,7 +52,7 @@
       </intent-filter>
     </receiver>
 
-    <receiver android:name="com.appboy.sample.NotificationActionReceiver" >
+    <receiver android:name="com.appboy.sample.NotificationActionReceiver" android:exported="false" >
       <intent-filter>
         <action android:name="com.appboy.sample.intent.APPBOY_PUSH_RECEIVED" />
         <action android:name="com.appboy.sample.intent.APPBOY_NOTIFICATION_OPENED" />

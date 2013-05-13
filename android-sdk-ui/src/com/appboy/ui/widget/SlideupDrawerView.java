@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -134,7 +135,6 @@ public class SlideupDrawerView extends ViewGroup {
     mContext = context;
 
     TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideupDrawerView, defStyle, 0);
-    mMaxHeight = (int) typedArray.getDimension(R.styleable.SlideupDrawerView_maxHeight, 100.0f);
     int handleId = typedArray.getResourceId(R.styleable.SlideupDrawerView_handle, 0);
     int contentId = typedArray.getResourceId(R.styleable.SlideupDrawerView_content, 0);
     typedArray.recycle();
@@ -180,8 +180,7 @@ public class SlideupDrawerView extends ViewGroup {
     }
     mContent.setVisibility(View.GONE);
 
-    mSlideupArrow = (Button) findViewById(R.id.com_appboy_slideup_drawer_arrow);
-    mSlideupArrow.setOnClickListener(new OnClickListener() {
+    mContent.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Appboy.getInstance(mContext).logSlideupClicked();
@@ -201,6 +200,9 @@ public class SlideupDrawerView extends ViewGroup {
     if (widthSpecMode == MeasureSpec.UNSPECIFIED || heightSpecMode == MeasureSpec.UNSPECIFIED) {
       throw new RuntimeException("SlidingDrawer cannot have UNSPECIFIED dimensions");
     }
+
+    measureChild(mContent, widthMeasureSpec, heightMeasureSpec);
+    mMaxHeight = mContent.getMeasuredHeight();
 
     mTopOffset = heightSpecSize - mMaxHeight;
 

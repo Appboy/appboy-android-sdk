@@ -17,31 +17,32 @@
   <LinearLayout
       android:id="@id/com_appboy_slideup_drawer_content"
       android:layout_width="match_parent"
-      android:layout_height="102.0dp"
+      android:layout_height="wrap_content"
       android:orientation="vertical"
       android:clickable="true">
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2.0dp"
+        android:layout_height="1.0dp"
         style="@style/Appboy.Slideup.TopShadow"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100.0dp"
+        android:layout_height="wrap_content"
         style="@style/Appboy.Slideup.Drawer">
 
-      <Button
+      <ImageView
           android:id="@+id/com_appboy_slideup_drawer_arrow"
-          android:layout_width="wrap_content"
-          android:layout_height="70.0dp"
+          android:layout_width="8.0dp"
+          android:layout_height="13.0dp"
           android:layout_alignParentRight="true"
           android:layout_centerVertical="true"
+          android:layout_marginLeft="10.0dp"
           style="@style/Appboy.Slideup.DrawerArrow"/>
 
       <TextView
           android:id="@+id/com_appboy_slideup_drawer_message"
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_centerVertical="true"
           android:layout_alignParentLeft="true"

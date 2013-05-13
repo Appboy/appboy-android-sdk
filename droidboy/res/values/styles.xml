@@ -9,6 +9,21 @@
     <item name="android:text">@string/spin</item>
   </style>
 
+  <style name="UserSingleLineText">
+    <item name="android:inputType">text|textCapWords</item>
+    <item name="android:singleLine">true</item>
+  </style>
+  <style name="UserEmailAddress">
+    <item name="android:inputType">textEmailAddress</item>
+    <item name="android:singleLine">true</item>
+  </style>
+  <style name="UserBio">
+    <item name="android:gravity">top</item>
+    <item name="android:inputType">text|textMultiLine|textCapSentences</item>
+    <item name="android:minLines">3</item>
+    <item name="android:maxLines">3</item>
+  </style>
+
   <style name="Appboy.Feedback.Layout">
     <item name="android:background">@color/mint</item>
   </style>
@@ -18,6 +33,7 @@
 
   <style name="Appboy.Feed.List">
     <item name="android:background">@color/mint</item>
+    <item name="android:cacheColorHint">@color/mint</item>
     <item name="android:divider">@android:color/transparent</item>
     <item name="android:dividerHeight">16.0dp</item>
     <item name="android:paddingLeft">12.5dp</item>

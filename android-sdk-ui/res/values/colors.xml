@@ -10,6 +10,9 @@
   <color name="com_appboy_description">#666565</color>
   <color name="com_appboy_domain">#3F3F3F</color>
 
+  <color name="com_appboy_button_enabled">#555555</color>
+  <color name="com_appboy_button_disabled">#BBBBBB</color>
+
   <color name="com_appboy_cross_promotion_small_card_recommendation_tab_text">#404040</color>
   <color name="com_appboy_cross_promotion_small_card_subtitle">#5E5E5E</color>
   <color name="com_appboy_cross_promotion_small_card_review_count">#5E5E5E</color>

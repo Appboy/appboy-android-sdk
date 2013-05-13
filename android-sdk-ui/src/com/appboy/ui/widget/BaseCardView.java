@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.ICard;
+import com.appboy.ui.support.StringUtils;
 
 /**
  * Base class for Appboy feed card views
@@ -31,11 +32,11 @@ public abstract class BaseCardView<T extends ICard> extends RelativeLayout {
   public abstract void setCard(T card);
 
   void setOptionalTextView(TextView view, String value) {
-    if (value != null && !value.trim().equals("")) {
+    if (value != null && !value.trim().equals(StringUtils.EMPTY_STRING)) {
       view.setText(value);
       view.setVisibility(VISIBLE);
     } else {
-      view.setText("");
+      view.setText(StringUtils.EMPTY_STRING);
       view.setVisibility(GONE);
     }
   }

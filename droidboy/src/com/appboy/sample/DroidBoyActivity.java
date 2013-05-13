@@ -25,13 +25,8 @@ import com.appboy.ui.*;
  * To start tracking analytics using the Appboy Android SDK, you must make sure that you follow these steps
  * to integrate correctly.
  *
- * Step 1: In all activities, call Appboy.openSession() and Appboy.closeSession() in the activity's onStart()
- *         and onStop() respectively. In this sample, we put that code into DroidBoyActivity and PreferenceActivity.
- *
- * Step 2 (Optional): To integrate the Feedback form, first, create a custom style by using FeedbackCustomStyle.Builder.
- *                    Second, define the navigation action that should be performed after the feedback has been sent by
- *                    creating a FinishAction. Finally, either use the FeedbackHelper directly to inflate/attach/wire
- *                    the form or use the AppboyFeedFragment class which will do it all for you.
+ * In all activities, call Appboy.openSession() and Appboy.closeSession() in the activity's onStart() and
+ * onStop() respectively. In this sample, we put that code into DroidBoyActivity and PreferenceActivity.
  */
 public class DroidBoyActivity extends FragmentActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, DroidBoyActivity.class.getName());
@@ -49,17 +44,7 @@ public class DroidBoyActivity extends FragmentActivity {
     mDecisionFragment = new DecisionFragment();
     mFragmentManager = getSupportFragmentManager();
     replaceCurrentFragment(mDecisionFragment);
-    setTitleOnActionBar("DroidBoy");
-
-    // Use the back stack
-    FinishAction finishAction = new FinishAction() {
-      public void onFinish() {
-        mFragmentManager.popBackStack();
-      }
-    };
-
-    // Sets the FeedbackCustomStyle and FinishAction that will be applied to the feedback form.
-    AppboyFeedbackFragment.configure(finishAction);
+    setTitle("DroidBoy");
   }
 
   @Override
@@ -71,8 +56,7 @@ public class DroidBoyActivity extends FragmentActivity {
   public void onStart() {
     super.onStart();
     // Opens a new Appboy session.
-    IAppboy appboy = Appboy.getInstance(this);
-    mSlideupShouldBeRequested = appboy.openSession();
+    mSlideupShouldBeRequested = Appboy.getInstance(this).openSession(this);
   }
 
   @Override
@@ -91,17 +75,16 @@ public class DroidBoyActivity extends FragmentActivity {
 
   @Override
   public void onPause() {
+    super.onPause();
     // Unregisters from Appboy slideup messages.
     AppboySlideupManager.getInstance().unregisterSlideupUI(this);
-    super.onPause();
   }
-
 
   @Override
   public void onStop() {
-    // Closes the Appboy session.
-    Appboy.getInstance(this).closeSession();
     super.onStop();
+    // Closes the Appboy session.
+    Appboy.getInstance(this).closeSession(this);
   }
 
   @Override
@@ -118,13 +101,13 @@ public class DroidBoyActivity extends FragmentActivity {
         replaceCurrentFragment(new AppboyFeedFragment());
         break;
       case R.id.feedback:
-        replaceCurrentFragment(new AppboyFeedbackFragment());
+        replaceCurrentFragment(createFeedbackFragment());
         break;
       case R.id.settings:
         startActivity(new Intent(this, PreferencesActivity.class));
         break;
       default:
-        Log.e(TAG, String.format("MenuItem not found: [%s]", item.getTitle()));
+        Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
     }
     return true;
   }
@@ -140,9 +123,15 @@ public class DroidBoyActivity extends FragmentActivity {
 
   @TargetApi(11)
   private void setTitleOnActionBar(String title) {
-    if (android.os.Build.VERSION.SDK_INT >= 11) {
-      ActionBar actionBar = getActionBar();
-      actionBar.setTitle(title);
+    ActionBar actionBar = getActionBar();
+    actionBar.setTitle(title);
+  }
+
+  private void setTitle(String title) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      setTitleOnActionBar(title);
+    } else {
+      super.setTitle(title);
     }
   }
 
@@ -150,7 +139,7 @@ public class DroidBoyActivity extends FragmentActivity {
     Fragment currentFragment = mFragmentManager.findFragmentById(R.id.root);
     if (currentFragment != null && currentFragment.getClass().equals(fragment.getClass())) {
       Log.i(TAG, String.format("Fragment of type %s is already the active fragment. Ignoring request to replace " +
-          "current fragment.", currentFragment.getClass()));
+        "current fragment.", currentFragment.getClass()));
       return;
     }
 
@@ -192,5 +181,16 @@ public class DroidBoyActivity extends FragmentActivity {
     } else if (NotificationActionReceiver.HOME.equals(destination)) {
       replaceCurrentFragment(mDecisionFragment);
     }
+  }
+
+  private AppboyFeedbackFragment createFeedbackFragment() {
+    AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
+    appboyFeedbackFragment.setFeedbackFinishedListener(new AppboyFeedbackFragment.FeedbackFinishedListener() {
+      @Override
+      public void onFeedbackFinished() {
+        mFragmentManager.popBackStack();
+      }
+    });
+    return appboyFeedbackFragment;
   }
 }

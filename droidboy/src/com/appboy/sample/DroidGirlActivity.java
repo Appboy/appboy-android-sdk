@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.appboy.Appboy;
-import com.appboy.ui.AppboyFeedbackActivity;
 import com.appboy.ui.AppboySlideupManager;
 import com.appboy.ui.Constants;
 
@@ -39,7 +38,7 @@ public class DroidGirlActivity extends FragmentActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.droid_girl);
-    setTitleOnActionBar("DroidGirl");
+    setTitle("DroidGirl");
     activateStrictMode();
 
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -48,28 +47,11 @@ public class DroidGirlActivity extends FragmentActivity {
     fragmentTransaction.commit();
   }
 
-  @TargetApi(11)
-  private void setTitleOnActionBar(String title) {
-    if (android.os.Build.VERSION.SDK_INT >= 11) {
-      ActionBar actionBar = getActionBar();
-      actionBar.setTitle(title);
-    }
-  }
-
-  @TargetApi(9)
-  private void activateStrictMode() {
-    // Set the activity to Strict mode so that we get LogCat warnings when code misbehaves on the main thread.
-    if (BuildConfig.DEBUG
-      && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-      StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
-    }
-  }
-
   @Override
   public void onStart() {
     super.onStart();
     // Opens a new Appboy session.
-    Appboy.getInstance(this).openSession();
+    Appboy.getInstance(this).openSession(this);
   }
 
   @Override
@@ -90,7 +72,7 @@ public class DroidGirlActivity extends FragmentActivity {
   @Override
   public void onStop() {
     // Closes the Appboy session.
-    Appboy.getInstance(this).closeSession();
+    Appboy.getInstance(this).closeSession(this);
     super.onStop();
   }
 
@@ -105,6 +87,7 @@ public class DroidGirlActivity extends FragmentActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.feed:
+        startActivity(new Intent(this, AppboyFeedActivity.class));
         break;
       case R.id.feedback:
         startActivity(new Intent(this, AppboyFeedbackActivity.class));
@@ -116,6 +99,29 @@ public class DroidGirlActivity extends FragmentActivity {
         Log.e(TAG, String.format("MenuItem not found: [%s]", item.getTitle()));
     }
     return true;
+  }
+
+  @TargetApi(11)
+  private void setTitleOnActionBar(String title) {
+    ActionBar actionBar = getActionBar();
+    actionBar.setTitle(title);
+  }
+
+  private void setTitle(String title) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      setTitleOnActionBar(title);
+    } else {
+      super.setTitle(title);
+    }
+  }
+
+  @TargetApi(9)
+  private void activateStrictMode() {
+    // Set the activity to Strict mode so that we get LogCat warnings when code misbehaves on the main thread.
+    if (BuildConfig.DEBUG
+      && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+      StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
+    }
   }
 }
 
