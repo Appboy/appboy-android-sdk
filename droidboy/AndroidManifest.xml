@@ -21,7 +21,6 @@
   <application android:label="@string/app_name" android:icon="@drawable/droidboy" android:allowBackup="true">
     <!--<meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="3b182e5f-5f3e-4bca-8924-155dc18251b3" />--> <!-- PROD -->
     <meta-data android:name="com.appboy.APPBOY_API_KEY" android:value="4cc30eca-a79b-46eb-ae20-23982d1f18d7" /><!-- STAGING -->
-    <meta-data android:name="com.appboy.SERVER_TARGET" android:value="staging" />
     <meta-data android:name="com.appboy.GCM_MESSAGING_REGISTRATION_ENABLED" android:value="true" />
     <meta-data android:name="com.appboy.GCM_SENDER_ID" android:value="@string/gcm_sender_id" />
 
