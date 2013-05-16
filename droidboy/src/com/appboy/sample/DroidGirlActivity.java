@@ -38,13 +38,15 @@ public class DroidGirlActivity extends FragmentActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.droid_girl);
-    setTitle("DroidGirl");
     activateStrictMode();
+    setTitle("DroidGirl");
 
     FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.replace(R.id.root, new DecisionFragment());
-    fragmentTransaction.commit();
+    if (savedInstanceState == null) {
+      FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+      fragmentTransaction.replace(R.id.root, new DecisionFragment());
+      fragmentTransaction.commit();
+    }
   }
 
   @Override

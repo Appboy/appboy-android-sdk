@@ -40,11 +40,13 @@ public class DroidBoyActivity extends FragmentActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.droid_boy);
     activateStrictMode();
-
-    mDecisionFragment = new DecisionFragment();
-    mFragmentManager = getSupportFragmentManager();
-    replaceCurrentFragment(mDecisionFragment);
     setTitle("DroidBoy");
+
+    mFragmentManager = getSupportFragmentManager();
+    if (savedInstanceState == null) {
+      mDecisionFragment = new DecisionFragment();
+      replaceCurrentFragment(mDecisionFragment);
+    }
   }
 
   @Override
