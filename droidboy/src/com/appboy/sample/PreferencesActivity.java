@@ -18,7 +18,7 @@ public class PreferencesActivity extends PreferenceActivity {
     addPreferencesFromResource(R.xml.preferences);
 
     ListView listView = getListView();
-    int mint = getResources().getColor(R.color.mint);
+    int mint = getResources().getColor(R.color.light_gray);
     listView.setBackgroundColor(mint);
     listView.setCacheColorHint(mint);
 

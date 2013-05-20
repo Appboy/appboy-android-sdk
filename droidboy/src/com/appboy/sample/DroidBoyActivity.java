@@ -67,12 +67,12 @@ public class DroidBoyActivity extends FragmentActivity {
     // Registers for Appboy slideup messages.
     AppboySlideupManager.getInstance().registerSlideupUI(this);
 
+    processIntent();
+
     // Requests a slideup from the Appboy server only when a new session has started.
     if (mSlideupShouldBeRequested) {
       Appboy.getInstance(this).requestSlideupRefresh();
     }
-
-    processIntent();
   }
 
   @Override
@@ -181,6 +181,7 @@ public class DroidBoyActivity extends FragmentActivity {
     } else if (NotificationActionReceiver.FEEDBACK.equals(destination)) {
       replaceCurrentFragment(new AppboyFeedbackFragment());
     } else if (NotificationActionReceiver.HOME.equals(destination)) {
+      mSlideupShouldBeRequested = false;
       replaceCurrentFragment(mDecisionFragment);
     }
   }
