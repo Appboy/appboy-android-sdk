@@ -43,7 +43,7 @@
     <activity android:name="com.appboy.sample.AppboyFeedbackActivity" android:theme="@style/Theme.Feed" />
     <activity android:name="com.appboy.sample.AppboyFeedActivity" android:theme="@style/Theme.Feed" />
 
-    <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+    <receiver android:name="com.appboy.ui.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
       <intent-filter>
         <action android:name="com.google.android.c2dm.intent.RECEIVE" />
         <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
