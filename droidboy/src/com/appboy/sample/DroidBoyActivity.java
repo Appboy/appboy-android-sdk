@@ -16,8 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
-import com.appboy.IAppboy;
-import com.appboy.ui.*;
+import com.appboy.ui.AppboyFeedFragment;
+import com.appboy.ui.AppboyFeedbackFragment;
+import com.appboy.ui.AppboySlideupManager;
+import com.appboy.ui.Constants;
 
 /*
  * Appboy integration sample (using Appboy Fragments)

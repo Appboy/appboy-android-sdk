@@ -9,6 +9,22 @@
     <item name="android:textColor">@color/com_appboy_button</item>
   </style>
 
+  <!-- Custom Push Notifications -->
+  <style name="Appboy.EventContent">
+    <item name="android:textColor">#999999</item>
+    <item name="android:textSize">12dp</item>
+  </style>
+  <style name="Appboy.EventContent.Title">
+    <item name="android:textColor">#ffffff</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="android:textSize">16dp</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+  <style name="Appboy.EventContent.Time">
+    <item name="android:textSize">10dp</item>
+    <item name="android:textColor">#999999</item>
+  </style>
+
   <!-- Feedback -->
   <style name="Appboy.Feedback"/>
   <style name="Appboy.Feedback.Layout">

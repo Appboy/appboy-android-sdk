@@ -23,6 +23,7 @@
     <meta-data android:name="com.appboy.SERVER_TARGET" android:value="staging" />
     <meta-data android:name="com.appboy.GCM_MESSAGING_REGISTRATION_ENABLED" android:value="true" />
     <meta-data android:name="com.appboy.GCM_SENDER_ID" android:value="@string/gcm_sender_id" />
+    <meta-data android:name="com.appboy.SMALL_NOTIFICATION_ICON" android:resource="@drawable/notification_icon" />
 
     <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:icon="@drawable/droidboy" android:theme="@style/Theme.Feedback">
       <intent-filter>
@@ -43,7 +44,7 @@
     <activity android:name="com.appboy.sample.AppboyFeedbackActivity" android:theme="@style/Theme.Feed" />
     <activity android:name="com.appboy.sample.AppboyFeedActivity" android:theme="@style/Theme.Feed" />
 
-    <receiver android:name="com.appboy.ui.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+    <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
       <intent-filter>
         <action android:name="com.google.android.c2dm.intent.RECEIVE" />
         <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
