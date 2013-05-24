@@ -7,9 +7,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,6 +33,7 @@ public class AppboyFeedbackFragment extends Fragment {
   private View.OnClickListener mCancelListener;
   private View.OnClickListener mSendListener;
   private FeedbackFinishedListener mFeedbackFinishedListener;
+  private int mOriginalSoftInputMode;
 
   @Override
   public void onAttach(Activity activity) {
@@ -107,15 +106,29 @@ public class AppboyFeedbackFragment extends Fragment {
   public void onResume() {
     super.onResume();
     Appboy.getInstance(getActivity()).logFeedbackDisplayed();
+
+    Activity activity = getActivity();
+    Window window = activity.getWindow();
+
+    // Overriding the soft input mode of the Window so that the Send and Cancel buttons appear above
+    // the soft keyboard when either EditText field gains focus. We cache the mode in order to set it
+    // back to the original value when the Fragment is paused.
+    mOriginalSoftInputMode = window.getAttributes().softInputMode;
+    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+    Appboy.getInstance(activity).logFeedbackDisplayed();
     ensureSendButton();
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    // Hide keyboard when paused.
     Activity activity = getActivity();
+    activity.getWindow().setSoftInputMode(mOriginalSoftInputMode);
+
+    // Hide keyboard when paused.
     View currentFocusView = activity.getCurrentFocus();
+
     if (currentFocusView != null) {
       InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
       inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
