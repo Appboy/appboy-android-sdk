@@ -9,13 +9,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.models.cards.ICard;
+import com.appboy.models.cards.Card;
 import com.appboy.ui.support.StringUtils;
 
 /**
  * Base class for Appboy feed card views
  */
-public abstract class BaseCardView<T extends ICard> extends RelativeLayout {
+public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, BaseCardView.class.getName());
 
   protected final Context mContext;
@@ -54,7 +54,17 @@ public abstract class BaseCardView<T extends ICard> extends RelativeLayout {
     setBackground(background);
   }
 
-  void setImageViewToUrl(final ImageView view, final String imageUrl) {
-    Appboy.getInstance(getContext()).fetchAndRenderImage(imageUrl, view);
+  /**
+   * Asynchronously fetches the image at the given imageUrl and displays the image in the ImageView. No image will be
+   * displayed if the image cannot be downloaded or fetched from the cache.
+   *
+   * @param imageView the ImageView in which to display the image
+   * @param imageUrl the URL of the image resource
+   */
+  void setImageViewToUrl(final ImageView imageView, final String imageUrl) {
+    // We set the ImageView to null before fetching the card image to avoid having
+    // a stale image while the user scrolls.
+    imageView.setImageDrawable(null);
+    Appboy.getInstance(getContext()).fetchAndRenderImage(imageUrl, imageView);
   }
 }

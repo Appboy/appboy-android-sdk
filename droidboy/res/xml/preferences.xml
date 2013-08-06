@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-  <com.appboy.sample.UserDialog
+  <com.appboy.sample.UserProfileDialog
       android:title="@string/user_dialog_title"
       android:summary="@string/user_dialog_summary"
       android:positiveButtonText="@string/user_dialog_okay"
@@ -48,5 +48,14 @@
         android:key="twitter_share"
         android:title="@string/twitter_share_title"
         android:summary="@string/twitter_share_summary"/>
+  </PreferenceCategory>
+
+  <PreferenceCategory
+      android:title="@string/miscellaneous_title">
+
+    <Preference
+        android:key="log_purchase"
+        android:title="@string/log_purchase_title"
+        android:summary="@string/log_purchase_summary"/>
   </PreferenceCategory>
 </PreferenceScreen>

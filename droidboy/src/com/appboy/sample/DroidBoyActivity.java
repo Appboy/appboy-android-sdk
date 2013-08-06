@@ -1,94 +1,84 @@
 package com.appboy.sample;
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.ui.AppboyFeedFragment;
 import com.appboy.ui.AppboyFeedbackFragment;
-import com.appboy.ui.AppboySlideupManager;
 import com.appboy.ui.Constants;
+import com.crittercism.app.Crittercism;
 
-/*
- * Appboy integration sample (using Appboy Fragments)
- *
- * To start tracking analytics using the Appboy Android SDK, you must make sure that you follow these steps
- * to integrate correctly.
- *
- * In all activities, call Appboy.openSession() and Appboy.closeSession() in the activity's onStart() and
- * onStop() respectively. In this sample, we put that code into DroidBoyActivity and PreferenceActivity.
- */
-public class DroidBoyActivity extends FragmentActivity {
+public class DroidBoyActivity extends AppboyFragmentActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, DroidBoyActivity.class.getName());
-
-  private FragmentManager mFragmentManager;
-  private DecisionFragment mDecisionFragment;
-  private boolean mSlideupShouldBeRequested = false;
+  private int mBackStackEntryCount = 0;
+  private AppboyFeedFragment mAppboyFeedFragment;
+  private AppboyFeedbackFragment mAppboyFeedbackFragment;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.droid_boy);
-    activateStrictMode();
     setTitle("DroidBoy");
 
-    mFragmentManager = getSupportFragmentManager();
-    if (savedInstanceState == null) {
-      mDecisionFragment = new DecisionFragment();
-      replaceCurrentFragment(mDecisionFragment);
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+    Fragment currentFragment = fragmentManager.findFragmentById(R.id.root);
+    Log.i(TAG, String.format("Creating DroidBoyActivity with current fragment: %s", currentFragment));
+
+    if (currentFragment != null) {
+      // We set the FeedbackFinishedListener in onCreate() so that it assigns the new listener on every
+      // orientation change.
+      if (currentFragment instanceof AppboyFeedbackFragment) {
+        ((AppboyFeedbackFragment) currentFragment).setFeedbackFinishedListener(getFeedbackFinishedListener());
+      }
+    } else {
+      fragmentManager.beginTransaction().add(R.id.root, new DecisionFragment()).commit();
+    }
+
+    fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+      @Override
+      public void onBackStackChanged() {
+        int newBackStackEntryCount = fragmentManager.getBackStackEntryCount();
+        if (newBackStackEntryCount <= mBackStackEntryCount) {
+          Crittercism.leaveBreadcrumb("Popped the back stack");
+        } else {
+          FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(newBackStackEntryCount - 1);
+          Crittercism.leaveBreadcrumb(backStackEntry.getName());
+        }
+        mBackStackEntryCount = newBackStackEntryCount;
+      }
+    });
+
+    // Retain the existing AppboyFeedFragment and AppboyFeedbackFragment if they exists in the backstack.
+    // If they're not in the backstack, we will lazily construct them in onOptionsItemSelected, which is
+    // called for each click on the options menu item.
+    if (mAppboyFeedFragment == null) {
+      mAppboyFeedFragment = (AppboyFeedFragment) fragmentManager.findFragmentByTag(AppboyFeedFragment.class.toString());
+    }
+    if (mAppboyFeedbackFragment == null) {
+      mAppboyFeedbackFragment = (AppboyFeedbackFragment) fragmentManager.findFragmentByTag(AppboyFeedbackFragment.class.toString());
     }
   }
 
   @Override
   public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
     setIntent(intent);
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-    // Opens a new Appboy session.
-    mSlideupShouldBeRequested = Appboy.getInstance(this).openSession(this);
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    // Registers for Appboy slideup messages.
-    AppboySlideupManager.getInstance().registerSlideupUI(this);
-
     processIntent();
-
-    // Requests a slideup from the Appboy server only when a new session has started.
-    if (mSlideupShouldBeRequested) {
-      Appboy.getInstance(this).requestSlideupRefresh();
-    }
-  }
-
-  @Override
-  public void onPause() {
-    super.onPause();
-    // Unregisters from Appboy slideup messages.
-    AppboySlideupManager.getInstance().unregisterSlideupUI(this);
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    // Closes the Appboy session.
-    Appboy.getInstance(this).closeSession(this);
   }
 
   @Override
@@ -102,10 +92,16 @@ public class DroidBoyActivity extends FragmentActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.feed:
-        replaceCurrentFragment(new AppboyFeedFragment());
+        if (mAppboyFeedFragment == null) {
+          mAppboyFeedFragment = new AppboyFeedFragment();
+        }
+        replaceCurrentFragment(mAppboyFeedFragment);
         break;
       case R.id.feedback:
-        replaceCurrentFragment(createFeedbackFragment());
+        if (mAppboyFeedbackFragment == null) {
+          mAppboyFeedbackFragment = new AppboyFeedbackFragment();
+        }
+        replaceCurrentFragment(mAppboyFeedbackFragment);
         break;
       case R.id.settings:
         startActivity(new Intent(this, PreferencesActivity.class));
@@ -116,86 +112,84 @@ public class DroidBoyActivity extends FragmentActivity {
     return true;
   }
 
-  @TargetApi(9)
-  private void activateStrictMode() {
-    // Set the activity to Strict mode so that we get LogCat warnings when code misbehaves on the main thread.
-    if (BuildConfig.DEBUG
-      && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-      StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
-    }
-  }
+  private void replaceCurrentFragment(Fragment newFragment) {
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    Fragment currentFragment = fragmentManager.findFragmentById(R.id.root);
 
-  @TargetApi(11)
-  private void setTitleOnActionBar(String title) {
-    ActionBar actionBar = getActionBar();
-    actionBar.setTitle(title);
-  }
-
-  private void setTitle(String title) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-      setTitleOnActionBar(title);
-    } else {
-      super.setTitle(title);
-    }
-  }
-
-  private void replaceCurrentFragment(Fragment fragment) {
-    Fragment currentFragment = mFragmentManager.findFragmentById(R.id.root);
-    if (currentFragment != null && currentFragment.getClass().equals(fragment.getClass())) {
+    if (currentFragment != null && currentFragment.getClass().equals(newFragment.getClass())) {
       Log.i(TAG, String.format("Fragment of type %s is already the active fragment. Ignoring request to replace " +
         "current fragment.", currentFragment.getClass()));
       return;
     }
 
-    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+    // Re-attach any listeners. We currently only have one for the feedback fragment.
+    if (newFragment instanceof AppboyFeedbackFragment) {
+      ((AppboyFeedbackFragment) newFragment).setFeedbackFinishedListener(getFeedbackFinishedListener());
+    }
+
+    hideSoftKeyboard();
+    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
       android.R.anim.fade_in, android.R.anim.fade_out);
-    fragmentTransaction.replace(R.id.root, fragment);
+    fragmentTransaction.replace(R.id.root, newFragment, newFragment.getClass().toString());
     if (currentFragment != null) {
+      fragmentTransaction.addToBackStack(newFragment.getClass().toString());
+    } else {
       fragmentTransaction.addToBackStack(null);
     }
     fragmentTransaction.commit();
   }
 
   private void processIntent() {
-    // Check to see if the Activity was opened by the NotificationActionReceiver. If it was, navigate to the
-    // fragment identified by the APPBOY_TARGET_KEY.
+    // Check to see if the Activity was opened by the AppboyBroadcastReceiver. If it was, navigate to the
+    // correct fragment.
     Bundle extras = getIntent().getExtras();
-    if (extras != null && Constants.APPBOY.equals(extras.getString(NotificationActionReceiver.SOURCE_KEY))) {
-      logPushNotificationOpened(extras);
+    if (extras != null && Constants.APPBOY.equals(extras.getString(AppboyBroadcastReceiver.SOURCE_KEY))) {
+      // Logs that the push notification was opened. These analytics will be sent to Appboy.
+      String campaignId = extras.getString(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
+      if (campaignId != null) {
+        Appboy.getInstance(this).logPushNotificationOpened(campaignId);
+      }
       navigateToDestination(extras);
     }
-  }
 
-  private void logPushNotificationOpened(Bundle extras) {
-    // Logs that the push notification was opened. These analytics will be sent to Appboy.
-    String campaignId = extras.getString(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
-    if (campaignId != null) {
-      Appboy.getInstance(this).logPushNotificationOpened(campaignId);
-    }
+    // Clear the intent so that screen rotations don't cause the intent to be re-executed on.
+    setIntent(new Intent());
   }
 
   private void navigateToDestination(Bundle extras) {
-    // Navigate to the feed/feedback/home fragment based on the intent extras.
-    String destination = extras.getString(NotificationActionReceiver.DESTINATION_VIEW);
-    if (NotificationActionReceiver.FEED.equals(destination)) {
-      replaceCurrentFragment(new AppboyFeedFragment());
-    } else if (NotificationActionReceiver.FEEDBACK.equals(destination)) {
-      replaceCurrentFragment(new AppboyFeedbackFragment());
-    } else if (NotificationActionReceiver.HOME.equals(destination)) {
-      mSlideupShouldBeRequested = false;
-      replaceCurrentFragment(mDecisionFragment);
+    // DESTINATION_VIEW holds the name of the fragment we're trying to visit.
+    String destination = extras.getString(AppboyBroadcastReceiver.DESTINATION_VIEW);
+    if (AppboyBroadcastReceiver.FEED.equals(destination)) {
+      if (mAppboyFeedFragment == null) {
+        mAppboyFeedFragment = new AppboyFeedFragment();
+      }
+      replaceCurrentFragment(mAppboyFeedFragment);
+    } else if (AppboyBroadcastReceiver.FEEDBACK.equals(destination)) {
+      if (mAppboyFeedbackFragment == null) {
+        mAppboyFeedbackFragment = new AppboyFeedbackFragment();
+      }
+      replaceCurrentFragment(mAppboyFeedbackFragment);
+    } else if (AppboyBroadcastReceiver.HOME.equals(destination)) {
+      replaceCurrentFragment(new DecisionFragment());
     }
   }
 
-  private AppboyFeedbackFragment createFeedbackFragment() {
-    AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
-    appboyFeedbackFragment.setFeedbackFinishedListener(new AppboyFeedbackFragment.FeedbackFinishedListener() {
+  private void hideSoftKeyboard() {
+    if (getCurrentFocus() != null) {
+      InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+      inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+        InputMethodManager.RESULT_UNCHANGED_SHOWN);
+    }
+  }
+
+  private AppboyFeedbackFragment.FeedbackFinishedListener getFeedbackFinishedListener() {
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+    return new AppboyFeedbackFragment.FeedbackFinishedListener() {
       @Override
       public void onFeedbackFinished() {
-        mFragmentManager.popBackStack();
+        fragmentManager.popBackStack();
       }
-    });
-    return appboyFeedbackFragment;
+    };
   }
 }

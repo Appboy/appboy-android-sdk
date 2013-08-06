@@ -57,6 +57,7 @@
   </style>
   <style name="Appboy.Feedback.IsBugCheckBox">
     <item name="android:text">@string/com_appboy_feedback_form_is_bug</item>
+    <item name="android:textColor">@color/com_appboy_feedback_form_is_bug</item>
   </style>
 
   <!-- Slideup -->

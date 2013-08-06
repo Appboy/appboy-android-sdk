@@ -13,8 +13,10 @@ import com.appboy.Appboy;
 import com.appboy.AppboyUser;
 import com.appboy.enums.Gender;
 import com.appboy.ui.Constants;
+import com.appboy.ui.support.StringUtils;
+import com.crittercism.app.Crittercism;
 
-public class UserDialog extends DialogPreference {
+public class UserProfileDialog extends DialogPreference {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, DialogPreference.class.getName());
 
   private EditText mFirstName;
@@ -24,13 +26,13 @@ public class UserDialog extends DialogPreference {
   private RadioGroup mGender;
   private EditText mFavoriteColor;
 
-  public UserDialog(Context context, AttributeSet attrs) {
+  public UserProfileDialog(Context context, AttributeSet attrs) {
     super(context, attrs);
     setDialogLayoutResource(R.layout.user_preferences);
     setPersistent(false);
   }
 
-  public UserDialog(Context context, AttributeSet attrs, int defStyle) {
+  public UserProfileDialog(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     setDialogLayoutResource(R.layout.user_preferences);
     setPersistent(false);
@@ -75,6 +77,12 @@ public class UserDialog extends DialogPreference {
       Log.d(TAG, String.format("genderId: %d, genderResourceId: %d", genderId, genderResourceId));
       String favoriteColor = mFavoriteColor.getText().toString();
 
+      if (!StringUtils.isNullOrBlank(email)) {
+        Appboy.getInstance(getContext()).changeUser(email);
+        // Crittercism limits the length of the username to 32 characters.
+        Crittercism.setUsername(email.substring(0, Math.min(email.length(), 31)));
+      }
+
       SharedPreferences.Editor editor = getEditor();
       editor.putString("user.firstname", firstName);
       editor.putString("user.lastname", lastName);
@@ -103,6 +111,7 @@ public class UserDialog extends DialogPreference {
           Log.w(TAG, "Error parsing gender from user preferences.");
       }
       appboyUser.setCustomUserAttribute("favorite_color", favoriteColor);
+      appboyUser.incrementCustomUserAttribute("user_rating", 5);
     }
   }
 

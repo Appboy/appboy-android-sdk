@@ -46,18 +46,31 @@ public class StarRatingView extends LinearLayout {
     int ratingRoundedDown = (int) Math.floor(mRating);
     int ratingRoundedUp = (int) Math.ceil(mRating);
     for (int starIndex = 0; starIndex < ratingRoundedDown; starIndex++) {
-      mStarRating.get(starIndex).setImageResource(R.drawable.com_appboy_rating_full_star);
+      ImageView star = mStarRating.get(starIndex);
+      star.setTag(R.drawable.com_appboy_rating_full_star);
+      star.setImageResource(R.drawable.com_appboy_rating_full_star);
     }
     for (int starIndex = ratingRoundedUp; starIndex < mStarRating.size(); starIndex++) {
-      mStarRating.get(starIndex).setImageResource(R.drawable.com_appboy_rating_empty_star);
+      ImageView star = mStarRating.get(starIndex);
+      star.setTag(R.drawable.com_appboy_rating_empty_star);
+      star.setImageResource(R.drawable.com_appboy_rating_empty_star);
     }
+
+    // Processing the remainder. A remainder between [0.25, 0.75) will be displayed as a half star.
+    // Otherwise, it be rounded up/down to the nearest whole star.
     float remainder = rating - ratingRoundedDown;
-    if (remainder < 0.25f) {
-      mStarRating.get(ratingRoundedDown).setImageResource(R.drawable.com_appboy_rating_empty_star);
-    } else if (remainder < 0.75f) {
-      mStarRating.get(ratingRoundedDown).setImageResource(R.drawable.com_appboy_rating_half_star);
-    } else {
-      mStarRating.get(ratingRoundedDown).setImageResource(R.drawable.com_appboy_rating_full_star);
+    if (remainder > 0.0f) {
+      ImageView star = mStarRating.get(ratingRoundedDown);
+      if (remainder < 0.25f) {
+        star.setTag(R.drawable.com_appboy_rating_empty_star);
+        star.setImageResource(R.drawable.com_appboy_rating_empty_star);
+      } else if (remainder < 0.75f) {
+        star.setTag(R.drawable.com_appboy_rating_half_star);
+        star.setImageResource(R.drawable.com_appboy_rating_half_star);
+      } else {
+        star.setTag(R.drawable.com_appboy_rating_full_star);
+        star.setImageResource(R.drawable.com_appboy_rating_full_star);
+      }
     }
     return true;
   }
@@ -73,11 +86,16 @@ public class StarRatingView extends LinearLayout {
     mStarRating = new ArrayList<ImageView>(mNumStars);
     for (int i = 0; i < mNumStars; i++) {
       ImageView star = new ImageView(context);
+      star.setTag(0);
       ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       addView(star, layoutParams);
       mStarRating.add(star);
     }
 
     setRating(mRating);
+  }
+
+  List<ImageView> getImageViewList() {
+    return mStarRating;
   }
 }

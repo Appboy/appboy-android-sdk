@@ -22,6 +22,7 @@
 
   <string name="general_preferences_title">General</string>
   <string name="social_preferences_title">Social</string>
+  <string name="miscellaneous_title">Misc.</string>
 
   <string name="user_dialog_title">Sign up</string>
   <string name="user_dialog_summary">Receive the latest DroidBoy news and updates!</string>
@@ -41,9 +42,15 @@
 
   <string name="facebook_share_title">Facebook</string>
   <string name="facebook_share_summary">Share us on Facebook</string>
+  <string name="facebook_share_toast">Thank you for sharing on Facebook</string>
 
   <string name="twitter_share_title">Twitter</string>
   <string name="twitter_share_summary">Share us on Twitter</string>
+  <string name="twitter_share_toast">Thank you for sharing on Twitter</string>
+
+  <string name="log_purchase_title">Unlock goodies</string>
+  <string name="log_purchase_summary">In-app purchase</string>
+  <string name="log_purchase_toast">Thank you for your purchase</string>
 
   <string name="spinner_content_description">Spinner</string>
   <string name="spin">Spin!</string>
@@ -52,6 +59,4 @@
   <string name="blue">Blue</string>
   <string name="yellow">Yellow</string>
   <string name="green">Green</string>
-
-  <string name="gcm_sender_id">134664038330</string>
 </resources>

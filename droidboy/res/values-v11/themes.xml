@@ -4,6 +4,10 @@
     <item name="android:background">@color/gray</item>
   </style>
 
+  <style name="Theme.DroidBoy" parent="@android:style/Theme.Holo.Light">
+    <item name="android:actionBarStyle">@style/ActionBar</item>
+  </style>
+
   <style name="Theme.Feedback" parent="@android:style/Theme.Holo.Light">
     <item name="android:actionBarStyle">@style/ActionBar</item>
   </style>

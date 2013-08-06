@@ -7,9 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.models.actions.IAction;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.ui.R;
+import com.appboy.ui.actions.IAction;
+import com.appboy.ui.actions.MarketAction;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -58,16 +59,15 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     mStarRating.setRating((float) card.getRating());
     mReviewCount.setText(String.format("(%s)", NumberFormat.getInstance().format(card.getReviewCount())));
     mPrice.setText(getPriceString(card.getPrice()));
-    mPriceAction = card.getClickAction();
+    mPriceAction = new MarketAction(card.getUrl(), card.getPackage());
     mPrice.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Appboy.getInstance(mContext).logFeedCardClick(card.getId());
-        mPriceAction.execute(mContext, null);
+        mPriceAction.execute(mContext);
       }
     });
 
-    // card.getUrl() has the store action.
     setImageViewToUrl(mImage, card.getImageUrl());
   }
 

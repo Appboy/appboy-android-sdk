@@ -2,10 +2,10 @@
 <resources>
   <style name="DecisionOptionText">
     <item name="android:inputType">textCapWords</item>
-    <item name="android:textColor">@android:color/black</item>
+    <item name="android:textColor">@android:color/white</item>
   </style>
   <style name="DecisionSpinButton">
-    <item name="android:textColor">@android:color/black</item>
+    <item name="android:textColor">@android:color/white</item>
     <item name="android:text">@string/spin</item>
   </style>
 

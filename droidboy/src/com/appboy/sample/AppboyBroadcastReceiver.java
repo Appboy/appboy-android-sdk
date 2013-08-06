@@ -8,8 +8,8 @@ import android.util.Log;
 import com.appboy.Constants;
 import com.appboy.AppboyGcmReceiver;
 
-public class NotificationActionReceiver extends BroadcastReceiver {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, NotificationActionReceiver.class.getName());
+public class AppboyBroadcastReceiver extends BroadcastReceiver {
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyBroadcastReceiver.class.getName());
   public static final String SOURCE_KEY = "source";
   public static final String DESTINATION_VIEW = "destination";
   public static final String HOME = "home";
@@ -22,9 +22,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     String pushReceivedAction = packageName + ".intent.APPBOY_PUSH_RECEIVED";
     String notificationOpenedAction = packageName + ".intent.APPBOY_NOTIFICATION_OPENED";
     String slideupClicked = packageName + ".intent.APPBOY_SLIDEUP_CLICKED";
-
     String action = intent.getAction();
     Log.d(TAG, String.format("Received intent with action %s", action));
+
     if (pushReceivedAction.equals(action)) {
       Log.d(TAG, "Received push notification.");
     } else if (notificationOpenedAction.equals(action)) {
@@ -34,10 +34,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
       startDroidBoyWithIntent(context, extras);
     } else if (slideupClicked.equals(action)) {
       Bundle extras = new Bundle();
-      extras.putString(DESTINATION_VIEW, HOME);
+      extras.putString(DESTINATION_VIEW, FEED);
       startDroidBoyWithIntent(context, extras);
     } else {
-      Log.d(TAG, String.format("Ignoring intent with action %s", action));
+      Log.d(TAG, String.format("Ignoring intent with unsupported action %s", action));
     }
   }
 
@@ -45,9 +45,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     Intent startActivityIntent = new Intent(context, DroidBoyActivity.class);
     startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     startActivityIntent.putExtra(SOURCE_KEY, Constants.APPBOY);
+
     if (extras != null) {
       startActivityIntent.putExtras(extras);
     }
+
     context.startActivity(startActivityIntent);
   }
 }

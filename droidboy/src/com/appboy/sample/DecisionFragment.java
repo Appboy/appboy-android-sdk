@@ -44,7 +44,6 @@ public class DecisionFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
     View contentView = layoutInflater.inflate(R.layout.decision, container, false);
-
     mSpinner = (ImageView) contentView.findViewById(R.id.spinner);
     final Button spinButton = (Button) contentView.findViewById(R.id.spin);
     final Animation.AnimationListener animationListener = new Animation.AnimationListener() {

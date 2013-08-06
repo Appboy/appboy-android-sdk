@@ -19,9 +19,12 @@ import java.util.Queue;
  * in registerSlideupUI(Activity) and detached in unregisterSlideupUI(Activity). To show a slideup in any Activity,
  * EVERY Activity should call registerSlideupUI(Activity) and registerSlideupUI(Activity) in the Activity's onResume()
  * and onPause() lifecycle method respectively. Forgetting to include these method calls can result in the SlideupDrawerView
- * not being attached to the current Activity's view and can also result in loss of slideup messages.
+ * not being attached to the current Activity's view and can also result in loss of slideup messages. Note that there
+ * are instances where an application transitioning from activity A to activity B could have the onStop method of
+ * activity A called after the onStart of activity B. For this reason, we highly recommend calling registerSlideupUI
+ * in onResume and unregisterSlideupUI in onPause (and opposed to onStart/onStop).
  *
- * This class contains a list of incoming slideup messages which are quesed and and displayed sequentially with a one
+ * This class contains a list of incoming slideup messages which are queued and and displayed sequentially with a one
  * second interval between messages.
  *
  * This class is not thread-safe and should only be used from the UI thread.
@@ -116,7 +119,7 @@ public final class AppboySlideupManager {
   }
 
   /**
-   * Unregisters the AppboySlideupManager. After a call to this method, the Activty will no longer receive
+   * Unregisters the AppboySlideupManager. After a call to this method, the Activity will no longer receive
    * and display Appboy slideups. This should be called in the onPause() method of the current Activity.
    *
    * @param activity The current activity

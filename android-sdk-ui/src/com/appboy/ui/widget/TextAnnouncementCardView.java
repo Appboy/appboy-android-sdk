@@ -5,9 +5,11 @@ import android.view.View;
 import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.models.actions.IAction;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.R;
+import com.appboy.ui.actions.IAction;
+import com.appboy.ui.actions.WebAction;
+import com.appboy.ui.support.StringUtils;
 
 public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard> {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, TextAnnouncementCardView.class.getName());
@@ -44,13 +46,19 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
     mTitle.setText(card.getTitle());
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
-    mCardAction = card.getClickAction();
+
+    if (!StringUtils.isNullOrBlank(card.getUrl())) {
+      mCardAction = new WebAction(card.getUrl());
+    } else {
+      mCardAction = null;
+    }
+
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         if (mCardAction != null) {
           Appboy.getInstance(mContext).logFeedCardClick(card.getId());
-          mCardAction.execute(mContext, null);
+          mCardAction.execute(mContext);
         }
       }
     });

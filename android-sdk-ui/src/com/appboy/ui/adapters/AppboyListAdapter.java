@@ -7,26 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import com.appboy.Appboy;
+import com.appboy.models.cards.Card;
 import com.appboy.models.cards.CrossPromotionSmallCard;
-import com.appboy.models.cards.ICard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.Constants;
 import com.appboy.ui.widget.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Default adapter used to display cards and log card impressions for the Appboy stream.
+ * Default adapter used to display cards and log card impressions for the Appboy feed.
  *
  * This allows the stream to reuse cards when they go out of view.
  *
  * IMPORTANT - When you add a new card, be sure to add the new view type and update the view count here
- *
- * Note that this class will not automatically trigger change notifications. You must manually tell the adapter that
- * a change has been made.
  *
  * A card generates an impression once per viewing per open ListView. If a card is viewed more than once
  * in a particular ListView, it generates only one impression. If closed an reopened, a card will again
@@ -36,19 +34,16 @@ import java.util.Set;
  * IMPORTANT - You must call resetCardImpressionTracker() whenever the ListView is displayed. This will ensure
  *             that cards that come into view will be tracked according to the description above.
  */
-public class AppboyListAdapter extends ArrayAdapter<ICard> {
+public class AppboyListAdapter extends ArrayAdapter<Card> {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyListAdapter.class.getName());
 
   private final Context mContext;
   private final Set<String> mCardIdImpressions;
-  private boolean mHasReceivedFeed = false;
 
-  public AppboyListAdapter(Context context, int layoutResourceId, List<ICard> cards) {
+  public AppboyListAdapter(Context context, int layoutResourceId, List<Card> cards) {
     super(context, layoutResourceId, cards);
     mContext = context;
     mCardIdImpressions = new HashSet<String>();
-    // Tell the adapter that we're going to manually notify it of changes.
-    setNotifyOnChange(false);
   }
 
   /**
@@ -62,7 +57,7 @@ public class AppboyListAdapter extends ArrayAdapter<ICard> {
 
   @Override
   public int getItemViewType(int position) {
-    ICard card = getItem(position);
+    Card card = getItem(position);
     if (card instanceof CrossPromotionSmallCard) {
       return 1;
     } else if (card instanceof ShortNewsCard) {
@@ -81,7 +76,7 @@ public class AppboyListAdapter extends ArrayAdapter<ICard> {
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     BaseCardView view;
-    ICard card = getItem(position);
+    Card card = getItem(position);
 
     if (convertView == null) {
       if (card instanceof CrossPromotionSmallCard) {
@@ -105,19 +100,49 @@ public class AppboyListAdapter extends ArrayAdapter<ICard> {
     return view;
   }
 
-  public void addCards(List<ICard> cards) {
-    mHasReceivedFeed = true;
+  public void replaceFeed(List<Card> cards) {
+    setNotifyOnChange(false);
+
     if (cards == null) {
       clear();
+      notifyDataSetChanged();
       return;
     }
+
+    Log.d(TAG, String.format("Replacing existing feed of %d cards with new feed containing %d cards.",
+      getCount(), cards.size()));
+    int i = 0, j = 0, newFeedSize = cards.size();
+    Card existingCard, newCard;
+
+    // Iterate over the entire existing feed, skipping items at the head of the list whenever they're the same as the
+    // head of the new list.
+    while (i < getCount()) {
+      existingCard = getItem(i);
+      newCard = cards.get(j);
+      // If the card we're trying to add is the same as the next existing card in the feed, continue.
+      if (newCard.getId().equals(existingCard.getId()) && newCard.getUpdated() == existingCard.getUpdated()) {
+        i++;
+        j++;
+      } else { // Otherwise, we need to get rid of the front card from the adapter, and continue checking.
+        remove(existingCard);
+      }
+    }
+
+    // Now we add the remainder of the feed.
     if (android.os.Build.VERSION.SDK_INT < 11) {
-      for (ICard card: cards) {
-        add(card);
+      while (j < newFeedSize) {
+        add(cards.get(j));
+        j++;
       }
     } else {
-      addAllBatch(cards);
+      addAllBatch(cards.subList(j, newFeedSize));
     }
+    notifyDataSetChanged();
+  }
+
+  @TargetApi(11)
+  private void addAllBatch(Collection<Card> cards) {
+    super.addAll(cards);
   }
 
   /**
@@ -128,16 +153,7 @@ public class AppboyListAdapter extends ArrayAdapter<ICard> {
     mCardIdImpressions.clear();
   }
 
-  public boolean hasReceivedFeed() {
-    return mHasReceivedFeed;
-  }
-
-  @TargetApi(11)
-  private void addAllBatch(List<ICard> cards) {
-    addAll(cards);
-  }
-
-  private void logCardImpression(ICard card) {
+  private void logCardImpression(Card card) {
     String cardId = card.getId();
     if (!mCardIdImpressions.contains(cardId)) {
       mCardIdImpressions.add(cardId);

@@ -19,6 +19,10 @@ import com.appboy.ui.support.StringUtils;
 public class AppboyFeedbackFragment extends Fragment {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyFeedbackFragment.class.getName());
 
+  /**
+   * Listener to be called after the feedback has been submitted or cancelled. You must set the
+   * static listener before creating an instance of the AppboyFeedbackFragment.
+   */
   public interface FeedbackFinishedListener {
     void onFeedbackFinished();
   }
@@ -81,9 +85,11 @@ public class AppboyFeedbackFragment extends Fragment {
         if (mFeedbackFinishedListener != null) {
           mFeedbackFinishedListener.onFeedbackFinished();
         }
+
         clearData();
       }
     };
+    setRetainInstance(true);
   }
 
   @Override

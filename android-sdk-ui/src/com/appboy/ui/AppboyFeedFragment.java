@@ -1,7 +1,6 @@
 package com.appboy.ui;
 
 import android.app.Activity;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
-import com.appboy.models.cards.ICard;
+import com.appboy.models.cards.Card;
 import com.appboy.ui.adapters.AppboyListAdapter;
 
 import java.util.ArrayList;
@@ -25,6 +24,22 @@ import java.util.ArrayList;
 public class AppboyFeedFragment extends ListFragment {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyFeedFragment.class.getName());
   private static int NETWORK_PROBLEM_WARNING_MS = 5000;
+  private static int MAX_FEED_TTL_SECONDS = 60;
+
+  private final Handler mMainThreadLooper = new Handler(Looper.getMainLooper());
+  // Shows the network error message. This should only be executed on the Main/UI thread.
+  private final Runnable mShowNetworkError = new Runnable() {
+    @Override
+    public void run() {
+      // null checks make sure that this only executes when the constituent views are valid references.
+      if (mLoadingSpinner != null) {
+        mLoadingSpinner.setVisibility(View.GONE);
+      }
+      if (mNetworkErrorLayout != null) {
+        mNetworkErrorLayout.setVisibility(View.VISIBLE);
+      }
+    }
+  };
 
   private Appboy mAppboy;
   private IEventSubscriber<FeedUpdatedEvent> mFeedUpdatedSubscriber;
@@ -32,40 +47,16 @@ public class AppboyFeedFragment extends ListFragment {
   private LinearLayout mNetworkErrorLayout;
   private LinearLayout mEmptyFeedLayout;
   private ProgressBar mLoadingSpinner;
+  private boolean mSkipCardImpressionsReset;
 
   @Override
   public void onAttach(final Activity activity) {
     super.onAttach(activity);
-
     mAppboy = Appboy.getInstance(activity);
-    mAdapter = new AppboyListAdapter(activity, R.id.tag, new ArrayList<ICard>());
-
-    mFeedUpdatedSubscriber = new IEventSubscriber<FeedUpdatedEvent>() {
-      @Override
-      public void trigger(final FeedUpdatedEvent event) {
-        activity.runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            if (event.isFromOfflineStorage() && event.getFeedCards().isEmpty()) {
-              Log.i(TAG, "Got result from offline storage, but it was empty, so waiting for result from web request.");
-              return;
-            }
-            if (!mAdapter.isEmpty() && event.isFromOfflineStorage()) {
-              Log.i(TAG, "Ignoring feed from offline storage because the feed was already non-empty.");
-              return;
-            }
-
-            Log.i(TAG, String.format("Clearing existing feed and adding %d more cards.", event.getFeedCards().size()));
-            mAdapter.clear();
-            mAdapter.addCards(event.getFeedCards());
-            mAdapter.notifyDataSetChanged();
-          }
-        });
-      }
-    };
-    mAppboy.subscribeToFeedUpdates(mFeedUpdatedSubscriber);
-    mAppboy.requestFeedRefresh();
-    mAppboy.requestFeedRefreshFromCache();
+    if (mAdapter == null) {
+      mAdapter = new AppboyListAdapter(activity, R.id.tag, new ArrayList<Card>());
+    }
+    setRetainInstance(true);
   }
 
   @Override
@@ -80,81 +71,126 @@ public class AppboyFeedFragment extends ListFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    // Applying top and bottom padding like this allows for the top and bottom padding to be scrolled away, as opposed
-    // to being a permanent frame around the feed.
-    TextView padding = new TextView(getActivity());
-    padding.setHeight(0);
+    if (mSkipCardImpressionsReset) {
+      mSkipCardImpressionsReset = false;
+    } else {
+      mAdapter.resetCardImpressionTracker();
+      Log.d(TAG, "Resetting card impressions.");
+    }
+
+    // Applying top and bottom padding as header and footer views allows for the top and bottom padding to be scrolled
+    // away, as opposed to being a permanent frame around the feed.
+    TextView topPadding = new TextView(getActivity());
+    topPadding.setHeight(0);
+    TextView bottomPadding = new TextView(getActivity());
+    bottomPadding.setHeight(0);
 
     final ListView listView = getListView();
-    listView.addHeaderView(padding);
-    listView.addFooterView(padding);
+    listView.addHeaderView(topPadding);
+    listView.addFooterView(bottomPadding);
 
-    // We need to wait to call setAdapter until after we've added the header and foot views, otherwise Android gets mad.
-    listView.setAdapter(mAdapter);
-
-    mAdapter.registerDataSetObserver(new DataSetObserver() {
+    // Remove the previous subscriber before rebuilding a new one with our new activity.
+    mAppboy.removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
+    mFeedUpdatedSubscriber = new IEventSubscriber<FeedUpdatedEvent>() {
       @Override
-      public void onChanged() {
-        super.onChanged();
-        Log.d(TAG, "Feed list adapter changed. Updating visibility settings.");
-
-        // Get rid of the loading spinner, if it's around.
-        mLoadingSpinner.setVisibility(View.GONE);
-
-        // Depending on the state of the adapter, we either show an empty feed message, or we display the list of cards.
-        if (mAdapter.isEmpty()) {
-          mEmptyFeedLayout.setVisibility(View.VISIBLE);
-          listView.setVisibility(View.GONE);
-        } else {
-          mEmptyFeedLayout.setVisibility(View.GONE);
-          listView.setVisibility(View.VISIBLE);
+      public void trigger(final FeedUpdatedEvent event) {
+        Activity activity = getActivity();
+        // Not strictly necessary, but being defensive in the face of a lot of inconsistent behavior with
+        // fragment/activity lifecycles.
+        if (activity == null) {
+          return;
         }
+
+        activity.runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Log.d(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
+            // If a FeedUpdatedEvent comes in, we make sure that the network error isn't visible. It could become
+            // visible again later if we need to request a new feed and it doesn't return in time, but we display a
+            // network spinner while we wait, instead of keeping the network error up.
+            mMainThreadLooper.removeCallbacks(mShowNetworkError);
+            mNetworkErrorLayout.setVisibility(View.GONE);
+
+            // If there are no cards, regardless of what happens further down, we're not going to show the list view, so
+            // clear the list view and change relevant visibility now.
+            if (event.getCardCount() == 0) {
+              listView.setVisibility(View.GONE);
+              mAdapter.clear();
+            } else {
+              mEmptyFeedLayout.setVisibility(View.GONE);
+              mLoadingSpinner.setVisibility(View.GONE);
+            }
+
+            // If we our feed from offline storage, and it was old, we asynchronously request a new one from the server,
+            // putting up a spinner if the old feed was empty.
+            if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
+              Log.i(TAG, String.format("Feed received was older than the max time to live of %d seconds, displaying it " +
+                "for now, but requesting an updated view from the server.", MAX_FEED_TTL_SECONDS));
+              mAppboy.requestFeedRefresh();
+              // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
+              // Eventually displaying an error message if it doesn't.
+              if (event.getCardCount() == 0) {
+                Log.d(TAG, String.format("Old feed was empty, putting up a network spinner and registering the network error message on a delay of %dms.",
+                  NETWORK_PROBLEM_WARNING_MS));
+                mEmptyFeedLayout.setVisibility(View.GONE);
+                mLoadingSpinner.setVisibility(View.VISIBLE);
+                mMainThreadLooper.postDelayed(mShowNetworkError, NETWORK_PROBLEM_WARNING_MS);
+                return;
+              }
+            }
+
+            // If we get here, we know that our feed is either fresh from the cache, or came down directly from a
+            // network request. Thus, an empty feed shouldn't have a network error, or a spinner, we should just
+            // tell the user that the feed is empty.
+            if (event.getCardCount() == 0) {
+              mLoadingSpinner.setVisibility(View.GONE);
+              mEmptyFeedLayout.setVisibility(View.VISIBLE);
+            } else {
+              mAdapter.replaceFeed(event.getFeedCards());
+              listView.setVisibility(View.VISIBLE);
+            }
+          }
+        });
       }
-    });
+    };
+    mAppboy.subscribeToFeedUpdates(mFeedUpdatedSubscriber);
 
-    // If our request to refreshAll() has already returned, we've missed the chance for the adapter to notify the view
-    // that it's data set changed, so we do it manually.
-    if (mAdapter.hasReceivedFeed()) {
-      mAdapter.notifyDataSetChanged();
-    } else {
-      final Handler handler = new Handler(Looper.getMainLooper());
-      final Runnable showNetworkError = new Runnable() {
-        @Override
-        public void run() {
-          mLoadingSpinner.setVisibility(View.GONE);
-          mNetworkErrorLayout.setVisibility(View.VISIBLE);
-        }
-      };
-      handler.postDelayed(showNetworkError, NETWORK_PROBLEM_WARNING_MS);
-
-      // Setup a temporary observer on the list adapter which will remove the NetworkError runnable from the delay
-      // queue (if it hasn't run yet) and will make sure that the error is not visible.
-      DataSetObserver stopNetworkErrorRunnableObserver = new DataSetObserver() {
-        @Override
-        public void onChanged() {
-          super.onChanged();
-          handler.removeCallbacks(showNetworkError);
-          mNetworkErrorLayout.setVisibility(View.GONE);
-
-          // Since this should only run once, we remove the data set observer right after executing.
-          mAdapter.unregisterDataSetObserver(this);
-        }
-      };
-      mAdapter.registerDataSetObserver(stopNetworkErrorRunnableObserver);
-    }
+    // Once the header and footer views are set and our event handlers are ready to go, we set the adapter and hit the
+    // cache for an initial feed load.
+    listView.setAdapter(mAdapter);
+    mAppboy.requestFeedRefreshFromCache();
   }
 
   @Override
   public void onResume() {
     super.onResume();
     Appboy.getInstance(getActivity()).logFeedDisplayed();
-    mAdapter.resetCardImpressionTracker();
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    // If the view is destroyed, we don't care about updating it anymore. Remove the subscription immediately.
+    mAppboy.removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
   }
 
   @Override
   public void onDetach() {
     super.onDetach();
-    mAppboy.removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
     setListAdapter(null);
+  }
+
+  // The onSaveInstanceState method gets called before an orientation change when either the fragment is
+  // the current fragment or exists in the fragment manager backstack.
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    // We set mSkipCardImpressionsReset to true only when onSaveInstanceState is called while the fragment
+    // is visible on the screen. That happens when the fragment is being managed by the fragment manager and
+    // it is not in the backstack. We do this to avoid setting the mSkipCardImpressionsReset flag when the
+    // device undergoes an orientation change while the fragment is in the backstack.
+    if (isVisible()) {
+      mSkipCardImpressionsReset = true;
+    }
   }
 }
