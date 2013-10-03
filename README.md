@@ -10,7 +10,7 @@ In under 30 minutes, you'll have Appboy in your app!
 
 1. Go to https://dashboard.appboy.com and create an account
 2. Add a new App Group by clicking the + sign in the left column
-3. [Read our Android Getting Started documentation](https://appboy.zendesk.com/forums/22071132-Android-Documentation) to integrate Appboy into your app
+3. [Read our Getting Started documentation](http://documentation.appboy.com) to integrate Appboy into your app
 
 ## Supported OS Versions
 Android 2.2+ (Froyo and up).
