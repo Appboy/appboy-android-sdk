@@ -19,4 +19,5 @@ Android 2.2+ (Froyo and up).
 We currently have full feature parity with our iOS V2 SDK.
 
 ## Feedback & Support
+Javadocs are available [here](http://appboy.github.io/appboy-android-sdk/javadocs/).
 If you have questions, please contact [support@appboy.com](mailto:support@appboy.com).
