@@ -1,4 +1,5 @@
 com.appboy
+com.appboy.configuration
 com.appboy.enums
 com.appboy.events
 com.appboy.models
