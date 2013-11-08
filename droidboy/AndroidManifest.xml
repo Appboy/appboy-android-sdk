@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="2" android:versionName="1.1">
+  package="com.appboy.sample" android:versionCode="14" android:versionName="1.2">
 
   <!-- Supported versions -->
-  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
 
   <!-- Permissions -->
   <uses-permission android:name="android.permission.INTERNET" />

@@ -10,7 +10,7 @@
 
   <string name="board_choices_title">Number of choices</string>
   <string name="board_choices_summary">Please select the number of colors on the board</string>
-  <string name="default_board_choices">2</string>
+  <string name="default_board_choices">4</string>
 
   <string name="spinner_duration_title">Spinner duration</string>
   <string name="spinner_duration_summary">Please select the duration of the spinner</string>
@@ -20,9 +20,14 @@
   <string name="spin_direction_summary">Please select the spin direction</string>
   <string name="default_spin_direction">1</string>
 
+  <string name="input_method_title">Input Method</string>
+  <string name="input_method_summary">Please select your input method</string>
+  <string name="default_input_method">Button</string>
+
   <string name="general_preferences_title">General</string>
   <string name="social_preferences_title">Social</string>
   <string name="miscellaneous_title">Misc.</string>
+  <string name="network_control_title">Network Control</string>
 
   <string name="user_dialog_title">Sign up</string>
   <string name="user_dialog_summary">Receive the latest DroidBoy news and updates!</string>
@@ -52,6 +57,10 @@
   <string name="log_purchase_summary">In-app purchase</string>
   <string name="log_purchase_toast">Thank you for your purchase</string>
 
+  <string name="data_flush_title">Request Flush</string>
+  <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>
+  <string name="data_flush_toast">Data flush requested</string>
+
   <string name="spinner_content_description">Spinner</string>
   <string name="spin">Spin!</string>
 
@@ -59,4 +68,5 @@
   <string name="blue">Blue</string>
   <string name="yellow">Yellow</string>
   <string name="green">Green</string>
+
 </resources>

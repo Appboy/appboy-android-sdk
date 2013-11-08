@@ -3,6 +3,17 @@
   <!-- General configuration -->
   <string name="com_appboy_api_key">appboy-android-sample</string>
 
+  <!-- To disable automatic flushing in any of these network conditions, simply set the value to -1. To turn off
+      all automatic data flushing, set all three intervals to -1. When automatic flushing is disabled, you can use
+      IAppboy.RequestImmediateDataFlush to manually flush analytics data to the server. Note, however, that any
+      feedback requests or refreshes of the news feed or slideup will automatically flush your analytics data as well. -->
+  <!-- On GPRS and EDGE, allow a flush request up to every 80 seconds. (default is 60)  -->
+  <integer name="com_appboy_data_flush_interval_bad_network">30</integer>
+  <!-- With a 3G connection, allow a flush request up to every 20 seconds. (default is 30) -->
+  <integer name="com_appboy_data_flush_interval_good_network">15</integer>
+  <!-- If we're on 4G or Wifi, allow a flush request up to every 10 seconds. (default is 10) -->
+  <integer name="com_appboy_data_flush_interval_great_network">10</integer>
+
   <!-- Push Notification configuration -->
   <bool name="com_appboy_push_gcm_messaging_registration_enabled">true</bool>
   <string name="com_appboy_push_gcm_sender_id">134664038330</string>

@@ -22,6 +22,11 @@
     <item>7</item>
   </string-array>
 
+  <string-array name="inputMethodOptions">
+    <item>Button</item>
+    <item>Swipe</item>
+  </string-array>
+
   <string-array name="spinDirectionOptions">
     <item>Clockwise</item>
     <item>Counterclockwise</item>

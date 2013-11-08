@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -15,6 +17,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import com.appboy.Appboy;
 import com.appboy.ui.Constants;
 
@@ -32,6 +35,10 @@ public class DecisionFragment extends Fragment {
   private View mBisectMode;
   private View mQuadrisectMode;
   private float mSpinDirectionMultiplier;
+  private Button mSpinButton;
+  private Animation.AnimationListener mSpinAnimationListener;
+  private GestureDetector mSwipeGestureDetector;
+  private View.OnTouchListener mSwipeTouchListener;
 
   @Override
   public void onAttach(final Activity activity) {
@@ -39,30 +46,20 @@ public class DecisionFragment extends Fragment {
     mRandom = new Random();
     mInterpolator = new AccelerateDecelerateInterpolator();
     mCurrentSpinnerInDegrees = 0f;
+    mSwipeGestureDetector = new GestureDetector(getActivity(), new SwipeGestureListener(this));
+    mSwipeTouchListener = new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        return mSwipeGestureDetector.onTouchEvent(event);
+      }
+    };
   }
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
     View contentView = layoutInflater.inflate(R.layout.decision, container, false);
     mSpinner = (ImageView) contentView.findViewById(R.id.spinner);
-    final Button spinButton = (Button) contentView.findViewById(R.id.spin);
-    final Animation.AnimationListener animationListener = new Animation.AnimationListener() {
-      public void onAnimationStart(Animation animation) {
-        spinButton.setEnabled(false);
-      }
-      public void onAnimationEnd(Animation animation) {
-        spinButton.setEnabled(true);
-      }
-      public void onAnimationRepeat(Animation animation) { }
-    };
-    spinButton.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View view) {
-        float rotationDegrees = getRotationInDegrees();
-        Animation animation = getRotationAnimation(rotationDegrees);
-        animation.setAnimationListener(animationListener);
-        spin(animation, rotationDegrees);
-      }
-    });
+    mSpinButton = (Button) contentView.findViewById(R.id.spin);
 
     mSelectedMode = contentView.findViewById(R.id.mode_placeholder);
     mBisectMode = getActivity().getLayoutInflater().inflate(R.layout.bisect, (ViewGroup) mSelectedMode.getParent(), false);
@@ -91,11 +88,37 @@ public class DecisionFragment extends Fragment {
     mSpinnerDuration = Integer.parseInt(sharedPreferences.getString("spinner.duration", getString(R.string.default_spinner_duration)));
     mSpinDirectionMultiplier = Float.parseFloat(sharedPreferences.getString("spin.direction", getString(R.string.default_spin_direction)));
     resetSpinner();
+
+    mSpinAnimationListener = new Animation.AnimationListener() {
+      public void onAnimationStart(Animation animation) {
+        mSpinButton.setEnabled(false);
+        unregisterSwipeListeners();
+      }
+      public void onAnimationEnd(Animation animation) {
+        mSpinButton.setEnabled(true);
+        registerSwipeListeners();
+      }
+      public void onAnimationRepeat(Animation animation) { }
+    };
+
+    mSpinButton.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View view) {
+        performSpin(mSpinDirectionMultiplier == 1 ? true : false);
+      }
+    });
+    resetSwipeListeners();
+  }
+
+  public void performSpin(boolean clockwise) {
+    float rotationDegrees = clockwise ? getRotationInDegrees() : getRotationInDegrees() * -1.0f;
+    Animation animation = getRotationAnimation(rotationDegrees);
+    animation.setAnimationListener(mSpinAnimationListener);
+    spin(animation, rotationDegrees);
   }
 
   private float getRotationInDegrees() {
     float minRotationDegrees = mSpinnerDuration * 2 * 360f;
-    return (minRotationDegrees + mRandom.nextInt(360)) * mSpinDirectionMultiplier;
+    return minRotationDegrees + mRandom.nextInt(360);
   }
 
   private Animation getRotationAnimation(float rotationDegrees) {
@@ -126,5 +149,42 @@ public class DecisionFragment extends Fragment {
   private void resetSpinner() {
     mCurrentSpinnerInDegrees = 0;
     mSpinner.clearAnimation();
+  }
+
+  private void registerSwipeListeners() {
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    String inputMethod = sharedPreferences.getString("input.method", getString(R.string.default_input_method));
+    if ("Swipe".equals(inputMethod)) {
+      mBisectMode.setOnTouchListener(mSwipeTouchListener);
+      mQuadrisectMode.setOnTouchListener(mSwipeTouchListener);
+    }
+  }
+
+  private void unregisterSwipeListeners() {
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    String inputMethod = sharedPreferences.getString("input.method", getString(R.string.default_input_method));
+    if ("Swipe".equals(inputMethod)) {
+      mBisectMode.setOnTouchListener(null);
+      mQuadrisectMode.setOnTouchListener(null);
+    }
+  }
+
+  private void resetSwipeListeners() {
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    String inputMethod = sharedPreferences.getString("input.method", getString(R.string.default_input_method));
+    if ("Button".equals(inputMethod)) {
+      mBisectMode.setOnTouchListener(null);
+      mQuadrisectMode.setOnTouchListener(null);
+      mSpinButton.setVisibility(View.VISIBLE);
+    } else if ("Swipe".equals(inputMethod)) {
+      mBisectMode.setOnTouchListener(mSwipeTouchListener);
+      mQuadrisectMode.setOnTouchListener(mSwipeTouchListener);
+      mSpinButton.setVisibility(View.GONE);
+    } else {
+      Log.w(TAG, "Unrecognized input method. Setting the input method type to 'Button'");
+      mBisectMode.setOnTouchListener(null);
+      mQuadrisectMode.setOnTouchListener(null);
+      mSpinButton.setVisibility(View.VISIBLE);
+    }
   }
 }

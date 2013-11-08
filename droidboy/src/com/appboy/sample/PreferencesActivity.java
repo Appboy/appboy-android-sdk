@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
-import android.widget.ListView;
 import android.widget.Toast;
-
 import com.android.vending.billing.utils.IabHelper;
 import com.android.vending.billing.utils.IabResult;
 import com.android.vending.billing.utils.Inventory;
@@ -36,6 +34,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference facebookSharePreference = findPreference("facebook_share");
     Preference twitterSharePreference = findPreference("twitter_share");
     Preference logPurchasePreference = findPreference("log_purchase");
+    Preference dataFlushPreference = findPreference("data_flush");
 
     facebookSharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
@@ -58,6 +57,14 @@ public class PreferencesActivity extends PreferenceActivity {
       public boolean onPreferenceClick(Preference preference) {
         mHelper.launchPurchaseFlow(PreferencesActivity.this, SKU_ANDROID_TEST_PURCHASED,
             IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE, mPurchaseFinishedListener);
+        return true;
+      }
+    });
+    dataFlushPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.getInstance(PreferencesActivity.this).requestImmediateDataFlush();
+        Toast.makeText(PreferencesActivity.this, getString(R.string.data_flush_toast), Toast.LENGTH_LONG).show();
         return true;
       }
     });

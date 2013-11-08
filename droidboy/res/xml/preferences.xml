@@ -34,6 +34,14 @@
         android:entries="@array/spinDirectionOptions"
         android:entryValues="@array/spinDirectionValues"
         android:defaultValue="@string/default_spin_direction"/>
+
+    <ListPreference
+        android:key="input.method"
+        android:title="@string/input_method_title"
+        android:summary="@string/input_method_summary"
+        android:entries="@array/inputMethodOptions"
+        android:entryValues="@array/inputMethodOptions"
+        android:defaultValue="@string/default_input_method"/>
   </PreferenceCategory>
 
   <PreferenceCategory
@@ -57,5 +65,14 @@
         android:key="log_purchase"
         android:title="@string/log_purchase_title"
         android:summary="@string/log_purchase_summary"/>
+  </PreferenceCategory>
+
+  <PreferenceCategory
+      android:title="@string/network_control_title">
+
+    <Preference
+        android:key="data_flush"
+        android:title="@string/data_flush_title"
+        android:summary="@string/data_flush_summary"/>
   </PreferenceCategory>
 </PreferenceScreen>
