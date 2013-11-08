@@ -6,14 +6,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.models.cards.ShortNewsCard;
+import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.support.StringUtils;
 
-public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, ShortNewsCardView.class.getName());
+public class CaptionedImageCardView  extends BaseCardView<CaptionedImageCard> {
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CaptionedImageCardView.class.getName());
 
   private final ImageView mImage;
   private final TextView mTitle;
@@ -21,16 +21,16 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
   private final TextView mDomain;
   private IAction mCardAction;
 
-  public ShortNewsCardView(Context context) {
+  public CaptionedImageCardView(Context context) {
     this(context, null);
   }
 
-  public ShortNewsCardView(final Context context, ShortNewsCard card) {
+  public CaptionedImageCardView(final Context context, CaptionedImageCard card) {
     super(context);
-    mDescription = (TextView) findViewById(R.id.com_appboy_short_news_card_description);
-    mImage = (ImageView) findViewById(R.id.com_appboy_short_news_card_image);
-    mTitle = (TextView) findViewById(R.id.com_appboy_short_news_card_title);
-    mDomain = (TextView) findViewById(R.id.com_appboy_short_news_card_domain);
+    mImage = (ImageView) findViewById(R.id.com_appboy_captioned_image_card_image);
+    mTitle = (TextView) findViewById(R.id.com_appboy_captioned_image_title);
+    mDescription = (TextView) findViewById(R.id.com_appboy_captioned_image_description);
+    mDomain = (TextView) findViewById(R.id.com_appboy_captioned_image_card_domain);
 
     if (card != null) {
       setCard(card);
@@ -41,13 +41,13 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
 
   @Override
   protected int getLayoutResource() {
-    return R.layout.com_appboy_short_news_card;
+    return R.layout.com_appboy_captioned_image_card;
   }
 
   @Override
-  public void onSetCard(final ShortNewsCard card) {
+  public void onSetCard(final CaptionedImageCard card) {
+    mTitle.setText(card.getTitle());
     mDescription.setText(card.getDescription());
-    setOptionalTextView(mTitle, card.getTitle());
     setOptionalTextView(mDomain, card.getDomain());
 
     if (!StringUtils.isNullOrBlank(card.getUrl())) {
@@ -66,6 +66,6 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl());
+    setImageViewToUrl(mImage, card.getImageUrl(), 1.5f);
   }
 }

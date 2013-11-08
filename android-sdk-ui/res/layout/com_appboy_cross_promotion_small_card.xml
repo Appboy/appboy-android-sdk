@@ -21,8 +21,15 @@
         android:layout_height="57.5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10.0dp"
         android:layout_marginRight="10.0dp"
+        android:layout_marginTop="10.0dp"
         style="@style/Appboy.Cards.CrossPromotionSmall.Image"/>
+
+    <View
+        android:layout_width="0.0dp"
+        android:layout_height="10.0dp"
+        android:layout_below="@id/com_appboy_cross_promotion_small_card_image"/>
 
     <Button
         android:id="@+id/com_appboy_cross_promotion_small_card_price"
@@ -31,6 +38,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10.0dp"
+        android:layout_marginRight="10.0dp"
         style="@style/Appboy.Cards.CrossPromotionSmall.Price"/>
 
     <LinearLayout
@@ -38,7 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/com_appboy_cross_promotion_small_card_image"
         android:layout_toLeftOf="@id/com_appboy_cross_promotion_small_card_price"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="10.0dp">
 
       <TextView
           android:id="@+id/com_appboy_cross_promotion_small_card_title"

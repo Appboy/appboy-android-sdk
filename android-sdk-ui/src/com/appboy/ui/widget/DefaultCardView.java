@@ -26,7 +26,7 @@ public class DefaultCardView extends BaseCardView<Card> {
     return R.layout.com_appboy_default_card;
   }
 
-  @Override public void setCard(Card card) {
-    Log.w(TAG, "Set card called for blank view with: " + card.toString());
+  @Override public void onSetCard(Card card) {
+    Log.w(TAG, "onSetCard called for blank view with: " + card.toString());
   }
 }

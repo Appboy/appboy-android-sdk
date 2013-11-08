@@ -7,6 +7,9 @@
       android:layout_height="wrap_content"
       android:layout_alignParentTop="true"
       android:layout_alignParentLeft="true"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
+      android:layout_marginTop="10.0dp"
       style="@style/Appboy.Cards.TextAnnouncement.Title"/>
 
   <TextView
@@ -15,6 +18,8 @@
       android:layout_height="wrap_content"
       android:layout_alignParentLeft="true"
       android:layout_below="@id/com_appboy_text_announcement_card_title"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
       style="@style/Appboy.Cards.TextAnnouncement.Description"/>
 
   <!-- Optional -->
@@ -24,5 +29,7 @@
       android:layout_height="wrap_content"
       android:layout_alignParentLeft="true"
       android:layout_below="@id/com_appboy_text_announcement_card_description"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
       style="@style/Appboy.Cards.TextAnnouncement.Domain"/>
 </merge>

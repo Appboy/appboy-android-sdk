@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.models.cards.CrossPromotionSmallCard;
+import com.appboy.models.cards.CrossPromotionLargeCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
 import com.appboy.ui.actions.IAction;
@@ -15,52 +15,54 @@ import com.appboy.ui.actions.IAction;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmallCard> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CrossPromotionSmallCardView.class.getName());
+public class CrossPromotionLargeCardView extends BaseCardView<CrossPromotionLargeCard> {
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CrossPromotionLargeCardView.class.getName());
 
   private final TextView mTitle;
   private final TextView mSubtitle;
-  private final TextView mCaption;
   private final ImageView mImage;
   private final StarRatingView mStarRating;
   private final TextView mReviewCount;
   private final Button mPrice;
+  private final TextView mDescription;
   private IAction mPriceAction;
 
-  public CrossPromotionSmallCardView(Context context) {
+  public CrossPromotionLargeCardView(Context context) {
     this(context, null);
   }
 
-  public CrossPromotionSmallCardView(final Context context, CrossPromotionSmallCard card) {
+  public CrossPromotionLargeCardView(final Context context, CrossPromotionLargeCard card) {
     super(context);
-    mTitle = (TextView) findViewById(R.id.com_appboy_cross_promotion_small_card_title);
-    mSubtitle = (TextView) findViewById(R.id.com_appboy_cross_promotion_small_card_subtitle);
-    mCaption = (TextView) findViewById(R.id.com_appboy_cross_promotion_small_card_recommendation_tab);
-    mImage = (ImageView) findViewById(R.id.com_appboy_cross_promotion_small_card_image);
-    mStarRating = (StarRatingView) findViewById(R.id.com_appboy_cross_promotion_small_card_star_rating);
-    mReviewCount = (TextView) findViewById(R.id.com_appboy_cross_promotion_small_card_review_count);
-    mPrice = (Button) findViewById(R.id.com_appboy_cross_promotion_small_card_price);
+    mTitle = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_card_title);
+    mSubtitle = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_card_subtitle);
+    mImage = (ImageView) findViewById(R.id.com_appboy_cross_promotion_large_card_image);
+    mStarRating = (StarRatingView) findViewById(R.id.com_appboy_cross_promotion_large_card_star_rating);
+    mReviewCount = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_card_review_count);
+    mDescription = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_description);
+    mPrice = (Button) findViewById(R.id.com_appboy_cross_promotion_large_card_price);
 
     if (card != null) {
       setCard(card);
     }
+
+    safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
   }
 
   @Override
   protected int getLayoutResource() {
-    return R.layout.com_appboy_cross_promotion_small_card;
+    return R.layout.com_appboy_cross_promotion_large_card;
   }
 
   @Override
-  public void onSetCard(final CrossPromotionSmallCard card) {
+  public void onSetCard(final CrossPromotionLargeCard card) {
     mTitle.setText(card.getTitle());
     mSubtitle.setText(card.getSubtitle().toUpperCase(Locale.getDefault()));
-    mCaption.setText(card.getCaption().toUpperCase(Locale.getDefault()));
     mStarRating.setRating((float) card.getRating());
     mReviewCount.setText(String.format("(%s)", NumberFormat.getInstance().format(card.getReviewCount())));
+    mDescription.setText(card.getDescription());
     mPrice.setText(getPriceString(card.getPrice()));
     mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false);
-    mPrice.setOnClickListener(new OnClickListener() {
+    mPrice.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Appboy.getInstance(mContext).logFeedCardClick(card.getId());
@@ -68,7 +70,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl());
+    setImageViewToUrl(mImage, card.getImageUrl(), 1.5f);
   }
 
   private String getPriceString(double price) {

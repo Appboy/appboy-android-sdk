@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Shadow -->
+  <item>
+    <shape>
+      <padding android:bottom="@dimen/com_appboy_card_background_shadow_bottom"/>
+      <solid android:color="@color/com_appboy_card_background_shadow"/>
+      <corners android:radius="@dimen/com_appboy_card_background_shadow_radius"/>
+    </shape>
+  </item>
+  <item>
+    <shape>
+      <padding
+          android:left="@dimen/com_appboy_card_background_border_left"
+          android:right="@dimen/com_appboy_card_background_border_right"
+          android:top="@dimen/com_appboy_card_background_border_top"
+          android:bottom="@dimen/com_appboy_card_background_border_bottom"/>
+      <solid android:color="@color/com_appboy_card_background_border"/>
+      <corners android:radius="@dimen/com_appboy_card_background_shadow_radius"/>
+    </shape>
+  </item>
+
+  <!-- Background -->
+  <item>
+    <shape>
+      <solid android:color="@android:color/white"/>
+      <corners android:radius="@dimen/com_appboy_card_background_corner_radius"/>
+    </shape>
+  </item>
+</layer-list>

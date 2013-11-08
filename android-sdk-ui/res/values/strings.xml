@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Cards -->
+  <string name="com_appboy_app_store_review_card_title">Like Our App?</string>
+  <string name="com_appboy_app_store_review_card_subtitle">Rate us in the App Store now!</string>
+  <string name="com_appboy_app_store_review_card_image_content_description">Banner Image</string>
+  <string name="com_appboy_banner_image_card_image_content_description">Banner Image</string>
   <string name="com_appboy_cross_promotion_small_card_image_content_description">App image</string>
-  <string name="com_appboy_short_news_card_image_content_description">Image</string>
+  <string name="com_appboy_short_news_card_image_content_description">News Item Image</string>
 
   <!-- Feedback form -->
   <string name="com_appboy_feedback_form_is_bug">Reporting an Issue?</string>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <ImageView
+      android:id="@+id/com_appboy_captioned_image_card_image"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:scaleType="centerCrop"
+      android:adjustViewBounds="true"
+      style="@style/Appboy.Cards.CaptionedImage.Image"/>
+
+  <LinearLayout
+      android:id="@+id/com_appboy_captioned_image_card_title_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/com_appboy_captioned_image_card_image"
+      style="@style/Appboy.Cards.CaptionedImage.Title.Container">
+
+    <TextView
+        android:id="@+id/com_appboy_captioned_image_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dp"
+        android:layout_marginRight="10.0dp"
+        android:layout_marginTop="11.0dp"
+        android:layout_marginBottom="11.0dp"
+        style="@style/Appboy.Cards.CaptionedImage.Title"/>
+  </LinearLayout>
+
+  <TextView
+      android:id="@+id/com_appboy_captioned_image_description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/com_appboy_captioned_image_card_title_container"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
+      android:layout_marginTop="8.0dp"
+      style="@style/Appboy.Cards.CaptionedImage.Description"/>
+
+  <!-- Optional -->
+  <TextView
+      android:id="@+id/com_appboy_captioned_image_card_domain"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/com_appboy_captioned_image_description"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
+      style="@style/Appboy.Cards.CaptionedImage.Domain"/>
+</merge>

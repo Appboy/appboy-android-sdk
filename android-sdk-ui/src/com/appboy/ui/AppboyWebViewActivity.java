@@ -1,6 +1,7 @@
 package com.appboy.ui;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -23,6 +24,14 @@ public class AppboyWebViewActivity extends Activity {
     webSettings.setAllowFileAccess(false);
     // Plugin support is disabled by default. If plugins, such as flash, are required, change the PluginState.
     webSettings.setPluginState(WebSettings.PluginState.OFF);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      webSettings.setDisplayZoomControls(false);
+    }
+    webSettings.setBuiltInZoomControls(true);
+    webSettings.setUseWideViewPort(true);
+    webSettings.setLoadWithOverviewMode(true);
+
     webView.setWebViewClient(new WebViewClient());
 
     Bundle extras = getIntent().getExtras();

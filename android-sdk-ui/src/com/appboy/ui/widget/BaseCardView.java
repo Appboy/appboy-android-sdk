@@ -3,13 +3,17 @@ package com.appboy.ui.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
+import com.appboy.ui.R;
 import com.appboy.ui.support.StringUtils;
 
 /**
@@ -19,6 +23,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, BaseCardView.class.getName());
 
   protected final Context mContext;
+  protected T mCard;
 
   public BaseCardView(Context context) {
     super(context);
@@ -29,7 +34,16 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
 
   protected abstract int getLayoutResource();
 
-  public abstract void setCard(T card);
+  public void setCard(final T card) {
+    mCard = card;
+    onSetCard(card);
+  };
+
+  protected abstract void onSetCard(T card);
+
+  public Card getCard() {
+    return mCard;
+  }
 
   void setOptionalTextView(TextView view, String value) {
     if (value != null && !value.trim().equals(StringUtils.EMPTY_STRING)) {
@@ -54,6 +68,10 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     setBackground(background);
   }
 
+  void setImageViewToUrl(final ImageView imageView, final String imageUrl) {
+    setImageViewToUrl(imageView, imageUrl, 1f);
+  }
+
   /**
    * Asynchronously fetches the image at the given imageUrl and displays the image in the ImageView. No image will be
    * displayed if the image cannot be downloaded or fetched from the cache.
@@ -61,10 +79,38 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
    * @param imageView the ImageView in which to display the image
    * @param imageUrl the URL of the image resource
    */
-  void setImageViewToUrl(final ImageView imageView, final String imageUrl) {
-    // We set the ImageView to null before fetching the card image to avoid having
-    // a stale image while the user scrolls.
-    imageView.setImageDrawable(null);
-    Appboy.getInstance(getContext()).fetchAndRenderImage(imageUrl, imageView);
+  void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio) {
+    if (imageUrl == null) {
+      Log.w(TAG, String.format("The image url (%s) to render is null. Not setting the card image.", imageUrl));
+    }
+
+    if (aspectRatio != 1) {
+      ViewTreeObserver viewTreeObserver = imageView.getViewTreeObserver();
+      if (viewTreeObserver.isAlive()) {
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+          @Override
+          public void onGlobalLayout() {
+            int width = imageView.getWidth();
+            imageView.setLayoutParams(new LayoutParams(width, (int) (width / aspectRatio)));
+            safeRemoveOnGlobalLayoutListener(imageView.getViewTreeObserver(), this);
+          }
+        });
+      }
+    }
+
+    if (!imageUrl.equals(imageView.getTag())) {
+      imageView.setImageResource(android.R.color.transparent);
+      Appboy.getInstance(getContext()).fetchAndRenderImage(imageUrl, imageView);
+      imageView.setTag(imageUrl);
+    }
+  }
+
+  private void safeRemoveOnGlobalLayoutListener(ViewTreeObserver viewTreeObserver,
+                                                ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener) {
+    if (android.os.Build.VERSION.SDK_INT < 16) {
+      viewTreeObserver.removeGlobalOnLayoutListener(onGlobalLayoutListener);
+    } else {
+      viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
   }
 }

@@ -11,18 +11,18 @@
 
   <!-- Custom Push Notifications -->
   <style name="Appboy.EventContent">
-    <item name="android:textColor">#999999</item>
+    <item name="android:textColor">@color/com_appboy_custom_notification_content</item>
     <item name="android:textSize">12dp</item>
   </style>
   <style name="Appboy.EventContent.Title">
-    <item name="android:textColor">#ffffff</item>
+    <item name="android:textColor">@color/com_appboy_custom_notification_title</item>
     <item name="android:fontFamily">sans-serif-light</item>
     <item name="android:textSize">16dp</item>
     <item name="android:textStyle">bold</item>
   </style>
   <style name="Appboy.EventContent.Time">
     <item name="android:textSize">10dp</item>
-    <item name="android:textColor">#999999</item>
+    <item name="android:textColor">@color/com_appboy_custom_notification_time</item>
   </style>
 
   <!-- Feedback -->
@@ -117,6 +117,61 @@
   <!-- Cards -->
   <style name="Appboy.Cards"/>
 
+  <style name="Appboy.Cards.AppStoreReview"/>
+  <style name="Appboy.Cards.AppStoreReview.Image">
+    <item name="android:contentDescription">@string/com_appboy_app_store_review_card_image_content_description</item>
+  </style>
+  <style name="Appboy.Cards.AppStoreReview.Arrow">
+    <item name="android:src">@drawable/com_appboy_slideup_drawer_arrow</item>
+  </style>
+  <style name="Appboy.Cards.AppStoreReview.Title">
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">19.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
+  </style>
+  <style name="Appboy.Cards.AppStoreReview.Subtitle">
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">15.0sp</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingTop">2.0dp</item>
+  </style>
+
+  <!-- Banner Card -->
+  <style name="Appboy.Cards.BannerImage"/>
+  <style name="Appboy.Cards.BannerImage.Image">
+    <item name="android:contentDescription">@string/com_appboy_banner_image_card_image_content_description</item>
+  </style>
+
+  <!-- Captioned Image Card -->
+  <style name="Appboy.Cards.CaptionedImage"/>
+  <style name="Appboy.Cards.CaptionedImage.Image">
+  </style>
+  <style name="Appboy.Cards.CaptionedImage.Title.Container">
+    <item name="android:background">@color/com_appboy_card_title_container</item>
+  </style>
+  <style name="Appboy.Cards.CaptionedImage.Title">
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">17.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
+  </style>
+  <style name="Appboy.Cards.CaptionedImage.Description">
+    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textSize">15.0sp</item>
+    <item name="android:maxLines">5</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingBottom">8.0dp</item>
+  </style>
+  <style name="Appboy.Cards.CaptionedImage.Domain">
+    <item name="android:textColor">@color/com_appboy_domain</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingBottom">10.0dp</item>
+  </style>
+
   <!-- Text Announcement Card -->
   <style name="Appboy.Cards.TextAnnouncement"/>
   <style name="Appboy.Cards.TextAnnouncement.Title">
@@ -134,13 +189,14 @@
     <item name="android:maxLines">5</item>
     <item name="android:ellipsize">end</item>
     <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingBottom">8.0dp</item>
   </style>
   <style name="Appboy.Cards.TextAnnouncement.Domain">
     <item name="android:textColor">@color/com_appboy_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
-    <item name="android:paddingTop">8.0dp</item>
+    <item name="android:paddingBottom">10.0dp</item>
   </style>
 
   <!-- Short News Card -->
@@ -163,22 +219,19 @@
     <item name="android:textSize">13.0sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:paddingTop">8.0dp</item>
+    <item name="android:paddingBottom">8.0dp</item>
   </style>
   <style name="Appboy.Cards.ShortNews.Domain">
     <item name="android:textColor">@color/com_appboy_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
-    <item name="android:paddingTop">8.0dp</item>
+    <item name="android:paddingBottom">10.0dp</item>
   </style>
 
   <!-- Cross Promotion Small Card -->
   <style name="Appboy.Cards.CrossPromotionSmall"/>
   <style name="Appboy.Cards.CrossPromotionSmall.Layout">
-    <item name="android:paddingTop">12.0dp</item>
-    <item name="android:paddingBottom">14.0dp</item>
-    <item name="android:paddingLeft">12.0dp</item>
-    <item name="android:paddingRight">12.0dp</item>
     <item name="android:background">@drawable/com_appboy_card_background</item>
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.Title">
@@ -192,7 +245,7 @@
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.Subtitle">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_subtitle</item>
+    <item name="android:textColor">@color/com_appboy_cross_promotion_card_subtitle</item>
     <item name="android:textSize">9.0sp</item>
     <item name="android:paddingTop">2.0dp</item>
   </style>
@@ -201,9 +254,10 @@
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.RatingBar">
     <item name="android:paddingTop">2.0dp</item>
+    <item name="android:paddingBottom">10.0dp</item>
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.ReviewCount">
-    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_review_count</item>
+    <item name="android:textColor">@color/com_appboy_cross_promotion_card_review_count</item>
     <item name="android:textSize">11.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:maxLines">1</item>
@@ -212,7 +266,7 @@
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.Price" parent="Appboy.Button">
     <item name="android:padding">0.0dp</item>
-    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_price</item>
+    <item name="android:textColor">@color/com_appboy_cross_promotion_card_price</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:background">@drawable/com_appboy_button</item>
@@ -228,5 +282,57 @@
     <item name="android:textSize">12.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
+  </style>
+
+  <style name="Appboy.Cards.CrossPromotionLarge"/>
+  <style name="Appboy.Cards.CrossPromotionLarge.Image">
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.Title.Container">
+    <item name="android:background">@color/com_appboy_card_title_container</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.Title">
+    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textSize">16.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:singleLine">false</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:includeFontPadding">false</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.AdditionInformationBar">
+    <item name="android:paddingTop">5.0dp</item>
+    <item name="android:paddingBottom">5.0dp</item>
+    <item name="android:background">@color/com_appboy_cross_promotion_large_card_additional_information_bar</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.Subtitle">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textSize">9.0sp</item>
+    <item name="android:paddingTop">2.0dp</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.RatingBar">
+    <item name="android:paddingTop">2.0dp</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.ReviewCount">
+    <item name="android:textColor">@color/com_appboy_cross_promotion_card_review_count</item>
+    <item name="android:textSize">11.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:paddingLeft">2.0dp</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.Price" parent="Appboy.Button">
+    <item name="android:padding">0.0dp</item>
+    <item name="android:textColor">@color/com_appboy_cross_promotion_card_price</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:background">@drawable/com_appboy_button</item>
+  </style>
+  <style name="Appboy.Cards.CrossPromotionLarge.Description">
+    <item name="android:lineSpacingExtra">1.5dp</item>
+    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textSize">13.0sp</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:paddingBottom">8.0dp</item>
   </style>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.appboy.Appboy;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
@@ -125,13 +126,13 @@ public class AppboyFeedFragment extends ListFragment {
             // putting up a spinner if the old feed was empty.
             if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
               Log.i(TAG, String.format("Feed received was older than the max time to live of %d seconds, displaying it " +
-                "for now, but requesting an updated view from the server.", MAX_FEED_TTL_SECONDS));
+                  "for now, but requesting an updated view from the server.", MAX_FEED_TTL_SECONDS));
               mAppboy.requestFeedRefresh();
               // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
               // Eventually displaying an error message if it doesn't.
               if (event.getCardCount() == 0) {
                 Log.d(TAG, String.format("Old feed was empty, putting up a network spinner and registering the network error message on a delay of %dms.",
-                  NETWORK_PROBLEM_WARNING_MS));
+                    NETWORK_PROBLEM_WARNING_MS));
                 mEmptyFeedLayout.setVisibility(View.GONE);
                 mLoadingSpinner.setVisibility(View.VISIBLE);
                 mMainThreadLooper.postDelayed(mShowNetworkError, NETWORK_PROBLEM_WARNING_MS);

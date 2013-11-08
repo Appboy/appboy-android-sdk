@@ -2,6 +2,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_appboy_feed_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -53,7 +54,8 @@
   <ListView
       android:id="@android:id/list"
       android:visibility="gone"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/com_appboy_feed_max_width"
       android:layout_height="match_parent"
+      android:layout_centerHorizontal="true"
       style="@style/Appboy.Feed.List"/>
 </RelativeLayout>

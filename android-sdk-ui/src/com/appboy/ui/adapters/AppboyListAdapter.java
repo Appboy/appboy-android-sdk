@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import com.appboy.Appboy;
-import com.appboy.models.cards.Card;
-import com.appboy.models.cards.CrossPromotionSmallCard;
-import com.appboy.models.cards.ShortNewsCard;
-import com.appboy.models.cards.TextAnnouncementCard;
+import com.appboy.models.cards.*;
 import com.appboy.ui.Constants;
+import com.appboy.ui.configuration.XmlUIConfigurationProvider;
 import com.appboy.ui.widget.*;
 
 import java.util.Collection;
@@ -39,11 +37,13 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
 
   private final Context mContext;
   private final Set<String> mCardIdImpressions;
+  private final XmlUIConfigurationProvider mUiConfigurationProvider;
 
   public AppboyListAdapter(Context context, int layoutResourceId, List<Card> cards) {
     super(context, layoutResourceId, cards);
     mContext = context;
     mCardIdImpressions = new HashSet<String>();
+    mUiConfigurationProvider = new XmlUIConfigurationProvider(context);
   }
 
   /**
@@ -52,18 +52,26 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    */
   @Override
   public int getViewTypeCount() {
-    return 4;
+    return 8;
   }
 
   @Override
   public int getItemViewType(int position) {
     Card card = getItem(position);
-    if (card instanceof CrossPromotionSmallCard) {
+    if (card instanceof AppStoreReviewCard) {
       return 1;
-    } else if (card instanceof ShortNewsCard) {
+    } else if (card instanceof BannerImageCard) {
       return 2;
-    } else if (card instanceof TextAnnouncementCard) {
+    } else if (card instanceof CaptionedImageCard) {
       return 3;
+    } else if (card instanceof CrossPromotionLargeCard) {
+      return 4;
+    } else if (card instanceof CrossPromotionSmallCard) {
+      return 5;
+    } else if (card instanceof ShortNewsCard) {
+      return 6;
+    } else if (card instanceof TextAnnouncementCard) {
+      return 7;
     } else {
       return 0;
     }
@@ -79,7 +87,15 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     Card card = getItem(position);
 
     if (convertView == null) {
-      if (card instanceof CrossPromotionSmallCard) {
+      if (card instanceof AppStoreReviewCard) {
+        view = new AppStoreReviewCardView(mContext, mUiConfigurationProvider.getApplicationIconResourceId());
+      } else if (card instanceof BannerImageCard) {
+        view = new BannerImageCardView(mContext);
+      } else if (card instanceof CaptionedImageCard) {
+        view = new CaptionedImageCardView(mContext);
+      } else if (card instanceof CrossPromotionLargeCard) {
+        view = new CrossPromotionLargeCardView(mContext);
+      } else if (card instanceof CrossPromotionSmallCard) {
         view = new CrossPromotionSmallCardView(mContext);
       } else if (card instanceof ShortNewsCard) {
         view = new ShortNewsCardView(mContext);

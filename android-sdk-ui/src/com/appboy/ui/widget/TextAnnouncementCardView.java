@@ -42,7 +42,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
   }
 
   @Override
-  public void setCard(final TextAnnouncementCard card) {
+  public void onSetCard(final TextAnnouncementCard card) {
     mTitle.setText(card.getTitle());
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());

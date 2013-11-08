@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="com_appboy_feed_max_width">380.0dp</dimen>
+
+  <dimen name="com_appboy_card_background_border_left">1.0dp</dimen>
+  <dimen name="com_appboy_card_background_border_right">1.0dp</dimen>
+  <dimen name="com_appboy_card_background_border_top">0.5dp</dimen>
+  <dimen name="com_appboy_card_background_border_bottom">1.0dp</dimen>
+  <dimen name="com_appboy_card_background_shadow_bottom">1.0dp</dimen>
+  <dimen name="com_appboy_card_background_corner_radius">1.0dp</dimen>
+  <dimen name="com_appboy_card_background_shadow_radius">2.0dp</dimen>
+</resources>

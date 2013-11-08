@@ -7,8 +7,15 @@
       android:layout_height="57.5dp"
       android:layout_alignParentTop="true"
       android:layout_alignParentLeft="true"
-      android:layout_marginRight="12.5dp"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
+      android:layout_marginTop="10.0dp"
       style="@style/Appboy.Cards.ShortNews.Image"/>
+
+  <View
+      android:layout_width="0.0dp"
+      android:layout_height="10.0dp"
+      android:layout_below="@id/com_appboy_short_news_card_image"/>
 
   <TextView
       android:id="@+id/com_appboy_short_news_card_title"
@@ -16,6 +23,8 @@
       android:layout_height="wrap_content"
       android:layout_toRightOf="@id/com_appboy_short_news_card_image"
       android:layout_alignParentTop="true"
+      android:layout_marginRight="10.0dp"
+      android:layout_marginTop="8.0dp"
       style="@style/Appboy.Cards.ShortNews.Title"/>
 
   <TextView
@@ -24,6 +33,7 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/com_appboy_short_news_card_title"
       android:layout_alignLeft="@id/com_appboy_short_news_card_title"
+      android:layout_marginRight="10.0dp"
       style="@style/Appboy.Cards.ShortNews.Description"/>
 
   <!-- Optional -->
@@ -33,5 +43,6 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/com_appboy_short_news_card_description"
       android:layout_alignLeft="@id/com_appboy_short_news_card_description"
+      android:layout_marginRight="10.0dp"
       style="@style/Appboy.Cards.ShortNews.Domain"/>
 </merge>
