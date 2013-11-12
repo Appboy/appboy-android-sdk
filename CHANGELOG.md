@@ -1,3 +1,6 @@
+## 1.2.1
+* Fixing a ProGuard issue.
+
 ## 1.2
 * Introducing two new card types (Banner card and Captioned Image card).
 * Adding support for sending down key/value pairs as part of a GCM message.
