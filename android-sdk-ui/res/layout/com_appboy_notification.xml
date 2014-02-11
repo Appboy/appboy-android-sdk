@@ -7,13 +7,15 @@
      center at only a single line. -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
              android:id="@+id/status_bar_latest_event_content"
              android:layout_width="match_parent"
              android:layout_height="65dp">
   <ImageView android:id="@+id/com_appboy_notification_icon"
              android:layout_width="@android:dimen/notification_large_icon_width"
              android:layout_height="@android:dimen/notification_large_icon_height"
-             android:scaleType="center"/>
+             android:scaleType="center"
+             tools:targetApi="honeycomb"/>
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -22,7 +24,8 @@
       android:paddingTop="0dp"
       android:gravity="top"
       android:orientation="vertical"
-      android:layout_gravity="fill_vertical">
+      android:layout_gravity="fill_vertical"
+      tools:targetApi="honeycomb">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
