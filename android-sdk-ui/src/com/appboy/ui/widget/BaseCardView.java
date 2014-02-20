@@ -54,6 +54,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     }
   }
 
+  @SuppressWarnings("deprecation")
   void safeSetBackground(Drawable background) {
     if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
       setBackgroundDrawable(background);
@@ -104,6 +105,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     }
   }
 
+  @SuppressWarnings("deprecation")
   private void safeRemoveOnGlobalLayoutListener(ViewTreeObserver viewTreeObserver,
                                                 ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener) {
     if (android.os.Build.VERSION.SDK_INT < 16) {
