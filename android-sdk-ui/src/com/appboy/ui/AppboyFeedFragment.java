@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.appboy.Appboy;
 import com.appboy.events.FeedUpdatedEvent;
@@ -81,14 +80,10 @@ public class AppboyFeedFragment extends ListFragment {
 
     // Applying top and bottom padding as header and footer views allows for the top and bottom padding to be scrolled
     // away, as opposed to being a permanent frame around the feed.
-    TextView topPadding = new TextView(getActivity());
-    topPadding.setHeight(0);
-    TextView bottomPadding = new TextView(getActivity());
-    bottomPadding.setHeight(0);
-
+    LayoutInflater inflater = LayoutInflater.from(getActivity());
     final ListView listView = getListView();
-    listView.addHeaderView(topPadding);
-    listView.addFooterView(bottomPadding);
+    listView.addHeaderView(inflater.inflate(R.layout.com_appboy_feed_header, null));
+    listView.addFooterView(inflater.inflate(R.layout.com_appboy_feed_footer, null));
 
     // Remove the previous subscriber before rebuilding a new one with our new activity.
     mAppboy.removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
