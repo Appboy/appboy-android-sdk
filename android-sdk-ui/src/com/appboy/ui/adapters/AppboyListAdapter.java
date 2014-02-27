@@ -149,10 +149,12 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     // head of the new list.
     while (i < getCount()) {
       existingCard = getItem(i);
-      newCard = cards.get(j);
-			if (newCard == null) {
-				break;
-			}
+      newCard = null;
+      if (j < cards.size()) {
+        newCard = cards.get(j);
+      } else {
+		break;
+	  }
       // If the card we're trying to add is the same as the next existing card in the feed, continue.
       if (newCard.getId().equals(existingCard.getId()) && newCard.getUpdated() == existingCard.getUpdated()) {
         i++;
