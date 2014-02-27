@@ -1,5 +1,10 @@
 package com.appboy.ui.adapters;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.util.Log;
@@ -7,15 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import com.appboy.Appboy;
-import com.appboy.models.cards.*;
+import com.appboy.models.cards.AppStoreReviewCard;
+import com.appboy.models.cards.BannerImageCard;
+import com.appboy.models.cards.CaptionedImageCard;
+import com.appboy.models.cards.Card;
+import com.appboy.models.cards.CrossPromotionLargeCard;
+import com.appboy.models.cards.CrossPromotionSmallCard;
+import com.appboy.models.cards.ShortNewsCard;
+import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.Constants;
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
-import com.appboy.ui.widget.*;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.appboy.ui.widget.AppStoreReviewCardView;
+import com.appboy.ui.widget.BannerImageCardView;
+import com.appboy.ui.widget.BaseCardView;
+import com.appboy.ui.widget.CaptionedImageCardView;
+import com.appboy.ui.widget.CrossPromotionLargeCardView;
+import com.appboy.ui.widget.CrossPromotionSmallCardView;
+import com.appboy.ui.widget.DefaultCardView;
+import com.appboy.ui.widget.ShortNewsCardView;
+import com.appboy.ui.widget.TextAnnouncementCardView;
 
 /**
  * Default adapter used to display cards and log card impressions for the Appboy feed.
@@ -26,7 +41,7 @@ import java.util.Set;
  *
  * A card generates an impression once per viewing per open ListView. If a card is viewed more than once
  * in a particular ListView, it generates only one impression. If closed an reopened, a card will again
- * generate an impression. This also takes into account the case of a card being off-screen in the ListView. 
+ * generate an impression. This also takes into account the case of a card being off-screen in the ListView.
  * The card only generates an impression when it actually scrolls onto the screen.
  *
  * IMPORTANT - You must call resetCardImpressionTracker() whenever the ListView is displayed. This will ensure
@@ -135,6 +150,9 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     while (i < getCount()) {
       existingCard = getItem(i);
       newCard = cards.get(j);
+			if (newCard == null) {
+				break;
+			}
       // If the card we're trying to add is the same as the next existing card in the feed, continue.
       if (newCard.getId().equals(existingCard.getId()) && newCard.getUpdated() == existingCard.getUpdated()) {
         i++;
