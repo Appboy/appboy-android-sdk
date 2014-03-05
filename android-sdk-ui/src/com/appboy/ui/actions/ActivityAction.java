@@ -3,7 +3,6 @@ package com.appboy.ui.actions;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.appboy.Constants;
 
 /**
  * Action that launches a new Activity.
@@ -11,14 +10,13 @@ import com.appboy.Constants;
 public final class ActivityAction implements IAction {
   private final Intent mIntent;
 
-  public ActivityAction(Intent intent) {
-    mIntent = intent;
-  }
-
   public ActivityAction(Context ctx, Uri uri) {
+    this(new Intent());
     mIntent.setClassName(ctx, uri.getHost());
     setQueryParameters(uri);
   }
+
+  public ActivityAction(Intent intent) {
     mIntent = intent;
   }
 
