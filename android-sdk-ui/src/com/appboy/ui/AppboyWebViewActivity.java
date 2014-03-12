@@ -1,14 +1,15 @@
 package com.appboy.ui;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.appboy.Appboy;
 
-public class AppboyWebViewActivity extends Activity {
+import com.appboy.ui.activities.AppboyBaseActivity;
+import com.appboy.ui.activities.AppboyBaseFragmentActivity;
+
+public class AppboyWebViewActivity extends AppboyBaseActivity {
   // The Intent extra string containing the URL to open.
   public static final String URL_EXTRA = "url";
 
@@ -41,19 +42,5 @@ public class AppboyWebViewActivity extends Activity {
       webView.loadUrl(url);
     }
     setContentView(webView);
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-    // Opens a new Appboy session.
-    Appboy.getInstance(this).openSession(this);
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    // Closes the Appboy session.
-    Appboy.getInstance(this).closeSession(this);
   }
 }

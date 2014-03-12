@@ -4,8 +4,7 @@
   <color name="com_appboy_feedback_form_navigation_bar_background">#808080</color>
   <color name="com_appboy_feedback_form_is_bug">@android:color/black</color>
 
-  <color name="com_appboy_slideup_drawer_top_shadow">#3F3F3F</color>
-  <color name="com_appboy_slideup_drawer_background">#CC1D1D1D</color>
+  <color name="com_appboy_slideup_background">#CC1D1D1D</color>
 
   <color name="com_appboy_title">#3F3F3F</color>
   <color name="com_appboy_description">#666565</color>

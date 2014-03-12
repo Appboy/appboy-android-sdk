@@ -61,23 +61,22 @@
   </style>
 
   <!-- Slideup -->
-  <style name="Appboy.Slideup"/>
-  <style name="Appboy.Slideup.TopShadow">
-    <item name="android:background">@color/com_appboy_slideup_drawer_top_shadow</item>
+  <style name="Appboy.Slideup">
+    <item name="android:padding">8.0sp</item>
+    <item name="android:background">@color/com_appboy_slideup_background</item>
   </style>
-  <style name="Appboy.Slideup.Drawer">
-    <item name="android:padding">12.0sp</item>
-    <item name="android:background">@color/com_appboy_slideup_drawer_background</item>
-  </style>
-  <style name="Appboy.Slideup.DrawerMessage">
+  <style name="Appboy.Slideup.Message">
+    <item name="android:background">@android:color/transparent</item>
     <item name="android:lineSpacingMultiplier">1.2</item>
     <item name="android:textColor">@android:color/white</item>
     <item name="android:textSize">14.0sp</item>
     <item name="android:maxLines">3</item>
     <item name="android:singleLine">false</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingBottom">4dp</item>
     <item name="android:includeFontPadding">false</item>
   </style>
-  <style name="Appboy.Slideup.DrawerArrow">
+  <style name="Appboy.Slideup.Chevron">
     <item name="android:background">@drawable/com_appboy_slideup_drawer_arrow</item>
   </style>
 

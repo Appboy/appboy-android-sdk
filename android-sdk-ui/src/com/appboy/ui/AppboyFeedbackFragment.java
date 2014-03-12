@@ -32,8 +32,7 @@ public class AppboyFeedbackFragment extends Fragment {
   private CheckBox mIsBugCheckBox;
   private EditText mMessageEditText;
   private EditText mEmailEditText;
-  private TextWatcher mMessageTextWatcher;
-  private TextWatcher mEmailTextWatcher;
+  private TextWatcher mSendButtonWatcher;
   private View.OnClickListener mCancelListener;
   private View.OnClickListener mSendListener;
   private FeedbackFinishedListener mFeedbackFinishedListener;
@@ -42,21 +41,9 @@ public class AppboyFeedbackFragment extends Fragment {
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
-    mMessageTextWatcher = new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence sequence, int start, int count, int after) { }
-      @Override
-      public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
-      @Override
-      public void afterTextChanged(Editable sequence) {
-        ensureSendButton();
-      }
-    };
-    mEmailTextWatcher = new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence sequence, int start, int count, int after) { }
-      @Override
-      public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
+    mSendButtonWatcher = new TextWatcher() {
+      @Override public void beforeTextChanged(CharSequence sequence, int start, int count, int after) { }
+      @Override public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
       @Override
       public void afterTextChanged(Editable sequence) {
         ensureSendButton();
@@ -65,6 +52,7 @@ public class AppboyFeedbackFragment extends Fragment {
     mCancelListener = new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        hideSoftKeyboard();
         if (mFeedbackFinishedListener != null) {
           mFeedbackFinishedListener.onFeedbackFinished();
         }
@@ -74,10 +62,10 @@ public class AppboyFeedbackFragment extends Fragment {
     mSendListener = new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        hideSoftKeyboard();
         boolean isBug = mIsBugCheckBox.isChecked();
         String message = mMessageEditText.getText().toString();
         String email = mEmailEditText.getText().toString();
-
         boolean result = Appboy.getInstance(getActivity()).submitFeedback(email, message, isBug);
         if (!result) {
           Log.e(TAG, "Could not post feedback.");
@@ -85,7 +73,6 @@ public class AppboyFeedbackFragment extends Fragment {
         if (mFeedbackFinishedListener != null) {
           mFeedbackFinishedListener.onFeedbackFinished();
         }
-
         clearData();
       }
     };
@@ -101,8 +88,8 @@ public class AppboyFeedbackFragment extends Fragment {
     mMessageEditText = (EditText) view.findViewById(R.id.com_appboy_feedback_message);
     mEmailEditText = (EditText) view.findViewById(R.id.com_appboy_feedback_email);
 
-    mMessageEditText.addTextChangedListener(mMessageTextWatcher);
-    mEmailEditText.addTextChangedListener(mEmailTextWatcher);
+    mMessageEditText.addTextChangedListener(mSendButtonWatcher);
+    mEmailEditText.addTextChangedListener(mSendButtonWatcher);
     mCancelButton.setOnClickListener(mCancelListener);
     mSendButton.setOnClickListener(mSendListener);
     return view;
@@ -127,26 +114,10 @@ public class AppboyFeedbackFragment extends Fragment {
   }
 
   @Override
-  public void onPause() {
-    super.onPause();
-    Activity activity = getActivity();
-    activity.getWindow().setSoftInputMode(mOriginalSoftInputMode);
-
-    // Hide keyboard when paused.
-    View currentFocusView = activity.getCurrentFocus();
-
-    if (currentFocusView != null) {
-      InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-      inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
-        InputMethodManager.RESULT_UNCHANGED_SHOWN);
-    }
-  }
-
-  @Override
   public void onDestroyView() {
     super.onDestroyView();
-    mMessageEditText.removeTextChangedListener(mMessageTextWatcher);
-    mEmailEditText.removeTextChangedListener(mEmailTextWatcher);
+    mMessageEditText.removeTextChangedListener(mSendButtonWatcher);
+    mEmailEditText.removeTextChangedListener(mSendButtonWatcher);
   }
 
   public void setFeedbackFinishedListener(FeedbackFinishedListener feedbackFinishedListener) {
@@ -174,5 +145,19 @@ public class AppboyFeedbackFragment extends Fragment {
     mEmailEditText.setText(StringUtils.EMPTY_STRING);
     mMessageEditText.setText(StringUtils.EMPTY_STRING);
     mIsBugCheckBox.setChecked(false);
+  }
+
+  private void hideSoftKeyboard() {
+    Activity activity = getActivity();
+    activity.getWindow().setSoftInputMode(mOriginalSoftInputMode);
+
+    // Hide keyboard when paused.
+    View currentFocusView = activity.getCurrentFocus();
+
+    if (currentFocusView != null) {
+      InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+      inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+          InputMethodManager.RESULT_UNCHANGED_SHOWN);
+    }
   }
 }
