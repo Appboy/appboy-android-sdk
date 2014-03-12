@@ -1,19 +1,28 @@
 package com.appboy.sample;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.android.vending.billing.utils.IabHelper;
 import com.android.vending.billing.utils.IabResult;
 import com.android.vending.billing.utils.Inventory;
 import com.android.vending.billing.utils.Purchase;
 import com.appboy.Appboy;
+import com.appboy.IAppboyNavigator;
+import com.appboy.enums.Slideup.DismissType;
+import com.appboy.enums.Slideup.SlideFrom;
 import com.appboy.enums.SocialNetwork;
-import com.appboy.ui.AppboySlideupManager;
+import com.appboy.models.Slideup;
 import com.appboy.ui.Constants;
+import com.appboy.ui.slideups.AppboySlideupManager;
+import com.appboy.ui.slideups.ISlideupManagerListener;
+import com.appboy.ui.slideups.SlideupCloser;
+import com.appboy.ui.slideups.SlideupOperation;
 import com.crittercism.app.Crittercism;
 
 public class PreferencesActivity extends PreferenceActivity {
@@ -23,6 +32,7 @@ public class PreferencesActivity extends PreferenceActivity {
   private static final String SKU_ANDROID_TEST_REFUNDED = "android.test.refunded";
   private static final String SKU_ANDROID_TEST_UNAVAILABLE = "android.test.item_unavailable";
   private static final int IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE = 12345;
+  private static final CustomSlideupViewFactory sCustomSlideupViewFactory = new CustomSlideupViewFactory();
 
   private IabHelper mHelper;
 
@@ -35,6 +45,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference twitterSharePreference = findPreference("twitter_share");
     Preference logPurchasePreference = findPreference("log_purchase");
     Preference dataFlushPreference = findPreference("data_flush");
+    Preference requestSlideupPreference = findPreference("request_slideup");
 
     facebookSharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
@@ -65,6 +76,14 @@ public class PreferencesActivity extends PreferenceActivity {
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).requestImmediateDataFlush();
         Toast.makeText(PreferencesActivity.this, getString(R.string.data_flush_toast), Toast.LENGTH_LONG).show();
+        return true;
+      }
+    });
+    requestSlideupPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.getInstance(PreferencesActivity.this).requestSlideupRefresh();
+        Toast.makeText(PreferencesActivity.this, "Requested Slideup", Toast.LENGTH_LONG).show();
         return true;
       }
     });
@@ -130,16 +149,17 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onResume() {
     super.onResume();
-    // Registers for Appboy slideup messages.
-    AppboySlideupManager.getInstance().registerSlideupUI(this);
+    // Registers the AppboySlideupManager for the current Activity. This Activity will now listen for
+    // slideup messages from Appboy.
+    AppboySlideupManager.getInstance().registerSlideupManager(this);
     Crittercism.leaveBreadcrumb(PreferencesActivity.class.getName());
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    // Unregisters from Appboy slideup messages.
-    AppboySlideupManager.getInstance().unregisterSlideupUI(this);
+    // Unregisters the AppboySlideupManager.
+    AppboySlideupManager.getInstance().unregisterSlideupManager(this);
   }
 
   @Override

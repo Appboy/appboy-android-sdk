@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_appboy_feedback_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Appboy.Feedback.Layout">
+
+    <LinearLayout
+        android:id="@+id/slideup_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        style="@style/Appboy.Feedback.NavigationBar">
+
+        <Button
+            android:id="@+id/create_and_add_slideup_button"
+            android:layout_width="0.0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Create and Add Slideup"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/display_next_slideup_button"
+            android:layout_width="0.0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Display Next Slideup"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/request_slideup_from_server_button"
+            android:layout_width="0.0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Request Slideup from Appboy"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/hide_current_slideup_button"
+            android:layout_width="0.0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Hide Current Slideup"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:fillViewport="true"
+        android:layout_above="@id/slideup_buttons">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4.0dp"
+                android:paddingRight="4.0dp"
+                android:stretchColumns="1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:text="Animates in from the"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"/>
+
+                    <ListView
+                        android:id="@+id/slide_from_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:choiceMode="singleChoice"
+                        android:listSelector="@drawable/listview_selector"
+                        android:dividerHeight="0dp"
+                        android:divider="@null"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:text="ClickAction set to"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"/>
+
+                    <ListView
+                        android:id="@+id/click_action_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:choiceMode="singleChoice"
+                        android:listSelector="@drawable/listview_selector"
+                        android:dividerHeight="0dp"
+                        android:divider="@null"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:text="URI set to"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"/>
+
+                    <EditText
+                        android:id="@+id/uri_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:text="DismissType set to"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"/>
+
+                    <ListView
+                        android:id="@+id/dismiss_type_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:choiceMode="singleChoice"
+                        android:listSelector="@drawable/listview_selector"
+                        android:dividerHeight="0dp"
+                        android:divider="@null"/>
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/custom_slideup_view_factory_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom ISlideupViewFactory"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/custom_slideup_manager_listener_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom ISlideupManagerListener"
+                    android:textColor="@android:color/black"/>
+
+                <CheckBox
+                    android:id="@+id/custom_appboy_navigator_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom IAppboyNavigator"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

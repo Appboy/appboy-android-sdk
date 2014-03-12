@@ -42,9 +42,12 @@
     </activity>
 
     <activity android:name="com.appboy.ui.AppboyWebViewActivity" android:theme="@style/Theme.DroidBoy" />
+    <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" android:theme="@style/Theme.DroidBoy" />
+
     <activity android:name=".PreferencesActivity" android:theme="@style/Theme.Preferences" />
     <activity android:name=".FeedbackFragmentActivity" android:theme="@style/Theme.Feed" />
     <activity android:name=".FeedFragmentActivity" android:theme="@style/Theme.Feed" />
+    <activity android:name=".SlideupTesterActivity" android:theme="@style/Theme.DroidBoy" />
 
     <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
       <intent-filter>
@@ -58,7 +61,6 @@
       <intent-filter>
         <action android:name="com.appboy.sample.intent.APPBOY_PUSH_RECEIVED" />
         <action android:name="com.appboy.sample.intent.APPBOY_NOTIFICATION_OPENED" />
-        <action android:name="com.appboy.sample.intent.APPBOY_SLIDEUP_CLICKED" />
       </intent-filter>
     </receiver>
 </application>

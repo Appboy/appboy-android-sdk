@@ -106,6 +106,9 @@ public class DroidBoyActivity extends AppboyFragmentActivity {
       case R.id.settings:
         startActivity(new Intent(this, PreferencesActivity.class));
         break;
+      case R.id.slideups:
+        startActivity(new Intent(this, SlideupTesterActivity.class));
+        break;
       default:
         Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
     }

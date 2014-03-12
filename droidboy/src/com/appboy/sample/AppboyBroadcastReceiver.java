@@ -21,7 +21,6 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
     String packageName = context.getPackageName();
     String pushReceivedAction = packageName + ".intent.APPBOY_PUSH_RECEIVED";
     String notificationOpenedAction = packageName + ".intent.APPBOY_NOTIFICATION_OPENED";
-    String slideupClicked = packageName + ".intent.APPBOY_SLIDEUP_CLICKED";
     String action = intent.getAction();
     Log.d(TAG, String.format("Received intent with action %s", action));
 
@@ -32,10 +31,6 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
       extras.putString(DESTINATION_VIEW, FEED);
       extras.putString(AppboyGcmReceiver.CAMPAIGN_ID_KEY, intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY));
       startDroidBoyWithIntent(context, extras);
-    } else if (slideupClicked.equals(action)) {
-      Bundle extras = new Bundle();
-      extras.putString(DESTINATION_VIEW, FEED);
-      startDroidBoyWithIntent(context, extras);
     } else {
       Log.d(TAG, String.format("Ignoring intent with unsupported action %s", action));
     }
@@ -45,11 +40,9 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
     Intent startActivityIntent = new Intent(context, DroidBoyActivity.class);
     startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     startActivityIntent.putExtra(SOURCE_KEY, Constants.APPBOY);
-
     if (extras != null) {
       startActivityIntent.putExtras(extras);
     }
-
     context.startActivity(startActivityIntent);
   }
 }
