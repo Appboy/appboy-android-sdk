@@ -12,6 +12,11 @@ In under 30 minutes, you'll have Appboy in your app!
 2. Add a new App Group by clicking the + sign in the left column
 3. [Read our Getting Started documentation](http://documentation.appboy.com) to integrate Appboy into your app
 
+## Building with Gradle
+To build the Appboy user interface library and the sample app with Gradle, use the 'gradle assemble' command.
+
+For more information about the Android Gradle build system, refer to the [documentation](http://tools.android.com/tech-docs/new-build-system).
+
 ## Supported OS Versions
 Android 2.2+ (Froyo and up).
 

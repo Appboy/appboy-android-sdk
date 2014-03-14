@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+
 import com.appboy.Appboy;
-import com.appboy.ui.AppboySlideupManager;
 import com.appboy.ui.Constants;
+import com.appboy.ui.slideups.AppboySlideupManager;
 import com.crittercism.app.Crittercism;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +39,9 @@ public class AppboyFragmentActivity extends FragmentActivity {
   @Override
   public void onStart() {
     super.onStart();
-    // Opens a new Appboy session. If we've opened a new session, request a refresh of the slideup.
+    // Opens (or reopens) an Appboy session.
+    // Note: This must be called in the onStart lifecycle method of EVERY Activity. Failure to do so
+    // will result in incomplete and/or erroneous analytics.
     if (Appboy.getInstance(this).openSession(this)) {
       mRefreshData = true;
     }
@@ -46,28 +50,29 @@ public class AppboyFragmentActivity extends FragmentActivity {
   @Override
   public void onResume() {
     super.onResume();
-
-    // Register for slideup messages and request a new one, if applicable.
-    AppboySlideupManager.getInstance().registerSlideupUI(this);
+    // Registers the AppboySlideupManager for the current Activity. This Activity will now listen for
+    // slideup messages from Appboy.
+    AppboySlideupManager.getInstance().registerSlideupManager(this);
     if (mRefreshData) {
       Appboy.getInstance(this).requestSlideupRefresh();
       mRefreshData = false;
     }
-
     Crittercism.leaveBreadcrumb(this.getClass().getName());
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    // Unregisters from Appboy slideup messages.
-    AppboySlideupManager.getInstance().unregisterSlideupUI(this);
+    // Unregisters the AppboySlideupManager.
+    AppboySlideupManager.getInstance().unregisterSlideupManager(this);
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    // Closes the Appboy session.
+    // Closes the current Appboy session.
+    // Note: This must be called in the onStop lifecycle method of EVERY Activity. Failure to do so
+    // will result in incomplete and/or erroneous analytics.
     Appboy.getInstance(this).closeSession(this);
   }
 

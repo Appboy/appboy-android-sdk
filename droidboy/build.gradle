@@ -1,0 +1,37 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "com.android.tools.build:gradle:0.5.6"
+  }
+}
+
+apply plugin: "android"
+
+android {
+  repositories {
+     mavenLocal()
+    mavenCentral()
+  }
+
+  compileSdkVersion 19
+  buildToolsVersion '19.0.0'
+
+  sourceSets {
+    main.setRoot(".")
+    main {
+      java.srcDirs = ["src"]
+      resources.srcDirs = ["src"]
+      aidl.srcDirs = ["src"]
+      res.srcDirs = ["res"]
+      assets.srcDirs = ["assets"]
+    }
+  }
+
+  dependencies {
+    compile project(':android-sdk-ui')
+    compile files('libs/crittercism-3.0.8.jar')
+  }
+}

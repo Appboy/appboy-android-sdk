@@ -36,4 +36,20 @@
     <item>1</item>
     <item>-1</item>
   </string-array>
+
+  <string-array name="slideFromValues">
+    <item>Top</item>
+    <item>Bottom</item>
+  </string-array>
+
+  <string-array name="clickActionValues">
+    <item>News Feed</item>
+    <item>URI</item>
+    <item>None</item>
+  </string-array>
+
+  <string-array name="dismissTypeValues">
+    <item>Auto</item>
+    <item>Swipe</item>
+  </string-array>
 </resources>

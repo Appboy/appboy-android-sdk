@@ -10,19 +10,13 @@ import com.appboy.Constants;
  */
 public final class ActivityAction implements IAction {
   private final Intent mIntent;
-  private final Bundle mOptions;
 
   public ActivityAction(Intent intent) {
-    this(intent, null);
-  }
-
-  public ActivityAction(Intent intent, Bundle options) {
     mIntent = intent;
-    mOptions = options;
   }
 
   @Override
   public void execute(Context context) {
-    context.startActivity(mIntent, mOptions);
+    context.startActivity(mIntent);
   }
 }
