@@ -15,6 +15,7 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
 import com.appboy.ui.actions.ActivityAction;
+import com.appboy.ui.actions.IAction;
 import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.support.StringUtils;
 
