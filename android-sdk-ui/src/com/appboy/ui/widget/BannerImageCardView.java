@@ -3,8 +3,8 @@ package com.appboy.ui.widget;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
@@ -12,8 +12,6 @@ import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.support.StringUtils;
 
 public class BannerImageCardView  extends BaseCardView<BannerImageCard> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, BannerImageCardView.class.getName());
-
   private final ImageView mImage;
   private IAction mCardAction;
 

@@ -1,7 +1,6 @@
 package com.appboy.ui.slideups;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -20,7 +19,6 @@ import com.appboy.ui.Constants;
 import com.appboy.ui.R;
 import com.appboy.ui.support.ViewUtils;
 
-import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 

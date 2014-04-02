@@ -4,16 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.models.cards.AppStoreReviewCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
 import com.appboy.ui.actions.IAction;
 
 public class AppStoreReviewCardView extends BaseCardView<AppStoreReviewCard> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppStoreReviewCardView.class.getName());
-
   private int mApplicationIconId;
   private final ImageView mImage;
   private final TextView mTitle;

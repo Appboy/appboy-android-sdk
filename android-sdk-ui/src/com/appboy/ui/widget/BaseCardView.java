@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
-import com.appboy.ui.R;
 import com.appboy.ui.support.StringUtils;
 
 /**

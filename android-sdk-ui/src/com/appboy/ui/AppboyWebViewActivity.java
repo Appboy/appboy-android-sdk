@@ -7,7 +7,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.appboy.ui.activities.AppboyBaseActivity;
-import com.appboy.ui.activities.AppboyBaseFragmentActivity;
 
 public class AppboyWebViewActivity extends AppboyBaseActivity {
   // The Intent extra string containing the URL to open.

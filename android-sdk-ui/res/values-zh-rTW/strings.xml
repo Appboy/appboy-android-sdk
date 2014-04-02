@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_app_store_review_card_title">喜歡我們的應用程式嗎？</string>
+  <string name="com_appboy_app_store_review_card_subtitle">請到應用商店給我們評分吧！</string>
+  <string name="com_appboy_app_store_review_card_image_content_description">橫幅圖片</string>
+  <string name="com_appboy_banner_image_card_image_content_description">橫幅圖片</string>
+  <string name="com_appboy_cross_promotion_small_card_image_content_description">應用圖片</string>
+  <string name="com_appboy_short_news_card_image_content_description">新聞消息圖片</string>
+  <string name="com_appboy_recommendation_free">免費</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">出錯了？</string>
+  <string name="com_appboy_feedback_form_message">反饋消息</string>
+  <string name="com_appboy_feedback_form_email">電子郵件</string>
+  <string name="com_appboy_feedback_form_cancel">取消</string>
+  <string name="com_appboy_feedback_form_send">發送</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">暫時沒有更新。\n請稍候再試。</string>
+  <string name="com_appboy_feed_connection_error_title">連線錯誤</string>
+  <string name="com_appboy_feed_connection_error_body">無法建立網路連線。\n請稍候再試。</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>
+

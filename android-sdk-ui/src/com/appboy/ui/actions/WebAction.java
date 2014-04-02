@@ -2,7 +2,7 @@ package com.appboy.ui.actions;
 
 import android.content.Context;
 import android.content.Intent;
-import com.appboy.Constants;
+
 import com.appboy.ui.AppboyWebViewActivity;
 
 /**
