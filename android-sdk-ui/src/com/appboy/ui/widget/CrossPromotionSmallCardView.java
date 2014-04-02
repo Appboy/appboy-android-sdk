@@ -73,7 +73,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
 
   private String getPriceString(double price) {
     if (price == 0.0) {
-      return "Free";
+      return mContext.getString(R.string.com_appboy_recommendation_free);
     } else {
       return NumberFormat.getCurrencyInstance(Locale.US).format(price);
     }
