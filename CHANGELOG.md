@@ -1,3 +1,8 @@
+## 1.3.1
+- Updating to version 1.9.1 of Android-Universal-Image-Loader.
+- Adds Chinese language translations.
+- Minor cleanup to imports.
+
 ## 1.3
 Appboy version 1.3 provides a substantial upgrade to the slideup code and reorganization for better flexibility moving forward, but at the expense of a number of breaking changes. We've detailed the changes in this changelog and hope that you'll love the added power, increased flexibility, and improved UI that the new Appboy slideup provides. If you have any trouble with these changes, feel free to reach out to success@appboy.com for help, but most migrations to the new code structure should be relatively painless.
 
