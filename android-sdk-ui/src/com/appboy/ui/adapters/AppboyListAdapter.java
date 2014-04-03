@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
 import com.appboy.Appboy;
 import com.appboy.models.cards.*;
 import com.appboy.ui.Constants;
@@ -82,6 +83,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    * be of the appropriate type, but it will be recycled, so you need to fully re-populate it with data from the card.
    */
   @Override
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public View getView(int position, View convertView, ViewGroup parent) {
     BaseCardView view;
     Card card = getItem(position);

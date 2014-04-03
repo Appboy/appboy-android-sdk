@@ -1,5 +1,6 @@
 package com.appboy.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebSettings;
@@ -12,6 +13,8 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
   // The Intent extra string containing the URL to open.
   public static final String URL_EXTRA = "url";
 
+  @SuppressWarnings("deprecation")
+  @SuppressLint({ "SetJavaScriptEnabled", "NewApi" })
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
