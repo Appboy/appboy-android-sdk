@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- General configuration -->
-  <string name="com_appboy_api_key">appboy-android-sample</string>
+  <string name="com_appboy_api_key">appboy-sample-android</string>
 
   <!-- To disable automatic flushing in any of these network conditions, simply set the value to -1. To turn off
       all automatic data flushing, set all three intervals to -1. When automatic flushing is disabled, you can use
