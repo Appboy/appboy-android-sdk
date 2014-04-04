@@ -80,7 +80,8 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
    */
   void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio) {
     if (imageUrl == null) {
-      Log.w(TAG, String.format("The image url (%s) to render is null. Not setting the card image.", imageUrl));
+      Log.w(TAG, "The image url to render is null. Not setting the card image");
+      return;
     }
 
     if (aspectRatio != 1) {
