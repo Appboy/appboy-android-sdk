@@ -8,8 +8,6 @@ import com.appboy.Appboy;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.WebAction;
-import com.appboy.ui.support.StringUtils;
 
 public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard> {
   private final TextView mTitle;
@@ -45,11 +43,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
 
-    if (!StringUtils.isNullOrBlank(card.getUrl())) {
-      mCardAction = new WebAction(card.getUrl());
-    } else {
-      mCardAction = null;
-    }
+    mCardAction = createUriAction(card.getUrl());
 
     setOnClickListener(new OnClickListener() {
       @Override

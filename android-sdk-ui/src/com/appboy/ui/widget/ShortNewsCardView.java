@@ -9,8 +9,6 @@ import com.appboy.Appboy;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.WebAction;
-import com.appboy.ui.support.StringUtils;
 
 public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
   private final ImageView mImage;
@@ -48,11 +46,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
     setOptionalTextView(mTitle, card.getTitle());
     setOptionalTextView(mDomain, card.getDomain());
 
-    if (!StringUtils.isNullOrBlank(card.getUrl())) {
-      mCardAction = new WebAction(card.getUrl());
-    } else {
-      mCardAction = null;
-    }
+    mCardAction = createUriAction(card.getUrl());
 
     setOnClickListener(new OnClickListener() {
       @Override

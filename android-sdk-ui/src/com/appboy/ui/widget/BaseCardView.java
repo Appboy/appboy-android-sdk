@@ -3,6 +3,7 @@ package com.appboy.ui.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewTreeObserver;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
+import com.appboy.ui.actions.ActivityAction;
+import com.appboy.ui.actions.IAction;
+import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.support.StringUtils;
 
 /**
@@ -54,6 +58,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     }
   }
 
+  @SuppressWarnings("deprecation")
   void safeSetBackground(Drawable background) {
     if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
       setBackgroundDrawable(background);
@@ -104,6 +109,19 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     }
   }
 
+  protected IAction createUriAction(String url) {
+    if (!StringUtils.isNullOrBlank(url)) {
+      Uri uri = Uri.parse(url);
+      if ("intent".equals(uri.getScheme())) {
+        return new ActivityAction(getContext(), uri);
+      } else {
+        return new WebAction(url);
+      }
+    }
+    return null;
+  }
+
+  @SuppressWarnings("deprecation")
   private void safeRemoveOnGlobalLayoutListener(ViewTreeObserver viewTreeObserver,
                                                 ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener) {
     if (android.os.Build.VERSION.SDK_INT < 16) {
