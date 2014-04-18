@@ -2,7 +2,6 @@ package com.appboy.sample;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,8 +10,8 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import com.appboy.Appboy;
 import com.appboy.AppboyUser;
+import com.appboy.Constants;
 import com.appboy.enums.Gender;
-import com.appboy.ui.Constants;
 import com.appboy.ui.support.StringUtils;
 import com.crittercism.app.Crittercism;
 
@@ -25,6 +24,7 @@ public class UserProfileDialog extends DialogPreference {
   private EditText mBio;
   private RadioGroup mGender;
   private EditText mFavoriteColor;
+  private EditText mAvatarImageUrl;
 
   public UserProfileDialog(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -47,6 +47,7 @@ public class UserProfileDialog extends DialogPreference {
     mBio = (EditText) view.findViewById(R.id.bio);
     mGender = (RadioGroup) view.findViewById(R.id.gender);
     mFavoriteColor = (EditText) view.findViewById(R.id.favorite_color);
+    mAvatarImageUrl = (EditText) view.findViewById(R.id.avatar_image_url);
     return view;
   }
 
@@ -61,6 +62,7 @@ public class UserProfileDialog extends DialogPreference {
     mBio.setText(sharedPreferences.getString("user.bio", null));
     mGender.check(sharedPreferences.getInt("user.gender_resource_id", R.id.unspecified));
     mFavoriteColor.setText(sharedPreferences.getString("user.favorite_color", null));
+    mAvatarImageUrl.setText(sharedPreferences.getString("user.avatar_image_url", null));
   }
 
   @Override
@@ -73,9 +75,8 @@ public class UserProfileDialog extends DialogPreference {
       int genderResourceId = mGender.getCheckedRadioButtonId();
       View genderRadioButton = mGender.findViewById(genderResourceId);
       int genderId = mGender.indexOfChild(genderRadioButton);
-
-      Log.d(TAG, String.format("genderId: %d, genderResourceId: %d", genderId, genderResourceId));
       String favoriteColor = mFavoriteColor.getText().toString();
+      String avatarImageUrl = mAvatarImageUrl.getText().toString();
 
       if (!StringUtils.isNullOrBlank(email)) {
         Appboy.getInstance(getContext()).changeUser(email);
@@ -90,6 +91,7 @@ public class UserProfileDialog extends DialogPreference {
       editor.putString("user.bio", bio);
       editor.putInt("user.gender_resource_id", genderResourceId);
       editor.putString("user.favorite_color", favoriteColor);
+      editor.putString("user.avatar_image_url", avatarImageUrl);
       persist(editor);
 
       AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
@@ -111,12 +113,13 @@ public class UserProfileDialog extends DialogPreference {
           Log.w(TAG, "Error parsing gender from user preferences.");
       }
       appboyUser.setCustomUserAttribute("favorite_color", favoriteColor);
+      appboyUser.setAvatarImageUrl(avatarImageUrl);
       appboyUser.incrementCustomUserAttribute("user_rating", 5);
     }
   }
 
   private void persist(SharedPreferences.Editor editor) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+    if (android.os.Build.VERSION.SDK_INT < 9) {
       editor.commit();
     } else {
       editor.apply();

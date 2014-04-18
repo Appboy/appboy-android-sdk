@@ -3,7 +3,6 @@ package com.appboy.sample;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.appboy.ui.AppboyNavigator;
 
 public class CustomAppboyNavigator extends AppboyNavigator {

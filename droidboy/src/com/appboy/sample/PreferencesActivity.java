@@ -1,28 +1,19 @@
 package com.appboy.sample;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.android.vending.billing.utils.IabHelper;
 import com.android.vending.billing.utils.IabResult;
 import com.android.vending.billing.utils.Inventory;
 import com.android.vending.billing.utils.Purchase;
 import com.appboy.Appboy;
-import com.appboy.IAppboyNavigator;
-import com.appboy.enums.Slideup.DismissType;
-import com.appboy.enums.Slideup.SlideFrom;
+import com.appboy.Constants;
 import com.appboy.enums.SocialNetwork;
-import com.appboy.models.Slideup;
-import com.appboy.ui.Constants;
 import com.appboy.ui.slideups.AppboySlideupManager;
-import com.appboy.ui.slideups.ISlideupManagerListener;
-import com.appboy.ui.slideups.SlideupCloser;
-import com.appboy.ui.slideups.SlideupOperation;
 import com.crittercism.app.Crittercism;
 
 public class PreferencesActivity extends PreferenceActivity {
@@ -46,6 +37,8 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference logPurchasePreference = findPreference("log_purchase");
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestSlideupPreference = findPreference("request_slideup");
+    Preference aboutPreference = findPreference("about");
+    aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
     facebookSharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override

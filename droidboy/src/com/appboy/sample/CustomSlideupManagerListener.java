@@ -2,7 +2,6 @@ package com.appboy.sample;
 
 import android.app.Activity;
 import android.widget.Toast;
-
 import com.appboy.models.Slideup;
 import com.appboy.ui.slideups.ISlideupManagerListener;
 import com.appboy.ui.slideups.SlideupCloser;

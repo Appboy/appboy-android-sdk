@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import com.appboy.ui.Constants;
+import com.appboy.Constants;
 
 /*
  * Appboy integration sample (using Appboy Activity classes)

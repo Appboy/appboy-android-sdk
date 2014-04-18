@@ -9,12 +9,10 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-
 import com.appboy.Appboy;
-import com.appboy.ui.Constants;
+import com.appboy.Constants;
 import com.appboy.ui.slideups.AppboySlideupManager;
 import com.crittercism.app.Crittercism;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +30,6 @@ public class AppboyFragmentActivity extends FragmentActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Crittercism.init(getApplicationContext(), "51b731aa8b2e337d52000002", getCrittercismConfiguration());
     activateStrictMode();
   }
 

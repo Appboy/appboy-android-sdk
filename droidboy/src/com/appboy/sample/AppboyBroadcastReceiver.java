@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import com.appboy.Constants;
 import com.appboy.AppboyGcmReceiver;
+import com.appboy.Constants;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyBroadcastReceiver.class.getName());

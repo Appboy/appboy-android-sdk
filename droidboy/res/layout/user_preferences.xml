@@ -129,5 +129,23 @@
           android:layout_span="3"
           style="@style/UserSingleLineText"/>
     </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_dialog_avatar_image_url"/>
+
+        <EditText
+            android:id="@+id/avatar_image_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="3"
+            android:singleLine="true"
+            android:inputType="textUri"/>
+    </TableRow>
   </TableLayout>
 </ScrollView>

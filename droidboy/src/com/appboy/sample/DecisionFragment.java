@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.appboy.Appboy;
-import com.appboy.ui.Constants;
+import com.appboy.Constants;
 
 import java.util.Random;
 

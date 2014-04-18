@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
+import com.appboy.Constants;
 import com.appboy.ui.AppboyFeedFragment;
 import com.appboy.ui.AppboyFeedbackFragment;
-import com.appboy.ui.Constants;
 import com.crittercism.app.Crittercism;
 
 public class DroidBoyActivity extends AppboyFragmentActivity {
