@@ -1,29 +1,22 @@
-# appboy-android-sdk
+![Appboy Logo](http://www.appboy.com/assets/logo-cee4c217ff207f321cc7250f86a1037d.gif)
 
-This is the public repo for the Appboy Android SDK. This repo contains two folders:
+# Android SDK
 
-* android-sdk-ui - the Appboy SDK user interface containing the Appboy jar
-* droidboy - a sample application which demonstrates how to use Appboy
+Successful marketing automation is essential to the future of your mobile app. Appboy helps you engage your users beyond the download. Visit the following links for details and we'll have you up and running in no time!
 
-## Getting Started
-In under 30 minutes, you'll have Appboy in your app!
+- [Appboy Academy](http://www.appboy.com/academy "Appboy Academy")
+- [Technical Documentation](http://documentation.appboy.com "Appboy Technical Documentation")
+- [Full Class Documentation](http://appboy.github.io/appboy-android-sdk/javadocs/ "Appboy Android SDK Class Documentation")
 
-1. Go to https://dashboard.appboy.com and create an account
-2. Add a new App Group by clicking the + sign in the left column
-3. [Read our Getting Started documentation](http://documentation.appboy.com) to integrate Appboy into your app
+## Components
 
-## Building with Gradle
-To build the Appboy user interface library and the sample app with Gradle, use the 'gradle assemble' command.
+- `android-sdk-ui` - the Appboy SDK user interface containing the Appboy jar.
+- `droidboy` - a sample application which demonstrates how to use Appboy.
 
-For more information about the Android Gradle build system, refer to the [documentation](http://tools.android.com/tech-docs/new-build-system).
+## Version Support
 
-## Supported OS Versions
-Android 2.2+ (Froyo and up).
+The Android SDK supports Android 2.2+ (Froyo and up).
 
-## Features
-We currently have full feature parity with our iOS V2 SDK.
-
-## Feedback & Support
-Javadocs are available [here](http://appboy.github.io/appboy-android-sdk/javadocs/).
+## Questions?
 
 If you have questions, please contact [support@appboy.com](mailto:support@appboy.com).

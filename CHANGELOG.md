@@ -1,3 +1,15 @@
+## 1.3.2
+- Moves com.appboy.AppboyGcmReceiver to the open source android-sdk-ui project. Also moves some of the constants
+  previously available as AppboyGcmReceiver.* to com.appboy.constants.APPBOY_GCM_*. The CAMPAIGN_ID_KEY previously used
+  in our sample app is still available in com.appboy.AppboyGcmReceiver, but if you were using other constants, you'll
+  have to move the references.
+- Fixes a few minor style issues to be closer in line with Eclipse's preferences.
+- Fixes a potential synchronization issue with the AppboyListAdapter.
+- Minor update to Chinese language translation.
+- Adds the ability to set the avatar image URL for your users.
+- Fixes support for protocol URLs and adds an ActivityAction overload that streamlines the use of deep link and web link actions.
+- Removes input validation on custom attribute key names so that you can use foreign characters and spaces to your heart's desire. Just don't go over the max character limit.
+
 ## 1.3.1
 - Updating to version 1.9.1 of Android-Universal-Image-Loader.
 - Adds Chinese language translations.
@@ -32,20 +44,19 @@ IAppboyNavigator
 Other
 - A new base class, ```AppboyBaseActivity```, has been added that extends ```android.app.Activity``` and integrates Appboy session and slideup management.
 - A drop in ```AppboyFeedActivity``` class has been added which can be used to display the Appboy news feed.
-- Gradle build scripts for both the Appboy user interface library and the sample app.
 
-# 1.2.1
-* Fixing a ProGuard issue.
+## 1.2.1
+- Fixing a ProGuard issue.
 
 ## 1.2
-* Introducing two new card types (Banner card and Captioned Image card).
-* Adding support for sending down key/value pairs as part of a GCM message.
-* Minor bug fixes.
+- Introducing two new card types (Banner card and Captioned Image card).
+- Adding support for sending down key/value pairs as part of a GCM message.
+- Minor bug fixes.
 
 ## 1.1
-* Adds support for reporting purchases in multiple currencies. Deprecating IAppboy.logPurchase(String, int).
-* Fixing a bug in caching custom events to a SQLite database.  
-* Fixing a validation bug when logging custom events.
+- Adds support for reporting purchases in multiple currencies. Deprecating IAppboy.logPurchase(String, int).
+- Fixing a bug in caching custom events to a SQLite database.  
+- Fixing a validation bug when logging custom events.
 
 ## 1.0
-* Initial release
+- Initial release
