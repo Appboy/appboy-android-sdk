@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-
+import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.ui.actions.ActivityAction;
 import com.appboy.ui.actions.WebAction;

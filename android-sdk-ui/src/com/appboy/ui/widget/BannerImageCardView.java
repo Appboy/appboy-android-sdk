@@ -3,13 +3,11 @@ package com.appboy.ui.widget;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.appboy.Appboy;
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.ui.R;
+import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.WebAction;
-import com.appboy.ui.support.StringUtils;
 
 public class BannerImageCardView  extends BaseCardView<BannerImageCard> {
   private final ImageView mImage;
@@ -38,12 +36,7 @@ public class BannerImageCardView  extends BaseCardView<BannerImageCard> {
   @Override
   public void onSetCard(final BannerImageCard card) {
     setImageViewToUrl(mImage, card.getImageUrl(), 6f);
-
-    if (!StringUtils.isNullOrBlank(card.getUrl())) {
-      mCardAction = new WebAction(card.getUrl());
-    } else {
-      mCardAction = null;
-    }
+    mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
 
     setOnClickListener(new OnClickListener() {
       @Override

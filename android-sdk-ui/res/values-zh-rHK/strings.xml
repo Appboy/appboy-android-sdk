@@ -7,6 +7,7 @@
   <string name="com_appboy_banner_image_card_image_content_description">橫幅圖片</string>
   <string name="com_appboy_cross_promotion_small_card_image_content_description">應用圖片</string>
   <string name="com_appboy_short_news_card_image_content_description">新聞消息圖片</string>
+  <string name="com_appboy_recommendation_free">免費</string>
 
   <!-- Feedback form -->
   <string name="com_appboy_feedback_form_is_bug">出錯了？</string>

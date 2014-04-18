@@ -2,6 +2,17 @@ package com.appboy.ui.actions;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
+
+import com.appboy.Constants;
+import com.appboy.ui.support.UriUtils;
+
+import org.apache.http.client.utils.URLEncodedUtils;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Action that launches a new Activity.
@@ -9,12 +20,31 @@ import android.content.Intent;
 public final class ActivityAction implements IAction {
   private final Intent mIntent;
 
+  /**
+   * Constructs an ActivityAction given a package name and Uri. The Uri query parameters are parsed
+   * and added to the Intent as extras.
+   */
+  public ActivityAction(String packageName, Uri uri) {
+    this(new Intent());
+    mIntent.setClassName(packageName, uri.getHost());
+    Map<String, String> parameters = UriUtils.getQueryParameters(uri);
+    for (Map.Entry<String, String> entry : parameters.entrySet()) {
+      mIntent.putExtra(entry.getKey(), entry.getValue());
+    }
+  }
+
+  /**
+   * Constructs an ActivityAction given a fully initialized Intent. The intent will be passed as a
+   * parameter to the {@link android.content.Context#startActivity(android.content.Intent)} method.
+   */
   public ActivityAction(Intent intent) {
     mIntent = intent;
   }
 
   @Override
   public void execute(Context context) {
-    context.startActivity(mIntent);
+    if (mIntent.resolveActivity(context.getPackageManager()) != null) {
+      context.startActivity(mIntent);
+    }
   }
 }

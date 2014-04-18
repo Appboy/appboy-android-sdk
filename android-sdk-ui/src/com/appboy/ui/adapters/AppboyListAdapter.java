@@ -6,11 +6,27 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
 import com.appboy.Appboy;
-import com.appboy.models.cards.*;
-import com.appboy.ui.Constants;
+import com.appboy.Constants;
+import com.appboy.models.cards.AppStoreReviewCard;
+import com.appboy.models.cards.BannerImageCard;
+import com.appboy.models.cards.CaptionedImageCard;
+import com.appboy.models.cards.Card;
+import com.appboy.models.cards.CrossPromotionLargeCard;
+import com.appboy.models.cards.CrossPromotionSmallCard;
+import com.appboy.models.cards.ShortNewsCard;
+import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
-import com.appboy.ui.widget.*;
+import com.appboy.ui.widget.AppStoreReviewCardView;
+import com.appboy.ui.widget.BannerImageCardView;
+import com.appboy.ui.widget.BaseCardView;
+import com.appboy.ui.widget.CaptionedImageCardView;
+import com.appboy.ui.widget.CrossPromotionLargeCardView;
+import com.appboy.ui.widget.CrossPromotionSmallCardView;
+import com.appboy.ui.widget.DefaultCardView;
+import com.appboy.ui.widget.ShortNewsCardView;
+import com.appboy.ui.widget.TextAnnouncementCardView;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,11 +42,16 @@ import java.util.Set;
  *
  * A card generates an impression once per viewing per open ListView. If a card is viewed more than once
  * in a particular ListView, it generates only one impression. If closed an reopened, a card will again
- * generate an impression. This also takes into account the case of a card being off-screen in the ListView. 
+ * generate an impression. This also takes into account the case of a card being off-screen in the ListView.
  * The card only generates an impression when it actually scrolls onto the screen.
  *
  * IMPORTANT - You must call resetCardImpressionTracker() whenever the ListView is displayed. This will ensure
  *             that cards that come into view will be tracked according to the description above.
+ *
+ * Adding and removing cards to and from the adapter should be done using the following synchronized
+ * methods: {@link com.appboy.ui.adapters.AppboyListAdapter#add(Card)},
+ * {@link com.appboy.ui.adapters.AppboyListAdapter#clear()}clear(),
+ * {@link com.appboy.ui.adapters.AppboyListAdapter#replaceFeed(java.util.List)}
  */
 public class AppboyListAdapter extends ArrayAdapter<Card> {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyListAdapter.class.getName());
@@ -116,7 +137,12 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     return view;
   }
 
-  public void replaceFeed(List<Card> cards) {
+  @Override
+  public synchronized void clear() {
+    super.clear();
+  }
+
+  public synchronized void replaceFeed(List<Card> cards) {
     setNotifyOnChange(false);
 
     if (cards == null) {
@@ -156,8 +182,13 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     notifyDataSetChanged();
   }
 
+  @Override
+  public synchronized void add(Card card) {
+    super.add(card);
+  }
+
   @TargetApi(11)
-  private void addAllBatch(Collection<Card> cards) {
+  private synchronized void addAllBatch(Collection<Card> cards) {
     super.addAll(cards);
   }
 

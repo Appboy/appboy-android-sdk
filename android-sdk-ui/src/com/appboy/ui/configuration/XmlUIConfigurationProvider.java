@@ -5,8 +5,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.appboy.Constants;
 import com.appboy.configuration.CachedConfigurationProvider;
-import com.appboy.ui.Constants;
 
 public class XmlUIConfigurationProvider extends CachedConfigurationProvider {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, XmlUIConfigurationProvider.class.getName());

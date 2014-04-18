@@ -25,7 +25,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     // Plugin support is disabled by default. If plugins, such as flash, are required, change the PluginState.
     webSettings.setPluginState(WebSettings.PluginState.OFF);
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       webSettings.setDisplayZoomControls(false);
     }
     webSettings.setBuiltInZoomControls(true);

@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.models.cards.CrossPromotionLargeCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
@@ -16,7 +16,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class CrossPromotionLargeCardView extends BaseCardView<CrossPromotionLargeCard> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CrossPromotionLargeCardView.class.getName());
 
   private final TextView mTitle;
   private final TextView mSubtitle;
