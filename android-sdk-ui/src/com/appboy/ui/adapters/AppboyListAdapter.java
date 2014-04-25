@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
 import com.appboy.Appboy;
+import com.appboy.Constants;
 import com.appboy.models.cards.AppStoreReviewCard;
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.models.cards.CaptionedImageCard;
@@ -20,7 +22,9 @@ import com.appboy.models.cards.CrossPromotionLargeCard;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
+
 import com.appboy.ui.Constants;
+
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
 import com.appboy.ui.widget.AppStoreReviewCardView;
 import com.appboy.ui.widget.BannerImageCardView;
@@ -31,6 +35,11 @@ import com.appboy.ui.widget.CrossPromotionSmallCardView;
 import com.appboy.ui.widget.DefaultCardView;
 import com.appboy.ui.widget.ShortNewsCardView;
 import com.appboy.ui.widget.TextAnnouncementCardView;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Default adapter used to display cards and log card impressions for the Appboy feed.
@@ -46,6 +55,11 @@ import com.appboy.ui.widget.TextAnnouncementCardView;
  *
  * IMPORTANT - You must call resetCardImpressionTracker() whenever the ListView is displayed. This will ensure
  *             that cards that come into view will be tracked according to the description above.
+ *
+ * Adding and removing cards to and from the adapter should be done using the following synchronized
+ * methods: {@link com.appboy.ui.adapters.AppboyListAdapter#add(Card)},
+ * {@link com.appboy.ui.adapters.AppboyListAdapter#clear()}clear(),
+ * {@link com.appboy.ui.adapters.AppboyListAdapter#replaceFeed(java.util.List)}
  */
 public class AppboyListAdapter extends ArrayAdapter<Card> {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyListAdapter.class.getName());
@@ -131,7 +145,12 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     return view;
   }
 
-  public void replaceFeed(List<Card> cards) {
+  @Override
+  public synchronized void clear() {
+    super.clear();
+  }
+
+  public synchronized void replaceFeed(List<Card> cards) {
     setNotifyOnChange(false);
 
     if (cards == null) {
@@ -146,17 +165,18 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     Card existingCard, newCard;
 
     // Iterate over the entire existing feed, skipping items at the head of the list whenever they're the same as the
-    // head of the new list.
+    // head of the new list and otherwise removing them.
     while (i < getCount()) {
       existingCard = getItem(i);
       newCard = null;
-      if (j < cards.size()) {
+
+      // Only consider a new card if there are any left.
+      if (j < newFeedSize) {
         newCard = cards.get(j);
-      } else {
-        break;
       }
-      // If the card we're trying to add is the same as the next existing card in the feed, continue.
-      if (newCard.getId().equals(existingCard.getId()) && newCard.getUpdated() == existingCard.getUpdated()) {
+
+      // If there is still a card to add and it is the same as the next existing card in the feed, continue.
+      if (newCard != null && newCard.getId().equals(existingCard.getId()) && newCard.getUpdated() == existingCard.getUpdated()) {
         i++;
         j++;
       } else { // Otherwise, we need to get rid of the front card from the adapter, and continue checking.
@@ -176,8 +196,13 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     notifyDataSetChanged();
   }
 
+  @Override
+  public synchronized void add(Card card) {
+    super.add(card);
+  }
+
   @TargetApi(11)
-  private void addAllBatch(Collection<Card> cards) {
+  private synchronized void addAllBatch(Collection<Card> cards) {
     super.addAll(cards);
   }
 

@@ -3,7 +3,6 @@ package com.appboy.sample;
 import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
-
 import com.appboy.models.Slideup;
 import com.appboy.ui.slideups.ISlideupViewFactory;
 

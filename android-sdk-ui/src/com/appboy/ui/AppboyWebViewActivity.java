@@ -7,7 +7,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.appboy.ui.activities.AppboyBaseActivity;
-import com.appboy.ui.activities.AppboyBaseFragmentActivity;
 
 public class AppboyWebViewActivity extends AppboyBaseActivity {
   // The Intent extra string containing the URL to open.
@@ -26,7 +25,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     // Plugin support is disabled by default. If plugins, such as flash, are required, change the PluginState.
     webSettings.setPluginState(WebSettings.PluginState.OFF);
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       webSettings.setDisplayZoomControls(false);
     }
     webSettings.setBuiltInZoomControls(true);

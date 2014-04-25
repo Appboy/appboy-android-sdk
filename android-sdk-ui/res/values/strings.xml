@@ -7,6 +7,7 @@
   <string name="com_appboy_banner_image_card_image_content_description">Banner Image</string>
   <string name="com_appboy_cross_promotion_small_card_image_content_description">App image</string>
   <string name="com_appboy_short_news_card_image_content_description">News Item Image</string>
+  <string name="com_appboy_recommendation_free">Free</string>
 
   <!-- Feedback form -->
   <string name="com_appboy_feedback_form_is_bug">Reporting an Issue?</string>

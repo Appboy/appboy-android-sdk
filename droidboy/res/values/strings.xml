@@ -28,6 +28,7 @@
   <string name="social_preferences_title">Social</string>
   <string name="miscellaneous_title">Misc.</string>
   <string name="network_control_title">Network Control</string>
+  <string name="about_title">About</string>
 
   <string name="user_dialog_title">Sign up</string>
   <string name="user_dialog_summary">Receive the latest DroidBoy news and updates!</string>
@@ -40,6 +41,7 @@
   <string name="user_dialog_bio">Bio:</string>
   <string name="user_dialog_gender">Gender:</string>
   <string name="user_dialog_favorite_color">Favorite Color:</string>
+  <string name="user_dialog_avatar_image_url">Avatar Image URL:</string>
 
   <string name="male">Male</string>
   <string name="female">Female</string>
@@ -60,6 +62,8 @@
   <string name="data_flush_title">Request Flush</string>
   <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>
   <string name="data_flush_toast">Data flush requested</string>
+
+  <string name="about_summary">Appboy SDK version: %1$s</string>
 
   <string name="spinner_content_description">Spinner</string>
   <string name="spin">Spin!</string>

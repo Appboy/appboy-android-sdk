@@ -1,19 +1,9 @@
 package com.appboy.ui.support;
 
+import android.content.res.Resources;
+
 public final class StringUtils {
   public static final String EMPTY_STRING = "";
-
-  public static String checkNotNullOrEmpty(String reference) {
-    if (reference == null) {
-      throw new NullPointerException("Provided String must be non-null.");
-    }
-
-    if (reference.length() == 0) {
-      throw new IllegalArgumentException("Provided String must be non-empty.");
-    }
-
-    return reference;
-  }
 
   public static boolean isNullOrEmpty(String reference) {
     return reference == null || reference.length() == 0;
@@ -24,5 +14,13 @@ public final class StringUtils {
    */
   public static boolean isNullOrBlank(String reference) {
     return reference == null || reference.trim().length() == 0;
+  }
+
+  public static String getOptionalStringResource(Resources resources, int stringResourceId, String defaultString) {
+    try {
+      return resources.getString(stringResourceId);
+    } catch (Resources.NotFoundException e) {
+      return defaultString;
+    }
   }
 }

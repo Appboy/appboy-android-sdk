@@ -3,17 +3,14 @@ package com.appboy.ui.widget;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
+
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.R;
+import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.WebAction;
-import com.appboy.ui.support.StringUtils;
 
 public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, TextAnnouncementCardView.class.getName());
-
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;
@@ -46,12 +43,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
     mTitle.setText(card.getTitle());
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
-
-    if (!StringUtils.isNullOrBlank(card.getUrl())) {
-      mCardAction = new WebAction(card.getUrl());
-    } else {
-      mCardAction = null;
-    }
+    mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
 
     setOnClickListener(new OnClickListener() {
       @Override

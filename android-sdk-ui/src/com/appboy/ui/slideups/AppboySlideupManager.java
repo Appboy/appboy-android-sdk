@@ -1,7 +1,6 @@
 package com.appboy.ui.slideups;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -9,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appboy.Appboy;
+import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.enums.Slideup.ClickAction;
 import com.appboy.events.IEventSubscriber;
@@ -16,11 +16,9 @@ import com.appboy.events.SlideupEvent;
 import com.appboy.models.Slideup;
 import com.appboy.support.BundleUtils;
 import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.Constants;
 import com.appboy.ui.R;
 import com.appboy.ui.support.ViewUtils;
 
-import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 

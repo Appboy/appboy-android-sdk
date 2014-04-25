@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.appboy.Constants;
 import com.appboy.ui.AppboyWebViewActivity;
 
 /**
@@ -13,7 +12,6 @@ import com.appboy.ui.AppboyWebViewActivity;
  * time spent viewing the app in the web view counts toward the session duration.
  */
 public final class GooglePlayAppDetailsAction implements IAction {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, GooglePlayAppDetailsAction.class.getName());
   private static final String PLAY_STORE_APP_BASE = "market://details?id=";
   private static final String PLAY_STORE_WEB_BASE = "https://play.google.com/store/apps/details?id=";
 

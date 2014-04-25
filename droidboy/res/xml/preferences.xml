@@ -79,4 +79,11 @@
         android:title="@string/data_flush_title"
         android:summary="@string/data_flush_summary"/>
   </PreferenceCategory>
+
+  <PreferenceCategory
+      android:title="@string/about_title">
+
+    <Preference
+        android:key="about"/>
+  </PreferenceCategory>
 </PreferenceScreen>

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
-import com.appboy.ui.R;
 import com.appboy.ui.support.StringUtils;
 
 /**
@@ -81,7 +80,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
    */
   void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio) {
     if (imageUrl == null) {
-      Log.w(TAG, "The image url to render is null. Not setting the card image");
+      Log.w(TAG, "The image url to render is null. Not setting the card image.");
       return;
     }
 

@@ -1,7 +1,6 @@
 package com.appboy.ui.slideups;
 
 import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,9 @@ import android.widget.FrameLayout;
 import com.appboy.enums.Slideup.DismissType;
 import com.appboy.enums.Slideup.SlideFrom;
 import com.appboy.models.Slideup;
-import com.appboy.ui.Constants;
 import com.appboy.ui.support.ViewUtils;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class SlideupViewWrapper {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, SlideupViewWrapper.class.getName());
   private static Interpolator sInterpolator = new DecelerateInterpolator();
   private static final long sAnimationDurationInMilliseconds = 400l;
 
@@ -28,7 +23,6 @@ public class SlideupViewWrapper {
   private final Slideup mSlideup;
   private final ISlideupViewLifecycleListener mSlideupViewLifecycleListener;
   private Runnable mDismissRunnable;
-  private AtomicBoolean mClosedEventFired = new AtomicBoolean(false);
 
   public SlideupViewWrapper(View slideupView, Slideup slideup, ISlideupViewLifecycleListener slideupViewLifecycleListener) {
     mSlideupView = slideupView;

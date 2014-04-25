@@ -3,8 +3,7 @@ package com.appboy.sample;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-
-import com.appboy.ui.Constants;
+import com.appboy.Constants;
 
 public class SwipeGestureListener implements GestureDetector.OnGestureListener {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, DecisionFragment.class.getName());

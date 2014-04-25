@@ -4,17 +4,16 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.ui.R;
+import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.support.StringUtils;
 
 public class CaptionedImageCardView  extends BaseCardView<CaptionedImageCard> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CaptionedImageCardView.class.getName());
-
   private final ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;
@@ -49,12 +48,7 @@ public class CaptionedImageCardView  extends BaseCardView<CaptionedImageCard> {
     mTitle.setText(card.getTitle());
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
-
-    if (!StringUtils.isNullOrBlank(card.getUrl())) {
-      mCardAction = new WebAction(card.getUrl());
-    } else {
-      mCardAction = null;
-    }
+    mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
 
     setOnClickListener(new OnClickListener() {
       @Override
