@@ -1,10 +1,5 @@
 package com.appboy.ui.adapters;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.util.Log;
