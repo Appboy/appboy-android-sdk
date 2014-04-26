@@ -17,6 +17,7 @@ import com.appboy.models.cards.CrossPromotionLargeCard;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
+
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
 import com.appboy.ui.widget.AppStoreReviewCardView;
 import com.appboy.ui.widget.BannerImageCardView;
@@ -156,16 +157,23 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     int i = 0, j = 0, newFeedSize = cards.size();
     Card existingCard, newCard;
 
-    // Iterate over the entire existing feed, skipping items at the head of the list whenever they're the same as the
-    // head of the new list.
+    // Iterate over the entire existing feed, retaining items at the head of the list whenever they're the 
+    // same as the head of the new list and otherwise removing them.
     while (i < getCount()) {
       existingCard = getItem(i);
-      newCard = cards.get(j);
-      // If the card we're trying to add is the same as the next existing card in the feed, continue.
-      if (newCard.getId().equals(existingCard.getId()) && newCard.getUpdated() == existingCard.getUpdated()) {
+      newCard = null;
+
+      // Only consider a new card if there are any left.
+      if (j < newFeedSize) {
+        newCard = cards.get(j);
+      }
+
+      // If there is still a card to add and it is the same as the next existing card in the feed, continue.
+      if (newCard != null && newCard.getId().equals(existingCard.getId()) &&
+        newCard.getUpdated() == existingCard.getUpdated()) {
         i++;
         j++;
-      } else { // Otherwise, we need to get rid of the front card from the adapter, and continue checking.
+      } else { // Otherwise, we need to get rid of the next card in the adapter, and continue checking.
         remove(existingCard);
       }
     }

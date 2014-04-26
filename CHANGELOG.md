@@ -1,3 +1,6 @@
+## 1.3.3
+- Minor bug fix for a crash that occurred in certain conditions where the News Feed cards were replaced with a smaller set of cards.
+
 ## 1.3.2
 - Moves com.appboy.AppboyGcmReceiver to the open source android-sdk-ui project. Also moves some of the constants
   previously available as AppboyGcmReceiver.* to com.appboy.constants.APPBOY_GCM_*. The CAMPAIGN_ID_KEY previously used
