@@ -18,8 +18,6 @@ import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
 
-import com.appboy.ui.Constants;
-
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
 import com.appboy.ui.widget.AppStoreReviewCardView;
 import com.appboy.ui.widget.BannerImageCardView;
