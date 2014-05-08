@@ -29,9 +29,16 @@ Successful marketing automation is essential to the future of your mobile app. A
    use the `installDebug` task if you have a device or emulator connected to adb and want to run Droidboy. You can see
    other available tasks by running `./gradlew tasks`.
 
-## Installing the android-sdk-ui to your local maven repository and using it in builds.
+## Installing the android-sdk-ui to Your Local Maven Repository
 To install the UI library as an AAR file to your local maven repository, run the `install` task with
-`./gradlew install`.
+`./gradlew install`. You can reference it with groupId `com.appboy` and artifactId `android-sdk-ui`. The version should
+match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
+
+```
+dependencies {
+  compile 'com.appboy:android-sdk-ui:1.3+'
+}
+```
 
 ## Version Support
 

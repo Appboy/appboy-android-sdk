@@ -1,5 +1,13 @@
 apply plugin: 'android'
 
+dependencies {
+  compile project(':android-sdk-ui')
+  // Note: This will be removed in a future release.
+  compile files('libs/crittercism-3.0.8.jar')
+  // Note: This requires the Android Support Repository to be installed, please see the README.md
+  compile('com.android.support:support-v4:19.1.0')
+}
+
 android {
   compileSdkVersion 19
   buildToolsVersion '19.0.3'
@@ -22,13 +30,5 @@ android {
       res.srcDirs = ['res']
       assets.srcDirs = ['assets']
     }
-  }
-
-  dependencies {
-    compile project(':android-sdk-ui')
-    // Note: This will be removed in a future release.
-    compile files('libs/crittercism-3.0.8.jar')
-    // Note: This requires the Android Support Repository to be installed, please see the README.md
-    compile('com.android.support:support-v4:19.1.0')
   }
 }

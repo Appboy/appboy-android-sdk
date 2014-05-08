@@ -40,6 +40,8 @@ public class DecisionFragment extends Fragment {
   private GestureDetector mSwipeGestureDetector;
   private View.OnTouchListener mSwipeTouchListener;
 
+  public DecisionFragment() {}
+
   @Override
   public void onAttach(final Activity activity) {
     super.onAttach(activity);
