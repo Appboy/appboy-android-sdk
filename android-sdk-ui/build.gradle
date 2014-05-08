@@ -1,36 +1,33 @@
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath "com.android.tools.build:gradle:0.9.+"
-  }
-}
-
-apply plugin: "android-library"
+apply plugin: 'android-library'
+apply plugin: 'android-maven'
 
 android {
-  repositories {
-    mavenLocal()
-    mavenCentral()
-  }
-
   compileSdkVersion 19
-  buildToolsVersion '19.0.2'
+  buildToolsVersion '19.0.3'
+
+  defaultConfig {
+    minSdkVersion 8
+    targetSdkVersion 19
+  }
 
   sourceSets {
     main.setRoot(".")
+    // Note: We'll be moving this project to the new Android Build System conventional folder structure in a future
+    // release.
     main {
-      java.srcDirs = ["src"]
-      resources.srcDirs = ["src"]
-      res.srcDirs = ["res"]
-      assets.srcDirs = ["assets"]
+      manifest.srcFile 'AndroidManifest.xml'
+      java.srcDirs = ['src']
+      resources.srcDirs = ['src']
+      aidl.srcDirs = ['src']
+      renderscript.srcDirs = ['src']
+      res.srcDirs = ['res']
+      assets.srcDirs = ['assets']
     }
   }
 
   dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar']) 
-    compile 'com.android.support:support-v4:19.0.+'   
+    compile files('libs/appboy.jar')
+    // Note: This requires the Android Support Repository to be installed, please see the README.md
+    compile('com.android.support:support-v4:19.1.0')
   }
 }

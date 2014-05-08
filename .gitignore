@@ -5,3 +5,6 @@
 bin/
 target/
 gen/
+.gradle/
+.idea/
+build/
