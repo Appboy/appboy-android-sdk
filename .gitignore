@@ -8,3 +8,4 @@ gen/
 .gradle/
 .idea/
 build/
+local.properties
