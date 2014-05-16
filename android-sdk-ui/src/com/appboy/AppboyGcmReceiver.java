@@ -1,5 +1,6 @@
 package com.appboy;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.ui.R;
 import com.appboy.ui.support.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,7 +62,6 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     if (error != null) {
       if ("SERVICE_NOT_AVAILABLE".equals(error)) {
         Log.e(TAG, "Unable to connect to the GCM registration server. Try again later.");
-        // TODO(martin) - We should try to register again.
       } else if ("ACCOUNT_MISSING".equals(error)) {
         Log.e(TAG, "No Google account found on the phone. For pre-3.0 devices, a Google account is required on the device.");
       } else if ("AUTHENTICATION_FAILED".equals(error)) {
@@ -203,6 +204,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     }
     PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, 0, pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
     notificationBuilder.setContentIntent(pushOpenedPendingIntent);
+
     // Sets the icon used in the notification bar itself.
     notificationBuilder.setSmallIcon(smallNotificationIconResourceId);
     notificationBuilder.setContentTitle(title);
@@ -214,13 +216,13 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       Resources resources = context.getResources();
       String packageName = context.getPackageName();
 
-      int layoutResourceId = resources.getIdentifier("com_appboy_notification", "layout", packageName);
-      int titleResourceId = resources.getIdentifier("com_appboy_notification_title", "id", packageName);
-      int contentResourceId = resources.getIdentifier("com_appboy_notification_content", "id", packageName);
-      int iconResourceId = resources.getIdentifier("com_appboy_notification_icon", "id", packageName);
-      int timeViewResourceId = resources.getIdentifier("com_appboy_notification_time", "id", packageName);
-      int twentyFourHourFormatResourceId = resources.getIdentifier("com_appboy_push_notification_twenty_four_hour_format", "string", packageName);
-      int twelveHourFormatResourceId = resources.getIdentifier("com_appboy_push_notification_twelve_hour_format", "string", packageName);
+      int layoutResourceId = R.layout.com_appboy_notification;
+      int titleResourceId = R.id.com_appboy_notification_title;
+      int contentResourceId = R.id.com_appboy_notification_content;
+      int iconResourceId = R.id.com_appboy_notification_icon;
+      int timeViewResourceId = R.id.com_appboy_notification_time;
+      int twentyFourHourFormatResourceId = R.string.com_appboy_notification_time_twenty_four_hour_format;
+      int twelveHourFormatResourceId = R.string.com_appboy_notification_time_twelve_hour_format;
 
       String twentyFourHourTimeFormat = StringUtils.getOptionalStringResource(resources,
         twentyFourHourFormatResourceId, Constants.DEFAULT_TWENTY_FOUR_HOUR_TIME_FORMAT);
@@ -286,6 +288,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     return false;
   }
 
+  @TargetApi(12)
   public static String bundleOptString(Bundle bundle, String key, String defaultValue) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
      return bundle.getString(key, defaultValue);

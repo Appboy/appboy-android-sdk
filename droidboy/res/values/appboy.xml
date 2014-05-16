@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- General configuration -->
-  <string name="com_appboy_api_key">appboy-sample-android</string>
+  <!-- The API key is not shown to the user and thus we don't require that it be translated. -->
+  <string translatable="false" name="com_appboy_api_key">appboy-sample-android</string>
 
   <!-- To disable automatic flushing in any of these network conditions, simply set the value to -1. To turn off
       all automatic data flushing, set all three intervals to -1. When automatic flushing is disabled, you can use
@@ -16,8 +17,9 @@
 
   <!-- Push Notification configuration -->
   <bool name="com_appboy_push_gcm_messaging_registration_enabled">true</bool>
-  <string name="com_appboy_push_gcm_sender_id">901477453852</string>
+
+  <!-- This is a string because parsing it out of a resource file as a numeric value isn't properly handled by Android.
+     Also, it's not shown to the user and thus we don't require it to be translated. -->
+  <string translatable="false" name="com_appboy_push_gcm_sender_id">901477453852</string>
   <drawable name="com_appboy_push_small_notification_icon">@drawable/notification_icon</drawable>
-  <string name="com_appboy_push_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_push_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

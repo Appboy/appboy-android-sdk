@@ -1,5 +1,6 @@
 package com.appboy.sample;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.DialogPreference;
@@ -118,6 +119,7 @@ public class UserProfileDialog extends DialogPreference {
     }
   }
 
+  @TargetApi(9)
   private void persist(SharedPreferences.Editor editor) {
     if (android.os.Build.VERSION.SDK_INT < 9) {
       editor.commit();

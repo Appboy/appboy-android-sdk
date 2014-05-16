@@ -6,7 +6,7 @@ dependencies {
   // Note: This will be removed in a future release.
   compile files('libs/crittercism-3.0.8.jar')
   // Note: This requires the Android Support Repository to be installed, please see the README.md
-  compile('com.android.support:support-v4:19.1.0')
+  compile 'com.android.support:support-v4:19.1.0'
 }
 
 android {

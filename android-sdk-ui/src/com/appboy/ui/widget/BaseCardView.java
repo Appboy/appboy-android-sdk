@@ -92,7 +92,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
           public void onGlobalLayout() {
             int width = imageView.getWidth();
             imageView.setLayoutParams(new LayoutParams(width, (int) (width / aspectRatio)));
-            safeRemoveOnGlobalLayoutListener(imageView.getViewTreeObserver(), this);
+            removeOnGlobalLayoutListenerSafe(imageView.getViewTreeObserver(), this);
           }
         });
       }
@@ -105,7 +105,8 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     }
   }
 
-  private void safeRemoveOnGlobalLayoutListener(ViewTreeObserver viewTreeObserver,
+  @TargetApi(16)
+  private void removeOnGlobalLayoutListenerSafe(ViewTreeObserver viewTreeObserver,
                                                 ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener) {
     if (android.os.Build.VERSION.SDK_INT < 16) {
       viewTreeObserver.removeGlobalOnLayoutListener(onGlobalLayoutListener);

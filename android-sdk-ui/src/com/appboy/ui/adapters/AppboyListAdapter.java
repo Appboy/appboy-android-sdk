@@ -17,7 +17,6 @@ import com.appboy.models.cards.CrossPromotionLargeCard;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
-
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
 import com.appboy.ui.widget.AppStoreReviewCardView;
 import com.appboy.ui.widget.BannerImageCardView;
@@ -157,8 +156,8 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     int i = 0, j = 0, newFeedSize = cards.size();
     Card existingCard, newCard;
 
-    // Iterate over the entire existing feed, retaining items at the head of the list whenever they're the 
-    // same as the head of the new list and otherwise removing them.
+    // Iterate over the entire existing feed, skipping items at the head of the list whenever they're the same as the
+    // head of the new list and otherwise removing them.
     while (i < getCount()) {
       existingCard = getItem(i);
       newCard = null;

@@ -5,7 +5,7 @@ dependencies {
   compile files('libs/appboy.jar')
   // Note: This requires the Android Support Repository to be installed, please see the README.md. The jar is
   // also available in the libs/ directory to help support people who are using older build systems.
-  compile('com.android.support:support-v4:19.1.0')
+  compile 'com.android.support:support-v4:19.1.0'
 }
 
 android {
