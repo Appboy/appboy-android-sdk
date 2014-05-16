@@ -23,7 +23,7 @@ Successful marketing automation is essential to the future of your mobile app. A
    or don't have a local.properties folder with a valid sdk.dir folder, this plugin will also install the base SDK for
    you. Other than a bit of wasted disk space, it isn't bad if the plugin re-installs your Android SDK (it'll put it in
    `~/.android-sdk` if you want to move it or delete it later), but either way, it's cleaner to have your ANDROID_HOME
-   properly set before running the build. See the [plugin repo[(https://github.com/JakeWharton/sdk-manager-plugin) for
+   properly set before running the build. See the [plugin repo](https://github.com/JakeWharton/sdk-manager-plugin) for
    more information.
 3. To assemble the UI library and the Droidboy APK, run `./gradlew assemble` (use gradlew.bat on Windows). You can find
    assembled files in the `build/` subdirectories of the `android-sdk-ui` and `droidboy` projects. You can also
