@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <style name="Appboy"/>
 
   <style name="Appboy.Button">
@@ -9,14 +9,14 @@
     <item name="android:textColor">@color/com_appboy_button</item>
   </style>
 
-  <!-- Custom Push Notifications -->
-  <style name="Appboy.EventContent">
+  <!-- Custom Push Notification View Styles. AppboyGcmReceiver ensures that this is only used for Android versions from
+   Honeycomb to Ice Cream Sandwich, so we mark it with targetApi 11 for Lint purposes. -->
+  <style name="Appboy.EventContent" tools:targetApi="11">
     <item name="android:textColor">@color/com_appboy_custom_notification_content</item>
     <item name="android:textSize">12dp</item>
   </style>
   <style name="Appboy.EventContent.Title">
     <item name="android:textColor">@color/com_appboy_custom_notification_title</item>
-    <item name="android:fontFamily">sans-serif-light</item>
     <item name="android:textSize">16dp</item>
     <item name="android:textStyle">bold</item>
   </style>

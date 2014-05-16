@@ -6,10 +6,14 @@
      cannot use BigTextStyle notifications) will truncate the display of push notifications in the notification
      center at only a single line. -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- The AppboyGcmReceiver ensures that this layout is only used for Honeycomb and above, so we mark this class with
+     tools:targetApi="11" to soothe lint analysis into complacency. -->
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+             xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/status_bar_latest_event_content"
              android:layout_width="match_parent"
-             android:layout_height="65dp">
+             android:layout_height="65dp"
+             tools:targetApi="11">
   <ImageView android:id="@+id/com_appboy_notification_icon"
              android:layout_width="@android:dimen/notification_large_icon_width"
              android:layout_height="@android:dimen/notification_large_icon_height"
@@ -60,7 +64,7 @@
               android:singleLine="false"
               android:maxLines="2"
               android:ellipsize="end"
-              android:text="content"
+              android:text=""
               android:layout_weight="1"/>
   </LinearLayout>
 </FrameLayout>

@@ -37,7 +37,7 @@ match the git version tag, or the most recent version noted in the changelog. An
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.3+'
+  compile 'com.appboy:android-sdk-ui:1.3.+'
 }
 ```
 

@@ -1,3 +1,8 @@
+## 1.3.4
+- Minor changes to address some Lint issues in the UI project.
+- Updates the open source AppboyGcmReceiver to use references to R.java for resource identifiers. This became possible
+  when we moved AppboyGcmReceiver.java into the android-sdk-ui project (from the base library JAR).
+
 ## 1.3.3
 - Minor bug fix for a crash that occurred in certain conditions where the News Feed cards were replaced with a smaller set of cards.
 
