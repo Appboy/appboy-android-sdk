@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: Appboy Android SDK Base Library
-Implementation-Version: 0.0
-Terms-Of-Use: Any use of Appboy code, libraries and services must be i
- n compliance with Appboy's terms at time of use (http://appboy.com/te
- rms).
-
