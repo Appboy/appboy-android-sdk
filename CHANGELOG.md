@@ -1,3 +1,13 @@
+## 1.4.0
+- Adds categories.
+- Added swipe to refresh functionality to the newsfeed. The swipe to refresh colors are configurable in
+  the colors xml file.
+- Added configurable session timeout to the appboy xml.
+- Added images to gcm push notifications.
+- Removed click logging on slideups when action is None.
+- Added email and push notification subscription types for a user. Subscription types are explicitly opted in, subscribed, and unsubscribed. The old email boolean subscribe method has been deprecated.
+- The feedback form now displays error popups to the user on invalid fields.
+
 ## 1.3.4
 - Minor changes to address some Lint issues in the UI project.
 - Updates the open source AppboyGcmReceiver to use references to R.java for resource identifiers. This became possible

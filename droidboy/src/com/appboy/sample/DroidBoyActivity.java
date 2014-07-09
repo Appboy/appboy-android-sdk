@@ -3,6 +3,7 @@ package com.appboy.sample;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,15 +15,20 @@ import android.view.inputmethod.InputMethodManager;
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
+import com.appboy.enums.CardCategory;
 import com.appboy.ui.AppboyFeedFragment;
 import com.appboy.ui.AppboyFeedbackFragment;
 import com.crittercism.app.Crittercism;
 
-public class DroidBoyActivity extends AppboyFragmentActivity {
+import java.util.EnumSet;
+
+public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
+  public static final String CATEGORIES_STRING= "categories";
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, DroidBoyActivity.class.getName());
   private int mBackStackEntryCount = 0;
   private AppboyFeedFragment mAppboyFeedFragment;
   private AppboyFeedbackFragment mAppboyFeedbackFragment;
+  private EnumSet<CardCategory> mAppboyFeedCategories;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -92,10 +98,18 @@ public class DroidBoyActivity extends AppboyFragmentActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.feed:
-        if (mAppboyFeedFragment == null) {
-          mAppboyFeedFragment = new AppboyFeedFragment();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.root);
+        if (currentFragment != null && currentFragment instanceof AppboyFeedFragment) {
+          mAppboyFeedCategories = ((AppboyFeedFragment) currentFragment).getCategories();
+          DialogFragment newFragment = FeedCategoriesFragment.newInstance(mAppboyFeedCategories);
+          newFragment.show(getSupportFragmentManager(), "categories");
+        } else {
+          if (mAppboyFeedFragment == null) {
+            mAppboyFeedFragment = new AppboyFeedFragment();
+          }
+          mAppboyFeedFragment.setCategories(mAppboyFeedCategories);
+          replaceCurrentFragment(mAppboyFeedFragment);
         }
-        replaceCurrentFragment(mAppboyFeedFragment);
         break;
       case R.id.feedback:
         if (mAppboyFeedbackFragment == null) {
@@ -167,6 +181,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity {
       if (mAppboyFeedFragment == null) {
         mAppboyFeedFragment = new AppboyFeedFragment();
       }
+      mAppboyFeedFragment.setCategories(mAppboyFeedCategories);
       replaceCurrentFragment(mAppboyFeedFragment);
     } else if (AppboyBroadcastReceiver.FEEDBACK.equals(destination)) {
       if (mAppboyFeedbackFragment == null) {
@@ -194,5 +209,16 @@ public class DroidBoyActivity extends AppboyFragmentActivity {
         fragmentManager.popBackStack();
       }
     };
+  }
+
+  // The dialog fragment receives a reference to this Activity through the
+  // Fragment.onAttach() callback, which it uses to call the following methods
+  // defined by the NoticeDialogFragment.NoticeDialogListener interface
+  public void onDialogPositiveClick(FeedCategoriesFragment dialog) {
+    if (mAppboyFeedFragment == null) {
+      mAppboyFeedFragment = new AppboyFeedFragment();
+    }
+    mAppboyFeedCategories = EnumSet.copyOf(dialog.selectedCategories);
+    mAppboyFeedFragment.setCategories(mAppboyFeedCategories);
   }
 }

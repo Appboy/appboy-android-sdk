@@ -30,6 +30,7 @@ public class AppboyFragmentActivity extends FragmentActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    
     activateStrictMode();
   }
 

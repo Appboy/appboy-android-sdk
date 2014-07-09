@@ -23,11 +23,13 @@ public class SlideupViewWrapper {
   private final Slideup mSlideup;
   private final ISlideupViewLifecycleListener mSlideupViewLifecycleListener;
   private Runnable mDismissRunnable;
+  private boolean mIsAnimatingClose;
 
   public SlideupViewWrapper(View slideupView, Slideup slideup, ISlideupViewLifecycleListener slideupViewLifecycleListener) {
     mSlideupView = slideupView;
     mSlideup = slideup;
     mSlideupViewLifecycleListener = slideupViewLifecycleListener;
+    mIsAnimatingClose = false;
 
     // We only apply the swipe touch listener to the slideup View on devices running Android version
     // 12 or higher. Pre-12 devices will have to click to close the slideup.
@@ -50,6 +52,12 @@ public class SlideupViewWrapper {
     addViewToLayout(root);
     display();
   }
+  public boolean getIsAnimatingClose() {
+    return mIsAnimatingClose;
+  }
+  public void callAfterClosed() {
+    mSlideupViewLifecycleListener.afterClosed(mSlideup);
+  }
 
   private void preClose() {
     mSlideupViewLifecycleListener.beforeClosed(mSlideupView, mSlideup);
@@ -57,6 +65,7 @@ public class SlideupViewWrapper {
 
   private void performClose() {
     if (mSlideup.getAnimateOut()) {
+      mIsAnimatingClose = true;
       setAndStartAnimation(false);
     } else {
       ViewUtils.removeViewFromParent(mSlideupView);

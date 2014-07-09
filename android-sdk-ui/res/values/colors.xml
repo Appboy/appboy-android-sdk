@@ -29,4 +29,9 @@
   <color name="com_appboy_custom_notification_title">#999999</color>
   <color name="com_appboy_custom_notification_content">#FFFFFF</color>
   <color name="com_appboy_custom_notification_time">#999999</color>
+
+  <color name="com_appboy_newsfeed_swipe_refresh_color_1">#f33e3e</color>
+  <color name="com_appboy_newsfeed_swipe_refresh_color_2">#1bbdf2</color>
+  <color name="com_appboy_newsfeed_swipe_refresh_color_3">#2f3436</color>
+  <color name="com_appboy_newsfeed_swipe_refresh_color_4">#ffffff</color>
 </resources>

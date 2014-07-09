@@ -14,8 +14,9 @@ import java.util.List;
  */
 public final class WebAction implements IAction {
   private final String mTargetUrl;
+
   private static final List<String> sSupportedSchemes = Collections.unmodifiableList(
-      Arrays.asList("http", "https", "ftp", "ftps", "about", "javascript", "mailto", "tel"));
+      Arrays.asList("http", "https", "ftp", "ftps", "about", "javascript"));
 
   public WebAction(String targetUrl) {
     mTargetUrl = targetUrl;

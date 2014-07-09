@@ -18,6 +18,8 @@ import com.appboy.support.BundleUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
 import com.appboy.ui.support.ViewUtils;
+import com.appboy.ui.actions.ActionFactory;
+import com.appboy.ui.actions.IAction;
 
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -56,7 +58,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The default view used to display slideups is defined by res/layout/com_appboy_slideup_view.xml. In
  * order to use a custom view, you must set the custom view factory using the
  * {@link AppboySlideupManager#setCustomSlideupViewFactory(ISlideupViewFactory slideupViewFactory)} method.
- *
+ *import com.appboy.ui.actions.IAction;
+
  * A new slideup {@link android.view.View} object is created when a slideup is displayed and also
  * when the user navigates away to another {@link android.app.Activity}. This happens so that the
  * Activity can be garbage collected and does not create a memory leak. For that reason, the
@@ -128,8 +131,16 @@ public final class AppboySlideupManager {
     // requests an orientation change), we save it in memory so that we can redisplay it when the
     // operation is done.
     if (mSlideupViewWrapper != null) {
-      mCarryoverSlideup = mSlideupViewWrapper.getSlideup();
+
       ViewUtils.removeViewFromParent(mSlideupViewWrapper.getSlideupView());
+      // Only continue if we're not animating a close
+      if (mSlideupViewWrapper.getIsAnimatingClose()) {
+        mSlideupViewWrapper.callAfterClosed();
+        mCarryoverSlideup = null;
+      } else {
+        mCarryoverSlideup = mSlideupViewWrapper.getSlideup();
+      }
+
       mSlideupViewWrapper = null;
     } else {
       mCarryoverSlideup = null;
@@ -352,7 +363,9 @@ public final class AppboySlideupManager {
     @Override
     public void onClicked(SlideupCloser slideupCloser, View slideupView, Slideup slideup) {
       Log.d(TAG, "SlideupViewWrapper.ISlideupViewLifecycleListener.onClicked called.");
-      slideup.logClick();
+      if (slideup.getClickAction() != ClickAction.NONE) {
+        slideup.logClick();
+      }
 
       // Perform the slideup clicked listener action from the host application first. This give
       // the app the option to override the values that are sent from the server and handle the
@@ -384,7 +397,8 @@ public final class AppboySlideupManager {
         case URI:
           slideup.setAnimateOut(false);
           slideupCloser.close(false);
-          getAppboyNavigator().gotoURI(mActivity, slideup.getUri(), BundleUtils.mapToBundle(slideup.getExtras()));
+          IAction action = ActionFactory.createUriAction(mActivity, slideup.getUri().toString());
+          action.execute(mActivity);
           break;
         case NONE:
           slideupCloser.close(true);

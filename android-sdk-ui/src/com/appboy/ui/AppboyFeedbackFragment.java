@@ -43,6 +43,7 @@ public class AppboyFeedbackFragment extends Fragment {
   private View.OnClickListener mSendListener;
   private FeedbackFinishedListener mFeedbackFinishedListener;
   private int mOriginalSoftInputMode;
+  private boolean mErrorMessageShown;
 
   @Override
   public void onAttach(Activity activity) {
@@ -52,7 +53,10 @@ public class AppboyFeedbackFragment extends Fragment {
       @Override public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
       @Override
       public void afterTextChanged(Editable sequence) {
-        ensureSendButton();
+          if (mErrorMessageShown){
+            // Only show error messages after the user has clicked the send button at least once.
+            ensureSendButton();
+          }
       }
     };
     mCancelListener = new View.OnClickListener() {
@@ -68,18 +72,19 @@ public class AppboyFeedbackFragment extends Fragment {
     mSendListener = new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        hideSoftKeyboard();
-        boolean isBug = mIsBugCheckBox.isChecked();
-        String message = mMessageEditText.getText().toString();
-        String email = mEmailEditText.getText().toString();
-        boolean result = Appboy.getInstance(getActivity()).submitFeedback(email, message, isBug);
-        if (!result) {
-          Log.e(TAG, "Could not post feedback.");
+        if (ensureSendButton()) {
+          hideSoftKeyboard();
+          boolean isBug = mIsBugCheckBox.isChecked();
+          String message = mMessageEditText.getText().toString();
+          String email = mEmailEditText.getText().toString();
+          boolean result = Appboy.getInstance(getActivity()).submitFeedback(email, message, isBug);
+          if (mFeedbackFinishedListener != null) {
+            mFeedbackFinishedListener.onFeedbackFinished();
+          }
+          clearData();
+        } else {
+          mErrorMessageShown = true;
         }
-        if (mFeedbackFinishedListener != null) {
-          mFeedbackFinishedListener.onFeedbackFinished();
-        }
-        clearData();
       }
     };
     setRetainInstance(true);
@@ -116,7 +121,6 @@ public class AppboyFeedbackFragment extends Fragment {
     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
     Appboy.getInstance(activity).logFeedbackDisplayed();
-    ensureSendButton();
   }
 
   @Override
@@ -131,26 +135,40 @@ public class AppboyFeedbackFragment extends Fragment {
   }
 
   private boolean validatedMessage() {
-    return mMessageEditText.getText() != null && !StringUtils.isNullOrBlank(mMessageEditText.getText().toString());
+    boolean validMessage = mMessageEditText.getText() != null && !StringUtils.isNullOrBlank(mMessageEditText.getText().toString());
+    if (validMessage){
+        mMessageEditText.setError(null);
+    } else {
+      // Display error message in the message box
+      mMessageEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_invalid_message));
+    }
+    return validMessage;
   }
 
   private boolean validatedEmail() {
-    return mEmailEditText.getText() != null && !StringUtils.isNullOrBlank(mEmailEditText.getText().toString()) &&
+    boolean validEmail =  mEmailEditText.getText() != null && !StringUtils.isNullOrBlank(mEmailEditText.getText().toString()) &&
       ValidationUtils.isValidEmailAddress(mEmailEditText.getText().toString());
+    if (validEmail){
+        mEmailEditText.setError(null);
+    } else {
+      // Display error message in the email box
+      mEmailEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_invalid_email));
+    }
+    return validEmail;
   }
 
-  private void ensureSendButton() {
-    if (validatedMessage() && validatedEmail()) {
-      mSendButton.setEnabled(true);
-    } else {
-      mSendButton.setEnabled(false);
-    }
+  private boolean ensureSendButton() {
+    // Both validators should run, so don't short-circuit this AND statement.
+    return (validatedMessage() & validatedEmail());
   }
 
   private void clearData() {
     mEmailEditText.setText(StringUtils.EMPTY_STRING);
     mMessageEditText.setText(StringUtils.EMPTY_STRING);
     mIsBugCheckBox.setChecked(false);
+    mErrorMessageShown = false;
+    mEmailEditText.setError(null);
+    mMessageEditText.setError(null);
   }
 
   private void hideSoftKeyboard() {

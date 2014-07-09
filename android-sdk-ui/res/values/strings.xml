@@ -15,6 +15,8 @@
   <string name="com_appboy_feedback_form_email">Email</string>
   <string name="com_appboy_feedback_form_cancel">Cancel</string>
   <string name="com_appboy_feedback_form_send">Send</string>
+  <string name="com_appboy_feedback_form_invalid_message">Please enter a feedback message</string>
+  <string name="com_appboy_feedback_form_invalid_email">Invalid Email Address</string>
 
   <!-- News feed -->
   <string name="com_appboy_feed_empty">We have no updates.\nPlease check again later.</string>

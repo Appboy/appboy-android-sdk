@@ -15,6 +15,8 @@
   <string name="com_appboy_feedback_form_email">電子郵件</string>
   <string name="com_appboy_feedback_form_cancel">取消</string>
   <string name="com_appboy_feedback_form_send">發送</string>
+  <string name="com_appboy_feedback_form_invalid_message">請輸入您的反饋</string>
+  <string name="com_appboy_feedback_form_invalid_email">無效的電子郵件</string>
 
   <!-- News feed -->
   <string name="com_appboy_feed_empty">暫時沒有更新。\n請稍候再試。</string>

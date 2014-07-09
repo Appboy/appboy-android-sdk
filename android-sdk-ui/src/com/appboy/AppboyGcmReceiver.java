@@ -8,17 +8,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
+
 import com.appboy.configuration.XmlAppConfigurationProvider;
-import com.appboy.ui.R;
-import com.appboy.ui.support.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -35,6 +38,14 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
   private static final String GCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
   public static final String CAMPAIGN_ID_KEY = Constants.APPBOY_GCM_CAMPAIGN_ID_KEY;
 
+  public static final String APPBOY_GCM_NOTIFICATION_ID = "com_appboy_notification";
+  public static final String APPBOY_GCM_NOTIFICATION_TITLE_ID = "com_appboy_notification_title";
+  public static final String APPBOY_GCM_NOTIFICATION_CONTENT_ID = "com_appboy_notification_content";
+  public static final String APPBOY_GCM_NOTIFICATION_ICON_ID = "com_appboy_notification_icon";
+  public static final String APPBOY_GCM_NOTIFICATION_TIME_ID = "com_appboy_notification_time";
+  public static final String APPBOY_GCM_NOTIFICATION_TWENTY_FOUR_HOUR_FORMAT_ID = "com_appboy_notification_time_twenty_four_hour_format";
+  public static final String APPBOY_GCM_NOTIFICATION_TWELVE_HOUR_FORTMAT_ID = "com_appboy_notification_time_twelve_hour_format";
+
   @Override
   public void onReceive(Context context, Intent intent) {
     Log.i(TAG, String.format("Received GCM message. Message: %s", intent.toString()));
@@ -43,7 +54,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
       handleRegistrationEventIfEnabled(appConfigurationProvider, context, intent);
     } else if (GCM_RECEIVE_INTENT_ACTION.equals(action) && isAppboyGcmMessage(intent)) {
-      handleAppboyGcmMessage(context, intent);
+      new HandleAppboyGcmMessageTask(context, intent);
     } else {
       Log.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
     }
@@ -216,17 +227,17 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       Resources resources = context.getResources();
       String packageName = context.getPackageName();
 
-      int layoutResourceId = R.layout.com_appboy_notification;
-      int titleResourceId = R.id.com_appboy_notification_title;
-      int contentResourceId = R.id.com_appboy_notification_content;
-      int iconResourceId = R.id.com_appboy_notification_icon;
-      int timeViewResourceId = R.id.com_appboy_notification_time;
-      int twentyFourHourFormatResourceId = R.string.com_appboy_notification_time_twenty_four_hour_format;
-      int twelveHourFormatResourceId = R.string.com_appboy_notification_time_twelve_hour_format;
+      int layoutResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_ID, "layout", packageName);
+      int titleResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TITLE_ID, "id", packageName);
+      int contentResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_CONTENT_ID, "id", packageName);
+      int iconResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_ICON_ID, "id", packageName);
+      int timeViewResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TIME_ID, "id", packageName);
+      int twentyFourHourFormatResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TWENTY_FOUR_HOUR_FORMAT_ID, "string", packageName);
+      int twelveHourFormatResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TWELVE_HOUR_FORTMAT_ID, "string", packageName);
 
-      String twentyFourHourTimeFormat = StringUtils.getOptionalStringResource(resources,
+      String twentyFourHourTimeFormat = getOptionalStringResource(resources,
         twentyFourHourFormatResourceId, Constants.DEFAULT_TWENTY_FOUR_HOUR_TIME_FORMAT);
-      String twelveHourTimeFormat = StringUtils.getOptionalStringResource(resources,
+      String twelveHourTimeFormat = getOptionalStringResource(resources,
         twelveHourFormatResourceId, Constants.DEFAULT_TWELVE_HOUR_TIME_FORMAT);
 
       if (layoutResourceId == 0 || titleResourceId == 0 || contentResourceId == 0 || iconResourceId == 0
@@ -256,11 +267,86 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     // If we're using Jelly Bean, we can use the BigTextStyle, which lets the notification layout size grow to
     // accommodate longer text.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      // If there is an image url found in the extras payload and the image can be downloaded, then
+      // use the android BigPictureStyle as the notification. Else, use the BigTextStyle instead.
+      if (intentExtras != null) {
+        Bundle extrasBundle = intentExtras.getBundle(Constants.APPBOY_GCM_EXTRAS_KEY);
+        if (extrasBundle!=null && extrasBundle.containsKey(Constants.APPBOY_GCM_BIG_IMAGE_URL_KEY)) {
+          String imageUrl = extrasBundle.getString(Constants.APPBOY_GCM_BIG_IMAGE_URL_KEY);
+          Bitmap imageBitmap = downloadImageBitmap(imageUrl);
+          if (imageBitmap != null) {
+            Log.d(TAG, "Rendering push notification with BigPictureStyle");
+            return new NotificationCompat.BigPictureStyle(notificationBuilder)
+                .bigPicture(imageBitmap)
+                .build();
+          } else {
+            Log.d(TAG, "Bitmap download failed for push notification");
+          }
+        }
+      }
       Log.d(TAG, "Rendering push notification with BigTextStyle");
       return new NotificationCompat.BigTextStyle(notificationBuilder)
-        .bigText(content).build();
+          .bigText(content).build();
     }
     return notificationBuilder.build();
+  }
+
+  static String getOptionalStringResource(Resources resources, int stringResourceId, String defaultString) {
+    try {
+      return resources.getString(stringResourceId);
+    } catch (Resources.NotFoundException e) {
+      return defaultString;
+    }
+  }
+
+  /**
+   * Downloads an image and returns a bitmap object. The image should be less than 450dp for the
+   * push notification. An aspect ratio of 2:1 is recommended. This should always be run in a background
+   * thread.
+   *
+   * According to http://developer.android.com/guide/appendix/media-formats.html, the supported file
+   * types are jpg and png.
+   *
+   * @param imageUrl The url where the image is found
+   * @return An image in Bitmap form. If the image cannot be downloaded, or cannot be decoded into
+   * a bitmap, then null is returned.
+   */
+  public static Bitmap downloadImageBitmap(String imageUrl) {
+    Bitmap bitmap = null;
+    try {
+      InputStream in = new java.net.URL(imageUrl).openStream();
+      bitmap = BitmapFactory.decodeStream(in);
+    } catch (OutOfMemoryError e) {
+      Log.e(TAG, "Out of Memory Error in image bitmap download");
+      e.printStackTrace();
+    } catch (Exception e) {
+      Log.e(TAG, "General exception in image bitmap download");
+      e.printStackTrace();
+    }
+    return bitmap;
+  }
+
+  /**
+   * Runs the handleAppboyGcmMessage method in a background thread in case of an image push
+   * notification, which cannot be downloaded on the main thread.
+   *
+   * Note: since an AsyncTask requires a return type, true was arbitrarily chosen.
+   */
+  public class HandleAppboyGcmMessageTask extends AsyncTask<Void, Void, Boolean> {
+    private final Context context;
+    private final Intent intent;
+
+    public HandleAppboyGcmMessageTask(Context context, Intent intent) {
+      this.context = context;
+      this.intent = intent;
+      this.execute();
+    }
+
+    @Override
+    protected Boolean doInBackground(Void... voids) {
+      handleAppboyGcmMessage(this.context, this.intent);
+      return true;
+    }
   }
 
   /**

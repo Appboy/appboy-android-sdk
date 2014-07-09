@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<android.support.v4.widget.SwipeRefreshLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/appboy_feed_swipe_container"
+  android:layout_width="fill_parent"
+  android:layout_height="match_parent">
+  <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_appboy_feed_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <ProgressBar
+    <ProgressBar
       android:id="@+id/com_appboy_feed_loading_spinner"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
       android:layout_marginBottom="15.0sp">
-  </ProgressBar>
+    </ProgressBar>
 
-  <LinearLayout
+    <LinearLayout
       android:id="@+id/com_appboy_feed_network_error"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -23,19 +28,19 @@
       android:orientation="vertical"
       android:visibility="gone">
 
-    <TextView
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/Appboy.Feed.NetworkErrorTitle"/>
 
-    <TextView
+      <TextView
         android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/Appboy.Feed.NetworkErrorBody"/>
-  </LinearLayout>
+    </LinearLayout>
 
-  <LinearLayout
+    <LinearLayout
       android:id="@+id/com_appboy_feed_empty_feed"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -44,18 +49,24 @@
       android:orientation="vertical"
       android:visibility="gone">
 
-    <TextView
+      <TextView
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/Appboy.Feed.Empty"/>
-  </LinearLayout>
+    </LinearLayout>
 
-  <ListView
+    <ListView
       android:id="@android:id/list"
       android:visibility="gone"
       android:layout_width="@dimen/com_appboy_feed_max_width"
       android:layout_height="match_parent"
       android:layout_centerHorizontal="true"
-      style="@style/Appboy.Feed.List"/>
-</RelativeLayout>
+      style="@style/Appboy.Feed.List"
+      />
+
+    <View android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:id="@+id/com_appboy_feed_transparent_full_bounds_container_view"/>
+  </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
