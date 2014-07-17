@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,14 +17,14 @@ import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.enums.CardCategory;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.models.cards.Card;
 import com.appboy.ui.adapters.AppboyListAdapter;
-import com.appboy.enums.CardCategory;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -53,9 +55,11 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   private LinearLayout mNetworkErrorLayout;
   private LinearLayout mEmptyFeedLayout;
   private ProgressBar mLoadingSpinner;
+  private RelativeLayout mFeedRootLayout;
   private boolean mSkipCardImpressionsReset;
   private EnumSet<CardCategory> mCategories;
   private SwipeRefreshLayout mFeedSwipeLayout;
+  private GestureDetectorCompat mGestureDetector;
 
   // This view should only be in the View.VISIBLE state when the listview is not visible. This view's
   // purpose is to let the "network error" and "no card" states to have the swipe-to-refresh functionality
@@ -71,6 +75,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
       mCategories = CardCategory.ALL_CATEGORIES;
     }
     setRetainInstance(true);
+    mGestureDetector = new GestureDetectorCompat(activity, new FeedGestureListener());
   }
 
   @Override
@@ -79,6 +84,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     mNetworkErrorLayout = (LinearLayout) view.findViewById(R.id.com_appboy_feed_network_error);
     mLoadingSpinner = (ProgressBar) view.findViewById(R.id.com_appboy_feed_loading_spinner);
     mEmptyFeedLayout = (LinearLayout) view.findViewById(R.id.com_appboy_feed_empty_feed);
+    mFeedRootLayout = (RelativeLayout) view.findViewById(R.id.com_appboy_feed_root);
     mFeedSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.appboy_feed_swipe_container);
     mFeedSwipeLayout.setOnRefreshListener(this);
     mFeedSwipeLayout.setEnabled(false);
@@ -107,6 +113,14 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     listView.addHeaderView(inflater.inflate(R.layout.com_appboy_feed_header, null));
     listView.addFooterView(inflater.inflate(R.layout.com_appboy_feed_footer, null));
 
+    mFeedRootLayout.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View view, MotionEvent motionEvent) {
+        // Send touch events from the background view to the gesture detector to enable margin listview scrolling
+        return mGestureDetector.onTouchEvent(motionEvent);
+      }
+    });
+
     // Enable the swipe-to-refresh view only when the user is at the head of the listview.
     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
       @Override
@@ -121,11 +135,12 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     });
 
     // We need the transparent view to pass it's touch events to the swipe-to-refresh view. We
-    // do this by not consuming touch events in the transparent view.
+    // do this by consuming touch events in the transparent view.
     mTransparentFullBoundsContainerView.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
-        return true;
+        // Only consume events if the view is visible
+        return view.getVisibility() == View.VISIBLE;
       }
     });
 
@@ -283,5 +298,29 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
         mFeedSwipeLayout.setRefreshing(false);
       }
     }, AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS);
+  }
+
+  // This class is a custom listener to catch gestures happening outside the bounds of the listview that
+  // should be fed into it.
+  public class FeedGestureListener extends GestureDetector.SimpleOnGestureListener {
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+      return true;
+    }
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float dx, float dy) {
+      getListView().smoothScrollBy((int) dy, 0);
+      return true;
+    }
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float velocityX, float velocityY) {
+      // We need to find the pixel distance of the scroll from the velocity with units (px / sec)
+      // So d (px) = v (px / sec) * 1 (sec) / 1000 (ms) * deltaTimeMillis (ms)
+      long deltaTimeMillis = (motionEvent2.getEventTime() - motionEvent.getEventTime()) * 2;
+      int scrollDistance = (int) (velocityY * deltaTimeMillis / 1000);
+      // Multiplied by 2 to get a smoother scroll effect during a fling
+      getListView().smoothScrollBy(-scrollDistance, (int) (deltaTimeMillis * 2));
+      return true;
+    }
   }
 }

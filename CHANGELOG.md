@@ -1,3 +1,11 @@
+## 1.4.1
+- Adds automatic tests to verify that the sdk has integrated correctly.
+- Added an optional quantity amount to in-app-purchases.
+- Removed default max length and ellipsize properties in the styles.xml. The old defaults were set to 5 for maxLines for 
+  newsfeed cards and ellipsize 'end'.
+- Changed the device identifier from the device persistent ANDROID_ID to a non device persistent identifier for compliance with
+  the new Google Play Terms of Service.
+
 ## 1.4.0
 - Adds categories.
 - Added swipe to refresh functionality to the newsfeed. The swipe to refresh colors are configurable in
