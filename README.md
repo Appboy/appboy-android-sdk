@@ -13,6 +13,23 @@ Successful marketing automation is essential to the future of your mobile app. A
 - `android-sdk-ui` - the Appboy SDK user interface containing the Appboy jar.
 - `droidboy` - a sample application which demonstrates how to use Appboy.
 
+## Remote repository for gradle
+The version should match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
+
+```
+repositories {
+    maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+    ...
+}
+```
+
+```
+dependencies {
+    compile 'com.appboy:android-sdk-ui:1.4.+'
+    ...
+}
+```
+
 ## Building and Running the Sample Application
 
 1. Make sure the ANDROID_HOME environment variable is set to the location of your installed SDK or you have a
@@ -29,17 +46,6 @@ Successful marketing automation is essential to the future of your mobile app. A
    assembled files in the `build/` subdirectories of the `android-sdk-ui` and `droidboy` projects. You can also
    use the `installDebug` task if you have a device or emulator connected to adb and want to run Droidboy. You can see
    other available tasks by running `./gradlew tasks`.
-
-## Installing android-sdk-ui to Your Local Maven Repository
-To install the UI library as an AAR file to your local maven repository, run the `install` task with
-`./gradlew install`. You can reference it with groupId `com.appboy` and artifactId `android-sdk-ui`. The version should
-match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
-
-```
-dependencies {
-  compile 'com.appboy:android-sdk-ui:1.4.+'
-}
-```
 
 ## Version Support
 
