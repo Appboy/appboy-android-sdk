@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UriUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, UriUtils.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, UriUtils.class.getName());
 
   /**
    * Backport of the Uri.getQueryParameters method.

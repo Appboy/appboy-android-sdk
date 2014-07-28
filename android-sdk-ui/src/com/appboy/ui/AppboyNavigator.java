@@ -14,7 +14,7 @@ import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.activities.AppboyFeedActivity;
 
 public class AppboyNavigator implements IAppboyNavigator {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyNavigator.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNavigator.class.getName());
 
   @Override
   public void gotoNewsFeed(Context context, Bundle extras) {

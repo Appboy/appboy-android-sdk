@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyGcmReceiver.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyGcmReceiver.class.getName());
   private static final String GCM_RECEIVE_INTENT_ACTION = "com.google.android.c2dm.intent.RECEIVE";
   private static final String GCM_REGISTRATION_INTENT_ACTION = "com.google.android.c2dm.intent.REGISTRATION";
   private static final String GCM_ERROR_KEY = "error";
@@ -278,6 +278,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
             Log.d(TAG, "Rendering push notification with BigPictureStyle");
             return new NotificationCompat.BigPictureStyle(notificationBuilder)
                 .bigPicture(imageBitmap)
+                .setSummaryText(content)
                 .build();
           } else {
             Log.d(TAG, "Bitmap download failed for push notification");

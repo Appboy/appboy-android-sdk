@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StarRatingView extends LinearLayout {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, StarRatingView.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, StarRatingView.class.getName());
 
   private int mNumStars;
   private List<ImageView> mStarRating;

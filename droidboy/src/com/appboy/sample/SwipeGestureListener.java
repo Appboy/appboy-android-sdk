@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import com.appboy.Constants;
 
 public class SwipeGestureListener implements GestureDetector.OnGestureListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, DecisionFragment.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, SwipeGestureListener.class.getName());
   private static final int SWIPE_MIN_DISTANCE = 120;
   private static final int SWIPE_MAX_OFF_PATH = 250;
   private static final int SWIPE_THRESHOLD_VELOCITY = 200;

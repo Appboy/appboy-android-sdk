@@ -7,7 +7,7 @@ import com.appboy.models.cards.Card;
 import com.appboy.ui.R;
 
 public class DefaultCardView extends BaseCardView<Card> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, DefaultCardView.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DefaultCardView.class.getName());
 
   public DefaultCardView(Context context) {
     this(context, null);

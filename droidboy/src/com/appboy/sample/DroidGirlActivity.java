@@ -20,7 +20,7 @@ import com.appboy.Constants;
  * onStop() respectively. In this sample, we put that code into DroidBoyActivity and PreferenceActivity.
  */
 public class DroidGirlActivity extends AppboyFragmentActivity {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, DroidGirlActivity.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidGirlActivity.class.getName());
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import com.appboy.support.ValidationUtils;
 import com.appboy.ui.support.StringUtils;
 
 public class AppboyFeedbackFragment extends Fragment {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyFeedbackFragment.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFeedbackFragment.class.getName());
 
   /**
    * Listener to be called after the feedback has been submitted or cancelled. You must set the

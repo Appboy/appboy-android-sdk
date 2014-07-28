@@ -24,7 +24,7 @@ import com.appboy.Constants;
 import java.util.Random;
 
 public class DecisionFragment extends Fragment {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, DecisionFragment.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DecisionFragment.class.getName());
 
   private ImageView mSpinner;
   private Random mRandom;

@@ -19,7 +19,7 @@ import com.appboy.ui.support.StringUtils;
  * Base class for Appboy feed card views
  */
 public abstract class BaseCardView<T extends Card> extends RelativeLayout {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, BaseCardView.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, BaseCardView.class.getName());
 
   protected final Context mContext;
   protected T mCard;

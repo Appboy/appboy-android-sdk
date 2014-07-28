@@ -17,7 +17,7 @@ import com.appboy.ui.slideups.AppboySlideupManager;
 import com.crittercism.app.Crittercism;
 
 public class PreferencesActivity extends PreferenceActivity {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, PreferencesActivity.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
   private static final String SKU_ANDROID_TEST_PURCHASED = "android.test.purchased";
   private static final String SKU_ANDROID_TEST_CANCELED = "android.test.canceled";
   private static final String SKU_ANDROID_TEST_REFUNDED = "android.test.refunded";

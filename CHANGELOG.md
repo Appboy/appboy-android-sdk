@@ -1,3 +1,7 @@
+## 1.4.2
+- Adds summary text for push image notifications.
+- Adds a new constant, APPBOY_LOG_TAG_PREFIX, for logging which includes the sdk version number.
+
 ## 1.4.1
 - Adds automatic tests to verify that the sdk has integrated correctly.
 - Added an optional quantity amount to in-app-purchases.

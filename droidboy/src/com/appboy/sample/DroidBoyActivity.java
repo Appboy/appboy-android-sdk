@@ -24,7 +24,7 @@ import java.util.EnumSet;
 
 public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
   public static final String CATEGORIES_STRING= "categories";
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, DroidBoyActivity.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidBoyActivity.class.getName());
   private int mBackStackEntryCount = 0;
   private AppboyFeedFragment mAppboyFeedFragment;
   private AppboyFeedbackFragment mAppboyFeedbackFragment;

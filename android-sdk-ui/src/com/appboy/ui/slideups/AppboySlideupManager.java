@@ -69,7 +69,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * methods of every Activity.
  */
 public final class AppboySlideupManager {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboySlideupManager.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboySlideupManager.class.getName());
   private static volatile AppboySlideupManager sInstance = null;
 
   private final Stack<Slideup> mSlideupStack = new Stack<Slideup>();

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyFeedFragment.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFeedFragment.class.getName());
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;
   private static final int MAX_FEED_TTL_SECONDS = 60;
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;

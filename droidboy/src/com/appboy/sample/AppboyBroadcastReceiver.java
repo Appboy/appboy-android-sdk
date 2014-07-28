@@ -9,7 +9,7 @@ import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyBroadcastReceiver.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyBroadcastReceiver.class.getName());
   public static final String SOURCE_KEY = "source";
   public static final String DESTINATION_VIEW = "destination";
   public static final String HOME = "home";

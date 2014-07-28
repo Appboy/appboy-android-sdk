@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * activity (inherited by most other activities) and com.appboy.sample.PreferencesActivity.
  */
 public class AppboyFragmentActivity extends FragmentActivity {
-  protected static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyFragmentActivity.class.getName());
+  protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFragmentActivity.class.getName());
   private boolean mRefreshData;
 
   @Override

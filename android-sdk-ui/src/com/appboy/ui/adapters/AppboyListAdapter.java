@@ -54,7 +54,7 @@ import java.util.Set;
  * {@link com.appboy.ui.adapters.AppboyListAdapter#replaceFeed(java.util.List)}
  */
 public class AppboyListAdapter extends ArrayAdapter<Card> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, AppboyListAdapter.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyListAdapter.class.getName());
 
   private final Context mContext;
   private final Set<String> mCardIdImpressions;

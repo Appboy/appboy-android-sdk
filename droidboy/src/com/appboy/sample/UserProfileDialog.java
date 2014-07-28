@@ -17,7 +17,7 @@ import com.appboy.ui.support.StringUtils;
 import com.crittercism.app.Crittercism;
 
 public class UserProfileDialog extends DialogPreference {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, DialogPreference.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, UserProfileDialog.class.getName());
 
   private EditText mFirstName;
   private EditText mLastName;
