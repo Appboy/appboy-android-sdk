@@ -1,3 +1,6 @@
+## 1.4.3
+- Removes org.json classes from appboy.jar.
+
 ## 1.4.2
 - Adds summary text for push image notifications.
 - Adds a new constant, APPBOY_LOG_TAG_PREFIX, for logging which includes the sdk version number.
