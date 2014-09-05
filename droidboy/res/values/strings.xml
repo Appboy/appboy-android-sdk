@@ -59,6 +59,10 @@
   <string name="log_purchase_summary">In-app purchase</string>
   <string name="log_purchase_toast">Thank you for your purchase</string>
 
+  <string name="log_purchase_with_quantity_title">Unlock multiple goodies</string>
+  <string name="log_purchase_with_quantity_summary">In-app purchase</string>
+  <string name="log_purchase_with_quantity_toast">Thank you for your purchases</string>
+
   <string name="data_flush_title">Request Flush</string>
   <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>
   <string name="data_flush_toast">Data flush requested</string>

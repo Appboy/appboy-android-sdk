@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
 
   <ImageView
       android:id="@+id/com_appboy_short_news_card_image"

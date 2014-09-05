@@ -1,0 +1,15 @@
+apply plugin: 'android'
+
+dependencies {
+  compile 'com.appboy:android-sdk-ui:1.4.+'
+}
+
+android {
+  compileSdkVersion 19
+  buildToolsVersion '19.1.0'
+
+  defaultConfig {
+    minSdkVersion 8
+    targetSdkVersion 19
+  }
+}

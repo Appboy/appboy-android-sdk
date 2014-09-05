@@ -59,6 +59,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   private boolean mSkipCardImpressionsReset;
   private EnumSet<CardCategory> mCategories;
   private SwipeRefreshLayout mFeedSwipeLayout;
+  private int previousVisibleHeadCardIndex, currentCardIndexAtBottomOfScreen;
   private GestureDetectorCompat mGestureDetector;
 
   // This view should only be in the View.VISIBLE state when the listview is not visible. This view's
@@ -124,13 +125,29 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     // Enable the swipe-to-refresh view only when the user is at the head of the listview.
     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
       @Override
-      public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-
-      }
-
+      public void onScrollStateChanged(AbsListView absListView, int scrollState) {}
       @Override
       public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         mFeedSwipeLayout.setEnabled(firstVisibleItem == 0);
+
+        // Handle read/unread cards functionality below
+        if (visibleItemCount == 0){
+          // No cards/views have been loaded, do nothing
+          return;
+        }
+
+        int currentVisibleHeadCardIndex = firstVisibleItem - 1;
+
+        // Head index increased (scroll down)
+        if (currentVisibleHeadCardIndex > previousVisibleHeadCardIndex){
+          // Mark all cards in the gap as read
+          mAdapter.batchSetCardsToRead(previousVisibleHeadCardIndex, currentVisibleHeadCardIndex);
+        }
+        previousVisibleHeadCardIndex = currentVisibleHeadCardIndex;
+
+        // We take note of what card is at the bottom of the feed so that when this fragment is destroyed,
+        // all on-screen cards have updated read indicators.
+        currentCardIndexAtBottomOfScreen = firstVisibleItem + visibleItemCount;
       }
     });
 
@@ -231,6 +248,22 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     super.onDestroyView();
     // If the view is destroyed, we don't care about updating it anymore. Remove the subscription immediately.
     mAppboy.removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
+
+    setOnScreenCardsToRead();
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    setOnScreenCardsToRead();
+  }
+
+  /**
+   * This should be called whenever the feed goes off the user's screen.
+   */
+  private void setOnScreenCardsToRead() {
+    // Set whatever cards are on screen to read since the view is being destroyed.
+    mAdapter.batchSetCardsToRead(previousVisibleHeadCardIndex, currentCardIndexAtBottomOfScreen);
   }
 
   @Override

@@ -16,15 +16,15 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class CrossPromotionLargeCardView extends BaseCardView<CrossPromotionLargeCard> {
-
   private final TextView mTitle;
   private final TextView mSubtitle;
-  private final ImageView mImage;
-  private final StarRatingView mStarRating;
   private final TextView mReviewCount;
-  private final Button mPrice;
   private final TextView mDescription;
+  private final StarRatingView mStarRating;
+  private final ImageView mImage;
+  private final Button mPrice;
   private IAction mPriceAction;
+  private final float mAspectRatio = 1.5f;
 
   public CrossPromotionLargeCardView(Context context) {
     this(context, null);
@@ -34,10 +34,10 @@ public class CrossPromotionLargeCardView extends BaseCardView<CrossPromotionLarg
     super(context);
     mTitle = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_card_title);
     mSubtitle = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_card_subtitle);
-    mImage = (ImageView) findViewById(R.id.com_appboy_cross_promotion_large_card_image);
-    mStarRating = (StarRatingView) findViewById(R.id.com_appboy_cross_promotion_large_card_star_rating);
     mReviewCount = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_card_review_count);
     mDescription = (TextView) findViewById(R.id.com_appboy_cross_promotion_large_description);
+    mStarRating = (StarRatingView) findViewById(R.id.com_appboy_cross_promotion_large_card_star_rating);
+    mImage = (ImageView) findViewById(R.id.com_appboy_cross_promotion_large_card_image);
     mPrice = (Button) findViewById(R.id.com_appboy_cross_promotion_large_card_price);
 
     if (card != null) {
@@ -60,16 +60,17 @@ public class CrossPromotionLargeCardView extends BaseCardView<CrossPromotionLarg
     mReviewCount.setText(String.format("(%s)", NumberFormat.getInstance().format(card.getReviewCount())));
     mDescription.setText(card.getDescription());
     mPrice.setText(getPriceString(card.getPrice()));
-    mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false);
+    mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false, card.getAppStore());
     mPrice.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Appboy.getInstance(mContext).logFeedCardClick(card.getId());
+        card.logClick();
+        card.setIsRead(true);
         mPriceAction.execute(mContext);
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl(), 1.5f);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
   }
 
   private String getPriceString(double price) {

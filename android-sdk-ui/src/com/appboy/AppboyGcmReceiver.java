@@ -1,29 +1,20 @@
 package com.appboy;
 
-import android.annotation.TargetApi;
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import android.content.pm.PackageManager;
+import android.os.PowerManager;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import com.appboy.configuration.XmlAppConfigurationProvider;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
@@ -36,15 +27,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
   private static final String GCM_MESSAGE_TYPE_KEY = "message_type";
   private static final String GCM_DELETED_MESSAGES_KEY = "deleted_messages";
   private static final String GCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
-  public static final String CAMPAIGN_ID_KEY = Constants.APPBOY_GCM_CAMPAIGN_ID_KEY;
-
-  public static final String APPBOY_GCM_NOTIFICATION_ID = "com_appboy_notification";
-  public static final String APPBOY_GCM_NOTIFICATION_TITLE_ID = "com_appboy_notification_title";
-  public static final String APPBOY_GCM_NOTIFICATION_CONTENT_ID = "com_appboy_notification_content";
-  public static final String APPBOY_GCM_NOTIFICATION_ICON_ID = "com_appboy_notification_icon";
-  public static final String APPBOY_GCM_NOTIFICATION_TIME_ID = "com_appboy_notification_time";
-  public static final String APPBOY_GCM_NOTIFICATION_TWENTY_FOUR_HOUR_FORMAT_ID = "com_appboy_notification_time_twenty_four_hour_format";
-  public static final String APPBOY_GCM_NOTIFICATION_TWELVE_HOUR_FORTMAT_ID = "com_appboy_notification_time_twelve_hour_format";
+  public static final String CAMPAIGN_ID_KEY = Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY;
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -53,7 +36,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     if (GCM_REGISTRATION_INTENT_ACTION.equals(action)) {
       XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
       handleRegistrationEventIfEnabled(appConfigurationProvider, context, intent);
-    } else if (GCM_RECEIVE_INTENT_ACTION.equals(action) && isAppboyGcmMessage(intent)) {
+    } else if (GCM_RECEIVE_INTENT_ACTION.equals(action) && AppboyNotificationUtils.isAppboyPushMessage(intent)) {
       new HandleAppboyGcmMessageTask(context, intent);
     } else {
       Log.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
@@ -90,9 +73,9 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         Log.w(TAG, String.format("Received an unrecognised GCM registration error type. Ignoring. Error: %s", error));
       }
     } else if (registrationId != null) {
-      Appboy.getInstance(context).registerAppboyGcmMessages(registrationId);
+      Appboy.getInstance(context).registerAppboyPushMessages(registrationId);
     } else if (intent.hasExtra(GCM_UNREGISTERED_KEY)) {
-      Appboy.getInstance(context).unregisterAppboyGcmMessages();
+      Appboy.getInstance(context).unregisterAppboyPushMessages();
     } else {
       Log.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration " +
         "confirmation. Ignoring.");
@@ -122,24 +105,49 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       Bundle extras = intent.getExtras();
 
       // Parsing the Appboy data extras (data push).
-      Bundle appboyExtrasData = createExtrasBundle(bundleOptString(extras, Constants.APPBOY_GCM_EXTRAS_KEY, "{}"));
-      extras.remove(Constants.APPBOY_GCM_EXTRAS_KEY);
-      extras.putBundle(Constants.APPBOY_GCM_EXTRAS_KEY, appboyExtrasData);
+      Bundle appboyExtrasData = createExtrasBundle(AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
+      extras.remove(Constants.APPBOY_PUSH_EXTRAS_KEY);
+      extras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtrasData);
 
-      if (isNotificationMessage(intent)) {
+      if (AppboyNotificationUtils.isNotificationMessage(intent)) {
         int notificationId = extras.getString(Constants.APPBOY_GCM_MESSAGE_TYPE_KEY).hashCode();
-        extras.putInt(Constants.APPBOY_GCM_NOTIFICATION_ID, notificationId);
+        extras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
         XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
-        Notification notification = createNotification(appConfigurationProvider, context,
-            extras.getString(Constants.APPBOY_GCM_TITLE_KEY), extras.getString(Constants.APPBOY_GCM_CONTENT_KEY), extras);
-        notificationManager.notify(Constants.APPBOY_GCM_NOTIFICATION_TAG, notificationId, notification);
-        sendGcmMessageReceivedBroadcast(context, extras);
+
+        Notification notification = AppboyNotificationUtils.createNotification(appConfigurationProvider, context,
+            extras.getString(Constants.APPBOY_PUSH_TITLE_KEY), extras.getString(Constants.APPBOY_PUSH_CONTENT_KEY), extras);
+        notificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
+        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
+
+        // Since we have received a notification, we want to wake the device screen.
+        wakeScreenIfHasPermission(context);
+
         return true;
       } else {
-        sendGcmMessageReceivedBroadcast(context, extras);
+        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
         return false;
       }
     }
+  }
+
+  /**
+   * This method will wake the device using a wake lock if the WAKE_LOCK permission is present in the
+   * manifest. If the permission is not present, this does nothing. If the screen is already on,
+   * and the permission is present, this does nothing.
+   */
+  private void wakeScreenIfHasPermission(Context context) {
+    // Check for the wake lock permission
+    if (context.checkCallingOrSelfPermission(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_DENIED) {
+      return;
+    }
+
+    // Get the power manager for the wake lock
+    PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+    // Acquire the wake lock for some negligible time, then release it. We just want to wake the screen
+    // and not take up more CPU power than necessary.
+    wakeLock.acquire();
+    wakeLock.release();
   }
 
   public static Bundle createExtrasBundle(String jsonString) {
@@ -159,181 +167,11 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
   }
 
   /**
-   * Checks the intent to determine whether this is an Appboy GCM message.
-   *
-   * All Appboy GCM messages must contain an extras entry with key set to "_ab" and value set to "true".
-   */
-  public static boolean isAppboyGcmMessage(Intent intent) {
-    Bundle extras = intent.getExtras();
-    return extras != null && "true".equals(extras.getString(Constants.APPBOY_GCM_APPBOY_KEY));
-  }
-
-  /**
-   * Checks the intent to determine whether this is a notification message or a data push.
-   *
-   * A notification message is an Appboy GCM message that displays a notification in the
-   * notification center (and optionally contains extra information that can be used directly
-   * by the app).
-   *
-   * A data push is an Appboy GCM message that contains only extra information that can
-   * be used directly by the app.
-   */
-  public static boolean isNotificationMessage(Intent intent) {
-    Bundle extras = intent.getExtras();
-    return extras != null && extras.containsKey(Constants.APPBOY_GCM_TITLE_KEY) && extras.containsKey(Constants.APPBOY_GCM_CONTENT_KEY);
-  }
-
-  /**
-   * Creates the rich notification. The notification varies based on the Android version on the
-   * device, but each notification contains an icon, image, title, and content.
-   *
-   * Opening a notification from the notification center triggers a broadcast message to be sent.
-   * The broadcast message action is <host-app-package-name>.intent.APPBOY_NOTIFICATION_OPENED.
-   *
-   * Note: Froyo and Gingerbread notifications are limited to one line of content.
-   */
-  public static Notification createNotification(XmlAppConfigurationProvider appConfigurationProvider,
-                                                Context context, String title, String content, Bundle intentExtras) {
-    int smallNotificationIconResourceId = appConfigurationProvider.getSmallNotificationIconResourceId();
-    if (smallNotificationIconResourceId == 0) {
-      Log.d(TAG, "Small notification icon resource was not found. Will use the app icon when " +
-          "displaying notifications.");
-      smallNotificationIconResourceId = appConfigurationProvider.getApplicationIconResourceId();
-    }
-
-    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
-    notificationBuilder.setTicker(title);
-    notificationBuilder.setAutoCancel(true);
-
-    // Create broadcast intent that will fire when the notification has been opened. To action on these messages,
-    // register a broadcast receiver that listens to intent <your_package_name>.intent.APPBOY_NOTIFICATION_OPENED
-    // and <your_package_name>.intent.APPBOY_PUSH_RECEIVED.
-    String pushOpenedAction = context.getPackageName() + ".intent.APPBOY_NOTIFICATION_OPENED";
-    Intent pushOpenedIntent = new Intent(pushOpenedAction);
-    if (intentExtras != null) {
-      pushOpenedIntent.putExtras(intentExtras);
-    }
-    PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, 0, pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
-    notificationBuilder.setContentIntent(pushOpenedPendingIntent);
-
-    // Sets the icon used in the notification bar itself.
-    notificationBuilder.setSmallIcon(smallNotificationIconResourceId);
-    notificationBuilder.setContentTitle(title);
-    notificationBuilder.setContentText(content);
-
-    // From Honeycomb to ICS, we can use a custom view for our notifications which will allow them to be taller than
-    // the standard one line of text.
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-      Resources resources = context.getResources();
-      String packageName = context.getPackageName();
-
-      int layoutResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_ID, "layout", packageName);
-      int titleResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TITLE_ID, "id", packageName);
-      int contentResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_CONTENT_ID, "id", packageName);
-      int iconResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_ICON_ID, "id", packageName);
-      int timeViewResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TIME_ID, "id", packageName);
-      int twentyFourHourFormatResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TWENTY_FOUR_HOUR_FORMAT_ID, "string", packageName);
-      int twelveHourFormatResourceId = resources.getIdentifier(APPBOY_GCM_NOTIFICATION_TWELVE_HOUR_FORTMAT_ID, "string", packageName);
-
-      String twentyFourHourTimeFormat = getOptionalStringResource(resources,
-        twentyFourHourFormatResourceId, Constants.DEFAULT_TWENTY_FOUR_HOUR_TIME_FORMAT);
-      String twelveHourTimeFormat = getOptionalStringResource(resources,
-        twelveHourFormatResourceId, Constants.DEFAULT_TWELVE_HOUR_TIME_FORMAT);
-
-      if (layoutResourceId == 0 || titleResourceId == 0 || contentResourceId == 0 || iconResourceId == 0
-        || timeViewResourceId == 0) {
-        Log.w(TAG, String.format("Couldn't find all resource IDs for custom notification view, extended view will " +
-          "not be used for push notifications. Received %d for layout, %d for title, %d for content, %d for icon, " +
-          "and %d for time.",
-          layoutResourceId, titleResourceId, contentResourceId, iconResourceId, timeViewResourceId));
-      } else {
-        Log.d(TAG, "Using RemoteViews for rendering of push notification.");
-        RemoteViews remoteViews = new RemoteViews(packageName, layoutResourceId);
-        remoteViews.setTextViewText(titleResourceId, title);
-        remoteViews.setTextViewText(contentResourceId, content);
-        remoteViews.setImageViewResource(iconResourceId, smallNotificationIconResourceId);
-
-        // Custom views cannot be used as part of a RemoteViews so we're using a TextView widget instead. This
-        // view will always display the time without date information (even after the day has changed).
-        SimpleDateFormat timeFormat = new SimpleDateFormat(
-          android.text.format.DateFormat.is24HourFormat(context) ? twentyFourHourTimeFormat : twelveHourTimeFormat);
-        String notificationTime = timeFormat.format(new Date());
-        remoteViews.setTextViewText(timeViewResourceId, notificationTime);
-        notificationBuilder.setContent(remoteViews);
-        return notificationBuilder.build();
-      }
-    }
-
-    // If we're using Jelly Bean, we can use the BigTextStyle, which lets the notification layout size grow to
-    // accommodate longer text.
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-      // If there is an image url found in the extras payload and the image can be downloaded, then
-      // use the android BigPictureStyle as the notification. Else, use the BigTextStyle instead.
-      if (intentExtras != null) {
-        Bundle extrasBundle = intentExtras.getBundle(Constants.APPBOY_GCM_EXTRAS_KEY);
-        if (extrasBundle!=null && extrasBundle.containsKey(Constants.APPBOY_GCM_BIG_IMAGE_URL_KEY)) {
-          String imageUrl = extrasBundle.getString(Constants.APPBOY_GCM_BIG_IMAGE_URL_KEY);
-          Bitmap imageBitmap = downloadImageBitmap(imageUrl);
-          if (imageBitmap != null) {
-            Log.d(TAG, "Rendering push notification with BigPictureStyle");
-            return new NotificationCompat.BigPictureStyle(notificationBuilder)
-                .bigPicture(imageBitmap)
-                .setSummaryText(content)
-                .build();
-          } else {
-            Log.d(TAG, "Bitmap download failed for push notification");
-          }
-        }
-      }
-      Log.d(TAG, "Rendering push notification with BigTextStyle");
-      return new NotificationCompat.BigTextStyle(notificationBuilder)
-          .bigText(content).build();
-    }
-    return notificationBuilder.build();
-  }
-
-  static String getOptionalStringResource(Resources resources, int stringResourceId, String defaultString) {
-    try {
-      return resources.getString(stringResourceId);
-    } catch (Resources.NotFoundException e) {
-      return defaultString;
-    }
-  }
-
-  /**
-   * Downloads an image and returns a bitmap object. The image should be less than 450dp for the
-   * push notification. An aspect ratio of 2:1 is recommended. This should always be run in a background
-   * thread.
-   *
-   * According to http://developer.android.com/guide/appendix/media-formats.html, the supported file
-   * types are jpg and png.
-   *
-   * @param imageUrl The url where the image is found
-   * @return An image in Bitmap form. If the image cannot be downloaded, or cannot be decoded into
-   * a bitmap, then null is returned.
-   */
-  public static Bitmap downloadImageBitmap(String imageUrl) {
-    Bitmap bitmap = null;
-    try {
-      InputStream in = new java.net.URL(imageUrl).openStream();
-      bitmap = BitmapFactory.decodeStream(in);
-    } catch (OutOfMemoryError e) {
-      Log.e(TAG, "Out of Memory Error in image bitmap download");
-      e.printStackTrace();
-    } catch (Exception e) {
-      Log.e(TAG, "General exception in image bitmap download");
-      e.printStackTrace();
-    }
-    return bitmap;
-  }
-
-  /**
    * Runs the handleAppboyGcmMessage method in a background thread in case of an image push
    * notification, which cannot be downloaded on the main thread.
    *
-   * Note: since an AsyncTask requires a return type, true was arbitrarily chosen.
    */
-  public class HandleAppboyGcmMessageTask extends AsyncTask<Void, Void, Boolean> {
+  public class HandleAppboyGcmMessageTask extends AsyncTask<Void, Void, Void> {
     private final Context context;
     private final Intent intent;
 
@@ -344,24 +182,10 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     }
 
     @Override
-    protected Boolean doInBackground(Void... voids) {
+    protected Void doInBackground(Void... voids) {
       handleAppboyGcmMessage(this.context, this.intent);
-      return true;
+      return null;
     }
-  }
-
-  /**
-   * Creates and sends a broadcast message that can be listened for by the host app. The broadcast
-   * message intent contains all of the data sent as part of the Appboy GCM message. The broadcast
-   * message action is <host-app-package-name>.intent.APPBOY_PUSH_RECEIVED.
-   */
-  private void sendGcmMessageReceivedBroadcast(Context context, Bundle extras) {
-    String pushReceivedAction = context.getPackageName() + ".intent.APPBOY_PUSH_RECEIVED";
-    Intent pushReceivedIntent = new Intent(pushReceivedAction);
-    if (extras != null) {
-      pushReceivedIntent.putExtras(extras);
-    }
-    context.sendBroadcast(pushReceivedIntent);
   }
 
   boolean handleRegistrationEventIfEnabled(XmlAppConfigurationProvider appConfigurationProvider,
@@ -373,18 +197,5 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       return true;
     }
     return false;
-  }
-
-  @TargetApi(12)
-  public static String bundleOptString(Bundle bundle, String key, String defaultValue) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-     return bundle.getString(key, defaultValue);
-    } else {
-      String result = bundle.getString(key);
-      if (result == null) {
-        result = defaultValue;
-      }
-      return result;
-    }
   }
 }

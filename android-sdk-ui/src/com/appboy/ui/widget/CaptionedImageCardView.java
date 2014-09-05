@@ -10,15 +10,17 @@ import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.WebAction;
-import com.appboy.ui.support.StringUtils;
 
-public class CaptionedImageCardView  extends BaseCardView<CaptionedImageCard> {
+public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
   private final ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;
   private IAction mCardAction;
+
+  // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
+  // aspect ratio, then this value will be the aspect ratio of the card on render.
+  private float mAspectRatio = 4f / 3f;
 
   public CaptionedImageCardView(Context context) {
     this(context, null);
@@ -49,17 +51,23 @@ public class CaptionedImageCardView  extends BaseCardView<CaptionedImageCard> {
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
+    boolean respectAspectRatio = false;
+    if (card.getAspectRatio() != 0f){
+      mAspectRatio = card.getAspectRatio();
+      respectAspectRatio = true;
+    }
 
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        card.setIsRead(true);
         if (mCardAction != null) {
-          Appboy.getInstance(mContext).logFeedCardClick(card.getId());
+          card.logClick();
           mCardAction.execute(mContext);
         }
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl(), 1.5f);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
   }
 }

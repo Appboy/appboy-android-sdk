@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.AppStoreReviewCard;
 import com.appboy.models.cards.BannerImageCard;
@@ -137,11 +136,6 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     return view;
   }
 
-  @Override
-  public synchronized void clear() {
-    super.clear();
-  }
-
   public synchronized void replaceFeed(List<Card> cards) {
     setNotifyOnChange(false);
 
@@ -168,8 +162,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       }
 
       // If there is still a card to add and it is the same as the next existing card in the feed, continue.
-      if (newCard != null && newCard.getId().equals(existingCard.getId()) &&
-        newCard.getUpdated() == existingCard.getUpdated()) {
+      if (newCard != null && newCard.isEqualToCard(existingCard)) {
         i++;
         j++;
       } else { // Otherwise, we need to get rid of the next card in the adapter, and continue checking.
@@ -211,14 +204,45 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     String cardId = card.getId();
     if (!mCardIdImpressions.contains(cardId)) {
       mCardIdImpressions.add(cardId);
-      Appboy.getInstance(mContext).logFeedCardImpression(cardId);
+      card.logImpression();
       Log.d(TAG, String.format("Logged impression for card %s", cardId));
     } else {
       Log.d(TAG, String.format("Already counted impression for card %s", cardId));
     }
+    if (!card.getViewed()){
+      card.setViewed(true);
+    }
   }
 
-  boolean hasCardImpression(String cardId) {
-    return mCardIdImpressions.contains(cardId);
+  /**
+   * Helper method to batch set cards to visually read after either an up or down scroll of the feed.
+   * Since scrolls can have multiple cards scrolled off screen at a time, this method can batch set those
+   * cards to read.
+   * @param startIndex Where to start setting cards to viewed. The card at this index will
+   *                   be set to viewed. Must be less than endIndex
+   * @param endIndex Where to end setting cards to viewed. The card at this index will be set to viewed.
+   */
+  public void batchSetCardsToRead(int startIndex, int endIndex){
+    if (getCount() == 0){
+      Log.d(TAG, "mAdapter is empty in setting some cards to viewed.");
+      return;
+    }
+
+    // Make sure the start and end are in bounds
+    startIndex = Math.max(0, startIndex);
+    endIndex = Math.min(getCount(), endIndex);
+
+    for (int traversalIndex = startIndex; traversalIndex < endIndex; traversalIndex++){
+      // Get the card
+      Card card = getItem(traversalIndex);
+      if (card == null){
+        Log.d(TAG, "Card was null in setting some cards to viewed.");
+        break;
+      }
+
+      if (!card.isRead()){
+        card.setIsRead(true);
+      }
+    }
   }
 }

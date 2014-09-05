@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-
   <TextView
       android:id="@+id/com_appboy_cross_promotion_small_card_recommendation_tab"
       android:layout_width="wrap_content"
@@ -14,6 +13,8 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/com_appboy_cross_promotion_small_card_recommendation_tab"
       style="@style/Appboy.Cards.CrossPromotionSmall.Layout">
+
+      <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
 
     <ImageView
         android:id="@+id/com_appboy_cross_promotion_small_card_image"

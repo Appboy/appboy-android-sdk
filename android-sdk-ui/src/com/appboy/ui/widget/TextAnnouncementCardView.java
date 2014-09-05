@@ -48,8 +48,9 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        card.setIsRead(true);
         if (mCardAction != null) {
-          Appboy.getInstance(mContext).logFeedCardClick(card.getId());
+          card.logClick();
           mCardAction.execute(mContext);
         }
       }

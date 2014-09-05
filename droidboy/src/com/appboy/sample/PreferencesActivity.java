@@ -1,5 +1,7 @@
 package com.appboy.sample;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -11,10 +13,12 @@ import com.android.vending.billing.utils.IabResult;
 import com.android.vending.billing.utils.Inventory;
 import com.android.vending.billing.utils.Purchase;
 import com.appboy.Appboy;
+import com.appboy.AppboyUser;
 import com.appboy.Constants;
 import com.appboy.enums.SocialNetwork;
 import com.appboy.ui.slideups.AppboySlideupManager;
 import com.crittercism.app.Crittercism;
+import java.math.BigDecimal;
 
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
@@ -37,7 +41,14 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference logPurchasePreference = findPreference("log_purchase");
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestSlideupPreference = findPreference("request_slideup");
+    Preference customAttributeArraySetPreference = findPreference("custom_attribute_array_set");
+    Preference customAttributeArrayAddPreference = findPreference("custom_attribute_array_add");
+    Preference customAttributeArrayRemPreference = findPreference("custom_attribute_array_rem");
+    Preference customAttributeArraySetEmptyPreference = findPreference("custom_attribute_array_empty");
+    Preference customAttributeArraySetNullPreference = findPreference("custom_attribute_array_null");
     Preference aboutPreference = findPreference("about");
+    Preference logPurchaseWithQuantityPreference = findPreference("log_purchase_with_quantity");
+
     aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
     facebookSharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -56,14 +67,20 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
-    logPurchasePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        mHelper.launchPurchaseFlow(PreferencesActivity.this, SKU_ANDROID_TEST_PURCHASED,
-            IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE, mPurchaseFinishedListener);
-        return true;
-      }
-    });
+    if (Constants.IS_AMAZON) {
+      Appboy.getInstance(PreferencesActivity.this).logPurchase("product_id", 99);
+      Toast.makeText(PreferencesActivity.this, "Thank you for your purchase", Toast.LENGTH_LONG).show();
+    } else {
+      iapGoogleSetup();
+      logPurchasePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+          mHelper.launchPurchaseFlow(PreferencesActivity.this, SKU_ANDROID_TEST_PURCHASED,
+              IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE, mPurchaseFinishedListener);
+          return true;
+        }
+      });
+    }
     dataFlushPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
@@ -80,7 +97,68 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
+    customAttributeArraySetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        String[] testSetArray = new String[] { "TestVal2", "TestVal2"};
+        Toast.makeText(PreferencesActivity.this, "Set a Custom Attribute Array", Toast.LENGTH_LONG).show();
+        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
+        appboyUser.setCustomAttributeArray("custom_attribute_array_test", testSetArray);
+        return true;
+      }
+    });
+    customAttributeArrayAddPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        String testAddString = "CustomAttributeArrayTestValue";
+        Toast.makeText(PreferencesActivity.this, "Added value to Custom Attribute Array", Toast.LENGTH_LONG).show();
+        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
+        appboyUser.addToCustomAttributeArray("custom_attribute_array_test", testAddString);
+        return true;
+      }
+    });
+    customAttributeArrayRemPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        String testRemString = "CustomAttributeArrayTestValue";
+        Toast.makeText(PreferencesActivity.this, "Removed value from Custom Attribute Array", Toast.LENGTH_LONG).show();
+        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
+        appboyUser.removeFromCustomAttributeArray("custom_attribute_array_test", testRemString);
+        return true;
+      }
+    });
+    customAttributeArraySetEmptyPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        String[] testEmptyArray = new String[] {};
+        Toast.makeText(PreferencesActivity.this, "Set Empty Custom Attribute Array", Toast.LENGTH_LONG).show();
+        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
+        appboyUser.setCustomAttributeArray("custom_attribute_array_test", testEmptyArray);
+        return true;
+      }
+    });
+    customAttributeArraySetNullPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        String[] testNullArray = null;
+        Toast.makeText(PreferencesActivity.this, "Set Null Custom Attribute Array", Toast.LENGTH_LONG).show();
+        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
+        appboyUser.setCustomAttributeArray("custom_attribute_array_test", testNullArray);
+        return true;
+      }
+    });
+    logPurchaseWithQuantityPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        // Log a purchase of 3 items each with price of $1.00
+        Appboy.getInstance(PreferencesActivity.this).logPurchase(SKU_ANDROID_TEST_PURCHASED, "USD", BigDecimal.ONE, 3);
+        Toast.makeText(PreferencesActivity.this, getString(R.string.log_purchase_with_quantity_toast), Toast.LENGTH_LONG).show();
+        return true;
+      }
+    });
+  }
 
+  void iapGoogleSetup() {
     /* base64EncodedPublicKey should be YOUR APPLICATION'S PUBLIC KEY
      * (that you got from the Google Play developer console). This is not your
      * developer public key, it's the *app-specific* public key.

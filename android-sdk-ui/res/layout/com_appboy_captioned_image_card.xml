@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-
   <ImageView
       android:id="@+id/com_appboy_captioned_image_card_image"
       android:layout_width="match_parent"
@@ -10,12 +9,13 @@
       android:adjustViewBounds="true"
       style="@style/Appboy.Cards.CaptionedImage.Image"/>
 
-  <LinearLayout
+  <RelativeLayout
       android:id="@+id/com_appboy_captioned_image_card_title_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@id/com_appboy_captioned_image_card_image"
       style="@style/Appboy.Cards.CaptionedImage.Title.Container">
+    <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
 
     <TextView
         android:id="@+id/com_appboy_captioned_image_title"
@@ -26,7 +26,7 @@
         android:layout_marginTop="11.0dp"
         android:layout_marginBottom="11.0dp"
         style="@style/Appboy.Cards.CaptionedImage.Title"/>
-  </LinearLayout>
+  </RelativeLayout>
 
   <TextView
       android:id="@+id/com_appboy_captioned_image_description"

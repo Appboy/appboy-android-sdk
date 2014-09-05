@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-
   <ImageView
       android:id="@+id/com_appboy_app_store_review_card_image"
       android:layout_width="57.5dp"
@@ -32,6 +31,7 @@
       android:layout_toLeftOf="@id/com_appboy_app_store_review_card_arrow"
       android:layout_centerVertical="true"
       android:orientation="vertical">
+    <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
 
     <TextView
         android:id="@+id/com_appboy_app_store_review_card_title"

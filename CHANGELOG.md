@@ -1,3 +1,15 @@
+## 1.5.0
+- Adds Kindle Fire support and ADM support.
+- Adds read/unread visual indicators to newsfeed cards. Use the configuration boolean com_appboy_newsfeed_unread_visual_indicator_on in appboy.xml
+  to enabled the indicators.  Additionally, moved the logFeedCardImpression() and logFeedCardClick() methods to the 
+  card objects themselves.
+- Adds support to image loading in CaptionedImage and Banner cards for dynamic resizing after loading the image url; supports any
+  aspect ratio.
+- Adds Hello Appboy sample project that shows a minimal use case of the Appboy SDK.
+- Adds wake lock to AppboyGcmReceiver in the UI project. When the WAKE_LOCK permission is set, the screen
+  will be turned on when a notification is received.
+- Restricted productId to 255 characters for logPurchase.
+
 ## 1.4.3
 - Removes org.json classes from appboy.jar.
 

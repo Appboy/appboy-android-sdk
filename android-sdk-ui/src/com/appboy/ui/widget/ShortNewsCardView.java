@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.appboy.Appboy;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
@@ -16,6 +15,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
   private final TextView mDescription;
   private final TextView mDomain;
   private IAction mCardAction;
+  private final float mAspectRatio = 1f;
 
   public ShortNewsCardView(Context context) {
     this(context, null);
@@ -50,13 +50,14 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        card.setIsRead(true);
         if (mCardAction != null) {
-          Appboy.getInstance(mContext).logFeedCardClick(card.getId());
+          card.logClick();
           mCardAction.execute(mContext);
         }
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl());
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
   }
 }

@@ -281,7 +281,9 @@ public class IabHelper {
         mSetupDone = false;
         if (mServiceConn != null) {
             logDebug("Unbinding from service.");
-            if (mContext != null) mContext.unbindService(mServiceConn);
+            if (mContext != null && mService != null) {
+              mContext.unbindService(mServiceConn);
+            }
             mServiceConn = null;
             mService = null;
             mPurchaseListener = null;

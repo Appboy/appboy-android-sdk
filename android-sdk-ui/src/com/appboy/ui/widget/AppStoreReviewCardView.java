@@ -46,13 +46,14 @@ public class AppStoreReviewCardView extends BaseCardView<AppStoreReviewCard> {
     mImage.setImageResource(mApplicationIconId);
     mTitle.setText(getResources().getString(R.string.com_appboy_app_store_review_card_title));
     mSubtitle.setText(getResources().getString(R.string.com_appboy_app_store_review_card_subtitle));
-    mCardAction = new GooglePlayAppDetailsAction(mContext.getPackageName(), false);
+    mCardAction = new GooglePlayAppDetailsAction(mContext.getPackageName(), false, card.getAppStore());
 
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        card.setIsRead(true);
         if (mCardAction != null) {
-          Appboy.getInstance(mContext).logFeedCardClick(card.getId());
+          card.logClick();
           mCardAction.execute(mContext);
         }
       }

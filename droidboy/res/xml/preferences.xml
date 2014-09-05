@@ -65,6 +65,12 @@
         android:key="log_purchase"
         android:title="@string/log_purchase_title"
         android:summary="@string/log_purchase_summary"/>
+
+    <Preference
+        android:key="log_purchase_with_quantity"
+        android:title="@string/log_purchase_with_quantity_title"
+        android:summary="@string/log_purchase_with_quantity_summary"
+        />
   </PreferenceCategory>
 
   <PreferenceCategory
@@ -78,6 +84,30 @@
         android:key="data_flush"
         android:title="@string/data_flush_title"
         android:summary="@string/data_flush_summary"/>
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    android:title="Custom Attribute Array Test">
+
+    <Preference
+      android:key="custom_attribute_array_set"
+      android:title="Set an Array"/>
+
+    <Preference
+      android:key="custom_attribute_array_add"
+      android:title="Add a Value"/>
+
+    <Preference
+      android:key="custom_attribute_array_rem"
+      android:title="Remove a Value"/>
+
+    <Preference
+      android:key="custom_attribute_array_empty"
+      android:title="Set Empty Array"/>
+
+    <Preference
+      android:key="custom_attribute_array_null"
+      android:title="Set Null Array"/>
   </PreferenceCategory>
 
   <PreferenceCategory
