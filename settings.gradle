@@ -1,3 +1,2 @@
 include ':android-sdk-ui'
 include ':droidboy'
-include ':hello-appboy'
