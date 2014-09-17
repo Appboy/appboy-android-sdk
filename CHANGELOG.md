@@ -1,3 +1,6 @@
+## 1.5.1
+- Removes obfuscation from parameter names on public models.
+
 ## 1.5.0
 - Adds Kindle Fire support and ADM support.
 - Adds read/unread visual indicators to newsfeed cards. Use the configuration boolean com_appboy_newsfeed_unread_visual_indicator_on in appboy.xml

@@ -1,7 +1,7 @@
 buildscript {
   repositories {
     mavenCentral()
-    mavenLocal()
+    maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
   }
 
   dependencies {
@@ -13,12 +13,12 @@ buildscript {
 
 subprojects {
   repositories {
-    mavenLocal()
     mavenCentral()
+    maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
   }
 
   group = 'com.appboy'
-  version = '1.5.0'
+  version = '1.5.1'
 
   apply plugin: 'android-sdk-manager'
 }
