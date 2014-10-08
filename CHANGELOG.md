@@ -11,6 +11,7 @@
 - Adds Hello Appboy sample project that shows a minimal use case of the Appboy SDK.
 - Adds wake lock to AppboyGcmReceiver in the UI project. When the WAKE_LOCK permission is set, the screen
   will be turned on when a notification is received.
+- Moved constants from AppboyGcmReceiver (ie: APPBOY_GCM_NOTIFICATION_TITLE_ID, etc.) into new AppboyNotificationUtils class.
 - Restricted productId to 255 characters for logPurchase.
 
 ## 1.4.3
