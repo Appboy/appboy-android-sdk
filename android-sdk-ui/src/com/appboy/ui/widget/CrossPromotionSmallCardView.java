@@ -53,7 +53,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
   @Override
   public void onSetCard(final CrossPromotionSmallCard card) {
     mTitle.setText(card.getTitle());
-    if (card.getSubtitle() == null || card.getSubtitle().toUpperCase().equals("NULL")) {
+    if (card.getSubtitle() == null || card.getSubtitle().toUpperCase(Locale.getDefault()).equals("NULL")) {
       mSubtitle.setVisibility(View.GONE);
     } else {
       mSubtitle.setText(card.getSubtitle().toUpperCase(Locale.getDefault()));

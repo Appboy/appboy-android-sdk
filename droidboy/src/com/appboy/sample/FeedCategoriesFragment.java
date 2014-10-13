@@ -26,6 +26,8 @@ public class FeedCategoriesFragment extends DialogFragment {
     public void onDialogPositiveClick(FeedCategoriesFragment dialog);
   }
 
+  public FeedCategoriesFragment() {}
+
   public EnumSet<CardCategory> selectedCategories;
 
   // Use this instance of the interface to deliver action events

@@ -1,3 +1,11 @@
+## 1.5.2
+- Adds support for GCM and ADM messages without collapse keys.
+- Adds support for GCM and ADM messages with notification priorities.
+- Removes extraneous features from Droidboy so it's more easily digestible as a sample application.
+- Enables setting a registration ID without a full push setup; registerAppboyGcmMessages and registerAppboyPushMessages
+  no longer throw null pointer exceptions if Appboy isn't correctly configured to display push messages.
+- Enables AppboyWebViewActivity to download items.
+
 ## 1.5.1
 - Removes obfuscation from parameter names on public models.
 

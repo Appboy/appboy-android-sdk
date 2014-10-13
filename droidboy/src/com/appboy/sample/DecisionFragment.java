@@ -30,15 +30,9 @@ public class DecisionFragment extends Fragment {
   private Random mRandom;
   private Interpolator mInterpolator;
   private float mCurrentSpinnerInDegrees;
-  private int mSpinnerDuration;
-  private View mSelectedMode;
-  private View mBisectMode;
-  private View mQuadrisectMode;
-  private float mSpinDirectionMultiplier;
+  private final int mSpinnerDuration = 5;
   private Button mSpinButton;
   private Animation.AnimationListener mSpinAnimationListener;
-  private GestureDetector mSwipeGestureDetector;
-  private View.OnTouchListener mSwipeTouchListener;
 
   public DecisionFragment() {}
 
@@ -48,13 +42,6 @@ public class DecisionFragment extends Fragment {
     mRandom = new Random();
     mInterpolator = new AccelerateDecelerateInterpolator();
     mCurrentSpinnerInDegrees = 0f;
-    mSwipeGestureDetector = new GestureDetector(getActivity(), new SwipeGestureListener(this));
-    mSwipeTouchListener = new View.OnTouchListener() {
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-        return mSwipeGestureDetector.onTouchEvent(event);
-      }
-    };
   }
 
   @Override
@@ -62,12 +49,6 @@ public class DecisionFragment extends Fragment {
     View contentView = layoutInflater.inflate(R.layout.decision, container, false);
     mSpinner = (ImageView) contentView.findViewById(R.id.spinner);
     mSpinButton = (Button) contentView.findViewById(R.id.spin);
-
-    mSelectedMode = contentView.findViewById(R.id.mode_placeholder);
-    mBisectMode = getActivity().getLayoutInflater().inflate(R.layout.bisect, (ViewGroup) mSelectedMode.getParent(), false);
-    mQuadrisectMode = getActivity().getLayoutInflater().inflate(R.layout.quadrisect, (ViewGroup) mSelectedMode.getParent(), false);
-    switchBoardMode(mBisectMode);
-
     return contentView;
   }
 
@@ -75,44 +56,27 @@ public class DecisionFragment extends Fragment {
   public void onStart() {
     super.onStart();
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    int boardChoices = Integer.parseInt(sharedPreferences.getString("board.choices", getString(R.string.default_board_choices)));
-    switch (boardChoices) {
-      case 2:
-        switchBoardMode(mBisectMode);
-        break;
-      case 4:
-        switchBoardMode(mQuadrisectMode);
-        break;
-      default:
-        Log.e(TAG, "Unknown board configuration! Defaulting to mode '2'");
-        switchBoardMode(mBisectMode);
-    }
-    mSpinnerDuration = Integer.parseInt(sharedPreferences.getString("spinner.duration", getString(R.string.default_spinner_duration)));
-    mSpinDirectionMultiplier = Float.parseFloat(sharedPreferences.getString("spin.direction", getString(R.string.default_spin_direction)));
     resetSpinner();
 
     mSpinAnimationListener = new Animation.AnimationListener() {
       public void onAnimationStart(Animation animation) {
         mSpinButton.setEnabled(false);
-        unregisterSwipeListeners();
       }
       public void onAnimationEnd(Animation animation) {
         mSpinButton.setEnabled(true);
-        registerSwipeListeners();
       }
       public void onAnimationRepeat(Animation animation) { }
     };
 
     mSpinButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
-        performSpin(mSpinDirectionMultiplier == 1 ? true : false);
+        performSpin();
       }
     });
-    resetSwipeListeners();
   }
 
-  public void performSpin(boolean clockwise) {
-    float rotationDegrees = clockwise ? getRotationInDegrees() : getRotationInDegrees() * -1.0f;
+  public void performSpin() {
+    float rotationDegrees = getRotationInDegrees();
     Animation animation = getRotationAnimation(rotationDegrees);
     animation.setAnimationListener(mSpinAnimationListener);
     spin(animation, rotationDegrees);
@@ -140,53 +104,8 @@ public class DecisionFragment extends Fragment {
     mCurrentSpinnerInDegrees %= 360f;
   }
 
-  private void switchBoardMode(View secondView) {
-    ViewGroup parent = (ViewGroup) mSelectedMode.getParent();
-    int index = parent.indexOfChild(mSelectedMode);
-    parent.removeView(mSelectedMode);
-    parent.addView(secondView, index);
-    mSelectedMode = secondView;
-  }
-
   private void resetSpinner() {
     mCurrentSpinnerInDegrees = 0;
     mSpinner.clearAnimation();
-  }
-
-  private void registerSwipeListeners() {
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    String inputMethod = sharedPreferences.getString("input.method", getString(R.string.default_input_method));
-    if ("Swipe".equals(inputMethod)) {
-      mBisectMode.setOnTouchListener(mSwipeTouchListener);
-      mQuadrisectMode.setOnTouchListener(mSwipeTouchListener);
-    }
-  }
-
-  private void unregisterSwipeListeners() {
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    String inputMethod = sharedPreferences.getString("input.method", getString(R.string.default_input_method));
-    if ("Swipe".equals(inputMethod)) {
-      mBisectMode.setOnTouchListener(null);
-      mQuadrisectMode.setOnTouchListener(null);
-    }
-  }
-
-  private void resetSwipeListeners() {
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    String inputMethod = sharedPreferences.getString("input.method", getString(R.string.default_input_method));
-    if ("Button".equals(inputMethod)) {
-      mBisectMode.setOnTouchListener(null);
-      mQuadrisectMode.setOnTouchListener(null);
-      mSpinButton.setVisibility(View.VISIBLE);
-    } else if ("Swipe".equals(inputMethod)) {
-      mBisectMode.setOnTouchListener(mSwipeTouchListener);
-      mQuadrisectMode.setOnTouchListener(mSwipeTouchListener);
-      mSpinButton.setVisibility(View.GONE);
-    } else {
-      Log.w(TAG, "Unrecognized input method. Setting the input method type to 'Button'");
-      mBisectMode.setOnTouchListener(null);
-      mQuadrisectMode.setOnTouchListener(null);
-      mSpinButton.setVisibility(View.VISIBLE);
-    }
   }
 }

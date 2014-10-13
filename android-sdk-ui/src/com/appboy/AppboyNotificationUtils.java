@@ -14,7 +14,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.appboy.Constants;
 import com.appboy.configuration.XmlAppConfigurationProvider;
 
 import org.json.JSONException;
@@ -119,9 +118,20 @@ public class AppboyNotificationUtils
     // If we're using Jelly Bean, we can use the BigTextStyle, which lets the notification layout size grow to
     // accommodate longer text.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
       // If there is an image url found in the extras payload and the image can be downloaded, then
       // use the android BigPictureStyle as the notification. Else, use the BigTextStyle instead.
       if (intentExtras != null) {
+
+        // Retrieve notification priority from intentExtras bundle if it has been set.
+        // Otherwise the notification's priority remains the default priority.
+        if (intentExtras.containsKey(Constants.APPBOY_PUSH_PRIORITY_KEY)) {
+          int notificationPriority = Integer.parseInt(intentExtras.getString(Constants.APPBOY_PUSH_PRIORITY_KEY));
+          if (isValidNotificationPriority(notificationPriority)) {
+            notificationBuilder.setPriority(notificationPriority);
+          }
+        }
+
         Bundle extrasBundle = intentExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
         if (extrasBundle!=null && extrasBundle.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
           String imageUrl = extrasBundle.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
@@ -179,7 +189,7 @@ public class AppboyNotificationUtils
     return bitmap;
   }
 
-  @TargetApi(12)
+  @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
   public static String bundleOptString(Bundle bundle, String key, String defaultValue) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
       return bundle.getString(key, defaultValue);
@@ -193,9 +203,9 @@ public class AppboyNotificationUtils
   }
 
   /**
-   * Checks the intent to determine whether this is an Appboy ADM message.
+   * Checks the intent to determine whether this is an Appboy push message.
    *
-   * All Appboy ADM messages must contain an extras entry with key set to "_ab" and value set to "true".
+   * All Appboy push messages must contain an extras entry with key set to "_ab" and value set to "true".
    */
   public static boolean isAppboyPushMessage(Intent intent) {
     Bundle extras = intent.getExtras();
@@ -203,13 +213,21 @@ public class AppboyNotificationUtils
   }
 
   /**
+   * Checks whether the given integer value is a valid Android notification priority constant
+   */
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+  public static boolean isValidNotificationPriority(int priority) {
+    return (priority >= Notification.PRIORITY_MIN && priority <= Notification.PRIORITY_MAX);
+  }
+
+  /**
    * Checks the intent to determine whether this is a notification message or a data push.
    *
-   * A notification message is an Appboy ADM message that displays a notification in the
+   * A notification message is an Appboy push message that displays a notification in the
    * notification center (and optionally contains extra information that can be used directly
    * by the app).
    *
-   * A data push is an Appboy GCM message that contains only extra information that can
+   * A data push is an Appboy push message that contains only extra information that can
    * be used directly by the app.
    */
   public static boolean isNotificationMessage(Intent intent) {
@@ -219,7 +237,7 @@ public class AppboyNotificationUtils
 
   /**
    * Creates and sends a broadcast message that can be listened for by the host app. The broadcast
-   * message intent contains all of the data sent as part of the Appboy GCM/ADM message. The broadcast
+   * message intent contains all of the data sent as part of the Appboy push message. The broadcast
    * message action is <host-app-package-name>.intent.APPBOY_PUSH_RECEIVED.
    */
   public static void sendPushMessageReceivedBroadcast(Context context, Bundle extras) {
@@ -243,7 +261,7 @@ public class AppboyNotificationUtils
       }
       return bundle;
     } catch (JSONException e) {
-      Log.e(TAG, String.format("Unable to parse the Appboy GCM data extras."));
+      Log.e(TAG, String.format("Unable to parse the Appboy push data extras."));
       return null;
     }
   }

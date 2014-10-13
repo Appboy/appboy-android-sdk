@@ -19,7 +19,7 @@
             android:layout_width="0.0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Create and Add Slideup"
+            android:text="@string/create_and_add_slideup"
             android:textSize="12dp"
             android:textStyle="bold"/>
 
@@ -28,7 +28,7 @@
             android:layout_width="0.0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Display Next Slideup"
+            android:text="@string/display_next_slideup"
             android:textSize="12dp"
             android:textStyle="bold"/>
 
@@ -37,7 +37,7 @@
             android:layout_width="0.0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Request Slideup from Appboy"
+            android:text="@string/request_slideup_from_appboy"
             android:textSize="12dp"
             android:textStyle="bold"/>
 
@@ -46,7 +46,7 @@
             android:layout_width="0.0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Hide Current Slideup"
+            android:text="@string/hide_current_slideup"
             android:textSize="12dp"
             android:textStyle="bold"/>
     </LinearLayout>
@@ -80,7 +80,7 @@
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
-                        android:text="Animates in from the"
+                        android:text="@string/animates_in_from"
                         android:textColor="@android:color/black"
                         android:textStyle="bold"/>
 
@@ -103,7 +103,7 @@
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
-                        android:text="ClickAction set to"
+                        android:text="@string/click_action_set_to"
                         android:textColor="@android:color/black"
                         android:textStyle="bold"/>
 
@@ -126,7 +126,7 @@
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
-                        android:text="URI set to"
+                        android:text="@string/uri_set_to"
                         android:textColor="@android:color/black"
                         android:textStyle="bold"/>
 
@@ -146,7 +146,7 @@
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
-                        android:text="DismissType set to"
+                        android:text="@string/dismiss_type_set_to"
                         android:textColor="@android:color/black"
                         android:textStyle="bold"/>
 
@@ -170,21 +170,21 @@
                     android:id="@+id/custom_slideup_view_factory_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom ISlideupViewFactory"
+                    android:text="@string/custom_islideup_view_factory"
                     android:textColor="@android:color/black"/>
 
                 <CheckBox
                     android:id="@+id/custom_slideup_manager_listener_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom ISlideupManagerListener"
+                    android:text="@string/custom_islideupmanager_listener"
                     android:textColor="@android:color/black"/>
 
                 <CheckBox
                     android:id="@+id/custom_appboy_navigator_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom IAppboyNavigator"
+                    android:text="@string/custom_iappboy_navigator"
                     android:textColor="@android:color/black"/>
             </LinearLayout>
         </LinearLayout>

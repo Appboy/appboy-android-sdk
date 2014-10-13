@@ -44,6 +44,8 @@ public class AppboyFeedbackFragment extends Fragment {
   private int mOriginalSoftInputMode;
   private boolean mErrorMessageShown;
 
+  public AppboyFeedbackFragment() {}
+
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);

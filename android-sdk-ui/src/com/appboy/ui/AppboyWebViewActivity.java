@@ -1,10 +1,13 @@
 package com.appboy.ui;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -46,6 +49,16 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
         } else {
           setProgressBarVisibility(false);
         }
+      }
+    });
+
+    webView.setDownloadListener(new DownloadListener() {
+      public void onDownloadStart(String url, String userAgent,
+                                  String contentDisposition, String mimetype,
+                                  long contentLength) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
       }
     });
 
