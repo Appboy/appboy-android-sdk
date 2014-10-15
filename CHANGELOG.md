@@ -5,6 +5,11 @@
 - Enables setting a registration ID without a full push setup; registerAppboyGcmMessages and registerAppboyPushMessages
   no longer throw null pointer exceptions if Appboy isn't correctly configured to display push messages.
 - Enables AppboyWebViewActivity to download items.
+- Adds support for apps built targeting android-L. Appboy's process for registering push
+  notifications had previously used an implicit service intent which caused a runtime error. Any
+  apps built against android-L will need to upgrade to this version. However, apps with Appboy that
+  are/were built against any other versions of Android will run without issue on android-L. Thus,
+  this is not an urgent upgrade unless you're working with android-L.
 
 ## 1.5.1
 - Removes obfuscation from parameter names on public models.
