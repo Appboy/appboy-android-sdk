@@ -17,5 +17,5 @@
         android:showAsAction="ifRoom"/>
     <item
         android:id="@+id/slideups"
-        android:title="Slideups"/>
+        android:title="@string/slideups_activity"/>
 </menu>

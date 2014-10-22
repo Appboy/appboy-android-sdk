@@ -8,23 +8,6 @@
   <string name="settings">Settings</string>
   <string name="send_feedback">Send Feedback</string>
 
-  <string name="board_choices_title">Number of choices</string>
-  <string name="board_choices_summary">Please select the number of colors on the board</string>
-  <string name="default_board_choices">4</string>
-
-  <string name="spinner_duration_title">Spinner duration</string>
-  <string name="spinner_duration_summary">Please select the duration of the spinner</string>
-  <string name="default_spinner_duration">5</string>
-
-  <string name="spin_direction_title">Spin direction</string>
-  <string name="spin_direction_summary">Please select the spin direction</string>
-  <string name="default_spin_direction">1</string>
-
-  <string name="input_method_title">Input Method</string>
-  <string name="input_method_summary">Please select your input method</string>
-  <string name="default_input_method">Button</string>
-
-  <string name="general_preferences_title">General</string>
   <string name="social_preferences_title">Social</string>
   <string name="miscellaneous_title">Misc.</string>
   <string name="network_control_title">Network Control</string>
@@ -76,5 +59,16 @@
   <string name="blue">Blue</string>
   <string name="yellow">Yellow</string>
   <string name="green">Green</string>
-
+  <string name="create_and_add_slideup">Create and Add Slideup</string>
+  <string name="display_next_slideup">Display Next Slideup</string>
+  <string name="request_slideup_from_appboy">Request Slideup from Appboy</string>
+  <string name="hide_current_slideup">Hide Current Slideup</string>
+  <string name="animates_in_from">Animates in from the</string>
+  <string name="custom_iappboy_navigator">Custom IAppboyNavigator</string>
+  <string name="custom_islideupmanager_listener">Custom ISlideupManagerListener</string>
+  <string name="slideups_activity">Slideups</string>
+  <string name="custom_islideup_view_factory">Custom ISlideupViewFactory</string>
+  <string name="dismiss_type_set_to">DismissType set to</string>
+  <string name="uri_set_to">URI set to</string>
+  <string name="click_action_set_to">ClickAction set to</string>
 </resources>

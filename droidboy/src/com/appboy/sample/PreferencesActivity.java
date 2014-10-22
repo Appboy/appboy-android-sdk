@@ -265,6 +265,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
       Log.d(TAG, "Purchase successful.");
       Appboy.getInstance(PreferencesActivity.this).logPurchase("product_id", 99);
+      Toast.makeText(PreferencesActivity.this, getString(R.string.log_purchase_toast), Toast.LENGTH_LONG).show();
     }
   };
 

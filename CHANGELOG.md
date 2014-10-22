@@ -1,3 +1,16 @@
+## 1.5.2
+- Adds support for GCM and ADM messages without collapse keys.
+- Adds support for GCM and ADM messages with notification priorities.
+- Removes extraneous features from Droidboy so it's more easily digestible as a sample application.
+- Enables setting a registration ID without a full push setup; registerAppboyGcmMessages and registerAppboyPushMessages
+  no longer throw null pointer exceptions if Appboy isn't correctly configured to display push messages.
+- Enables AppboyWebViewActivity to download items.
+- Adds support for apps built targeting android-L. Appboy's process for registering push
+  notifications had previously used an implicit service intent which caused a runtime error. Any
+  apps built against android-L will need to upgrade to this version. However, apps with Appboy that
+  are/were built against any other versions of Android will run without issue on android-L. Thus,
+  this is not an urgent upgrade unless you're working with android-L.
+
 ## 1.5.1
 - Removes obfuscation from parameter names on public models.
 
@@ -11,6 +24,7 @@
 - Adds Hello Appboy sample project that shows a minimal use case of the Appboy SDK.
 - Adds wake lock to AppboyGcmReceiver in the UI project. When the WAKE_LOCK permission is set, the screen
   will be turned on when a notification is received.
+- Moved constants from AppboyGcmReceiver (ie: APPBOY_GCM_NOTIFICATION_TITLE_ID, etc.) into new AppboyNotificationUtils class.
 - Restricted productId to 255 characters for logPurchase.
 
 ## 1.4.3

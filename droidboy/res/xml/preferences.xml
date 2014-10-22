@@ -9,42 +9,6 @@
       android:negativeButtonText="@string/user_dialog_cancel"/>
 
   <PreferenceCategory
-      android:title="@string/general_preferences_title">
-
-    <ListPreference
-        android:key="board.choices"
-        android:title="@string/board_choices_title"
-        android:summary="@string/board_choices_summary"
-        android:entries="@array/boardOptions"
-        android:entryValues="@array/boardValues"
-        android:defaultValue="@string/default_board_choices"/>
-
-    <ListPreference
-        android:key="spinner.duration"
-        android:title="@string/spinner_duration_title"
-        android:summary="@string/spinner_duration_summary"
-        android:entries="@array/spinnerDurationOptions"
-        android:entryValues="@array/spinnerDurationValues"
-        android:defaultValue="@string/default_spinner_duration"/>
-
-    <ListPreference
-        android:key="spin.direction"
-        android:title="@string/spin_direction_title"
-        android:summary="@string/spin_direction_summary"
-        android:entries="@array/spinDirectionOptions"
-        android:entryValues="@array/spinDirectionValues"
-        android:defaultValue="@string/default_spin_direction"/>
-
-    <ListPreference
-        android:key="input.method"
-        android:title="@string/input_method_title"
-        android:summary="@string/input_method_summary"
-        android:entries="@array/inputMethodOptions"
-        android:entryValues="@array/inputMethodOptions"
-        android:defaultValue="@string/default_input_method"/>
-  </PreferenceCategory>
-
-  <PreferenceCategory
     android:title="@string/social_preferences_title">
 
     <Preference
