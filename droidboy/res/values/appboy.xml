@@ -31,4 +31,9 @@
   <!-- This boolean sets whether the read/unread visual indicator at the top right of newsfeed cards
       on or off. -->
   <bool name="com_appboy_newsfeed_unread_visual_indicator_on">true</bool>
+
+  <!-- This boolean sets whether Appboy will automatically collect location (if the user permits).  If set to true,
+  location will not be set for the user unless integrating apps manually call setUserLastKnownLocation on the AppboyUser.
+   -->
+  <bool name="com_appboy_disable_location_collection">false</bool>
 </resources>

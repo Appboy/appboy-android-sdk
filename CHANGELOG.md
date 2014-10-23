@@ -1,3 +1,10 @@
+## 1.5.3
+- Adds the ability to turn off Appboy's automatic location collection using the com_appboy_disable_location_collection
+  boolean in appboy.xml.
+- Adds the ability to send location tracking events to Appboy manually using setLastKnownLocation on the AppboyUser.  This
+  is intended to be used with com_appboy_disable_location_collection set to true so that locations are only being recorded
+  from a single source.
+
 ## 1.5.2
 - Adds support for GCM and ADM messages without collapse keys.
 - Adds support for GCM and ADM messages with notification priorities.
