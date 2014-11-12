@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.appboy.Appboy;
@@ -31,7 +30,6 @@ public class AppboyFragmentActivity extends FragmentActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     
-    activateStrictMode();
   }
 
   @Override
@@ -72,15 +70,6 @@ public class AppboyFragmentActivity extends FragmentActivity {
     // Note: This must be called in the onStop lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
     Appboy.getInstance(this).closeSession(this);
-  }
-
-  @TargetApi(9)
-  private void activateStrictMode() {
-    // Set the activity to Strict mode so that we get LogCat warnings when code misbehaves on the main thread.
-    if (BuildConfig.DEBUG
-      && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-      StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
-    }
   }
 
   protected void setTitle(String title) {

@@ -28,13 +28,17 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    Log.i(TAG, String.format("Received GCM message. Message: %s", intent.toString()));
+    Log.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
     String action = intent.getAction();
     if (GCM_REGISTRATION_INTENT_ACTION.equals(action)) {
       XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
       handleRegistrationEventIfEnabled(appConfigurationProvider, context, intent);
     } else if (GCM_RECEIVE_INTENT_ACTION.equals(action) && AppboyNotificationUtils.isAppboyPushMessage(intent)) {
       new HandleAppboyGcmMessageTask(context, intent);
+    } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action) && intent.hasExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG)) {
+      int notificationId = intent.getIntExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
+      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
     } else {
       Log.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
     }
@@ -119,6 +123,12 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         // Since we have received a notification, we want to wake the device screen.
         wakeScreenIfHasPermission(context);
 
+        // Set a custom duration for this notification.
+        if (extras != null && extras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
+          int durationInMillis = Integer.parseInt(extras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));
+          AppboyNotificationUtils.setNotificationDurationAlarm(context, this.getClass(), notificationId, durationInMillis);
+        }
+
         return true;
       } else {
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
@@ -135,6 +145,10 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
    * Note: Collapse keys are used by the GCM server to collapse duplicate messages.
    */
   int getNotificationId(Bundle extras) {
+    if (extras == null) {
+      Log.d(TAG, String.format("message without extras bundle received.  Assigning notification id of " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
+      return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
+    }
     if (extras.containsKey(Constants.APPBOY_GCM_MESSAGE_TYPE_KEY)) {
       return extras.getString(Constants.APPBOY_GCM_MESSAGE_TYPE_KEY).hashCode();
     } else {

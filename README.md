@@ -6,7 +6,7 @@ Successful marketing automation is essential to the future of your mobile app. A
 
 - [Appboy Academy](http://www.appboy.com/academy "Appboy Academy")
 - [Technical Documentation](http://documentation.appboy.com "Appboy Technical Documentation")
-- [Full Class Documentation](http://appboy.github.io/appboy-android-sdk/javadocs/ "Appboy Android SDK Class Documentation")
+- [JavaDocs](http://appboy.github.io/appboy-android-sdk/javadocs/ "Appboy Android SDK Class Documentation")
 
 ## Components
 

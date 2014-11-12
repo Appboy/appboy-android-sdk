@@ -48,6 +48,7 @@
         android:key="data_flush"
         android:title="@string/data_flush_title"
         android:summary="@string/data_flush_summary"/>
+
   </PreferenceCategory>
 
   <PreferenceCategory

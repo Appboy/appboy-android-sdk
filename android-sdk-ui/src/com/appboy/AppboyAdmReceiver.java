@@ -24,7 +24,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    Log.i(TAG, String.format("Received ADM message. Message: %s", intent.toString()));
+    Log.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
     String action = intent.getAction();
     if (ADM_REGISTRATION_INTENT_ACTION.equals(action)) {
       Log.i(TAG, String.format("Received ADM REGISTRATION. Message: %s", intent.toString()));
@@ -32,6 +32,10 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       handleRegistrationEventIfEnabled(appConfigurationProvider, context, intent);
     } else if (ADM_RECEIVE_INTENT_ACTION.equals(action) && AppboyNotificationUtils.isAppboyPushMessage(intent)) {
       new HandleAppboyAdmMessageTask(context, intent);
+    } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action) && intent.hasExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG)) {
+      int notificationId = intent.getIntExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
+      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
     } else {
       Log.w(TAG, String.format("The ADM receiver received a message not sent from Appboy. Ignoring the message."));
     }
@@ -95,6 +99,13 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
             extras.getString(Constants.APPBOY_PUSH_TITLE_KEY), extras.getString(Constants.APPBOY_PUSH_CONTENT_KEY), extras);
         notificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
+
+        // Set a custom duration for this notification.
+        if (extras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
+          int durationInMillis = Integer.parseInt(extras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));
+          AppboyNotificationUtils.setNotificationDurationAlarm(context, this.getClass(), notificationId, durationInMillis);
+        }
+
         return true;
       } else {
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
@@ -111,13 +122,13 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
    * Note: Consolidation keys are used by the ADM server to collapse duplicate messages.
    */
   int getNotificationId(Bundle extras) {
-    if (extras.containsKey(Constants.APPBOY_ADM_MESSAGE_TYPE_KEY)) {
-      return extras.getString(Constants.APPBOY_ADM_MESSAGE_TYPE_KEY).hashCode();
-    } else {
-      Log.d(TAG, String.format("message without consolidation key received: " + extras.toString()));
+    if (extras != null) {
       String messageKey = AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_TITLE_KEY, "")
-          + AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
+        + AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
       return messageKey.hashCode();
+    } else {
+      Log.d(TAG, String.format("message without extras bundle received.  Assigning notification id of " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
+      return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
     }
   }
 

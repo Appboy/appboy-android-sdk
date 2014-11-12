@@ -26,11 +26,13 @@ public class SlideupTesterActivity extends AppboyFragmentActivity {
   private static final String CUSTOM_SLIDEUP_VIEW_KEY = "slideups_custom_slideup_view";
   private static final String CUSTOM_SLIDEUP_MANAGER_LISTENER_KEY = "slideups_custom_slideup_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "slideups_custom_appboy_navigator";
+  private static final int SLIDEUP_DURATION_DEFAULT_MILLIS = 5000;
 
   private ListView mSlideFromListView;
   private ListView mClickActionListView;
   private ListView mDismissTypeListView;
   private EditText mUriEditText;
+  private EditText mDurationSecondsEditText;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class SlideupTesterActivity extends AppboyFragmentActivity {
     mDismissTypeListView.setAdapter(dismissTypeListAdapter);
 
     mUriEditText = (EditText) findViewById(R.id.uri_edit_text);
+    mDurationSecondsEditText = (EditText) findViewById(R.id.duration_seconds_edit_text);
 
     CheckBox customSlideupViewCheckBox = (CheckBox) findViewById(R.id.custom_slideup_view_factory_checkbox);
     customSlideupViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -153,7 +156,15 @@ public class SlideupTesterActivity extends AppboyFragmentActivity {
           return;
         }
 
-        Slideup slideup = Slideup.createSlideup("This is a test slideup.", slideFrom, dismissType, 5000);
+        // initialize slideup
+        Slideup slideup = Slideup.createSlideup("This is a test slideup.", slideFrom, dismissType, SLIDEUP_DURATION_DEFAULT_MILLIS);
+
+        // set slideup duration
+        if (!StringUtils.isNullOrEmpty(mDurationSecondsEditText.getText().toString())) {
+          slideup.setDurationInMilliseconds(Integer.parseInt(mDurationSecondsEditText.getText().toString()) * 1000);
+        }
+
+        // set slideup click action
         switch (clickAction) {
           case NEWS_FEED:
             slideup.setClickActionToNewsFeed();

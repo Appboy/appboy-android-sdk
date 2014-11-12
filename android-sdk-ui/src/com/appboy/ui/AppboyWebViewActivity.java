@@ -12,6 +12,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.RelativeLayout;
 
 import com.appboy.ui.activities.AppboyBaseActivity;
 
@@ -41,6 +42,10 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     webSettings.setBuiltInZoomControls(true);
     webSettings.setUseWideViewPort(true);
     webSettings.setLoadWithOverviewMode(true);
+
+    // Instruct webview to be as large as its parent view.
+    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+    webView.setLayoutParams(layoutParams);
 
     webView.setWebChromeClient(new WebChromeClient() {
       public void onProgressChanged(WebView view, int progress) {

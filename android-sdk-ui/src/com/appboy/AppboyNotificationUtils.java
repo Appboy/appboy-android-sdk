@@ -1,6 +1,7 @@
 package com.appboy;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,8 +9,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -67,10 +70,27 @@ public class AppboyNotificationUtils
     PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, 0, pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
     notificationBuilder.setContentIntent(pushOpenedPendingIntent);
 
+
     // Sets the icon used in the notification bar itself.
     notificationBuilder.setSmallIcon(smallNotificationIconResourceId);
     notificationBuilder.setContentTitle(title);
     notificationBuilder.setContentText(content);
+
+    // Setting notification sounds are supported after Honeycomb.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && intentExtras != null) {
+      // Retrieve sound uri if included in intentExtras bundle.
+      if (intentExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY)) {
+        String soundURI = intentExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY);
+        if(soundURI != null) {
+          if (soundURI.equals(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE)) {
+            notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
+          } else {
+            notificationBuilder.setSound(Uri.parse(soundURI));
+          }
+
+        }
+      }
+    }
 
     // From Honeycomb to ICS, we can use a custom view for our notifications which will allow them to be taller than
     // the standard one line of text.
@@ -115,13 +135,21 @@ public class AppboyNotificationUtils
       }
     }
 
-    // If we're using Jelly Bean, we can use the BigTextStyle, which lets the notification layout size grow to
-    // accommodate longer text.
+    // If we're using Jelly Bean, we can use the Big View Style, which lets the notification layout size grow to
+    // accommodate longer text and images.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+      // Summary text which appears with content in expanded view.
+      String summaryText = "";
 
       // If there is an image url found in the extras payload and the image can be downloaded, then
       // use the android BigPictureStyle as the notification. Else, use the BigTextStyle instead.
       if (intentExtras != null) {
+
+        // Retrieve summary text if included in intentExtras bundle.
+        if (intentExtras.containsKey(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY)) {
+          summaryText = intentExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
+        }
 
         // Retrieve notification priority from intentExtras bundle if it has been set.
         // Otherwise the notification's priority remains the default priority.
@@ -138,20 +166,50 @@ public class AppboyNotificationUtils
           Bitmap imageBitmap = downloadImageBitmap(imageUrl);
           if (imageBitmap != null) {
             Log.d(TAG, "Rendering push notification with BigPictureStyle");
-            return new NotificationCompat.BigPictureStyle(notificationBuilder)
-                .bigPicture(imageBitmap)
-                .setSummaryText(content)
-                .build();
+
+            return getBigPictureNotification(notificationBuilder, imageBitmap, content, summaryText);
           } else {
             Log.d(TAG, "Bitmap download failed for push notification");
           }
         }
       }
       Log.d(TAG, "Rendering push notification with BigTextStyle");
-      return new NotificationCompat.BigTextStyle(notificationBuilder)
-          .bigText(content).build();
+      return getBigTextNotification(notificationBuilder, content, summaryText);
     }
     return notificationBuilder.build();
+  }
+
+  /**
+   * Returns a big-picture style notification initialized with the specified bitmap, content, and summary text.
+   * If summary text is specified, it will be shown in the expanded notification view.
+   * If no summary text is specified, the content text will be shown in its place.
+   */
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+  public static Notification getBigPictureNotification(NotificationCompat.Builder notificationBuilder, Bitmap imageBitmap, String content, String summaryText) {
+    NotificationCompat.BigPictureStyle bigPictureNotificationBuilder = new NotificationCompat.BigPictureStyle(notificationBuilder);
+    if (summaryText != null && !summaryText.isEmpty()) {
+      bigPictureNotificationBuilder.setSummaryText(summaryText);
+    } else {
+      bigPictureNotificationBuilder.setSummaryText(content);
+    }
+    return bigPictureNotificationBuilder
+      .bigPicture(imageBitmap)
+      .build();
+  }
+
+  /**
+   * Returns a big-text style notification initialized with the specified content and summary text.
+   * If no summary text is specified, summary text will not be added to the notification.
+   */
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+  public static Notification getBigTextNotification(NotificationCompat.Builder notificationBuilder, String content, String summaryText) {
+    NotificationCompat.BigTextStyle bigTextNotificationBuilder = new NotificationCompat.BigTextStyle(notificationBuilder);
+    if (summaryText != null && !summaryText.isEmpty()) {
+      bigTextNotificationBuilder.setSummaryText(summaryText);
+    }
+    return bigTextNotificationBuilder
+      .bigText(content)
+      .build();
   }
 
   static String getOptionalStringResource(Resources resources, int stringResourceId, String defaultString) {
@@ -249,6 +307,20 @@ public class AppboyNotificationUtils
     context.sendBroadcast(pushReceivedIntent);
   }
 
+  /**
+   * Creates an alarm which will issue a broadcast to cancel the notification specified by the given notificationId after the given duration.
+   */
+  public static void setNotificationDurationAlarm(Context context, Class<?> thisClass, int notificationId, int durationInMillis) {
+    Intent cancelIntent = new Intent(context, thisClass);
+    cancelIntent.setAction(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION);
+    cancelIntent.putExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG, notificationId);
+
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    if (durationInMillis >= Constants.APPBOY_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
+      alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + durationInMillis, pendingIntent);
+    }
+  }
 
   public static Bundle createExtrasBundle(String jsonString) {
     try {
@@ -262,6 +334,7 @@ public class AppboyNotificationUtils
       return bundle;
     } catch (JSONException e) {
       Log.e(TAG, String.format("Unable to parse the Appboy push data extras."));
+      e.printStackTrace();
       return null;
     }
   }

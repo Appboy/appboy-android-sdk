@@ -1,7 +1,5 @@
 package com.appboy.sample;
 
-import android.app.AlarmManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -16,6 +14,7 @@ import com.appboy.Appboy;
 import com.appboy.AppboyUser;
 import com.appboy.Constants;
 import com.appboy.enums.SocialNetwork;
+import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.ui.slideups.AppboySlideupManager;
 import com.crittercism.app.Crittercism;
 import java.math.BigDecimal;
@@ -55,7 +54,7 @@ public class PreferencesActivity extends PreferenceActivity {
       @Override
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).logShare(SocialNetwork.FACEBOOK);
-        Toast.makeText(PreferencesActivity.this, getString(R.string.facebook_share_toast), Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.facebook_share_toast));
         return true;
       }
     });
@@ -63,7 +62,7 @@ public class PreferencesActivity extends PreferenceActivity {
       @Override
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).logShare(SocialNetwork.TWITTER);
-        Toast.makeText(PreferencesActivity.this, getString(R.string.twitter_share_toast), Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.twitter_share_toast));
         return true;
       }
     });
@@ -85,7 +84,7 @@ public class PreferencesActivity extends PreferenceActivity {
       @Override
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).requestImmediateDataFlush();
-        Toast.makeText(PreferencesActivity.this, getString(R.string.data_flush_toast), Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.data_flush_toast));
         return true;
       }
     });
@@ -93,7 +92,7 @@ public class PreferencesActivity extends PreferenceActivity {
       @Override
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).requestSlideupRefresh();
-        Toast.makeText(PreferencesActivity.this, "Requested Slideup", Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.requested_slideup_toast));
         return true;
       }
     });
@@ -194,6 +193,11 @@ public class PreferencesActivity extends PreferenceActivity {
         mHelper.queryInventoryAsync(mGotInventoryListener);
       }
     });
+  }
+
+  // Displays a toast to the user
+  private void showToast(String message) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   @Override
