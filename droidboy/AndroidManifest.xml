@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="33" android:versionName="1.5.4">
+  package="com.appboy.sample" android:versionCode="33" android:versionName="1.5.5">
 
   <!-- Supported versions -->
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
@@ -10,10 +10,10 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
 
   <!-- Permissions for GCM -->
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
   <permission android:name="com.appboy.sample.permission.C2D_MESSAGE" android:protectionLevel="signature" />
   <uses-permission android:name="com.appboy.sample.permission.C2D_MESSAGE" />

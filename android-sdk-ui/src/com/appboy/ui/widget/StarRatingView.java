@@ -1,8 +1,6 @@
 package com.appboy.ui.widget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -17,19 +15,25 @@ import java.util.List;
 public class StarRatingView extends LinearLayout {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, StarRatingView.class.getName());
 
-  private int mNumStars;
+  private static final int MAX_NUMBER_OF_STARS = 5;
   private List<ImageView> mStarRating;
-  private float mRating;
+  private float mRating = 0.0f;
 
   public StarRatingView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    init(context, attrs, 0);
-  }
+    setOrientation(HORIZONTAL);
 
-  @TargetApi(11)
-  public StarRatingView(Context context, AttributeSet attrs, int defStyle) {
-    super(context, attrs, defStyle);
-    init(context, attrs, defStyle);
+    // Initialize the star views and layout parameters so they can be changed to match the rating of this specific card later.
+    mStarRating = new ArrayList<ImageView>(MAX_NUMBER_OF_STARS);
+    for (int i = 0; i < MAX_NUMBER_OF_STARS; i++) {
+      ImageView star = new ImageView(context);
+      star.setTag(0);
+      ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      addView(star, layoutParams);
+      mStarRating.add(star);
+    }
+
+    setRating(mRating);
   }
 
   public float getRating() {
@@ -37,8 +41,8 @@ public class StarRatingView extends LinearLayout {
   }
 
   public boolean setRating(float rating) {
-    if (rating < 0 || rating > mNumStars) {
-      Log.e(TAG, String.format("Unable to set rating to %f. Rating must be between 0 and %d", rating, mNumStars));
+    if (rating < 0 || rating > MAX_NUMBER_OF_STARS) {
+      Log.e(TAG, String.format("Unable to set rating to %f. Rating must be between 0 and %d", rating, MAX_NUMBER_OF_STARS));
       return false;
     }
 
@@ -73,26 +77,6 @@ public class StarRatingView extends LinearLayout {
       }
     }
     return true;
-  }
-
-  private void init(Context context, AttributeSet attrs, int defStyle) {
-    setOrientation(HORIZONTAL);
-
-    TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.StarRatingView, defStyle, 0);
-    mNumStars = typedArray.getInteger(R.styleable.StarRatingView_numStars, 5);
-    mRating = typedArray.getFloat(R.styleable.StarRatingView_defaultRating, 0.0f);
-    typedArray.recycle();
-
-    mStarRating = new ArrayList<ImageView>(mNumStars);
-    for (int i = 0; i < mNumStars; i++) {
-      ImageView star = new ImageView(context);
-      star.setTag(0);
-      ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-      addView(star, layoutParams);
-      mStarRating.add(star);
-    }
-
-    setRating(mRating);
   }
 
   List<ImageView> getImageViewList() {

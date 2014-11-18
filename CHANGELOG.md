@@ -1,3 +1,8 @@
+## 1.5.5
+- Notifications with a minimum priority specified no longer trigger the device wakelock because Android does not display
+  them in the status bar (they appear silently in the drawer).
+- Removes styleable elements from the UI project. This should have no impact on consuming projects.
+
 ## 1.5.4
 - Incubates a feature to allow for runtime changes to be made to the API key. Please contact android@appboy.com if you want to test this feature.
 - Adds support for Big View text summaries, allowing summary text to be displayed under the main text in a notification.
@@ -8,6 +13,7 @@
 - Adds support for changing In-App Message duration from the client app.  To do this, you can modify the slideup object passed to you in the OnReceive()
   delegate using the new setter method setDurationInMilliseconds(int millis).
 - Updates AppboyWebViewActivity to always fill the parent view.  This forces some previously problematic websites to render at the correct size.
+- Adds support for displaying Kindle notifications with images.
 
 ## 1.5.3
 - Adds the ability to turn off Appboy's automatic location collection using the com_appboy_disable_location_collection

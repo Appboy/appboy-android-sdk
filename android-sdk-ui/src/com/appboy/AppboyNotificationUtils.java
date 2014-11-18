@@ -1,17 +1,20 @@
 package com.appboy;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -151,16 +154,10 @@ public class AppboyNotificationUtils
           summaryText = intentExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
         }
 
-        // Retrieve notification priority from intentExtras bundle if it has been set.
-        // Otherwise the notification's priority remains the default priority.
-        if (intentExtras.containsKey(Constants.APPBOY_PUSH_PRIORITY_KEY)) {
-          int notificationPriority = Integer.parseInt(intentExtras.getString(Constants.APPBOY_PUSH_PRIORITY_KEY));
-          if (isValidNotificationPriority(notificationPriority)) {
-            notificationBuilder.setPriority(notificationPriority);
-          }
-        }
+        // Set a custom notification priority if defined in the bundle.
+        notificationBuilder.setPriority(getNotificationPriority(intentExtras));
 
-        Bundle extrasBundle = intentExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
+        Bundle extrasBundle = getExtrasBundle(intentExtras);
         if (extrasBundle!=null && extrasBundle.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
           String imageUrl = extrasBundle.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
           Bitmap imageBitmap = downloadImageBitmap(imageUrl);
@@ -177,6 +174,19 @@ public class AppboyNotificationUtils
       return getBigTextNotification(notificationBuilder, content, summaryText);
     }
     return notificationBuilder.build();
+  }
+
+  /**
+   * Get the extras JSON bundle from the push payload.
+   *
+   * Amazon ADM recursively flattens all JSON messages, so we just return the original bundle.
+   */
+  public static Bundle getExtrasBundle(Bundle intentExtras) {
+    if (!Constants.IS_AMAZON) {
+      return intentExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
+    } else {
+      return intentExtras;
+    }
   }
 
   /**
@@ -271,14 +281,6 @@ public class AppboyNotificationUtils
   }
 
   /**
-   * Checks whether the given integer value is a valid Android notification priority constant
-   */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-  public static boolean isValidNotificationPriority(int priority) {
-    return (priority >= Notification.PRIORITY_MIN && priority <= Notification.PRIORITY_MAX);
-  }
-
-  /**
    * Checks the intent to determine whether this is a notification message or a data push.
    *
    * A notification message is an Appboy push message that displays a notification in the
@@ -320,6 +322,57 @@ public class AppboyNotificationUtils
     if (durationInMillis >= Constants.APPBOY_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
       alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + durationInMillis, pendingIntent);
     }
+  }
+
+  /**
+   * This method will retrieve notification priority from intentExtras bundle if it has been set.
+   * Otherwise returns the default priority.
+   */
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+  public static int getNotificationPriority(Bundle intentExtras) {
+    if (intentExtras != null && intentExtras.containsKey(Constants.APPBOY_PUSH_PRIORITY_KEY)) {
+      int notificationPriority = Integer.parseInt(intentExtras.getString(Constants.APPBOY_PUSH_PRIORITY_KEY));
+      if (isValidNotificationPriority(notificationPriority)) {
+        return notificationPriority;
+      }
+    }
+    return Notification.PRIORITY_DEFAULT;
+  }
+
+  /**
+   * Checks whether the given integer value is a valid Android notification priority constant
+   */
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+  public static boolean isValidNotificationPriority(int priority) {
+    return (priority >= Notification.PRIORITY_MIN && priority <= Notification.PRIORITY_MAX);
+  }
+
+  /**
+   * This method will wake the device using a wake lock if the WAKE_LOCK permission is present in the
+   * manifest. If the permission is not present, this does nothing. If the screen is already on,
+   * and the permission is present, this does nothing.  If the priority of the incoming notification
+   * is min, this does nothing.
+   */
+  public static boolean wakeScreenIfHasPermission(Context context, Bundle intentExtras) {
+    // Check for the wake lock permission.
+    if (context.checkCallingOrSelfPermission(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_DENIED) {
+      return false;
+    }
+    // Don't wake lock if this is a minimum priority notification.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      if (getNotificationPriority(intentExtras) == Notification.PRIORITY_MIN) {
+        return false;
+      }
+    }
+
+    // Get the power manager for the wake lock.
+    PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+    // Acquire the wake lock for some negligible time, then release it. We just want to wake the screen
+    // and not take up more CPU power than necessary.
+    wakeLock.acquire();
+    wakeLock.release();
+    return true;
   }
 
   public static Bundle createExtrasBundle(String jsonString) {

@@ -100,6 +100,9 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         notificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
 
+        // Since we have received a notification, we want to wake the device screen.
+        AppboyNotificationUtils.wakeScreenIfHasPermission(context, extras);
+
         // Set a custom duration for this notification.
         if (extras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
           int durationInMillis = Integer.parseInt(extras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));

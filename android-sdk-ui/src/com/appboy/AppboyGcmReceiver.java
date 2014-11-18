@@ -1,6 +1,5 @@
 package com.appboy;
 
-import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -8,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.content.pm.PackageManager;
-import android.os.PowerManager;
 import android.util.Log;
 
 import com.appboy.configuration.XmlAppConfigurationProvider;
@@ -121,7 +118,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
 
         // Since we have received a notification, we want to wake the device screen.
-        wakeScreenIfHasPermission(context);
+        AppboyNotificationUtils.wakeScreenIfHasPermission(context, extras);
 
         // Set a custom duration for this notification.
         if (extras != null && extras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
@@ -160,29 +157,8 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
   }
 
   /**
-   * This method will wake the device using a wake lock if the WAKE_LOCK permission is present in the
-   * manifest. If the permission is not present, this does nothing. If the screen is already on,
-   * and the permission is present, this does nothing.
-   */
-  private void wakeScreenIfHasPermission(Context context) {
-    // Check for the wake lock permission
-    if (context.checkCallingOrSelfPermission(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_DENIED) {
-      return;
-    }
-
-    // Get the power manager for the wake lock
-    PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
-    // Acquire the wake lock for some negligible time, then release it. We just want to wake the screen
-    // and not take up more CPU power than necessary.
-    wakeLock.acquire();
-    wakeLock.release();
-  }
-
-  /**
    * Runs the handleAppboyGcmMessage method in a background thread in case of an image push
    * notification, which cannot be downloaded on the main thread.
-   *
    */
   public class HandleAppboyGcmMessageTask extends AsyncTask<Void, Void, Void> {
     private final Context context;
