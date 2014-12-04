@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Cards -->
-  <string name="com_appboy_app_store_review_card_title">喜歡我們的應用程式嗎？</string>
-  <string name="com_appboy_app_store_review_card_subtitle">請到應用商店給我們評分吧！</string>
-  <string name="com_appboy_app_store_review_card_image_content_description">橫幅圖片</string>
-  <string name="com_appboy_banner_image_card_image_content_description">橫幅圖片</string>
-  <string name="com_appboy_cross_promotion_small_card_image_content_description">應用圖片</string>
-  <string name="com_appboy_short_news_card_image_content_description">新聞消息圖片</string>
   <string name="com_appboy_recommendation_free">免費</string>
 
   <!-- Feedback form -->
@@ -16,7 +10,8 @@
   <string name="com_appboy_feedback_form_cancel">取消</string>
   <string name="com_appboy_feedback_form_send">發送</string>
   <string name="com_appboy_feedback_form_invalid_message">請輸入您的反饋</string>
-  <string name="com_appboy_feedback_form_invalid_email">無效的電子郵件</string>
+  <string name="com_appboy_feedback_form_invalid_email">無效的電子郵箱</string>
+  <string name="com_appboy_feedback_form_empty_email">必須輸入一個有效的電子郵箱</string>
 
   <!-- News feed -->
   <string name="com_appboy_feed_empty">暫時沒有更新。\n請稍候再試。</string>

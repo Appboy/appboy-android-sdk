@@ -1,9 +1,12 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.appboy.Constants;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
@@ -16,6 +19,8 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
   private final TextView mDomain;
   private IAction mCardAction;
   private final float mAspectRatio = 1f;
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY, ShortNewsCardView.class.getName());
+
 
   public ShortNewsCardView(Context context) {
     this(context, null);
@@ -52,6 +57,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
       public void onClick(View v) {
         card.setIsRead(true);
         if (mCardAction != null) {
+          Log.d(TAG, String.format("Logged click for card %s", card.getId()));
           card.logClick();
           mCardAction.execute(mContext);
         }

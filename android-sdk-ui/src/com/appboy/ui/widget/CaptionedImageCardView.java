@@ -1,11 +1,13 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appboy.Appboy;
+import com.appboy.Constants;
 import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
@@ -17,6 +19,7 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
   private final TextView mDescription;
   private final TextView mDomain;
   private IAction mCardAction;
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CaptionedImageCardView.class.getName());
 
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
   // aspect ratio, then this value will be the aspect ratio of the card on render.
@@ -62,6 +65,7 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
       public void onClick(View v) {
         card.setIsRead(true);
         if (mCardAction != null) {
+          Log.d(TAG, String.format("Logged click for card %s", card.getId()));
           card.logClick();
           mCardAction.execute(mContext);
         }

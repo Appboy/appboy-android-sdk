@@ -19,10 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * !! MODIFIED THE ORIGINAL !!
- * !! Be sure to make the same modifications when updating this to a newer version. !!
- * !! Modified to expose the SKU price amount in micros and the price currency code. !!
- *
  * Represents an in-app product's listing details.
  */
 public class SkuDetails {
@@ -30,8 +26,6 @@ public class SkuDetails {
   String mSku;
   String mType;
   String mPrice;
-  Long mPriceAmountMicros;    // Added
-  String mPriceCurrencyCode;  // Added
   String mTitle;
   String mDescription;
   String mJson;
@@ -47,8 +41,6 @@ public class SkuDetails {
     mSku = o.optString("productId");
     mType = o.optString("type");
     mPrice = o.optString("price");
-    mPriceAmountMicros = o.optLong("price_amount_micros");    // Added
-    mPriceCurrencyCode = o.optString("price_currency_code");  // Added
     mTitle = o.optString("title");
     mDescription = o.optString("description");
   }
@@ -63,16 +55,6 @@ public class SkuDetails {
 
   public String getPrice() {
     return mPrice;
-  }
-
-  // Added
-  public Long getPriceAmountMicros() {
-    return mPriceAmountMicros;
-  }
-
-  // Added
-  public String getPriceCurrencyCode() {
-    return mPriceCurrencyCode;
   }
 
   public String getTitle() {

@@ -226,9 +226,9 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
               mAdapter.replaceFeed(event.getFeedCards(mCategories));
               listView.setVisibility(View.VISIBLE);
             }
+            mFeedSwipeLayout.setRefreshing(false);
           }
         });
-        mFeedSwipeLayout.setRefreshing(false);
       }
     };
     mAppboy.subscribeToFeedUpdates(mFeedUpdatedSubscriber);

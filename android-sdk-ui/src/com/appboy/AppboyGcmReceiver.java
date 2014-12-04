@@ -108,7 +108,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       extras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtrasData);
 
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
-        int notificationId = getNotificationId(extras);
+        int notificationId = AppboyNotificationUtils.getNotificationId(extras);
         extras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
         XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
 
@@ -131,28 +131,6 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
         return false;
       }
-    }
-  }
-
-  /**
-   * Returns a new id for the new notification we'll send to the notification center.
-   * Notification id is used by Android OS to collapse duplicate notifications.
-   * If collapse key present - the new id is the hash of the collapse key.
-   * If no collapse key present - we want a unique id so we use a hash of the message title & content.
-   * Note: Collapse keys are used by the GCM server to collapse duplicate messages.
-   */
-  int getNotificationId(Bundle extras) {
-    if (extras == null) {
-      Log.d(TAG, String.format("message without extras bundle received.  Assigning notification id of " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
-      return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
-    }
-    if (extras.containsKey(Constants.APPBOY_GCM_MESSAGE_TYPE_KEY)) {
-      return extras.getString(Constants.APPBOY_GCM_MESSAGE_TYPE_KEY).hashCode();
-    } else {
-      Log.d(TAG, String.format("message without collapse key received: " + extras.toString()));
-      String messageKey = AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_TITLE_KEY, "")
-          + AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
-      return messageKey.hashCode();
     }
   }
 

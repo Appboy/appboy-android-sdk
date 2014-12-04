@@ -1,6 +1,7 @@
 package com.appboy.sample;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -14,7 +15,7 @@ import com.appboy.Appboy;
 import com.appboy.AppboyUser;
 import com.appboy.Constants;
 import com.appboy.enums.SocialNetwork;
-import com.appboy.sample.util.SharedPrefsUtil;
+import android.content.Context;
 import com.appboy.ui.slideups.AppboySlideupManager;
 import com.crittercism.app.Crittercism;
 import java.math.BigDecimal;
@@ -66,20 +67,26 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
-    if (Constants.IS_AMAZON) {
-      Appboy.getInstance(PreferencesActivity.this).logPurchase("product_id", 99);
-      Toast.makeText(PreferencesActivity.this, "Thank you for your purchase", Toast.LENGTH_LONG).show();
-    } else {
+    if (isGoglePlayInstalled(this)) {
       iapGoogleSetup();
-      logPurchasePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
+    } else {
+      Log.e(TAG, "Google Play is not installed; not setting up In-App Billing");
+    }
+    logPurchasePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        if (Constants.IS_AMAZON || !isGoglePlayInstalled(PreferencesActivity.this)) {
+          Appboy.getInstance(PreferencesActivity.this).logPurchase(SKU_ANDROID_TEST_PURCHASED, "USD", BigDecimal.ONE);
+          Toast.makeText(PreferencesActivity.this, "Thank you for your purchase", Toast.LENGTH_LONG).show();
+          return true;
+        } else {
           mHelper.launchPurchaseFlow(PreferencesActivity.this, SKU_ANDROID_TEST_PURCHASED,
-              IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE, mPurchaseFinishedListener);
+            IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE, mPurchaseFinishedListener);
           return true;
         }
-      });
-    }
+      }
+    });
+
     dataFlushPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
@@ -99,7 +106,7 @@ public class PreferencesActivity extends PreferenceActivity {
     customAttributeArraySetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
-        String[] testSetArray = new String[] { "TestVal2", "TestVal2"};
+        String[] testSetArray = new String[]{"TestVal2", "TestVal2"};
         Toast.makeText(PreferencesActivity.this, "Set a Custom Attribute Array", Toast.LENGTH_LONG).show();
         AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
         appboyUser.setCustomAttributeArray("custom_attribute_array_test", testSetArray);
@@ -129,7 +136,7 @@ public class PreferencesActivity extends PreferenceActivity {
     customAttributeArraySetEmptyPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
-        String[] testEmptyArray = new String[] {};
+        String[] testEmptyArray = new String[]{};
         Toast.makeText(PreferencesActivity.this, "Set Empty Custom Attribute Array", Toast.LENGTH_LONG).show();
         AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
         appboyUser.setCustomAttributeArray("custom_attribute_array_test", testEmptyArray);
@@ -208,8 +215,7 @@ public class PreferencesActivity extends PreferenceActivity {
       // perform any handling of activity results not related to in-app
       // billing...
       super.onActivityResult(requestCode, resultCode, data);
-    }
-    else {
+    } else {
       Log.d(TAG, "onActivityResult handled by IABUtil.");
     }
   }
@@ -247,6 +253,7 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onDestroy() {
     super.onDestroy();
+
     Log.d(TAG, "Destroying helper.");
     if (mHelper != null) {
       mHelper.dispose();
@@ -310,7 +317,9 @@ public class PreferencesActivity extends PreferenceActivity {
     }
   };
 
-  /** Verifies the developer payload of a purchase. */
+  /**
+   * Verifies the developer payload of a purchase.
+   */
   private boolean verifyDeveloperPayload(Purchase p) {
     String payload = p.getDeveloperPayload();
 
@@ -337,6 +346,20 @@ public class PreferencesActivity extends PreferenceActivity {
          * installations is recommended.
          */
 
+    return true;
+  }
+
+  // Detect if Google Play is installed to know if IAB can be used
+  private boolean isGoglePlayInstalled(Context context) {
+    try {
+      context.getPackageManager().getPackageInfo("com.google.android.gsf", 0);
+    } catch (PackageManager.NameNotFoundException e) {
+      Log.e(TAG, "GCM requires the Google Play store installed.");
+      return false;
+    } catch (Exception e) {
+      Log.e(TAG, String.format("Unexpected exception while checking for %s.", "com.google.android.gsf"));
+      return false;
+    }
     return true;
   }
 }

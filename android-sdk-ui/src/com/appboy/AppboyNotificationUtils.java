@@ -325,15 +325,52 @@ public class AppboyNotificationUtils
   }
 
   /**
+   * Returns an id for the new notification we'll send to the notification center.
+   * Notification id is used by the Android OS to override currently active notifications with identical ids.
+   * If a custom notification id is not defined in the payload, Appboy derives an id value from the message's contents
+   * to prevent duplication in the notification center.
+   */
+  public static int getNotificationId(Bundle extras) {
+    if (extras != null) {
+      if (extras.containsKey(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID)) {
+        try {
+          int notificationId = Integer.parseInt(extras.getString(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID));
+          Log.d(TAG, String.format("Using notification id provided in the message's extras bundle: " + notificationId));
+          return notificationId;
+
+        } catch (NumberFormatException e) {
+          Log.e(TAG, String.format("Unable to parse notification id provided in the message's extras bundle. Using default notification id instead: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
+          e.printStackTrace();
+          return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
+        }
+      } else {
+        String messageKey = AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_TITLE_KEY, "")
+            + AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
+        int notificationId = messageKey.hashCode();
+        Log.d(TAG, String.format("Message without notification id provided in the extras bundle received.  Using a hash of the message: " + notificationId));
+        return notificationId;
+      }
+    } else {
+      Log.d(TAG, String.format("Message without extras bundle received.  Using default notification id: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
+      return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
+    }
+  }
+
+  /**
    * This method will retrieve notification priority from intentExtras bundle if it has been set.
    * Otherwise returns the default priority.
    */
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static int getNotificationPriority(Bundle intentExtras) {
     if (intentExtras != null && intentExtras.containsKey(Constants.APPBOY_PUSH_PRIORITY_KEY)) {
-      int notificationPriority = Integer.parseInt(intentExtras.getString(Constants.APPBOY_PUSH_PRIORITY_KEY));
-      if (isValidNotificationPriority(notificationPriority)) {
-        return notificationPriority;
+      try {
+        int notificationPriority = Integer.parseInt(intentExtras.getString(Constants.APPBOY_PUSH_PRIORITY_KEY));
+        if (isValidNotificationPriority(notificationPriority)) {
+          return notificationPriority;
+        }
+      } catch (NumberFormatException e) {
+        Log.e(TAG, String.format("Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT));
+        e.printStackTrace();
       }
     }
     return Notification.PRIORITY_DEFAULT;

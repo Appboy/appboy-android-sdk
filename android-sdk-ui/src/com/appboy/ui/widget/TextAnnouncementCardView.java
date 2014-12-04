@@ -1,10 +1,12 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.appboy.Appboy;
+import com.appboy.Constants;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
@@ -15,6 +17,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
   private final TextView mDescription;
   private final TextView mDomain;
   private IAction mCardAction;
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY, TextAnnouncementCardView.class.getName());
 
   public TextAnnouncementCardView(Context context) {
     this(context, null);
@@ -50,6 +53,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
       public void onClick(View v) {
         card.setIsRead(true);
         if (mCardAction != null) {
+          Log.d(TAG, String.format("Logged click for card %s", card.getId()));
           card.logClick();
           mCardAction.execute(mContext);
         }
