@@ -15,7 +15,7 @@ public class ActionFactory {
     if (!StringUtils.isNullOrBlank(url)) {
       Uri uri = Uri.parse(url);
       if (WebAction.getSupportedSchemes().contains(uri.getScheme())) {
-        return new WebAction(url);
+        return new WebAction(url, extras);
       } else if ("intent".equals(uri.getScheme())) {
         return new ActivityAction(context.getPackageName(), uri, extras);
       } else {
