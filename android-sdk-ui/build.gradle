@@ -1,20 +1,22 @@
 apply plugin: 'android-library'
-apply plugin: 'android-maven'
+apply plugin: 'maven-publish'
+
+version = '1.6.0'
 
 dependencies {
-  compile files('libs/appboy.jar')
+  compile 'com.appboy:closed-lib:0.0.1'
   // Note: This requires the Android Support Repository to be installed, please see the README.md. The jar is
   // also available in the libs/ directory to help support people who are using older build systems.
-  compile 'com.android.support:support-v4:20.0.0'
+  compile 'com.android.support:support-v4:21.0.0'
 }
 
 android {
-  compileSdkVersion 20
-  buildToolsVersion '20.0.0'
+  compileSdkVersion 21
+  buildToolsVersion '21.0.0'
 
   defaultConfig {
     minSdkVersion 8
-    targetSdkVersion 20
+    targetSdkVersion 21
   }
 
   sourceSets {
@@ -31,4 +33,43 @@ android {
       assets.srcDirs = ['assets']
     }
   }
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
+            groupId 'com.appboy'
+            artifactId 'sdk'
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "http://iheart.artifactoryonline.com/iheart/internal"
+            credentials {
+                username artifactoryUsername
+                password artifactoryPassword
+            }
+        }
+    }
 }
