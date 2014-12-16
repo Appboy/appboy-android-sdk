@@ -11,6 +11,10 @@ import android.os.Bundle;
 public class ViewAction implements IAction {
   private final Intent mIntent;
 
+  public ViewAction(Uri uri) {
+    this(uri, null);
+  }
+
   public ViewAction(Uri uri, Bundle extras) {
     mIntent = new Intent(Intent.ACTION_VIEW);
     mIntent.setData(uri);
