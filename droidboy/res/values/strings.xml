@@ -50,6 +50,7 @@
   <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>
   <string name="data_flush_toast">Data flush requested</string>
 
+  <string name="requested_slideup_toast">Requested Slideup</string>
   <string name="about_summary">Appboy SDK version: %1$s</string>
 
   <string name="spinner_content_description">Spinner</string>
@@ -70,5 +71,6 @@
   <string name="custom_islideup_view_factory">Custom ISlideupViewFactory</string>
   <string name="dismiss_type_set_to">DismissType set to</string>
   <string name="uri_set_to">URI set to</string>
+  <string name="uri_duration_seconds">Auto-dismiss duration (s)</string>
   <string name="click_action_set_to">ClickAction set to</string>
 </resources>

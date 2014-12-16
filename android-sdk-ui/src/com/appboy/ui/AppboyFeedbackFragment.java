@@ -147,12 +147,15 @@ public class AppboyFeedbackFragment extends Fragment {
   }
 
   private boolean validatedEmail() {
-    boolean validEmail =  mEmailEditText.getText() != null && !StringUtils.isNullOrBlank(mEmailEditText.getText().toString()) &&
-      ValidationUtils.isValidEmailAddress(mEmailEditText.getText().toString());
+    boolean validEmail = mEmailEditText.getText() != null && !StringUtils.isNullOrBlank(mEmailEditText.getText().toString()) && ValidationUtils.isValidEmailAddress(mEmailEditText.getText().toString());
+    boolean blankEmail = mEmailEditText.getText() != null && StringUtils.isNullOrBlank(mEmailEditText.getText().toString());
     if (validEmail){
         mEmailEditText.setError(null);
+    } else if (blankEmail) {
+      // Display blank email error message in the email box
+      mEmailEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_empty_email));
     } else {
-      // Display error message in the email box
+      // Display general invalid email error message in the email box
       mEmailEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_invalid_email));
     }
     return validEmail;

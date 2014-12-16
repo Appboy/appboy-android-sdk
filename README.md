@@ -6,7 +6,7 @@ Successful marketing automation is essential to the future of your mobile app. A
 
 - [Appboy Academy](http://www.appboy.com/academy "Appboy Academy")
 - [Technical Documentation](http://documentation.appboy.com "Appboy Technical Documentation")
-- [Full Class Documentation](http://appboy.github.io/appboy-android-sdk/javadocs/ "Appboy Android SDK Class Documentation")
+- [JavaDocs](http://appboy.github.io/appboy-android-sdk/javadocs/ "Appboy Android SDK Class Documentation")
 
 ## Components
 
@@ -28,9 +28,9 @@ Successful marketing automation is essential to the future of your mobile app. A
    more information.
 3. To assemble the UI library and the Droidboy APK, run `./gradlew assemble` (use gradlew.bat on Windows). You can find
    assembled files in the `build/` subdirectories of the `android-sdk-ui` and `droidboy` projects. You can also
-   use the `installDebug` task if you have a device or emulator connected to adb and want to run Droidboy or Hello-Appboy. 
+   use the `installDebug` task if you have a device or emulator connected to adb and want to run Droidboy or Hello-Appboy.
    You can see other available tasks by running `./gradlew tasks`.
-   
+
 ## Remote repository for gradle
 The version should match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
 
@@ -43,7 +43,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:1.5.+'
+   compile 'com.appboy:android-sdk-ui:1.6.+'
    ...
 }
 ```
@@ -63,7 +63,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.5.+'
+  compile 'com.appboy:android-sdk-ui:1.6.+'
 }
 ```
 

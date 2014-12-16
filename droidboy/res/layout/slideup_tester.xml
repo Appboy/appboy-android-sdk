@@ -159,6 +159,33 @@
                         android:dividerHeight="0dp"
                         android:divider="@null"/>
                 </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:text="@string/uri_duration_seconds"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:id="@+id/textView"
+                        />
+
+                    <EditText
+                        android:id="@+id/duration_seconds_edit_text"
+                        android:layout_width="match_parent"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+
             </TableLayout>
 
             <LinearLayout

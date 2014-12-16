@@ -1,3 +1,32 @@
+## 1.6.0
+- Updates the android-L preview support from version 1.5.2 to support the public release of Android 5.0.  Updates the
+  v4 support library dependency to version 21.0.0.
+- android.permission.GET_ACCOUNTS is no longer required during initial GCM registration for devices running Jelly Bean and higher.  However,
+  use of this permissions is recommended so that pre-Jelly Bean devices can register with GCM.
+- android.permission.WAKE_LOCK is no longer required during initial GCM registration.  However, use of this permissions is recommended to allow
+  notifications to wake the screen and engage users when the notification arrives.
+- No longer overwrite messages in the notification center based on collapse key (gcm) or consolidation key (adm).  Instead, overwrite based on message
+  title and message alert, or, if specified, a custom notification id.
+- Fixes News Feed swipe-refresh CalledFromWrongThreadException.
+- Updates Droidboy to use the most recent Google IAB helper classes.
+
+## 1.5.5
+- Adds support for displaying Kindle notifications with images.
+- Notifications with a minimum priority specified no longer trigger the device wakelock because Android does not display
+  them in the status bar (they appear silently in the drawer).
+- Removes styleable elements from the UI project. This should have no impact on consuming projects.
+
+## 1.5.4
+- Incubates a feature to allow for runtime changes to be made to the API key. Please contact android@appboy.com if you want to test this feature.
+- Adds support for Big View text summaries, allowing summary text to be displayed under the main text in a notification.
+- Adds support for custom URIs to open when a notification is clicked.
+- Adds support for notification duration control.  When specified, sets an alarm to remove a notification from the notification
+  center after the specified duration.
+- Adds support for notification sounds.  Users can specify a notification sound URI to play with the notification.
+- Adds support for changing In-App Message duration from the client app.  To do this, you can modify the slideup object passed to you in the OnReceive()
+  delegate using the new setter method setDurationInMilliseconds(int millis).
+- Updates AppboyWebViewActivity to always fill the parent view.  This forces some previously problematic websites to render at the correct size.
+
 ## 1.5.3
 - Adds the ability to turn off Appboy's automatic location collection using the com_appboy_disable_location_collection
   boolean in appboy.xml.

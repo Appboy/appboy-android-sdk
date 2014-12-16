@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Cards -->
-  <string name="com_appboy_app_store_review_card_title">Like Our App?</string>
-  <string name="com_appboy_app_store_review_card_subtitle">Rate us in the App Store now!</string>
-  <string name="com_appboy_app_store_review_card_image_content_description">Banner Image</string>
-  <string name="com_appboy_banner_image_card_image_content_description">Banner Image</string>
-  <string name="com_appboy_cross_promotion_small_card_image_content_description">App image</string>
-  <string name="com_appboy_short_news_card_image_content_description">News Item Image</string>
   <string name="com_appboy_recommendation_free">Free</string>
 
   <!-- Feedback form -->
@@ -15,8 +9,9 @@
   <string name="com_appboy_feedback_form_email">Email</string>
   <string name="com_appboy_feedback_form_cancel">Cancel</string>
   <string name="com_appboy_feedback_form_send">Send</string>
-  <string name="com_appboy_feedback_form_invalid_message">Please enter a feedback message</string>
+  <string name="com_appboy_feedback_form_invalid_message">Please enter a feedback message.</string>
   <string name="com_appboy_feedback_form_invalid_email">Invalid Email Address</string>
+  <string name="com_appboy_feedback_form_empty_email">An email address is required.</string>
 
   <!-- News feed -->
   <string name="com_appboy_feed_empty">We have no updates.\nPlease check again later.</string>

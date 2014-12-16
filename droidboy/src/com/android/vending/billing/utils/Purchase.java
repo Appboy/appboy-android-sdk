@@ -88,5 +88,7 @@ public class Purchase {
   }
 
   @Override
-  public String toString() { return "PurchaseInfo(type:" + mItemType + "):" + mOriginalJson; }
+  public String toString() {
+    return "PurchaseInfo(type:" + mItemType + "):" + mOriginalJson;
+  }
 }

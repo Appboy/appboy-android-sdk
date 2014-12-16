@@ -1,6 +1,5 @@
 package com.appboy.sample;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.DialogPreference;
@@ -13,6 +12,7 @@ import com.appboy.Appboy;
 import com.appboy.AppboyUser;
 import com.appboy.Constants;
 import com.appboy.enums.Gender;
+import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.ui.support.StringUtils;
 import com.crittercism.app.Crittercism;
 
@@ -93,7 +93,7 @@ public class UserProfileDialog extends DialogPreference {
       editor.putInt("user.gender_resource_id", genderResourceId);
       editor.putString("user.favorite_color", favoriteColor);
       editor.putString("user.avatar_image_url", avatarImageUrl);
-      persist(editor);
+      SharedPrefsUtil.persist(editor);
 
       AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
       appboyUser.setFirstName(firstName);
@@ -116,15 +116,6 @@ public class UserProfileDialog extends DialogPreference {
       appboyUser.setCustomUserAttribute("favorite_color", favoriteColor);
       appboyUser.setAvatarImageUrl(avatarImageUrl);
       appboyUser.incrementCustomUserAttribute("user_rating", 5);
-    }
-  }
-
-  @TargetApi(9)
-  private void persist(SharedPreferences.Editor editor) {
-    if (android.os.Build.VERSION.SDK_INT < 9) {
-      editor.commit();
-    } else {
-      editor.apply();
     }
   }
 }

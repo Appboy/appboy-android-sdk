@@ -1,16 +1,19 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appboy.Appboy;
+import com.appboy.Constants;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.support.StringUtils;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -25,6 +28,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
   private final Button mPrice;
   private IAction mPriceAction;
   private final float mAspectRatio = 1f;
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CrossPromotionSmallCardView.class.getName());
 
   public CrossPromotionSmallCardView(Context context) {
     this(context, null);
@@ -67,13 +71,20 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
       mReviewCount.setText(String.format("(%s)", NumberFormat.getInstance().format(card.getReviewCount())));
       mStarRating.setRating((float) card.getRating());
     }
-    mPrice.setText(getPriceString(card.getPrice()));
+    // If the server sends down the display price, use that,
+    if (!StringUtils.isNullOrBlank(card.getDisplayPrice())) {
+      mPrice.setText(card.getDisplayPrice());
+    } else{
+    // else, format client-side.
+      mPrice.setText(getPriceString(card.getPrice()));
+    }
     mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false,  card.getAppStore(), card.getKindleId());
     mPrice.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        card.logClick();
+        Log.d(TAG, String.format("Logged click for card %s", card.getId()));
         card.setIsRead(true);
+        card.logClick();
         mPriceAction.execute(mContext);
       }
     });

@@ -8,20 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.appboy.Constants;
-import com.appboy.models.cards.AppStoreReviewCard;
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.models.cards.Card;
-import com.appboy.models.cards.CrossPromotionLargeCard;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
-import com.appboy.ui.widget.AppStoreReviewCardView;
 import com.appboy.ui.widget.BannerImageCardView;
 import com.appboy.ui.widget.BaseCardView;
 import com.appboy.ui.widget.CaptionedImageCardView;
-import com.appboy.ui.widget.CrossPromotionLargeCardView;
 import com.appboy.ui.widget.CrossPromotionSmallCardView;
 import com.appboy.ui.widget.DefaultCardView;
 import com.appboy.ui.widget.ShortNewsCardView;
@@ -78,20 +74,16 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
   @Override
   public int getItemViewType(int position) {
     Card card = getItem(position);
-    if (card instanceof AppStoreReviewCard) {
+    if (card instanceof BannerImageCard) {
       return 1;
-    } else if (card instanceof BannerImageCard) {
-      return 2;
     } else if (card instanceof CaptionedImageCard) {
-      return 3;
-    } else if (card instanceof CrossPromotionLargeCard) {
-      return 4;
+      return 2;
     } else if (card instanceof CrossPromotionSmallCard) {
-      return 5;
+      return 3;
     } else if (card instanceof ShortNewsCard) {
-      return 6;
+      return 4;
     } else if (card instanceof TextAnnouncementCard) {
-      return 7;
+      return 5;
     } else {
       return 0;
     }
@@ -107,14 +99,10 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     Card card = getItem(position);
 
     if (convertView == null) {
-      if (card instanceof AppStoreReviewCard) {
-        view = new AppStoreReviewCardView(mContext, mUiConfigurationProvider.getApplicationIconResourceId());
-      } else if (card instanceof BannerImageCard) {
+      if (card instanceof BannerImageCard) {
         view = new BannerImageCardView(mContext);
       } else if (card instanceof CaptionedImageCard) {
         view = new CaptionedImageCardView(mContext);
-      } else if (card instanceof CrossPromotionLargeCard) {
-        view = new CrossPromotionLargeCardView(mContext);
       } else if (card instanceof CrossPromotionSmallCard) {
         view = new CrossPromotionSmallCardView(mContext);
       } else if (card instanceof ShortNewsCard) {
