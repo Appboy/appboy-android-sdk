@@ -3,6 +3,8 @@ apply plugin: 'maven-publish'
 
 version = '1.6.0'
 
+version = version + '-ihr'
+
 dependencies {
   compile 'com.appboy:closed-lib:0.0.1'
   // Note: This requires the Android Support Repository to be installed, please see the README.md. The jar is
