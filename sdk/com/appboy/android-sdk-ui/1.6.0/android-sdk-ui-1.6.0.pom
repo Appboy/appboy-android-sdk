@@ -10,7 +10,7 @@
     <dependency>
       <groupId>com.appboy</groupId>
       <artifactId>android-sdk-jar</artifactId>
-      <version>1.6.+</version>
+      <version>1.6.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
