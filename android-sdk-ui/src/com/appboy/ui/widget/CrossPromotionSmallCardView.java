@@ -1,13 +1,11 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.ui.R;
@@ -82,10 +80,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     mPrice.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.d(TAG, String.format("Logged click for card %s", card.getId()));
-        card.setIsRead(true);
-        card.logClick();
-        mPriceAction.execute(mContext);
+        handleCardClick(mContext,card, mPriceAction, TAG);
       }
     });
 

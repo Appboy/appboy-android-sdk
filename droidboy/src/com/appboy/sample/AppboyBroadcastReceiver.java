@@ -36,8 +36,8 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
       // If a custom URI is defined, start an ACTION_VIEW intent pointing at the custom URI.
       // The intent returned from getStartActivityIntent() is placed on the back stack.
       // Otherwise, start the intent defined in getStartActivityIntent().
-      if (intent.getStringExtra(Constants.APPBOY_PUSH_CUSTOM_URI_KEY) != null) {
-        Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra(Constants.APPBOY_PUSH_CUSTOM_URI_KEY)));
+      if (intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY) != null) {
+        Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)));
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(getStartActivityIntent(context, extras));
         stackBuilder.addNextIntent(uriIntent);

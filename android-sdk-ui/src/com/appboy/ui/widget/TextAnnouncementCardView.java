@@ -1,11 +1,9 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.R;
@@ -51,12 +49,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        card.setIsRead(true);
-        if (mCardAction != null) {
-          Log.d(TAG, String.format("Logged click for card %s", card.getId()));
-          card.logClick();
-          mCardAction.execute(mContext);
-        }
+        handleCardClick(mContext, card, mCardAction, TAG);
       }
     });
   }

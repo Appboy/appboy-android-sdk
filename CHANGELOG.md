@@ -1,3 +1,7 @@
+## 1.6.1
+- Fixes a timezone bug where short names were used for lookup, causing the default timezone (GMT) to be set in
+  cases where the short name was not equal to the time zone Id.
+
 ## 1.6.0
 - Updates the android-L preview support from version 1.5.2 to support the public release of Android 5.0.  Updates the
   v4 support library dependency to version 21.0.0.

@@ -12,11 +12,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
 import com.appboy.ui.R;
+import com.appboy.ui.actions.IAction;
 import com.appboy.ui.support.StringUtils;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -215,6 +218,15 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
       viewTreeObserver.removeGlobalOnLayoutListener(onGlobalLayoutListener);
     } else {
       viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
+  }
+
+  protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag){
+    card.setIsRead(true);
+    if(cardAction != null){
+      Log.d(tag, String.format("Logged click for card %s", card.getId()));
+      card.logClick();
+      cardAction.execute(context);
     }
   }
 }

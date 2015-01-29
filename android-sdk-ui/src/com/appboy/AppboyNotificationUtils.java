@@ -29,10 +29,12 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Random;
 
 public class AppboyNotificationUtils
 {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationUtils.class.getName());
+  private static final Random mRandom = new Random();
   public static final String APPBOY_NOTIFICATION_ID = "com_appboy_notification";
   public static final String APPBOY_NOTIFICATION_TITLE_ID = "com_appboy_notification_title";
   public static final String APPBOY_NOTIFICATION_CONTENT_ID = "com_appboy_notification_content";
@@ -70,7 +72,7 @@ public class AppboyNotificationUtils
     if (intentExtras != null) {
       pushOpenedIntent.putExtras(intentExtras);
     }
-    PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, 0, pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
+    PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, getRequestCode(), pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
     notificationBuilder.setContentIntent(pushOpenedPendingIntent);
 
 
@@ -382,6 +384,14 @@ public class AppboyNotificationUtils
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static boolean isValidNotificationPriority(int priority) {
     return (priority >= Notification.PRIORITY_MIN && priority <= Notification.PRIORITY_MAX);
+  }
+
+  /**
+   * Returns a random request code for this notification.
+   * Request codes are used to differentiate between multiple active pending intents.
+   */
+  public static int getRequestCode() {
+    return mRandom.nextInt();
   }
 
   /**

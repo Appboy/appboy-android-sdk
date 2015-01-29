@@ -1,7 +1,6 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,12 +54,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        card.setIsRead(true);
-        if (mCardAction != null) {
-          Log.d(TAG, String.format("Logged click for card %s", card.getId()));
-          card.logClick();
-          mCardAction.execute(mContext);
-        }
+        handleCardClick(mContext, card, mCardAction, TAG);
       }
     });
 
