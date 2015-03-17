@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Ilmainen</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Ilmoitatko ongelmasta?</string>
+  <string name="com_appboy_feedback_form_message">Viesti</string>
+  <string name="com_appboy_feedback_form_email">Sähköposti</string>
+  <string name="com_appboy_feedback_form_cancel">Peruuta</string>
+  <string name="com_appboy_feedback_form_send">Lähetä</string>
+  <string name="com_appboy_feedback_form_invalid_message">Kirjoita palauteviesti.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Virheellinen sähköpostiosoite</string>
+  <string name="com_appboy_feedback_form_empty_email">Sähköpostiosoite on pakollinen.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Päivityksiä ei ole saatavilla. Tarkista myöhemmin uudelleen.</string>
+  <string name="com_appboy_feed_connection_error_title">Yhteysvirhe</string>
+  <string name="com_appboy_feed_connection_error_body">Verkkoyhteyttä ei voida luoda. Yritä myöhemmin uudelleen.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

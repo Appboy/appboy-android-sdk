@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">निःशुल्क</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">क्या कोई समस्या रिपोर्ट कर रहे हैं?</string>
+  <string name="com_appboy_feedback_form_message">संदेश</string>
+  <string name="com_appboy_feedback_form_email">ईमेल</string>
+  <string name="com_appboy_feedback_form_cancel">रद्द करें</string>
+  <string name="com_appboy_feedback_form_send">भेजें</string>
+  <string name="com_appboy_feedback_form_invalid_message">कृपया फीडबैक संदेश प्रविष्ट करें.</string>
+  <string name="com_appboy_feedback_form_invalid_email">अमान्य ईमेल पता</string>
+  <string name="com_appboy_feedback_form_empty_email">ईमेल पता आवश्यक है।.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">हमारे पास कोई अपडेट नहीं हैं। कृपया बाद में फिर से जाँच करें.।</string>
+  <string name="com_appboy_feed_connection_error_title">कनेक्शन की त्रुटि</string>
+  <string name="com_appboy_feed_connection_error_body">नेटवर्क कनेक्शन स्थापित नहीं हो रहा है। कृपया बाद में दोबारा प्रयास करें।.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

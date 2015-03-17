@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Libre</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Nag-uulat ng isyu?</string>
+  <string name="com_appboy_feedback_form_message">Mensahe</string>
+  <string name="com_appboy_feedback_form_email">Email</string>
+  <string name="com_appboy_feedback_form_cancel">Kanselahin</string>
+  <string name="com_appboy_feedback_form_send">Ipadala</string>
+  <string name="com_appboy_feedback_form_invalid_message">Mangyaring maglagay ng isang mensahe na pagpuna.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Hindi Wastong Address sa Email</string>
+  <string name="com_appboy_feedback_form_empty_email">Ang isang address sa email ay kailangan.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Wala kaming mga update. Mangyaring suriin muli sa ibang pagkakataon.</string>
+  <string name="com_appboy_feed_connection_error_title">May Error sa Koneksyon</string>
+  <string name="com_appboy_feed_connection_error_body">Hindi makapagtatag ng koneksyon sa network. Mangyaring subukan muli mamaya.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

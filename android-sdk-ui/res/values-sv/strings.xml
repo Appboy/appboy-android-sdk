@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Gratis</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Vill du rapportera ett problem?</string>
+  <string name="com_appboy_feedback_form_message">Meddelande</string>
+  <string name="com_appboy_feedback_form_email">E-post</string>
+  <string name="com_appboy_feedback_form_cancel">Avbryt</string>
+  <string name="com_appboy_feedback_form_send">Skicka</string>
+  <string name="com_appboy_feedback_form_invalid_message">Skriv in ett omdöme.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Ogiltig e-postadress</string>
+  <string name="com_appboy_feedback_form_empty_email">Du måste ange en e-postadress.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Det finns inga uppdateringar. Försök igen senare.</string>
+  <string name="com_appboy_feed_connection_error_title">Anslutningsfel</string>
+  <string name="com_appboy_feed_connection_error_body">Det gick inte att skapa en nätverksanslutning. Försök igen senare.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

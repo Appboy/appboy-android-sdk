@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">ដោយឥតគិតថ្លៃ</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">រាយការណ៍បញ្ហា?</string>
+  <string name="com_appboy_feedback_form_message">សារ</string>
+  <string name="com_appboy_feedback_form_email">អ៊ីម៉ែល</string>
+  <string name="com_appboy_feedback_form_cancel">ទុកជាមោឃៈ</string>
+  <string name="com_appboy_feedback_form_send">បញ្ជូន</string>
+  <string name="com_appboy_feedback_form_invalid_message">សូមបញ្ចូលសារមតិអ្នកប្រើ.</string>
+  <string name="com_appboy_feedback_form_invalid_email">អាស័យដ្ធានអ៊ីម៉ែលមិនត្រឹមត្រូវ</string>
+  <string name="com_appboy_feedback_form_empty_email">ត្រូវការចាំបាច់អាស័យដ្ធានអ៊ីម៉ែល.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">យើងមិនមានការធ្វើបច្ចុប្បន្នភាពទេ។ សូមពិនិត្យមើលម្តងទៀតនៅពេលក្រោយ.</string>
+  <string name="com_appboy_feed_connection_error_title">កំហុសឆ្គងក្នុងការតភ្ជាប់</string>
+  <string name="com_appboy_feed_connection_error_body">មិនអាចបង្កើតបណ្តាញតភ្ជាប់បានទេ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

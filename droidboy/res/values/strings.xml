@@ -38,6 +38,15 @@
   <string name="twitter_share_summary">Share us on Twitter</string>
   <string name="twitter_share_toast">Thank you for sharing on Twitter</string>
 
+  <string name="custom_logging_dialog_title">Custom Logging</string>
+  <string name="custom_logging_dialog_summary">Log Custom Events And Custom Purchases</string>
+  <string name="custom_logging_dialog_okay">OK</string>
+  <string name="custom_logging_dialog_cancel">Cancel</string>
+
+  <string name="custom_logging_user_attribute">User Attribute Key</string>
+  <string name="custom_logging_custom_event">Custom Event</string>
+  <string name="custom_logging_custom_purchase">Custom Purchase</string>
+
   <string name="log_purchase_title">Unlock goodies</string>
   <string name="log_purchase_summary">In-app purchase</string>
   <string name="log_purchase_toast">Thank you for your purchase</string>

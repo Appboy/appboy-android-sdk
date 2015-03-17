@@ -26,6 +26,7 @@ public class DroidboyApplication extends Application
       Log.i(TAG, "Did not match zh_CN locale, configuring Appboy to clear any existing override key");
       Appboy.configure(this, null);
     }
+    Appboy.setAppboyEndpointProvider(new DummyEndpointProvider());
   }
 
   @TargetApi(9)

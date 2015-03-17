@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="36" android:versionName="1.6.1">
+  package="com.appboy.sample" android:versionCode="37" android:versionName="1.6.2">
 
   <!-- Supported versions -->
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="21"/>
@@ -30,7 +30,7 @@
   <uses-permission android:name="com.appboy.sample.permission.RECEIVE_ADM_MESSAGE" />
   <uses-permission android:name="com.amazon.device.messaging.permission.RECEIVE" />
 
-  <application android:label="@string/app_name" android:icon="@drawable/droidboy" android:allowBackup="true" android:name="DroidboyApplication">
+  <application android:label="@string/app_name" android:icon="@drawable/ic_launcher_droidboy" android:allowBackup="true" android:name="DroidboyApplication">
     <amazon:enable-feature android:name="com.amazon.device.messaging" android:required="false" />
 
     <receiver android:name="com.appboy.AppboyAdmReceiver" android:permission="com.amazon.device.messaging.permission.SEND">
@@ -41,7 +41,7 @@
       </intent-filter>
     </receiver>
 
-    <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:icon="@drawable/droidboy"
+    <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:icon="@drawable/ic_launcher_droidboy"
               android:theme="@style/Theme.DroidBoy" android:windowSoftInputMode="stateUnchanged">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -49,7 +49,7 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".DroidGirlActivity" android:label="@string/droid_girl" android:icon="@drawable/droidgirl"
+    <activity android:name=".DroidGirlActivity" android:label="@string/droid_girl" android:icon="@drawable/ic_launcher_droidgirl"
               android:theme="@style/Theme.DroidBoy" android:windowSoftInputMode="stateUnchanged">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

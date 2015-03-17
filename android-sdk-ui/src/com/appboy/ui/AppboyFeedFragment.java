@@ -91,7 +91,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     mFeedSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.appboy_feed_swipe_container);
     mFeedSwipeLayout.setOnRefreshListener(this);
     mFeedSwipeLayout.setEnabled(false);
-    mFeedSwipeLayout.setColorScheme(R.color.com_appboy_newsfeed_swipe_refresh_color_1,
+    mFeedSwipeLayout.setColorSchemeResources(R.color.com_appboy_newsfeed_swipe_refresh_color_1,
       R.color.com_appboy_newsfeed_swipe_refresh_color_2,
       R.color.com_appboy_newsfeed_swipe_refresh_color_3,
       R.color.com_appboy_newsfeed_swipe_refresh_color_4);

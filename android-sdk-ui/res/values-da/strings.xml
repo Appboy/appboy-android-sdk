@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Gratis</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Rapporter en fejl</string>
+  <string name="com_appboy_feedback_form_message">Besked</string>
+  <string name="com_appboy_feedback_form_email">Email</string>
+  <string name="com_appboy_feedback_form_cancel">Fortryd</string>
+  <string name="com_appboy_feedback_form_send">Send</string>
+  <string name="com_appboy_feedback_form_invalid_message">Indtast feedback besked.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Ugyldig email adresse</string>
+  <string name="com_appboy_feedback_form_empty_email">Email adresse er påkrævet.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Vi har ingen updates. Prøv venligst senere.</string>
+  <string name="com_appboy_feed_connection_error_title">Netværksfejl</string>
+  <string name="com_appboy_feed_connection_error_body">Kan ikke etablere netværksforbindelse. Prøv venligst senere.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

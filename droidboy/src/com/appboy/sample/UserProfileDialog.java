@@ -42,8 +42,8 @@ public class UserProfileDialog extends DialogPreference {
   @Override
   public View onCreateDialogView() {
     View view = super.onCreateDialogView();
-    mFirstName = (EditText) view.findViewById(R.id.first_name);
-    mLastName = (EditText) view.findViewById(R.id.last_name);
+    mFirstName = (EditText) view.findViewById(R.id.custom_event);
+    mLastName = (EditText) view.findViewById(R.id.custom_purchase);
     mEmail = (EditText) view.findViewById(R.id.email);
     mBio = (EditText) view.findViewById(R.id.bio);
     mGender = (RadioGroup) view.findViewById(R.id.gender);

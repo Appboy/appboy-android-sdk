@@ -42,6 +42,8 @@ public class SlideupViewWrapper {
       // a new runnable when the touch ends.
       touchAwareSwipeListener.setTouchListener(createTouchAwareListener());
       mSlideupView.setOnTouchListener(touchAwareSwipeListener);
+    } else {
+      mSlideupView.setOnTouchListener(getSimpleSwipeListener());
     }
 
     slideupView.setOnClickListener(createClickListener());
@@ -161,10 +163,33 @@ public class SlideupViewWrapper {
     };
   }
 
-  private Animation createAnimation(float fromY, float toY, long duration) {
+  /**
+   * @param fromY Change in Y coordinate to apply at the start of the animation, represented as a percentage (where 1.0 is 100%).
+   * @param toY Change in Y coordinate to apply at the end of the animation, represented as a percentage (where 1.0 is 100%).
+   * @param duration Amount of time (in milliseconds) for the animation to run.
+   * @return an Animation object with appropriate vertical transformation and duration
+   */
+  private Animation createVerticalAnimation(float fromY, float toY, long duration) {
     TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0f,
         Animation.RELATIVE_TO_PARENT, 0f, Animation.RELATIVE_TO_SELF, fromY,
         Animation.RELATIVE_TO_SELF, toY);
+    return setAnimationParams(animation, duration);
+  }
+
+  /**
+   * @param fromX Change in X coordinate to apply at the start of the animation, represented as a percentage (where 1.0 is 100%).
+   * @param toX Change in X coordinate to apply at the end of the animation, represented as a percentage (where 1.0 is 100%).
+   * @param duration Amount of time (in milliseconds) for the animation to run.
+   * @return an Animation object with appropriate horizontal transformation and duration
+   */
+  private Animation createHorizontalAnimation(float fromX, float toX, long duration) {
+    TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, fromX,
+        Animation.RELATIVE_TO_SELF, toX, Animation.RELATIVE_TO_PARENT, 0f,
+        Animation.RELATIVE_TO_PARENT, 0f);
+    return setAnimationParams(animation, duration);
+  }
+
+  private Animation setAnimationParams(Animation animation, long duration) {
     animation.setDuration(duration);
     animation.setFillAfter(true);
     animation.setFillEnabled(true);
@@ -175,13 +200,13 @@ public class SlideupViewWrapper {
   private void setAndStartAnimation(boolean opening) {
     Animation animation;
     if (opening && mSlideup.getSlideFrom() == SlideFrom.TOP) {
-      animation = createAnimation(-1, 0, sAnimationDurationInMilliseconds);
+      animation = createVerticalAnimation(-1, 0, sAnimationDurationInMilliseconds);
     } else if (opening && mSlideup.getSlideFrom() == SlideFrom.BOTTOM) {
-      animation = createAnimation(1, 0, sAnimationDurationInMilliseconds);
+      animation = createVerticalAnimation(1, 0, sAnimationDurationInMilliseconds);
     } else if (!opening && mSlideup.getSlideFrom() == SlideFrom.TOP) {
-      animation = createAnimation(0, -1, sAnimationDurationInMilliseconds);
+      animation = createVerticalAnimation(0, -1, sAnimationDurationInMilliseconds);
     } else {
-      animation = createAnimation(0, 1, sAnimationDurationInMilliseconds);
+      animation = createVerticalAnimation(0, 1, sAnimationDurationInMilliseconds);
     }
     animation.setAnimationListener(createAnimationListener(opening));
     mSlideupView.clearAnimation();
@@ -228,5 +253,36 @@ public class SlideupViewWrapper {
         public void onAnimationRepeat(Animation animation) {}
       };
     }
+  }
+
+  /**
+   * Adds swipe event handling to the SimpleSwipeDismissTouchListener.
+   *
+   * Used in API levels 11 and below.  Detected swipe left and right events
+   * cause the slideup to animate off the screen in the direction of the swipe.
+   */
+  private SimpleSwipeDismissTouchListener getSimpleSwipeListener() {
+    return new SimpleSwipeDismissTouchListener(mSlideupView.getContext()) {
+      @Override
+      public void onSwipeLeft() {
+        animateAndClose(createHorizontalAnimation(0, -1, sAnimationDurationInMilliseconds));
+      }
+
+      @Override
+      public void onSwipeRight() {
+        animateAndClose(createHorizontalAnimation(0, 1, sAnimationDurationInMilliseconds));
+      }
+
+      private void animateAndClose(Animation animation) {
+        preClose();
+        mSlideupView.clearAnimation();
+        mSlideupView.setAnimation(animation);
+        animation.startNow();
+        mSlideupView.invalidate();
+        mSlideupViewLifecycleListener.onDismissed(mSlideupView, mSlideup);
+        mSlideup.setAnimateOut(false);
+        performClose();
+      }
+    };
   }
 }

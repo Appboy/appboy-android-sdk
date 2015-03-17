@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Gratuit</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Signaler un problème ?</string>
+  <string name="com_appboy_feedback_form_message">Message</string>
+  <string name="com_appboy_feedback_form_email">E-mail</string>
+  <string name="com_appboy_feedback_form_cancel">Annuler</string>
+  <string name="com_appboy_feedback_form_send">Envoyer</string>
+  <string name="com_appboy_feedback_form_invalid_message">Veuillez entrer un message de commentaire.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Adresse e-mail non valide</string>
+  <string name="com_appboy_feedback_form_empty_email">Une adresse email est requise.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Aucune mise à jour disponible. Veuillez vérifier ultérieurement.</string>
+  <string name="com_appboy_feed_connection_error_title">Erreur de connexion.</string>
+  <string name="com_appboy_feed_connection_error_body">Impossible d\'établir la connexion réseau. Veuillez réessayer ultérieurement.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

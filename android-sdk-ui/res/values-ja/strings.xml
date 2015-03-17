@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">無料</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">問題を報告しますか？</string>
+  <string name="com_appboy_feedback_form_message">メッセージ</string>
+  <string name="com_appboy_feedback_form_email">Eメール</string>
+  <string name="com_appboy_feedback_form_cancel">キャンセル</string>
+  <string name="com_appboy_feedback_form_send">送信</string>
+  <string name="com_appboy_feedback_form_invalid_message">フィードバックの内容を入力してください。</string>
+  <string name="com_appboy_feedback_form_invalid_email">無効なEメールアドレス</string>
+  <string name="com_appboy_feedback_form_empty_email">Eメールアドレスが必要です。</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">アップデートはありません。後でもう一度確認してください。</string>
+  <string name="com_appboy_feed_connection_error_title">接続エラー</string>
+  <string name="com_appboy_feed_connection_error_body">ネットワークに接続できません。後でもう一度試してください。</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

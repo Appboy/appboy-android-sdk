@@ -78,6 +78,19 @@ public class AppboyNotificationUtils
 
     // Sets the icon used in the notification bar itself.
     notificationBuilder.setSmallIcon(smallNotificationIconResourceId);
+
+    // Set accent color for devices on Lollipop and above.  We use the push-specific accent color if it exists in the intentExtras,
+    // otherwise we search for a default set in appboy.xml or don't set the color at all (and the system notification gray
+    // default is used).
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      if (intentExtras != null && intentExtras.containsKey(Constants.APPBOY_PUSH_ACCENT_KEY)) {
+        // Color is an unsigned integer, so we first parse it as a long.
+        notificationBuilder.setColor((int) Long.parseLong(intentExtras.getString(Constants.APPBOY_PUSH_ACCENT_KEY)));
+      } else {
+        notificationBuilder.setColor(appConfigurationProvider.getDefaultNotificationAccentColor());
+      }
+    }
+
     notificationBuilder.setContentTitle(title);
     notificationBuilder.setContentText(content);
 

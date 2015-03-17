@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Miễn phí</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Báo Cáo Vấn Ðề?</string>
+  <string name="com_appboy_feedback_form_message">Tin nhắn</string>
+  <string name="com_appboy_feedback_form_email">Email</string>
+  <string name="com_appboy_feedback_form_cancel">Hủy</string>
+  <string name="com_appboy_feedback_form_send">Gửi</string>
+  <string name="com_appboy_feedback_form_invalid_message">Vui lòng nhập một tin nhắn phản hồi.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Ðịa Chỉ Email Không Hợp Lệ</string>
+  <string name="com_appboy_feedback_form_empty_email">Cần có địa chỉ email.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Chúng tôi không có cập nhật nào. Vui lòng kiểm tra lại sau.</string>
+  <string name="com_appboy_feed_connection_error_title">Lỗi Kết Nối</string>
+  <string name="com_appboy_feed_connection_error_body">Không thể thiết lập kết nối mạng. Vui lòng thử lại sau.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

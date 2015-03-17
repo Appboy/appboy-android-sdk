@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Percuma</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Laporkan Masalah?</string>
+  <string name="com_appboy_feedback_form_message">Mesej</string>
+  <string name="com_appboy_feedback_form_email">E-mel</string>
+  <string name="com_appboy_feedback_form_cancel">Batal</string>
+  <string name="com_appboy_feedback_form_send">Hantar</string>
+  <string name="com_appboy_feedback_form_invalid_message">Sila masukkan mesej maklum balas.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Alamat E-mel Tidak Sah</string>
+  <string name="com_appboy_feedback_form_empty_email">Alamat e-mel diperlukan.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Tiada kemas kini. Sila periksa kemudian.</string>
+  <string name="com_appboy_feed_connection_error_title">Ralat Sambungan</string>
+  <string name="com_appboy_feed_connection_error_body">Tidak boleh membuat sambungan rangkaian. Sila cuba kemudian.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">Бесплатно</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">Сообщить о проблеме?</string>
+  <string name="com_appboy_feedback_form_message">Сообщение</string>
+  <string name="com_appboy_feedback_form_email">Электронная почта</string>
+  <string name="com_appboy_feedback_form_cancel">Отменить</string>
+  <string name="com_appboy_feedback_form_send">Отправить</string>
+  <string name="com_appboy_feedback_form_invalid_message">Пожалуйста, Напишите свой отзыв.</string>
+  <string name="com_appboy_feedback_form_invalid_email">Недопустимый адрес электронной почты</string>
+  <string name="com_appboy_feedback_form_empty_email">Требуется адрес электронной почты.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">Обновления недоступны. Пожалуйста, проверьте снова позже.</string>
+  <string name="com_appboy_feed_connection_error_title">Ошибка подключения</string>
+  <string name="com_appboy_feed_connection_error_body">Невозможно установить сетевое подключение. Пожалуйста, повторите попытку позже.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

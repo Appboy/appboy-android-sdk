@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">ຟ​ຣີ</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">ລາຍ​ງານ​ບັນ​ຫາ​ບໍ?</string>
+  <string name="com_appboy_feedback_form_message">ຂໍ້​ຄວາມ</string>
+  <string name="com_appboy_feedback_form_email">ອີ​ເມວ</string>
+  <string name="com_appboy_feedback_form_cancel">ຍົກ​ເລີກ</string>
+  <string name="com_appboy_feedback_form_send">ສົ່ງ</string>
+  <string name="com_appboy_feedback_form_invalid_message">ກະ​ລຸ​ນາ​ປ້ອນ​ຂໍ້​ຄວາມ​ຄຳ​ຕິ​ຊົມ.</string>
+  <string name="com_appboy_feedback_form_invalid_email">ທີ່​ຢູ່​ອີ​ເມວ​ໃຊ້​ບໍ່​ໄດ້</string>
+  <string name="com_appboy_feedback_form_empty_email">ຈຳ​ເປັນ​ຕ້ອງ​ມີ​ທີ່​ຢູ່​ອີ​ເມວ.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">ພວກ​ເຮົາ​ບໍ່​ມີ​ການ​ອັບ​ເດດ. ກະ​ລຸ​ນາ​ລອງ​ໃໝ່​ພາຍ​ຫຼັງ.</string>
+  <string name="com_appboy_feed_connection_error_title">ການ​ເຊື່ອມ​ຕໍ່​ຜິດ​ພາດ</string>
+  <string name="com_appboy_feed_connection_error_body">ບໍ່​ສາ​ມາດ​ຕັ້ງ​ການ​ເຊື່ອມ​ຕໍ່​ເຄືອ​ຂ່າຍ​ໄດ້. ກະ​ລຸ​ນາ​ລອງ​ໃໝ່​ພາຍ​ຫຼັງ.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

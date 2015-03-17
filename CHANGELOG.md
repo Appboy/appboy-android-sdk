@@ -1,3 +1,12 @@
+## 1.6.2
+- Updates our UI library to build against API level 21. 
+- Adds a major performance upgrade that reduces CPU usage, memory footprint, and network traffic. 
+- Adds 26 additional languages to localization support for Appboy UI elements.
+- Adds local blocking of blacklisted properties.
+- Adds the ability to set the accent color for notification in Android Lollipop and above.  This can be done by setting the com_appboy_default_notification_accent_color integer in your appboy.xml. 
+- Updates the News Feed to render wider on tablet screens.
+- Adds swipe handling for in-app messages on APIs <= 11.
+
 ## 1.6.1
 - Fixes a timezone bug where short names were used for lookup, causing the default timezone (GMT) to be set in
   cases where the short name was not equal to the time zone Id.

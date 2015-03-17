@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Cards -->
+  <string name="com_appboy_recommendation_free">လြတ္လပ္ေသာ</string>
+
+  <!-- Feedback form -->
+  <string name="com_appboy_feedback_form_is_bug">ျပႆနာတစ္ခုတင္ျပျခင္းပါလား။</string>
+  <string name="com_appboy_feedback_form_message">သတင္းစကား</string>
+  <string name="com_appboy_feedback_form_email">အီးေမးလ္</string>
+  <string name="com_appboy_feedback_form_cancel">ဖ်က္သိမ္း</string>
+  <string name="com_appboy_feedback_form_send">ပို႕</string>
+  <string name="com_appboy_feedback_form_invalid_message">ေက်းဇူးျပဳ၍ တုန္႕ျပန္ သတင္းစကား ေပးပါ။.</string>
+  <string name="com_appboy_feedback_form_invalid_email">အီးေမးလ္ လိပ္စာ မမွန္ကန္ပါ။</string>
+  <string name="com_appboy_feedback_form_empty_email">အီးေမးလ္ လိပ္စာတစ္ခုလိုအပ္သည္.</string>
+
+  <!-- News feed -->
+  <string name="com_appboy_feed_empty">ကၽႊႏု္ပ္ တို႕တြင္ အသစ္တင္ျပရန္မရွိပါ။ ေက်းဇူးျပဳ၍ ေနာင္တြင္ ထပ္စစ္ပါ။ .</string>
+  <string name="com_appboy_feed_connection_error_title">ဆက္သြယ္ေရး အမွား</string>
+  <string name="com_appboy_feed_connection_error_body">ကြန္ယက္ဆက္သြယ္ျခင္း မျပဳလုပ္ႏိုင္ပါ။ ေက်းဇူးျပဳ၍ ထပ္မံၾကိဳးစားၾကည္႕ပါ။.</string>
+
+  <!-- Notification time formats -->
+  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>
