@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="push_click_action_options">
+  <item>No Click Action</item>
+  <item>Http Link</item>
+  <item>Deep Link</item>
+</string-array>
+<string-array name="push_click_action_values">
+  <item></item>
+  <item>http://google.com</item>
+  <item>tel:555555555</item>
+</string-array>
+</resources>

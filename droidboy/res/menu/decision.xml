@@ -16,6 +16,9 @@
         android:icon="@drawable/ic_menu_settings"
         android:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/slideups"
-        android:title="@string/slideups_activity"/>
+        android:id="@+id/inappmessages"
+        android:title="@string/inappmessage_activity"/>
+    <item
+      android:id="@+id/push_testing"
+      android:title="@string/push_testing"/>
 </menu>

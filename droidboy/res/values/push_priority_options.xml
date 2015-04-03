@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="push_priority_options">
+    <item>Priority: Default</item>
+    <item>Priority: Min</item>
+    <item>Priority: Low</item>
+    <item>Priority: High</item>
+    <item>Priority: Max</item>
+  </string-array>
+  <string-array name="push_priority_values">
+    <item>-0</item>
+    <item>-2</item>
+    <item>-1</item>
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+</resources>

@@ -6,4 +6,6 @@
   <color name="yellow">#A68633</color>
   <color name="gray">#DCDCDC</color>
   <color name="light_gray">#F9F9F9</color>
+
+  <color name="custom_inappmessage_green">#FF48D46B</color>
 </resources>

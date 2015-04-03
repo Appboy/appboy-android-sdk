@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="com_appboy_feed_max_width">600.0dp</dimen>
+</resources>

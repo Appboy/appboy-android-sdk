@@ -1,0 +1,93 @@
+package com.appboy.push;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.RemoteViews;
+
+import com.appboy.Constants;
+import com.appboy.support.PackageUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+public class AppboyNotificationRemoteViewsUtils {
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationRemoteViewsUtils.class.getName());
+  public static final String APPBOY_NOTIFICATION_ID = "com_appboy_notification";
+  public static final String APPBOY_NOTIFICATION_TITLE_ID = "com_appboy_notification_title";
+  public static final String APPBOY_NOTIFICATION_CONTENT_ID = "com_appboy_notification_content";
+  public static final String APPBOY_NOTIFICATION_ICON_ID = "com_appboy_notification_icon";
+  public static final String APPBOY_NOTIFICATION_TIME_ID = "com_appboy_notification_time";
+  public static final String APPBOY_NOTIFICATION_TWENTY_FOUR_HOUR_FORMAT_ID = "com_appboy_notification_time_twenty_four_hour_format";
+  public static final String APPBOY_NOTIFICATION_TWELVE_HOUR_FORTMAT_ID = "com_appboy_notification_time_twelve_hour_format";
+
+  /**
+   * Returns a custom multi-line push notification view.  For devices running Jelly Bean+, you should use
+   * the native BigTextStyle to get this functionality.
+   *
+   * Returns null if the view cannot be created.
+   */
+  @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+  public static RemoteViews createMultiLineContentNotificationView(Context context, Bundle notificationExtras, int smallNotificationIconResourceId) {
+    if (notificationExtras != null) {
+      String title = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY);
+      String contentText = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
+      Resources resources = context.getResources();
+
+      String resourcePackageName = PackageUtils.getResourcePackageName(context);
+      int layoutResourceId = resources.getIdentifier(APPBOY_NOTIFICATION_ID, "layout", resourcePackageName);
+      int titleResourceId = resources.getIdentifier(APPBOY_NOTIFICATION_TITLE_ID, "id", resourcePackageName);
+      int contentResourceId = resources.getIdentifier(APPBOY_NOTIFICATION_CONTENT_ID, "id", resourcePackageName);
+      int iconResourceId = resources.getIdentifier(APPBOY_NOTIFICATION_ICON_ID, "id", resourcePackageName);
+      int timeViewResourceId = resources.getIdentifier(APPBOY_NOTIFICATION_TIME_ID, "id", resourcePackageName);
+      int twentyFourHourFormatResourceId = resources.getIdentifier(APPBOY_NOTIFICATION_TWENTY_FOUR_HOUR_FORMAT_ID, "string", resourcePackageName);
+      int twelveHourFormatResourceId = resources.getIdentifier(APPBOY_NOTIFICATION_TWELVE_HOUR_FORTMAT_ID, "string", resourcePackageName);
+
+      String twentyFourHourTimeFormat = AppboyNotificationUtils.getOptionalStringResource(resources,
+        twentyFourHourFormatResourceId, Constants.DEFAULT_TWENTY_FOUR_HOUR_TIME_FORMAT);
+      String twelveHourTimeFormat = AppboyNotificationUtils.getOptionalStringResource(resources,
+        twelveHourFormatResourceId, Constants.DEFAULT_TWELVE_HOUR_TIME_FORMAT);
+
+      if (layoutResourceId == 0 || titleResourceId == 0 || contentResourceId == 0 || iconResourceId == 0
+        || timeViewResourceId == 0) {
+        Log.w(TAG, String.format("Couldn't find all resource IDs for custom notification view, extended view will " +
+            "not be used for push notifications. Received %d for layout, %d for title, %d for content, %d for icon, " +
+            "and %d for time.",
+          layoutResourceId, titleResourceId, contentResourceId, iconResourceId, timeViewResourceId));
+      } else {
+        Log.d(TAG, "Using RemoteViews for rendering of push notification.");
+
+        RemoteViews remoteViews;
+        try {
+          remoteViews = new RemoteViews(PackageUtils.getResourcePackageName(context), layoutResourceId);
+        } catch (Exception e) {
+          Log.e(TAG, String.format("Failed to initialized remote views with package %s", PackageUtils.getResourcePackageName(context)), e);
+          try {
+            remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
+          } catch (Exception e2) {
+            Log.e(TAG, String.format("Failed to initialized remote views with package %s", context.getPackageName()), e2);
+            return null;
+          }
+        }
+
+        remoteViews.setTextViewText(titleResourceId, title);
+        remoteViews.setTextViewText(contentResourceId, contentText);
+        remoteViews.setImageViewResource(iconResourceId, smallNotificationIconResourceId);
+
+        // Custom views cannot be used as part of a RemoteViews so we're using a TextView widget instead. This
+        // view will always display the time without date information (even after the day has changed).
+        SimpleDateFormat timeFormat = new SimpleDateFormat(
+          android.text.format.DateFormat.is24HourFormat(context) ? twentyFourHourTimeFormat : twelveHourTimeFormat);
+        String notificationTime = timeFormat.format(new Date());
+        remoteViews.setTextViewText(timeViewResourceId, notificationTime);
+        return remoteViews;
+      }
+    }
+
+    return null;
+  }
+}

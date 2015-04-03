@@ -3,11 +3,11 @@ package com.appboy.ui.activities;
 import android.app.Activity;
 
 import com.appboy.Appboy;
-import com.appboy.ui.slideups.AppboySlideupManager;
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 /**
  * The AppboyBaseFragmentActivity class is a base class that includes the necessary Appboy method
- * calls for basic analytics and slideup integration. This class extends the Android Activity class.
+ * calls for basic analytics and in-app message integration. This class extends the Android Activity class.
  */
 public class AppboyBaseActivity extends Activity {
   @Override
@@ -22,16 +22,16 @@ public class AppboyBaseActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    // Registers the AppboySlideupManager for the current Activity. This Activity will now listen for
-    // slideup messages from Appboy.
-    AppboySlideupManager.getInstance().registerSlideupManager(this);
+    // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
+    // in-app messages from Appboy.
+    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    // Unregisters the AppboySlideupManager.
-    AppboySlideupManager.getInstance().unregisterSlideupManager(this);
+    // Unregisters the AppboyInAppMessageManager.
+    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
   }
 
   @Override

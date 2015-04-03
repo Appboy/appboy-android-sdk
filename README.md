@@ -43,7 +43,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:1.6.+'
+   compile 'com.appboy:android-sdk-ui:1.7.+'
    ...
 }
 ```
@@ -63,7 +63,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.6.+'
+  compile 'com.appboy:android-sdk-ui:1.7.+'
 }
 ```
 

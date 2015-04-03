@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.push.AppboyNotificationFactory;
+import com.appboy.push.AppboyNotificationUtils;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyGcmReceiver.class.getName());
@@ -100,35 +102,47 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       }
       return false;
     } else {
-      Bundle extras = intent.getExtras();
+      Bundle gcmExtras = intent.getExtras();
 
       // Parsing the Appboy data extras (data push).
-      Bundle appboyExtrasData = AppboyNotificationUtils.createExtrasBundle(AppboyNotificationUtils.bundleOptString(extras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
-      extras.remove(Constants.APPBOY_PUSH_EXTRAS_KEY);
-      extras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtrasData);
+      // We convert the JSON in the extras key into a Bundle.
+      Bundle appboyExtras = AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(AppboyNotificationUtils.bundleOptString(gcmExtras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
+      gcmExtras.remove(Constants.APPBOY_PUSH_EXTRAS_KEY);
+      gcmExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
-        int notificationId = AppboyNotificationUtils.getNotificationId(extras);
-        extras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
+        int notificationId = AppboyNotificationUtils.getNotificationId(gcmExtras);
+        gcmExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
         XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
 
-        Notification notification = AppboyNotificationUtils.createNotification(appConfigurationProvider, context,
-            extras.getString(Constants.APPBOY_PUSH_TITLE_KEY), extras.getString(Constants.APPBOY_PUSH_CONTENT_KEY), extras);
+        Notification notification = null;
+        IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
+        try {
+          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, gcmExtras, AppboyNotificationUtils.getAppboyExtras(gcmExtras));
+        } catch(Exception e) {
+          Log.e(TAG, "Failed to create notification.", e);
+          return false;
+        }
+
+        if (notification == null) {
+          return false;
+        }
+
         notificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
-        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
+        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, gcmExtras);
 
         // Since we have received a notification, we want to wake the device screen.
-        AppboyNotificationUtils.wakeScreenIfHasPermission(context, extras);
+        AppboyNotificationUtils.wakeScreenIfHasPermission(context, gcmExtras);
 
         // Set a custom duration for this notification.
-        if (extras != null && extras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
-          int durationInMillis = Integer.parseInt(extras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));
+        if (gcmExtras != null && gcmExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
+          int durationInMillis = Integer.parseInt(gcmExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));
           AppboyNotificationUtils.setNotificationDurationAlarm(context, this.getClass(), notificationId, durationInMillis);
         }
 
         return true;
       } else {
-        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, extras);
+        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, gcmExtras);
         return false;
       }
     }

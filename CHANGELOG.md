@@ -1,3 +1,15 @@
+## 1.7.0
+- Refactors AppboyNotificationUtils into multiple classes in the com.appboy.push package and the
+  AppboyImageUtils class in com.appboy.
+- Adds the ability to set a custom IAppboyNotificationFactory to customize push using
+  Appboy.setCustomAppboyNotificationFactory(IAppboyNotificationFactory customAppboyNotificationFactory).
+- Adds the ability to override title and summary in BigView push notifications.
+- Adds summary subtext in BigView notifications.
+- Adds the ability to set a default large icon for push messages by adding the com_appboy_push_large_notification_icon drawable resource to your appboy.xml.
+- Adds support for modal and full screen style in-app messages.  Also adds support for including fontawesome icons and images with in-app messages, changing colors on in-app message UI elements, expanded customization options, and message resizing for tablets.  Please visit our documentation for more information.
+- Adds a sample application (China Sample App) which integrates Baidu Cloud Push and Appboy for sending push messages through Appboy to devices without Google Services installed.
+- Adds AppboyNotificationUtils.logBaiduNotificationClick(), a utility method for logging push notification opens from push messsages sent via Baidu Cloud Push by Appboy.
+
 ## 1.6.2
 - Updates our UI library to build against API level 21. 
 - Adds a major performance upgrade that reduces CPU usage, memory footprint, and network traffic. 

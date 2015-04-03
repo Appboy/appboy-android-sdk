@@ -8,10 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.ui.slideups.AppboySlideupManager;
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.crittercism.app.Crittercism;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,11 +48,11 @@ public class AppboyFragmentActivity extends FragmentActivity {
   @Override
   public void onResume() {
     super.onResume();
-    // Registers the AppboySlideupManager for the current Activity. This Activity will now listen for
-    // slideup messages from Appboy.
-    AppboySlideupManager.getInstance().registerSlideupManager(this);
+    // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
+    // in-app messages from Appboy.
+    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
     if (mRefreshData) {
-      Appboy.getInstance(this).requestSlideupRefresh();
+      Appboy.getInstance(this).requestInAppMessageRefresh();
       mRefreshData = false;
     }
     Crittercism.leaveBreadcrumb(this.getClass().getName());
@@ -59,8 +61,8 @@ public class AppboyFragmentActivity extends FragmentActivity {
   @Override
   public void onPause() {
     super.onPause();
-    // Unregisters the AppboySlideupManager.
-    AppboySlideupManager.getInstance().unregisterSlideupManager(this);
+    // Unregisters the AppboyInAppMessageManager.
+    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
   }
 
   @Override

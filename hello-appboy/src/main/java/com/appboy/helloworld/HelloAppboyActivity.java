@@ -23,7 +23,7 @@ public class HelloAppboyActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.hello_appboy);
 
-    // It is good practice to always get an instance of the appboy singleton using the application
+    // It is good practice to always get an instance of the Appboy singleton using the application
     // context.
     mApplicationContext = this.getApplicationContext();
 

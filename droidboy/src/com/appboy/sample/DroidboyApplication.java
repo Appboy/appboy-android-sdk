@@ -27,6 +27,7 @@ public class DroidboyApplication extends Application
       Appboy.configure(this, null);
     }
     Appboy.setAppboyEndpointProvider(new DummyEndpointProvider());
+    Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
   }
 
   @TargetApi(9)

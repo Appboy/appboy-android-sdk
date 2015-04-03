@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.appboy.sample.CustomInAppMessageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inappmessage"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_inappmessage_background"
+    android:paddingLeft="15.0dp"
+    android:paddingTop="15.0dp"
+    android:paddingRight="15.0dp"
+    android:paddingBottom="15.0dp">
+    <TextView
+        android:id="@+id/inappmessage_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="120.0sp"
+        android:textColor="@android:color/white"
+        android:background="@android:color/transparent"
+        android:padding="0.0dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/inappmessage_message"
+        android:layout_width="match_parent"
+        android:layout_height="50.0dp"
+        android:padding="0.0dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/inappmessage_icon"/>
+    <ImageView
+        android:id="@+id/inappmessage_image"
+        android:layout_width="270.0dp"
+        android:layout_height="180.0dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_below="@id/inappmessage_message"/>
+</com.appboy.sample.CustomInAppMessageView>

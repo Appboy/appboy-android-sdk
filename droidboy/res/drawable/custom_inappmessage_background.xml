@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+    android:id="@+id/inappmessage_background"
+    android:left="10.0dp"
+    android:top="5.0dp"
+    android:right="10.0dp"
+    android:bottom="5.0dp">
+    <shape>
+        <solid android:color="@color/custom_inappmessage_green"/>
+        <corners android:radius="3.0dp"/>
+    </shape>
+  </item>
+</layer-list>

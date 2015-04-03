@@ -13,6 +13,64 @@
 
   <string-array name="dismissTypeValues">
     <item>Auto</item>
-    <item>Swipe</item>
+    <item>Manual</item>
+  </string-array>
+
+  <string-array name="backgroundColorTypeValues">
+    <item>Default</item>
+    <item>Red</item>
+    <item>Black</item>
+    <item>White</item>
+  </string-array>
+
+  <string-array name="iconColorTypeValues">
+    <item>Default</item>
+    <item>Red</item>
+    <item>Purple</item>
+    <item>White</item>
+  </string-array>
+
+  <string-array name="closeButtonColorTypeValues">
+    <item>Default</item>
+    <item>Red</item>
+    <item>White</item>
+  </string-array>
+
+  <string-array name="textColorTypeValues">
+    <item>Default</item>
+    <item>Red</item>
+    <item>Purple</item>
+    <item>White</item>
+  </string-array>
+
+  <string-array name="messageTypeTypeValues">
+    <item>Slideup</item>
+    <item>Modal</item>
+    <item>Full</item>
+  </string-array>
+
+  <string-array name="headerTextColorTypeValues">
+    <item>Default</item>
+    <item>Red</item>
+    <item>Purple</item>
+    <item>White</item>
+  </string-array>
+
+  <string-array name="iconTypeValues">
+    <item>None</item>
+    <item>Blue</item>
+    <item>Appboy</item>
+    <item>Horn</item>
+    <item>Money</item>
+    <item>Play</item>
+    <item>Star</item>
+    <item>Trophy</item>
+    <item>Video</item>
+  </string-array>
+
+  <string-array name="messageButtonTypeValues">
+    <item>None</item>
+    <item>One</item>
+    <item>Two</item>
   </string-array>
 </resources>

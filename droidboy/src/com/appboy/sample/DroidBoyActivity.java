@@ -120,8 +120,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       case R.id.settings:
         startActivity(new Intent(this, PreferencesActivity.class));
         break;
-      case R.id.slideups:
-        startActivity(new Intent(this, SlideupTesterActivity.class));
+      case R.id.inappmessages:
+        startActivity(new Intent(this, InAppMessageTesterActivity.class));
+        break;
+      case R.id.push_testing:
+        startActivity(new Intent(this, PushTesterActivity.class));
         break;
       default:
         Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));

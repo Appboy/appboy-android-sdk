@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.appboy.chinapush" android:versionCode="1" android:versionName="1.7.0">
+
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+  <application
+    android:icon="@drawable/ic_launcher_china_push"
+    android:allowBackup="true"
+    android:label="@string/app_name"
+    android:name=".ChinaPushApplication">
+    <activity
+      android:name=".ChinaPushActivity"
+      android:launchMode="singleTask"
+      android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <receiver android:name=".ChinaPushMessageReceiver">
+      <intent-filter>
+        <action android:name="com.baidu.android.pushservice.action.MESSAGE"/>
+        <action android:name="com.baidu.android.pushservice.action.RECEIVE"/>
+        <action android:name="com.baidu.android.pushservice.action.notification.CLICK"/>
+      </intent-filter>
+    </receiver>
+    <!-- 用于接收系统消息以保证 PushService 正常运行 -->
+    <receiver
+      android:name="com.baidu.android.pushservice.PushServiceReceiver"
+      android:process=":bdservice_v1">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+        <action android:name="com.baidu.android.pushservice.action.notification.SHOW"/>
+        <action android:name="com.baidu.android.pushservice.action.media.CLICK"/>
+      </intent-filter>
+    </receiver>
+    <!-- Push 服务接收客户端发送的各种请求-->
+    <!-- 注意:RegistrationReceiver 在 2.1.1 及之前版本有拼写失误,为 RegistratonReceiver ,用 新版本 SDK 时请更改为如下代码-->
+    <receiver
+      android:name="com.baidu.android.pushservice.RegistrationReceiver"
+      android:process=":bdservice_v1">
+      <intent-filter>
+        <action android:name="com.baidu.android.pushservice.action.METHOD"/>
+        <action android:name="com.baidu.android.pushservice.action.BIND_SYNC"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+        <data android:scheme="package"/>
+      </intent-filter>
+    </receiver>
+    <!-- Push 服务 -->
+    <!-- 注意:在 4.0 (包含)之后的版本需加上如下所示的 intent-filter action -->
+    <service
+      android:name="com.baidu.android.pushservice.PushService"
+      android:exported="true"
+      android:process=":bdservice_v1">
+      <intent-filter >
+        <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE"/>
+      </intent-filter>
+    </service>
+    <!-- 在百度开发者中心查询应用的API Key -->
+<meta-data android:name="api_key" android:value="YOUR-BAIDU-API-KEY-HERE" />
+  </application>
+</manifest>

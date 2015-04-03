@@ -4,7 +4,20 @@
   <color name="com_appboy_feedback_form_navigation_bar_background">#808080</color>
   <color name="com_appboy_feedback_form_is_bug">@android:color/black</color>
 
-  <color name="com_appboy_slideup_background">#CC1D1D1D</color>
+  <color name="com_appboy_inappmessage_icon">@android:color/white</color>
+  <color name="com_appboy_inappmessage_icon_background">#ff0073d5</color>
+  <color name="com_appboy_inappmessage_chevron">@android:color/white</color>
+
+  <color name="com_appboy_inappmessage_background_dark">#E6000000</color>
+  <color name="com_appboy_inappmessage_text_dark">@android:color/white</color>
+
+  <color name="com_appboy_inappmessage_modal_frame_light">#E6000000</color>
+  <color name="com_appboy_inappmessage_background_light">@android:color/white</color>
+  <color name="com_appboy_inappmessage_header_text_light">@android:color/black</color>
+  <color name="com_appboy_inappmessage_text_light">@android:color/black</color>
+  <color name="com_appboy_inappmessage_button_text_light">@android:color/white</color>
+  <color name="com_appboy_inappmessage_button_bg_light">#ff0073d5</color>
+  <color name="com_appboy_inappmessage_button_close_light">@android:color/black</color>
 
   <color name="com_appboy_title">#3F3F3F</color>
   <color name="com_appboy_description">#666565</color>

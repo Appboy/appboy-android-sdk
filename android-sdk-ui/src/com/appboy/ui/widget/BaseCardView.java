@@ -16,6 +16,7 @@ import android.widget.ViewSwitcher;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
+import com.appboy.support.PackageUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.support.StringUtils;
@@ -30,6 +31,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, BaseCardView.class.getName());
   private static Boolean unreadCardVisualIndicatorOn;
   private static final float SQUARE_ASPECT_RATIO = 1f;
+  private static final String COM_APPBOY_NEWSFEED_UNREAD_VISUAL_INDICATOR_ON =  "com_appboy_newsfeed_unread_visual_indicator_on";
 
   protected final Context mContext;
   protected T mCard;
@@ -58,7 +60,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
 
     // Read the setting from the appboy.xml if we don't already have a value.
     if (unreadCardVisualIndicatorOn == null) {
-      int resId = mContext.getResources().getIdentifier("com_appboy_newsfeed_unread_visual_indicator_on", "bool", context.getPackageName());
+      int resId = mContext.getResources().getIdentifier(COM_APPBOY_NEWSFEED_UNREAD_VISUAL_INDICATOR_ON, "bool", PackageUtils.getResourcePackageName(context));
       if (resId != 0) {
         unreadCardVisualIndicatorOn = context.getResources().getBoolean(resId);
       } else {
