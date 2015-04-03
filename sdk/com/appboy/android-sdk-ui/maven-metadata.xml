@@ -3,7 +3,7 @@
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-jar</artifactId>
   <versioning>
-    <release>1.6.2</release>
+    <release>1.7.0</release>
     <versions>
       <version>1.5.1</version>
       <version>1.5.2</version>
@@ -13,8 +13,9 @@
       <version>1.6.0</version>
       <version>1.6.1</version>
       <version>1.6.2</version>
+      <version>1.7.0</version>
     </versions>
-    <lastUpdated>20150317130220</lastUpdated>
+    <lastUpdated>20150403164953</lastUpdated>
   </versioning>
 </metadata>
 
