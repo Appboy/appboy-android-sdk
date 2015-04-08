@@ -69,7 +69,7 @@ public class FeedCategoriesFragment extends DialogFragment {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
     // Set the dialog title
-    builder.setTitle("Choose News Feed's Categories")
+    builder.setTitle("News Feed Categories")
 
         // Specify the list array, the items to be selected by default (the EnumSet from DroidBoyActivity),
         // and the listener through which to receive callbacks when items are selected

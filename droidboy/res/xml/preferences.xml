@@ -1,90 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <com.appboy.sample.UserProfileDialog
+        android:title="@string/user_dialog_title"
+        android:summary="@string/user_dialog_summary"
+        android:positiveButtonText="@string/user_dialog_okay"
+        android:negativeButtonText="@string/user_dialog_cancel"/>
 
-  <com.appboy.sample.UserProfileDialog
-      android:title="@string/user_dialog_title"
-      android:summary="@string/user_dialog_summary"
-      android:positiveButtonText="@string/user_dialog_okay"
-      android:negativeButtonText="@string/user_dialog_cancel"/>
+    <PreferenceCategory
+        android:title="@string/engagement_title">
+        <com.appboy.sample.CustomLoggingDialog
+            android:title="@string/custom_logging_dialog_title"
+            android:summary="@string/custom_logging_dialog_summary"
+            android:positiveButtonText="@string/custom_logging_dialog_okay"
+            android:negativeButtonText="@string/custom_logging_dialog_cancel"/>
+        <Preference
+            android:key="log_iab_purchase"
+            android:title="@string/iab_log_purchase_title"
+            android:summary="@string/iab_log_purchase_summary"/>
+        <Preference
+            android:key="facebook_share"
+            android:title="@string/facebook_share_title"
+            android:summary="@string/facebook_share_summary"/>
+        <Preference
+            android:key="twitter_share"
+            android:title="@string/twitter_share_title"
+            android:summary="@string/twitter_share_summary"/>
+    </PreferenceCategory>
 
-  <PreferenceCategory
-    android:title="@string/social_preferences_title">
+    <PreferenceCategory
+        android:title="@string/network_control_title">
+        <Preference
+            android:key="request_inappmessage"
+            android:title="Request In-App Message"/>
+        <Preference
+            android:key="data_flush"
+            android:title="@string/data_flush_title"
+            android:summary="@string/data_flush_summary"/>
+    </PreferenceCategory>
 
-    <Preference
-        android:key="facebook_share"
-        android:title="@string/facebook_share_title"
-        android:summary="@string/facebook_share_summary"/>
-
-    <Preference
-        android:key="twitter_share"
-        android:title="@string/twitter_share_title"
-        android:summary="@string/twitter_share_summary"/>
-  </PreferenceCategory>
-
-  <PreferenceCategory
-      android:title="@string/miscellaneous_title">
-
-    <com.appboy.sample.CustomLoggingDialog
-      android:title="@string/custom_logging_dialog_title"
-      android:summary="@string/custom_logging_dialog_summary"
-      android:positiveButtonText="@string/custom_logging_dialog_okay"
-      android:negativeButtonText="@string/custom_logging_dialog_cancel"/>
-
-    <Preference
-        android:key="log_purchase"
-        android:title="@string/log_purchase_title"
-        android:summary="@string/log_purchase_summary"/>
-
-    <Preference
-        android:key="log_purchase_with_quantity"
-        android:title="@string/log_purchase_with_quantity_title"
-        android:summary="@string/log_purchase_with_quantity_summary"
-        />
-  </PreferenceCategory>
-
-  <PreferenceCategory
-      android:title="@string/network_control_title">
-
-    <Preference
-        android:key="request_inappmessage"
-        android:title="Request In-App Message"/>
-
-    <Preference
-        android:key="data_flush"
-        android:title="@string/data_flush_title"
-        android:summary="@string/data_flush_summary"/>
-
-  </PreferenceCategory>
-
-  <PreferenceCategory
-    android:title="Custom Attribute Array Test">
-
-    <Preference
-      android:key="custom_attribute_array_set"
-      android:title="Set an Array"/>
-
-    <Preference
-      android:key="custom_attribute_array_add"
-      android:title="Add a Value"/>
-
-    <Preference
-      android:key="custom_attribute_array_rem"
-      android:title="Remove a Value"/>
-
-    <Preference
-      android:key="custom_attribute_array_empty"
-      android:title="Set Empty Array"/>
-
-    <Preference
-      android:key="custom_attribute_array_null"
-      android:title="Set Null Array"/>
-  </PreferenceCategory>
-
-  <PreferenceCategory
-      android:title="@string/about_title">
-
-    <Preference
-        android:key="about"/>
-  </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/about_title">
+        <Preference
+            android:key="about"/>
+    </PreferenceCategory>
 </PreferenceScreen>

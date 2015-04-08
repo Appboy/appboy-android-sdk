@@ -9,8 +9,8 @@
   <string name="send_feedback">Send Feedback</string>
 
   <string name="social_preferences_title">Social</string>
-  <string name="miscellaneous_title">Misc.</string>
-  <string name="network_control_title">Network Control</string>
+  <string name="engagement_title">Engagement</string>
+  <string name="network_control_title">Network Controls</string>
   <string name="about_title">About</string>
 
   <string name="user_dialog_title">Sign up</string>
@@ -39,21 +39,25 @@
   <string name="twitter_share_toast">Thank you for sharing on Twitter</string>
 
   <string name="custom_logging_dialog_title">Custom Logging</string>
-  <string name="custom_logging_dialog_summary">Log Custom Events And Custom Purchases</string>
+  <string name="custom_logging_dialog_summary">Log User Attributes, Custom Events, and Purchases</string>
   <string name="custom_logging_dialog_okay">OK</string>
   <string name="custom_logging_dialog_cancel">Cancel</string>
 
-  <string name="custom_logging_user_attribute">User Attribute Key</string>
+  <string name="attribute_array">Array Operation</string>
+  <string name="attribute_array_set">Set</string>
+  <string name="attribute_array_add">Add</string>
+  <string name="attribute_array_remove">Remove</string>
+  <string name="attribute_array_key">Create Attribute Array</string>
+
+  <string name="custom_logging_user_attribute">User Attribute</string>
   <string name="custom_logging_custom_event">Custom Event</string>
   <string name="custom_logging_custom_purchase">Custom Purchase</string>
+  <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
 
-  <string name="log_purchase_title">Unlock goodies</string>
-  <string name="log_purchase_summary">In-app purchase</string>
-  <string name="log_purchase_toast">Thank you for your purchase</string>
-
-  <string name="log_purchase_with_quantity_title">Unlock multiple goodies</string>
-  <string name="log_purchase_with_quantity_summary">In-app purchase</string>
-  <string name="log_purchase_with_quantity_toast">Thank you for your purchases</string>
+  <string name="iab_log_purchase_title">Google IAB Purchase Flow</string>
+  <string name="iab_log_purchase_summary">IAB In-app purchase</string>
+  <string name="iab_log_purchase_toast">Thank you for your purchase!</string>
+  <string name="iab_log_purchase_sorry">Sorry, your device does not support Google IAB.</string>
 
   <string name="data_flush_title">Request Flush</string>
   <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>

@@ -1,3 +1,7 @@
+## 1.7.1
+- Removes requirement to manually integrate Font Awesome into the client app's /assets folder for in-app messages with icons.
+- Upgrades Droidboy's custom user attributes and purchases capability and refactors the settings page.
+
 ## 1.7.0
 - Refactors AppboyNotificationUtils into multiple classes in the com.appboy.push package and the
   AppboyImageUtils class in com.appboy.

@@ -20,8 +20,6 @@ import com.appboy.enums.SocialNetwork;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.crittercism.app.Crittercism;
 
-import java.math.BigDecimal;
-
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
   private static final String SKU_ANDROID_TEST_PURCHASED = "android.test.purchased";
@@ -40,16 +38,10 @@ public class PreferencesActivity extends PreferenceActivity {
 
     Preference facebookSharePreference = findPreference("facebook_share");
     Preference twitterSharePreference = findPreference("twitter_share");
-    Preference logPurchasePreference = findPreference("log_purchase");
+    Preference logPurchasePreference = findPreference("log_iab_purchase");
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestInAppMessagePreference = findPreference("request_inappmessage");
-    Preference customAttributeArraySetPreference = findPreference("custom_attribute_array_set");
-    Preference customAttributeArrayAddPreference = findPreference("custom_attribute_array_add");
-    Preference customAttributeArrayRemPreference = findPreference("custom_attribute_array_rem");
-    Preference customAttributeArraySetEmptyPreference = findPreference("custom_attribute_array_empty");
-    Preference customAttributeArraySetNullPreference = findPreference("custom_attribute_array_null");
     Preference aboutPreference = findPreference("about");
-    Preference logPurchaseWithQuantityPreference = findPreference("log_purchase_with_quantity");
 
     aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
@@ -69,7 +61,7 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
-    if (isGoglePlayInstalled(this)) {
+    if (isGooglePlayInstalled(this)) {
       iapGoogleSetup();
     } else {
       Log.e(TAG, "Google Play is not installed; not setting up In-App Billing");
@@ -77,9 +69,8 @@ public class PreferencesActivity extends PreferenceActivity {
     logPurchasePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
-        if (Constants.IS_AMAZON || !isGoglePlayInstalled(PreferencesActivity.this)) {
-          Appboy.getInstance(PreferencesActivity.this).logPurchase(SKU_ANDROID_TEST_PURCHASED, "USD", BigDecimal.ONE);
-          Toast.makeText(PreferencesActivity.this, "Thank you for your purchase", Toast.LENGTH_LONG).show();
+        if (Constants.IS_AMAZON || !isGooglePlayInstalled(PreferencesActivity.this)) {
+          showToast(getString(R.string.iab_log_purchase_sorry));
           return true;
         } else {
           mHelper.launchPurchaseFlow(PreferencesActivity.this, SKU_ANDROID_TEST_PURCHASED,
@@ -102,65 +93,6 @@ public class PreferencesActivity extends PreferenceActivity {
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).requestInAppMessageRefresh();
         showToast(getString(R.string.requested_inappmessage_toast));
-        return true;
-      }
-    });
-    customAttributeArraySetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        String[] testSetArray = new String[]{"TestVal2", "TestVal2"};
-        Toast.makeText(PreferencesActivity.this, "Set a Custom Attribute Array", Toast.LENGTH_LONG).show();
-        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
-        appboyUser.setCustomAttributeArray("custom_attribute_array_test", testSetArray);
-        return true;
-      }
-    });
-    customAttributeArrayAddPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        String testAddString = "CustomAttributeArrayTestValue";
-        Toast.makeText(PreferencesActivity.this, "Added value to Custom Attribute Array", Toast.LENGTH_LONG).show();
-        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
-        appboyUser.addToCustomAttributeArray("custom_attribute_array_test", testAddString);
-        return true;
-      }
-    });
-    customAttributeArrayRemPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        String testRemString = "CustomAttributeArrayTestValue";
-        Toast.makeText(PreferencesActivity.this, "Removed value from Custom Attribute Array", Toast.LENGTH_LONG).show();
-        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
-        appboyUser.removeFromCustomAttributeArray("custom_attribute_array_test", testRemString);
-        return true;
-      }
-    });
-    customAttributeArraySetEmptyPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        String[] testEmptyArray = new String[]{};
-        Toast.makeText(PreferencesActivity.this, "Set Empty Custom Attribute Array", Toast.LENGTH_LONG).show();
-        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
-        appboyUser.setCustomAttributeArray("custom_attribute_array_test", testEmptyArray);
-        return true;
-      }
-    });
-    customAttributeArraySetNullPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        String[] testNullArray = null;
-        Toast.makeText(PreferencesActivity.this, "Set Null Custom Attribute Array", Toast.LENGTH_LONG).show();
-        AppboyUser appboyUser = Appboy.getInstance(PreferencesActivity.this).getCurrentUser();
-        appboyUser.setCustomAttributeArray("custom_attribute_array_test", testNullArray);
-        return true;
-      }
-    });
-    logPurchaseWithQuantityPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        // Log a purchase of 3 items each with price of $1.00
-        Appboy.getInstance(PreferencesActivity.this).logPurchase(SKU_ANDROID_TEST_PURCHASED, "USD", BigDecimal.ONE, 3);
-        Toast.makeText(PreferencesActivity.this, getString(R.string.log_purchase_with_quantity_toast), Toast.LENGTH_LONG).show();
         return true;
       }
     });
@@ -194,7 +126,7 @@ public class PreferencesActivity extends PreferenceActivity {
         Log.d(TAG, "In-app billing helper setup finished.");
 
         if (!result.isSuccess()) {
-          Toast.makeText(PreferencesActivity.this, "Problem setting up in-app billing: " + result, Toast.LENGTH_LONG).show();
+          showToast("Problem setting up in-app billing: " + result);
           return;
         }
 
@@ -266,19 +198,22 @@ public class PreferencesActivity extends PreferenceActivity {
   // Callback for when a purchase is finished
   IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
     public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-      Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+      String purchaseResultLog = "Purchase finished: " + result + ", purchase: " + purchase;
+      Log.d(TAG, purchaseResultLog);
       if (result.isFailure()) {
         Log.e(TAG, "Error purchasing: " + result);
+        showToast(purchaseResultLog);
         return;
       }
       if (!verifyDeveloperPayload(purchase)) {
         Log.d(TAG, "Error purchasing. Authenticity verification failed.");
+        showToast(purchaseResultLog);
         return;
       }
 
       Log.d(TAG, "Purchase successful.");
       Appboy.getInstance(PreferencesActivity.this).logPurchase("product_id", 99);
-      Toast.makeText(PreferencesActivity.this, getString(R.string.log_purchase_toast), Toast.LENGTH_LONG).show();
+      showToast(getString(R.string.iab_log_purchase_toast));
     }
   };
 
@@ -352,7 +287,7 @@ public class PreferencesActivity extends PreferenceActivity {
   }
 
   // Detect if Google Play is installed to know if IAB can be used
-  private boolean isGoglePlayInstalled(Context context) {
+  private boolean isGooglePlayInstalled(Context context) {
     try {
       context.getPackageManager().getPackageInfo("com.google.android.gsf", 0);
     } catch (PackageManager.NameNotFoundException e) {
