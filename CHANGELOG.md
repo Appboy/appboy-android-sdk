@@ -8,7 +8,7 @@
 - Adds the ability to set a custom IAppboyNotificationFactory to customize push using
   Appboy.setCustomAppboyNotificationFactory(IAppboyNotificationFactory customAppboyNotificationFactory).
 - Adds the ability to override title and summary in BigView push notifications.
-- Adds summary subtext in BigView notifications.
+- Adds summary subtext in BigView style notifications.  This is a breaking change in BigView style notification display.  Previously the summary text in BigView style notifications was set to the bundle/dashboard summary text if it was present, or the alert message otherwise.  Now the bundle/dashboard summary text is used to set the message subtext, which results in the bundle/dashboard summary text being shown in both the collapsed and expanded views.  See our updated push previews for a visualization of this change.
 - Adds the ability to set a default large icon for push messages by adding the com_appboy_push_large_notification_icon drawable resource to your appboy.xml.
 - Adds support for modal and full screen style in-app messages.  Also adds support for including fontawesome icons and images with in-app messages, changing colors on in-app message UI elements, expanded customization options, and message resizing for tablets.  Please visit our documentation for more information.
 - Adds a sample application (China Sample App) which integrates Baidu Cloud Push and Appboy for sending push messages through Appboy to devices without Google Services installed.
