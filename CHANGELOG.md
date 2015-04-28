@@ -1,3 +1,11 @@
+## 1.7.2
+- Removes DownloadUtils.java from com.appboy.ui.support.  The downloadImageBitmap function has been moved to com.appboy.AppboyImageUtils.
+- Introduces AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) to parse Appboy extras from GCM/ADM intent extras directly
+  rather than requiring Appboy extras to be parsed into a Bundle before being passed into AppboyNotificationUtils.getAppboyExtras(Bundle notificationExtras).
+- Adds the ability to send and retrieve extra key-value pairs via a News Feed card.
+- Adds the ability to define custom key-value properties on a custom event or purchase.  Property keys are strings and values may be strings, doubles, ints, booleans, or
+  java.util.Date objects.
+
 ## 1.7.1
 - Removes requirement to manually integrate Font Awesome into the client app's /assets folder for in-app messages with icons.
 - Upgrades Droidboy's custom user attributes and purchases capability and refactors the settings page.

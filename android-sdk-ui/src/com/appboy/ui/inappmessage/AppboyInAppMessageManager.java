@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.appboy.Appboy;
+import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.enums.inappmessage.ClickAction;
@@ -25,7 +26,6 @@ import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.support.DownloadUtils;
 import com.appboy.ui.support.StringUtils;
 import com.appboy.ui.support.ViewUtils;
 
@@ -257,7 +257,7 @@ public final class AppboyInAppMessageManager {
       IInAppMessage inAppMessage = inAppMessages[0];
       String imageUrl = inAppMessage.getImageUrl();
       if (!StringUtils.isNullOrBlank(imageUrl) && inAppMessage.getBitmap() == null) {
-        inAppMessage.setBitmap(DownloadUtils.downloadImageBitmap(inAppMessage.getImageUrl()));
+        inAppMessage.setBitmap(AppboyImageUtils.downloadImageBitmap(inAppMessage.getImageUrl()));
       } else {
         Log.d(TAG, "In-app message already contains image bitmap or has no image URL.  Not downloading image from URL.");
       }

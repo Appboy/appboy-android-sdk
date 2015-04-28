@@ -2,6 +2,7 @@ package com.appboy.sample;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -14,9 +15,9 @@ import com.android.vending.billing.utils.IabResult;
 import com.android.vending.billing.utils.Inventory;
 import com.android.vending.billing.utils.Purchase;
 import com.appboy.Appboy;
-import com.appboy.AppboyUser;
 import com.appboy.Constants;
 import com.appboy.enums.SocialNetwork;
+import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.crittercism.app.Crittercism;
 
@@ -27,7 +28,6 @@ public class PreferencesActivity extends PreferenceActivity {
   private static final String SKU_ANDROID_TEST_REFUNDED = "android.test.refunded";
   private static final String SKU_ANDROID_TEST_UNAVAILABLE = "android.test.item_unavailable";
   private static final int IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE = 12345;
-  private static final CustomInAppMessageViewFactory sCustomInAppMessageViewFactory = new CustomInAppMessageViewFactory();
 
   private IabHelper mHelper;
 
@@ -42,6 +42,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestInAppMessagePreference = findPreference("request_inappmessage");
     Preference aboutPreference = findPreference("about");
+    Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
 
     aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
@@ -93,6 +94,21 @@ public class PreferencesActivity extends PreferenceActivity {
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).requestInAppMessageRefresh();
         showToast(getString(R.string.requested_inappmessage_toast));
+        return true;
+      }
+    });
+    toggleDisableAppboyNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        boolean newDisableAppboyNetworkRequestsPreference = !Boolean.parseBoolean(getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETORK_REQUESTS_KEY, null));
+        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).edit();
+        sharedPreferencesEditor.putString(SharedPrefsUtil.DISABLE_APPBOY_NETORK_REQUESTS_KEY, String.valueOf(newDisableAppboyNetworkRequestsPreference));
+        SharedPrefsUtil.persist(sharedPreferencesEditor);
+        if (newDisableAppboyNetworkRequestsPreference) {
+          Toast.makeText(PreferencesActivity.this, "Disabling Appboy network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
+        } else {
+          Toast.makeText(PreferencesActivity.this, "Enabling Appboy network requests for the next app run for all devices", Toast.LENGTH_LONG).show();
+        }
         return true;
       }
     });

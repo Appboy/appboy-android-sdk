@@ -29,9 +29,7 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
     if (pushReceivedAction.equals(action)) {
       Log.d(TAG, "Received push notification.");
     } else if (notificationOpenedAction.equals(action)) {
-      Bundle extras = new Bundle();
-      extras.putString(DESTINATION_VIEW, FEED);
-      extras.putString(AppboyGcmReceiver.CAMPAIGN_ID_KEY, intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY));
+      Bundle extras = getPushExtrasBundle(intent);
 
       // If a custom URI is defined, start an ACTION_VIEW intent pointing at the custom URI.
       // The intent returned from getStartActivityIntent() is placed on the back stack.
@@ -53,11 +51,20 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
   private Intent getStartActivityIntent(Context context, Bundle extras) {
     Intent startActivityIntent = new Intent(context, DroidBoyActivity.class);
     startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    startActivityIntent.putExtra(SOURCE_KEY, Constants.APPBOY);
     if (extras != null) {
       startActivityIntent.putExtras(extras);
     }
     return startActivityIntent;
+  }
 
+  private Bundle getPushExtrasBundle(Intent intent) {
+    Bundle extras = intent.getBundleExtra(Constants.APPBOY_PUSH_EXTRAS_KEY);
+    if (extras == null) {
+      extras = new Bundle();
+    }
+    extras.putString(DESTINATION_VIEW, FEED);
+    extras.putString(AppboyGcmReceiver.CAMPAIGN_ID_KEY, intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY));
+    extras.putString(SOURCE_KEY, Constants.APPBOY);
+    return extras;
   }
 }

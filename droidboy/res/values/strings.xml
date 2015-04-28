@@ -51,8 +51,10 @@
 
   <string name="custom_logging_user_attribute">User Attribute</string>
   <string name="custom_logging_custom_event">Custom Event</string>
+  <string name="custom_logging_custom_event_property">Event Property</string>
   <string name="custom_logging_custom_purchase">Custom Purchase</string>
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
+  <string name="custom_logging_custom_purchase_property">Purchase Property</string>
 
   <string name="iab_log_purchase_title">Google IAB Purchase Flow</string>
   <string name="iab_log_purchase_summary">IAB In-app purchase</string>
@@ -106,4 +108,7 @@
   <string name="push_tester_summary_label">Add Summary</string>
   <string name="push_tester_overflow_text_label">Should Overflow Text</string>
   <string name="push_tester_public_version_label">Set Public Version Notification</string>
+  <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
+  <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>
+  <string name="misc_preference_category">Misc</string>
 </resources>

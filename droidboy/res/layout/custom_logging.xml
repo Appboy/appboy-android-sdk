@@ -59,6 +59,30 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/custom_logging_custom_event_property"/>
+
+            <EditText
+                android:id="@+id/custom_event_property_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserSingleLineText"/>
+
+            <EditText
+                android:id="@+id/custom_event_property_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserSingleLineText"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/custom_logging_custom_purchase"/>
 
             <EditText
@@ -84,6 +108,30 @@
                 android:layout_height="wrap_content"
                 android:layout_span="4"
                 android:inputType="number"
+                style="@style/UserSingleLineText"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_logging_custom_purchase_property"/>
+
+            <EditText
+                android:id="@+id/purchase_property_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserSingleLineText"/>
+
+            <EditText
+                android:id="@+id/purchase_property_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
                 style="@style/UserSingleLineText"/>
         </TableRow>
 

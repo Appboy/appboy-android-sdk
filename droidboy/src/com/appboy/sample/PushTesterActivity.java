@@ -122,7 +122,6 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
             notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(mTitle, mShouldOverflowText));
             notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(mContent, mShouldOverflowText));
 
-            Bundle appboyExtras = new Bundle();
             if (mUseSummary) {
               notificationExtras.putString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(mSummary, mShouldOverflowText));
             }
@@ -149,11 +148,15 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
                 Log.e(TAG, "Failed to created public version notification JSON string", jsonException);
               }
             }
+
+            // Manually build the appboy extras bundle. 
+            Bundle appboyExtras = new Bundle();
             if (mUseImage) {
               if (Constants.IS_AMAZON) {
                 // Amazon flattens the extras bundle so we have to put it in the regular notification
-                // extras to imitate that funcitonality.
+                // extras to imitate that functionality.
                 notificationExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
+                appboyExtras = new Bundle(notificationExtras);
               } else {
                 appboyExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
               }
@@ -164,7 +167,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
               mAppConfigurationProvider,
               getApplicationContext(),
               notificationExtras,
-              AppboyNotificationUtils.getAppboyExtras(notificationExtras));
+              appboyExtras);
             mNotificationManager.notify(AppboyNotificationUtils.getNotificationId(notificationExtras), notification);
           }
         })).start();

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.app.Notification;
 import android.app.NotificationManager;
 import com.appboy.configuration.XmlAppConfigurationProvider;
-import com.appboy.push.AppboyNotificationFactory;
 import com.appboy.push.AppboyNotificationUtils;
 
 public final class AppboyAdmReceiver extends BroadcastReceiver {
@@ -91,9 +90,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       Bundle admExtras = intent.getExtras();
 
       // Parsing the Appboy data extras (data push).
-      // We convert the JSON in the extras key into a Bundle.
-      Bundle appboyExtras = AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(AppboyNotificationUtils.bundleOptString(admExtras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
-      admExtras.remove(Constants.APPBOY_PUSH_EXTRAS_KEY);
+      Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);
       admExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
@@ -104,7 +101,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         Notification notification = null;
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
         try {
-          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, AppboyNotificationUtils.getAppboyExtras(admExtras));
+          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
         } catch(Exception e) {
           Log.e(TAG, "Failed to create notification.", e);
           return false;

@@ -6,12 +6,14 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.appboy.Constants;
 import com.appboy.models.MessageButton;
 import com.appboy.ui.R;
 import com.appboy.ui.support.ViewUtils;
@@ -19,6 +21,7 @@ import com.appboy.ui.support.ViewUtils;
 import java.util.List;
 
 public class InAppMessageViewUtils {
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageViewUtils.class.getName());
 
   public static void setImage(Bitmap bitmap, ImageView imageView) {
     if (bitmap != null) {
@@ -27,9 +30,14 @@ public class InAppMessageViewUtils {
   }
 
   public static void setIcon(Context context, String icon, int iconColor, int iconBackgroundColor, TextView textView) {
-    Typeface fontFamily = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf");
-    textView.setTypeface(fontFamily);
     if (isValidIcon(icon)) {
+      try {
+        Typeface fontFamily = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf");
+        textView.setTypeface(fontFamily);
+      } catch (Exception e) {
+        Log.e(TAG, "Caught exception setting icon typeface. Not rendering icon.", e);
+        return;
+      }
       textView.setText(icon);
       setTextViewColor(textView, iconColor);
       if (textView.getBackground() != null) {

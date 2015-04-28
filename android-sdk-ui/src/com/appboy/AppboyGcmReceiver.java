@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.appboy.configuration.XmlAppConfigurationProvider;
-import com.appboy.push.AppboyNotificationFactory;
 import com.appboy.push.AppboyNotificationUtils;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
@@ -106,8 +105,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
 
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.
-      Bundle appboyExtras = AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(AppboyNotificationUtils.bundleOptString(gcmExtras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
-      gcmExtras.remove(Constants.APPBOY_PUSH_EXTRAS_KEY);
+      Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(gcmExtras);
       gcmExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
@@ -118,7 +116,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         Notification notification = null;
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
         try {
-          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, gcmExtras, AppboyNotificationUtils.getAppboyExtras(gcmExtras));
+          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, gcmExtras, appboyExtras);
         } catch(Exception e) {
           Log.e(TAG, "Failed to create notification.", e);
           return false;

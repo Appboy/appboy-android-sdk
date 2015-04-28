@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
+
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
@@ -171,6 +173,9 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         Appboy.getInstance(this).logPushNotificationOpened(campaignId);
       }
       navigateToDestination(extras);
+      String bundleLogString = convertBundleToAppboyLogString(extras);
+      Toast.makeText(DroidBoyActivity.this, bundleLogString, Toast.LENGTH_LONG).show();
+      Log.d(TAG, bundleLogString);
     }
 
     // Clear the intent so that screen rotations don't cause the intent to be re-executed on.
@@ -223,5 +228,18 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     }
     mAppboyFeedCategories = EnumSet.copyOf(dialog.selectedCategories);
     mAppboyFeedFragment.setCategories(mAppboyFeedCategories);
+  }
+
+  public static String convertBundleToAppboyLogString(Bundle bundle) {
+    if (bundle == null) {
+      return "Received intent with null extras Bundle from Appboy.";
+    }
+    String bundleString = "Received intent with extras Bundle of size " + bundle.size()
+        + " from Appboy containing [";
+    for (String key : bundle.keySet()) {
+      bundleString += " '" + key + "':'" + bundle.get(key) + "'";
+    }
+    bundleString += " ].";
+    return bundleString;
   }
 }

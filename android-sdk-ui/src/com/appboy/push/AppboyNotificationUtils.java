@@ -18,7 +18,6 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.util.Xml;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
@@ -39,10 +38,14 @@ public class AppboyNotificationUtils {
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
 
   /**
-   * Get the Appboy extras Bundle from the notification extras.
+   * Get the Appboy extras Bundle from the notification extras. Notification extras must be in a Bundle.
    *
    * Amazon ADM recursively flattens all JSON messages, so we just return the original bundle.
+   * 
+   * @deprecated use {@link AppboyNotificationUtils#getAppboyExtrasWithoutPreprocessing(android.os.Bundle) instead.
+   * Note that notification extras must be in GCM/ADM format instead of a Bundle.}
    */
+  @Deprecated
   public static Bundle getAppboyExtras(Bundle notificationExtras) {
     if (notificationExtras == null) {
       return null;
@@ -51,6 +54,22 @@ public class AppboyNotificationUtils {
       return notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
     } else {
       return notificationExtras;
+    }
+  }
+
+  /**
+   * Get the Appboy extras Bundle from the notification extras.  Notification extras must be in GCM/ADM format.
+   *
+   * Amazon ADM recursively flattens all JSON messages, so we just return a copy of the original bundle.
+   */
+  public static Bundle getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) {
+    if (notificationExtras == null) {
+      return null;
+    }
+    if (!Constants.IS_AMAZON) {
+      return AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
+    } else {
+      return new Bundle(notificationExtras);
     }
   }
 
