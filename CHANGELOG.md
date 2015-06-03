@@ -2,6 +2,7 @@
 - Adds Appboy logging configurability by setting the AppboyLogger.LogLevel.  This is intended to be used in development environments
   and should not be set in a released application as logging statements are essential for debugging.
 - Adds getAppboyPushMessageRegistrationId() to the Appboy interface to enable retrieval of the GCM/ADM/Baidu registration ID Appboy has set for the device.
+- Updates our libraries to build against API level 22.
 
 ## 1.7.2
 - Removes DownloadUtils.java from com.appboy.ui.support.  The downloadImageBitmap function has been moved to com.appboy.AppboyImageUtils.
