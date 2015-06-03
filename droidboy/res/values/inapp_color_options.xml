@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_color_options">
+    <item>Not Set</item>
+    <item>Red</item>
+    <item>Orange</item>
+    <item>Yellow</item>
+    <item>Green</item>
+    <item>Blue</item>
+    <item>Purple</item>
+    <item>Brown</item>
+    <item>Grey</item>
+    <item>Black</item>
+    <item>White</item>
+  </string-array>
+  <string-array name="inapp_color_values">
+    <item>not set</item>
+    <item>red</item>
+    <item>orange</item>
+    <item>yellow</item>
+    <item>green</item>
+    <item>blue</item>
+    <item>purple</item>
+    <item>brown</item>
+    <item>grey</item>
+    <item>black</item>
+    <item>white</item>
+  </string-array>
+</resources>

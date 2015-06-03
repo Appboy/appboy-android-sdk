@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="push_image_options">
-    <item>No Image</item>
-    <item>Normal Image</item>
-    <item>Taller Than Wide Image</item>
+    <item>Image: None</item>
+    <item>Image: Normal</item>
+    <item>Image: Taller Than Wide</item>
   </string-array>
   <string-array name="push_image_values">
     <item></item>

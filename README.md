@@ -71,6 +71,8 @@ dependencies {
 
 The Android SDK supports Android 2.2+ (Froyo and up).
 
+Appboy uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons.  Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
+
 ## Questions?
 
 If you have questions, please contact [support@appboy.com](mailto:support@appboy.com).

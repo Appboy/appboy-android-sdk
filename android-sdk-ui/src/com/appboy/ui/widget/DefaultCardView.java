@@ -1,7 +1,7 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
 import com.appboy.ui.R;
@@ -27,6 +27,6 @@ public class DefaultCardView extends BaseCardView<Card> {
   }
 
   @Override public void onSetCard(Card card) {
-    Log.w(TAG, "onSetCard called for blank view with: " + card.toString());
+    AppboyLogger.w(TAG, "onSetCard called for blank view with: " + card.toString());
   }
 }

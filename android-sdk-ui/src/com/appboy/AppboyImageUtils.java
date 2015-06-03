@@ -2,7 +2,7 @@ package com.appboy;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -27,7 +27,7 @@ public class AppboyImageUtils {
    */
   public static Bitmap downloadImageBitmap(String imageUrl) {
     if (imageUrl == null || imageUrl.length() == 0) {
-      Log.i(TAG, "Null or empty Url string passed to image bitmap download. Not attempting download.");
+      AppboyLogger.i(TAG, "Null or empty Url string passed to image bitmap download. Not attempting download.");
       return null;
     }
     Bitmap bitmap = null;
@@ -38,13 +38,13 @@ public class AppboyImageUtils {
         inputStream.close();
       }
     } catch (OutOfMemoryError e) {
-      Log.e(TAG, String.format("Out of Memory Error in image bitmap download for Url: %s.", imageUrl), e);
+      AppboyLogger.e(TAG, String.format("Out of Memory Error in image bitmap download for Url: %s.", imageUrl), e);
     } catch (UnknownHostException e) {
-      Log.e(TAG, String.format("Unknown Host Exception in image bitmap download for Url: %s. Device may be offline.", imageUrl), e);
+      AppboyLogger.e(TAG, String.format("Unknown Host Exception in image bitmap download for Url: %s. Device may be offline.", imageUrl), e);
     } catch (MalformedURLException e) {
-      Log.e(TAG, String.format("Malformed URL Exception in image bitmap download for Url: %s. Image Url may be corrupted.", imageUrl), e);
+      AppboyLogger.e(TAG, String.format("Malformed URL Exception in image bitmap download for Url: %s. Image Url may be corrupted.", imageUrl), e);
     } catch (Exception e) {
-      Log.e(TAG, String.format("Exception in image bitmap download for Url: %s", imageUrl), e);
+      AppboyLogger.e(TAG, String.format("Exception in image bitmap download for Url: %s", imageUrl), e);
     }
     return bitmap;
   }

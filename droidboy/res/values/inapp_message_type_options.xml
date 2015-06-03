@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_message_type_options">
+    <item>Message Type: Slideup</item>
+    <item>Message Type: Modal</item>
+    <item>Message Type: Full</item>
+  </string-array>
+  <string-array name="inapp_message_type_values">
+    <item>slideup</item>
+    <item>modal</item>
+    <item>full</item>
+  </string-array>
+</resources>

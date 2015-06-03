@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.widget.RemoteViews;
 
 import com.appboy.Constants;
@@ -54,22 +54,22 @@ public class AppboyNotificationRemoteViewsUtils {
 
       if (layoutResourceId == 0 || titleResourceId == 0 || contentResourceId == 0 || iconResourceId == 0
         || timeViewResourceId == 0) {
-        Log.w(TAG, String.format("Couldn't find all resource IDs for custom notification view, extended view will " +
+        AppboyLogger.w(TAG, String.format("Couldn't find all resource IDs for custom notification view, extended view will " +
             "not be used for push notifications. Received %d for layout, %d for title, %d for content, %d for icon, " +
             "and %d for time.",
           layoutResourceId, titleResourceId, contentResourceId, iconResourceId, timeViewResourceId));
       } else {
-        Log.d(TAG, "Using RemoteViews for rendering of push notification.");
+        AppboyLogger.d(TAG, "Using RemoteViews for rendering of push notification.");
 
         RemoteViews remoteViews;
         try {
           remoteViews = new RemoteViews(PackageUtils.getResourcePackageName(context), layoutResourceId);
         } catch (Exception e) {
-          Log.e(TAG, String.format("Failed to initialized remote views with package %s", PackageUtils.getResourcePackageName(context)), e);
+          AppboyLogger.e(TAG, String.format("Failed to initialized remote views with package %s", PackageUtils.getResourcePackageName(context)), e);
           try {
             remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
           } catch (Exception e2) {
-            Log.e(TAG, String.format("Failed to initialized remote views with package %s", context.getPackageName()), e2);
+            AppboyLogger.e(TAG, String.format("Failed to initialized remote views with package %s", context.getPackageName()), e2);
             return null;
           }
         }

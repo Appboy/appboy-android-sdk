@@ -3,7 +3,7 @@ package com.appboy.ui.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -102,10 +102,10 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
         // Used to identify the current Drawable in the imageSwitcher
         mImageSwitcher.setTag(String.valueOf(resourceId));
       } else {
-        Log.d(TAG, "The imageSwitcher for the read/unread feature is null. Did you include it in your xml?");
+        AppboyLogger.d(TAG, "The imageSwitcher for the read/unread feature is null. Did you include it in your xml?");
       }
     } else {
-      Log.d(TAG, "The card is null.");
+      AppboyLogger.d(TAG, "The card is null.");
     }
   }
 
@@ -178,12 +178,12 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
    */
   void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio, final boolean respectAspectRatio) {
     if (imageUrl == null) {
-      Log.w(TAG, "The image url to render is null. Not setting the card image.");
+      AppboyLogger.w(TAG, "The image url to render is null. Not setting the card image.");
       return;
     }
 
     if (aspectRatio == 0){
-      Log.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
+      AppboyLogger.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
       return;
     }
 
@@ -226,7 +226,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag){
     card.setIsRead(true);
     if(cardAction != null){
-      Log.d(tag, String.format("Logged click for card %s", card.getId()));
+      AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
       card.logClick();
       cardAction.execute(context);
     }

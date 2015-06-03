@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.ui.actions.ActivityAction;
@@ -27,7 +27,7 @@ public class AppboyNavigator implements IAppboyNavigator {
       ActivityAction activityAction = new ActivityAction(intent);
       activityAction.execute(context);
     } catch (PackageManager.NameNotFoundException e) {
-      Log.d(TAG, "The AppboyFeedActivity is not registered in the manifest. Ignoring request " +
+      AppboyLogger.d(TAG, "The AppboyFeedActivity is not registered in the manifest. Ignoring request " +
           "to display the news feed.");
     }
   }
@@ -35,7 +35,7 @@ public class AppboyNavigator implements IAppboyNavigator {
   @Override
   public void gotoURI(Context context, Uri uri, Bundle extras) {
     if (uri == null) {
-      Log.e(TAG, "IAppboyNavigator cannot open URI because the URI is null.");
+      AppboyLogger.e(TAG, "IAppboyNavigator cannot open URI because the URI is null.");
       return;
     }
     WebAction webAction = new WebAction(uri.toString());

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="inapp_uri_options">
+  <item>URI: Not Set</item>
+  <item>URI: Http Link</item>
+  <item>URI: Telephone Deep Link</item>
+  <item>URI: Droidboy Deep Link</item>
+</string-array>
+<string-array name="inapp_uri_values">
+  <item>not set</item>
+  <item>@string/google_url</item>
+  <item>tel:555555555</item>
+  <item>droidboy://preferences</item>
+</string-array>
+</resources>

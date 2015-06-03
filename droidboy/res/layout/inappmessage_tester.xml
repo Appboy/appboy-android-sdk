@@ -39,57 +39,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <Spinner
+                android:id="@+id/inapp_set_message_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_click_action_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_dismiss_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_slide_from_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_uri_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_icon_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_image_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_button_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4.0dp"
                 android:paddingRight="4.0dp"
                 android:stretchColumns="1">
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/set_message_type"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/message_type_list_view"
-                        android:layout_height="120dp"
-                        style="@style/InAppMessageTesterListView"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/click_action_set_to"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/click_action_list_view"
-                        android:layout_height="120dp"
-                        style="@style/InAppMessageTesterListView"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/dismiss_type_set_to"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/dismiss_type_list_view"
-                        android:layout_height="80dp"
-                        style="@style/InAppMessageTesterListView"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/uri_set_to"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <EditText
-                        android:id="@+id/uri_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textUri"/>
-                </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -118,48 +105,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="@string/icon_set_to"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <EditText
-                        android:id="@+id/icon_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textUri"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                        <TextView
-                            android:text="@string/animates_in_from"
-                            style="@style/InAppMessageTesterTextView"/>
-                        <ListView
-                            android:id="@+id/slide_from_list_view"
-                            android:layout_height="80dp"
-                            style="@style/InAppMessageTesterListView"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/uri_duration_seconds"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <EditText
-                        android:id="@+id/duration_seconds_edit_text"
-                        android:layout_width="match_parent"
-                        android:ems="10"
-                        android:inputType="number"
-                        android:layout_height="wrap_content"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
                         android:text="@string/set_background_color"
                         style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/bg_color_list_view"
-                        android:layout_height="160dp"
-                        style="@style/InAppMessageTesterListView"/>
+                    <Spinner
+                        android:id="@+id/inapp_background_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
@@ -167,10 +118,21 @@
                     <TextView
                         android:text="@string/set_icon_color"
                         style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/icon_color_list_view"
-                        android:layout_height="160dp"
-                        style="@style/InAppMessageTesterListView"/>
+                    <Spinner
+                        android:id="@+id/inapp_icon_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/set_icon_background_color"
+                        style="@style/InAppMessageTesterTextView"/>
+                    <Spinner
+                        android:id="@+id/inapp_icon_background_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
@@ -178,10 +140,10 @@
                     <TextView
                         android:text="@string/set_close_button_color"
                         style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/close_btn_color_list_view"
-                        android:layout_height="120dp"
-                        style="@style/InAppMessageTesterListView"/>
+                    <Spinner
+                        android:id="@+id/inapp_close_button_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
@@ -189,10 +151,10 @@
                     <TextView
                         android:text="@string/set_text_color"
                         style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/text_color_list_view"
-                        android:layout_height="160dp"
-                        style="@style/InAppMessageTesterListView"/>
+                    <Spinner
+                        android:id="@+id/inapp_text_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
@@ -200,32 +162,10 @@
                     <TextView
                         android:text="@string/set_header_text_color"
                         style="@style/InAppMessageTesterTextView"/>
-                      <ListView
-                          android:id="@+id/header_text_list_view"
-                          android:layout_height="160dp"
-                          style="@style/InAppMessageTesterListView"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/set_icon_or_image"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/icon_list_view"
-                        android:layout_height="360dp"
-                        style="@style/InAppMessageTesterListView"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/add_message_buttons"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <ListView
-                        android:id="@+id/message_buttons_list_view"
-                        android:layout_height="120dp"
-                        style="@style/InAppMessageTesterListView"/>
+                    <Spinner
+                        android:id="@+id/inapp_header_text_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                 </TableRow>
             </TableLayout>
             <LinearLayout
@@ -243,6 +183,10 @@
                 <CheckBox
                     android:id="@+id/custom_appboy_navigator_checkbox"
                     android:text="@string/custom_iappboy_navigator"
+                    style="@style/InAppMessageTesterCheckBox"/>
+                <CheckBox
+                    android:id="@+id/custom_appboy_animation_checkbox"
+                    android:text="@string/custom_iappboy_animation"
                     style="@style/InAppMessageTesterCheckBox"/>
             </LinearLayout>
         </LinearLayout>

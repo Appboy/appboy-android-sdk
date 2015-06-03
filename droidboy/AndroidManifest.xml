@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="39" android:versionName="1.7.2">
+  package="com.appboy.sample" android:versionCode="39" android:versionName="1.7.3">
 
   <!-- Supported versions -->
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="21"/>
@@ -60,10 +60,20 @@
     <activity android:name="com.appboy.ui.AppboyWebViewActivity" android:theme="@style/Theme.DroidBoy" />
     <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" android:theme="@style/Theme.DroidBoy" />
 
-    <activity android:name=".PreferencesActivity" android:theme="@style/Theme.Preferences" />
+    <!-- Deep link example -->
+    <activity android:name=".PreferencesActivity" android:label="Preferences" android:theme="@style/Theme.Preferences">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <!-- Accepts URI "droidboy://preferences” -->
+        <data android:scheme="droidboy"
+              android:host="preferences"/>
+      </intent-filter>
+    </activity>
     <activity android:name=".FeedbackFragmentActivity" android:theme="@style/Theme.Feed" />
     <activity android:name=".FeedFragmentActivity" android:theme="@style/Theme.Feed" />
-    <activity android:name=".InAppMessageTesterActivity" android:theme="@style/Theme.DroidBoy" />
+    <activity android:name=".InAppMessageTesterActivity" android:windowSoftInputMode="stateHidden" android:theme="@style/Theme.DroidBoy" />
     <activity android:name=".PushTesterActivity" android:theme="@style/Theme.DroidBoy" />
 
     <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND">

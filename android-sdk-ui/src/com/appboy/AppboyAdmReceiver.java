@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.content.Context;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -25,10 +25,10 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    Log.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
+    AppboyLogger.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
     String action = intent.getAction();
     if (ADM_REGISTRATION_INTENT_ACTION.equals(action)) {
-      Log.i(TAG, String.format("Received ADM REGISTRATION. Message: %s", intent.toString()));
+      AppboyLogger.i(TAG, String.format("Received ADM REGISTRATION. Message: %s", intent.toString()));
       XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
       handleRegistrationEventIfEnabled(appConfigurationProvider, context, intent);
     } else if (ADM_RECEIVE_INTENT_ACTION.equals(action) && AppboyNotificationUtils.isAppboyPushMessage(intent)) {
@@ -38,7 +38,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
     } else {
-      Log.w(TAG, String.format("The ADM receiver received a message not sent from Appboy. Ignoring the message."));
+      AppboyLogger.w(TAG, String.format("The ADM receiver received a message not sent from Appboy. Ignoring the message."));
     }
   }
 
@@ -54,15 +54,15 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     String unregistered = intent.getStringExtra(ADM_UNREGISTERED_KEY);
 
     if (error != null) {
-      Log.e(TAG, "Error during ADM registration: " + error);
+      AppboyLogger.e(TAG, "Error during ADM registration: " + error);
     } else if (registrationId != null) {
-      Log.i(TAG, "Registering for ADM messages with registrationId: " + registrationId);
+      AppboyLogger.i(TAG, "Registering for ADM messages with registrationId: " + registrationId);
       Appboy.getInstance(context).registerAppboyPushMessages(registrationId);
     } else if (unregistered != null) {
-      Log.i(TAG, "Unregistering from ADM: " + unregistered);
+      AppboyLogger.i(TAG, "Unregistering from ADM: " + unregistered);
       Appboy.getInstance(context).unregisterAppboyPushMessages();
     } else {
-      Log.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration " +
+      AppboyLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration " +
           "confirmation. Ignoring.");
       return false;
     }
@@ -81,9 +81,9 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     if (ADM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(ADM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
-        Log.e(TAG, String.format("Unable to parse ADM message. Intent: %s", intent.toString()));
+        AppboyLogger.e(TAG, String.format("Unable to parse ADM message. Intent: %s", intent.toString()));
       } else {
-        Log.i(TAG, String.format("ADM deleted %d messages. Fetch them from Appboy.", totalDeleted));
+        AppboyLogger.i(TAG, String.format("ADM deleted %d messages. Fetch them from Appboy.", totalDeleted));
       }
       return false;
     } else {
@@ -103,7 +103,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         try {
           notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
         } catch(Exception e) {
-          Log.e(TAG, "Failed to create notification.", e);
+          AppboyLogger.e(TAG, "Failed to create notification.", e);
           return false;
         }
 
@@ -157,11 +157,11 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     // Only handle ADM registration events if ADM registration handling is turned on in the
     // configuration file.
     if (appConfigurationProvider.isAdmMessagingRegistrationEnabled()) {
-      Log.d(TAG, "ADM enabled in appboy.xml. Continuing to process ADM registration intent.");
+      AppboyLogger.d(TAG, "ADM enabled in appboy.xml. Continuing to process ADM registration intent.");
       handleRegistrationIntent(context, intent);
       return true;
     }
-    Log.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set " +
+    AppboyLogger.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set " +
         "com_appboy_push_adm_messaging_registration_enabled to true in your appboy.xml to enable ADM.");
     return false;
   }

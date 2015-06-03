@@ -15,9 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/custom_attribute_button"
+                style="@style/PopulateButton"
                 android:text="@string/custom_logging_user_attribute"/>
 
             <EditText
@@ -39,9 +39,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/custom_attribute_increment_button"
+                style="@style/PopulateButton"
+                android:text="@string/custom_logging_user_attribute_increment"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_increment_key"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserSingleLineText"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_increment_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:inputType="number"
+                style="@style/UserSingleLineText"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/custom_attribute_unset_button"
+                style="@style/PopulateButton"
+                android:text="@string/custom_logging_user_attribute_unset"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_unset_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="4"
+                style="@style/UserSingleLineText"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/custom_event_button"
+                style="@style/PopulateButton"
                 android:text="@string/custom_logging_custom_event"/>
 
             <EditText
@@ -56,9 +98,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/custom_event_property_button"
+                style="@style/PopulateButton"
                 android:text="@string/custom_logging_custom_event_property"/>
 
             <EditText
@@ -80,9 +122,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/custom_purchase_button"
+                style="@style/PopulateButton"
                 android:text="@string/custom_logging_custom_purchase"/>
 
             <EditText
@@ -97,9 +139,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/purchase_qty_button"
+                style="@style/PopulateButton"
                 android:text="@string/custom_logging_custom_purchase_qty"/>
 
             <EditText
@@ -115,9 +157,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/purchase_property_button"
+                style="@style/PopulateButton"
                 android:text="@string/custom_logging_custom_purchase_property"/>
 
             <EditText
@@ -139,9 +181,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/custom_attribute_array_button"
+                style="@style/PopulateButton"
                 android:text="@string/attribute_array_key"/>
 
             <EditText
@@ -193,6 +235,23 @@
                     android:layout_height="wrap_content"
                     android:text="@string/attribute_array_remove"/>
             </RadioGroup>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="1"
+                android:text="@string/user_dialog_flush"/>
+
+            <CheckBox
+                android:id="@+id/custom_logging_flush_checkbox"
+                android:layout_span="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </TableRow>
     </TableLayout>
 </ScrollView>

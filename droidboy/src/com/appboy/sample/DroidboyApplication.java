@@ -6,18 +6,21 @@ import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
+
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.sample.util.EmulatorDetectionUtils;
 import com.appboy.sample.util.SharedPrefsUtil;
 
-import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.Locale;
 
 public class DroidboyApplication extends Application
 {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidboyApplication.class.getName());
+  private static final String QA_FLAVOR = "QA";
+  private static final String OVERRIDE_API_KEY = "f9622241-8e26-4366-8183-1c9e310af6b0";
+  private static final Locale OVERRIDE_LOCALE = Locale.CHINA;
 
   @Override
   public void onCreate()
@@ -35,12 +38,15 @@ public class DroidboyApplication extends Application
       Appboy.disableAllAppboyNetworkRequests();
       Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", android.os.Build.MODEL));
     }
-    if (Locale.getDefault().toString().equals("zh_CN")) {
-      Log.i(TAG, "Matched zh_CN locale, configuring Appboy with override key");
-      Appboy.configure(this, "f9622241-8e26-4366-8183-1c9e310af6b0");
+    if (BuildConfig.FLAVOR.equals(QA_FLAVOR)) {
+      Log.i(TAG, "QA build detected, configuring Appboy to clear any existing override key regardless of locale.");
+      Appboy.configure(getApplicationContext(), null);
+    } else if (Locale.getDefault().equals(OVERRIDE_LOCALE)) {
+      Log.i(TAG, String.format("Matched %s locale, configuring Appboy with override key.", OVERRIDE_LOCALE));
+      Appboy.configure(getApplicationContext(), OVERRIDE_API_KEY);
     } else {
-      Log.i(TAG, "Did not match zh_CN locale, configuring Appboy to clear any existing override key");
-      Appboy.configure(this, null);
+      Log.i(TAG, String.format("Did not match %s locale, configuring Appboy to clear any existing override key.", OVERRIDE_LOCALE));
+      Appboy.configure(getApplicationContext(), null);
     }
     Appboy.setAppboyEndpointProvider(new DummyEndpointProvider());
     Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());

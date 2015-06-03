@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 
 import com.appboy.Constants;
 import com.appboy.enums.AppStore;
@@ -47,10 +47,10 @@ public final class GooglePlayAppDetailsAction implements IAction {
       try {
         context.getPackageManager().getPackageInfo(("com.google.android.gsf"), 0);
       } catch (PackageManager.NameNotFoundException e) {
-        Log.i(TAG, "Google Play Store not found, launching Play Store with WebView");
+        AppboyLogger.i(TAG, "Google Play Store not found, launching Play Store with WebView");
         mUseAppboyWebView = true;
       } catch (Exception e) {
-        Log.e(TAG, String.format("Unexpected exception while checking for %s.", "com.google.android.gsf"));
+        AppboyLogger.e(TAG, String.format("Unexpected exception while checking for %s.", "com.google.android.gsf"));
         mUseAppboyWebView = true;
       }
     }

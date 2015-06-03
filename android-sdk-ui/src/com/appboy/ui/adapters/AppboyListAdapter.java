@@ -2,7 +2,7 @@ package com.appboy.ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -113,11 +113,11 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
         view = new DefaultCardView(mContext);
       }
     } else {
-      Log.d(TAG, "Reusing convertView for rendering of item " + position);
+      AppboyLogger.d(TAG, "Reusing convertView for rendering of item " + position);
       view = (BaseCardView) convertView;
     }
 
-    Log.d(TAG, String.format("Using view of type: %s for card at position %d: %s", view.getClass().getName(),
+    AppboyLogger.d(TAG, String.format("Using view of type: %s for card at position %d: %s", view.getClass().getName(),
         position, card.toString()));
     view.setCard(card);
     logCardImpression(card);
@@ -133,7 +133,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       return;
     }
 
-    Log.d(TAG, String.format("Replacing existing feed of %d cards with new feed containing %d cards.",
+    AppboyLogger.d(TAG, String.format("Replacing existing feed of %d cards with new feed containing %d cards.",
       getCount(), cards.size()));
     int i = 0, j = 0, newFeedSize = cards.size();
     Card existingCard, newCard;
@@ -193,9 +193,9 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     if (!mCardIdImpressions.contains(cardId)) {
       mCardIdImpressions.add(cardId);
       card.logImpression();
-      Log.d(TAG, String.format("Logged impression for card %s", cardId));
+      AppboyLogger.d(TAG, String.format("Logged impression for card %s", cardId));
     } else {
-      Log.d(TAG, String.format("Already counted impression for card %s", cardId));
+      AppboyLogger.d(TAG, String.format("Already counted impression for card %s", cardId));
     }
     if (!card.getViewed()){
       card.setViewed(true);
@@ -212,7 +212,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    */
   public void batchSetCardsToRead(int startIndex, int endIndex){
     if (getCount() == 0){
-      Log.d(TAG, "mAdapter is empty in setting some cards to viewed.");
+      AppboyLogger.d(TAG, "mAdapter is empty in setting some cards to viewed.");
       return;
     }
 
@@ -224,7 +224,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       // Get the card
       Card card = getItem(traversalIndex);
       if (card == null){
-        Log.d(TAG, "Card was null in setting some cards to viewed.");
+        AppboyLogger.d(TAG, "Card was null in setting some cards to viewed.");
         break;
       }
 

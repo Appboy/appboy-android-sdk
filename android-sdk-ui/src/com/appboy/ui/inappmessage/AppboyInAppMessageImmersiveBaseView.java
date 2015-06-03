@@ -2,7 +2,7 @@ package com.appboy.ui.inappmessage;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -69,7 +69,7 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if(keyCode == KeyEvent.KEYCODE_BACK) {
-      Log.d(TAG, "Back button intercepted by in-app message view, closing in-app message.");
+      AppboyLogger.d(TAG, "Back button intercepted by in-app message view, closing in-app message.");
       AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true);
       return true;
     }

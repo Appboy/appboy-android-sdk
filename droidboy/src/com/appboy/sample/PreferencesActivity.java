@@ -18,6 +18,7 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.enums.SocialNetwork;
 import com.appboy.sample.util.SharedPrefsUtil;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.crittercism.app.Crittercism;
 
@@ -43,6 +44,8 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference requestInAppMessagePreference = findPreference("request_inappmessage");
     Preference aboutPreference = findPreference("about");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
+    Preference toggleDisableAppboyLoggingPreference = findPreference("toggle_disable_appboy_logging");
+    Preference getRegistrationIdPreference = findPreference("get_registration_id");
 
     aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
@@ -109,6 +112,28 @@ public class PreferencesActivity extends PreferenceActivity {
         } else {
           Toast.makeText(PreferencesActivity.this, "Enabling Appboy network requests for the next app run for all devices", Toast.LENGTH_LONG).show();
         }
+        return true;
+      }
+    });
+
+    toggleDisableAppboyLoggingPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        if (AppboyLogger.LogLevel != Log.VERBOSE) {
+          AppboyLogger.LogLevel = Log.VERBOSE;
+          showToast("Set log level back to VERBOSE to show all Appboy messages.");
+        } else {
+          AppboyLogger.LogLevel = AppboyLogger.SUPPRESS;
+          showToast("Disabled Appboy Logging.");
+        }
+        return true;
+      }
+    });
+
+    getRegistrationIdPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        showToast("Registration Id: " + Appboy.getInstance(PreferencesActivity.this).getAppboyPushMessageRegistrationId());
         return true;
       }
     });
@@ -184,6 +209,12 @@ public class PreferencesActivity extends PreferenceActivity {
     // in-app messages from Appboy.
     AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
     Crittercism.leaveBreadcrumb(PreferencesActivity.class.getName());
+
+    // Shows a toast if the activity detects that it was opened via a deep link.
+    Bundle extras = getIntent().getExtras();
+    if (extras != null && Constants.APPBOY.equals(extras.getString(AppboyBroadcastReceiver.SOURCE_KEY))) {
+      showToast("This activity was opened by a deep link!");
+    }
   }
 
   @Override

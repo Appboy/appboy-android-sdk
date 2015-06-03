@@ -3,7 +3,7 @@ package com.appboy.ui.configuration;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 
 import com.appboy.Constants;
 import com.appboy.configuration.CachedConfigurationProvider;

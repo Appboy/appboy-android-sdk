@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <com.appboy.sample.UserProfileDialog
         android:title="@string/user_dialog_title"
         android:summary="@string/user_dialog_summary"
@@ -39,14 +39,21 @@
             android:summary="@string/data_flush_summary"/>
     </PreferenceCategory>
 
-  <PreferenceCategory
-    android:title="@string/misc_preference_category">
-    <Preference
-      android:key="toggle_disable_appboy_network_requests_for_filtered_emulators"
-      android:title="@string/disable_appboy_network_requests"
-      android:summary="@string/disable_appboy_network_requests_summary"
-      />
-  </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/misc_preference_category">
+        <Preference
+            android:key="toggle_disable_appboy_network_requests_for_filtered_emulators"
+            android:title="@string/disable_appboy_network_requests"
+            android:summary="@string/disable_appboy_network_requests_summary"/>
+        <Preference
+            android:key="toggle_disable_appboy_logging"
+            android:title="@string/disable_appboy_logging_title"
+            android:summary="@string/disable_appboy_logging_summary"/>
+        <Preference
+            android:key="get_registration_id"
+            android:title="@string/get_registration_id_title"
+            android:summary="@string/get_registration_id_summary"/>
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/about_title">

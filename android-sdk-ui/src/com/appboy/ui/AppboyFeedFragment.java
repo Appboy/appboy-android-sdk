@@ -7,7 +7,7 @@ import android.os.Looper;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -106,7 +106,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
       mSkipCardImpressionsReset = false;
     } else {
       mAdapter.resetCardImpressionTracker();
-      Log.d(TAG, "Resetting card impressions.");
+      AppboyLogger.d(TAG, "Resetting card impressions.");
     }
 
     // Applying top and bottom padding as header and footer views allows for the top and bottom padding to be scrolled
@@ -178,7 +178,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
         activity.runOnUiThread(new Runnable() {
           @Override
           public void run() {
-            Log.d(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
+            AppboyLogger.d(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
             // If a FeedUpdatedEvent comes in, we make sure that the network error isn't visible. It could become
             // visible again later if we need to request a new feed and it doesn't return in time, but we display a
             // network spinner while we wait, instead of keeping the network error up.
@@ -199,13 +199,13 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
             // If we got our feed from offline storage, and it was old, we asynchronously request a new one from the server,
             // putting up a spinner if the old feed was empty.
             if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
-              Log.i(TAG, String.format("Feed received was older than the max time to live of %d seconds, displaying it " +
+              AppboyLogger.i(TAG, String.format("Feed received was older than the max time to live of %d seconds, displaying it " +
                   "for now, but requesting an updated view from the server.", MAX_FEED_TTL_SECONDS));
               mAppboy.requestFeedRefresh();
               // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
               // Eventually displaying an error message if it doesn't.
               if (event.getCardCount(mCategories) == 0) {
-                Log.d(TAG, String.format("Old feed was empty, putting up a network spinner and registering the network error message on a delay of %dms.",
+                AppboyLogger.d(TAG, String.format("Old feed was empty, putting up a network spinner and registering the network error message on a delay of %dms.",
                     NETWORK_PROBLEM_WARNING_MS));
                 mEmptyFeedLayout.setVisibility(View.GONE);
                 mLoadingSpinner.setVisibility(View.VISIBLE);
@@ -308,10 +308,10 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
    */
   public void setCategories(EnumSet<CardCategory> categories) {
     if (categories == null) {
-      Log.i(TAG, "The categories passed into setCategories are null, AppboyFeedFragment is going to display all the cards in cache.");
+      AppboyLogger.i(TAG, "The categories passed into setCategories are null, AppboyFeedFragment is going to display all the cards in cache.");
       mCategories = CardCategory.ALL_CATEGORIES;
     } else if (categories.isEmpty()) {
-      Log.w(TAG, "The categories set had no elements and have been ignored. Please pass a valid EnumSet of CardCategory.");
+      AppboyLogger.w(TAG, "The categories set had no elements and have been ignored. Please pass a valid EnumSet of CardCategory.");
       return;
     } else if (categories.equals(mCategories)) {
       return;

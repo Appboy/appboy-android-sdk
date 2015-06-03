@@ -1,14 +1,16 @@
 package com.appboy.sample;
 
-import android.support.v4.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
+import com.appboy.push.AppboyNotificationUtils;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyBroadcastReceiver.class.getName());
@@ -21,8 +23,8 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     String packageName = context.getPackageName();
-    String pushReceivedAction = packageName + ".intent.APPBOY_PUSH_RECEIVED";
-    String notificationOpenedAction = packageName + ".intent.APPBOY_NOTIFICATION_OPENED";
+    String pushReceivedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_RECEIVED_SUFFIX;
+    String notificationOpenedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
     String action = intent.getAction();
     Log.d(TAG, String.format("Received intent with action %s", action));
 
@@ -35,7 +37,8 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
       // The intent returned from getStartActivityIntent() is placed on the back stack.
       // Otherwise, start the intent defined in getStartActivityIntent().
       if (intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY) != null) {
-        Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)));
+        Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)))
+            .putExtras(extras);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(getStartActivityIntent(context, extras));
         stackBuilder.addNextIntent(uriIntent);

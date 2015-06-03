@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.Constants;
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.sample.util.SpinnerUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,34 +83,19 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     });
 
     // Creates the push image spinner.
-    setupSpinner(
-      (Spinner) findViewById(R.id.push_image_spinner),
-      ArrayAdapter.createFromResource(this, R.array.push_image_options, android.R.layout.simple_spinner_item)
-    );
+    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the push priority spinner.
-    setupSpinner(
-      (Spinner) findViewById(R.id.push_priority_spinner),
-      ArrayAdapter.createFromResource(this, R.array.push_priority_options, android.R.layout.simple_spinner_item)
-    );
+    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
 
     // Creates the push click action spinner.
-    setupSpinner(
-      (Spinner) findViewById(R.id.push_click_action_spinner),
-      ArrayAdapter.createFromResource(this,R.array.push_click_action_options, android.R.layout.simple_spinner_item)
-    );
+    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
 
     // Creates the notification category spinner.
-    setupSpinner(
-      (Spinner) findViewById(R.id.push_category_spinner),
-      ArrayAdapter.createFromResource(this,R.array.push_category_options, android.R.layout.simple_spinner_item)
-    );
+    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
 
     // Creates the visiblity spinner.
-    setupSpinner(
-      (Spinner) findViewById(R.id.push_visibility_spinner),
-      ArrayAdapter.createFromResource(this,R.array.push_visibility_options, android.R.layout.simple_spinner_item)
-    );
+    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
 
     mAppConfigurationProvider = new XmlAppConfigurationProvider(this);
     Button pushTestButton = (Button) findViewById(R.id.test_push_button);
@@ -175,10 +161,8 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     });
   }
 
-  public void onItemSelected(AdapterView<?> parent, View view,
-                             int pos, long id) {
-    int parentId = parent.getId();
-    switch (parentId) {
+  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    switch (parent.getId()) {
       case R.id.push_image_spinner:
         String pushImageUriString = getResources().getStringArray(R.array.push_image_values)[parent.getSelectedItemPosition()];
         if (pushImageUriString != null && pushImageUriString.length() > 0) {
@@ -231,12 +215,6 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     publicVersionJSON.put(Constants.APPBOY_PUSH_CONTENT_KEY, "Please (content)");
     publicVersionJSON.put(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, "Summary");
     return publicVersionJSON.toString();
-  }
-
-  private void setupSpinner(Spinner spinner, ArrayAdapter arrayAdapter) {
-    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    spinner.setAdapter(arrayAdapter);
-    spinner.setOnItemSelectedListener(this);
   }
 
   // If shouldOverflowText is specified we concatenate an append string 5 times

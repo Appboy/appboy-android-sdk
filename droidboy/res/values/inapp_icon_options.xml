@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_icon_options">
+    <item>Icon: Not Set</item>
+    <item>Icon: None</item>
+    <item>Icon: Horn</item>
+    <item>Icon: Money</item>
+    <item>Icon: Play</item>
+    <item>Icon: Star</item>
+    <item>Icon: Trophy</item>
+    <item>Icon: Video</item>
+    <item>Icon: Connect</item>
+    <item>Icon: Visa</item>
+  </string-array>
+  <string-array name="inapp_icon_values">
+    <item>not set</item>
+    <item>none</item>
+    <item></item>
+    <item></item>
+    <item></item>
+    <item></item>
+    <item></item>
+    <item></item>
+    <item></item>
+    <item></item>
+  </string-array>
+</resources>

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.support.AppboyLogger;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyGcmReceiver.class.getName());
@@ -26,7 +27,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    Log.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
+    AppboyLogger.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
     String action = intent.getAction();
     if (GCM_REGISTRATION_INTENT_ACTION.equals(action)) {
       XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
@@ -38,7 +39,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
     } else {
-      Log.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
+      AppboyLogger.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
     }
   }
 
@@ -69,14 +70,14 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         Log.e(TAG, "The request sent by the device does not contain the expected parameters. This phone does not " +
           "currently support GCM.");
       } else {
-        Log.w(TAG, String.format("Received an unrecognised GCM registration error type. Ignoring. Error: %s", error));
+        AppboyLogger.w(TAG, String.format("Received an unrecognised GCM registration error type. Ignoring. Error: %s", error));
       }
     } else if (registrationId != null) {
       Appboy.getInstance(context).registerAppboyPushMessages(registrationId);
     } else if (intent.hasExtra(GCM_UNREGISTERED_KEY)) {
       Appboy.getInstance(context).unregisterAppboyPushMessages();
     } else {
-      Log.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration " +
+      AppboyLogger.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration " +
         "confirmation. Ignoring.");
       return false;
     }
@@ -97,7 +98,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       if (totalDeleted == -1) {
         Log.e(TAG, String.format("Unable to parse GCM message. Intent: %s", intent.toString()));
       } else {
-        Log.i(TAG, String.format("GCM deleted %d messages. Fetch them from Appboy.", totalDeleted));
+        AppboyLogger.i(TAG, String.format("GCM deleted %d messages. Fetch them from Appboy.", totalDeleted));
       }
       return false;
     } else {

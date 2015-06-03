@@ -7,7 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.view.WindowManager;
 
 import com.appboy.AppboyImageUtils;
@@ -31,7 +31,7 @@ public class AppboyNotificationStyleFactory {
 
     // Default style is BigTextStyle.
     if (style == null) {
-      Log.d(TAG, "Rendering push notification with BigTextStyle");
+      AppboyLogger.d(TAG, "Rendering push notification with BigTextStyle");
       style = AppboyNotificationStyleFactory.getBigTextNotificationStyle(notificationExtras);
     }
 
@@ -117,11 +117,11 @@ public class AppboyNotificationStyleFactory {
         try {
           imageBitmap = Bitmap.createScaledBitmap(imageBitmap, bigPictureWidthPixels, bigPictureHeightPixels, true);
         } catch (Exception e) {
-          Log.e(TAG, "Failed to scale image bitmap, using original.", e);
+          AppboyLogger.e(TAG, "Failed to scale image bitmap, using original.", e);
         }
       }
       if (imageBitmap == null) {
-        Log.i(TAG, "Bitmap download failed for push notification. No image will be included with the notification.");
+        AppboyLogger.i(TAG, "Bitmap download failed for push notification. No image will be included with the notification.");
         return null;
       }
 
@@ -145,7 +145,7 @@ public class AppboyNotificationStyleFactory {
       bigPictureNotificationStyle.bigPicture(imageBitmap);
       return bigPictureNotificationStyle;
     } catch (Exception e) {
-      Log.e(TAG, "Failed to create Big Picture Style.", e);
+      AppboyLogger.e(TAG, "Failed to create Big Picture Style.", e);
       return null;
     }
   }

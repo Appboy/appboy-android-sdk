@@ -4,15 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.appboy.Constants;
 import com.appboy.ui.support.UriUtils;
 
-import org.apache.http.client.utils.URLEncodedUtils;
-
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

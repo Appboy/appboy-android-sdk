@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_image_options">
+    <item>Image: Not Set</item>
+    <item>Image: None</item>
+    <item>Image: Appboy</item>
+    <item>Image: Blue</item>
+  </string-array>
+  <string-array name="inapp_image_values">
+    <item>not set</item>
+    <item>none</item>
+    <item>@string/appboy_url</item>
+    <item>@string/blue_url</item>
+  </string-array>
+</resources>

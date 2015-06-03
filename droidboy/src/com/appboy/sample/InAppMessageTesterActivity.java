@@ -3,13 +3,14 @@ package com.appboy.sample;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
@@ -22,40 +23,69 @@ import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
+import com.appboy.sample.util.SharedPrefsUtil;
+import com.appboy.sample.util.SpinnerUtils;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
-import com.appboy.ui.support.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public class InAppMessageTesterActivity extends AppboyFragmentActivity {
+public class InAppMessageTesterActivity extends AppboyFragmentActivity implements AdapterView.OnItemSelectedListener {
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
   private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
-  private static final String IMAGE_URL_BLUE = "https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg";
-  private static final String IMAGE_URL_APPBOY = "https://pbs.twimg.com/profile_images/489799002259329024/9yeNWMU_.png";
+  private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
 
   // color reference: http://www.google.com/design/spec/style/color.html
-  private static final int GOOGLE_PURPLE = 0xFF673AB7;
   private static final int APPBOY_RED = 0xFFf33e3e;
+  private static final int GOOGLE_ORANGE = 0xFFFF5722;
+  private static final int GOOGLE_YELLOW = 0xFFFFEB3B;
+  private static final int GOOGLE_GREEN = 0xFF4CAF50;
+  private static final int APPBOY_BLUE = 0xFF0073d5;
+  private static final int GOOGLE_PURPLE = 0xFF673AB7;
+  private static final int GOOGLE_BROWN = 0xFF795548;
+  private static final int GOOGLE_GREY = 0xFF9E9E9E;
+  private static final int BLACK = 0xFF000000;
+  private static final int WHITE = 0xFFFFFFFF;
+  private static final Map<Integer, Integer> sSpinnerOptionMap;
+  static {
+    Map<Integer, Integer> spinnerOptionMap = new HashMap<Integer, Integer>();
+    spinnerOptionMap.put(R.id.inapp_set_message_type_spinner, R.array.inapp_message_type_options);
+    spinnerOptionMap.put(R.id.inapp_click_action_spinner, R.array.inapp_click_action_options);
+    spinnerOptionMap.put(R.id.inapp_dismiss_type_spinner, R.array.inapp_dismiss_type_options);
+    spinnerOptionMap.put(R.id.inapp_slide_from_spinner, R.array.inapp_slide_from_options);
+    spinnerOptionMap.put(R.id.inapp_background_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_icon_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_icon_background_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_close_button_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_text_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_header_text_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_uri_spinner, R.array.inapp_uri_options);
+    spinnerOptionMap.put(R.id.inapp_icon_spinner, R.array.inapp_icon_options);
+    spinnerOptionMap.put(R.id.inapp_image_spinner, R.array.inapp_image_options);
+    spinnerOptionMap.put(R.id.inapp_button_spinner, R.array.inapp_button_options);
+    sSpinnerOptionMap = Collections.unmodifiableMap(spinnerOptionMap);
+  }
 
-  private ListView mSlideFromListView;
-  private ListView mClickActionListView;
-  private ListView mDismissTypeListView;
-  private ListView mTextColorListView;
-  private ListView mBackgroundColorListView;
-  private ListView mIconColorListView;
-  private ListView mCloseButtonColorListView;
-  private ListView mMessageTypeListView;
-  private ListView mHeaderTextColorListView;
-  private ListView mIconListView;
-  private ListView mMessageButtonListView;
-  private EditText mUriEditText;
+  private String mMessageType;
+  private String mClickAction;
+  private String mDismissType;
+  private String mSlideFrom;
+  private String mUri;
+  private String mBackgroundColor;
+  private String mIconColor;
+  private String mIconBackgroundColor;
+  private String mCloseButtonColor;
+  private String mTextColor;
+  private String mHeaderTextColor;
+  private String mIcon;
+  private String mImage;
+  private String mButtons;
+
   private EditText mMessageEditText;
   private EditText mHeaderEditText;
-  private EditText mIconEditText;
-  private EditText mDurationSecondsEditText;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -63,66 +93,12 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
     setContentView(R.layout.inappmessage_tester);
     setTitle("In App Messages");
 
-    List<String> slideFromValues = Arrays.asList(getResources().getStringArray(R.array.slideFromValues));
-    ArrayAdapter<String> slideFromListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, slideFromValues);
-    mSlideFromListView = (ListView) findViewById(R.id.slide_from_list_view);
-    mSlideFromListView.setAdapter(slideFromListAdapter);
+    for (Integer key: sSpinnerOptionMap.keySet()) {
+      SpinnerUtils.setUpSpinner((Spinner) findViewById(key), this, sSpinnerOptionMap.get(key));
+    }
 
-    List<String> clickActionValues = Arrays.asList(getResources().getStringArray(R.array.clickActionValues));
-    ArrayAdapter<String> clickActionListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, clickActionValues);
-    mClickActionListView = (ListView) findViewById(R.id.click_action_list_view);
-    mClickActionListView.setAdapter(clickActionListAdapter);
-
-    List<String> dismissTypeValues = Arrays.asList(getResources().getStringArray(R.array.dismissTypeValues));
-    ArrayAdapter<String> dismissTypeListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, dismissTypeValues);
-    mDismissTypeListView = (ListView) findViewById(R.id.dismiss_type_list_view);
-    mDismissTypeListView.setAdapter(dismissTypeListAdapter);
-
-    List<String> backgroundColorValues = Arrays.asList(getResources().getStringArray(R.array.backgroundColorTypeValues));
-    ArrayAdapter<String> backgroundColorListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, backgroundColorValues);
-    mBackgroundColorListView = (ListView) findViewById(R.id.bg_color_list_view);
-    mBackgroundColorListView.setAdapter(backgroundColorListAdapter);
-
-    List<String> iconColorValues = Arrays.asList(getResources().getStringArray(R.array.iconColorTypeValues));
-    ArrayAdapter<String> iconColorListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, iconColorValues);
-    mIconColorListView = (ListView) findViewById(R.id.icon_color_list_view);
-    mIconColorListView.setAdapter(iconColorListAdapter);
-
-    List<String> closeButtonColorValues = Arrays.asList(getResources().getStringArray(R.array.closeButtonColorTypeValues));
-    ArrayAdapter<String> closeButtonColorListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, closeButtonColorValues);
-    mCloseButtonColorListView = (ListView) findViewById(R.id.close_btn_color_list_view);
-    mCloseButtonColorListView.setAdapter(closeButtonColorListAdapter);
-
-    List<String> textColorValues = Arrays.asList(getResources().getStringArray(R.array.textColorTypeValues));
-    ArrayAdapter<String>textColorListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, textColorValues);
-    mTextColorListView = (ListView) findViewById(R.id.text_color_list_view);
-    mTextColorListView.setAdapter(textColorListAdapter);
-
-    List<String> messageTypeValues = Arrays.asList(getResources().getStringArray(R.array.messageTypeTypeValues));
-    ArrayAdapter<String>messageTypeListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, messageTypeValues);
-    mMessageTypeListView = (ListView) findViewById(R.id.message_type_list_view);
-    mMessageTypeListView.setAdapter(messageTypeListAdapter);
-
-    List<String> headerTextColorAlignValues = Arrays.asList(getResources().getStringArray(R.array.headerTextColorTypeValues));
-    ArrayAdapter<String>headerTextColorListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, headerTextColorAlignValues);
-    mHeaderTextColorListView = (ListView) findViewById(R.id.header_text_list_view);
-    mHeaderTextColorListView.setAdapter(headerTextColorListAdapter);
-
-    List<String> iconValues = Arrays.asList(getResources().getStringArray(R.array.iconTypeValues));
-    ArrayAdapter<String>iconListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, iconValues);
-    mIconListView = (ListView) findViewById(R.id.icon_list_view);
-    mIconListView.setAdapter(iconListAdapter);
-
-    List<String> messageButtonValues = Arrays.asList(getResources().getStringArray(R.array.messageButtonTypeValues));
-    ArrayAdapter<String>messageButtonListAdapter = new ArrayAdapter<String>(this, R.layout.default_list_view, R.id.text, messageButtonValues);
-    mMessageButtonListView = (ListView) findViewById(R.id.message_buttons_list_view);
-    mMessageButtonListView.setAdapter(messageButtonListAdapter);
-
-    mUriEditText = (EditText) findViewById(R.id.uri_edit_text);
     mMessageEditText = (EditText) findViewById(R.id.message_edit_text);
     mHeaderEditText = (EditText) findViewById(R.id.header_edit_text);
-    mIconEditText = (EditText) findViewById(R.id.icon_edit_text);
-    mDurationSecondsEditText = (EditText) findViewById(R.id.duration_seconds_edit_text);
 
     CheckBox customInAppMessageViewCheckBox = (CheckBox) findViewById(R.id.custom_inappmessage_view_factory_checkbox);
     customInAppMessageViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -133,7 +109,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).commit();
+        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked));
       }
     });
     boolean usingCustomInAppMessageView = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
@@ -148,7 +124,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).commit();
+        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked));
       }
     });
     boolean usingCustomInAppMessageManagerListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
@@ -163,38 +139,45 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
         } else {
           Appboy.getInstance(InAppMessageTesterActivity.this).setAppboyNavigator(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).commit();
+        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked));
       }
     });
     boolean usingCustomAppboyNavigator = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
     customAppboyNavigatorCheckBox.setChecked(usingCustomAppboyNavigator);
-
     Button createAndAddInAppMessageButton = (Button) findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-
         if (getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
           // current custom in-app message view is an implementation of a base in-app message.
           addInAppMessage(new CustomInAppMessage());
-        } else if (mMessageTypeListView.getCheckedItemPosition() >= 0) {
-          // initialize inappmessage with defaults and set message type.
-          String messageTypeString = mMessageTypeListView.getItemAtPosition(mMessageTypeListView.getCheckedItemPosition()).toString();
-          if ("Slideup".equals(messageTypeString)) {
+        } else {
+          if ("slideup".equals(mMessageType)) {
             addInAppMessage(new InAppMessageSlideup());
-          } else if ("Modal".equals(messageTypeString)) {
+          } else if ("modal".equals(mMessageType)) {
             addInAppMessage(new InAppMessageModal());
-          } else if ("Full".equals(messageTypeString)) {
+          } else if ("full".equals(mMessageType)) {
             addInAppMessage(new InAppMessageFull());
           } else {
-            return;
+            addInAppMessage(new InAppMessageSlideup());
           }
-        } else {
-          Toast.makeText(InAppMessageTesterActivity.this, "Please select a Message Type.", Toast.LENGTH_LONG).show();
-          return;
         }
       }
     });
+    CheckBox customInAppMessageAnimationCheckBox = (CheckBox) findViewById(R.id.custom_appboy_animation_checkbox);
+    customInAppMessageAnimationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+          AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(new CustomInAppMessageAnimationFactory());
+        } else {
+          AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
+        }
+        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked));
+      }
+    });
+    boolean usingCustomInAppAnimation = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
+    customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
 
     Button displayNextInAppMessageButton = (Button) findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +212,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
     } else if (inAppMessage instanceof InAppMessageFull) {
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.  Full in-app messages can contain many lines of text as well as a header, image, and action buttons.");
       inAppMessage.setHeader("Hello from Appboy!");
-      inAppMessage.setImageUrl(IMAGE_URL_APPBOY);
+      inAppMessage.setImageUrl(getResources().getString(R.string.appboy_url));
 
     }
     ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
@@ -240,15 +223,15 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
     inAppMessage.setMessageButtons(messageButtons);
     addMessageButtons(inAppMessage);
     addHeader(inAppMessage);
-    addCloseButtonColor(inAppMessage);
+    setCloseButtonColor(inAppMessage);
   }
 
   private void addInAppMessageSlideup(InAppMessageSlideup inAppMessage) {
     inAppMessage.setMessage("Welcome to Appboy! This is a slideup in-app message.");
     inAppMessage.setIcon("\uf091");
     inAppMessage.setClickAction(ClickAction.NEWS_FEED);
-    addSlideFrom(inAppMessage);
-    addChevronColor(inAppMessage);
+    setSlideFrom(inAppMessage);
+    setChevronColor(inAppMessage);
   }
 
   private void addInAppMessageCustom(IInAppMessage inAppMessage) {
@@ -267,194 +250,117 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
     if(!addClickAction(inAppMessage)) {
       return;
     }
-    addDuration(inAppMessage);
-    addDismissType(inAppMessage);
-    addBackgroundColor(inAppMessage);
-    addMessage(inAppMessage);
-    addImage(inAppMessage);
+    setDismissType(inAppMessage);
+    setBackgroundColor(inAppMessage);
+    setMessage(inAppMessage);
+    setIcon(inAppMessage);
+    setImage(inAppMessage);
     AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
   }
 
-  private void addDuration(IInAppMessage inAppMessage) {
-    // set in-app message duration if defined
-    if (!StringUtils.isNullOrEmpty(mDurationSecondsEditText.getText().toString())) {
-      inAppMessage.setDurationInMilliseconds(Integer.parseInt(mDurationSecondsEditText.getText().toString()) * 1000);
-    }
-  }
-
-  private void addDismissType(IInAppMessage inAppMessage) {
+  private void setDismissType(IInAppMessage inAppMessage) {
     // set dismiss type if defined
-    if (mDismissTypeListView.getCheckedItemPosition() >= 0) {
-      String dismissTypeString = mDismissTypeListView.getItemAtPosition(mDismissTypeListView.getCheckedItemPosition()).toString();
-      if ("Auto".equals(dismissTypeString)) {
-        inAppMessage.setDismissType(DismissType.AUTO_DISMISS);
-      } else if ("Manual".equals(dismissTypeString)) {
-        inAppMessage.setDismissType(DismissType.MANUAL);
-      }
+    if ("auto".equals(mDismissType)) {
+      inAppMessage.setDismissType(DismissType.AUTO_DISMISS);
+    } else if ("auto-short".equals(mDismissType)) {
+      inAppMessage.setDismissType(DismissType.AUTO_DISMISS);
+      inAppMessage.setDurationInMilliseconds(1000);
+    } else if ("manual".equals(mDismissType)) {
+      inAppMessage.setDismissType(DismissType.MANUAL);
     }
   }
 
-  private void addBackgroundColor(IInAppMessage inAppMessage) {
+  private void setBackgroundColor(IInAppMessage inAppMessage) {
     // set background color if defined
-    if (mBackgroundColorListView.getCheckedItemPosition() >= 0) {
-      String backgroundColorString = mBackgroundColorListView.getItemAtPosition(mBackgroundColorListView.getCheckedItemPosition()).toString();
-      if ("Default".equals(backgroundColorString)) {
-        // Do nothing.
-      } else if ("Red".equals(backgroundColorString)) {
-        inAppMessage.setBackgroundColor(APPBOY_RED);
-      } else if ("Black".equals(backgroundColorString)) {
-        inAppMessage.setBackgroundColor(Color.BLACK);
-      } else if ("White".equals(backgroundColorString)) {
-        inAppMessage.setBackgroundColor(Color.WHITE);
-      }
+    if (!SpinnerUtils.SpinnerItemNotSet(mBackgroundColor)) {
+      inAppMessage.setBackgroundColor(parseColorFromString(mBackgroundColor));
     }
   }
 
-  private void addChevronColor(InAppMessageSlideup inAppMessage) {
+  private void setChevronColor(InAppMessageSlideup inAppMessage) {
+    // set chevron color if defined
+    if (!SpinnerUtils.SpinnerItemNotSet(mCloseButtonColor)) {
+      inAppMessage.setChevronColor(parseColorFromString(mCloseButtonColor));
+    }
+  }
+
+  private void setCloseButtonColor(IInAppMessageImmersive inAppMessage) {
     // set close button color if defined
-    if (mCloseButtonColorListView.getCheckedItemPosition() >= 0) {
-      String closeButtonColorString = mCloseButtonColorListView.getItemAtPosition(mCloseButtonColorListView.getCheckedItemPosition()).toString();
-      if ("Default".equals(closeButtonColorString)) {
-        // Do nothing.
-      } else if ("Red".equals(closeButtonColorString)) {
-        inAppMessage.setChevronColor(APPBOY_RED);
-      } else if ("White".equals(closeButtonColorString)) {
-        inAppMessage.setChevronColor(Color.WHITE);
-      }
+    if (!SpinnerUtils.SpinnerItemNotSet(mCloseButtonColor)) {
+      inAppMessage.setCloseButtonColor(parseColorFromString(mCloseButtonColor));
     }
   }
 
-  private void addCloseButtonColor(IInAppMessageImmersive inAppMessage) {
-    // set close button color if defined
-    if (mCloseButtonColorListView.getCheckedItemPosition() >= 0) {
-      String closeButtonColorString = mCloseButtonColorListView.getItemAtPosition(mCloseButtonColorListView.getCheckedItemPosition()).toString();
-      if ("Default".equals(closeButtonColorString)) {
-        // Do nothing.
-      } else if ("Red".equals(closeButtonColorString)) {
-        inAppMessage.setCloseButtonColor(APPBOY_RED);
-      } else if ("White".equals(closeButtonColorString)) {
-        inAppMessage.setCloseButtonColor(Color.WHITE);
-      }
-    }
-  }
-
-  private void addMessage(IInAppMessage inAppMessage) {
+  private void setMessage(IInAppMessage inAppMessage) {
     // set text color if defined
-    if (mTextColorListView.getCheckedItemPosition() >= 0) {
-      String textColorString = mTextColorListView.getItemAtPosition(mTextColorListView.getCheckedItemPosition()).toString();
-      if ("Default".equals(textColorString)) {
-        // Do nothing.
-      } else if ("Red".equals(textColorString)) {
-        inAppMessage.setMessageTextColor(APPBOY_RED);
-      } else if ("Purple".equals(textColorString)) {
-        inAppMessage.setMessageTextColor(GOOGLE_PURPLE);
-      } else if ("White".equals(textColorString)) {
-        inAppMessage.setMessageTextColor(Color.WHITE);
-      }
+    if (!SpinnerUtils.SpinnerItemNotSet(mTextColor)) {
+      inAppMessage.setMessageTextColor(parseColorFromString(mTextColor));
     }
     if (mMessageEditText.getText().toString().length() > 0) {
       inAppMessage.setMessage(mMessageEditText.getText().toString());
     }
   }
 
-  private void addImage(IInAppMessage inAppMessage) {
+  private void setIcon(IInAppMessage inAppMessage) {
     // set icon color if defined
-    if (mIconColorListView.getCheckedItemPosition() >= 0) {
-      String iconColorString = mIconColorListView.getItemAtPosition(mIconColorListView.getCheckedItemPosition()).toString();
-      if ("Default".equals(iconColorString)) {
-        // Do nothing.
-      } else if ("Red".equals(iconColorString)) {
-        inAppMessage.setIconColor(Color.WHITE);
-        inAppMessage.setIconBackgroundColor(APPBOY_RED);
-      } else if ("Purple".equals(iconColorString)) {
-        inAppMessage.setIconColor(Color.WHITE);
-        inAppMessage.setIconBackgroundColor(GOOGLE_PURPLE);
-      } else if ("White".equals(iconColorString)) {
-        inAppMessage.setIconColor(Color.GRAY);
-        inAppMessage.setIconBackgroundColor(Color.WHITE);
-      }
+    if (!SpinnerUtils.SpinnerItemNotSet(mIconColor)) {
+      inAppMessage.setIconColor(parseColorFromString(mIconColor));
     }
-    // set in-app message image url
-    if (mIconListView.getCheckedItemPosition() >= 0) {
-      String iconString = mIconListView.getItemAtPosition(mIconListView.getCheckedItemPosition()).toString();
-      if ("None".equals(iconString)) {
-        inAppMessage.setImageUrl(null);
+    // set icon background color if defined
+    if (!SpinnerUtils.SpinnerItemNotSet(mIconBackgroundColor)) {
+      inAppMessage.setIconBackgroundColor(parseColorFromString(mIconBackgroundColor));
+    }
+    // set in-app message icon
+    if (!SpinnerUtils.SpinnerItemNotSet(mIcon)) {
+      if (mIcon.equals("none")) {
         inAppMessage.setIcon(null);
-      } else if ("Blue".equals(iconString)) {
-        inAppMessage.setImageUrl(IMAGE_URL_BLUE);
-      } else if ("Appboy".equals(iconString)) {
-        inAppMessage.setImageUrl(IMAGE_URL_APPBOY);
-      } else if ("Horn".equals(iconString)) {
-        inAppMessage.setIcon("\uf0a1");
-      } else if ("Money".equals(iconString)) {
-        inAppMessage.setIcon("\uf0d6");
-      } else if ("Play".equals(iconString)) {
-        inAppMessage.setIcon("\uf04b");
-      } else if ("Star".equals(iconString)) {
-        inAppMessage.setIcon("\uf005");
-      } else if ("Trophy".equals(iconString)) {
-        inAppMessage.setIcon("\uf091");
-      } else if ("Video".equals(iconString)) {
-        inAppMessage.setIcon("\uf03d");
+      } else {
+        inAppMessage.setIcon(mIcon);
       }
     }
-    if (mIconEditText.getText().toString().length() > 0) {
-      try {
-        inAppMessage.setIcon(new String(Character.toChars(Integer.decode("0x" + mIconEditText.getText().toString()))));
-      } catch (Exception e) {
-        Toast.makeText(this.getApplicationContext(), "Invalid Fontawesome code. Please enter a valid four character code, e.g. \"f042\" for 'fa-adjust'.  See http://fortawesome.github.io/Font-Awesome/cheatsheet/", Toast.LENGTH_LONG).show();
+  }
 
+  private void setImage(IInAppMessage inAppMessage) {
+    // set in-app message image url
+    if (!SpinnerUtils.SpinnerItemNotSet(mImage)) {
+      if (mIcon.equals("none")) {
+        inAppMessage.setImageUrl(null);
+      } else {
+        inAppMessage.setImageUrl(mImage);
       }
     }
   }
 
   private boolean addClickAction(IInAppMessage inAppMessage) {
     // set click action if defined
-    if (mClickActionListView.getCheckedItemPosition() >= 0) {
-      String clickActionString = mClickActionListView.getItemAtPosition(mClickActionListView.getCheckedItemPosition()).toString();
-      if ("News Feed".equals(clickActionString)) {
-        inAppMessage.setClickAction(ClickAction.NEWS_FEED);
-      } else if ("URI".equals(clickActionString)) {
-        String uriString = mUriEditText.getText().toString();
-        if (StringUtils.isNullOrEmpty(uriString)) {
-          Toast.makeText(InAppMessageTesterActivity.this, "Please enter a URI.", Toast.LENGTH_LONG).show();
-          return false;
-        } else {
-          inAppMessage.setClickAction(ClickAction.URI, Uri.parse(uriString));
-
-        }
-      } else if ("None".equals(clickActionString)) {
-        inAppMessage.setClickAction(ClickAction.NONE);
+    if ("newsfeed".equals(mClickAction)) {
+      inAppMessage.setClickAction(ClickAction.NEWS_FEED);
+    } else if ("uri".equals(mClickAction)) {
+      if (SpinnerUtils.SpinnerItemNotSet(mUri)) {
+        Toast.makeText(InAppMessageTesterActivity.this, "Please choose a URI.", Toast.LENGTH_LONG).show();
+        return false;
+      } else {
+        inAppMessage.setClickAction(ClickAction.URI, Uri.parse(mUri));
       }
+    } else if ("none".equals(mClickAction)) {
+      inAppMessage.setClickAction(ClickAction.NONE);
     }
     return true;
   }
 
-  private void addSlideFrom(InAppMessageSlideup inAppMessage) {
+  private void setSlideFrom(InAppMessageSlideup inAppMessage) {
     // set slide from if defined
-    if (mSlideFromListView.getCheckedItemPosition() >= 0){
-      String slideFromString = mSlideFromListView.getItemAtPosition(mSlideFromListView.getCheckedItemPosition()).toString();
-      if ("Top".equals(slideFromString)) {
-        inAppMessage.setSlideFrom(SlideFrom.TOP);
-      } else if ("Bottom".equals(slideFromString)) {
-        inAppMessage.setSlideFrom(SlideFrom.BOTTOM);
-      }
+    if ("top".equals(mSlideFrom)) {
+      inAppMessage.setSlideFrom(SlideFrom.TOP);
+    } else if ("bottom".equals(mSlideFrom)) {
+      inAppMessage.setSlideFrom(SlideFrom.BOTTOM);
     }
   }
 
   private void addHeader(IInAppMessageImmersive inAppMessage) {
     // set header text color if defined
-    if (mHeaderTextColorListView.getCheckedItemPosition() >= 0) {
-      String headerTextColorString = mHeaderTextColorListView.getItemAtPosition(mHeaderTextColorListView.getCheckedItemPosition()).toString();
-      if ("Default".equals(headerTextColorString)) {
-        // Do nothing.
-      } else if ("Red".equals(headerTextColorString)) {
-        inAppMessage.setHeaderTextColor(APPBOY_RED);
-      } else if ("Purple".equals(headerTextColorString)) {
-        inAppMessage.setHeaderTextColor(GOOGLE_PURPLE);
-      } else if ("White".equals(headerTextColorString)) {
-        inAppMessage.setHeaderTextColor(Color.WHITE);
-      }
+    if (!SpinnerUtils.SpinnerItemNotSet(mHeaderTextColor)) {
+      inAppMessage.setHeaderTextColor(parseColorFromString(mHeaderTextColor));
     }
     if (mHeaderEditText.getText().toString().length() > 0) {
       inAppMessage.setHeader(mHeaderEditText.getText().toString());
@@ -463,19 +369,18 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
 
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
     // add message buttons.
-    if (mMessageButtonListView.getCheckedItemPosition() >= 0) {
-      String buttonString = mMessageButtonListView.getItemAtPosition(mMessageButtonListView.getCheckedItemPosition()).toString();
+    if (!SpinnerUtils.SpinnerItemNotSet(mButtons)) {
       ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
-      if ("None".equals(buttonString)) {
+      if ("none".equals(mButtons)) {
         inAppMessage.setMessageButtons(null);
-      } else if ("One".equals(buttonString)) {
+      } else if ("one".equals(mButtons)) {
         MessageButton buttonOne = new MessageButton();
         buttonOne.setText("NEWSFEED");
         buttonOne.setBackgroundColor(Color.BLACK);
         buttonOne.setClickAction(ClickAction.NEWS_FEED);
         messageButtons.add(buttonOne);
         inAppMessage.setMessageButtons(messageButtons);
-      } else if ("Two".equals(buttonString)) {
+      } else if ("two".equals(mButtons)) {
         MessageButton buttonOne = new MessageButton();
         buttonOne.setText("ACCEPT");
         buttonOne.setClickAction(ClickAction.URI, Uri.parse("http://www.appboy.com"));
@@ -486,7 +391,98 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity {
         buttonTwo.setClickAction(ClickAction.NONE);
         messageButtons.add(buttonTwo);
         inAppMessage.setMessageButtons(messageButtons);
+      } else if ("long".equals(mButtons)) {
+        MessageButton buttonOne = new MessageButton();
+        buttonOne.setText("ACCEPT BUTTON ONE WITH A VERY LONG TITLE");
+        buttonOne.setBackgroundColor(Color.BLACK);
+        buttonOne.setClickAction(ClickAction.URI, Uri.parse("http://www.appboy.com"));
+        inAppMessage.setMessageButtons(messageButtons);
+        messageButtons.add(buttonOne);
+        MessageButton buttonTwo = new MessageButton();
+        buttonTwo.setText("CLOSE BUTTON TWO WITH A VERY LONG TITLE");
+        buttonTwo.setBackgroundColor(Color.BLACK);
+        buttonTwo.setClickAction(ClickAction.NONE);
+        messageButtons.add(buttonTwo);
+        inAppMessage.setMessageButtons(messageButtons);
       }
+    }
+  }
+
+  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    switch (parent.getId()) {
+      case R.id.inapp_set_message_type_spinner:
+        mMessageType = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_message_type_values);
+        break;
+      case R.id.inapp_click_action_spinner:
+        mClickAction = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_click_action_values);
+        break;
+      case R.id.inapp_dismiss_type_spinner:
+        mDismissType = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_dismiss_type_values);
+        break;
+      case R.id.inapp_slide_from_spinner:
+        mSlideFrom = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_slide_from_values);
+        break;
+      case R.id.inapp_uri_spinner:
+        mUri = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_uri_values);
+        break;
+      case R.id.inapp_background_color_spinner:
+        mBackgroundColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_icon_color_spinner:
+        mIconColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_icon_background_color_spinner:
+        mIconBackgroundColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_close_button_color_spinner:
+        mCloseButtonColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_text_color_spinner:
+        mTextColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_header_text_color_spinner:
+        mHeaderTextColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_icon_spinner:
+        mIcon = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_icon_values);
+        break;
+      case R.id.inapp_image_spinner:
+        mImage = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_image_values);
+        break;
+      case R.id.inapp_button_spinner:
+        mButtons = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_button_values);
+        break;
+      default:
+        Log.e(TAG, "Item selected for unknown spinner");
+    }
+  }
+
+  public void onNothingSelected(AdapterView<?> parent) {
+    // Do nothing
+  }
+
+  private int parseColorFromString(String colorString) {if (colorString.equals("red")) {
+      return APPBOY_RED;
+    } else if (colorString.equals("orange")) {
+      return GOOGLE_ORANGE;
+    } else if (colorString.equals("yellow")) {
+      return GOOGLE_YELLOW;
+    } else if (colorString.equals("green")) {
+      return GOOGLE_GREEN;
+    } else if (colorString.equals("blue")) {
+      return APPBOY_BLUE;
+    } else if (colorString.equals("purple")) {
+      return GOOGLE_PURPLE;
+    } else if (colorString.equals("brown")) {
+      return GOOGLE_BROWN;
+    } else if (colorString.equals("grey")) {
+      return GOOGLE_GREY;
+    } else if (colorString.equals("black")) {
+      return BLACK;
+    } else if (colorString.equals("white")) {
+      return WHITE;
+    } else {
+      return 0;
     }
   }
 }

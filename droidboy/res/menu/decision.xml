@@ -19,6 +19,6 @@
         android:id="@+id/inappmessages"
         android:title="@string/inappmessage_activity"/>
     <item
-      android:id="@+id/push_testing"
-      android:title="@string/push_testing"/>
+        android:id="@+id/push_testing"
+        android:title="@string/push_testing"/>
 </menu>

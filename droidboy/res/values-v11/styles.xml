@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="DecisionOptionText">
-    <item name="android:inputType">textCapWords</item>
-    <item name="android:textColor">@android:color/white</item>
-  </style>
   <style name="DecisionSpinButton">
-    <item name="android:textColor">@android:color/white</item>
     <item name="android:text">@string/spin</item>
+    <item name="android:textColor">@android:color/white</item>
   </style>
-
   <style name="UserSingleLineText">
     <item name="android:inputType">text|textCapWords</item>
     <item name="android:singleLine">true</item>

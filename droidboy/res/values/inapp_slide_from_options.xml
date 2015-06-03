@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_slide_from_options">
+    <item>Slide From: Not Set</item>
+    <item>Slide From: Top</item>
+    <item>Slide From: Bottom</item>
+  </string-array>
+  <string-array name="inapp_slide_from_values">
+    <item>not set</item>
+    <item>top</item>
+    <item>bottom</item>
+  </string-array>
+</resources>

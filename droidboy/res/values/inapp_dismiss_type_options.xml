@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_dismiss_type_options">
+    <item>Dismiss Type: Not Set</item>
+    <item>Dismiss Type: Auto</item>
+    <item>Dismiss Type: Auto Short</item>
+    <item>Dismiss Type: Manual</item>
+  </string-array>
+  <string-array name="inapp_dismiss_type_values">
+    <item>not set</item>
+    <item>auto</item>
+    <item>auto-short</item>
+    <item>manual</item>
+  </string-array>
+</resources>

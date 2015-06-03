@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="push_category_options">
-    <item>No Category</item>
-    <item>Invalid Category</item>
-    <item>Alarm</item>
-    <item>Progress</item>
-    <item>Social</item>
-    <item>Error</item>
-    <item>Transport</item>
-    <item>System</item>
-    <item>Service</item>
-    <item>Recommendation</item>
-    <item>Status</item>
+    <item>Category: None</item>
+    <item>Category: Invalid Category</item>
+    <item>Category: Alarm</item>
+    <item>Category: Progress</item>
+    <item>Category: Social</item>
+    <item>Category: Error</item>
+    <item>Category: Transport</item>
+    <item>Category: System</item>
+    <item>Category: Service</item>
+    <item>Category: Recommendation</item>
+    <item>Category: Status</item>
   </string-array>
   <string-array name="push_category_values">
     <item></item>

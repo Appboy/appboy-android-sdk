@@ -6,7 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,7 +35,7 @@ public class InAppMessageViewUtils {
         Typeface fontFamily = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf");
         textView.setTypeface(fontFamily);
       } catch (Exception e) {
-        Log.e(TAG, "Caught exception setting icon typeface. Not rendering icon.", e);
+        AppboyLogger.e(TAG, "Caught exception setting icon typeface. Not rendering icon.", e);
         return;
       }
       textView.setText(icon);

@@ -1,7 +1,7 @@
 package com.appboy.ui.support;
 
 import android.net.Uri;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 
 import com.appboy.Constants;
 
@@ -20,7 +20,7 @@ public class UriUtils {
    */
   public static Map<String, String> getQueryParameters(Uri uri) {
     if (uri.isOpaque()) {
-      Log.d(TAG, "URI is not hierarchical. There are no query parameters to parse.");
+      AppboyLogger.d(TAG, "URI is not hierarchical. There are no query parameters to parse.");
       return Collections.emptyMap();
     }
 

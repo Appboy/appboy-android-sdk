@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_click_action_options">
+    <item>Click Action: Not Set</item>
+    <item>Click Action: Newsfeed</item>
+    <item>Click Action: URI</item>
+    <item>Click Action: None</item>
+  </string-array>
+  <string-array name="inapp_click_action_values">
+    <item>not set</item>
+    <item>newsfeed</item>
+    <item>uri</item>
+    <item>none</item>
+  </string-array>
+</resources>

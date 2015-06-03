@@ -17,7 +17,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
@@ -115,7 +115,7 @@ public class AppboyNotificationUtils {
       }
       return bundle;
     } catch (JSONException e) {
-      Log.e(TAG, String.format("Unable parse JSON into a bundle."), e);
+      AppboyLogger.e(TAG, String.format("Unable parse JSON into a bundle."), e);
       return null;
     }
   }
@@ -185,22 +185,22 @@ public class AppboyNotificationUtils {
       if (notificationExtras.containsKey(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID)) {
         try {
           int notificationId = Integer.parseInt(notificationExtras.getString(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID));
-          Log.d(TAG, String.format("Using notification id provided in the message's extras bundle: " + notificationId));
+          AppboyLogger.d(TAG, String.format("Using notification id provided in the message's extras bundle: " + notificationId));
           return notificationId;
 
         } catch (NumberFormatException e) {
-          Log.e(TAG, String.format("Unable to parse notification id provided in the message's extras bundle. Using default notification id instead: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID), e);
+          AppboyLogger.e(TAG, String.format("Unable to parse notification id provided in the message's extras bundle. Using default notification id instead: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID), e);
           return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
         }
       } else {
         String messageKey = AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_TITLE_KEY, "")
             + AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
         int notificationId = messageKey.hashCode();
-        Log.d(TAG, String.format("Message without notification id provided in the extras bundle received.  Using a hash of the message: " + notificationId));
+        AppboyLogger.d(TAG, String.format("Message without notification id provided in the extras bundle received.  Using a hash of the message: " + notificationId));
         return notificationId;
       }
     } else {
-      Log.d(TAG, String.format("Message without extras bundle received.  Using default notification id: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
+      AppboyLogger.d(TAG, String.format("Message without extras bundle received.  Using default notification id: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
       return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
     }
   }
@@ -217,10 +217,10 @@ public class AppboyNotificationUtils {
         if (isValidNotificationPriority(notificationPriority)) {
           return notificationPriority;
         } else {
-          Log.e(TAG, String.format("Received invalid notification priority %d", notificationPriority));
+          AppboyLogger.e(TAG, String.format("Received invalid notification priority %d", notificationPriority));
         }
       } catch (NumberFormatException e) {
-        Log.e(TAG, String.format("Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT), e);
+        AppboyLogger.e(TAG, String.format("Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT), e);
       }
     }
     return Notification.PRIORITY_DEFAULT;
@@ -331,7 +331,7 @@ public class AppboyNotificationUtils {
   public static int setSmallIcon(XmlAppConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
     int smallNotificationIconResourceId = appConfigurationProvider.getSmallNotificationIconResourceId();
       if (smallNotificationIconResourceId == 0) {
-        Log.d(TAG, "Small notification icon resource was not found. Will use the app icon when " +
+        AppboyLogger.d(TAG, "Small notification icon resource was not found. Will use the app icon when " +
           "displaying notifications.");
         smallNotificationIconResourceId = appConfigurationProvider.getApplicationIconResourceId();
       }
@@ -353,7 +353,7 @@ public class AppboyNotificationUtils {
           Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(), largeNotificationIconResourceId);
           notificationBuilder.setLargeIcon(largeNotificationBitmap);
         } catch (Exception e) {
-          Log.e(TAG, "Error setting large notification icon", e);
+          AppboyLogger.e(TAG, "Error setting large notification icon", e);
         }
       }
     }
@@ -485,10 +485,10 @@ public class AppboyNotificationUtils {
           if (isValidNotificationVisibility(visibility)) {
             notificationBuilder.setVisibility(visibility);
           } else {
-            Log.e(TAG, String.format("Received invalid notification visibility %d", visibility));
+            AppboyLogger.e(TAG, String.format("Received invalid notification visibility %d", visibility));
           }
         } catch (Exception e) {
-          Log.e(TAG, "Failed to parse visibility from notificationExtras", e);
+          AppboyLogger.e(TAG, "Failed to parse visibility from notificationExtras", e);
         }
       }
     }
@@ -533,7 +533,7 @@ public class AppboyNotificationUtils {
    */
   public static void logBaiduNotificationClick(Context context, String customContentString) {
     if (customContentString == null) {
-      Log.d(TAG, "customContentString was null. Doing nothing.");
+      AppboyLogger.d(TAG, "customContentString was null. Doing nothing.");
       return;
     }
     try {
@@ -544,7 +544,7 @@ public class AppboyNotificationUtils {
         Appboy.getInstance(context).logPushNotificationOpened(campaignId);
       }
     } catch (Exception e) {
-      Log.e(TAG, String.format("Caught an exception processing customContentString: %s", customContentString), e);
+      AppboyLogger.e(TAG, String.format("Caught an exception processing customContentString: %s", customContentString), e);
     }
   }
 }

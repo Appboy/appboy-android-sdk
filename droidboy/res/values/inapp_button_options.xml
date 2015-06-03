@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_button_options">
+    <item>Message Buttons: Not Set</item>
+    <item>Message Buttons: None</item>
+    <item>Message Buttons: One</item>
+    <item>Message Buttons: Two</item>
+    <item>Message Buttons: Two - Long Titles</item>
+  </string-array>
+  <string-array name="inapp_button_values">
+    <item>not set</item>
+    <item>none</item>
+    <item>one</item>
+    <item>two</item>
+    <item>long</item>
+  </string-array>
+</resources>

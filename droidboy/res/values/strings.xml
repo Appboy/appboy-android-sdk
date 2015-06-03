@@ -18,13 +18,15 @@
   <string name="user_dialog_okay">OK</string>
   <string name="user_dialog_cancel">Cancel</string>
 
-  <string name="user_dialog_first_name">First Name:</string>
-  <string name="user_dialog_last_name">Last Name:</string>
-  <string name="user_dialog_email_address">Email Address:</string>
-  <string name="user_dialog_bio">Bio:</string>
+  <string name="user_dialog_first_name">First Name</string>
+  <string name="user_dialog_last_name">Last Name</string>
+  <string name="user_dialog_email_address">Email Address</string>
+  <string name="user_dialog_bio">Bio</string>
   <string name="user_dialog_gender">Gender:</string>
-  <string name="user_dialog_favorite_color">Favorite Color:</string>
-  <string name="user_dialog_avatar_image_url">Avatar Image URL:</string>
+  <string name="user_dialog_avatar_image_url">Avatar Image URL</string>
+  <string name="user_dialog_flush">Flush on close</string>
+  <string name="user_dialog_populate">Populate</string>
+  <string name="user_dialog_clear">Clear All</string>
 
   <string name="male">Male</string>
   <string name="female">Female</string>
@@ -43,13 +45,15 @@
   <string name="custom_logging_dialog_okay">OK</string>
   <string name="custom_logging_dialog_cancel">Cancel</string>
 
-  <string name="attribute_array">Array Operation</string>
+  <string name="attribute_array">Array Operation:</string>
   <string name="attribute_array_set">Set</string>
   <string name="attribute_array_add">Add</string>
   <string name="attribute_array_remove">Remove</string>
   <string name="attribute_array_key">Create Attribute Array</string>
 
   <string name="custom_logging_user_attribute">User Attribute</string>
+  <string name="custom_logging_user_attribute_increment">Increment Attribute</string>
+  <string name="custom_logging_user_attribute_unset">Unset Attribute</string>
   <string name="custom_logging_custom_event">Custom Event</string>
   <string name="custom_logging_custom_event_property">Event Property</string>
   <string name="custom_logging_custom_purchase">Custom Purchase</string>
@@ -79,27 +83,20 @@
   <string name="display_next_inappmessage">Display Next In-App Message</string>
   <string name="request_inappmessage_from_appboy">Request In-App Message from Appboy</string>
   <string name="hide_current_inappmessage">Hide Current In-App Message</string>
-  <string name="animates_in_from">Animates in from the</string>
   <string name="custom_iappboy_navigator">Custom IAppboyNavigator</string>
+  <string name="custom_iappboy_animation">Custom IInAppMessageAnimationFactory</string>
   <string name="custom_iinappmessagemanager_listener">Custom IInAppMessageManagerListener</string>
   <string name="inappmessage_activity">In-App Messages</string>
   <string name="custom_iinappmessage_view_factory">Custom IInAppMessageViewFactory</string>
   <string name="push_testing">Push</string>
-  <string name="dismiss_type_set_to">DismissType set to</string>
-  <string name="uri_set_to">URI set to</string>
   <string name="message_set_to">Message set to</string>
   <string name="header_set_to">Header set to</string>
-  <string name="icon_set_to">Fontawesome code (4 hex chars)</string>
-  <string name="uri_duration_seconds">Auto-dismiss duration (s)</string>
   <string name="set_background_color">Set background color</string>
   <string name="set_icon_color">Set icon color</string>
+  <string name="set_icon_background_color">Set icon background color</string>
   <string name="set_close_button_color">Set close button color</string>
   <string name="set_text_color">Set text color</string>
-  <string name="set_message_type">Set message type*</string>
   <string name="set_header_text_color">Set header text color</string>
-  <string name="set_icon_or_image">Set icon/image</string>
-  <string name="add_message_buttons">Add message buttons</string>
-  <string name="click_action_set_to">ClickAction set to</string>
 
   <string name="test_push">Send Push</string>
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
@@ -111,4 +108,12 @@
   <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
   <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>
   <string name="misc_preference_category">Misc</string>
+  <string name="disable_appboy_logging_title">Toggle Appboy Logging</string>
+  <string name="disable_appboy_logging_summary">Toggle Appboy Logging.  This does not persist through app runs.</string>
+  <string name="get_registration_id_title">Get Push Registration Id</string>
+  <string name="get_registration_id_summary">Retrieve the Registration Id used for push on this device.</string>
+
+  <string name="appboy_url">https://pbs.twimg.com/profile_images/489799002259329024/9yeNWMU_.png</string>
+  <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
+  <string name="google_url">http://www.google.com</string>
 </resources>

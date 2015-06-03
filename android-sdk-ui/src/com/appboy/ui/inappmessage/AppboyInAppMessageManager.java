@@ -1,11 +1,13 @@
 package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
+import com.appboy.support.AppboyLogger;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
 import com.appboy.Appboy;
@@ -13,6 +15,7 @@ import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.enums.inappmessage.ClickAction;
+import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
 import com.appboy.models.IInAppMessage;
@@ -26,10 +29,10 @@ import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.support.AnimationUtils;
 import com.appboy.ui.support.StringUtils;
 import com.appboy.ui.support.ViewUtils;
 
-import java.net.URI;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -87,6 +90,7 @@ public final class AppboyInAppMessageManager {
   private IEventSubscriber<InAppMessageEvent> mInAppMessageEventSubscriber;
   private IInAppMessageManagerListener mCustomInAppMessageManagerListener;
   private IInAppMessageViewFactory mCustomInAppMessageViewFactory;
+  private IInAppMessageAnimationFactory mCustomInAppMessageAnimationFactory;
   private InAppMessageViewWrapper mInAppMessageViewWrapper;
   private IInAppMessage mCarryoverInAppMessageBase;
   private AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
@@ -119,7 +123,7 @@ public final class AppboyInAppMessageManager {
     // We have a special check to see if the host app switched to a different Activity (or recreated
     // the same Activity during an orientation change) so that we can redisplay the in-app message.
     if (mCarryoverInAppMessageBase != null) {
-      Log.d(TAG, "Displaying carryover in-app message.");
+      AppboyLogger.d(TAG, "Displaying carryover in-app message.");
       mCarryoverInAppMessageBase.setAnimateIn(false);
       displayInAppMessage(mCarryoverInAppMessageBase);
       mCarryoverInAppMessageBase = null;
@@ -174,6 +178,17 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
+   * Assigns a custom IInAppMessageAnimationFactory that will be used to animate the in-app message View. To revert
+   * back to the default IInAppMessageAnimationFactory, call the setCustomInAppMessageAnimationFactory method with null.
+   *
+   * @param inAppMessageAnimationFactory A custom IInAppMessageAnimationFactory or null (to revert back to the default
+   *                           IInAppMessageAnimationFactory).
+   */
+  public void setCustomInAppMessageAnimationFactory(IInAppMessageAnimationFactory inAppMessageAnimationFactory) {
+    mCustomInAppMessageAnimationFactory = inAppMessageAnimationFactory;
+  }
+
+  /**
    * Assigns a custom IInAppMessageViewFactory that will be used to create the in-app message View. To revert
    * back to the default IInAppMessageViewFactory, call the setCustomInAppMessageViewFactory method with null.
    *
@@ -203,11 +218,11 @@ public final class AppboyInAppMessageManager {
    */
   public boolean requestDisplayInAppMessage() {
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
-      Log.d(TAG, "A in-app message is currently being displayed. Ignoring request to display in-app message.");
+      AppboyLogger.d(TAG, "A in-app message is currently being displayed. Ignoring request to display in-app message.");
       return false;
     }
     if (mInAppMessageBaseStack.isEmpty()) {
-      Log.d(TAG, "The in-app message stack is empty. No in-app message will be displayed.");
+      AppboyLogger.d(TAG, "The in-app message stack is empty. No in-app message will be displayed.");
       mDisplayingInAppMessage.set(false);
       return false;
     }
@@ -217,22 +232,22 @@ public final class AppboyInAppMessageManager {
 
     switch (inAppMessageOperation) {
       case DISPLAY_NOW:
-        Log.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_NOW. The " +
+        AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_NOW. The " +
             "in-app message will be displayed.");
         break;
       case DISPLAY_LATER:
-        Log.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_LATER. The " +
+        AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_LATER. The " +
             "in-app message will be pushed back onto the stack.");
         mInAppMessageBaseStack.push(inAppMessage);
         mDisplayingInAppMessage.set(false);
         return false;
       case DISCARD:
-        Log.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISCARD. The " +
+        AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISCARD. The " +
             "in-app message will not be displayed and will not be put back on the stack.");
         mDisplayingInAppMessage.set(false);
         return false;
       default:
-        Log.e(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a " +
+        AppboyLogger.e(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a " +
             "InAppMessageOperation. Ignoring the in-app message. Please check the IInAppMessageStackBehaviour " +
             "implementation.");
         mDisplayingInAppMessage.set(false);
@@ -253,31 +268,31 @@ public final class AppboyInAppMessageManager {
 
     @Override
     protected IInAppMessage doInBackground(IInAppMessage... inAppMessages) {
-      Log.d(TAG, "Starting asynchronous in-app message preparation.");
+      AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
       IInAppMessage inAppMessage = inAppMessages[0];
       String imageUrl = inAppMessage.getImageUrl();
       if (!StringUtils.isNullOrBlank(imageUrl) && inAppMessage.getBitmap() == null) {
         inAppMessage.setBitmap(AppboyImageUtils.downloadImageBitmap(inAppMessage.getImageUrl()));
       } else {
-        Log.d(TAG, "In-app message already contains image bitmap or has no image URL.  Not downloading image from URL.");
+        AppboyLogger.d(TAG, "In-app message already contains image bitmap or has no image URL.  Not downloading image from URL.");
       }
       return inAppMessage;
     }
 
     @Override
     protected void onPostExecute(final IInAppMessage inAppMessage) {
-      Log.d(TAG, "Finished asycnhronous in-app message preparation. Attempting to display in-app message.");
+      AppboyLogger.d(TAG, "Finished asycnhronous in-app message preparation. Attempting to display in-app message.");
 
       if (inAppMessage != null) {
         mActivity.runOnUiThread(new Runnable() {
           @Override
           public void run() {
-            Log.d(TAG, "Displaying in-app message.");
+            AppboyLogger.d(TAG, "Displaying in-app message.");
             displayInAppMessage(inAppMessage);
           }
         });
       } else {
-        Log.e(TAG, "Cannot display the in-app message because the in-app message was null.");
+        AppboyLogger.e(TAG, "Cannot display the in-app message because the in-app message was null.");
         mDisplayingInAppMessage.set(false);
       }
     }
@@ -316,14 +331,14 @@ public final class AppboyInAppMessageManager {
     final View inAppMessageView = getInAppMessageViewFactory(inAppMessage).createInAppMessageView(mActivity, inAppMessage);
 
     if (inAppMessageView == null) {
-      Log.e(TAG, "The in-app message view returned from the IInAppMessageViewFactory was null. The in-app message will " +
+      AppboyLogger.e(TAG, "The in-app message view returned from the IInAppMessageViewFactory was null. The in-app message will " +
           "not be displayed and will not be put back on the stack.");
       mDisplayingInAppMessage.set(false);
       return false;
     }
 
     if (inAppMessageView.getParent() != null) {
-      Log.e(TAG, "The in-app message view returned from the IInAppMessageViewFactory already has a parent. This " +
+      AppboyLogger.e(TAG, "The in-app message view returned from the IInAppMessageViewFactory already has a parent. This " +
           "is a sign that the view is being reused. The IInAppMessageViewFactory method createInAppMessageView" +
           "must return a new view without a parent. The in-app message will not be displayed and will not " +
           "be put back on the stack.");
@@ -331,20 +346,23 @@ public final class AppboyInAppMessageManager {
       return false;
     }
 
+    Animation openingAnimation = getInAppMessageAnimationFactory(inAppMessage).getOpeningAnimation(inAppMessage);
+    Animation closingAnimation = getInAppMessageAnimationFactory(inAppMessage).getClosingAnimation(inAppMessage);
+
     if (inAppMessageView instanceof IInAppMessageImmersiveView) {
-      Log.d(TAG, "Creating view wrapper for immersive in-app message.");
+      AppboyLogger.d(TAG, "Creating view wrapper for immersive in-app message.");
       IInAppMessageImmersiveView inAppMessageViewImmersive = (IInAppMessageImmersiveView) inAppMessageView;
       mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
-          inAppMessageViewImmersive.getMessageClickableView(), inAppMessageViewImmersive.getMessageButtonViews(),
+          openingAnimation, closingAnimation, inAppMessageViewImmersive.getMessageClickableView(), inAppMessageViewImmersive.getMessageButtonViews(),
           inAppMessageViewImmersive.getMessageCloseButtonView());
     } else if (inAppMessageView instanceof IInAppMessageView) {
-      Log.d(TAG, "Creating view wrapper for base in-app message.");
+      AppboyLogger.d(TAG, "Creating view wrapper for base in-app message.");
       IInAppMessageView inAppMessageViewBase = (IInAppMessageView) inAppMessageView;
       mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView,
-          inAppMessage, mInAppMessageViewLifecycleListener, inAppMessageViewBase.getMessageClickableView());
+          inAppMessage, mInAppMessageViewLifecycleListener, openingAnimation, closingAnimation, inAppMessageViewBase.getMessageClickableView());
     } else {
-      Log.d(TAG, "Creating view wrapper for in-app message.");
-      mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener, inAppMessageView);
+      AppboyLogger.d(TAG, "Creating view wrapper for in-app message.");
+      mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener, openingAnimation, closingAnimation, inAppMessageView);
     }
 
     FrameLayout root = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
@@ -449,33 +467,78 @@ public final class AppboyInAppMessageManager {
     }
   };
 
+  private IInAppMessageAnimationFactory getInAppMessageAnimationFactory(IInAppMessage inAppMessage) {
+    if (mCustomInAppMessageAnimationFactory != null) {
+      return mCustomInAppMessageAnimationFactory;
+    } else {
+      return mInAppMessageAnimationFactory;
+    }
+  }
+
+  private IInAppMessageAnimationFactory mInAppMessageAnimationFactory = new IInAppMessageAnimationFactory() {
+    private final long sSlideupAnimationDurationMillis = 400l;
+    private final int mShortAnimationDurationMillis = Resources.getSystem().getInteger(android.R.integer.config_shortAnimTime);
+
+    @Override
+    public Animation getOpeningAnimation(IInAppMessage inAppMessage) {
+      Animation animation;
+      if (inAppMessage instanceof InAppMessageSlideup) {
+        InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) inAppMessage;
+        if (inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP) {
+          animation = AnimationUtils.createVerticalAnimation(-1, 0, sSlideupAnimationDurationMillis, false);
+        } else {
+          animation = AnimationUtils.createVerticalAnimation(1, 0, sSlideupAnimationDurationMillis, false);
+        }
+      } else {
+        animation = new AlphaAnimation(0, 1);
+      }
+      return AnimationUtils.setAnimationParams(animation, mShortAnimationDurationMillis, true);
+    }
+
+    @Override
+    public Animation getClosingAnimation(IInAppMessage inAppMessage) {
+      Animation animation;
+      if (inAppMessage instanceof InAppMessageSlideup) {
+        InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) inAppMessage;
+        if (inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP) {
+          animation = AnimationUtils.createVerticalAnimation(0, -1, sSlideupAnimationDurationMillis, false);
+        } else {
+          animation = AnimationUtils.createVerticalAnimation(0, 1, sSlideupAnimationDurationMillis, false);
+        }
+      } else {
+        animation = new AlphaAnimation(1, 0);
+      }
+      return AnimationUtils.setAnimationParams(animation, mShortAnimationDurationMillis, false);
+    }
+  };
+
   private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new IInAppMessageViewLifecycleListener() {
     @Override
     public void beforeOpened(View inAppMessageView, IInAppMessage inAppMessage) {
-      Log.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeOpened called.");
+      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeOpened called.");
       inAppMessage.logImpression();
     }
 
     @Override
     public void afterOpened(View inAppMessageView, IInAppMessage inAppMessage) {
-      Log.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterOpened called.");
+      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterOpened called.");
     }
 
     @Override
     public void beforeClosed(View inAppMessageView, IInAppMessage inAppMessage) {
-      Log.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeClosed called.");
+      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeClosed called.");
     }
 
     @Override
     public void afterClosed(IInAppMessage inAppMessage) {
       mInAppMessageViewWrapper = null;
-      Log.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterClosed called.");
+      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterClosed called.");
       mDisplayingInAppMessage.set(false);
     }
 
     @Override
     public void onClicked(InAppMessageCloser inAppMessageCloser, View inAppMessageView, IInAppMessage inAppMessage) {
-      Log.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onClicked called.");
+      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onClicked called.");
       if (inAppMessage.getClickAction() != ClickAction.NONE) {
         inAppMessage.logClick();
       }
@@ -497,7 +560,7 @@ public final class AppboyInAppMessageManager {
 
     @Override
     public void onButtonClicked(InAppMessageCloser inAppMessageCloser, MessageButton messageButton, IInAppMessageImmersive inAppMessageImmersive) {
-      Log.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onButtonClicked called.");
+      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onButtonClicked called.");
       if (messageButton.getClickAction() != ClickAction.NONE) {
         inAppMessageImmersive.logButtonClick(messageButton);
       }
