@@ -42,6 +42,9 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference logPurchasePreference = findPreference("log_iab_purchase");
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestInAppMessagePreference = findPreference("request_inappmessage");
+    Preference setManualLocationPreference = findPreference("set_manual_location");
+    Preference openSessionPreference = findPreference("open_session");
+    Preference closeSessionPreference = findPreference("close_session");
     Preference aboutPreference = findPreference("about");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference toggleDisableAppboyLoggingPreference = findPreference("toggle_disable_appboy_logging");
@@ -62,6 +65,14 @@ public class PreferencesActivity extends PreferenceActivity {
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).logShare(SocialNetwork.TWITTER);
         showToast(getString(R.string.twitter_share_toast));
+        return true;
+      }
+    });
+    setManualLocationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.getInstance(PreferencesActivity.this).getCurrentUser().setLastKnownLocation(1.0, 2.0, 3.0, 4.0);
+        showToast("Manually set location to latitude 1.0d, longitude 2.0d, altitude 3.0m, accuracy 4.0m.");
         return true;
       }
     });
@@ -100,13 +111,35 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
+    openSessionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        if (Appboy.getInstance(PreferencesActivity.this).openSession(PreferencesActivity.this)) {
+          showToast(getString(R.string.open_session_toast));
+        } else {
+          showToast(getString(R.string.resume_session_toast));
+        }
+        return true;
+      }
+    });
+    closeSessionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        if (Appboy.getInstance(PreferencesActivity.this).closeSession(PreferencesActivity.this)) {
+          showToast(getString(R.string.close_session_toast));
+        } else {
+          showToast(getString(R.string.no_session_toast));
+        }
+        return true;
+      }
+    });
     toggleDisableAppboyNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
         boolean newDisableAppboyNetworkRequestsPreference = !Boolean.parseBoolean(getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETORK_REQUESTS_KEY, null));
         SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).edit();
         sharedPreferencesEditor.putString(SharedPrefsUtil.DISABLE_APPBOY_NETORK_REQUESTS_KEY, String.valueOf(newDisableAppboyNetworkRequestsPreference));
-        SharedPrefsUtil.persist(sharedPreferencesEditor);
+        sharedPreferencesEditor.apply();
         if (newDisableAppboyNetworkRequestsPreference) {
           Toast.makeText(PreferencesActivity.this, "Disabling Appboy network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
         } else {

@@ -5,9 +5,9 @@
   <string translatable="false" name="com_appboy_api_key">appboy-sample-android</string>
 
   <!-- To disable automatic flushing in any of these network conditions, simply set the value to -1. To turn off
-      all automatic data flushing, set all three intervals to -1. When automatic flushing is disabled, you can use
-      IAppboy.RequestImmediateDataFlush to manually flush analytics data to the server. Note, however, that any
-      feedback requests or refreshes of the news feed or in app message will automatically flush your analytics data as well. -->
+    all automatic data flushing, set all three intervals to -1. When automatic flushing is disabled, you can use
+    IAppboy.RequestImmediateDataFlush to manually flush analytics data to the server. Note, however, that any
+    feedback requests or refreshes of the news feed or in app message will automatically flush your analytics data as well. -->
   <!-- On GPRS and EDGE, allow a flush request up to every 30 seconds. (default is 60)  -->
   <integer name="com_appboy_data_flush_interval_bad_network">30</integer>
   <!-- With a 3G connection, allow a flush request up to every 15 seconds. (default is 30) -->
@@ -23,24 +23,26 @@
   <bool name="com_appboy_push_gcm_messaging_registration_enabled">true</bool>
   <bool name="com_appboy_push_adm_messaging_registration_enabled">true</bool>
 
+  <!-- This integer sets the default accent color for push notifications on Android Lollipop and higher.  If not specified,
+    the default background color is gray (the same gray Lollipop uses for system notifications).  This value can
+    be overridden at runtime by a push notification that sets a custom accent color. -->
+  <integer name="com_appboy_default_notification_accent_color">0xFFf33e3e</integer>
+
   <!-- This is a string because parsing it out of a resource file as a numeric value isn't properly handled by Android.
-     Also, it's not shown to the user and thus we don't require it to be translated. -->
+    Also, it's not shown to the user and thus we don't require it to be translated. -->
   <string translatable="false" name="com_appboy_push_gcm_sender_id">901477453852</string>
   <drawable name="com_appboy_push_small_notification_icon">@drawable/ic_stat_notify_droidboy</drawable>
   <drawable name="com_appboy_push_large_notification_icon">@drawable/ic_stat_notify_droidboy_large</drawable>
 
-  <!-- This boolean sets whether the read/unread visual indicator at the top right of newsfeed cards
-      on or off. -->
+  <!-- News Feed configuration -->
+  <!-- This boolean sets whether the read/unread visual indicator at the top right of news feed cards
+    on or off. -->
   <bool name="com_appboy_newsfeed_unread_visual_indicator_on">true</bool>
 
-  <!-- This boolean sets whether Appboy will automatically collect location (if the user permits).  If set to true,
-  location will not be set for the user unless integrating apps manually call setUserLastKnownLocation on the AppboyUser.
-   -->
+  <!-- Location configuration -->
+  <!-- This boolean sets whether Appboy should automatically collect location (if the user permits).  If set to true,
+    all location collection will be disabled and location will never be set for the user
+    unless integrating apps manually call setUserLastKnownLocation on the AppboyUser.
+    If not specified or set to false, location data will be collected once at the start of each session. -->
   <bool name="com_appboy_disable_location_collection">false</bool>
-
-  <!-- This integer sets the default accent color for push notifications on Android Lollipop and higher.  If not specified,
-  the default background color is gray (the same gray Lollipop uses for system notifications).  This value can
-  be overridden at runtime by a push notification that sets a custom accent color.
- -->
-  <integer name="com_appboy_default_notification_accent_color">0xFFf33e3e</integer>
 </resources>

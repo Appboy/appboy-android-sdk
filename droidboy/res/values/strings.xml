@@ -11,6 +11,8 @@
   <string name="social_preferences_title">Social</string>
   <string name="engagement_title">Engagement</string>
   <string name="network_control_title">Network Controls</string>
+  <string name="session_title">Sessions</string>
+  <string name="location_title">Location</string>
   <string name="about_title">About</string>
 
   <string name="user_dialog_title">Sign up</string>
@@ -71,6 +73,10 @@
 
   <string name="requested_inappmessage_toast">Requested In-App Message</string>
   <string name="about_summary">Appboy SDK version: %1$s</string>
+  <string name="open_session_toast">Opened new Appboy session.</string>
+  <string name="resume_session_toast">Resumed existing Appboy session.</string>
+  <string name="close_session_toast">Closed existing Appboy session.</string>
+  <string name="no_session_toast">No Appboy session to close.</string>
 
   <string name="spinner_content_description">Spinner</string>
   <string name="spin">Spin!</string>
@@ -89,8 +95,6 @@
   <string name="inappmessage_activity">In-App Messages</string>
   <string name="custom_iinappmessage_view_factory">Custom IInAppMessageViewFactory</string>
   <string name="push_testing">Push</string>
-  <string name="message_set_to">Message set to</string>
-  <string name="header_set_to">Header set to</string>
   <string name="set_background_color">Set background color</string>
   <string name="set_icon_color">Set icon color</string>
   <string name="set_icon_background_color">Set icon background color</string>

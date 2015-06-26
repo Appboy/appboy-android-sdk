@@ -1,3 +1,8 @@
+## 1.8.0
+- Updates the minimum sdk version from 8 (froyo) to 9 (gingerbread).
+- Adds an opt-in location service that logs background location events.
+- Fixes an in-app message lifecycle listener bug where certain lifecycle events could be fired twice.
+
 ## 1.7.3
 - Adds Appboy logging configurability by setting the AppboyLogger.LogLevel.  This is intended to be used in development environments
   and should not be set in a released application as logging statements are essential for debugging.

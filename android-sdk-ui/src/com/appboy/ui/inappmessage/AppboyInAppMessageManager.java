@@ -264,6 +264,36 @@ public final class AppboyInAppMessageManager {
     return true;
   }
 
+  /**
+   * Hides any currently displaying in-app message.
+   *
+   * @param animate whether to animate the message out of view
+   * @param dismissed whether the message was dismissed by the user
+   */
+  public void hideCurrentInAppMessage(boolean animate, boolean dismissed) {
+    InAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
+    if (inAppMessageWrapperView != null && dismissed) {
+      inAppMessageWrapperView.callOnDismissed();
+    }
+    hideCurrentInAppMessage(animate);
+  }
+
+  /**
+   * Hides any currently displaying in-app message.
+   *
+   * @param animate whether to animate the message out of view
+   */
+  public void hideCurrentInAppMessage(boolean animate) {
+    InAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
+    if (inAppMessageWrapperView != null) {
+      IInAppMessage inAppMessage = inAppMessageWrapperView.getInAppMessage();
+      if (inAppMessage != null) {
+        inAppMessage.setAnimateOut(animate);
+      }
+      inAppMessageWrapperView.close();
+    }
+  }
+
   private class AsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, Integer, IInAppMessage> {
 
     @Override
@@ -295,17 +325,6 @@ public final class AppboyInAppMessageManager {
         AppboyLogger.e(TAG, "Cannot display the in-app message because the in-app message was null.");
         mDisplayingInAppMessage.set(false);
       }
-    }
-  }
-
-  public void hideCurrentInAppMessage(boolean animate) {
-    InAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
-    if (inAppMessageWrapperView != null) {
-      IInAppMessage inAppMessage = inAppMessageWrapperView.getInAppMessage();
-      if (inAppMessage != null) {
-        inAppMessage.setAnimateOut(animate);
-      }
-      inAppMessageWrapperView.close();
     }
   }
 
@@ -575,6 +594,7 @@ public final class AppboyInAppMessageManager {
 
     @Override
     public void onDismissed(View inAppMessageView, IInAppMessage inAppMessage) {
+      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onDismissed called.");
       getInAppMessageManagerListener().onInAppMessageDismissed(inAppMessage);
     }
 

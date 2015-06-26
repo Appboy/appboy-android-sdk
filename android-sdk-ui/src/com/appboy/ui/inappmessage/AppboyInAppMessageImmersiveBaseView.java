@@ -68,9 +68,9 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if(keyCode == KeyEvent.KEYCODE_BACK) {
+    if (keyCode == KeyEvent.KEYCODE_BACK) {
       AppboyLogger.d(TAG, "Back button intercepted by in-app message view, closing in-app message.");
-      AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true);
+      AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true, true);
       return true;
     }
     return super.onKeyDown(keyCode, event);

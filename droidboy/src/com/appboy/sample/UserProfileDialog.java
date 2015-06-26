@@ -16,7 +16,6 @@ import com.appboy.AppboyUser;
 import com.appboy.Constants;
 import com.appboy.enums.Gender;
 import com.appboy.sample.util.ButtonUtils;
-import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.ui.support.StringUtils;
 import com.crittercism.app.Crittercism;
 
@@ -153,7 +152,7 @@ public class UserProfileDialog extends DialogPreference {
       editor.putString(BIO_PREFERENCE_KEY, bio);
       editor.putInt(GENDER_PREFERENCE_KEY, genderId);
       editor.putString(AVATAR_PREFERENCE_KEY, avatarImageUrl);
-      SharedPrefsUtil.persist(editor);
+      editor.apply();
 
       AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
       appboyUser.setFirstName(firstName);

@@ -56,6 +56,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/session_title">
+        <Preference
+            android:key="open_session"
+            android:title="Open Session"/>
+        <Preference
+            android:key="close_session"
+            android:title="Close Session"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/location_title">
+        <Preference
+            android:key="set_manual_location"
+            android:title="Set Manual Location"
+            android:summary="Override current location"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/about_title">
         <Preference
             android:key="about"/>

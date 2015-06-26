@@ -23,6 +23,7 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.support.IntentUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +33,6 @@ import java.util.Random;
 
 public class AppboyNotificationUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationUtils.class.getName());
-  private static final Random mRandom = new Random();
   public static final String SOURCE_KEY = "source";
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
@@ -235,14 +235,6 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Returns a random request code for this notification.
-   * Request codes are used to differentiate between multiple active pending intents.
-   */
-  public static int getRequestCode() {
-    return mRandom.nextInt();
-  }
-
-  /**
    * This method will wake the device using a wake lock if the WAKE_LOCK permission is present in the
    * manifest. If the permission is not present, this does nothing. If the screen is already on,
    * and the permission is present, this does nothing.  If the priority of the incoming notification
@@ -320,7 +312,7 @@ public class AppboyNotificationUtils {
     if (notificationExtras != null) {
       pushOpenedIntent.putExtras(notificationExtras);
     }
-    PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, AppboyNotificationUtils.getRequestCode(), pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
+    PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
     notificationBuilder.setContentIntent(pushOpenedPendingIntent);
   }
 

@@ -1,7 +1,6 @@
 package com.appboy.ui.inappmessage;
 
 import android.os.Build;
-import com.appboy.support.AppboyLogger;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +8,13 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
 import com.appboy.Constants;
-import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.support.AnimationUtils;
 import com.appboy.ui.support.ViewUtils;
 
@@ -121,11 +120,17 @@ public class InAppMessageViewWrapper {
   public boolean getIsAnimatingClose() {
     return mIsAnimatingClose;
   }
+
   public void callAfterClosed() {
     mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
   }
 
+  public void callOnDismissed() {
+    mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
+  }
+
   private void preClose() {
+    mInAppMessageView.removeCallbacks(mDismissRunnable);
     mInAppMessageViewLifecycleListener.beforeClosed(mInAppMessageView, mInAppMessage);
   }
 
@@ -193,9 +198,8 @@ public class InAppMessageViewWrapper {
     return new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        // The onClicked lifecycle method is called after setting the click action to none.
-        mInAppMessage.setClickAction(ClickAction.NONE);
-        mInAppMessageViewLifecycleListener.onClicked(new InAppMessageCloser(InAppMessageViewWrapper.this), mInAppMessageView, mInAppMessage);
+        mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
+        close();
       }
     };
   }
@@ -212,10 +216,6 @@ public class InAppMessageViewWrapper {
       mInAppMessageView.requestFocus();
     }
     root.addView(mInAppMessageView, layoutParams);
-  }
-
-  private void removeViewFromLayout() {
-    ViewUtils.removeViewFromParent(mInAppMessageView);
   }
 
   private void display() {
@@ -238,6 +238,7 @@ public class InAppMessageViewWrapper {
       mDismissRunnable = new Runnable() {
         @Override
         public void run() {
+          mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
           close();
         }
       };
@@ -293,7 +294,7 @@ public class InAppMessageViewWrapper {
     mInAppMessageView.clearAnimation();
     mInAppMessageView.setAnimation(animation);
     animation.startNow();
-    // We need to explicitly call invalidate on Froyo, otherwise the animation won't start :(
+    // We need to explicitly call invalidate on Gingerbread, otherwise the animation won't start :(
     mInAppMessageView.invalidate();
   }
 
@@ -328,7 +329,7 @@ public class InAppMessageViewWrapper {
           mInAppMessageView.clearAnimation();
           mInAppMessageView.setVisibility(View.GONE);
           mInAppMessageView.setClickable(true);
-          removeViewFromLayout();
+          ViewUtils.removeViewFromParent(mInAppMessageView);
           mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
         }
         @Override
@@ -358,12 +359,12 @@ public class InAppMessageViewWrapper {
       }
 
       private void animateAndClose(Animation animation) {
+        mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
         preClose();
         mInAppMessageView.clearAnimation();
         mInAppMessageView.setAnimation(animation);
         animation.startNow();
         mInAppMessageView.invalidate();
-        mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
         mInAppMessage.setAnimateOut(false);
         performClose();
       }

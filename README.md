@@ -43,7 +43,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:1.7.+'
+   compile 'com.appboy:android-sdk-ui:1.8.+'
    ...
 }
 ```
@@ -63,13 +63,13 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.7.+'
+  compile 'com.appboy:android-sdk-ui:1.8.+'
 }
 ```
 
 ## Version Support
 
-The Android SDK supports Android 2.2+ (Froyo and up).
+The Android SDK supports Android 2.3+ (Gingerbread and up).
 
 Appboy uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons.  Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
 

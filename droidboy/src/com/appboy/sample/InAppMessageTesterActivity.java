@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,7 +22,6 @@ import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
-import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.sample.util.SpinnerUtils;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
@@ -37,6 +35,22 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
   private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
+
+  // '#' characters at the end of headers and messages are used to verify that the entire message was displayed.
+  private static final String HEADER_10 = "Hey there#";
+  private static final String HEADER_20 = "Hey hey from Appboy#";
+  private static final String HEADER_30 = "Good morning from us @ Appboy#";
+  private static final String HEADER_40 = "Hello from Appboy! Have a fun day today#";
+
+  private static final String MESSAGE_40 = "Hello there!  This is an in-app message#";
+  private static final String MESSAGE_90 = "Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#";
+  private static final String MESSAGE_140 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly one hundred and forty chars#";
+  private static final String MESSAGE_240 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly two hundred and forty chars!  " +
+      "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
+  private static final String MESSAGE_640 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly six hundred and forty chars!  " +
+      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
+      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
+      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -56,6 +70,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     spinnerOptionMap.put(R.id.inapp_click_action_spinner, R.array.inapp_click_action_options);
     spinnerOptionMap.put(R.id.inapp_dismiss_type_spinner, R.array.inapp_dismiss_type_options);
     spinnerOptionMap.put(R.id.inapp_slide_from_spinner, R.array.inapp_slide_from_options);
+    spinnerOptionMap.put(R.id.inapp_header_spinner, R.array.inapp_header_options);
+    spinnerOptionMap.put(R.id.inapp_message_spinner, R.array.inapp_message_options);
     spinnerOptionMap.put(R.id.inapp_background_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_icon_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_icon_background_color_spinner, R.array.inapp_color_options);
@@ -74,6 +90,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mDismissType;
   private String mSlideFrom;
   private String mUri;
+  private String mHeader;
+  private String mMessage;
   private String mBackgroundColor;
   private String mIconColor;
   private String mIconBackgroundColor;
@@ -83,9 +101,6 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mIcon;
   private String mImage;
   private String mButtons;
-
-  private EditText mMessageEditText;
-  private EditText mHeaderEditText;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -97,9 +112,6 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       SpinnerUtils.setUpSpinner((Spinner) findViewById(key), this, sSpinnerOptionMap.get(key));
     }
 
-    mMessageEditText = (EditText) findViewById(R.id.message_edit_text);
-    mHeaderEditText = (EditText) findViewById(R.id.header_edit_text);
-
     CheckBox customInAppMessageViewCheckBox = (CheckBox) findViewById(R.id.custom_inappmessage_view_factory_checkbox);
     customInAppMessageViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
@@ -109,7 +121,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
         }
-        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked));
+        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
       }
     });
     boolean usingCustomInAppMessageView = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
@@ -124,7 +136,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
         }
-        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked));
+        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
       }
     });
     boolean usingCustomInAppMessageManagerListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
@@ -139,7 +151,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         } else {
           Appboy.getInstance(InAppMessageTesterActivity.this).setAppboyNavigator(null);
         }
-        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked));
+        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
       }
     });
     boolean usingCustomAppboyNavigator = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
@@ -173,7 +185,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
         }
-        SharedPrefsUtil.persist(getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked));
+        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
       }
     });
     boolean usingCustomInAppAnimation = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
@@ -210,7 +222,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       inAppMessage.setHeader("Hello from Appboy!");
       inAppMessage.setIcon("\uf091");
     } else if (inAppMessage instanceof InAppMessageFull) {
-      inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.  Full in-app messages can contain many lines of text as well as a header, image, and action buttons.");
+      inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.");
       inAppMessage.setHeader("Hello from Appboy!");
       inAppMessage.setImageUrl(getResources().getString(R.string.appboy_url));
 
@@ -222,7 +234,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     messageButtons.add(buttonOne);
     inAppMessage.setMessageButtons(messageButtons);
     addMessageButtons(inAppMessage);
-    addHeader(inAppMessage);
+    setHeader(inAppMessage);
     setCloseButtonColor(inAppMessage);
   }
 
@@ -296,8 +308,16 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     if (!SpinnerUtils.SpinnerItemNotSet(mTextColor)) {
       inAppMessage.setMessageTextColor(parseColorFromString(mTextColor));
     }
-    if (mMessageEditText.getText().toString().length() > 0) {
-      inAppMessage.setMessage(mMessageEditText.getText().toString());
+    if ("40".equals(mMessage)) {
+      inAppMessage.setMessage(MESSAGE_40);
+    } else if ("90".equals(mMessage)) {
+      inAppMessage.setMessage(MESSAGE_90);
+    } else if ("140".equals(mMessage)) {
+      inAppMessage.setMessage(MESSAGE_140);
+    } else if ("240".equals(mMessage)) {
+      inAppMessage.setMessage(MESSAGE_240);
+    } else if ("640".equals(mMessage)) {
+      inAppMessage.setMessage(MESSAGE_640);
     }
   }
 
@@ -357,13 +377,21 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     }
   }
 
-  private void addHeader(IInAppMessageImmersive inAppMessage) {
+  private void setHeader(IInAppMessageImmersive inAppMessage) {
     // set header text color if defined
     if (!SpinnerUtils.SpinnerItemNotSet(mHeaderTextColor)) {
       inAppMessage.setHeaderTextColor(parseColorFromString(mHeaderTextColor));
     }
-    if (mHeaderEditText.getText().toString().length() > 0) {
-      inAppMessage.setHeader(mHeaderEditText.getText().toString());
+    if ("10".equals(mHeader)) {
+      inAppMessage.setHeader(HEADER_10);
+    } else if ("20".equals(mHeader)) {
+      inAppMessage.setHeader(HEADER_20);
+    } else if ("30".equals(mHeader)) {
+      inAppMessage.setHeader(HEADER_30);
+    } else if ("40".equals(mHeader)) {
+      inAppMessage.setHeader(HEADER_40);
+    } else if ("none".equals(mHeader)) {
+      inAppMessage.setHeader(null);
     }
   }
 
@@ -424,6 +452,12 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         break;
       case R.id.inapp_uri_spinner:
         mUri = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_uri_values);
+        break;
+      case R.id.inapp_header_spinner:
+        mHeader = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_header_values);
+        break;
+      case R.id.inapp_message_spinner:
+        mMessage = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_message_values);
         break;
       case R.id.inapp_background_color_spinner:
         mBackgroundColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);

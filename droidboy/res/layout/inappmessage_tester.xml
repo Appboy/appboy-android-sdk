@@ -71,36 +71,20 @@
                 android:id="@+id/inapp_button_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_message_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/inapp_header_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4.0dp"
                 android:paddingRight="4.0dp"
                 android:stretchColumns="1">
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/message_set_to"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <EditText
-                        android:id="@+id/message_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textUri"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/header_set_to"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <EditText
-                        android:id="@+id/header_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textUri"/>
-                </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

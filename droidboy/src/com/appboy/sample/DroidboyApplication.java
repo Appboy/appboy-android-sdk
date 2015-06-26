@@ -27,9 +27,7 @@ public class DroidboyApplication extends Application
   {
     super.onCreate();
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-      activateStrictMode();
-    }
+    activateStrictMode();
 
     // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
     // we don't want to run Appboy on in certain scenarios.
@@ -52,7 +50,6 @@ public class DroidboyApplication extends Application
     Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
   }
 
-  @TargetApi(9)
   private void activateStrictMode() {
     // Set the activity to Strict mode so that we get LogCat warnings when code misbehaves on the main thread.
     if (BuildConfig.DEBUG) {
