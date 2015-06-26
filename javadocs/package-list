@@ -6,4 +6,5 @@ com.appboy.events
 com.appboy.models
 com.appboy.models.cards
 com.appboy.models.outgoing
+com.appboy.services
 com.appboy.support
