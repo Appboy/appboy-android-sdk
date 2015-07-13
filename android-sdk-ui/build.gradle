@@ -1,24 +1,24 @@
 apply plugin: 'android-library'
 apply plugin: 'maven-publish'
 
-version = '1.6.0'
+version = '1.8.0'
 
 version = version + '-ihr'
 
 dependencies {
-  compile 'com.appboy:closed-lib:0.0.1'
+  compile 'com.appboy:closed-lib:0.0.2'
   // Note: This requires the Android Support Repository to be installed, please see the README.md. The jar is
   // also available in the libs/ directory to help support people who are using older build systems.
-  compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:support-v4:22.1.1'
 }
 
 android {
-  compileSdkVersion 22
-  buildToolsVersion '22.0.0'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.0'
 
-  defaultConfig {
-    minSdkVersion 9
-    targetSdkVersion 22
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 22
   }
 
   sourceSets {
