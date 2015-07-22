@@ -1,0 +1,10 @@
+com.appboy
+com.appboy.configuration
+com.appboy.enums
+com.appboy.enums.inappmessage
+com.appboy.events
+com.appboy.models
+com.appboy.models.cards
+com.appboy.models.outgoing
+com.appboy.services
+com.appboy.support
