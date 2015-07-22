@@ -60,6 +60,7 @@
   <string name="custom_logging_custom_event_property">Event Property</string>
   <string name="custom_logging_custom_purchase">Custom Purchase</string>
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
+  <string name="custom_logging_custom_purchase_currency_code">Currency Code</string>
   <string name="custom_logging_custom_purchase_property">Purchase Property</string>
 
   <string name="iab_log_purchase_title">Google IAB Purchase Flow</string>
@@ -120,4 +121,6 @@
   <string name="appboy_url">https://pbs.twimg.com/profile_images/489799002259329024/9yeNWMU_.png</string>
   <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
   <string name="google_url">http://www.google.com</string>
+
+  <string name="custom_font">doridrobot.ttf</string>
 </resources>

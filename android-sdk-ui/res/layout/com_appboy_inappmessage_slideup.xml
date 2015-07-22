@@ -15,7 +15,7 @@
             android:id="@+id/com_appboy_inappmessage_slideup_icon"
             style="@style/Appboy.InAppMessage.Icon.Slideup"/>
     </RelativeLayout>
-    <TextView
+    <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
         android:id="@+id/com_appboy_inappmessage_slideup_message"
         style="@style/Appboy.InAppMessage.Message.Slideup"/>
     <ImageView

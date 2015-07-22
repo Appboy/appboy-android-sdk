@@ -57,11 +57,13 @@ public class InAppMessageViewUtils {
       if (messageButtons.size() <= i) {
         buttonViews.get(i).setVisibility(View.GONE);
       } else {
-        Button button = (Button) buttonViews.get(i);
-        MessageButton messageButton = messageButtons.get(i);
-        button.setText(messageButton.getText());
-        setTextViewColor(button, messageButton.getTextColor());
-        setDrawableColor(button.getBackground(), messageButton.getBackgroundColor(), defaultColor);
+        if (buttonViews.get(i) instanceof Button) {
+          Button button = (Button) buttonViews.get(i);
+          MessageButton messageButton = messageButtons.get(i);
+          button.setText(messageButton.getText());
+          setTextViewColor(button, messageButton.getTextColor());
+          setDrawableColor(button.getBackground(), messageButton.getBackgroundColor(), defaultColor);
+        }
       }
     }
   }

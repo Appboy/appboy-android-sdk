@@ -1,3 +1,12 @@
+## 1.8.2
+- Adds the ability to specify custom fonts for in-app message ui elements via the appboyInAppMessageCustomFontFile custom xml attribute.
+- Increases the number of supported currency codes from 22 to 171.  All common currency codes are now supported. The full list of supported codes is available at our <a href="https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboy.html#logPurchase(java.lang.String,%20java.lang.String,%20java.math.BigDecimal,%20int,%20com.appboy.models.outgoing.AppboyProperties)">Javadoc</a>.
+- Adds the method isUninstallTrackingPush to AppboyNotificationUtils to be able to detect background push sent for Appboy uninstall tracking.
+- Updates BigPictureStyle to show message in expanded view if summary is not present (after 1.7.0 a summary was required in expanded view to have text appear).
+
+## 1.8.1
+- Internal release for Xamarin, adds AppboyXamarinFormsFeedFragment.
+
 ## 1.8.0
 - Updates the minimum sdk version from 8 (froyo) to 9 (gingerbread).
 - Adds an opt-in location service that logs background location events.

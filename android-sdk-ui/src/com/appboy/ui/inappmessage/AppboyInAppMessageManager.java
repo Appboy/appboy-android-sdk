@@ -347,7 +347,13 @@ public final class AppboyInAppMessageManager {
   }
 
   private boolean displayInAppMessage(IInAppMessage inAppMessage) {
-    final View inAppMessageView = getInAppMessageViewFactory(inAppMessage).createInAppMessageView(mActivity, inAppMessage);
+    IInAppMessageViewFactory inAppMessageViewFactory = getInAppMessageViewFactory(inAppMessage);
+    if (inAppMessageViewFactory == null) {
+      AppboyLogger.d(TAG, "ViewFactory from getInAppMessageViewFactory was null.");
+      return false;
+    }
+
+    final View inAppMessageView = inAppMessageViewFactory.createInAppMessageView(mActivity, inAppMessage);
 
     if (inAppMessageView == null) {
       AppboyLogger.e(TAG, "The in-app message view returned from the IInAppMessageViewFactory was null. The in-app message will " +

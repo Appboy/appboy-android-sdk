@@ -18,20 +18,20 @@
             <LinearLayout
                 android:id="@+id/com_appboy_inappmessage_full_text_layout"
                 style="@style/Appboy.InAppMessage.Layout.Text.Full">
-                <TextView
+                <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
                     android:id="@+id/com_appboy_inappmessage_full_header_text"
                     style="@style/Appboy.InAppMessage.Header.Full"/>
-                <TextView
+                <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
                     android:id="@+id/com_appboy_inappmessage_full_message"
                     style="@style/Appboy.InAppMessage.Message.Full"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/com_appboy_inappmessage_full_button_layout"
                 style="@style/Appboy.InAppMessage.Layout.Button.Full">
-                <Button
+                <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
                     android:id="@+id/com_appboy_inappmessage_full_button_one"
                     style="@style/Appboy.InAppMessage.Button.Full.One"/>
-                <Button
+                <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
                     android:id="@+id/com_appboy_inappmessage_full_button_two"
                     style="@style/Appboy.InAppMessage.Button.Full.Two"/>
             </LinearLayout>

@@ -29,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
-import java.util.Random;
 
 public class AppboyNotificationUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationUtils.class.getName());
@@ -538,5 +537,31 @@ public class AppboyNotificationUtils {
     } catch (Exception e) {
       AppboyLogger.e(TAG, String.format("Caught an exception processing customContentString: %s", customContentString), e);
     }
+  }
+
+  /**
+   * Returns true if the bundle is from a push sent by Appboy for uninstall tracking.
+   *
+   * Uninstall tracking push messages are content-only (i.e. non-display) push messages. You can use this
+   * method to detect that a push is from an Appboy uninstall tracking push and ensure your broadcast receiver
+   * doesn't take any actions it shouldn't if a content push is from Appboy uninstall tracking (e.g. don't ping your server
+   * for content on Appboy uninstall push).
+   *
+   * @param notificationExtras A notificationExtras bundle that is passed with the push recieved intent when a GCM/ADM message is
+   * received, and that Appboy passes in the intent to registered receivers.
+   */
+  public static boolean isUninstallTrackingPush(Bundle notificationExtras) {
+    if (notificationExtras != null) {
+      // The ADM case where extras are flattened
+      if (notificationExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY)) {
+        return true;
+      }
+      // THE GCM case where extras are in a separate bundle
+      Bundle appboyExtras = notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
+      if (appboyExtras != null) {
+        return appboyExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY);
+      }
+    }
+    return false;
   }
 }

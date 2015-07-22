@@ -41,7 +41,7 @@ public class AppboyNotificationStyleFactory {
   /**
    * Returns a BigTextStyle notification style initialized with the content, big title, and big summary
    * specified in the notificationExtras and appboyExtras bundles.
-   *
+   * <p/>
    * If summary text exists, it will be shown in the expanded notification view.
    * If a title exists, it will override the default in expanded notification view.
    */
@@ -75,7 +75,7 @@ public class AppboyNotificationStyleFactory {
   /**
    * Returns a BigPictureStyle notification style initialized with the bitmap, big title, and big summary
    * specified in the notificationExtras and appboyExtras bundles.
-   *
+   * <p/>
    * If summary text exists, it will be shown in the expanded notification view.
    * If a title exists, it will override the default in expanded notification view.
    */
@@ -125,28 +125,40 @@ public class AppboyNotificationStyleFactory {
         return null;
       }
 
-      String bigSummary = null;
-      String bigTitle = null;
-
-      if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY)) {
-        bigSummary = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY);
-      }
-      if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY)) {
-        bigTitle = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY);
-      }
-
       NotificationCompat.BigPictureStyle bigPictureNotificationStyle = new NotificationCompat.BigPictureStyle();
-      if (bigSummary != null) {
-        bigPictureNotificationStyle.setSummaryText(bigSummary);
-      }
-      if (bigTitle != null) {
-        bigPictureNotificationStyle.setBigContentTitle(bigTitle);
-      }
       bigPictureNotificationStyle.bigPicture(imageBitmap);
+      setBigPictureSummaryAndTitle(bigPictureNotificationStyle, notificationExtras);
+
       return bigPictureNotificationStyle;
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Failed to create Big Picture Style.", e);
       return null;
+    }
+  }
+
+  static void setBigPictureSummaryAndTitle(NotificationCompat.BigPictureStyle bigPictureNotificationStyle, Bundle notificationExtras) {
+    String bigSummary = null;
+    String bigTitle = null;
+
+    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY)) {
+      bigSummary = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY);
+    }
+    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY)) {
+      bigTitle = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY);
+    }
+
+    if (bigSummary != null) {
+      bigPictureNotificationStyle.setSummaryText(bigSummary);
+    }
+    if (bigTitle != null) {
+      bigPictureNotificationStyle.setBigContentTitle(bigTitle);
+    }
+
+    // If summary is null (which we set to the subtext in setSummaryTextIfPresentAndSupported in AppboyNotificationUtils)
+    // and bigSummary is null, set the summary to the message.  Without this, the message would be blank in expanded mode.
+    String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
+    if (summaryText == null && bigSummary == null) {
+      bigPictureNotificationStyle.setSummaryText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));
     }
   }
 }
