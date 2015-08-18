@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.MessageButton;
-import com.appboy.ui.inappmessage.IInAppMessageManagerListener;
+import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
 import com.appboy.ui.inappmessage.InAppMessageOperation;
 

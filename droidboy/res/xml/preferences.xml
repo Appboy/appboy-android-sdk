@@ -53,6 +53,10 @@
             android:key="get_registration_id"
             android:title="@string/get_registration_id_title"
             android:summary="@string/get_registration_id_summary"/>
+        <Preference
+          android:key="log_attribution"
+          android:title="@string/log_attribution_title"
+          android:summary="@string/log_attribution_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory

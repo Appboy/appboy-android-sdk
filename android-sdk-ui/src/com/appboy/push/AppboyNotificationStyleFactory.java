@@ -7,11 +7,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
-import com.appboy.support.AppboyLogger;
 import android.view.WindowManager;
 
 import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
+import com.appboy.support.AppboyLogger;
 
 public class AppboyNotificationStyleFactory {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationStyleFactory.class.getName());

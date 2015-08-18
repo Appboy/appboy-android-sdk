@@ -24,4 +24,15 @@ public class ActionFactory {
     }
     return null;
   }
+
+  /**
+   * Explicitly creates an Action to use the android.intent.action.VIEW action with the given URL.
+   */
+  public static IAction createViewUriAction(String url, Bundle extras) {
+    if (!StringUtils.isNullOrBlank(url)) {
+      Uri uri = Uri.parse(url);
+      return new ViewAction(uri, extras);
+    }
+    return null;
+  }
 }

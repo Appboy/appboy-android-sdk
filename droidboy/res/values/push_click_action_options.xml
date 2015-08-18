@@ -9,7 +9,7 @@
 <string-array name="push_click_action_values">
   <item></item>
   <item>@string/google_url</item>
-  <item>tel:555555555</item>
-  <item>droidboy://preferences</item>
+  <item>@string/telephone_uri</item>
+  <item>@string/droidboy_deep_link</item>
 </string-array>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.appboy.ui.inappmessage.AppboyInAppMessageFullView
+<com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_appboy_inappmessage_full"
     style="@style/Appboy.InAppMessage.Full">
@@ -10,8 +10,13 @@
         android:orientation="vertical"
         android:padding="0.0dp"
         android:weightSum="1.0">
-        <ImageView
-            android:id="@+id/com_appboy_inappmessage_full_image"
+        <ViewStub
+            android:id="@+id/com_appboy_inappmessage_full_imageview_stub"
+            android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
+            style="@style/Appboy.InAppMessage.Image.Full.Portrait"/>
+        <ViewStub
+            android:id="@+id/com_appboy_inappmessage_full_drawee_stub"
+            android:layout="@layout/com_appboy_stubbed_inappmessage_drawee_view"
             style="@style/Appboy.InAppMessage.Image.Full.Portrait"/>
         <RelativeLayout
             style="@style/Appboy.InAppMessage.Full.TextArea.Portrait">
@@ -41,9 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10.0dp">
-
         <ImageButton
             android:id="@+id/com_appboy_inappmessage_full_close_button"
             style="@style/Appboy.InAppMessage.CloseButton.Full"/>
     </RelativeLayout>
-</com.appboy.ui.inappmessage.AppboyInAppMessageFullView>
+</com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView>

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -17,13 +18,16 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import com.appboy.support.AppboyLogger;
 
 import com.appboy.Appboy;
+import com.appboy.AppboyAdmReceiver;
+import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
+import com.appboy.support.PackageUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +36,7 @@ import java.util.Iterator;
 
 public class AppboyNotificationUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationUtils.class.getName());
-  public static final String SOURCE_KEY = "source";
+  private static final String SOURCE_KEY = "source";
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
 
@@ -40,7 +44,7 @@ public class AppboyNotificationUtils {
    * Get the Appboy extras Bundle from the notification extras. Notification extras must be in a Bundle.
    *
    * Amazon ADM recursively flattens all JSON messages, so we just return the original bundle.
-   * 
+   *
    * @deprecated use {@link AppboyNotificationUtils#getAppboyExtrasWithoutPreprocessing(android.os.Bundle) instead.
    * Note that notification extras must be in GCM/ADM format instead of a Bundle.}
    */
@@ -57,9 +61,30 @@ public class AppboyNotificationUtils {
   }
 
   /**
+   * Handles a push notification click.  Called by GCM/ADM receiver when an
+   * Appboy push notification click intent is received.
+   *
+   * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
+   *
+   * @param context
+   * @param intent the internal notification clicked intent constructed in
+   * {@link #setContentIntentIfPresent}
+   */
+  public static void handleNotificationOpened(Context context, Intent intent) {
+    try {
+      logNotificationOpened(context, intent);
+      sendNotificationOpenedBroadcast(context, intent);
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Exception occurred attempting to handle notification.", e);
+    }
+  }
+
+  /**
    * Get the Appboy extras Bundle from the notification extras.  Notification extras must be in GCM/ADM format.
    *
-   * Amazon ADM recursively flattens all JSON messages, so we just return a copy of the original bundle.
+   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @return Returns the Appboy extras Bundle from the notification extras. Amazon ADM recursively flattens all JSON messages,
+   * so for Amazon devices we just return a copy of the original bundle.
    */
   public static Bundle getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) {
     if (notificationExtras == null) {
@@ -69,17 +94,6 @@ public class AppboyNotificationUtils {
       return AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
     } else {
       return new Bundle(notificationExtras);
-    }
-  }
-
-  /**
-   * Returns the specified String resource if it is found; otherwise it returns the defaultString.
-   */
-  static String getOptionalStringResource(Resources resources, int stringResourceId, String defaultString) {
-    try {
-      return resources.getString(stringResourceId);
-    } catch (Resources.NotFoundException e) {
-      return defaultString;
     }
   }
 
@@ -164,7 +178,7 @@ public class AppboyNotificationUtils {
   public static void setNotificationDurationAlarm(Context context, Class<?> thisClass, int notificationId, int durationInMillis) {
     Intent cancelIntent = new Intent(context, thisClass);
     cancelIntent.setAction(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION);
-    cancelIntent.putExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG, notificationId);
+    cancelIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
 
     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -301,18 +315,24 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Create broadcast intent that will fire when the notification has been opened. To action on these messages,
-   * register a broadcast receiver that listens to intent <your_package_name>.intent.APPBOY_NOTIFICATION_OPENED
-   * and <your_package_name>.intent.APPBOY_PUSH_RECEIVED.
+   * Create broadcast intent that will fire when the notification has been opened. The GCM or ADM receiver will be notified,
+   * log a click, then send a broadcast to the client receiver.
+   *
+   * @param context
+   * @param notificationBuilder
+   * @param notificationExtras
    */
   public static void setContentIntentIfPresent(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    String pushOpenedAction = context.getPackageName() + APPBOY_NOTIFICATION_OPENED_SUFFIX;
-    Intent pushOpenedIntent = new Intent(pushOpenedAction);
-    if (notificationExtras != null) {
-      pushOpenedIntent.putExtras(notificationExtras);
+    try {
+      Intent pushOpenedIntent = new Intent(Constants.APPBOY_PUSH_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+      if (notificationExtras != null) {
+        pushOpenedIntent.putExtras(notificationExtras);
+      }
+      PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
+      notificationBuilder.setContentIntent(pushOpenedPendingIntent);
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Error setting content.", e);
     }
-    PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
-    notificationBuilder.setContentIntent(pushOpenedPendingIntent);
   }
 
   /**
@@ -378,7 +398,7 @@ public class AppboyNotificationUtils {
    *
    * Supported on JellyBean+.
    */
-  public static void setSummaryTextIfPresentAndSupported( NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+  public static void setSummaryTextIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       if (notificationExtras != null) {
         // Retrieve summary text if included in notificationExtras bundle.
@@ -524,7 +544,7 @@ public class AppboyNotificationUtils {
    */
   public static void logBaiduNotificationClick(Context context, String customContentString) {
     if (customContentString == null) {
-      AppboyLogger.d(TAG, "customContentString was null. Doing nothing.");
+      AppboyLogger.w(TAG, "customContentString was null. Doing nothing.");
       return;
     }
     try {
@@ -536,6 +556,62 @@ public class AppboyNotificationUtils {
       }
     } catch (Exception e) {
       AppboyLogger.e(TAG, String.format("Caught an exception processing customContentString: %s", customContentString), e);
+    }
+  }
+
+  /**
+   * Handles a request to cancel a push notification in the notification center.  Called by GCM/ADM receiver when an
+   * Appboy cancel notification intent is received.
+   *
+   * Any existing notification in the notification center with the integer Id specified in the
+   * "nid" field of the provided intent's extras is cancelled.
+   *
+   * If no Id is found, the defaut Appboy notification Id is used.
+   *
+   * @param context
+   * @param intent the cancel notification intent
+   */
+  public static void handleCancelNotificationAction(Context context, Intent intent) {
+    try {
+      if (intent.hasExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID)) {
+        int notificationId = intent.getIntExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
+      }
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Exception occurred handling cancel notification intent.", e);
+    }
+  }
+
+  /**
+   * Creates a request to cancel a push notification in the notification center.
+   *
+   * Sends an intent to the GCM/ADM receiver requesting Appboy to cancel the notification with
+   * the specified notification Id.
+   *
+   * See {@link #handleCancelNotificationAction}
+   *
+   * @param context
+   * @param notificationId
+   */
+  public static void cancelNotification(Context context, int notificationId) {
+    try {
+      Intent cancelNotificationIntent = new Intent(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+      cancelNotificationIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
+      context.sendBroadcast(cancelNotificationIntent);
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Exception occurred attempting to cancel notification.", e);
+    }
+  }
+
+  /**
+   * @return the Class of the notification receiver used by this application.
+   */
+  public static Class<?> getNotificationReceiverClass() {
+    if (Constants.IS_AMAZON) {
+      return AppboyAdmReceiver.class;
+    } else {
+      return AppboyGcmReceiver.class;
     }
   }
 
@@ -563,5 +639,50 @@ public class AppboyNotificationUtils {
       }
     }
     return false;
+  }
+
+  /**
+   * Returns the specified String resource if it is found; otherwise it returns the defaultString.
+   */
+  static String getOptionalStringResource(Resources resources, int stringResourceId, String defaultString) {
+    try {
+      return resources.getString(stringResourceId);
+    } catch (Resources.NotFoundException e) {
+      return defaultString;
+    }
+  }
+
+  /**
+   * Sends a push notification opened broadcast to the client broadcast receiver.
+   * The broadcast message action is <host-app-package-name>.intent.APPBOY_NOTIFICATION_OPENED.
+   *
+   * @param context
+   * @param intent the internal notification clicked intent constructed in
+   * {@link #setContentIntentIfPresent}
+   */
+  static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
+    String pushOpenedAction = PackageUtils.getResourcePackageName(context) + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
+    Intent pushOpenedIntent = new Intent(pushOpenedAction);
+    if (intent.getExtras() != null) {
+      pushOpenedIntent.putExtras(intent.getExtras());
+    }
+    context.sendBroadcast(pushOpenedIntent);
+  }
+
+  /**
+   * Logs a push notification open.
+   *
+   * @param context
+   * @param intent the internal notification clicked intent constructed in
+   * {@link #setContentIntentIfPresent}
+   */
+  private static void logNotificationOpened(Context context, Intent intent) {
+    String campaignId = intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
+    if (campaignId != null) {
+      AppboyLogger.i(TAG, String.format("Logging push click to Appboy. Campaign Id: " + campaignId));
+      Appboy.getInstance(context).logPushNotificationOpened(campaignId);
+    } else {
+      AppboyLogger.i(TAG, String.format("No campaign Id associated with this notification. Not logging push click to Appboy."));
+    }
   }
 }

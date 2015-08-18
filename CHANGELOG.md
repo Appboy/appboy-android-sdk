@@ -1,3 +1,18 @@
+## 1.9.0
+- Adds support for analytics from Android Wear devices. If using wear, you must add the line `-dontwarn com.google.android.gms.**` to your proguard config file if proguarding your app.
+- Adds support for displaying notification action buttons sent from the Appboy dashboard.  To allow image sharing on social networks, add the `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />` permission to your `AndroidManifest.xml`.
+- Removes the need for integrating client apps to log push notifications inside their activity code.  Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Appboy.  Otherwise, push opens will be incorrectly logged twice.
+- Adds delegate to `FeedbackFinishedListener` enabling modification of feedback messages before they are sent to Appboy.  Also adds a disposition parameter to `onFeedbackFinished()`.
+- Adds support for GIF images in the News Feed and in In-App Messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app),
+  images and GIFs will be loaded using views from the Fresco library. In order to display GIFs,
+  Fresco must be added as a dependency in the parent app. If not found in the parent app, News Feed cards and In-App Messages will not display GIFs. To disable use of the Fresco library in the UI project, set the value
+  of `com_appboy_enable_fresco_library_use` to false (or omit it) in your `appboy.xml`; to enable Fresco use set `com_appboy_enable_fresco_library_use` to true in your `appboy.xml`. ImageView specific attributes for News Feed cards and In-App Messages, such as `scaleType`, must now be applied programmatically
+  instead of being applied from `styles.xml`. If using Fresco and proguarding your app, please include http://frescolib.org/docs/proguard.html with your proguard config.  Note: to use Fresco with Appboy it must be initialized when your application launches.
+- In-App Message views are now found in the `com.appboy.ui.inappmessage.views` package and In-App Message listeners are now found in the `com.appboy.ui.inappmessage.listeners` package.
+- Adds explicit top and bottom padding values for In-App Message buttons to improve button rendering on some phones.  See the `Appboy.InAppMessage.Button` style in `styles.xml`.
+- Adds HTML In-App Message types. HTML In-App Messages consist of html along with an included zipped assets file to locally reference images, css, etc. See `CustomHtmlInAppMessageActionListener` in our Droidboy sample app for an example listener for the callbacks on the actions inside the WebView hosting the HTML In-App Message.
+- Adds a `setAttributionData()` method to AppboyUser that sets an AttributionData object for the user. Use this method with attribution provider SDKs when attribution events are fired. 
+
 ## 1.8.2
 - Adds the ability to specify custom fonts for in-app message ui elements via the appboyInAppMessageCustomFontFile custom xml attribute.
 - Increases the number of supported currency codes from 22 to 171.  All common currency codes are now supported. The full list of supported codes is available at our <a href="https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboy.html#logPurchase(java.lang.String,%20java.lang.String,%20java.math.BigDecimal,%20int,%20com.appboy.models.outgoing.AppboyProperties)">Javadoc</a>.
@@ -40,7 +55,7 @@
 - Adds the ability to set a default large icon for push messages by adding the com_appboy_push_large_notification_icon drawable resource to your appboy.xml.
 - Adds support for modal and full screen style in-app messages.  Also adds support for including fontawesome icons and images with in-app messages, changing colors on in-app message UI elements, expanded customization options, and message resizing for tablets.  Please visit our documentation for more information.
 - Adds a sample application (China Sample App) which integrates Baidu Cloud Push and Appboy for sending push messages through Appboy to devices without Google Services installed.
-- Adds AppboyNotificationUtils.logBaiduNotificationClick(), a utility method for logging push notification opens from push messsages sent via Baidu Cloud Push by Appboy.
+- Adds AppboyNotificationUtils.logBaiduNotificationClick(), a utility method for logging push notification opens from push messages sent via Baidu Cloud Push by Appboy.
 
 ## 1.6.2
 - Updates our UI library to build against API level 21. 
@@ -54,6 +69,7 @@
 ## 1.6.1
 - Fixes a timezone bug where short names were used for lookup, causing the default timezone (GMT) to be set in
   cases where the short name was not equal to the time zone Id.
+- Fixes a bug where multiple pending push intents could override each other in the notification center.
 
 ## 1.6.0
 - Updates the android-L preview support from version 1.5.2 to support the public release of Android 5.0.  Updates the

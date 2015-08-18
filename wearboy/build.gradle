@@ -1,0 +1,22 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion 22
+  buildToolsVersion '22.0.0'
+
+  defaultConfig {
+    minSdkVersion 21
+    targetSdkVersion 22
+  }
+
+  productFlavors {
+    Wear {
+    }
+  }
+}
+
+dependencies {
+  compile project(':wear-library')
+  compile 'com.google.android.support:wearable:1.2.0'
+  compile 'com.google.android.gms:play-services-wearable:7.5.0'
+}

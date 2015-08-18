@@ -31,6 +31,8 @@
     <item name="android:layout_weight">0.5</item>
     <item name="android:paddingLeft">10.0dp</item>
     <item name="android:paddingRight">10.0dp</item>
+    <item name="android:paddingTop">22.5dp</item>
+    <item name="android:paddingBottom">22.5dp</item>
     <item name="appboyInAppMessageCustomFontFile">@string/custom_font</item>
   </style>
 </resources>

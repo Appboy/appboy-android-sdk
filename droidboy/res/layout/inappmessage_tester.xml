@@ -4,14 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_appboy_feedback_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/Appboy.Feedback.Layout">
+    android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/inappmessage_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        style="@style/Appboy.Feedback.NavigationBar">
+        android:background="@color/gray">
         <Button
             android:id="@+id/create_and_add_inappmessage_button"
             android:text="@string/create_and_add_inappmessage"
@@ -171,6 +170,10 @@
                 <CheckBox
                     android:id="@+id/custom_appboy_animation_checkbox"
                     android:text="@string/custom_iappboy_animation"
+                    style="@style/InAppMessageTesterCheckBox"/>
+                <CheckBox
+                    android:id="@+id/custom_appboy_webview_client_listener_checkbox"
+                    android:text="@string/custom_iinappmessage_webview_client_listener"
                     style="@style/InAppMessageTesterCheckBox"/>
             </LinearLayout>
         </LinearLayout>

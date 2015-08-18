@@ -17,14 +17,19 @@ import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
+import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageFull;
+import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.sample.util.SpinnerUtils;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,6 +40,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
   private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
+  private static final String CUSTOM_INAPPMESSAGE_WEBVIEW_CLIENT_LISTENER_KEY = "inappmessages_custom_inappmessage_webview_client_listener";
 
   // '#' characters at the end of headers and messages are used to verify that the entire message was displayed.
   private static final String HEADER_10 = "Hey there#";
@@ -46,11 +52,13 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final String MESSAGE_90 = "Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#";
   private static final String MESSAGE_140 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly one hundred and forty chars#";
   private static final String MESSAGE_240 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly two hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
   private static final String MESSAGE_640 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly six hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#";
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#";
+
+  private static final String HTML_CONTENT_REMOTE_URL = "https://s3.amazonaws.com/appboy-development-bucket/droidboy_html_tester_zipped_assets.zip";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -64,6 +72,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final int BLACK = 0xFF000000;
   private static final int WHITE = 0xFFFFFFFF;
   private static final Map<Integer, Integer> sSpinnerOptionMap;
+
   static {
     Map<Integer, Integer> spinnerOptionMap = new HashMap<Integer, Integer>();
     spinnerOptionMap.put(R.id.inapp_set_message_type_spinner, R.array.inapp_message_type_options);
@@ -101,6 +110,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mIcon;
   private String mImage;
   private String mButtons;
+  private String mHtmlBodyFromAssets;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +118,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     setContentView(R.layout.inappmessage_tester);
     setTitle("In App Messages");
 
-    for (Integer key: sSpinnerOptionMap.keySet()) {
+    for (Integer key : sSpinnerOptionMap.keySet()) {
       SpinnerUtils.setUpSpinner((Spinner) findViewById(key), this, sSpinnerOptionMap.get(key));
     }
 
@@ -170,6 +180,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
             addInAppMessage(new InAppMessageModal());
           } else if ("full".equals(mMessageType)) {
             addInAppMessage(new InAppMessageFull());
+          } else if ("html_full".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull());
           } else {
             addInAppMessage(new InAppMessageSlideup());
           }
@@ -190,6 +202,21 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     });
     boolean usingCustomInAppAnimation = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
     customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
+
+    CheckBox customInAppMessageWebViewClientListenerCheckBox = (CheckBox) findViewById(R.id.custom_appboy_webview_client_listener_checkbox);
+    customInAppMessageWebViewClientListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(InAppMessageTesterActivity.this));
+        } else {
+          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
+        }
+        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_WEBVIEW_CLIENT_LISTENER_KEY, isChecked).apply();
+      }
+    });
+    boolean usingCustomInAppWebViewClientListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_WEBVIEW_CLIENT_LISTENER_KEY, false);
+    customInAppMessageWebViewClientListenerCheckBox.setChecked(usingCustomInAppWebViewClientListener);
 
     Button displayNextInAppMessageButton = (Button) findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +241,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true);
       }
     });
+
+    mHtmlBodyFromAssets = readHtmlBodyFromAssets();
   }
 
   private void addInAppMessageImmersive(IInAppMessageImmersive inAppMessage) {
@@ -251,15 +280,22 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     inAppMessage.setIcon("\uf091");
   }
 
+  private void addInAppMessageHtmlFull(IInAppMessageHtml inAppMessage) {
+    inAppMessage.setMessage(mHtmlBodyFromAssets);
+    inAppMessage.setAssetsZipRemoteUrl(HTML_CONTENT_REMOTE_URL);
+  }
+
   private void addInAppMessage(IInAppMessage inAppMessage) {
     if (inAppMessage instanceof IInAppMessageImmersive) {
       addInAppMessageImmersive((IInAppMessageImmersive) inAppMessage);
     } else if (inAppMessage instanceof InAppMessageSlideup) {
       addInAppMessageSlideup((InAppMessageSlideup) inAppMessage);
+    } else if (inAppMessage instanceof InAppMessageHtmlFull) {
+      addInAppMessageHtmlFull((InAppMessageHtmlFull) inAppMessage);
     } else if (inAppMessage instanceof IInAppMessage) {
       addInAppMessageCustom(inAppMessage);
     }
-    if(!addClickAction(inAppMessage)) {
+    if (!addClickAction(inAppMessage)) {
       return;
     }
     setDismissType(inAppMessage);
@@ -343,7 +379,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private void setImage(IInAppMessage inAppMessage) {
     // set in-app message image url
     if (!SpinnerUtils.SpinnerItemNotSet(mImage)) {
-      if (mIcon.equals("none")) {
+      if (mImage.equals("none")) {
         inAppMessage.setImageUrl(null);
       } else {
         inAppMessage.setImageUrl(mImage);
@@ -495,7 +531,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     // Do nothing
   }
 
-  private int parseColorFromString(String colorString) {if (colorString.equals("red")) {
+  private int parseColorFromString(String colorString) {
+    if (colorString.equals("red")) {
       return APPBOY_RED;
     } else if (colorString.equals("orange")) {
       return GOOGLE_ORANGE;
@@ -518,5 +555,28 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     } else {
       return 0;
     }
+  }
+
+  /**
+   * @return the html body string from the assets folder or null if the read fails.
+   */
+  private String readHtmlBodyFromAssets() {
+    String htmlBody = null;
+
+    // Get the text of the html from the assets folder
+    try {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open("html_inapp_message_body.txt"), "UTF-8"));
+      String line;
+      StringBuilder stringBuilder = new StringBuilder();
+      while ((line = reader.readLine()) != null) {
+        stringBuilder.append(line);
+      }
+      reader.close();
+      htmlBody = stringBuilder.toString();
+    } catch (IOException e) {
+      Log.e(TAG, "Error while reading html body from assets.", e);
+    }
+
+    return htmlBody;
   }
 }

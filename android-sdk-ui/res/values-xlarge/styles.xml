@@ -59,6 +59,8 @@
     <item name="android:layout_weight">0.5</item>
     <item name="android:paddingLeft">15.0dp</item>
     <item name="android:paddingRight">15.0dp</item>
+    <item name="android:paddingTop">22.5dp</item>
+    <item name="android:paddingBottom">22.5dp</item>
   </style>
   <style name="Appboy.InAppMessage.CloseButton">
     <item name="android:layout_height">30.0dp</item>

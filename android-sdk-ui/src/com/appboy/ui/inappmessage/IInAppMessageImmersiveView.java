@@ -2,6 +2,10 @@ package com.appboy.ui.inappmessage;
 
 import android.view.View;
 
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageImmersiveBaseView;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
+
 import java.util.List;
 
 /**
@@ -13,9 +17,9 @@ import java.util.List;
  * and a close button.
  *
  * Known implementing classes include
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageImmersiveBaseView}
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageModalView}
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageFullView}
+ * {@link AppboyInAppMessageImmersiveBaseView}
+ * {@link AppboyInAppMessageModalView}
+ * {@link AppboyInAppMessageFullView}
  */
 public interface IInAppMessageImmersiveView extends IInAppMessageView {
 

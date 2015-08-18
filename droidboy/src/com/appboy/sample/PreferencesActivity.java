@@ -17,6 +17,7 @@ import com.android.vending.billing.utils.Purchase;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.enums.SocialNetwork;
+import com.appboy.models.outgoing.AttributionData;
 import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
@@ -31,6 +32,7 @@ public class PreferencesActivity extends PreferenceActivity {
   private static final int IN_APP_PURCHASE_ACTIVITY_REQUEST_CODE = 12345;
 
   private IabHelper mHelper;
+  private int attributionUniqueInt = 0;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference toggleDisableAppboyLoggingPreference = findPreference("toggle_disable_appboy_logging");
     Preference getRegistrationIdPreference = findPreference("get_registration_id");
+    Preference logAttrbiutionPreference = findPreference("log_attribution");
 
     aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
@@ -167,6 +170,18 @@ public class PreferencesActivity extends PreferenceActivity {
       @Override
       public boolean onPreferenceClick(Preference preference) {
         showToast("Registration Id: " + Appboy.getInstance(PreferencesActivity.this).getAppboyPushMessageRegistrationId());
+        return true;
+      }
+    });
+    logAttrbiutionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.getInstance(getApplicationContext()).getCurrentUser().setAttributionData(new AttributionData("network_val_" + attributionUniqueInt,
+          "campaign_val_" + attributionUniqueInt,
+          "adgroup_val_" + attributionUniqueInt,
+          "creative_val_" + attributionUniqueInt));
+        attributionUniqueInt++;
+        showToast("Attribution data sent to server");
         return true;
       }
     });

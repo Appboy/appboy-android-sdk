@@ -2,6 +2,7 @@ package com.appboy.ui.widget;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,12 +11,14 @@ import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
-  private final ImageView mImage;
+  private ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;
+  private SimpleDraweeView mDrawee;
   private IAction mCardAction;
   private static final String TAG = String.format("%s.%s", Constants.APPBOY, CaptionedImageCardView.class.getName());
 
@@ -29,7 +32,14 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
 
   public CaptionedImageCardView(final Context context, CaptionedImageCard card) {
     super(context);
-    mImage = (ImageView) findViewById(R.id.com_appboy_captioned_image_card_image);
+    if (canUseFresco()) {
+      mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_drawee_stub);
+    } else {
+      mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_imageview_stub);
+      mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+      mImage.setAdjustViewBounds(true);
+    }
+
     mTitle = (TextView) findViewById(R.id.com_appboy_captioned_image_title);
     mDescription = (TextView) findViewById(R.id.com_appboy_captioned_image_description);
     mDomain = (TextView) findViewById(R.id.com_appboy_captioned_image_card_domain);
@@ -65,6 +75,10 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
+    if (canUseFresco()) {
+      setSimpleDraweeToUrl(mDrawee, card.getImageUrl(), mAspectRatio, respectAspectRatio);
+    } else {
+      setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
+    }
   }
 }

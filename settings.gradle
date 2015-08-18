@@ -2,4 +2,6 @@ include ':android-sdk-ui'
 include ':droidboy'
 include ':hello-appboy'
 include ':china-push-sample'
+include ':wearboy'
+include ':wear-library'
 

@@ -1,0 +1,27 @@
+apply plugin: 'com.android.library'
+
+android {
+  compileSdkVersion 22
+  buildToolsVersion '22.0.0'
+
+  defaultConfig {
+    minSdkVersion 9
+    targetSdkVersion 22
+  }
+
+  buildTypes {
+    // We include the version number in the buildConfig to find it in the Constants.java class for logging
+    debug {
+      buildConfigField "String", "APPBOY_SDK_VERSION", "\"" + project.version + "\""
+    }
+
+    release {
+      buildConfigField "String", "APPBOY_SDK_VERSION", "\"" + project.version + "\""
+    }
+  }
+}
+
+dependencies {
+  compile 'com.google.android.support:wearable:1.2.0'
+  compile 'com.google.android.gms:play-services-wearable:7.5.0'
+}

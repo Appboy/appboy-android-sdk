@@ -25,6 +25,8 @@ import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.models.cards.Card;
 import com.appboy.ui.adapters.AppboyListAdapter;
+import com.appboy.ui.support.FrescoLibraryUtils;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 

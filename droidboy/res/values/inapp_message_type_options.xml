@@ -4,10 +4,12 @@
     <item>Message Type: Slideup</item>
     <item>Message Type: Modal</item>
     <item>Message Type: Full</item>
+    <item>Message Type: HTML Full</item>
   </string-array>
   <string-array name="inapp_message_type_values">
     <item>slideup</item>
     <item>modal</item>
     <item>full</item>
+    <item>html_full</item>
   </string-array>
 </resources>

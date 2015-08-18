@@ -11,6 +11,7 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.sample.util.EmulatorDetectionUtils;
 import com.appboy.sample.util.SharedPrefsUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -48,6 +49,8 @@ public class DroidboyApplication extends Application
     }
     Appboy.setAppboyEndpointProvider(new DummyEndpointProvider());
     Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
+
+    Fresco.initialize(getApplicationContext());
   }
 
   private void activateStrictMode() {

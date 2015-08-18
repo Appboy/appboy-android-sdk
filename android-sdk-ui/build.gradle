@@ -6,6 +6,9 @@ dependencies {
   // Note: This requires the Android Support Repository to be installed, please see the README.md. The jar is
   // also available in the libs/ directory to help support people who are using older build systems.
   compile 'com.android.support:support-v4:22.1.1'
+  provided ("com.facebook.fresco:fresco:0.6.1") {
+    exclude group: 'com.android.support', module: 'support-v4'
+  }
 }
 
 android {

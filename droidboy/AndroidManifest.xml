@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Note:  if you update the versionCode and package here, you must update in Wearboy as well -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="43" android:versionName="1.8.2">
+  package="com.appboy.sample" android:versionCode="44" android:versionName="1.9.0">
 
   <!-- Supported versions -->
   <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="22"/>
@@ -11,6 +12,7 @@
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
   <!-- Permissions for GCM -->
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -58,6 +60,11 @@
     </activity>
 
     <service android:name="com.appboy.services.AppboyLocationService"/>
+    <service android:name="com.appboy.services.AppboyWearableListenerService">
+        <intent-filter>
+        <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+        </intent-filter>
+    </service>
 
     <activity android:name="com.appboy.ui.AppboyWebViewActivity" android:theme="@style/Theme.DroidBoy" />
     <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" android:theme="@style/Theme.DroidBoy" />

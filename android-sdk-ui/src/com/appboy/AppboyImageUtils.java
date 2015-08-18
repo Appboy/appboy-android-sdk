@@ -1,9 +1,18 @@
 package com.appboy;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
+
 import com.appboy.support.AppboyLogger;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -50,6 +59,68 @@ public class AppboyImageUtils {
   }
 
   public static int getPixelsFromDensityAndDp(int dpi, int dp) {
-    return (dpi * dp)/BASELINE_SCREEN_DPI;
+    return (dpi * dp) / BASELINE_SCREEN_DPI;
+  }
+
+  /**
+   * Store the given bitmap image locally as a png file in the specified directory.
+   *
+   * @param imageBitmap image bitmap
+   * @param imageFilenameBase desired image filename, without file extension
+   * @param folderName image folder name
+   * @return the image Uri, or null if saving locally failed.
+   */
+  public static Uri storeBitmapLocally(Context context, Bitmap imageBitmap, String imageFilenameBase, String folderName) {
+    if (context == null) {
+      AppboyLogger.w(TAG, "Received null context. Doing nothing.");
+      return null;
+    }
+    if (imageBitmap == null) {
+      AppboyLogger.w(TAG, "Received null bitmap. Doing nothing.");
+      return null;
+    }
+    if (imageFilenameBase == null) {
+      AppboyLogger.w(TAG, "Received null image filename base. Doing nothing.");
+      return null;
+    }
+    if (folderName == null) {
+      AppboyLogger.w(TAG, "Received null image folder name. Doing nothing.");
+      return null;
+    }
+    try {
+      String imageStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName;
+      File imageStorageDirectory = new File(imageStoragePath);
+      if (!imageStorageDirectory.exists()) {
+        imageStorageDirectory.mkdirs();
+      }
+      File imageFile = new File(imageStorageDirectory, imageFilenameBase + ".png");
+
+      AppboyLogger.d(TAG, "Storing image locally at " + imageFile.getAbsolutePath());
+      FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+      imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, fileOutputStream);
+      fileOutputStream.flush();
+      fileOutputStream.close();
+
+      // Scan the new file so that it appears in the User's image gallery right away.
+      MediaScannerConnection.scanFile(context, new String[]{imageFile.getAbsolutePath()}, null, null);
+
+      return Uri.fromFile(imageFile);
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Exception occurred when attempting to store image locally.", e);
+      return null;
+    }
+  }
+
+  /**
+   * Checks whether writing to external storage is allowed.  Writing to external storage is necessary to store an image locally.
+   *
+   * Client apps must add <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> to their AndroidManifest.xml.
+   *
+   * @param context
+   * @return whether writing to external storage is allowed.  Writing to external storage is necessary to store an image locally
+   */
+  public static boolean isWriteExternalPermissionGranted(Context context) {
+    return context != null
+        && context.checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
   }
 }

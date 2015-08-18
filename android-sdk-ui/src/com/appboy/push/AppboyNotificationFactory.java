@@ -30,7 +30,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
   }
 
   /**
-   * Creates the rich notification. The notification varies based on the Android version on the
+   * Creates the rich notification. The notification content varies based on the Android version on the
    * device, but each notification can contain an icon, image, title, and content.
    *
    * Opening a notification from the notification center triggers a broadcast message to be sent.
@@ -47,7 +47,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     // we build the notification up in the order that each feature was supported.
 
     NotificationCompat.Builder notificationBuilder =
-      new NotificationCompat.Builder(context).setAutoCancel(true);
+            new NotificationCompat.Builder(context).setAutoCancel(true);
 
     AppboyNotificationUtils.setTitleIfPresent(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setContentIfPresent(notificationBuilder, notificationExtras);
@@ -71,10 +71,11 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
       }
     }
 
-    // Subtext, priority, and styles were added in JellyBean.
+    // Subtext, priority, notification actions, and styles were added in JellyBean.
     AppboyNotificationUtils.setSummaryTextIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setPriorityIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setStyleIfSupported(context, notificationBuilder, notificationExtras, appboyExtras);
+    AppboyNotificationActionUtils.addNotificationActions(context, notificationBuilder, notificationExtras);
 
     // Accent color, category, visibility, and public notification were added in Lollipop.
     AppboyNotificationUtils.setAccentColorIfPresentAndSupported(appConfigurationProvider, notificationBuilder, notificationExtras);
@@ -82,6 +83,8 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setVisibilityIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setPublicVersionIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
 
+    // Android Wear Notification support
+    AppboyWearableNotificationUtils.setWearableNotificationFeaturesIfPresentAndSupported(context, notificationBuilder, notificationExtras);
     return notificationBuilder.build();
   }
 }

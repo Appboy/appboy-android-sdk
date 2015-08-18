@@ -25,11 +25,16 @@ public class AppboyFeedbackFragment extends Fragment {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFeedbackFragment.class.getName());
 
   /**
-   * Listener to be called after the feedback has been submitted or cancelled. You must set the
-   * static listener before creating an instance of the AppboyFeedbackFragment.
+   * Listener to be called after the feedback has been submitted or cancelled, and before a user-submitted message is sent to Appboy.
    */
   public interface FeedbackFinishedListener {
-    void onFeedbackFinished();
+    void onFeedbackFinished(FeedbackResult feedbackResult);
+    // The input is the message submitted by the user, and the return value will be submitted to Appboy.
+    String beforeFeedbackSubmitted(String message);
+  }
+
+  public enum FeedbackResult {
+    SENT, CANCELLED, ERROR
   }
 
   private Button mCancelButton;
@@ -65,7 +70,7 @@ public class AppboyFeedbackFragment extends Fragment {
       public void onClick(View view) {
         hideSoftKeyboard();
         if (mFeedbackFinishedListener != null) {
-          mFeedbackFinishedListener.onFeedbackFinished();
+          mFeedbackFinishedListener.onFeedbackFinished(FeedbackResult.CANCELLED);
         }
         clearData();
       }
@@ -78,9 +83,12 @@ public class AppboyFeedbackFragment extends Fragment {
           boolean isBug = mIsBugCheckBox.isChecked();
           String message = mMessageEditText.getText().toString();
           String email = mEmailEditText.getText().toString();
+          if (mFeedbackFinishedListener != null) {
+            message = mFeedbackFinishedListener.beforeFeedbackSubmitted(message);
+          }
           boolean result = Appboy.getInstance(getActivity()).submitFeedback(email, message, isBug);
           if (mFeedbackFinishedListener != null) {
-            mFeedbackFinishedListener.onFeedbackFinished();
+            mFeedbackFinishedListener.onFeedbackFinished(result ? FeedbackResult.SENT : FeedbackResult.ERROR);
           }
           clearData();
         } else {

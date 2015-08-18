@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
@@ -34,20 +35,25 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
         Log.d(TAG, "Got uninstall tracking push");
       }
     } else if (notificationOpenedAction.equals(action)) {
-      Bundle extras = getPushExtrasBundle(intent);
-
-      // If a custom URI is defined, start an ACTION_VIEW intent pointing at the custom URI.
-      // The intent returned from getStartActivityIntent() is placed on the back stack.
-      // Otherwise, start the intent defined in getStartActivityIntent().
-      if (intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY) != null) {
-        Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)))
-            .putExtras(extras);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addNextIntent(getStartActivityIntent(context, extras));
-        stackBuilder.addNextIntent(uriIntent);
-        stackBuilder.startActivities(extras);
+      if (intent.getBooleanExtra(Constants.APPBOY_ACTION_IS_CUSTOM_ACTION_KEY, false)) {
+        Toast.makeText(context, "You clicked a Droidboy custom action!", Toast.LENGTH_LONG).show();
       } else {
-        context.startActivity(getStartActivityIntent(context, extras));
+        Bundle extras = getPushExtrasBundle(intent);
+
+        // If a custom URI is defined, start an ACTION_VIEW intent pointing at the custom URI.
+        // The intent returned from getStartActivityIntent() is placed on the back stack.
+        // Otherwise, start the intent defined in getStartActivityIntent().
+        if (intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY) != null) {
+          Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)))
+              .putExtras(extras);
+          TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+          stackBuilder.addNextIntent(getStartActivityIntent(context, extras));
+          stackBuilder.addNextIntent(uriIntent);
+          stackBuilder.startActivities(extras);
+
+        } else {
+          context.startActivity(getStartActivityIntent(context, extras));
+        }
       }
     } else {
       Log.d(TAG, String.format("Ignoring intent with unsupported action %s", action));
@@ -68,7 +74,6 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
     if (extras == null) {
       extras = new Bundle();
     }
-    extras.putString(DESTINATION_VIEW, FEED);
     extras.putString(AppboyGcmReceiver.CAMPAIGN_ID_KEY, intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY));
     extras.putString(SOURCE_KEY, Constants.APPBOY);
     return extras;
