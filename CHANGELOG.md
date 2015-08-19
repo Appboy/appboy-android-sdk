@@ -1,7 +1,7 @@
 ## 1.9.0
+- Removes the need for integrating client apps to log push notifications inside their activity code.  **Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Appboy.  Otherwise, push opens will be incorrectly logged twice.**
 - Adds support for analytics from Android Wear devices. If using wear, you must add the line `-dontwarn com.google.android.gms.**` to your proguard config file if proguarding your app.
 - Adds support for displaying notification action buttons sent from the Appboy dashboard.  To allow image sharing on social networks, add the `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />` permission to your `AndroidManifest.xml`.
-- Removes the need for integrating client apps to log push notifications inside their activity code.  Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Appboy.  Otherwise, push opens will be incorrectly logged twice.
 - Adds delegate to `FeedbackFinishedListener` enabling modification of feedback messages before they are sent to Appboy.  Also adds a disposition parameter to `onFeedbackFinished()`.
 - Adds support for GIF images in the News Feed and in In-App Messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app),
   images and GIFs will be loaded using views from the Fresco library. In order to display GIFs,
