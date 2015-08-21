@@ -51,7 +51,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference toggleDisableAppboyLoggingPreference = findPreference("toggle_disable_appboy_logging");
     Preference getRegistrationIdPreference = findPreference("get_registration_id");
-    Preference logAttrbiutionPreference = findPreference("log_attribution");
+    Preference logAttributionPreference = findPreference("log_attribution");
 
     aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
@@ -173,13 +173,13 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
-    logAttrbiutionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+    logAttributionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(getApplicationContext()).getCurrentUser().setAttributionData(new AttributionData("network_val_" + attributionUniqueInt,
-          "campaign_val_" + attributionUniqueInt,
-          "adgroup_val_" + attributionUniqueInt,
-          "creative_val_" + attributionUniqueInt));
+            "campaign_val_" + attributionUniqueInt,
+            "adgroup_val_" + attributionUniqueInt,
+            "creative_val_" + attributionUniqueInt));
         attributionUniqueInt++;
         showToast("Attribution data sent to server");
         return true;

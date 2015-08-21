@@ -7,12 +7,10 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
-import com.appboy.Constants;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
 
 public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout implements IInAppMessageView {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageHtmlBaseView.class.getName());
   private static final String HTML_MIME_TYPE = "text/html";
   private static final String HTML_ENCODING = "utf-8";
 

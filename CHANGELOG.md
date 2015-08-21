@@ -1,3 +1,6 @@
+## 1.9.1
+- Fixes bug triggered when the AppboyWearableListenerService is not registered.
+
 ## 1.9.0
 - Removes the need for integrating client apps to log push notifications inside their activity code.  **Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Appboy.  Otherwise, push opens will be incorrectly logged twice.**
 - Adds support for analytics from Android Wear devices. If using wear, you must add the line `-dontwarn com.google.android.gms.**` to your proguard config file if proguarding your app.

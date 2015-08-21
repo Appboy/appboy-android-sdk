@@ -79,7 +79,7 @@ public class FrescoLibraryUtils {
           break;
         }
       }
-    } catch (ClassNotFoundException e) {
+    } catch (Exception e) {
       isFrescoOnPath = false;
     }
 
