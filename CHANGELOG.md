@@ -1,4 +1,4 @@
-## 1.9.1
+## 1.9.2
 - Fixes bug triggered when the AppboyWearableListenerService is not registered.
 
 ## 1.9.0

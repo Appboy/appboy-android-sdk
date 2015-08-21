@@ -81,6 +81,10 @@ public class FrescoLibraryUtils {
       }
     } catch (Exception e) {
       isFrescoOnPath = false;
+    } catch (NoClassDefFoundError ncd) {
+      isFrescoOnPath = false;
+    } catch (Throwable t) {
+      isFrescoOnPath = false;
     }
 
     mCanUseFrescoSet = true;
@@ -150,6 +154,8 @@ public class FrescoLibraryUtils {
               .build();
       simpleDraweeView.setController(controller);
     } catch (NullPointerException e) {
+      AppboyLogger.e(TAG, "Fresco controller builder could not be retrieved. Fresco most likely prematurely shutdown.", e);
+    } catch (Exception e) {
       AppboyLogger.e(TAG, "Fresco controller builder could not be retrieved. Fresco most likely prematurely shutdown.", e);
     }
   }
