@@ -139,9 +139,9 @@ public class PreferencesActivity extends PreferenceActivity {
     toggleDisableAppboyNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
-        boolean newDisableAppboyNetworkRequestsPreference = !Boolean.parseBoolean(getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETORK_REQUESTS_KEY, null));
+        boolean newDisableAppboyNetworkRequestsPreference = !Boolean.parseBoolean(getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, null));
         SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).edit();
-        sharedPreferencesEditor.putString(SharedPrefsUtil.DISABLE_APPBOY_NETORK_REQUESTS_KEY, String.valueOf(newDisableAppboyNetworkRequestsPreference));
+        sharedPreferencesEditor.putString(SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, String.valueOf(newDisableAppboyNetworkRequestsPreference));
         sharedPreferencesEditor.apply();
         if (newDisableAppboyNetworkRequestsPreference) {
           Toast.makeText(PreferencesActivity.this, "Disabling Appboy network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();

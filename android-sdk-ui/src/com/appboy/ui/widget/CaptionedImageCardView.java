@@ -2,7 +2,6 @@ package com.appboy.ui.widget;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 

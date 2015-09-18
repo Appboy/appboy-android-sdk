@@ -32,7 +32,7 @@ public class DroidboyApplication extends Application
 
     // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
     // we don't want to run Appboy on in certain scenarios.
-    String disableAppboyNetworkRequestsBooleanString = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETORK_REQUESTS_KEY, null);
+    String disableAppboyNetworkRequestsBooleanString = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, null);
     if (Boolean.parseBoolean(disableAppboyNetworkRequestsBooleanString) && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(android.os.Build.MODEL)) {
       Appboy.disableAllAppboyNetworkRequests();
       Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", android.os.Build.MODEL));

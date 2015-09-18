@@ -97,7 +97,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         }
         break;
       case R.id.feedback:
-        AppboyFeedbackFragment  appboyFeedbackFragment = new AppboyFeedbackFragment();
+        AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
         replaceCurrentFragment(appboyFeedbackFragment);
         break;
       case R.id.settings:
@@ -200,9 +200,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   // Fragment.onAttach() callback, which it uses to call the following methods
   // defined by the NoticeDialogFragment.NoticeDialogListener interface
   public void onDialogPositiveClick(FeedCategoriesFragment dialog) {
-    AppboyFeedFragment  appboyFeedFragment = new AppboyFeedFragment();
-    mAppboyFeedCategories = EnumSet.copyOf(dialog.selectedCategories);
-    appboyFeedFragment.setCategories(mAppboyFeedCategories);
+    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.root);
+    if (currentFragment != null && currentFragment instanceof AppboyFeedFragment) {
+      mAppboyFeedCategories = EnumSet.copyOf(dialog.selectedCategories);
+      ((AppboyFeedFragment) currentFragment).setCategories(mAppboyFeedCategories);
+    }
   }
 
   public static String convertBundleToAppboyLogString(Bundle bundle) {

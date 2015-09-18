@@ -22,7 +22,6 @@ import com.appboy.ui.inappmessage.listeners.SwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.listeners.TouchAwareSwipeDismissTouchListener;
 import com.appboy.ui.support.AnimationUtils;
 import com.appboy.ui.support.ViewUtils;
-import com.appboy.ui.support.WebContentUtils;
 
 import java.util.List;
 

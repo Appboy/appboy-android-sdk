@@ -1,3 +1,11 @@
+## 1.10.0
+- Fixes an issue where applications in extremely resource starved environments were seeing ANRs from the periodic dispatch `BroadcastReceiver`.  This was not
+  a bug in the Appboy code, but a symptom of a failing application.  This updates our periodic dispatch mechanism so it won't have this symptomatic behavior,
+  which in some cases should help developers track down the source of the actual issue (depending on the bug).  Apps that only use the Appboy jar file will now have to
+  register `<service android:name="com.appboy.services.AppboyDataSyncService"/>` in their `AndroidManifest.xml` to enable Appboy to periodically flush data.
+- Updates the News Feed to not show cards in the local cache that have expired.
+- Fixes a very rare issue where calling checkCallingOrSelfPermission would cause an exception to be thrown on certain custom Android builds.
+
 ## 1.9.2
 - Fixes bug triggered when the AppboyWearableListenerService is not registered.
 

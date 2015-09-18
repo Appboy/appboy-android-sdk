@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
-import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.XmlAppConfigurationProvider;
 
 public class AppboyNotificationFactory implements IAppboyNotificationFactory {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationFactory.class.getName());
   private static volatile AppboyNotificationFactory sInstance = null;
 
   /**

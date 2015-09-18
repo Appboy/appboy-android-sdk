@@ -17,12 +17,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.support.ValidationUtils;
 import com.appboy.ui.support.StringUtils;
 
 public class AppboyFeedbackFragment extends Fragment {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFeedbackFragment.class.getName());
 
   /**
    * Listener to be called after the feedback has been submitted or cancelled, and before a user-submitted message is sent to Appboy.

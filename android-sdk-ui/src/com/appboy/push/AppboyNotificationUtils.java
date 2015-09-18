@@ -28,6 +28,7 @@ import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.PackageUtils;
+import com.appboy.support.PermissionUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -255,7 +256,7 @@ public class AppboyNotificationUtils {
    */
   public static boolean wakeScreenIfHasPermission(Context context, Bundle notificationExtras) {
     // Check for the wake lock permission.
-    if (context.checkCallingOrSelfPermission(Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_DENIED) {
+    if (!PermissionUtils.hasPermission(context, Manifest.permission.WAKE_LOCK)) {
       return false;
     }
     // Don't wake lock if this is a minimum priority notification.

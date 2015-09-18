@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.PermissionUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -121,6 +122,6 @@ public class AppboyImageUtils {
    */
   public static boolean isWriteExternalPermissionGranted(Context context) {
     return context != null
-        && context.checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        && PermissionUtils.hasPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
   }
 }

@@ -351,7 +351,7 @@ public final class AppboyInAppMessageManager {
       IInAppMessage inAppMessage = inAppMessages[0];
       if (inAppMessage instanceof InAppMessageHtmlFull) {
         // Note, this will clear the IAM cache, which is OK because we currently have mDisplayingInAppMessage
-        // set to true, which gauruntees no other IAM is relying on the cache dir right now.
+        // set to true, which guarantees no other IAM is relying on the cache dir right now.
         prepareInAppMessageWithHtml(inAppMessage);
       } else {
         String imageUrl = inAppMessage.getImageUrl();
