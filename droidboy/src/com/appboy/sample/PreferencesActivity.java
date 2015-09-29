@@ -16,7 +16,6 @@ import com.android.vending.billing.utils.Inventory;
 import com.android.vending.billing.utils.Purchase;
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.enums.SocialNetwork;
 import com.appboy.models.outgoing.AttributionData;
 import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.support.AppboyLogger;
@@ -39,8 +38,6 @@ public class PreferencesActivity extends PreferenceActivity {
     super.onCreate(savedInstanceState);
     addPreferencesFromResource(R.xml.preferences);
 
-    Preference facebookSharePreference = findPreference("facebook_share");
-    Preference twitterSharePreference = findPreference("twitter_share");
     Preference logPurchasePreference = findPreference("log_iab_purchase");
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestInAppMessagePreference = findPreference("request_inappmessage");
@@ -55,22 +52,6 @@ public class PreferencesActivity extends PreferenceActivity {
 
     aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), com.appboy.Constants.APPBOY_SDK_VERSION));
 
-    facebookSharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(PreferencesActivity.this).logShare(SocialNetwork.FACEBOOK);
-        showToast(getString(R.string.facebook_share_toast));
-        return true;
-      }
-    });
-    twitterSharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(PreferencesActivity.this).logShare(SocialNetwork.TWITTER);
-        showToast(getString(R.string.twitter_share_toast));
-        return true;
-      }
-    });
     setManualLocationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {

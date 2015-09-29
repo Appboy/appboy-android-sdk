@@ -107,23 +107,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/bio_button"
-                style="@style/PopulateButton"
-                android:text="@string/user_dialog_bio"/>
-
-            <EditText
-                android:id="@+id/bio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_span="3"
-                style="@style/UserBio"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

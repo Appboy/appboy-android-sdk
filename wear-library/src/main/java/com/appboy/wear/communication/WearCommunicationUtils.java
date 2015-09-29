@@ -2,7 +2,6 @@ package com.appboy.wear.communication;
 
 import com.appboy.wear.enums.Gender;
 import com.appboy.wear.enums.Month;
-import com.appboy.wear.enums.SocialNetwork;
 import com.appboy.wear.enums.WearSdkActions;
 import com.appboy.wear.models.AppboyProperties;
 import com.appboy.wear.models.WearDevice;
@@ -78,14 +77,6 @@ public class WearCommunicationUtils {
 
     // Insert the appboy properties
     addAppboyPropertiesToDataMap(dataMap, properties);
-  }
-
-  public static void modifyDataMapWithSocialNetworkShare(DataMap dataMap, SocialNetwork socialNetwork) {
-    dataMap.putString(ACTION_TYPE, WearSdkActions.LOG_SOCIAL_SHARE.name());
-    dataMap.putBoolean(ACTION_HAS_APPBOY_PROPERTIES, false);
-
-    // Value 0 - social network in .name() form
-    dataMap.putString(ACTION_VALUE_0, socialNetwork.name());
   }
 
   public static void modifyDataMapWithPushNotificationOpened(DataMap dataMap, String campaignId) {

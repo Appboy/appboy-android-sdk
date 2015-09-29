@@ -18,14 +18,6 @@
             android:key="log_iab_purchase"
             android:title="@string/iab_log_purchase_title"
             android:summary="@string/iab_log_purchase_summary"/>
-        <Preference
-            android:key="facebook_share"
-            android:title="@string/facebook_share_title"
-            android:summary="@string/facebook_share_summary"/>
-        <Preference
-            android:key="twitter_share"
-            android:title="@string/twitter_share_title"
-            android:summary="@string/twitter_share_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory

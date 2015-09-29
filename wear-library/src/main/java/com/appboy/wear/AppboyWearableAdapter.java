@@ -7,11 +7,10 @@ import android.util.Log;
 import com.appboy.wear.communication.WearCommunicationUtils;
 import com.appboy.wear.enums.Gender;
 import com.appboy.wear.enums.Month;
-import com.appboy.wear.enums.WearSdkActions;
-import com.appboy.wear.managers.WearDeviceDataProvider;
-import com.appboy.wear.enums.SocialNetwork;
 import com.appboy.wear.enums.WearScreenShape;
+import com.appboy.wear.enums.WearSdkActions;
 import com.appboy.wear.managers.AppboyWearDeviceIdReader;
+import com.appboy.wear.managers.WearDeviceDataProvider;
 import com.appboy.wear.models.AppboyProperties;
 import com.appboy.wear.models.WearDevice;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -153,26 +152,6 @@ public class AppboyWearableAdapter implements GoogleApiClient.ConnectionCallback
     } else {
       WearCommunicationUtils.modifyDataMapWithPurchase(dataMap, currencyCode, price, properties, productId);
     }
-    syncDataMapRequest(putDataMapRequest);
-    return true;
-  }
-
-  /**
-   * see IAppboy#logShare(SocialNetwork)
-   *
-   * @return a boolean indicating whether or not this action has been sent to the phone.
-   */
-  public boolean logShare(SocialNetwork socialNetwork) {
-    if (!isWearableApiConnectionAvailable()) {
-      return false;
-    }
-    if (socialNetwork == null) {
-      Log.w(TAG, "Social network is null. Not logging share.");
-      return false;
-    }
-    PutDataMapRequest putDataMapRequest = getNewPutDataMapRequest();
-    DataMap dataMap = putDataMapRequest.getDataMap();
-    WearCommunicationUtils.modifyDataMapWithSocialNetworkShare(dataMap, socialNetwork);
     syncDataMapRequest(putDataMapRequest);
     return true;
   }
@@ -530,17 +509,6 @@ public class AppboyWearableAdapter implements GoogleApiClient.ConnectionCallback
       return false;
     }
     return sendBasicUserProfileStringValue(url, WearSdkActions.SET_AVATAR_IMAGE_URL);
-  }
-
-  /**
-   * @return a boolean indicating whether or not this action has been sent to the phone.
-   */
-  public boolean setUserBio(String bio) {
-    if (isNullOrEmpty(bio)) {
-      Log.w(TAG, "Bio null or empty. Not setting user bio");
-      return false;
-    }
-    return sendBasicUserProfileStringValue(bio, WearSdkActions.SET_BIO);
   }
 
   /**

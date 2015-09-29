@@ -1,5 +1,6 @@
 package com.appboy.sample;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.ui.support.StringUtils;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyBroadcastReceiver.class.getName());
@@ -40,17 +42,21 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
       } else {
         Bundle extras = getPushExtrasBundle(intent);
 
-        // If a custom URI is defined, start an ACTION_VIEW intent pointing at the custom URI.
+        // If a deep link exists, start an ACTION_VIEW intent pointing at the deep link.
         // The intent returned from getStartActivityIntent() is placed on the back stack.
         // Otherwise, start the intent defined in getStartActivityIntent().
-        if (intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY) != null) {
-          Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)))
+        String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
+        if (!StringUtils.isNullOrBlank(deepLink)) {
+          Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
               .putExtras(extras);
           TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
           stackBuilder.addNextIntent(getStartActivityIntent(context, extras));
           stackBuilder.addNextIntent(uriIntent);
-          stackBuilder.startActivities(extras);
-
+          try {
+            stackBuilder.startActivities(extras);
+          } catch (ActivityNotFoundException e) {
+            Log.w(TAG, String.format("Could not find appropriate activity to open for deep link %s.", deepLink));
+          }
         } else {
           context.startActivity(getStartActivityIntent(context, extras));
         }

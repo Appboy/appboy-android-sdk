@@ -4,12 +4,16 @@
     <item>Message Type: Slideup</item>
     <item>Message Type: Modal</item>
     <item>Message Type: Full</item>
-    <item>Message Type: HTML Full</item>
+    <item>Message Type: HTML Full No JS</item>
+    <item>Message Type: HTML Full Inline JS</item>
+    <item>Message Type: HTML Full External JS</item>
   </string-array>
   <string-array name="inapp_message_type_values">
     <item>slideup</item>
     <item>modal</item>
     <item>full</item>
-    <item>html_full</item>
+    <item>html_full_no_js</item>
+    <item>html_full_inline_js</item>
+    <item>html_full_external_js</item>
   </string-array>
 </resources>

@@ -1,3 +1,7 @@
+## 1.10.1
+- Enables javascript in HTML in-app messages.
+- Deprecates logShare() and setBio() in the public interface as support in the Appboy dashboard has been removed.
+
 ## 1.10.0
 - Fixes an issue where applications in extremely resource starved environments were seeing ANRs from the periodic dispatch `BroadcastReceiver`.  This was not
   a bug in the Appboy code, but a symptom of a failing application.  This updates our periodic dispatch mechanism so it won't have this symptomatic behavior,

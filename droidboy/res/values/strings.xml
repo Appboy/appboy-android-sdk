@@ -23,7 +23,6 @@
   <string name="user_dialog_first_name">First Name</string>
   <string name="user_dialog_last_name">Last Name</string>
   <string name="user_dialog_email_address">Email Address</string>
-  <string name="user_dialog_bio">Bio</string>
   <string name="user_dialog_gender">Gender:</string>
   <string name="user_dialog_avatar_image_url">Avatar Image URL</string>
   <string name="user_dialog_flush">Flush on close</string>
