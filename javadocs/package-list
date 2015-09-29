@@ -6,5 +6,17 @@ com.appboy.events
 com.appboy.models
 com.appboy.models.cards
 com.appboy.models.outgoing
+com.appboy.push
 com.appboy.services
 com.appboy.support
+com.appboy.ui
+com.appboy.ui.actions
+com.appboy.ui.activities
+com.appboy.ui.adapters
+com.appboy.ui.configuration
+com.appboy.ui.inappmessage
+com.appboy.ui.inappmessage.listeners
+com.appboy.ui.inappmessage.views
+com.appboy.ui.slideups
+com.appboy.ui.support
+com.appboy.ui.widget
