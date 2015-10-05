@@ -32,6 +32,15 @@ public interface IInAppMessageWebViewClientListener {
   void onNewsfeedAction(IInAppMessage inAppMessage, String url, Bundle queryBundle);
 
   /**
+   * Called when the window location is set to a Custom Event URL (appboy://customEvent) in an HTML In App Message
+   *
+   * @param inAppMessage the inAppMessage
+   * @param url          the url that triggered the action
+   * @param queryBundle  a bundle of the query part of url
+   */
+  void onCustomEventAction(IInAppMessage inAppMessage, String url, Bundle queryBundle);
+
+  /**
    * Called when a non Appboy scheme url is encountered.
    *
    * @param inAppMessage the inAppMessage

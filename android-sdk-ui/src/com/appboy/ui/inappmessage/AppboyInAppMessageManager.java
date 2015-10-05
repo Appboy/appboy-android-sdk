@@ -26,6 +26,8 @@ import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
+import com.appboy.models.outgoing.AppboyProperties;
+import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
 import com.appboy.ui.AppboyNavigator;
@@ -101,6 +103,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class AppboyInAppMessageManager {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageManager.class.getName());
   private static volatile AppboyInAppMessageManager sInstance = null;
+  private static final String HTML_IAM_CUSTOM_EVENT_NAME_KEY = "name";
 
   private final Stack<IInAppMessage> mInAppMessageBaseStack = new Stack<IInAppMessage>();
   private final IAppboyNavigator mDefaultAppboyNavigator = new AppboyNavigator();
@@ -591,6 +594,11 @@ public final class AppboyInAppMessageManager {
     }
 
     @Override
+    public boolean onCustomEventFired(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
+      return false;
+    }
+
+    @Override
     public boolean onOtherUrlAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
       return false;
     }
@@ -833,6 +841,23 @@ public final class AppboyInAppMessageManager {
     }
   };
 
+  String parseCustomEventNameFromQueryBundle(Bundle queryBundle) {
+    return queryBundle.getString(HTML_IAM_CUSTOM_EVENT_NAME_KEY);
+  }
+
+  AppboyProperties parsePropertiesFromQueryBundle(Bundle queryBundle) {
+    AppboyProperties customEventProperties = new AppboyProperties();
+    for (String key: queryBundle.keySet()) {
+      if (!key.equals(HTML_IAM_CUSTOM_EVENT_NAME_KEY)) {
+        String propertyValue = AppboyNotificationUtils.bundleOptString(queryBundle, key, null);
+        if (!StringUtils.isNullOrBlank(propertyValue)) {
+          customEventProperties.addProperty(key, propertyValue);
+        }
+      }
+    }
+    return customEventProperties;
+  }
+
   private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new IInAppMessageWebViewClientListener() {
 
     @Override
@@ -856,6 +881,21 @@ public final class AppboyInAppMessageManager {
         Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
         inAppMessageBundle.putAll(queryBundle);
         getAppboyNavigator().gotoNewsFeed(mActivity, inAppMessageBundle);
+      }
+    }
+
+    @Override
+    public void onCustomEventAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
+      AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onCustomEventAction called.");
+
+      boolean handled = getHtmlInAppMessageActionListener().onCustomEventFired(inAppMessage, url, queryBundle);
+      if (!handled) {
+        String customEventName = parseCustomEventNameFromQueryBundle(queryBundle);
+        if (StringUtils.isNullOrBlank(customEventName)) {
+          return;
+        }
+        AppboyProperties customEventProperties = parsePropertiesFromQueryBundle(queryBundle);
+        Appboy.getInstance(mActivity.getApplicationContext()).logCustomEvent(customEventName, customEventProperties);
       }
     }
 

@@ -19,6 +19,7 @@ public class InAppMessageWebViewClient extends WebViewClient {
   private static final String APPBOY_INAPP_MESSAGE_SCHEME = "appboy";
   private static final String AUTHORITY_NAME_CLOSE = "close";
   private static final String AUTHORITY_NAME_NEWSFEED = "feed";
+  private static final String AUTHORITY_NAME_CUSTOM_EVENT = "customEvent";
 
   /**
    * The query key for the button id for tracking
@@ -75,6 +76,8 @@ public class InAppMessageWebViewClient extends WebViewClient {
         mInAppMessageWebViewClientListener.onCloseAction(mInAppMessage, url, queryBundle);
       } else if (authority.equals(AUTHORITY_NAME_NEWSFEED)) {
         mInAppMessageWebViewClientListener.onNewsfeedAction(mInAppMessage, url, queryBundle);
+      } else if (authority.equals(AUTHORITY_NAME_CUSTOM_EVENT)) {
+        mInAppMessageWebViewClientListener.onCustomEventAction(mInAppMessage, url, queryBundle);
       }
       return true;
     }

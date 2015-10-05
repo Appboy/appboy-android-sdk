@@ -26,6 +26,13 @@ public class CustomHtmlInAppMessageActionListener implements IHtmlInAppMessageAc
   }
 
   @Override
+  public boolean onCustomEventFired(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
+    Toast.makeText(mContext, "Custom event fired. Ignoring.", Toast.LENGTH_LONG).show();
+    AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(false, true);
+    return true;
+  }
+
+  @Override
   public boolean onNewsfeedClicked(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
     Toast.makeText(mContext, "Newsfeed button pressed. Ignoring.", Toast.LENGTH_LONG).show();
     AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(false, true);

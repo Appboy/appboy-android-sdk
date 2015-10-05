@@ -1,3 +1,6 @@
+## 1.10.2
+- Adds the ability to log a custom event from an HTML in-app message. To log a custom event from an HTML in-app message, navigate a user to a url of the form `appboy://customEvent?name=customEventName&p1=v2`, where the `name` URL parameter is the name of the event, and the remaining parameters are logged as String properties on the event.
+
 ## 1.10.1
 - Enables javascript in HTML in-app messages.
 - Deprecates logShare() and setBio() in the public interface as support in the Appboy dashboard has been removed.
