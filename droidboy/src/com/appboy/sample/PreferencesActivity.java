@@ -1,9 +1,11 @@
 package com.appboy.sample;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -16,11 +18,12 @@ import com.android.vending.billing.utils.Inventory;
 import com.android.vending.billing.utils.Purchase;
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.sample.util.RuntimePermissionUtils;
+
 import com.appboy.models.outgoing.AttributionData;
 import com.appboy.sample.util.SharedPrefsUtil;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
-import com.crittercism.app.Crittercism;
 
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
@@ -42,9 +45,11 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestInAppMessagePreference = findPreference("request_inappmessage");
     Preference setManualLocationPreference = findPreference("set_manual_location");
+    Preference locationRuntimePermissionDialogPreference = findPreference("location_runtime_permission_dialog");
     Preference openSessionPreference = findPreference("open_session");
     Preference closeSessionPreference = findPreference("close_session");
     Preference aboutPreference = findPreference("about");
+    Preference externalStorageRuntimePermissionDialogPreference = findPreference("external_storage_runtime_permission_dialog");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference toggleDisableAppboyLoggingPreference = findPreference("toggle_disable_appboy_logging");
     Preference getRegistrationIdPreference = findPreference("get_registration_id");
@@ -57,6 +62,17 @@ public class PreferencesActivity extends PreferenceActivity {
       public boolean onPreferenceClick(Preference preference) {
         Appboy.getInstance(PreferencesActivity.this).getCurrentUser().setLastKnownLocation(1.0, 2.0, 3.0, 4.0);
         showToast("Manually set location to latitude 1.0d, longitude 2.0d, altitude 3.0m, accuracy 4.0m.");
+        return true;
+      }
+    });
+    locationRuntimePermissionDialogPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+        } else {
+          Toast.makeText(PreferencesActivity.this, "Below Android M there is no need to check for runtime permissions.", Toast.LENGTH_SHORT).show();
+        }
         return true;
       }
     });
@@ -113,6 +129,17 @@ public class PreferencesActivity extends PreferenceActivity {
           showToast(getString(R.string.close_session_toast));
         } else {
           showToast(getString(R.string.no_session_toast));
+        }
+        return true;
+      }
+    });
+    externalStorageRuntimePermissionDialogPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+          requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, RuntimePermissionUtils.DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE);
+        } else {
+          Toast.makeText(PreferencesActivity.this, "Below Android M there is no need to check for runtime permissions.", Toast.LENGTH_SHORT).show();
         }
         return true;
       }
@@ -237,7 +264,6 @@ public class PreferencesActivity extends PreferenceActivity {
     // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
     // in-app messages from Appboy.
     AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
-    Crittercism.leaveBreadcrumb(PreferencesActivity.class.getName());
 
     // Shows a toast if the activity detects that it was opened via a deep link.
     Bundle extras = getIntent().getExtras();
@@ -269,6 +295,11 @@ public class PreferencesActivity extends PreferenceActivity {
       mHelper.dispose();
     }
     mHelper = null;
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    RuntimePermissionUtils.handleOnRequestPermissionsResult(PreferencesActivity.this, requestCode, grantResults);
   }
 
   // Callback for when a purchase is finished

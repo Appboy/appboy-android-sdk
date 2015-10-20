@@ -12,10 +12,6 @@ import android.util.Log;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
-import com.crittercism.app.Crittercism;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /*
  * Appboy integration sample (using Appboy Fragments)
@@ -31,7 +27,6 @@ public class AppboyFragmentActivity extends FragmentActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
   }
 
   @Override
@@ -55,7 +50,6 @@ public class AppboyFragmentActivity extends FragmentActivity {
       Appboy.getInstance(this).requestInAppMessageRefresh();
       mRefreshData = false;
     }
-    Crittercism.leaveBreadcrumb(this.getClass().getName());
   }
 
   @Override
@@ -86,31 +80,5 @@ public class AppboyFragmentActivity extends FragmentActivity {
   private void setTitleOnActionBar(String title) {
     ActionBar actionBar = getActionBar();
     actionBar.setTitle(title);
-  }
-
-  private JSONObject getCrittercismConfiguration() {
-    JSONObject crittercismConfiguration = new JSONObject();
-    String customVersionName = getCustomVersionName();
-    try {
-      crittercismConfiguration.put("includeVersionCode", true);
-      crittercismConfiguration.put("shouldCollectLogcat", true);
-      if (customVersionName != null) {
-        crittercismConfiguration.put("customVersionName", customVersionName);
-      }
-    } catch (JSONException e) {
-      Log.w(TAG, "Error while creating the Crittercism configuration. Using default configuration.");
-    }
-    return crittercismConfiguration;
-  }
-
-  private String getCustomVersionName() {
-    String customVersionName = null;
-    try {
-      PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-      customVersionName = String.format("%s-%s", packageInfo.versionName, com.appboy.Constants.APPBOY_SDK_VERSION);
-    } catch (PackageManager.NameNotFoundException e) {
-      Log.w(TAG, "Unable to read the version name.");
-    }
-    return customVersionName;
   }
 }

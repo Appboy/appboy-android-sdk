@@ -107,7 +107,7 @@
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
   <string name="push_tester_big_title_label">Add Big Title</string>
   <string name="push_tester_big_summary_label">Add Big Summary</string>
-  <string name="push_tester_summary_label">Add Summary</string>
+  <string name="push_tester_summary_label">Add Summary Text</string>
   <string name="push_tester_overflow_text_label">Overflow Text</string>
   <string name="push_tester_public_version_label">Set Public Version Notification</string>
   <string name="push_tester_wear_hide_app_icon_label">Wear: Hide App Icon</string>

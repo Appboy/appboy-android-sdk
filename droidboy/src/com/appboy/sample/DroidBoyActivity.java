@@ -1,7 +1,9 @@
 package com.appboy.sample;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -16,9 +18,10 @@ import android.widget.Toast;
 
 import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
+import com.appboy.sample.util.RuntimePermissionUtils;
+import com.appboy.support.PermissionUtils;
 import com.appboy.ui.AppboyFeedFragment;
 import com.appboy.ui.AppboyFeedbackFragment;
-import com.crittercism.app.Crittercism;
 
 import java.util.EnumSet;
 
@@ -26,6 +29,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidBoyActivity.class.getName());
   private int mBackStackEntryCount = 0;
   private EnumSet<CardCategory> mAppboyFeedCategories;
+  private static boolean mRequestedLocationPermissions = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -51,15 +55,18 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       @Override
       public void onBackStackChanged() {
         int newBackStackEntryCount = fragmentManager.getBackStackEntryCount();
-        if (newBackStackEntryCount <= mBackStackEntryCount) {
-          Crittercism.leaveBreadcrumb("Popped the back stack");
-        } else {
+        if (newBackStackEntryCount > mBackStackEntryCount) {
           FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(newBackStackEntryCount - 1);
-          Crittercism.leaveBreadcrumb(backStackEntry.getName());
         }
         mBackStackEntryCount = newBackStackEntryCount;
       }
     });
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        && !mRequestedLocationPermissions
+        && !PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+      requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+      mRequestedLocationPermissions = true;
+    }
   }
 
   @Override
@@ -113,6 +120,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
     }
     return true;
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    RuntimePermissionUtils.handleOnRequestPermissionsResult(DroidBoyActivity.this, requestCode, grantResults);
   }
 
   private void replaceCurrentFragment(Fragment newFragment) {

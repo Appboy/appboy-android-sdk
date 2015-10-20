@@ -17,7 +17,6 @@ import com.appboy.Constants;
 import com.appboy.enums.Gender;
 import com.appboy.sample.util.ButtonUtils;
 import com.appboy.ui.support.StringUtils;
-import com.crittercism.app.Crittercism;
 
 public class UserProfileDialog extends DialogPreference {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, UserProfileDialog.class.getName());
@@ -130,8 +129,6 @@ public class UserProfileDialog extends DialogPreference {
 
       if (!StringUtils.isNullOrBlank(email)) {
         Appboy.getInstance(getContext()).changeUser(email);
-        // Crittercism limits the length of the username to 32 characters.
-        Crittercism.setUsername(email.substring(0, Math.min(email.length(), 31)));
       }
 
       SharedPreferences.Editor editor = getEditor();

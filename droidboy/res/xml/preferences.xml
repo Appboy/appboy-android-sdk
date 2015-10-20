@@ -34,6 +34,10 @@
     <PreferenceCategory
         android:title="@string/misc_preference_category">
         <Preference
+            android:key="external_storage_runtime_permission_dialog"
+            android:title="External Storage Permission Dialog"
+            android:summary="Request Runtime Permission"/>
+        <Preference
             android:key="toggle_disable_appboy_network_requests_for_filtered_emulators"
             android:title="@string/disable_appboy_network_requests"
             android:summary="@string/disable_appboy_network_requests_summary"/>
@@ -67,6 +71,10 @@
             android:key="set_manual_location"
             android:title="Set Manual Location"
             android:summary="Override current location"/>
+        <Preference
+            android:key="location_runtime_permission_dialog"
+            android:title="Location Permission Dialog"
+            android:summary="Request Runtime Permission"/>
     </PreferenceCategory>
 
     <PreferenceCategory

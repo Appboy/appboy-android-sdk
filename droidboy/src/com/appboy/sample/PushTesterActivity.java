@@ -1,6 +1,8 @@
 package com.appboy.sample;
 
+import android.Manifest;
 import android.app.Notification;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -14,23 +16,24 @@ import android.widget.Spinner;
 import com.appboy.Constants;
 import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.SpinnerUtils;
+import com.appboy.support.PermissionUtils;
 import com.appboy.ui.support.StringUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PushTesterActivity extends AppboyFragmentActivity implements AdapterView.OnItemSelectedListener {
-  XmlAppConfigurationProvider mAppConfigurationProvider;
-  NotificationManagerCompat mNotificationManager;
-  private static final String[] mWearExtraPageTitles = new String[]{"Extra page (title)", "So Many Pages! (title)", "Last Page (title)"};
-  private static final String[] mWearExtraPageContents = new String[]{"Space (content)", "The Final Frontier (content)", "There's a lot of text here. There's so much text here! So many lines! This is also the last extra page (content)"};
-  private final String mTitle = "Welcome to Appboy (title)!";
-  private final String mContent = "We hope you're enjoying our product (content).";
-  private final String mBigTitle = "Appmazing (big title).";
-  private boolean mUseBigSummary = false;
-  private final String mBigSummary = "The Big Picture (big summary)";
-  private final String mSummary = "This is what it's all about (summary)";
+  private static final String[] WEAR_EXTRA_PAGE_TITLES = new String[]{"Extra page (title)", "So Many Pages! (title)", "Last Page (title)"};
+  private static final String[] WEAR_EXTRA_PAGE_CONTENTS = new String[]{"Space (content)", "The Final Frontier (content)", "There's a lot of text here. There's so much text here! So many lines! This is also the last extra page (content)"};
+  private static final String TITLE = "Title";
+  private static final String CONTENT = "Content";
+  private static final String BIG_TITLE = "Big Title";
+  private static final String BIG_SUMMARY = "Big Summary";
+  private static final String SUMMARY_TEXT = "Summary Text";
+  private XmlAppConfigurationProvider mAppConfigurationProvider;
+  private NotificationManagerCompat mNotificationManager;
   private String mPriority = String.valueOf(Notification.PRIORITY_DEFAULT);
   private String mImage;
   private String mClickActionUrl;
@@ -38,8 +41,8 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
   private String mVisibility;
   private String mWearBackgroundImageUrl;
   private String mActionType;
-
   private boolean mUseSummary = false;
+  private boolean mUseBigSummary = false;
   private boolean mUseImage = false;
   private boolean mShouldOverflowText = false;
   private boolean mUseBigTitle = false;
@@ -51,6 +54,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
   private boolean mWearUseBackgroundImage = false;
   private boolean mWearAddExtraPages = false;
 
+  @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.push_tester);
@@ -132,8 +136,8 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
         (new Thread(new Runnable() {
           public void run() {
             Bundle notificationExtras = new Bundle();
-            notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(mTitle, mShouldOverflowText));
-            notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(mContent, mShouldOverflowText));
+            notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
+            notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT));
             notificationExtras.putString(Constants.APPBOY_PUSH_WEAR_HIDE_APP_ICON_KEY, String.valueOf(mWearHideAppIcon));
 
             int notificationId = AppboyNotificationUtils.getNotificationId(notificationExtras);
@@ -141,17 +145,17 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
             notificationExtras = addActionButtons(notificationExtras);
 
             if (mUseSummary) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(mSummary, mShouldOverflowText));
+              notificationExtras.putString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(SUMMARY_TEXT));
             }
             if (mUseClickAction) {
               notificationExtras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, mClickActionUrl);
             }
             notificationExtras.putString(Constants.APPBOY_PUSH_PRIORITY_KEY, mPriority);
             if (mUseBigTitle) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY, mBigTitle);
+              notificationExtras.putString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY, generateDisplayValue(BIG_TITLE));
             }
             if (mUseBigSummary) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY, mBigSummary);
+              notificationExtras.putString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY, generateDisplayValue(BIG_SUMMARY));
             }
             if (mUseCategory) {
               notificationExtras.putString(Constants.APPBOY_PUSH_CATEGORY_KEY, mCategory);
@@ -173,7 +177,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
               addWearExtraPagesToNotificationBuilder(notificationExtras);
             }
 
-            // Manually build the appboy extras bundle. 
+            // Manually build the appboy extras bundle.
             Bundle appboyExtras = new Bundle();
             if (mUseImage) {
               if (Constants.IS_AMAZON) {
@@ -197,6 +201,11 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
         })).start();
       }
     });
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        && !PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, RuntimePermissionUtils.DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE);
+    }
   }
 
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -253,6 +262,11 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
       default:
         Log.e(TAG, "Item selected for unknown spinner");
     }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    RuntimePermissionUtils.handleOnRequestPermissionsResult(PushTesterActivity.this, requestCode, grantResults);
   }
 
   public void onNothingSelected(AdapterView<?> parent) {
@@ -322,9 +336,9 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
 
   // If shouldOverflowText is specified we concatenate an append string 5 times
   // This is to test big text and ellipsis cutoff in varying screen sizes
-  private String generateDisplayValue(String field, boolean shouldOverFlowText) {
+  private String generateDisplayValue(String field) {
     String appendString = " 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20";
-    if (shouldOverFlowText) {
+    if (mShouldOverflowText) {
       String returnText = field;
       for (int i = 0; i < 5; i++) {
         returnText = returnText + appendString;
@@ -336,13 +350,13 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
   }
 
   private void addWearExtraPagesToNotificationBuilder(Bundle notificationExtras) {
-    for (int i = 0; i < mWearExtraPageTitles.length; i++) {
+    for (int i = 0; i < WEAR_EXTRA_PAGE_TITLES.length; i++) {
       String titleKey = Constants.APPBOY_PUSH_WEAR_EXTRA_PAGE_TITLE_KEY_PREFIX + i;
-      notificationExtras.putString(titleKey, mWearExtraPageTitles[i]);
+      notificationExtras.putString(titleKey, WEAR_EXTRA_PAGE_TITLES[i]);
     }
-    for (int i = 0; i < mWearExtraPageContents.length; i++) {
+    for (int i = 0; i < WEAR_EXTRA_PAGE_CONTENTS.length; i++) {
       String contentKey = Constants.APPBOY_PUSH_WEAR_EXTRA_PAGE_CONTENT_KEY_PREFIX + i;
-      notificationExtras.putString(contentKey, mWearExtraPageContents[i]);
+      notificationExtras.putString(contentKey, WEAR_EXTRA_PAGE_CONTENTS[i]);
     }
   }
 }
