@@ -1,78 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="DecisionOptionText">
-    <item name="android:layout_centerInParent">true</item>
-    <item name="android:textColor">@android:color/white</item>
-  </style>
-  <style name="DecisionSpinButton">
-    <item name="android:text">@string/spin</item>
-    <item name="android:textColor">@android:color/black</item>
-  </style>
 
-  <style name="PopulateButton">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:padding">0dp</item>
-    <item name="android:textSize">10dp</item>
-    <item name="android:textColor">@android:color/black</item>
-    <item name="android:maxLines">3</item>
-  </style>
+    <style name="DecisionOptionText">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
-  <style name="UserSingleLineText">
-    <item name="android:inputType">text|textCapWords</item>
-    <item name="android:singleLine">true</item>
-  </style>
-  <style name="UserEmailAddress">
-    <item name="android:inputType">textEmailAddress</item>
-    <item name="android:singleLine">true</item>
-  </style>
+    <style name="DecisionSpinButton">
+        <item name="android:text">@string/spin</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
-  <style name="InAppMessageTesterButton">
-    <item name="android:layout_width">0.0dp</item>
-    <item name="android:layout_height">match_parent</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:textSize">12dp</item>
-    <item name="android:textStyle">bold</item>
-  </style>
+    <style name="PopulateButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:maxLines">3</item>
+    </style>
 
-  <style name="InAppMessageTesterCheckBox">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@android:color/black</item>
-  </style>
+    <style name="UserSingleLineText">
+        <item name="android:inputType">text|textCapWords</item>
+        <item name="android:singleLine">true</item>
+    </style>
 
-  <style name="InAppMessageTesterTextView">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:paddingLeft">10dp</item>
-    <item name="android:paddingTop">10dp</item>
-    <item name="android:paddingRight">20dp</item>
-    <item name="android:textColor">@android:color/black</item>
-    <item name="android:textStyle">bold</item>
-  </style>
+    <style name="UserEmailAddress">
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:singleLine">true</item>
+    </style>
 
-  <style name="InAppMessageTesterListView">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:choiceMode">singleChoice</item>
-    <item name="android:listSelector">@drawable/listview_selector</item>
-    <item name="android:dividerHeight">0dp</item>
-    <item name="android:divider">@null</item>
-  </style>
+    <style name="InAppMessageTesterButton">
+        <item name="android:layout_width">0.0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-  <style name="Appboy.Feedback.Layout">
-    <item name="android:background">@color/light_gray</item>
-  </style>
-  <style name="Appboy.Feedback.NavigationBar">
-    <item name="android:background">@color/gray</item>
-  </style>
+    <style name="InAppMessageTesterCheckBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
-  <style name="Appboy.Feed.List">
-    <item name="android:background">@color/light_gray</item>
-    <item name="android:cacheColorHint">@color/light_gray</item>
-    <item name="android:divider">@android:color/transparent</item>
-    <item name="android:dividerHeight">16.0dp</item>
-    <item name="android:paddingLeft">12.5dp</item>
-    <item name="android:paddingRight">5.0dp</item>
-    <item name="android:scrollbarStyle">outsideInset</item>
-  </style>
+    <style name="InAppMessageTesterTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="InAppMessageTesterListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:listSelector">@drawable/listview_selector</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+    <style name="Appboy.Feedback.Layout">
+        <item name="android:background">@color/light_gray</item>
+    </style>
+
+    <style name="Appboy.Feedback.NavigationBar">
+        <item name="android:background">@color/gray</item>
+    </style>
+
+    <style name="Appboy.Feed.List">
+        <item name="android:background">@color/red</item>
+        <item name="android:cacheColorHint">@color/red</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">16.0dp</item>
+        <item name="android:paddingLeft">12.5dp</item>
+        <item name="android:paddingRight">5.0dp</item>
+        <item name="android:scrollbarStyle">outsideInset</item>
+    </style>
+
+    <style name="Appboy.Cards.CaptionedImage.Title.Container">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Appboy.Cards.CaptionedImage.Image">
+        <item name="roundedCornerRadius">20dp</item>
+    </style>
+
+    <style name="Appboy.Cards.CaptionedImage">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Appboy.Cards.CaptionedImage.Description">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

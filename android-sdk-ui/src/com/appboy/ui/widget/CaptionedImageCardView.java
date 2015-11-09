@@ -1,15 +1,19 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
 import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
+import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
@@ -33,6 +37,7 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
     super(context);
     if (canUseFresco()) {
       mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_drawee_stub);
+      setRoundingCorners(context);
     } else {
       mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_imageview_stub);
       mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -48,6 +53,15 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
     }
 
     safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
+  }
+
+  private void setRoundingCorners(final Context context) {
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+    float radius = AppboyImageUtils.getPixelsFromDensityAndDp(displayMetrics.densityDpi,20);
+    RoundingParams r = RoundingParams.fromCornersRadii(radius, radius, 0,0);
+    mDrawee.getHierarchy().setRoundingParams(r);
   }
 
   @Override

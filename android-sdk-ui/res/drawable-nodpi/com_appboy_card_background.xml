@@ -4,7 +4,7 @@
   <item>
     <shape>
       <padding android:bottom="@dimen/com_appboy_card_background_shadow_bottom"/>
-      <solid android:color="@color/com_appboy_card_background_shadow"/>
+      <solid android:color="@android:color/transparent"/>
       <corners android:radius="@dimen/com_appboy_card_background_shadow_radius"/>
     </shape>
   </item>
@@ -15,8 +15,8 @@
           android:right="@dimen/com_appboy_card_background_border_right"
           android:top="@dimen/com_appboy_card_background_border_top"
           android:bottom="@dimen/com_appboy_card_background_border_bottom"/>
-      <solid android:color="@color/com_appboy_card_background_border"/>
-      <corners android:radius="@dimen/com_appboy_card_background_shadow_radius"/>
+      <solid android:color="@android:color/transparent"/>
+      <corners android:radius="20dp"/>
     </shape>
   </item>
 
@@ -24,7 +24,7 @@
   <item>
     <shape>
       <solid android:color="@android:color/white"/>
-      <corners android:radius="@dimen/com_appboy_card_background_corner_radius"/>
+      <corners android:radius="20dp"/>
     </shape>
   </item>
 </layer-list>
