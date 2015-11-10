@@ -1,7 +1,9 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,7 +31,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
     public ShortNewsCardView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init(null);
-        AppboyImageUtils.setRoundingCorners(mDrawee, mContext, getRadius(), getRadius(), 0 ,0);
+        AppboyImageUtils.setRoundingCorners(mDrawee, mContext, getRadius(), getRadius(), 0, 0);
     }
 
     public ShortNewsCardView(Context context) {
@@ -48,12 +50,31 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
             mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_imageview_stub);
         }
 
+        setTypeFace();
+
         if (card != null) {
             setCard(card);
         }
 
         safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
         backgroundCorners(((LayerDrawable) getResources().getDrawable(R.drawable.com_appboy_card_background)));
+    }
+
+    private void setTypeFace() {
+        String titleTypeFace = getTitleTypeFaceReference();
+        String messageTypeFace = getMessageTypeFaceReference();
+        if (!TextUtils.isEmpty(getTitleTypeFaceReference())) {
+            titleTypeFace = ensureTypeFaceSuffix(titleTypeFace);
+            Typeface font = Typeface.createFromAsset(mContext.getAssets(), titleTypeFace);
+            mTitle.setTypeface(font);
+        }
+
+        if (!TextUtils.isEmpty(messageTypeFace)) {
+            messageTypeFace = ensureTypeFaceSuffix(messageTypeFace);
+            Typeface font = Typeface.createFromAsset(mContext.getAssets(), messageTypeFace);
+            mDescription.setTypeface(font);
+            mDomain.setTypeface(font);
+        }
     }
 
     @Override

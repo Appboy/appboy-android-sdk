@@ -1,7 +1,9 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -57,7 +59,27 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
             setCard(card);
         }
 
+        setTypeFace();
+
         backgroundCorners(((LayerDrawable) getBackground()));
+    }
+
+    private void setTypeFace() {
+        String titleTypeFace = getTitleTypeFaceReference();
+        String messageTypeFace = getMessageTypeFaceReference();
+        if (!TextUtils.isEmpty(getTitleTypeFaceReference())) {
+            titleTypeFace = ensureTypeFaceSuffix(titleTypeFace);
+            Typeface font = Typeface.createFromAsset(mContext.getAssets(), titleTypeFace);
+            mTitle.setTypeface(font);
+        }
+
+        if (!TextUtils.isEmpty(messageTypeFace)) {
+            messageTypeFace = ensureTypeFaceSuffix(messageTypeFace);
+            Typeface font = Typeface.createFromAsset(mContext.getAssets(), messageTypeFace);
+            mSubtitle.setTypeface(font);
+            mReviewCount.setTypeface(font);
+            mCaption.setTypeface(font);
+        }
     }
 
 

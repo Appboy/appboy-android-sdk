@@ -83,14 +83,6 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
     }
 
 
-    private String ensureTypeFaceSuffix(String typeFace) {
-        if (!typeFace.endsWith(".ttf"))
-            typeFace += ".ttf";
-
-        return typeFace;
-    }
-
-
     @Override
     protected int getLayoutResource() {
         return R.layout.com_appboy_captioned_image_card;

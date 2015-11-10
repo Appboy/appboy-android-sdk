@@ -351,4 +351,17 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
             }
         }
     }
+
+    /**
+     * Ensure that the typeFace specified in {@link R.styleable.com_appboy_ui_widget_CardView_appboyCardViewRoundedCorners}
+     * have file extension .ttf
+     * @param typeFace key representing a font stored in assets
+     * @return The typeFace key with the suffix .ttf
+     */
+    protected String ensureTypeFaceSuffix(String typeFace) {
+        if (!typeFace.endsWith(".ttf"))
+            typeFace += ".ttf";
+
+        return typeFace;
+    }
 }
