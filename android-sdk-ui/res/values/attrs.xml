@@ -7,4 +7,14 @@
   <declare-styleable name="com.appboy.ui.inappmessage.AppboyInAppMessageButtonView">
     <attr name="appboyInAppMessageCustomFontFile"/>
   </declare-styleable>
+
+  <declare-styleable name="com.appboy.ui.widget.CardView">
+    <attr name="appboyCardViewRoundedCorners"  format="dimension"/>
+    <!-- Generic Font for all the texts in the card -->
+    <attr name="appboyCardViewCustomFont" format="string"/>
+    <!-- Font for the title text in the card. If specified, appboyCardViewCustomFont will be ignored for title-->
+    <attr name="appboyCardViewCustomFontTitle" format="string"/>
+    <!-- Font for the messages text in the card. If specified, appboyCardViewCustomFont will be ignored for title -->
+    <attr name="appboyCardViewCustomFontMessage" format="string"/>
+  </declare-styleable>
 </resources>
