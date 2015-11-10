@@ -81,11 +81,11 @@
     </style>
 
     <style name="Appboy.Cards.CaptionedImage.Title.Container">
+        <item name="android:textColor">@color/com_appboy_title</item>
+        <item name="android:textSize">17.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="Appboy.Cards.CaptionedImage.Image">
-        <item name="roundedCornerRadius">20dp</item>
     </style>
 
     <style name="Appboy.Cards.CaptionedImage">
@@ -93,6 +93,15 @@
     </style>
 
     <style name="Appboy.Cards.CaptionedImage.Description">
+        <item name="android:textColor">@color/com_appboy_description</item>
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingBottom">8.0dp</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Appboy.Cards">
+        <item name="appboyCardViewRoundedCorners">20dp</item>
+        <item name="appboyCardViewCustomFontTitle">doridrobot</item>
     </style>
 </resources>
