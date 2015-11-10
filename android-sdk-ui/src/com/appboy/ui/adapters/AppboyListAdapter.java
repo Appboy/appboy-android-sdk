@@ -2,7 +2,7 @@ package com.appboy.ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import com.appboy.support.AppboyLogger;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,14 +14,11 @@ import com.appboy.models.cards.Card;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
+import com.appboy.support.AppboyLogger;
+import com.appboy.ui.R;
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
-import com.appboy.ui.widget.BannerImageCardView;
 import com.appboy.ui.widget.BaseCardView;
-import com.appboy.ui.widget.CaptionedImageCardView;
-import com.appboy.ui.widget.CrossPromotionSmallCardView;
 import com.appboy.ui.widget.DefaultCardView;
-import com.appboy.ui.widget.ShortNewsCardView;
-import com.appboy.ui.widget.TextAnnouncementCardView;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,12 +51,14 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
   private final Context mContext;
   private final Set<String> mCardIdImpressions;
   private final XmlUIConfigurationProvider mUiConfigurationProvider;
+  private final LayoutInflater mInflater;
 
   public AppboyListAdapter(Context context, int layoutResourceId, List<Card> cards) {
     super(context, layoutResourceId, cards);
     mContext = context;
     mCardIdImpressions = new HashSet<String>();
     mUiConfigurationProvider = new XmlUIConfigurationProvider(context);
+    mInflater = LayoutInflater.from(mContext);
   }
 
   /**
@@ -100,15 +99,15 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
 
     if (convertView == null) {
       if (card instanceof BannerImageCard) {
-        view = new BannerImageCardView(mContext);
+        view = (BaseCardView) mInflater.inflate(R.layout.com_appboy_banner_image_card_layout, parent, false);
       } else if (card instanceof CaptionedImageCard) {
-        view = new CaptionedImageCardView(mContext);
+        view = (BaseCardView) mInflater.inflate(R.layout.com_appboy_captioned_image_card_layout, parent, false);
       } else if (card instanceof CrossPromotionSmallCard) {
-        view = new CrossPromotionSmallCardView(mContext);
+        view = (BaseCardView) mInflater.inflate(R.layout.com_appboy_cross_promotion_card_layout, parent, false);
       } else if (card instanceof ShortNewsCard) {
-        view = new ShortNewsCardView(mContext);
+        view = (BaseCardView) mInflater.inflate(R.layout.com_appboy_short_news_card_layout, parent, false);
       } else if (card instanceof TextAnnouncementCard) {
-        view = new TextAnnouncementCardView(mContext);
+        view = (BaseCardView) mInflater.inflate(R.layout.com_appboy_text_announcement_card_layout, parent, false);
       } else {
         view = new DefaultCardView(mContext);
       }
