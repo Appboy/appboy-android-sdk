@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.ViewTreeObserver;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -143,27 +144,14 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
             if (mImageSwitcher != null) {
                 int resourceId;
                 if (getCard().isRead()) {
-                    resourceId = R.drawable.icon_read;
-                    if (iconReadDrawable == null) {
-                        mImageSwitcher.setImageResource(resourceId);
-                        mImageSwitcher.setBackgroundResource(R.drawable.icon_read);
-                    } else {
+                    if (iconReadDrawable != null) {
                         mImageSwitcher.setImageDrawable(iconReadDrawable);
-                        mImageSwitcher.setBackground(null);
                     }
                 } else {
-                    resourceId = R.drawable.icon_unread;
-                    if (iconUnreadDrawable == null) {
-                        mImageSwitcher.setImageResource(resourceId);
-                        mImageSwitcher.setBackgroundResource(R.drawable.icon_unread);
-                    } else {
+                    if (iconUnreadDrawable != null){
                         mImageSwitcher.setImageDrawable(iconUnreadDrawable);
-                        mImageSwitcher.setBackground(null);
                     }
                 }
-
-                // Used to identify the current Drawable in the imageSwitcher
-                mImageSwitcher.setTag(String.valueOf(resourceId));
             } else {
                 AppboyLogger.d(TAG, "The imageSwitcher for the read/unread feature is null. Did you include it in your xml?");
             }
