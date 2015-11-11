@@ -10,11 +10,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.ViewTreeObserver;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
@@ -43,11 +41,13 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     private static final String COM_APPBOY_NEWSFEED_UNREAD_VISUAL_INDICATOR_ON = "com_appboy_newsfeed_unread_visual_indicator_on";
 
     protected final Context mContext;
+    private Drawable iconUnreadDrawable;
+    private Drawable iconReadDrawable;
     private String[] mTypeFaces;
     private String mTypeFaceReference;
     private float mRadius;
     protected T mCard;
-    protected ImageSwitcher mImageSwitcher;
+    protected ImageView mImageSwitcher;
     protected boolean mCanUseFresco;
 
 
@@ -74,6 +74,9 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
                 mTypeFaces[TYPE_FACE_GENERIC_INDEX] = a.getString(R.styleable.com_appboy_ui_widget_CardView_appboyCardViewCustomFont);
                 mTypeFaces[TYPE_FACE_TITLE_INDEX] = a.getString(R.styleable.com_appboy_ui_widget_CardView_appboyCardViewCustomFontTitle);
                 mTypeFaces[TYPE_FACE_MESSAGE_INDEX] = a.getString(R.styleable.com_appboy_ui_widget_CardView_appboyCardViewCustomFontMessage);
+
+                iconReadDrawable = a.getDrawable(R.styleable.com_appboy_ui_widget_CardView_appboyCardViewIconReadDrawable);
+                iconUnreadDrawable = a.getDrawable(R.styleable.com_appboy_ui_widget_CardView_appboyCardViewIconUnreadDrawable);
             } finally {
                 a.recycle();
             }
@@ -98,15 +101,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
         // All implementing views of BaseCardView must include this switcher view in order to have the
         // read/unread functionality. Views that don't have the indicator (like banner views) won't have the image switcher
         // in them and thus we do the null-check below.
-        mImageSwitcher = (ImageSwitcher) findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
-        if (mImageSwitcher != null) {
-            mImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-                @Override
-                public View makeView() {
-                    return new ImageView(mContext.getApplicationContext());
-                }
-            });
-        }
+        mImageSwitcher = (ImageView) findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
 
         // If the visual indicator on cards shouldn't be on, due to the xml setting in appboy.xml, then set the
         // imageSwitcher to GONE to hide the indicator UI.
@@ -149,10 +144,24 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
                 int resourceId;
                 if (getCard().isRead()) {
                     resourceId = R.drawable.icon_read;
+                    if (iconReadDrawable == null) {
+                        mImageSwitcher.setImageResource(resourceId);
+                        mImageSwitcher.setBackgroundResource(R.drawable.icon_read);
+                    } else {
+                        mImageSwitcher.setImageDrawable(iconReadDrawable);
+                        mImageSwitcher.setBackground(null);
+                    }
                 } else {
                     resourceId = R.drawable.icon_unread;
+                    if (iconUnreadDrawable == null) {
+                        mImageSwitcher.setImageResource(resourceId);
+                        mImageSwitcher.setBackgroundResource(R.drawable.icon_unread);
+                    } else {
+                        mImageSwitcher.setImageDrawable(iconUnreadDrawable);
+                        mImageSwitcher.setBackground(null);
+                    }
                 }
-                mImageSwitcher.setImageResource(resourceId);
+
                 // Used to identify the current Drawable in the imageSwitcher
                 mImageSwitcher.setTag(String.valueOf(resourceId));
             } else {
@@ -340,10 +349,9 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     /**
      * Round corners of the background, if it is a {@link LayerDrawable}.
      *
-     * @param drawable The LayerDrawable of the background
+     * @param layers The LayerDrawable of the background
      */
-    protected void backgroundCorners(LayerDrawable drawable) {
-        LayerDrawable layers = ((LayerDrawable) drawable);
+    protected void backgroundCorners(LayerDrawable layers) {
         for (int i = 0; i < layers.getNumberOfLayers(); i++) {
             Drawable item = layers.getDrawable(i);
             if (item instanceof GradientDrawable) {
@@ -355,6 +363,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     /**
      * Ensure that the typeFace specified in {@link R.styleable.com_appboy_ui_widget_CardView_appboyCardViewRoundedCorners}
      * have file extension .ttf
+     *
      * @param typeFace key representing a font stored in assets
      * @return The typeFace key with the suffix .ttf
      */

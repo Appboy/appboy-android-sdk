@@ -16,5 +16,7 @@
     <attr name="appboyCardViewCustomFontTitle" format="string"/>
     <!-- Font for the messages text in the card. If specified, appboyCardViewCustomFont will be ignored for title -->
     <attr name="appboyCardViewCustomFontMessage" format="string"/>
+    <attr name="appboyCardViewIconReadDrawable" format="reference"/>
+    <attr name="appboyCardViewIconUnreadDrawable" format="reference"/>
   </declare-styleable>
 </resources>
