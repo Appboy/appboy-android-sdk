@@ -103,5 +103,7 @@
     <style name="Appboy.Cards">
         <item name="appboyCardViewRoundedCorners">20dp</item>
         <item name="appboyCardViewCustomFontTitle">doridrobot</item>
+        <item name="appboyCardViewIconReadDrawable">@drawable/appboy_icon_read</item>
+        <item name="appboyCardViewIconUnreadDrawable">@drawable/appboy_icon_unread</item>
     </style>
 </resources>
