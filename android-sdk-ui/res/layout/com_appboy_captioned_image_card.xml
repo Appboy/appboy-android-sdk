@@ -12,13 +12,15 @@
       android:inflatedId="@+id/com_appboy_captioned_image_card_image"
       style="@style/Appboy.Cards.CaptionedImage.Image"/>
 
+    <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
+
     <RelativeLayout
         android:id="@+id/com_appboy_captioned_image_card_title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/com_appboy_captioned_image_card_image"
         style="@style/Appboy.Cards.CaptionedImage.Title.Container">
-        <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
+
 
         <TextView
             android:id="@+id/com_appboy_captioned_image_title"

@@ -1,10 +1,15 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
+import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.ui.R;
@@ -13,62 +18,88 @@ import com.appboy.ui.actions.IAction;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
-  private ImageView mImage;
-  private SimpleDraweeView mDrawee;
-  private final TextView mTitle;
-  private final TextView mDescription;
-  private final TextView mDomain;
-  private IAction mCardAction;
-  private final float mAspectRatio = 1f;
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, ShortNewsCardView.class.getName());
+    private ImageView mImage;
+    private SimpleDraweeView mDrawee;
+    private TextView mTitle;
+    private TextView mDescription;
+    private TextView mDomain;
+    private IAction mCardAction;
+    private final float mAspectRatio = 1f;
+    private static final String TAG = String.format("%s.%s", Constants.APPBOY, ShortNewsCardView.class.getName());
 
 
-  public ShortNewsCardView(Context context) {
-    this(context, null);
-  }
-
-  public ShortNewsCardView(final Context context, ShortNewsCard card) {
-    super(context);
-    mDescription = (TextView) findViewById(R.id.com_appboy_short_news_card_description);
-    mTitle = (TextView) findViewById(R.id.com_appboy_short_news_card_title);
-    mDomain = (TextView) findViewById(R.id.com_appboy_short_news_card_domain);
-
-    if (canUseFresco()) {
-      mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_drawee_stub);
-    } else {
-      mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_imageview_stub);
+    public ShortNewsCardView(final Context context, final AttributeSet attrs) {
+        super(context, attrs);
+        init(null);
+        AppboyImageUtils.setRoundingCorners(mDrawee, mContext, getRadius(), getRadius(), 0, 0);
     }
 
-    if (card != null) {
-      setCard(card);
+    public ShortNewsCardView(Context context) {
+        super(context);
+        init(null);
     }
 
-    safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
-  }
+    private void init(final ShortNewsCard card) {
+        mDescription = (TextView) findViewById(R.id.com_appboy_short_news_card_description);
+        mTitle = (TextView) findViewById(R.id.com_appboy_short_news_card_title);
+        mDomain = (TextView) findViewById(R.id.com_appboy_short_news_card_domain);
 
-  @Override
-  protected int getLayoutResource() {
-    return R.layout.com_appboy_short_news_card;
-  }
+        if (canUseFresco()) {
+            mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_drawee_stub);
+        } else {
+            mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_imageview_stub);
+        }
 
-  @Override
-  public void onSetCard(final ShortNewsCard card) {
-    mDescription.setText(card.getDescription());
-    setOptionalTextView(mTitle, card.getTitle());
-    setOptionalTextView(mDomain, card.getDomain());
-    mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
+        setTypeFace();
 
-    setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        handleCardClick(mContext, card, mCardAction, TAG);
-      }
-    });
+        if (card != null) {
+            setCard(card);
+        }
 
-    if (canUseFresco()) {
-      setSimpleDraweeToUrl(mDrawee, card.getImageUrl(), mAspectRatio, true);
-    } else {
-      setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
+        safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
+        backgroundCorners(((LayerDrawable) getResources().getDrawable(R.drawable.com_appboy_card_background)));
     }
-  }
+
+    private void setTypeFace() {
+        String titleTypeFace = getTitleTypeFaceReference();
+        String messageTypeFace = getMessageTypeFaceReference();
+        if (!TextUtils.isEmpty(getTitleTypeFaceReference())) {
+            titleTypeFace = ensureTypeFaceSuffix(titleTypeFace);
+            Typeface font = Typeface.createFromAsset(mContext.getAssets(), titleTypeFace);
+            mTitle.setTypeface(font);
+        }
+
+        if (!TextUtils.isEmpty(messageTypeFace)) {
+            messageTypeFace = ensureTypeFaceSuffix(messageTypeFace);
+            Typeface font = Typeface.createFromAsset(mContext.getAssets(), messageTypeFace);
+            mDescription.setTypeface(font);
+            mDomain.setTypeface(font);
+        }
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.com_appboy_short_news_card;
+    }
+
+    @Override
+    public void onSetCard(final ShortNewsCard card) {
+        mDescription.setText(card.getDescription());
+        setOptionalTextView(mTitle, card.getTitle());
+        setOptionalTextView(mDomain, card.getDomain());
+        mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
+
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCardClick(mContext, card, mCardAction, TAG);
+            }
+        });
+
+        if (canUseFresco()) {
+            setSimpleDraweeToUrl(mDrawee, card.getImageUrl(), mAspectRatio, true);
+        } else {
+            setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
+        }
+    }
 }
