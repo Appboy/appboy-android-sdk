@@ -45,7 +45,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
   private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
-  private static final String CUSTOM_INAPPMESSAGE_WEBVIEW_CLIENT_LISTENER_KEY = "inappmessages_custom_inappmessage_webview_client_listener";
+  private static final String CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY = "inappmessages_custom_appboy_html_inappmessage_action_listener";
 
   // '#' characters at the end of headers and messages are used to verify that the entire message was displayed.
   private static final String HEADER_10 = "Hey there#";
@@ -72,6 +72,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final int GOOGLE_YELLOW = 0xFFFFEB3B;
   private static final int GOOGLE_GREEN = 0xFF4CAF50;
   private static final int APPBOY_BLUE = 0xFF0073d5;
+  private static final int TRANSPARENT_APPBOY_BLUE = 0x220073d5;
   private static final int GOOGLE_PURPLE = 0xFF673AB7;
   private static final int GOOGLE_BROWN = 0xFF795548;
   private static final int GOOGLE_GREY = 0xFF9E9E9E;
@@ -93,6 +94,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     spinnerOptionMap.put(R.id.inapp_close_button_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_text_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_header_text_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_modal_frame_spinner, R.array.inapp_modal_frame_options);
     spinnerOptionMap.put(R.id.inapp_uri_spinner, R.array.inapp_uri_options);
     spinnerOptionMap.put(R.id.inapp_icon_spinner, R.array.inapp_icon_options);
     spinnerOptionMap.put(R.id.inapp_image_spinner, R.array.inapp_image_options);
@@ -113,6 +115,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mCloseButtonColor;
   private String mTextColor;
   private String mHeaderTextColor;
+  private String mModalFrameColor;
   private String mIcon;
   private String mImage;
   private String mButtons;
@@ -215,8 +218,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     boolean usingCustomInAppAnimation = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
     customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
 
-    CheckBox customInAppMessageWebViewClientListenerCheckBox = (CheckBox) findViewById(R.id.custom_appboy_webview_client_listener_checkbox);
-    customInAppMessageWebViewClientListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    CheckBox customHtmlInAppMessageActionListenerCheckBox = (CheckBox) findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
+    customHtmlInAppMessageActionListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
@@ -224,11 +227,11 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         } else {
           AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_WEBVIEW_CLIENT_LISTENER_KEY, isChecked).apply();
+        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomInAppWebViewClientListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_WEBVIEW_CLIENT_LISTENER_KEY, false);
-    customInAppMessageWebViewClientListenerCheckBox.setChecked(usingCustomInAppWebViewClientListener);
+    boolean usingCustomHtmlInAppActionListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
+    customHtmlInAppMessageActionListenerCheckBox.setChecked(usingCustomHtmlInAppActionListener);
 
     Button displayNextInAppMessageButton = (Button) findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -264,11 +267,11 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps.  This is a modal in-app message.");
       inAppMessage.setHeader("Hello from Appboy!");
       inAppMessage.setIcon("\uf091");
+      setModalFrameColor(((InAppMessageModal) inAppMessage));
     } else if (inAppMessage instanceof InAppMessageFull) {
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.");
       inAppMessage.setHeader("Hello from Appboy!");
-      inAppMessage.setImageUrl(getResources().getString(R.string.appboy_url));
-
+      inAppMessage.setImageUrl(getResources().getString(R.string.appboy_image_url));
     }
     ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
     MessageButton buttonOne = new MessageButton();
@@ -462,44 +465,48 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     }
   }
 
+  private void setModalFrameColor(InAppMessageModal inAppMessage) {
+    if (!SpinnerUtils.SpinnerItemNotSet(mModalFrameColor)) {
+      inAppMessage.setModalFrameColor(parseColorFromString(mModalFrameColor));
+    }
+  }
+
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
     // add message buttons.
     if (!SpinnerUtils.SpinnerItemNotSet(mButtons)) {
-      ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
       if ("none".equals(mButtons)) {
         inAppMessage.setMessageButtons(null);
-      } else if ("one".equals(mButtons)) {
-        MessageButton buttonOne = new MessageButton();
-        buttonOne.setText("NEWSFEED");
+        return;
+      }
+      ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
+      MessageButton buttonOne = new MessageButton();
+      if ("one".equals(mButtons)) {
         buttonOne.setBackgroundColor(Color.BLACK);
         buttonOne.setClickAction(ClickAction.NEWS_FEED);
+        buttonOne.setText("NEWSFEED");
         messageButtons.add(buttonOne);
         inAppMessage.setMessageButtons(messageButtons);
-      } else if ("two".equals(mButtons)) {
-        MessageButton buttonOne = new MessageButton();
+        return;
+      }
+      MessageButton buttonTwo = new MessageButton();
+      if ("two".equals(mButtons) || "long".equals(mButtons)) {
         buttonOne.setText("ACCEPT");
-        buttonOne.setClickAction(ClickAction.URI, Uri.parse("http://www.appboy.com"));
-        inAppMessage.setMessageButtons(messageButtons);
-        messageButtons.add(buttonOne);
-        MessageButton buttonTwo = new MessageButton();
+        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.appboy_homepage_url)));
         buttonTwo.setText("CLOSE");
         buttonTwo.setClickAction(ClickAction.NONE);
-        messageButtons.add(buttonTwo);
-        inAppMessage.setMessageButtons(messageButtons);
-      } else if ("long".equals(mButtons)) {
-        MessageButton buttonOne = new MessageButton();
-        buttonOne.setText("ACCEPT BUTTON ONE WITH A VERY LONG TITLE");
-        buttonOne.setBackgroundColor(Color.BLACK);
-        buttonOne.setClickAction(ClickAction.URI, Uri.parse("http://www.appboy.com"));
-        inAppMessage.setMessageButtons(messageButtons);
-        messageButtons.add(buttonOne);
-        MessageButton buttonTwo = new MessageButton();
-        buttonTwo.setText("CLOSE BUTTON TWO WITH A VERY LONG TITLE");
-        buttonTwo.setBackgroundColor(Color.BLACK);
-        buttonTwo.setClickAction(ClickAction.NONE);
-        messageButtons.add(buttonTwo);
-        inAppMessage.setMessageButtons(messageButtons);
+        if ("long".equals(mButtons)) {
+          buttonOne.setText("ACCEPT WITH A VERY LONG TITLE");
+          buttonTwo.setText("CLOSE WITH A VERY LONG TITLE");
+        }
+      } else if ("deeplink".equals(mButtons)) {
+        buttonOne.setText("TELEPHONE");
+        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.telephone_uri)));
+        buttonTwo.setText("PLAY STORE");
+        buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.play_store_uri)));
       }
+      messageButtons.add(buttonOne);
+      messageButtons.add(buttonTwo);
+      inAppMessage.setMessageButtons(messageButtons);
     }
   }
 
@@ -544,6 +551,9 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       case R.id.inapp_header_text_color_spinner:
         mHeaderTextColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
         break;
+      case R.id.inapp_modal_frame_spinner:
+        mModalFrameColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_modal_frame_values);
+        break;
       case R.id.inapp_icon_spinner:
         mIcon = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_icon_values);
         break;
@@ -583,6 +593,10 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       return BLACK;
     } else if (colorString.equals("white")) {
       return WHITE;
+    } else if (colorString.equals("transparent")) {
+      return 0;
+    } else if (colorString.equals("almost_transparent_blue")) {
+      return TRANSPARENT_APPBOY_BLUE;
     } else {
       return 0;
     }

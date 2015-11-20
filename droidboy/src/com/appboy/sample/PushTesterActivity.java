@@ -196,7 +196,10 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
               getApplicationContext(),
               notificationExtras,
               appboyExtras);
-            mNotificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, AppboyNotificationUtils.getNotificationId(notificationExtras), notification);
+
+            if (notification != null) {
+              mNotificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, AppboyNotificationUtils.getNotificationId(notificationExtras), notification);
+            }
           }
         })).start();
       }
@@ -295,7 +298,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     } else if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI)) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.appboy_url));
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.appboy_homepage_url));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "0"), getString(R.string.droidboy_icon_name));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Google");

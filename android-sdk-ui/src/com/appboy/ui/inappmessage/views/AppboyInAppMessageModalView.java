@@ -40,6 +40,10 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     }
   }
 
+  public void setModalFrameColor(Integer color) {
+    InAppMessageViewUtils.setModalFrameColor(findViewById(R.id.com_appboy_inappmessage_modal_frame), color);
+  }
+
   @Override
   public void setMessageBackgroundColor(int color) {
     InAppMessageViewUtils.setViewBackgroundColorFilter(findViewById(R.id.com_appboy_inappmessage_modal),

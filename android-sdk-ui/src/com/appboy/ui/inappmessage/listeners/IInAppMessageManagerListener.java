@@ -8,7 +8,9 @@ import com.appboy.ui.inappmessage.InAppMessageOperation;
 /**
  * The IInAppMessageManagerListener returns the in-app message at specific
  * events in its control flow and gives the host app the option of
- * overriding Appboy's default display/analytics handling and implementing its own custom behavior.
+ * overriding Appboy's default display handling and implementing its own custom behavior.
+ *
+ * If you are implementing Unity, you must use IAppboyUnityInAppMessageListener instead.
  *
  * See {@link com.appboy.ui.inappmessage.AppboyInAppMessageManager}
  */

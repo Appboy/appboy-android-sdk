@@ -11,7 +11,7 @@
   <string-array name="inapp_image_values">
     <item>not set</item>
     <item>none</item>
-    <item>@string/appboy_url</item>
+    <item>@string/appboy_image_url</item>
     <item>@string/blue_url</item>
     <item>@string/appboy_gif_url</item>
     <item>@string/appboy_siege_gif_url</item>

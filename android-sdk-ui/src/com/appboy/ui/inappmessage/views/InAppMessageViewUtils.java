@@ -69,6 +69,12 @@ public class InAppMessageViewUtils {
     }
   }
 
+  public static void setModalFrameColor(View view, Integer color) {
+    if (color != null) {
+      view.setBackgroundColor(color);
+    }
+  }
+
   public static void setTextViewColor(TextView textView, int color) {
     if (isValidInAppMessageColor(color)) {
       textView.setTextColor(color);

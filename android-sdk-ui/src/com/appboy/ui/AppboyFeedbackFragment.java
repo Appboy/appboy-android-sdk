@@ -23,11 +23,25 @@ import com.appboy.ui.support.StringUtils;
 public class AppboyFeedbackFragment extends Fragment {
 
   /**
-   * Listener to be called after the feedback has been submitted or cancelled, and before a user-submitted message is sent to Appboy.
+   * Listener called in response to feedback lifecycle events.
    */
   public interface FeedbackFinishedListener {
+
+    /**
+     * Called when the user finishes the feedback fragment by submitting feedback or cancelling.
+     *
+     * @param feedbackResult
+     */
     void onFeedbackFinished(FeedbackResult feedbackResult);
-    // The input is the message submitted by the user, and the return value will be submitted to Appboy.
+
+    /**
+     * Called just before a user-submitted feedback message is sent to Appboy.
+     *
+     * Allows modification or augmentation of the message before it is sent to Appboy.
+     *
+     * @param message the feedback message as written by the user
+     * @return the feedback message that will be sent to Appboy
+     */
     String beforeFeedbackSubmitted(String message);
   }
 
@@ -143,7 +157,7 @@ public class AppboyFeedbackFragment extends Fragment {
 
   private boolean validatedMessage() {
     boolean validMessage = mMessageEditText.getText() != null && !StringUtils.isNullOrBlank(mMessageEditText.getText().toString());
-    if (validMessage){
+    if (validMessage) {
         mMessageEditText.setError(null);
     } else {
       // Display error message in the message box

@@ -1,6 +1,7 @@
 package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 
@@ -20,6 +21,7 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
       mMessageWebView = (WebView) findViewById(R.id.com_appboy_inappmessage_html_full_webview);
       if (mMessageWebView != null) {
         mMessageWebView.getSettings().setJavaScriptEnabled(true);
+        mMessageWebView.setBackgroundColor(Color.TRANSPARENT);
       }
     }
     return mMessageWebView;

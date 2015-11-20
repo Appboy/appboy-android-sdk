@@ -5,9 +5,10 @@ dependencies {
   compile project(':android-sdk-ui')
   // Note: This requires the Android Support Repository to be installed, please see the README.md
   compile 'com.android.support:support-v4:23.0.1'
-  compile 'com.google.android.support:wearable:1.2.0'
-  compile 'com.google.android.gms:play-services-wearable:7.5.0'
-  compile "com.facebook.fresco:fresco:0.6.1"
+  compile 'com.google.android.support:wearable:1.3.0'
+  compile 'com.google.android.gms:play-services-wearable:8.3.0'
+  compile 'com.google.android.gms:play-services-ads:8.3.0'
+  compile 'com.facebook.fresco:fresco:0.6.1'
   // To link the wearboy app with Droidboy
   wearApp project(':wearboy')
 }

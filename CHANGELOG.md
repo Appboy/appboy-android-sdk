@@ -1,3 +1,11 @@
+## 1.11.0
+- Makes the WebView background for HTML in-app messages transparent.  Ensure your HTML in-app messages expect a transparent background.
+- Updates Google Play Services from to 7.5.0 to 8.3.0 and Play Services Support from 1.2.0 to 1.3.0.
+- Creates Activity based Unity in-app messages (fixing an issue where touches on in-app messages were hitting the game behind the in-app message) and removes redundant Unity permissions.
+- Updates Appboy WebView to support redirects to deep links and enables DOM storage.
+- Adds a method for setting modal frame color on in-app messages, no longer displays in-app messages on asset download failure and adds robustness.
+- Adds deep link support to AppboyUnityGcmReceiver.
+
 ## 1.10.3
 - Adds Android M Support.  Under the runtime permissions model introduced in Android M, location permission must be explicitly obtained from the end user by the integrating app.  Once location permission is granted, Appboy will resume location data collection on the subsequent session.
 
@@ -53,6 +61,7 @@
   and should not be set in a released application as logging statements are essential for debugging.
 - Adds getAppboyPushMessageRegistrationId() to the Appboy interface to enable retrieval of the GCM/ADM/Baidu registration ID Appboy has set for the device.
 - Updates our libraries to build against API level 22.
+- Blacklisted custom attributes may no longer be incremented.
 
 ## 1.7.2
 - Removes DownloadUtils.java from com.appboy.ui.support.  The downloadImageBitmap function has been moved to com.appboy.AppboyImageUtils.
@@ -82,7 +91,7 @@
 - Updates our UI library to build against API level 21. 
 - Adds a major performance upgrade that reduces CPU usage, memory footprint, and network traffic. 
 - Adds 26 additional languages to localization support for Appboy UI elements.
-- Adds local blocking of blacklisted properties.
+- Adds local blocking for blacklisted custom attributes, events, and purchases.  However, blacklisted attributes may still be incremented (removed in release 1.7.3).
 - Adds the ability to set the accent color for notification in Android Lollipop and above.  This can be done by setting the com_appboy_default_notification_accent_color integer in your appboy.xml. 
 - Updates the News Feed to render wider on tablet screens.
 - Adds swipe handling for in-app messages on APIs <= 11.
