@@ -55,6 +55,12 @@ public class DroidGirlActivity extends AppboyFragmentActivity {
       case R.id.settings:
         startActivity(new Intent(this, PreferencesActivity.class));
         break;
+      case R.id.inappmessages:
+        startActivity(new Intent(this, InAppMessageTesterActivity.class));
+        break;
+      case R.id.push_testing:
+        startActivity(new Intent(this, PushTesterActivity.class));
+        break;
       default:
         Log.e(TAG, String.format("MenuItem not found: [%s]", item.getTitle()));
     }

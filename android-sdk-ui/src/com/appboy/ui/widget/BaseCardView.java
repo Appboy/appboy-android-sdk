@@ -3,9 +3,9 @@ package com.appboy.ui.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import com.appboy.support.AppboyLogger;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -16,10 +16,13 @@ import android.widget.ViewSwitcher;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.PackageUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.support.FrescoLibraryUtils;
 import com.appboy.ui.support.StringUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -36,9 +39,13 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   protected final Context mContext;
   protected T mCard;
   protected ImageSwitcher mImageSwitcher;
+  private final boolean mCanUseFresco;
 
   public BaseCardView(Context context) {
     super(context);
+    // Note: this must be called before we inflate any views.
+    mCanUseFresco = FrescoLibraryUtils.canUseFresco(context);
+
     mContext = context;
     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     inflater.inflate(getLayoutResource(), this);
@@ -223,12 +230,50 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     }
   }
 
+  /**
+   * Loads an image via url for display in a SimpleDraweeView using the Facebook Fresco library.
+   * By default, gif urls are set to autoplay and tap to retry is on for all images.
+   * @param simpleDraweeView the fresco SimpleDraweeView in which to display the image
+   * @param imageUrl the URL of the image resource
+   */
+  void setSimpleDraweeToUrl(final SimpleDraweeView simpleDraweeView, final String imageUrl, final float aspectRatio, final boolean respectAspectRatio) {
+    if (imageUrl == null) {
+      AppboyLogger.w(TAG, "The image url to render is null. Not setting the card image.");
+      return;
+    }
+
+    FrescoLibraryUtils.setDraweeControllerHelper(simpleDraweeView, imageUrl, aspectRatio, respectAspectRatio);
+  }
+
+  /**
+   * Returns whether we can use the Fresco Library for newsfeed cards.
+   */
+  boolean canUseFresco() {
+    return mCanUseFresco;
+  }
+
   protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag){
     card.setIsRead(true);
     if(cardAction != null){
       AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
       card.logClick();
       cardAction.execute(context);
+    }
+  }
+
+  /**
+   * Gets the view to display the correct card image after checking if it can use Fresco.
+   * @param stubLayoutId The resource Id of the stub for inflation as returned by findViewById.
+   * @return the view to display the image. This will either be an ImageView or DraweeView
+   */
+  View getProperViewFromInflatedStub(int stubLayoutId) {
+    ViewStub imageStub = (ViewStub) findViewById(stubLayoutId);
+    imageStub.inflate();
+
+    if (mCanUseFresco) {
+      return findViewById(R.id.com_appboy_stubbed_feed_drawee_view);
+    } else {
+      return findViewById(R.id.com_appboy_stubbed_feed_image_view);
     }
   }
 }

@@ -158,6 +158,23 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/custom_purchase_currency_code_button"
+                style="@style/PopulateButton"
+                android:text="@string/custom_logging_custom_purchase_currency_code"/>
+
+            <EditText
+                android:id="@+id/custom_purchase_currency_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="4"
+                style="@style/UserSingleLineText"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
                 android:id="@+id/purchase_property_button"
                 style="@style/PopulateButton"
                 android:text="@string/custom_logging_custom_purchase_property"/>

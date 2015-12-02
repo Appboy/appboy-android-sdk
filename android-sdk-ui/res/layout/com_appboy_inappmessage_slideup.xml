@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.appboy.ui.inappmessage.AppboyInAppMessageSlideupView
+<com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_appboy_inappmessage_slideup"
     style="@style/Appboy.InAppMessage.Slideup">
@@ -8,17 +8,22 @@
         android:id="@+id/com_appboy_inappmessage_slideup_image_layout"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content">
-        <ImageView
-            android:id="@+id/com_appboy_inappmessage_slideup_image"
+        <ViewStub
+            android:id="@+id/com_appboy_inappmessage_slideup_imageview_stub"
+            android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
+            style="@style/Appboy.InAppMessage.Image.Slideup"/>
+        <ViewStub
+            android:id="@+id/com_appboy_inappmessage_slideup_drawee_stub"
+            android:layout="@layout/com_appboy_stubbed_inappmessage_drawee_view"
             style="@style/Appboy.InAppMessage.Image.Slideup"/>
         <TextView
             android:id="@+id/com_appboy_inappmessage_slideup_icon"
             style="@style/Appboy.InAppMessage.Icon.Slideup"/>
     </RelativeLayout>
-    <TextView
+    <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
         android:id="@+id/com_appboy_inappmessage_slideup_message"
         style="@style/Appboy.InAppMessage.Message.Slideup"/>
     <ImageView
         android:id="@+id/com_appboy_inappmessage_slideup_chevron"
         style="@style/Appboy.InAppMessage.Chevron"/>
-</com.appboy.ui.inappmessage.AppboyInAppMessageSlideupView>
+</com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlFullView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_appboy_inappmessage_html_full"
+    android:orientation="horizontal"
+    style="@style/Appboy.InAppMessage.Html">
+
+    <WebView
+        android:id="@+id/com_appboy_inappmessage_html_full_webview"
+        style="@style/Appboy.InAppMessage.Html.Webview"/>
+</com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlFullView>

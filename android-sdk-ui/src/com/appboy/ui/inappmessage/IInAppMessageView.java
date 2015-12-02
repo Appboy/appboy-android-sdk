@@ -2,6 +2,12 @@ package com.appboy.ui.inappmessage;
 
 import android.view.View;
 
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageBaseView;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageImmersiveBaseView;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView;
+
 /**
  * InAppMessageBase is the base view interface for all in-app messages.
  *
@@ -9,11 +15,11 @@ import android.view.View;
  * manipulated from outside the object.
  *
  * Known implementing classes include
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageBaseView}
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageSlideupView}
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageImmersiveBaseView}
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageModalView}
- * {@link com.appboy.ui.inappmessage.AppboyInAppMessageFullView}
+ * {@link AppboyInAppMessageBaseView}
+ * {@link AppboyInAppMessageSlideupView}
+ * {@link AppboyInAppMessageImmersiveBaseView}
+ * {@link AppboyInAppMessageModalView}
+ * {@link AppboyInAppMessageFullView}
  */
 public interface IInAppMessageView {
 

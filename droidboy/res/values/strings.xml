@@ -23,7 +23,6 @@
   <string name="user_dialog_first_name">First Name</string>
   <string name="user_dialog_last_name">Last Name</string>
   <string name="user_dialog_email_address">Email Address</string>
-  <string name="user_dialog_bio">Bio</string>
   <string name="user_dialog_gender">Gender:</string>
   <string name="user_dialog_avatar_image_url">Avatar Image URL</string>
   <string name="user_dialog_flush">Flush on close</string>
@@ -60,6 +59,7 @@
   <string name="custom_logging_custom_event_property">Event Property</string>
   <string name="custom_logging_custom_purchase">Custom Purchase</string>
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
+  <string name="custom_logging_custom_purchase_currency_code">Currency Code</string>
   <string name="custom_logging_custom_purchase_property">Purchase Property</string>
 
   <string name="iab_log_purchase_title">Google IAB Purchase Flow</string>
@@ -92,6 +92,7 @@
   <string name="custom_iappboy_navigator">Custom IAppboyNavigator</string>
   <string name="custom_iappboy_animation">Custom IInAppMessageAnimationFactory</string>
   <string name="custom_iinappmessagemanager_listener">Custom IInAppMessageManagerListener</string>
+  <string name="custom_html_inappmessage_action_listener">Custom IHtmlInAppMessageActionListener</string>
   <string name="inappmessage_activity">In-App Messages</string>
   <string name="custom_iinappmessage_view_factory">Custom IInAppMessageViewFactory</string>
   <string name="push_testing">Push</string>
@@ -106,9 +107,12 @@
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
   <string name="push_tester_big_title_label">Add Big Title</string>
   <string name="push_tester_big_summary_label">Add Big Summary</string>
-  <string name="push_tester_summary_label">Add Summary</string>
-  <string name="push_tester_overflow_text_label">Should Overflow Text</string>
+  <string name="push_tester_summary_label">Add Summary Text</string>
+  <string name="push_tester_overflow_text_label">Overflow Text</string>
   <string name="push_tester_public_version_label">Set Public Version Notification</string>
+  <string name="push_tester_wear_hide_app_icon_label">Wear: Hide App Icon</string>
+  <string name="push_tester_wear_add_extra_pages">Wear: Add Extra Pages</string>
+
   <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
   <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>
   <string name="misc_preference_category">Misc</string>
@@ -116,8 +120,29 @@
   <string name="disable_appboy_logging_summary">Toggle Appboy Logging.  This does not persist through app runs.</string>
   <string name="get_registration_id_title">Get Push Registration Id</string>
   <string name="get_registration_id_summary">Retrieve the Registration Id used for push on this device.</string>
+  <string name="log_attribution_title">Log Attribution For User</string>
+  <string name="log_attribution_summary">Log Creative, AdGroup, Network, and Campaign.</string>
 
-  <string name="appboy_url">https://pbs.twimg.com/profile_images/489799002259329024/9yeNWMU_.png</string>
+  <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
   <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
+  <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>
+  <string name="appboy_siege_gif_url">https://blog.appboy.com/wp-content/uploads/2015/03/BrowserPreview_tmp-1.gif</string>
+  <string name="appboy_homepage_url">http://www.appboy.com</string>
   <string name="google_url">http://www.google.com</string>
+  <string name="droidboy_deep_link">droidboy://preferences</string>
+  <string name="telephone_uri">tel:555555555</string>
+  <string name="play_store_uri">market://details?id=com.google.android.gm</string>
+
+  <string name="custom_font">doridrobot.ttf</string>
+  <string name="droidboy_custom_action">droidboy_custom_action</string>
+  <string name="droidboy_icon_name">ic_stat_notify_droidboy</string>
+  <string name="close_icon_name">com_appboy_ic_close_white</string>
+  <string name="close_icon_name_1">com_appboy_ic_highlight_off_white</string>
+  <string name="close_icon_name_2">com_appboy_ic_cancel_white</string>
+  <string name="heart_icon_name">com_appboy_ic_favorite_white</string>
+  <string name="settings_icon_name">com_appboy_ic_settings_white</string>
+  <string name="star_icon_name">com_appboy_ic_grade_white</string>
+  <string name="share_icon_name">com_appboy_ic_share_white</string>
+  <string name="exit_to_app_icon_name">com_appboy_ic_exit_to_app_white</string>
+  <string name="world_icon_name">com_appboy_ic_language_white</string>
 </resources>

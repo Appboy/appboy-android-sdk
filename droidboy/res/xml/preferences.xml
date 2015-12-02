@@ -18,14 +18,6 @@
             android:key="log_iab_purchase"
             android:title="@string/iab_log_purchase_title"
             android:summary="@string/iab_log_purchase_summary"/>
-        <Preference
-            android:key="facebook_share"
-            android:title="@string/facebook_share_title"
-            android:summary="@string/facebook_share_summary"/>
-        <Preference
-            android:key="twitter_share"
-            android:title="@string/twitter_share_title"
-            android:summary="@string/twitter_share_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -42,6 +34,10 @@
     <PreferenceCategory
         android:title="@string/misc_preference_category">
         <Preference
+            android:key="external_storage_runtime_permission_dialog"
+            android:title="External Storage Permission Dialog"
+            android:summary="Request Runtime Permission"/>
+        <Preference
             android:key="toggle_disable_appboy_network_requests_for_filtered_emulators"
             android:title="@string/disable_appboy_network_requests"
             android:summary="@string/disable_appboy_network_requests_summary"/>
@@ -53,6 +49,10 @@
             android:key="get_registration_id"
             android:title="@string/get_registration_id_title"
             android:summary="@string/get_registration_id_summary"/>
+        <Preference
+          android:key="log_attribution"
+          android:title="@string/log_attribution_title"
+          android:summary="@string/log_attribution_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -71,6 +71,10 @@
             android:key="set_manual_location"
             android:title="Set Manual Location"
             android:summary="Override current location"/>
+        <Preference
+            android:key="location_runtime_permission_dialog"
+            android:title="Location Permission Dialog"
+            android:summary="Request Runtime Permission"/>
     </PreferenceCategory>
 
     <PreferenceCategory

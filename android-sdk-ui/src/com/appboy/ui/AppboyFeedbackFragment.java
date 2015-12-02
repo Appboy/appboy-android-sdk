@@ -17,19 +17,36 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.support.ValidationUtils;
 import com.appboy.ui.support.StringUtils;
 
 public class AppboyFeedbackFragment extends Fragment {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFeedbackFragment.class.getName());
 
   /**
-   * Listener to be called after the feedback has been submitted or cancelled. You must set the
-   * static listener before creating an instance of the AppboyFeedbackFragment.
+   * Listener called in response to feedback lifecycle events.
    */
   public interface FeedbackFinishedListener {
-    void onFeedbackFinished();
+
+    /**
+     * Called when the user finishes the feedback fragment by submitting feedback or cancelling.
+     *
+     * @param feedbackResult
+     */
+    void onFeedbackFinished(FeedbackResult feedbackResult);
+
+    /**
+     * Called just before a user-submitted feedback message is sent to Appboy.
+     *
+     * Allows modification or augmentation of the message before it is sent to Appboy.
+     *
+     * @param message the feedback message as written by the user
+     * @return the feedback message that will be sent to Appboy
+     */
+    String beforeFeedbackSubmitted(String message);
+  }
+
+  public enum FeedbackResult {
+    SENT, CANCELLED, ERROR
   }
 
   private Button mCancelButton;
@@ -65,7 +82,7 @@ public class AppboyFeedbackFragment extends Fragment {
       public void onClick(View view) {
         hideSoftKeyboard();
         if (mFeedbackFinishedListener != null) {
-          mFeedbackFinishedListener.onFeedbackFinished();
+          mFeedbackFinishedListener.onFeedbackFinished(FeedbackResult.CANCELLED);
         }
         clearData();
       }
@@ -78,9 +95,12 @@ public class AppboyFeedbackFragment extends Fragment {
           boolean isBug = mIsBugCheckBox.isChecked();
           String message = mMessageEditText.getText().toString();
           String email = mEmailEditText.getText().toString();
+          if (mFeedbackFinishedListener != null) {
+            message = mFeedbackFinishedListener.beforeFeedbackSubmitted(message);
+          }
           boolean result = Appboy.getInstance(getActivity()).submitFeedback(email, message, isBug);
           if (mFeedbackFinishedListener != null) {
-            mFeedbackFinishedListener.onFeedbackFinished();
+            mFeedbackFinishedListener.onFeedbackFinished(result ? FeedbackResult.SENT : FeedbackResult.ERROR);
           }
           clearData();
         } else {
@@ -137,7 +157,7 @@ public class AppboyFeedbackFragment extends Fragment {
 
   private boolean validatedMessage() {
     boolean validMessage = mMessageEditText.getText() != null && !StringUtils.isNullOrBlank(mMessageEditText.getText().toString());
-    if (validMessage){
+    if (validMessage) {
         mMessageEditText.setError(null);
     } else {
       // Display error message in the message box

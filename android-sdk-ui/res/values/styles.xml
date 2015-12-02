@@ -117,6 +117,8 @@
     <item name="android:layout_weight">0.5</item>
     <item name="android:paddingLeft">10.0dp</item>
     <item name="android:paddingRight">10.0dp</item>
+    <item name="android:paddingTop">15.0dp</item>
+    <item name="android:paddingBottom">15.0dp</item>
   </style>
   <style name="Appboy.InAppMessage.CloseButton">
     <item name="android:layout_height">20.0dp</item>
@@ -281,6 +283,16 @@
   <style name="Appboy.InAppMessage.CloseButton.Full">
   </style>
 
+  <!-- In-App Message Html Full -->
+  <style name="Appboy.InAppMessage.Html">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+  <style name="Appboy.InAppMessage.Html.Webview">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+
   <!-- Feed -->
   <style name="Appboy.Feed"/>
   <!-- Styling the ListView background will require you to set the cacheColorHint, otherwise the
@@ -324,7 +336,11 @@
 
   <!-- Captioned Image Card -->
   <style name="Appboy.Cards.CaptionedImage"/>
+
   <style name="Appboy.Cards.CaptionedImage.Image">
+    <item name="android:layout_alignParentTop">true</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
   </style>
   <style name="Appboy.Cards.CaptionedImage.Title.Container">
     <item name="android:background">@color/com_appboy_card_title_container</item>
@@ -377,6 +393,13 @@
   <!-- Short News Card -->
   <style name="Appboy.Cards.ShortNews"/>
   <style name="Appboy.Cards.ShortNews.Image">
+    <item name="android:layout_width">57.5dp</item>
+    <item name="android:layout_height">57.5dp</item>
+    <item name="android:layout_alignParentTop">true</item>
+    <item name="android:layout_alignParentLeft">true</item>
+    <item name="android:layout_marginLeft">10.0dp</item>
+    <item name="android:layout_marginRight">10.0dp</item>
+    <item name="android:layout_marginTop">10.0dp</item>
   </style>
   <style name="Appboy.Cards.ShortNews.Title">
     <item name="android:lineSpacingExtra">1.5dp</item>
@@ -421,6 +444,13 @@
     <item name="android:paddingTop">2.0dp</item>
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.Image">
+    <item name="android:layout_width">57.5dp</item>
+    <item name="android:layout_height">57.5dp</item>
+    <item name="android:layout_alignParentTop">true</item>
+    <item name="android:layout_alignParentLeft">true</item>
+    <item name="android:layout_marginLeft">10.0dp</item>
+    <item name="android:layout_marginRight">10.0dp</item>
+    <item name="android:layout_marginTop">10.0dp</item>
   </style>
   <style name="Appboy.Cards.CrossPromotionSmall.RatingBar">
     <item name="android:paddingTop">2.0dp</item>

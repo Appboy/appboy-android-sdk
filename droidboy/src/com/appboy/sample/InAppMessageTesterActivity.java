@@ -17,24 +17,35 @@ import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
+import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageFull;
+import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.sample.util.SpinnerUtils;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class InAppMessageTesterActivity extends AppboyFragmentActivity implements AdapterView.OnItemSelectedListener {
+
+  private enum HtmlMessageJsType {
+    NO_JS, INLINE_JS, EXTERNAL_JS
+  }
+
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
   private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
   private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
+  private static final String CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY = "inappmessages_custom_appboy_html_inappmessage_action_listener";
 
   // '#' characters at the end of headers and messages are used to verify that the entire message was displayed.
   private static final String HEADER_10 = "Hey there#";
@@ -46,11 +57,14 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final String MESSAGE_90 = "Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#";
   private static final String MESSAGE_140 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly one hundred and forty chars#";
   private static final String MESSAGE_240 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly two hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
   private static final String MESSAGE_640 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly six hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
-      "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#";
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
+    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#";
+
+  private static final String HTML_ASSETS_NO_JS_REMOTE_URL = "https://s3.amazonaws.com/appboy-development-bucket/droidboy_html_tester_zipped_assets.zip";
+  private static final String HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL = "https://www.dropbox.com/s/ikn7ge2tfrfx2cn/Archive.zip?dl=1";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -58,12 +72,14 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final int GOOGLE_YELLOW = 0xFFFFEB3B;
   private static final int GOOGLE_GREEN = 0xFF4CAF50;
   private static final int APPBOY_BLUE = 0xFF0073d5;
+  private static final int TRANSPARENT_APPBOY_BLUE = 0x220073d5;
   private static final int GOOGLE_PURPLE = 0xFF673AB7;
   private static final int GOOGLE_BROWN = 0xFF795548;
   private static final int GOOGLE_GREY = 0xFF9E9E9E;
   private static final int BLACK = 0xFF000000;
   private static final int WHITE = 0xFFFFFFFF;
   private static final Map<Integer, Integer> sSpinnerOptionMap;
+
   static {
     Map<Integer, Integer> spinnerOptionMap = new HashMap<Integer, Integer>();
     spinnerOptionMap.put(R.id.inapp_set_message_type_spinner, R.array.inapp_message_type_options);
@@ -78,6 +94,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     spinnerOptionMap.put(R.id.inapp_close_button_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_text_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_header_text_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_modal_frame_spinner, R.array.inapp_modal_frame_options);
     spinnerOptionMap.put(R.id.inapp_uri_spinner, R.array.inapp_uri_options);
     spinnerOptionMap.put(R.id.inapp_icon_spinner, R.array.inapp_icon_options);
     spinnerOptionMap.put(R.id.inapp_image_spinner, R.array.inapp_image_options);
@@ -98,9 +115,13 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mCloseButtonColor;
   private String mTextColor;
   private String mHeaderTextColor;
+  private String mModalFrameColor;
   private String mIcon;
   private String mImage;
   private String mButtons;
+  private String mHtmlBodyFromAssets;
+  private String mHtmlBodyFromAssetsInlineJS;
+  private String mHtmlBodyFromAssetsExternalJS;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +129,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     setContentView(R.layout.inappmessage_tester);
     setTitle("In App Messages");
 
-    for (Integer key: sSpinnerOptionMap.keySet()) {
+    for (Integer key : sSpinnerOptionMap.keySet()) {
       SpinnerUtils.setUpSpinner((Spinner) findViewById(key), this, sSpinnerOptionMap.get(key));
     }
 
@@ -170,6 +191,12 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
             addInAppMessage(new InAppMessageModal());
           } else if ("full".equals(mMessageType)) {
             addInAppMessage(new InAppMessageFull());
+          } else if ("html_full_no_js".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageJsType.NO_JS);
+          } else if ("html_full_inline_js".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageJsType.INLINE_JS);
+          } else if ("html_full_external_js".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageJsType.EXTERNAL_JS);
           } else {
             addInAppMessage(new InAppMessageSlideup());
           }
@@ -190,6 +217,21 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     });
     boolean usingCustomInAppAnimation = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
     customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
+
+    CheckBox customHtmlInAppMessageActionListenerCheckBox = (CheckBox) findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
+    customHtmlInAppMessageActionListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(InAppMessageTesterActivity.this));
+        } else {
+          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
+        }
+        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
+      }
+    });
+    boolean usingCustomHtmlInAppActionListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
+    customHtmlInAppMessageActionListenerCheckBox.setChecked(usingCustomHtmlInAppActionListener);
 
     Button displayNextInAppMessageButton = (Button) findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +256,10 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true);
       }
     });
+
+    mHtmlBodyFromAssets = readHtmlBodyFromAssets(HtmlMessageJsType.NO_JS);
+    mHtmlBodyFromAssetsInlineJS = readHtmlBodyFromAssets(HtmlMessageJsType.INLINE_JS);
+    mHtmlBodyFromAssetsExternalJS = readHtmlBodyFromAssets(HtmlMessageJsType.EXTERNAL_JS);
   }
 
   private void addInAppMessageImmersive(IInAppMessageImmersive inAppMessage) {
@@ -221,11 +267,11 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps.  This is a modal in-app message.");
       inAppMessage.setHeader("Hello from Appboy!");
       inAppMessage.setIcon("\uf091");
+      setModalFrameColor(((InAppMessageModal) inAppMessage));
     } else if (inAppMessage instanceof InAppMessageFull) {
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.");
       inAppMessage.setHeader("Hello from Appboy!");
-      inAppMessage.setImageUrl(getResources().getString(R.string.appboy_url));
-
+      inAppMessage.setImageUrl(getResources().getString(R.string.appboy_image_url));
     }
     ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
     MessageButton buttonOne = new MessageButton();
@@ -251,15 +297,39 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     inAppMessage.setIcon("\uf091");
   }
 
+  private void addInAppMessageHtmlFull(IInAppMessageHtml inAppMessage, HtmlMessageJsType jsType) {
+    switch (jsType) {
+      case NO_JS:
+        inAppMessage.setMessage(mHtmlBodyFromAssets);
+        inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_NO_JS_REMOTE_URL);
+        break;
+      case INLINE_JS:
+        inAppMessage.setMessage(mHtmlBodyFromAssetsInlineJS);
+        inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL);
+        break;
+      case EXTERNAL_JS:
+        inAppMessage.setMessage(mHtmlBodyFromAssetsExternalJS);
+        inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL);
+        break;
+      default:
+        break;
+    }
+  }
+
   private void addInAppMessage(IInAppMessage inAppMessage) {
+    addInAppMessage(inAppMessage, null);
+  }
+  private void addInAppMessage(IInAppMessage inAppMessage, HtmlMessageJsType jsType) {
     if (inAppMessage instanceof IInAppMessageImmersive) {
       addInAppMessageImmersive((IInAppMessageImmersive) inAppMessage);
     } else if (inAppMessage instanceof InAppMessageSlideup) {
       addInAppMessageSlideup((InAppMessageSlideup) inAppMessage);
+    } else if (inAppMessage instanceof InAppMessageHtmlFull) {
+      addInAppMessageHtmlFull((InAppMessageHtmlFull) inAppMessage, jsType);
     } else if (inAppMessage instanceof IInAppMessage) {
       addInAppMessageCustom(inAppMessage);
     }
-    if(!addClickAction(inAppMessage)) {
+    if (!addClickAction(inAppMessage)) {
       return;
     }
     setDismissType(inAppMessage);
@@ -343,7 +413,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private void setImage(IInAppMessage inAppMessage) {
     // set in-app message image url
     if (!SpinnerUtils.SpinnerItemNotSet(mImage)) {
-      if (mIcon.equals("none")) {
+      if (mImage.equals("none")) {
         inAppMessage.setImageUrl(null);
       } else {
         inAppMessage.setImageUrl(mImage);
@@ -395,44 +465,48 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     }
   }
 
+  private void setModalFrameColor(InAppMessageModal inAppMessage) {
+    if (!SpinnerUtils.SpinnerItemNotSet(mModalFrameColor)) {
+      inAppMessage.setModalFrameColor(parseColorFromString(mModalFrameColor));
+    }
+  }
+
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
     // add message buttons.
     if (!SpinnerUtils.SpinnerItemNotSet(mButtons)) {
-      ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
       if ("none".equals(mButtons)) {
         inAppMessage.setMessageButtons(null);
-      } else if ("one".equals(mButtons)) {
-        MessageButton buttonOne = new MessageButton();
-        buttonOne.setText("NEWSFEED");
+        return;
+      }
+      ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
+      MessageButton buttonOne = new MessageButton();
+      if ("one".equals(mButtons)) {
         buttonOne.setBackgroundColor(Color.BLACK);
         buttonOne.setClickAction(ClickAction.NEWS_FEED);
+        buttonOne.setText("NEWSFEED");
         messageButtons.add(buttonOne);
         inAppMessage.setMessageButtons(messageButtons);
-      } else if ("two".equals(mButtons)) {
-        MessageButton buttonOne = new MessageButton();
+        return;
+      }
+      MessageButton buttonTwo = new MessageButton();
+      if ("two".equals(mButtons) || "long".equals(mButtons)) {
         buttonOne.setText("ACCEPT");
-        buttonOne.setClickAction(ClickAction.URI, Uri.parse("http://www.appboy.com"));
-        inAppMessage.setMessageButtons(messageButtons);
-        messageButtons.add(buttonOne);
-        MessageButton buttonTwo = new MessageButton();
+        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.appboy_homepage_url)));
         buttonTwo.setText("CLOSE");
         buttonTwo.setClickAction(ClickAction.NONE);
-        messageButtons.add(buttonTwo);
-        inAppMessage.setMessageButtons(messageButtons);
-      } else if ("long".equals(mButtons)) {
-        MessageButton buttonOne = new MessageButton();
-        buttonOne.setText("ACCEPT BUTTON ONE WITH A VERY LONG TITLE");
-        buttonOne.setBackgroundColor(Color.BLACK);
-        buttonOne.setClickAction(ClickAction.URI, Uri.parse("http://www.appboy.com"));
-        inAppMessage.setMessageButtons(messageButtons);
-        messageButtons.add(buttonOne);
-        MessageButton buttonTwo = new MessageButton();
-        buttonTwo.setText("CLOSE BUTTON TWO WITH A VERY LONG TITLE");
-        buttonTwo.setBackgroundColor(Color.BLACK);
-        buttonTwo.setClickAction(ClickAction.NONE);
-        messageButtons.add(buttonTwo);
-        inAppMessage.setMessageButtons(messageButtons);
+        if ("long".equals(mButtons)) {
+          buttonOne.setText("ACCEPT WITH A VERY LONG TITLE");
+          buttonTwo.setText("CLOSE WITH A VERY LONG TITLE");
+        }
+      } else if ("deeplink".equals(mButtons)) {
+        buttonOne.setText("TELEPHONE");
+        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.telephone_uri)));
+        buttonTwo.setText("PLAY STORE");
+        buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.play_store_uri)));
       }
+      messageButtons.add(buttonOne);
+      messageButtons.add(buttonTwo);
+      inAppMessage.setMessageButtons(messageButtons);
     }
   }
 
@@ -477,6 +551,9 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       case R.id.inapp_header_text_color_spinner:
         mHeaderTextColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
         break;
+      case R.id.inapp_modal_frame_spinner:
+        mModalFrameColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_modal_frame_values);
+        break;
       case R.id.inapp_icon_spinner:
         mIcon = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_icon_values);
         break;
@@ -495,7 +572,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     // Do nothing
   }
 
-  private int parseColorFromString(String colorString) {if (colorString.equals("red")) {
+  private int parseColorFromString(String colorString) {
+    if (colorString.equals("red")) {
       return APPBOY_RED;
     } else if (colorString.equals("orange")) {
       return GOOGLE_ORANGE;
@@ -515,8 +593,50 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       return BLACK;
     } else if (colorString.equals("white")) {
       return WHITE;
+    } else if (colorString.equals("transparent")) {
+      return 0;
+    } else if (colorString.equals("almost_transparent_blue")) {
+      return TRANSPARENT_APPBOY_BLUE;
     } else {
       return 0;
     }
+  }
+
+  /**
+   * @return the html body string from the assets folder or null if the read fails.
+   */
+  private String readHtmlBodyFromAssets(HtmlMessageJsType jsType) {
+    return readHtmlBodyFromAssetsWithFileName(jsType);
+  }
+
+  private String readHtmlBodyFromAssetsWithFileName(HtmlMessageJsType jsType) {
+    String htmlBody = null;
+    String filename = "html_inapp_message_body_no_js.html";
+    switch (jsType) {
+      case INLINE_JS:
+        filename = "html_inapp_message_body_inline_js.html";
+        break;
+      case EXTERNAL_JS:
+        filename = "html_inapp_message_body_external_js.html";
+        break;
+      default:
+        break;
+    }
+
+    // Get the text of the html from the assets folder
+    try {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(filename), "UTF-8"));
+      String line;
+      StringBuilder stringBuilder = new StringBuilder();
+      while ((line = reader.readLine()) != null) {
+        stringBuilder.append(line);
+      }
+      reader.close();
+      htmlBody = stringBuilder.toString();
+    } catch (IOException e) {
+      Log.e(TAG, "Error while reading html body from assets.", e);
+    }
+
+    return htmlBody;
   }
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.appboy.ui.inappmessage.AppboyInAppMessageModalView
+<com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_appboy_inappmessage_modal_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="0.0dp">
     <RelativeLayout
+        android:id="@+id/com_appboy_inappmessage_modal_frame"
         style="@style/Appboy.InAppMessage.Modal.Frame"/>
     <RelativeLayout
         android:id="@+id/com_appboy_inappmessage_modal"
@@ -21,8 +22,13 @@
                 android:padding="0.0dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
-                <ImageView
-                    android:id="@+id/com_appboy_inappmessage_modal_image"
+                <ViewStub
+                    android:id="@+id/com_appboy_inappmessage_modal_imageview_stub"
+                    android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
+                    style="@style/Appboy.InAppMessage.Image.Modal"/>
+                <ViewStub
+                    android:id="@+id/com_appboy_inappmessage_modal_drawee_stub"
+                    android:layout="@layout/com_appboy_stubbed_inappmessage_drawee_view"
                     style="@style/Appboy.InAppMessage.Image.Modal"/>
                 <TextView
                     android:id="@+id/com_appboy_inappmessage_modal_icon"
@@ -31,26 +37,26 @@
             <LinearLayout
                 android:id="@+id/com_appboy_inappmessage_modal_text_layout"
                 style="@style/Appboy.InAppMessage.Layout.Text.Modal">
-                <TextView
+                <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
                     android:id="@+id/com_appboy_inappmessage_modal_header_text"
                     style="@style/Appboy.InAppMessage.Header.Modal"/>
-                <TextView
+                <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
                     android:id="@+id/com_appboy_inappmessage_modal_message"
                     style="@style/Appboy.InAppMessage.Message.Modal"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/com_appboy_inappmessage_modal_button_layout"
                 style="@style/Appboy.InAppMessage.Layout.Button.Modal">
-                    <Button
+                    <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
                         android:id="@+id/com_appboy_inappmessage_modal_button_one"
                         style="@style/Appboy.InAppMessage.Button.Modal.One"/>
-                    <Button
+                    <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
                         android:id="@+id/com_appboy_inappmessage_modal_button_two"
                         style="@style/Appboy.InAppMessage.Button.Modal.Two"/>
             </LinearLayout>
         </RelativeLayout>
-      <ImageButton
+        <ImageButton
             android:id="@+id/com_appboy_inappmessage_modal_close_button"
             style="@style/Appboy.InAppMessage.CloseButton.Modal"/>
     </RelativeLayout>
-</com.appboy.ui.inappmessage.AppboyInAppMessageModalView>
+</com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView>

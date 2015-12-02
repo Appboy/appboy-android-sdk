@@ -14,9 +14,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
+import com.appboy.Constants;
+import com.appboy.support.AppboyLogger;
+import com.appboy.ui.actions.ActionFactory;
+import com.appboy.ui.actions.IAction;
+import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.activities.AppboyBaseActivity;
 
 public class AppboyWebViewActivity extends AppboyBaseActivity {
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyWebViewActivity.class.getName());
   // The Intent extra string containing the URL to open.
   public static final String URL_EXTRA = "url";
 
@@ -42,6 +48,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     webSettings.setBuiltInZoomControls(true);
     webSettings.setUseWideViewPort(true);
     webSettings.setLoadWithOverviewMode(true);
+    webSettings.setDomStorageEnabled(true);
 
     // Instruct webview to be as large as its parent view.
     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -49,7 +56,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
 
     webView.setWebChromeClient(new WebChromeClient() {
       public void onProgressChanged(WebView view, int progress) {
-        if (progress < 100){
+        if (progress < 100) {
           setProgressBarVisibility(true);
         } else {
           setProgressBarVisibility(false);
@@ -70,7 +77,28 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
     setWebLayerTypeSafe(webView);
 
-    webView.setWebViewClient(new WebViewClient());
+    webView.setWebViewClient(new WebViewClient() {
+      @Override
+      public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        try {
+          // If the Uri scheme is not supported by a web action (i.e. if it's not a web url),
+          // allow the system to try to open the uri first.  This allows the system to handle,
+          // for example, redirects to the play store via a "store://" Uri.
+          if(!WebAction.getSupportedSchemes().contains(Uri.parse(url).getScheme())) {
+            IAction action = ActionFactory.createViewUriAction(url, getIntent().getExtras());
+            action.execute(view.getContext());
+
+            // Close the WebView if the action was executed successfully
+            finish();
+            return true;
+          }
+        } catch (Exception e) {
+          AppboyLogger.i(TAG, String.format("Unexpected exception while processing url %s. " +
+              "Passing url back to WebView.", url), e);
+        }
+        return super.shouldOverrideUrlLoading(view, url);
+      }
+    });
 
     Bundle extras = getIntent().getExtras();
     // Opens the URL passed as an intent extra (if one exists).

@@ -1,84 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-  <TextView
-      android:id="@+id/com_appboy_cross_promotion_small_card_recommendation_tab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="20.0dp"
-      style="@style/Appboy.Cards.CrossPromotionSmall.RecommendationTab"/>
-
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/com_appboy_cross_promotion_small_card_recommendation_tab"
-      style="@style/Appboy.Cards.CrossPromotionSmall.Layout">
-
-      <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
-
-    <ImageView
-        android:id="@+id/com_appboy_cross_promotion_small_card_image"
-        android:layout_width="57.5dp"
-        android:layout_height="57.5dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10.0dp"
-        android:layout_marginRight="10.0dp"
-        android:layout_marginTop="10.0dp"
-        style="@style/Appboy.Cards.CrossPromotionSmall.Image"/>
-
-    <View
-        android:layout_width="0.0dp"
-        android:layout_height="10.0dp"
-        android:layout_below="@id/com_appboy_cross_promotion_small_card_image"/>
-
-    <Button
-        android:id="@+id/com_appboy_cross_promotion_small_card_price"
-        android:layout_width="70.0dp"
-        android:layout_height="27.0dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10.0dp"
-        android:layout_marginRight="10.0dp"
-        style="@style/Appboy.Cards.CrossPromotionSmall.Price"/>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/com_appboy_cross_promotion_small_card_recommendation_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/com_appboy_cross_promotion_small_card_image"
-        android:layout_toLeftOf="@id/com_appboy_cross_promotion_small_card_price"
-        android:orientation="vertical"
-        android:layout_marginTop="10.0dp">
+        android:layout_marginLeft="20.0dp"
+        style="@style/Appboy.Cards.CrossPromotionSmall.RecommendationTab"/>
 
-      <TextView
-          android:id="@+id/com_appboy_cross_promotion_small_card_title"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/Appboy.Cards.CrossPromotionSmall.Title"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/com_appboy_cross_promotion_small_card_recommendation_tab"
+        style="@style/Appboy.Cards.CrossPromotionSmall.Layout">
 
-      <TextView
-          android:id="@+id/com_appboy_cross_promotion_small_card_subtitle"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/Appboy.Cards.CrossPromotionSmall.Subtitle"/>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          style="@style/Appboy.Cards.CrossPromotionSmall.RatingBar">
-
-        <com.appboy.ui.widget.StarRatingView
-            android:id="@+id/com_appboy_cross_promotion_small_card_star_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/com_appboy_cross_promotion_small_card_review_count"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Appboy.Cards.CrossPromotionSmall.ReviewCount"/>
-      </LinearLayout>
-    </LinearLayout>
-  </RelativeLayout>
+            android:id="@+id/com_appboy_cross_promotion_small_card_image">
+            <ViewStub
+                android:id="@+id/com_appboy_cross_promotion_small_card_imageview_stub"
+                android:layout="@layout/com_appboy_stubbed_feed_image_view"
+                style="@style/Appboy.Cards.CrossPromotionSmall.Image"/>
+
+            <ViewStub
+                android:id="@+id/com_appboy_cross_promotion_small_card_drawee_stub"
+                android:layout="@layout/com_appboy_stubbed_feed_drawee_view"
+                style="@style/Appboy.Cards.CrossPromotionSmall.Image"/>
+        </LinearLayout>
+
+        <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
+
+        <View
+            android:layout_width="0.0dp"
+            android:layout_height="10.0dp"
+            android:layout_below="@id/com_appboy_cross_promotion_small_card_image"/>
+
+        <Button
+            android:id="@+id/com_appboy_cross_promotion_small_card_price"
+            android:layout_width="70.0dp"
+            android:layout_height="27.0dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dp"
+            android:layout_marginRight="10.0dp"
+            style="@style/Appboy.Cards.CrossPromotionSmall.Price"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/com_appboy_cross_promotion_small_card_image"
+            android:layout_toLeftOf="@id/com_appboy_cross_promotion_small_card_price"
+            android:orientation="vertical"
+            android:layout_marginTop="10.0dp">
+
+            <TextView
+                android:id="@+id/com_appboy_cross_promotion_small_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Appboy.Cards.CrossPromotionSmall.Title"/>
+
+            <TextView
+                android:id="@+id/com_appboy_cross_promotion_small_card_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Appboy.Cards.CrossPromotionSmall.Subtitle"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                style="@style/Appboy.Cards.CrossPromotionSmall.RatingBar">
+
+                <com.appboy.ui.widget.StarRatingView
+                    android:id="@+id/com_appboy_cross_promotion_small_card_star_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/com_appboy_cross_promotion_small_card_review_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Appboy.Cards.CrossPromotionSmall.ReviewCount"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </merge>

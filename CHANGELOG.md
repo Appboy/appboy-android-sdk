@@ -1,3 +1,56 @@
+## 1.11.0
+- Makes the WebView background for HTML in-app messages transparent.  Ensure your HTML in-app messages expect a transparent background.
+- Updates Google Play Services from to 7.5.0 to 8.3.0 and Play Services Support from 1.2.0 to 1.3.0.
+- Creates Activity based Unity in-app messages (fixing an issue where touches on in-app messages were hitting the game behind the in-app message) and removes redundant Unity permissions.
+- Updates Appboy WebView to support redirects to deep links and enables DOM storage.
+- Adds a method for setting modal frame color on in-app messages, no longer displays in-app messages on asset download failure and adds robustness.
+- Adds deep link support to AppboyUnityGcmReceiver.
+
+## 1.10.3
+- Adds Android M Support.  Under the runtime permissions model introduced in Android M, location permission must be explicitly obtained from the end user by the integrating app.  Once location permission is granted, Appboy will resume location data collection on the subsequent session.
+
+## 1.10.2
+- Adds the ability to log a custom event from an HTML in-app message. To log a custom event from an HTML in-app message, navigate a user to a url of the form `appboy://customEvent?name=customEventName&p1=v2`, where the `name` URL parameter is the name of the event, and the remaining parameters are logged as String properties on the event.
+
+## 1.10.1
+- Enables javascript in HTML in-app messages.
+- Deprecates logShare() and setBio() in the public interface as support in the Appboy dashboard has been removed.
+
+## 1.10.0
+- Fixes an issue where applications in extremely resource starved environments were seeing ANRs from the periodic dispatch `BroadcastReceiver`.  This was not
+  a bug in the Appboy code, but a symptom of a failing application.  This updates our periodic dispatch mechanism so it won't have this symptomatic behavior,
+  which in some cases should help developers track down the source of the actual issue (depending on the bug).  Apps that only use the Appboy jar file will now have to
+  register `<service android:name="com.appboy.services.AppboyDataSyncService"/>` in their `AndroidManifest.xml` to enable Appboy to periodically flush data.
+- Updates the News Feed to not show cards in the local cache that have expired.
+- Fixes a very rare issue where calling checkCallingOrSelfPermission would cause an exception to be thrown on certain custom Android builds.
+
+## 1.9.2
+- Fixes bug triggered when the AppboyWearableListenerService is not registered.
+
+## 1.9.0
+- Removes the need for integrating client apps to log push notifications inside their activity code.  **Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Appboy.  Otherwise, push opens will be incorrectly logged twice.**
+- Adds support for analytics from Android Wear devices. If using wear, you must add the line `-dontwarn com.google.android.gms.**` to your proguard config file if proguarding your app.
+- Adds support for displaying notification action buttons sent from the Appboy dashboard.  To allow image sharing on social networks, add the `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />` permission to your `AndroidManifest.xml`.
+- Adds delegate to `FeedbackFinishedListener` enabling modification of feedback messages before they are sent to Appboy.  Also adds a disposition parameter to `onFeedbackFinished()`.
+- Adds support for GIF images in the News Feed and in In-App Messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app),
+  images and GIFs will be loaded using views from the Fresco library. In order to display GIFs,
+  Fresco must be added as a dependency in the parent app. If not found in the parent app, News Feed cards and In-App Messages will not display GIFs. To disable use of the Fresco library in the UI project, set the value
+  of `com_appboy_enable_fresco_library_use` to false (or omit it) in your `appboy.xml`; to enable Fresco use set `com_appboy_enable_fresco_library_use` to true in your `appboy.xml`. ImageView specific attributes for News Feed cards and In-App Messages, such as `scaleType`, must now be applied programmatically
+  instead of being applied from `styles.xml`. If using Fresco and proguarding your app, please include http://frescolib.org/docs/proguard.html with your proguard config. If you are not using Fresco, add the `dontwarn com.appboy.ui.**` directive. Note: to use Fresco with Appboy it must be initialized when your application launches.
+- In-App Message views are now found in the `com.appboy.ui.inappmessage.views` package and In-App Message listeners are now found in the `com.appboy.ui.inappmessage.listeners` package.
+- Adds explicit top and bottom padding values for In-App Message buttons to improve button rendering on some phones.  See the `Appboy.InAppMessage.Button` style in `styles.xml`.
+- Adds HTML In-App Message types. HTML In-App Messages consist of html along with an included zipped assets file to locally reference images, css, etc. See `CustomHtmlInAppMessageActionListener` in our Droidboy sample app for an example listener for the callbacks on the actions inside the WebView hosting the HTML In-App Message.
+- Adds a `setAttributionData()` method to AppboyUser that sets an AttributionData object for the user. Use this method with attribution provider SDKs when attribution events are fired. 
+
+## 1.8.2
+- Adds the ability to specify custom fonts for in-app message ui elements via the appboyInAppMessageCustomFontFile custom xml attribute.
+- Increases the number of supported currency codes from 22 to 171.  All common currency codes are now supported. The full list of supported codes is available at our <a href="https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboy.html#logPurchase(java.lang.String,%20java.lang.String,%20java.math.BigDecimal,%20int,%20com.appboy.models.outgoing.AppboyProperties)">Javadoc</a>.
+- Adds the method isUninstallTrackingPush to AppboyNotificationUtils to be able to detect background push sent for Appboy uninstall tracking.
+- Updates BigPictureStyle to show message in expanded view if summary is not present (after 1.7.0 a summary was required in expanded view to have text appear).
+
+## 1.8.1
+- Internal release for Xamarin, adds AppboyXamarinFormsFeedFragment.
+
 ## 1.8.0
 - Updates the minimum sdk version from 8 (froyo) to 9 (gingerbread).
 - Adds an opt-in location service that logs background location events.
@@ -8,6 +61,7 @@
   and should not be set in a released application as logging statements are essential for debugging.
 - Adds getAppboyPushMessageRegistrationId() to the Appboy interface to enable retrieval of the GCM/ADM/Baidu registration ID Appboy has set for the device.
 - Updates our libraries to build against API level 22.
+- Blacklisted custom attributes may no longer be incremented.
 
 ## 1.7.2
 - Removes DownloadUtils.java from com.appboy.ui.support.  The downloadImageBitmap function has been moved to com.appboy.AppboyImageUtils.
@@ -31,13 +85,13 @@
 - Adds the ability to set a default large icon for push messages by adding the com_appboy_push_large_notification_icon drawable resource to your appboy.xml.
 - Adds support for modal and full screen style in-app messages.  Also adds support for including fontawesome icons and images with in-app messages, changing colors on in-app message UI elements, expanded customization options, and message resizing for tablets.  Please visit our documentation for more information.
 - Adds a sample application (China Sample App) which integrates Baidu Cloud Push and Appboy for sending push messages through Appboy to devices without Google Services installed.
-- Adds AppboyNotificationUtils.logBaiduNotificationClick(), a utility method for logging push notification opens from push messsages sent via Baidu Cloud Push by Appboy.
+- Adds AppboyNotificationUtils.logBaiduNotificationClick(), a utility method for logging push notification opens from push messages sent via Baidu Cloud Push by Appboy.
 
 ## 1.6.2
 - Updates our UI library to build against API level 21. 
 - Adds a major performance upgrade that reduces CPU usage, memory footprint, and network traffic. 
 - Adds 26 additional languages to localization support for Appboy UI elements.
-- Adds local blocking of blacklisted properties.
+- Adds local blocking for blacklisted custom attributes, events, and purchases.  However, blacklisted attributes may still be incremented (removed in release 1.7.3).
 - Adds the ability to set the accent color for notification in Android Lollipop and above.  This can be done by setting the com_appboy_default_notification_accent_color integer in your appboy.xml. 
 - Updates the News Feed to render wider on tablet screens.
 - Adds swipe handling for in-app messages on APIs <= 11.
@@ -45,6 +99,7 @@
 ## 1.6.1
 - Fixes a timezone bug where short names were used for lookup, causing the default timezone (GMT) to be set in
   cases where the short name was not equal to the time zone Id.
+- Fixes a bug where multiple pending push intents could override each other in the notification center.
 
 ## 1.6.0
 - Updates the android-L preview support from version 1.5.2 to support the public release of Android 5.0.  Updates the

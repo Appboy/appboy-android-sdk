@@ -219,6 +219,10 @@ public class IabHelper {
         if (mDisposed) return;
         logDebug("Billing service connected.");
         mService = IInAppBillingService.Stub.asInterface(service);
+        if (mService == null){
+          return;
+        }
+
         String packageName = mContext.getPackageName();
         try {
           logDebug("Checking for in-app billing 3 support.");
