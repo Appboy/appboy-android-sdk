@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import com.appboy.support.AppboyLogger;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,13 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.models.cards.Card;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.adapters.AppboyListAdapter;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 

@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appboy.ui.inappmessage.IInAppMessageView;
-import com.appboy.ui.inappmessage.InAppMessageViewUtils;
+import com.appboy.ui.inappmessage.views.InAppMessageViewUtils;
 import com.appboy.ui.support.ViewUtils;
 
 public class CustomInAppMessageView extends RelativeLayout implements IInAppMessageView {

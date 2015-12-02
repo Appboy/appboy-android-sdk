@@ -3,8 +3,9 @@
   <string-array name="inapp_button_options">
     <item>Message Buttons: Not Set</item>
     <item>Message Buttons: None</item>
-    <item>Message Buttons: One</item>
-    <item>Message Buttons: Two</item>
+    <item>Message Buttons: One - News Feed</item>
+    <item>Message Buttons: Two - Web</item>
+    <item>Message Buttons: Two - Deep Links</item>
     <item>Message Buttons: Two - Long Titles</item>
   </string-array>
   <string-array name="inapp_button_values">
@@ -12,6 +13,7 @@
     <item>none</item>
     <item>one</item>
     <item>two</item>
+    <item>deeplink</item>
     <item>long</item>
   </string-array>
 </resources>

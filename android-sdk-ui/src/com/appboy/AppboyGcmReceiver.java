@@ -1,19 +1,19 @@
 package com.appboy;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.push.AppboyNotificationActionUtils;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
 import com.iheartradio.appboy.AppboyDependencies;
-import com.iheartradio.appboy.AppboyIhrListener;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyGcmReceiver.class.getName());
@@ -31,21 +31,25 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
   public void onReceive(Context context, Intent intent) {
     AppboyLogger.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
     String action = intent.getAction();
+
     boolean isPush = GCM_RECEIVE_INTENT_ACTION.equals(action) && AppboyNotificationUtils.isAppboyPushMessage(intent);
 
     if (isPush && AppboyDependencies.ihr.isOptedOut()) {
         AppboyDependencies.listener.onPushSquelched();
     } else if (GCM_REGISTRATION_INTENT_ACTION.equals(action)) {
-      XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
-      handleRegistrationEventIfEnabled(appConfigurationProvider, context, intent);
+        handleRegistrationEventIfEnabled(new XmlAppConfigurationProvider(context), context, intent);
     } else if (isPush) {
-      new HandleAppboyGcmMessageTask(context, intent);
-    } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action) && intent.hasExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG)) {
-      int notificationId = intent.getIntExtra(Constants.APPBOY_CANCEL_NOTIFICATION_TAG, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
-      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-      notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
+        new HandleAppboyGcmMessageTask(context, intent);
+    } else if (GCM_RECEIVE_INTENT_ACTION.equals(action)) {
+        handleAppboyGcmReceiveIntent(context, intent);
+    } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action)) {
+        AppboyNotificationUtils.handleCancelNotificationAction(context, intent);
+    } else if (Constants.APPBOY_ACTION_CLICKED_ACTION.equals(action)) {
+        AppboyNotificationActionUtils.handleNotificationActionClicked(context, intent);
+    } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
+        AppboyNotificationUtils.handleNotificationOpened(context, intent);
     } else {
-      AppboyLogger.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
+        AppboyLogger.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
     }
   }
 
@@ -97,8 +101,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
    * center, although the payload is forwarded to the application via an Intent as well.
    */
   boolean handleAppboyGcmMessage(Context context, Intent intent) {
-
-    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
     String messageType = intent.getStringExtra(GCM_MESSAGE_TYPE_KEY);
     if (GCM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(GCM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
@@ -175,8 +178,13 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     }
   }
 
-  boolean handleRegistrationEventIfEnabled(XmlAppConfigurationProvider appConfigurationProvider,
-                                                   Context context, Intent intent) {
+  void handleAppboyGcmReceiveIntent(Context context, Intent intent) {
+    if (AppboyNotificationUtils.isAppboyPushMessage(intent)) {
+      new HandleAppboyGcmMessageTask(context, intent);
+    }
+  }
+
+  boolean handleRegistrationEventIfEnabled(XmlAppConfigurationProvider appConfigurationProvider, Context context, Intent intent) {
     // Only handle GCM registration events if GCM registration handling is turned on in the
     // configuration file.
     if (appConfigurationProvider.isGcmMessagingRegistrationEnabled()) {

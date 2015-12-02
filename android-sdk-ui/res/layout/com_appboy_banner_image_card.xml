@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-  <ImageView
-      android:id="@+id/com_appboy_banner_image_card_image"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:scaleType="centerCrop"
-      android:adjustViewBounds="true"
-      style="@style/Appboy.Cards.BannerImage.Image"/>
+    <ViewStub
+        android:id="@+id/com_appboy_banner_image_card_imageview_stub"
+        android:layout="@layout/com_appboy_stubbed_feed_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Appboy.Cards.BannerImage.Image"/>
+
+    <ViewStub
+        android:id="@+id/com_appboy_banner_image_card_drawee_stub"
+        android:layout="@layout/com_appboy_stubbed_feed_drawee_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Appboy.Cards.BannerImage.Image"/>
 </merge>

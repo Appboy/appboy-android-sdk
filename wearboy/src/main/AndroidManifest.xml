@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- For Wear apps, the package name MUST match that of the host app (i.e. Droidboy). The versionCode
+    also MUST match that of the host app as well. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.appboy.sample" android:versionCode="44">
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_wearboy"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault" >
+        <activity
+            android:name="com.appboy.sample.WearboyActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

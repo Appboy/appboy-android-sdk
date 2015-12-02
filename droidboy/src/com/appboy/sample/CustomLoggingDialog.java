@@ -27,10 +27,11 @@ public class CustomLoggingDialog extends DialogPreference {
   private EditText mCustomEventName;
   private EditText mCustomEventPropertyKey;
   private EditText mCustomEventPropertyValue;
-  private EditText mCustomPurchasePropertyKey;
-  private EditText mCustomPurchasePropertyValue;
   private EditText mCustomPurchaseName;
   private EditText mCustomPurchaseQuantity;
+  private EditText mCustomPurchaseCurrencyCodeName;
+  private EditText mCustomPurchasePropertyKey;
+  private EditText mCustomPurchasePropertyValue;
   private EditText mCustomAttributeArrayKey;
   private EditText mCustomAttributeArrayValue;
   private RadioGroup mCustomAttributeArrayChoices;
@@ -55,6 +56,7 @@ public class CustomLoggingDialog extends DialogPreference {
     mCustomEventPropertyValue =  (EditText) view.findViewById(R.id.custom_event_property_value);
     mCustomPurchaseName = (EditText) view.findViewById(R.id.custom_purchase);
     mCustomPurchaseQuantity = (EditText) view.findViewById(R.id.purchase_qty);
+    mCustomPurchaseCurrencyCodeName = (EditText) view.findViewById(R.id.custom_purchase_currency_code);
     mCustomPurchasePropertyKey =  (EditText) view.findViewById(R.id.purchase_property_key);
     mCustomPurchasePropertyValue =  (EditText) view.findViewById(R.id.purchase_property_value);
     mCustomAttributeArrayKey = (EditText) view.findViewById(R.id.custom_attribute_array_key);
@@ -75,6 +77,7 @@ public class CustomLoggingDialog extends DialogPreference {
     ButtonUtils.setUpPopulateButton(view, R.id.custom_event_property_button, mCustomEventPropertyKey, "type", mCustomEventPropertyValue, "pass");
     ButtonUtils.setUpPopulateButton(view, R.id.custom_purchase_button, mCustomPurchaseName, "football");
     ButtonUtils.setUpPopulateButton(view, R.id.purchase_qty_button, mCustomPurchaseQuantity, "5");
+    ButtonUtils.setUpPopulateButton(view, R.id.custom_purchase_currency_code_button, mCustomPurchaseCurrencyCodeName, "JPY");
     ButtonUtils.setUpPopulateButton(view, R.id.purchase_property_button, mCustomPurchasePropertyKey, "size", mCustomPurchasePropertyValue, "large");
     ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_array_button, mCustomAttributeArrayKey, "toys", mCustomAttributeArrayValue, "doll");
     mRequestFlush.setChecked(false);
@@ -93,6 +96,7 @@ public class CustomLoggingDialog extends DialogPreference {
       String customEventPropertyKey = mCustomEventPropertyKey.getText().toString();
       String customEventPropertyValue = mCustomEventPropertyValue.getText().toString();
       String customPurchaseName = mCustomPurchaseName.getText().toString();
+      String customCurrencyCodeName = mCustomPurchaseCurrencyCodeName.getText().toString();
       String customPurchaseQuantity = mCustomPurchaseQuantity.getText().toString();
       String customPurchasePropertyKey = mCustomPurchasePropertyKey.getText().toString();
       String customPurchasePropertyValue = mCustomPurchasePropertyValue.getText().toString();
@@ -139,10 +143,14 @@ public class CustomLoggingDialog extends DialogPreference {
         }
       }
       if (!StringUtils.isNullOrBlank(customPurchaseName)) {
+        String currencyCode = "USD";
+        if (!StringUtils.isNullOrBlank(customCurrencyCodeName)) {
+          currencyCode = customCurrencyCodeName;
+        }
         if (StringUtils.isNullOrBlank(customPurchaseQuantity) && StringUtils.isNullOrBlank(customPurchasePropertyKey)) {
-          notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, "USD", BigDecimal.ONE), "single purchase of: " + customPurchaseName);
+          notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, currencyCode, BigDecimal.ONE), "single purchase of: " + customPurchaseName);
         } else if (StringUtils.isNullOrBlank(customPurchasePropertyKey)) {
-          notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, "USD", BigDecimal.ONE, Integer.parseInt(customPurchaseQuantity)),
+          notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, currencyCode, BigDecimal.ONE, Integer.parseInt(customPurchaseQuantity)),
               customPurchaseQuantity + " purchases of: " + customPurchaseName);
         } else {
           AppboyProperties purchaseProperties = new AppboyProperties();
@@ -156,10 +164,10 @@ public class CustomLoggingDialog extends DialogPreference {
           purchaseProperties.addProperty("integer", 2);
           purchaseProperties.addProperty("string", "string");
           if (StringUtils.isNullOrBlank(customPurchaseQuantity)) {
-            notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, "USD", BigDecimal.ONE, purchaseProperties),
+            notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, currencyCode, BigDecimal.ONE, purchaseProperties),
                 String.format("single purchase: %s. Custom properties: %s, %s", customPurchaseName, customPurchasePropertyKey, customPurchasePropertyValue));
           } else {
-            notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, "USD", BigDecimal.ONE, Integer.parseInt(customPurchaseQuantity), purchaseProperties),
+            notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, currencyCode, BigDecimal.ONE, Integer.parseInt(customPurchaseQuantity), purchaseProperties),
                 String.format("%s purchases of %s. Custom properties: %s, %s", customPurchaseQuantity, customPurchaseName, customPurchasePropertyKey, customPurchasePropertyValue));
           }
         }

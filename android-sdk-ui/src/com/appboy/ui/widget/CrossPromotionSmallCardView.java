@@ -12,6 +12,7 @@ import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.support.StringUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -22,7 +23,8 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
   private final TextView mReviewCount;
   private final TextView mCaption;
   private final StarRatingView mStarRating;
-  private final ImageView mImage;
+  private ImageView mImage;
+  private SimpleDraweeView mDrawee;
   private final Button mPrice;
   private IAction mPriceAction;
   private final float mAspectRatio = 1f;
@@ -39,8 +41,13 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     mReviewCount = (TextView) findViewById(R.id.com_appboy_cross_promotion_small_card_review_count);
     mCaption = (TextView) findViewById(R.id.com_appboy_cross_promotion_small_card_recommendation_tab);
     mStarRating = (StarRatingView) findViewById(R.id.com_appboy_cross_promotion_small_card_star_rating);
-    mImage = (ImageView) findViewById(R.id.com_appboy_cross_promotion_small_card_image);
     mPrice = (Button) findViewById(R.id.com_appboy_cross_promotion_small_card_price);
+
+    if (canUseFresco()) {
+      mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_cross_promotion_small_card_drawee_stub);
+    } else {
+      mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_cross_promotion_small_card_imageview_stub);
+    }
 
     if (card != null) {
       setCard(card);
@@ -84,7 +91,11 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
+    if (canUseFresco()) {
+      setSimpleDraweeToUrl(mDrawee, card.getImageUrl(), mAspectRatio, true);
+    } else {
+      setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
+    }
   }
 
   private String getPriceString(double price) {

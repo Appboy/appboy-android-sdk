@@ -1,7 +1,9 @@
 package com.appboy.sample;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -14,22 +16,20 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.appboy.Appboy;
-import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
+import com.appboy.sample.util.RuntimePermissionUtils;
+import com.appboy.support.PermissionUtils;
 import com.appboy.ui.AppboyFeedFragment;
 import com.appboy.ui.AppboyFeedbackFragment;
-import com.crittercism.app.Crittercism;
 
 import java.util.EnumSet;
 
 public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidBoyActivity.class.getName());
   private int mBackStackEntryCount = 0;
-  private AppboyFeedFragment mAppboyFeedFragment;
-  private AppboyFeedbackFragment mAppboyFeedbackFragment;
   private EnumSet<CardCategory> mAppboyFeedCategories;
+  private static boolean mRequestedLocationPermissions = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -55,24 +55,17 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       @Override
       public void onBackStackChanged() {
         int newBackStackEntryCount = fragmentManager.getBackStackEntryCount();
-        if (newBackStackEntryCount <= mBackStackEntryCount) {
-          Crittercism.leaveBreadcrumb("Popped the back stack");
-        } else {
+        if (newBackStackEntryCount > mBackStackEntryCount) {
           FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(newBackStackEntryCount - 1);
-          Crittercism.leaveBreadcrumb(backStackEntry.getName());
         }
         mBackStackEntryCount = newBackStackEntryCount;
       }
     });
-
-    // Retain the existing AppboyFeedFragment and AppboyFeedbackFragment if they exists in the backstack.
-    // If they're not in the backstack, we will lazily construct them in onOptionsItemSelected, which is
-    // called for each click on the options menu item.
-    if (mAppboyFeedFragment == null) {
-      mAppboyFeedFragment = (AppboyFeedFragment) fragmentManager.findFragmentByTag(AppboyFeedFragment.class.toString());
-    }
-    if (mAppboyFeedbackFragment == null) {
-      mAppboyFeedbackFragment = (AppboyFeedbackFragment) fragmentManager.findFragmentByTag(AppboyFeedbackFragment.class.toString());
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        && !mRequestedLocationPermissions
+        && !PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+      requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+      mRequestedLocationPermissions = true;
     }
   }
 
@@ -105,18 +98,14 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
           DialogFragment newFragment = FeedCategoriesFragment.newInstance(mAppboyFeedCategories);
           newFragment.show(getSupportFragmentManager(), "categories");
         } else {
-          if (mAppboyFeedFragment == null) {
-            mAppboyFeedFragment = new AppboyFeedFragment();
-          }
-          mAppboyFeedFragment.setCategories(mAppboyFeedCategories);
-          replaceCurrentFragment(mAppboyFeedFragment);
+          AppboyFeedFragment appboyFeedFragment = new AppboyFeedFragment();
+          appboyFeedFragment.setCategories(mAppboyFeedCategories);
+          replaceCurrentFragment(appboyFeedFragment);
         }
         break;
       case R.id.feedback:
-        if (mAppboyFeedbackFragment == null) {
-          mAppboyFeedbackFragment = new AppboyFeedbackFragment();
-        }
-        replaceCurrentFragment(mAppboyFeedbackFragment);
+        AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
+        replaceCurrentFragment(appboyFeedbackFragment);
         break;
       case R.id.settings:
         startActivity(new Intent(this, PreferencesActivity.class));
@@ -131,6 +120,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
     }
     return true;
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    RuntimePermissionUtils.handleOnRequestPermissionsResult(DroidBoyActivity.this, requestCode, grantResults);
   }
 
   private void replaceCurrentFragment(Fragment newFragment) {
@@ -166,11 +160,6 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     // correct fragment.
     Bundle extras = getIntent().getExtras();
     if (extras != null && Constants.APPBOY.equals(extras.getString(AppboyBroadcastReceiver.SOURCE_KEY))) {
-      // Logs that the push notification was opened. These analytics will be sent to Appboy.
-      String campaignId = extras.getString(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
-      if (campaignId != null) {
-        Appboy.getInstance(this).logPushNotificationOpened(campaignId);
-      }
       navigateToDestination(extras);
       String bundleLogString = convertBundleToAppboyLogString(extras);
       Toast.makeText(DroidBoyActivity.this, bundleLogString, Toast.LENGTH_LONG).show();
@@ -185,16 +174,12 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     // DESTINATION_VIEW holds the name of the fragment we're trying to visit.
     String destination = extras.getString(AppboyBroadcastReceiver.DESTINATION_VIEW);
     if (AppboyBroadcastReceiver.FEED.equals(destination)) {
-      if (mAppboyFeedFragment == null) {
-        mAppboyFeedFragment = new AppboyFeedFragment();
-      }
-      mAppboyFeedFragment.setCategories(mAppboyFeedCategories);
-      replaceCurrentFragment(mAppboyFeedFragment);
+      AppboyFeedFragment appboyFeedFragment = new AppboyFeedFragment();
+      appboyFeedFragment.setCategories(mAppboyFeedCategories);
+      replaceCurrentFragment(appboyFeedFragment);
     } else if (AppboyBroadcastReceiver.FEEDBACK.equals(destination)) {
-      if (mAppboyFeedbackFragment == null) {
-        mAppboyFeedbackFragment = new AppboyFeedbackFragment();
-      }
-      replaceCurrentFragment(mAppboyFeedbackFragment);
+      AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
+      replaceCurrentFragment(appboyFeedbackFragment);
     } else if (AppboyBroadcastReceiver.HOME.equals(destination)) {
       replaceCurrentFragment(new DecisionFragment());
     }
@@ -212,8 +197,13 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     final FragmentManager fragmentManager = getSupportFragmentManager();
     return new AppboyFeedbackFragment.FeedbackFinishedListener() {
       @Override
-      public void onFeedbackFinished() {
+      public void onFeedbackFinished(AppboyFeedbackFragment.FeedbackResult feedbackResult) {
+        Log.i(TAG, "Feedback finished with disposition " + feedbackResult);
         fragmentManager.popBackStack();
+      }
+      @Override
+      public String beforeFeedbackSubmitted(String message) {
+        return message + " :from droidboy";
       }
     };
   }
@@ -222,11 +212,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   // Fragment.onAttach() callback, which it uses to call the following methods
   // defined by the NoticeDialogFragment.NoticeDialogListener interface
   public void onDialogPositiveClick(FeedCategoriesFragment dialog) {
-    if (mAppboyFeedFragment == null) {
-      mAppboyFeedFragment = new AppboyFeedFragment();
+    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.root);
+    if (currentFragment != null && currentFragment instanceof AppboyFeedFragment) {
+      mAppboyFeedCategories = EnumSet.copyOf(dialog.selectedCategories);
+      ((AppboyFeedFragment) currentFragment).setCategories(mAppboyFeedCategories);
     }
-    mAppboyFeedCategories = EnumSet.copyOf(dialog.selectedCategories);
-    mAppboyFeedFragment.setCategories(mAppboyFeedCategories);
   }
 
   public static String convertBundleToAppboyLogString(Bundle bundle) {

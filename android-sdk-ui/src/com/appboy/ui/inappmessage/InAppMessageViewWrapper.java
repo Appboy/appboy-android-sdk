@@ -11,10 +11,15 @@ import com.appboy.Constants;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
+import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.support.AppboyLogger;
+import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
+import com.appboy.ui.inappmessage.listeners.SimpleSwipeDismissTouchListener;
+import com.appboy.ui.inappmessage.listeners.SwipeDismissTouchListener;
+import com.appboy.ui.inappmessage.listeners.TouchAwareSwipeDismissTouchListener;
 import com.appboy.ui.support.AnimationUtils;
 import com.appboy.ui.support.ViewUtils;
 
@@ -62,7 +67,7 @@ public class InAppMessageViewWrapper {
     // 12 or higher. Pre-12 devices will have to click to close the slideup in-app message.
     // Only slideup in-app messages can be swiped.
     if (Build.VERSION.SDK_INT >= 12 && mInAppMessage instanceof InAppMessageSlideup) {
-      // Adds the swipe listener to the in-app message View. All slideup in-app messages should be dismissable via a swipe
+      // Adds the swipe listener to the in-app message View. All slideup in-app messages should be dismissible via a swipe
       // (even auto close slideup in-app messages).
       SwipeDismissTouchListener.DismissCallbacks dismissCallbacks = createDismissCallbacks();
       TouchAwareSwipeDismissTouchListener touchAwareSwipeListener = new TouchAwareSwipeDismissTouchListener(inAppMessageView, null, dismissCallbacks);
@@ -117,6 +122,7 @@ public class InAppMessageViewWrapper {
     addViewToLayout(root);
     display();
   }
+
   public boolean getIsAnimatingClose() {
     return mIsAnimatingClose;
   }
@@ -211,7 +217,7 @@ public class InAppMessageViewWrapper {
       InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) mInAppMessage;
       layoutParams.gravity = inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP ? Gravity.TOP : Gravity.BOTTOM;
     }
-    if (mInAppMessage instanceof IInAppMessageImmersive) {
+    if (mInAppMessage instanceof IInAppMessageImmersive || mInAppMessage instanceof IInAppMessageHtml) {
       mInAppMessageView.setFocusableInTouchMode(true);
       mInAppMessageView.requestFocus();
     }
