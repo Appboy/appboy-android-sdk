@@ -72,7 +72,6 @@ public class AppboyNotificationUtils {
    */
   public static void handleNotificationOpened(Context context, Intent intent) {
     try {
-      logNotificationOpened(context, intent);
       sendNotificationOpenedBroadcast(context, intent);
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Exception occurred attempting to handle notification.", e);
@@ -543,20 +542,20 @@ public class AppboyNotificationUtils {
    * @param customContentString extra key value pairs in JSON format.
    */
   public static void logBaiduNotificationClick(Context context, String customContentString) {
-    if (customContentString == null) {
-      AppboyLogger.w(TAG, "customContentString was null. Doing nothing.");
-      return;
-    }
-    try {
-      JSONObject jsonExtras = new JSONObject(customContentString);
-      String source = jsonExtras.optString(SOURCE_KEY, null);
-      String campaignId = jsonExtras.optString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY, null);
-      if (source != null && Constants.APPBOY.equals(source) && campaignId != null) {
-        Appboy.getInstance(context).logPushNotificationOpened(campaignId);
-      }
-    } catch (Exception e) {
-      AppboyLogger.e(TAG, String.format("Caught an exception processing customContentString: %s", customContentString), e);
-    }
+//    if (customContentString == null) {
+//      AppboyLogger.w(TAG, "customContentString was null. Doing nothing.");
+//      return;
+//    }
+//    try {
+//      JSONObject jsonExtras = new JSONObject(customContentString);
+//      String source = jsonExtras.optString(SOURCE_KEY, null);
+//      String campaignId = jsonExtras.optString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY, null);
+//      if (source != null && Constants.APPBOY.equals(source) && campaignId != null) {
+//        Appboy.getInstance(context).logPushNotificationOpened(campaignId);
+//      }
+//    } catch (Exception e) {
+//      AppboyLogger.e(TAG, String.format("Caught an exception processing customContentString: %s", customContentString), e);
+//    }
   }
 
   /**
@@ -669,20 +668,4 @@ public class AppboyNotificationUtils {
     context.sendBroadcast(pushOpenedIntent);
   }
 
-  /**
-   * Logs a push notification open.
-   *
-   * @param context
-   * @param intent the internal notification clicked intent constructed in
-   * {@link #setContentIntentIfPresent}
-   */
-  private static void logNotificationOpened(Context context, Intent intent) {
-    String campaignId = intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
-    if (campaignId != null) {
-      AppboyLogger.i(TAG, String.format("Logging push click to Appboy. Campaign Id: " + campaignId));
-      Appboy.getInstance(context).logPushNotificationOpened(campaignId);
-    } else {
-      AppboyLogger.i(TAG, String.format("No campaign Id associated with this notification. Not logging push click to Appboy."));
-    }
-  }
 }
