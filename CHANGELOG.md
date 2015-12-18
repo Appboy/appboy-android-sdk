@@ -1,3 +1,12 @@
+## 1.11.2
+- Fixes bug where large and small icons both rendered at full size in notification remoteviews for 
+  Honeycomb/ICS.  Now, if a large icon is available, only the large icon is shown.  Otherwise, the 
+  small icon is used.
+- Fixes bug where push open logs were under-reported under certain device conditions.
+
+## 1.11.1
+- Placeholder for Unity release.
+
 ## 1.11.0
 - Makes the WebView background for HTML in-app messages transparent.  Ensure your HTML in-app messages expect a transparent background.
 - Updates Google Play Services from to 7.5.0 to 8.3.0 and Play Services Support from 1.2.0 to 1.3.0.

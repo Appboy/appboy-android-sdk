@@ -308,13 +308,11 @@ public class InAppMessageViewWrapper {
     if (opening) {
       return new Animation.AnimationListener() {
         @Override
-        public void onAnimationStart(Animation animation) {
-          mInAppMessageView.setClickable(false);
-        }
+        public void onAnimationStart(Animation animation) {}
+        // This lifecycle callback has been observed to not be called during slideup animations
+        // on occasion.  Do not add any code that *MUST* be executed here.
         @Override
         public void onAnimationEnd(Animation animation) {
-          mInAppMessageView.setVisibility(View.VISIBLE);
-          mInAppMessageView.setClickable(true);
           if (mInAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
             addDismissRunnable();
           }
@@ -327,14 +325,11 @@ public class InAppMessageViewWrapper {
     } else {
       return new Animation.AnimationListener() {
         @Override
-        public void onAnimationStart(Animation animation) {
-          mInAppMessageView.setClickable(false);
-        }
+        public void onAnimationStart(Animation animation) {}
         @Override
         public void onAnimationEnd(Animation animation) {
           mInAppMessageView.clearAnimation();
           mInAppMessageView.setVisibility(View.GONE);
-          mInAppMessageView.setClickable(true);
           ViewUtils.removeViewFromParent(mInAppMessageView);
           mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
         }

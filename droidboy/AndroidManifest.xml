@@ -2,10 +2,10 @@
 <!-- Note:  if you update the versionCode and package here, you must update in Wearboy as well -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="44" android:versionName="1.11.0">
+  package="com.appboy.sample" android:versionCode="45" android:versionName="1.11.2">
 
   <!-- Supported versions -->
-  <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="22"/>
+  <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="23"/>
 
   <!-- Permissions -->
   <uses-permission android:name="android.permission.INTERNET" />

@@ -338,6 +338,8 @@ public class AppboyNotificationUtils {
   /**
    * Sets the icon used in the notification bar itself.
    * If a drawable defined in appboy.xml is found, we use that.  Otherwise, fall back to the application icon.
+   *
+   * @return the resource id of the small icon to be used.
    */
   public static int setSmallIcon(XmlAppConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
     int smallNotificationIconResourceId = appConfigurationProvider.getSmallNotificationIconResourceId();
@@ -354,20 +356,23 @@ public class AppboyNotificationUtils {
    * Set the large icon if the drawable is defined in appboy.xml and it exists
    *
    * Supported HoneyComb+.
+   *
+   * @return whether a large icon was successfully set.
    */
-  public static void setLargeIconIfPresentAndSupported(Context context, XmlAppConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-
+  public static boolean setLargeIconIfPresentAndSupported(Context context, XmlAppConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       int largeNotificationIconResourceId = appConfigurationProvider.getLargeNotificationIconResourceId();
       if (largeNotificationIconResourceId != 0) {
         try {
           Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(), largeNotificationIconResourceId);
           notificationBuilder.setLargeIcon(largeNotificationBitmap);
+          return true;
         } catch (Exception e) {
           AppboyLogger.e(TAG, "Error setting large notification icon", e);
         }
       }
     }
+    return false;
   }
 
   /**
@@ -376,7 +381,7 @@ public class AppboyNotificationUtils {
    * Supported HoneyComb+.
    */
   public static void setSoundIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       if (notificationExtras != null) {
         // Retrieve sound uri if included in notificationExtras bundle.
         if (notificationExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY)) {

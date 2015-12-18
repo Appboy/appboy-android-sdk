@@ -588,7 +588,7 @@ public final class AppboyInAppMessageManager {
       mInAppMessageViewWrapper.open(root);
       return true;
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error running displayInAppMesasge", e);
+      AppboyLogger.e(TAG, "Error running displayInAppMessage", e);
       return false;
     }
   }
