@@ -15,8 +15,8 @@ com.appboy.ui.activities
 com.appboy.ui.adapters
 com.appboy.ui.configuration
 com.appboy.ui.inappmessage
+com.appboy.ui.inappmessage.factories
 com.appboy.ui.inappmessage.listeners
 com.appboy.ui.inappmessage.views
-com.appboy.ui.slideups
 com.appboy.ui.support
 com.appboy.ui.widget
