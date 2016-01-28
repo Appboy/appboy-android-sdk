@@ -1,5 +1,6 @@
 package com.appboy.push;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,12 +14,13 @@ import android.support.v4.app.NotificationCompat;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
-import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
+import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.PackageUtils;
-import com.appboy.ui.support.StringUtils;
+import com.appboy.support.PermissionUtils;
+import com.appboy.support.StringUtils;
 
 public class AppboyNotificationActionUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationActionUtils.class.getName());
@@ -131,7 +133,7 @@ public class AppboyNotificationActionUtils {
   static boolean canShareImage(Context context, Bundle appboyExtras) {
     return appboyExtras != null
         && appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)
-        && AppboyImageUtils.isWriteExternalPermissionGranted(context);
+        && PermissionUtils.hasPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
   }
 
   /**
@@ -292,10 +294,10 @@ public class AppboyNotificationActionUtils {
       String fileName = Long.toString(System.currentTimeMillis());
 
       String imageUrl = appboyExtras.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
-      Bitmap imageBitmap = AppboyImageUtils.downloadImageBitmap(imageUrl);
+      Bitmap imageBitmap = AppboyImageUtils.getBitmap(Uri.parse(imageUrl));
 
       Uri localImageUri = AppboyImageUtils
-          .storeBitmapLocally(context.getApplicationContext(), imageBitmap, fileName, DEFAULT_LOCAL_STORAGE_FOLDER);
+          .storeBitmap(context.getApplicationContext(), imageBitmap, fileName, DEFAULT_LOCAL_STORAGE_FOLDER, true);
 
       shareIntent.setType(IMAGE_MIME_TYPE);
       shareIntent.putExtra(Intent.EXTRA_STREAM, localImageUri);

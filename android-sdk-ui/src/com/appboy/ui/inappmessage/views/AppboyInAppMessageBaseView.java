@@ -9,10 +9,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.support.FrescoLibraryUtils;
-import com.appboy.ui.support.StringUtils;
 import com.appboy.ui.support.ViewUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 

@@ -17,8 +17,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.appboy.Appboy;
+import com.appboy.support.StringUtils;
 import com.appboy.support.ValidationUtils;
-import com.appboy.ui.support.StringUtils;
 
 public class AppboyFeedbackFragment extends Fragment {
 

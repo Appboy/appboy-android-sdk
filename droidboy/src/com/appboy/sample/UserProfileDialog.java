@@ -16,7 +16,7 @@ import com.appboy.AppboyUser;
 import com.appboy.Constants;
 import com.appboy.enums.Gender;
 import com.appboy.sample.util.ButtonUtils;
-import com.appboy.ui.support.StringUtils;
+import com.appboy.support.StringUtils;
 
 public class UserProfileDialog extends DialogPreference {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, UserProfileDialog.class.getName());

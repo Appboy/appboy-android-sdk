@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 import com.appboy.push.AppboyNotificationUtils;
-import com.appboy.ui.support.StringUtils;
+import com.appboy.support.StringUtils;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyBroadcastReceiver.class.getName());

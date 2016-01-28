@@ -18,10 +18,10 @@ import com.appboy.Constants;
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PackageUtils;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.support.FrescoLibraryUtils;
-import com.appboy.ui.support.StringUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Observable;

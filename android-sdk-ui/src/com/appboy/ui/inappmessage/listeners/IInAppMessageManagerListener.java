@@ -18,6 +18,7 @@ public interface IInAppMessageManagerListener {
 
   /**
    * @param inAppMessage the received in-app message.
+   *
    * @return boolean flag to indicate to Appboy whether the display of this message
    * has been manually handled. If true, Appboy will do nothing with the in-app message.
    * If false, Appboy will add the message to its internal stack of in-app messages and request
@@ -27,6 +28,7 @@ public interface IInAppMessageManagerListener {
 
   /**
    * @param inAppMessage the in-app message that is currently requested for display.
+   *
    * @return InAppMessageOperation indicating how to handle the candidate in-app message.
    */
   InAppMessageOperation beforeInAppMessageDisplayed(IInAppMessage inAppMessage);
@@ -34,6 +36,7 @@ public interface IInAppMessageManagerListener {
   /**
    * @param inAppMessage the clicked in-app message.
    * @param inAppMessageCloser
+   *
    * @return boolean flag to indicate to Appboy whether the click has been manually handled.
    * If true, Appboy will log a click and do nothing. If false, Appboy will also close the in-app message.
    */
@@ -42,6 +45,7 @@ public interface IInAppMessageManagerListener {
   /**
    * @param button the clicked message button.
    * @param inAppMessageCloser
+   *
    * @return boolean flag to indicate to Appboy whether the click has been manually handled.
    * If true, Appboy will log a button click and do nothing. If false, Appboy will also close the in-app message.
    */

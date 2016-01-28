@@ -117,7 +117,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
 
   @TargetApi(11)
   private void setWebLayerTypeSafe(WebView webView) {
-    if (Build.VERSION.SDK_INT >= 11) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
   }

@@ -13,7 +13,7 @@ import com.appboy.Appboy;
 import com.appboy.AppboyUser;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.util.ButtonUtils;
-import com.appboy.ui.support.StringUtils;
+import com.appboy.support.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;

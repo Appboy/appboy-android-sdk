@@ -14,7 +14,7 @@ import com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView;
  * It implicitly defines policy for in-app message views that can be
  * manipulated from outside the object.
  *
- * Known implementing classes include
+ * All Known Implementing Classes:
  * {@link AppboyInAppMessageBaseView}
  * {@link AppboyInAppMessageSlideupView}
  * {@link AppboyInAppMessageImmersiveBaseView}

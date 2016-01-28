@@ -8,8 +8,8 @@ import android.webkit.WebViewClient;
 import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
-import com.appboy.ui.support.StringUtils;
 import com.appboy.ui.support.UriUtils;
 
 import java.util.Map;

@@ -19,7 +19,7 @@ import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.SpinnerUtils;
 import com.appboy.support.PermissionUtils;
-import com.appboy.ui.support.StringUtils;
+import com.appboy.support.StringUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

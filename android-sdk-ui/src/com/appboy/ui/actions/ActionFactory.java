@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.appboy.ui.support.StringUtils;
+import com.appboy.support.StringUtils;
 
 public class ActionFactory {
   public static IAction createUriAction(Context context, String url) {

@@ -1,3 +1,12 @@
+## 1.12.0
+- Removes the deprecated method Appboy.requestSlideupRefresh().  Please use Appboy.requestInAppMessageRefresh() instead.
+- Removes the deprecated class AppboySlideupManager.  Please use AppboyInAppMessageManager instead.
+- HTML in-app message WebViews now use wide viewport mode and load pages in overview mode.
+- Removes the partial duplicate of the private library's StringUtils from the ui project.
+- Moves AppboyImageUtils to the private library with an updated api.
+- Moves WebContentUtils to the private library.
+- Renames IInAppMessageHtmlBase to InAppMessageHtmlBase.
+
 ## 1.11.2
 - Fixes bug where large and small icons both rendered at full size in notification remoteviews for 
   Honeycomb/ICS.  Now, if a large icon is available, only the large icon is shown.  Otherwise, the 
@@ -38,7 +47,8 @@
 
 ## 1.9.0
 - Removes the need for integrating client apps to log push notifications inside their activity code.  **Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Appboy.  Otherwise, push opens will be incorrectly logged twice.**
-- Adds support for analytics from Android Wear devices. If using wear, you must add the line `-dontwarn com.google.android.gms.**` to your proguard config file if proguarding your app.
+- Adds support for analytics from Android Wear devices. 
+- All users must add the line `-dontwarn com.google.android.gms.**` to their proguard config file if using proguard.
 - Adds support for displaying notification action buttons sent from the Appboy dashboard.  To allow image sharing on social networks, add the `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />` permission to your `AndroidManifest.xml`.
 - Adds delegate to `FeedbackFinishedListener` enabling modification of feedback messages before they are sent to Appboy.  Also adds a disposition parameter to `onFeedbackFinished()`.
 - Adds support for GIF images in the News Feed and in In-App Messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app),

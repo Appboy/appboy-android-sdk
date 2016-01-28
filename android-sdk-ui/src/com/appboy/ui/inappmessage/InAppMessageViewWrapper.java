@@ -25,7 +25,7 @@ import com.appboy.ui.support.ViewUtils;
 
 import java.util.List;
 
-public class InAppMessageViewWrapper {
+public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageViewWrapper.class.getName());
 
   private final View mInAppMessageView;
@@ -39,9 +39,8 @@ public class InAppMessageViewWrapper {
   private Runnable mDismissRunnable;
   private boolean mIsAnimatingClose;
 
-
   /**
-   * Constructor for base ands slideup view wrappers.  Adds click listeners to the in-app message view and
+   * Constructor for base and slideup view wrappers.  Adds click listeners to the in-app message view and
    * adds swipe functionality to slideup in-app messages.
    *
    * @param inAppMessageView In-app message top level view.
@@ -117,30 +116,38 @@ public class InAppMessageViewWrapper {
     }
   }
 
+  @Override
   public void open(final FrameLayout root) {
     mInAppMessageViewLifecycleListener.beforeOpened(mInAppMessageView, mInAppMessage);
-    addViewToLayout(root);
-    display();
+    AppboyLogger.d(TAG, "Adding In-app message view to root FrameLayout.");
+    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    if (mInAppMessage instanceof InAppMessageSlideup) {
+      InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) mInAppMessage;
+      layoutParams.gravity = inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP ? Gravity.TOP : Gravity.BOTTOM;
+    }
+    if (mInAppMessage instanceof IInAppMessageImmersive || mInAppMessage instanceof IInAppMessageHtml) {
+      mInAppMessageView.setFocusableInTouchMode(true);
+      mInAppMessageView.requestFocus();
+    }
+    root.addView(mInAppMessageView, layoutParams);
+    if (mInAppMessage.getAnimateIn()) {
+      AppboyLogger.d(TAG, "In-app message view will animate into the visible area.");
+      setAndStartAnimation(true);
+      // The afterOpened lifecycle method gets called when the opening animation ends.
+    } else {
+      AppboyLogger.d(TAG, "In-app message view will be placed instantly into the visible area.");
+      // There is no opening animation, so we call the afterOpened lifecycle method immediately.
+      if (mInAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
+        addDismissRunnable();
+      }
+      mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
+    }
   }
 
-  public boolean getIsAnimatingClose() {
-    return mIsAnimatingClose;
-  }
-
-  public void callAfterClosed() {
-    mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
-  }
-
-  public void callOnDismissed() {
-    mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
-  }
-
-  private void preClose() {
+  @Override
+  public void close() {
     mInAppMessageView.removeCallbacks(mDismissRunnable);
     mInAppMessageViewLifecycleListener.beforeClosed(mInAppMessageView, mInAppMessage);
-  }
-
-  private void performClose() {
     if (mInAppMessage.getAnimateOut()) {
       mIsAnimatingClose = true;
       setAndStartAnimation(false);
@@ -150,17 +157,19 @@ public class InAppMessageViewWrapper {
     }
   }
 
-  public void close() {
-    preClose();
-    performClose();
-  }
-
+  @Override
   public View getInAppMessageView() {
     return mInAppMessageView;
   }
 
+  @Override
   public IInAppMessage getInAppMessage() {
     return mInAppMessage;
+  }
+
+  @Override
+  public boolean getIsAnimatingClose() {
+    return mIsAnimatingClose;
   }
 
   private View.OnClickListener createClickListener() {
@@ -208,35 +217,6 @@ public class InAppMessageViewWrapper {
         close();
       }
     };
-  }
-
-  private void addViewToLayout(final FrameLayout root) {
-    AppboyLogger.d(TAG, "Adding In-app message view to root FrameLayout.");
-    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    if (mInAppMessage instanceof InAppMessageSlideup) {
-      InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) mInAppMessage;
-      layoutParams.gravity = inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP ? Gravity.TOP : Gravity.BOTTOM;
-    }
-    if (mInAppMessage instanceof IInAppMessageImmersive || mInAppMessage instanceof IInAppMessageHtml) {
-      mInAppMessageView.setFocusableInTouchMode(true);
-      mInAppMessageView.requestFocus();
-    }
-    root.addView(mInAppMessageView, layoutParams);
-  }
-
-  private void display() {
-    if (mInAppMessage.getAnimateIn()) {
-      AppboyLogger.d(TAG, "In-app message view will animate into the visible area.");
-      setAndStartAnimation(true);
-      // The afterOpened lifecycle method gets called when the opening animation ends.
-    } else {
-      AppboyLogger.d(TAG, "In-app message view will be placed instantly into the visible area.");
-      // There is no opening animation, so we call the afterOpened lifecycle method immediately.
-      if (mInAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
-        addDismissRunnable();
-      }
-      mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
-    }
   }
 
   private void addDismissRunnable() {
@@ -361,13 +341,12 @@ public class InAppMessageViewWrapper {
 
       private void animateAndClose(Animation animation) {
         mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
-        preClose();
         mInAppMessageView.clearAnimation();
         mInAppMessageView.setAnimation(animation);
         animation.startNow();
         mInAppMessageView.invalidate();
         mInAppMessage.setAnimateOut(false);
-        performClose();
+        close();
       }
     };
   }

@@ -7,6 +7,7 @@
     <item>Message Type: HTML Full No JS</item>
     <item>Message Type: HTML Full Inline JS</item>
     <item>Message Type: HTML Full External JS</item>
+    <item>Message Type: HTML Full Star Wars</item>
   </string-array>
   <string-array name="inapp_message_type_values">
     <item>slideup</item>
@@ -15,5 +16,6 @@
     <item>html_full_no_js</item>
     <item>html_full_inline_js</item>
     <item>html_full_external_js</item>
+    <item>html_full_star_wars</item>
   </string-array>
 </resources>

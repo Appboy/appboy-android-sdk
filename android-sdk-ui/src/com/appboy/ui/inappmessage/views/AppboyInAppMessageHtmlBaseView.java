@@ -40,7 +40,10 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
   }
 
   /**
-   * Html full screen messages can alternatively be closed by the back button.
+   * Html in-app messages can alternatively be closed by the back button.
+   *
+   * Note: If the internal WebView has focus instead of this view, back button events on html
+   * in-app messages are handled separately in {@link AppboyInAppMessageWebView#onKeyDown(int, KeyEvent)}
    *
    * @return If the button pressed was the back button, close the in-app message
    * and return true to indicate that the event was handled.

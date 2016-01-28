@@ -3,11 +3,12 @@ package com.appboy.push;
 import android.app.Notification;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
-import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
+import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 
 public class AppboyWearableNotificationUtils {
@@ -29,7 +30,8 @@ public class AppboyWearableNotificationUtils {
 
       // Set the background image if present
       if (notificationExtras.containsKey(Constants.APPBOY_PUSH_WEAR_BACKGROUND_IMAGE_URL_KEY)) {
-        Bitmap wearNotificationBackgroundBitmap = AppboyImageUtils.downloadImageBitmap(notificationExtras.getString(Constants.APPBOY_PUSH_WEAR_BACKGROUND_IMAGE_URL_KEY));
+        String uriString = notificationExtras.getString(Constants.APPBOY_PUSH_WEAR_BACKGROUND_IMAGE_URL_KEY);
+        Bitmap wearNotificationBackgroundBitmap = AppboyImageUtils.getBitmap(Uri.parse(uriString));
         if (wearNotificationBackgroundBitmap != null) {
           wearableExtender.setBackground(wearNotificationBackgroundBitmap);
         }

@@ -23,8 +23,8 @@ import com.facebook.imagepipeline.image.ImageInfo;
 public class FrescoLibraryUtils {
   private final static String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, FrescoLibraryUtils.class.getName());
   public static final String FRESCO_ENABLED = "com_appboy_enable_fresco_library_use";
-  private static boolean mCanUseFresco = false;
-  private static boolean mCanUseFrescoSet = false;
+  private static boolean sCanUseFresco = false;
+  private static boolean sCanUseFrescoSet = false;
 
   private final static String[] USED_FRESCO_CLASSES = {
           "com.facebook.drawee.backends.pipeline.Fresco",
@@ -62,8 +62,8 @@ public class FrescoLibraryUtils {
    * in the Appboy xml settings.
    */
   public static boolean canUseFresco(Context context) {
-    if (mCanUseFrescoSet) {
-      return mCanUseFresco;
+    if (sCanUseFrescoSet) {
+      return sCanUseFresco;
     }
 
     context = context.getApplicationContext();
@@ -87,10 +87,10 @@ public class FrescoLibraryUtils {
       isFrescoOnPath = false;
     }
 
-    mCanUseFrescoSet = true;
-    mCanUseFresco = isFrescoOnPath && isFrescoEnabledFromXml;
+    sCanUseFrescoSet = true;
+    sCanUseFresco = isFrescoOnPath && isFrescoEnabledFromXml;
 
-    return mCanUseFresco;
+    return sCanUseFresco;
   }
 
   /**

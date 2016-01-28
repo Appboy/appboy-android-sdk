@@ -37,8 +37,8 @@ import java.util.Map;
 
 public class InAppMessageTesterActivity extends AppboyFragmentActivity implements AdapterView.OnItemSelectedListener {
 
-  private enum HtmlMessageJsType {
-    NO_JS, INLINE_JS, EXTERNAL_JS
+  private enum HtmlMessageType {
+    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS
   }
 
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
@@ -63,8 +63,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
     "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#";
 
-  private static final String HTML_ASSETS_NO_JS_REMOTE_URL = "https://s3.amazonaws.com/appboy-development-bucket/droidboy_html_tester_zipped_assets.zip";
-  private static final String HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL = "https://www.dropbox.com/s/ikn7ge2tfrfx2cn/Archive.zip?dl=1";
+  private static final String HTML_ASSETS_NO_JS_REMOTE_URL = "https://www.dropbox.com/s/rvxloodgmnml2t2/html_iam_image.zip?dl=1";
+  private static final String HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL = "https://www.dropbox.com/s/v1hhojkznz7so3s/html_iam_js.zip?dl=1";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -122,6 +122,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mHtmlBodyFromAssets;
   private String mHtmlBodyFromAssetsInlineJS;
   private String mHtmlBodyFromAssetsExternalJS;
+  private String mHtmlBodyFromAssetsStarWars;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -192,11 +193,13 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
           } else if ("full".equals(mMessageType)) {
             addInAppMessage(new InAppMessageFull());
           } else if ("html_full_no_js".equals(mMessageType)) {
-            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageJsType.NO_JS);
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.NO_JS);
           } else if ("html_full_inline_js".equals(mMessageType)) {
-            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageJsType.INLINE_JS);
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.INLINE_JS);
           } else if ("html_full_external_js".equals(mMessageType)) {
-            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageJsType.EXTERNAL_JS);
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.EXTERNAL_JS);
+          } else if ("html_full_star_wars".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.STAR_WARS);
           } else {
             addInAppMessage(new InAppMessageSlideup());
           }
@@ -257,9 +260,10 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       }
     });
 
-    mHtmlBodyFromAssets = readHtmlBodyFromAssets(HtmlMessageJsType.NO_JS);
-    mHtmlBodyFromAssetsInlineJS = readHtmlBodyFromAssets(HtmlMessageJsType.INLINE_JS);
-    mHtmlBodyFromAssetsExternalJS = readHtmlBodyFromAssets(HtmlMessageJsType.EXTERNAL_JS);
+    mHtmlBodyFromAssets = readHtmlBodyFromAssets(HtmlMessageType.NO_JS);
+    mHtmlBodyFromAssetsInlineJS = readHtmlBodyFromAssets(HtmlMessageType.INLINE_JS);
+    mHtmlBodyFromAssetsExternalJS = readHtmlBodyFromAssets(HtmlMessageType.EXTERNAL_JS);
+    mHtmlBodyFromAssetsStarWars = readHtmlBodyFromAssets(HtmlMessageType.STAR_WARS);
   }
 
   private void addInAppMessageImmersive(IInAppMessageImmersive inAppMessage) {
@@ -297,7 +301,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     inAppMessage.setIcon("\uf091");
   }
 
-  private void addInAppMessageHtmlFull(IInAppMessageHtml inAppMessage, HtmlMessageJsType jsType) {
+  private void addInAppMessageHtmlFull(IInAppMessageHtml inAppMessage, HtmlMessageType jsType) {
     switch (jsType) {
       case NO_JS:
         inAppMessage.setMessage(mHtmlBodyFromAssets);
@@ -305,11 +309,13 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         break;
       case INLINE_JS:
         inAppMessage.setMessage(mHtmlBodyFromAssetsInlineJS);
-        inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL);
         break;
       case EXTERNAL_JS:
         inAppMessage.setMessage(mHtmlBodyFromAssetsExternalJS);
         inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL);
+        break;
+      case STAR_WARS:
+        inAppMessage.setMessage(mHtmlBodyFromAssetsStarWars);
         break;
       default:
         break;
@@ -319,13 +325,13 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private void addInAppMessage(IInAppMessage inAppMessage) {
     addInAppMessage(inAppMessage, null);
   }
-  private void addInAppMessage(IInAppMessage inAppMessage, HtmlMessageJsType jsType) {
+  private void addInAppMessage(IInAppMessage inAppMessage, HtmlMessageType messageType) {
     if (inAppMessage instanceof IInAppMessageImmersive) {
       addInAppMessageImmersive((IInAppMessageImmersive) inAppMessage);
     } else if (inAppMessage instanceof InAppMessageSlideup) {
       addInAppMessageSlideup((InAppMessageSlideup) inAppMessage);
     } else if (inAppMessage instanceof InAppMessageHtmlFull) {
-      addInAppMessageHtmlFull((InAppMessageHtmlFull) inAppMessage, jsType);
+      addInAppMessageHtmlFull((InAppMessageHtmlFull) inAppMessage, messageType);
     } else if (inAppMessage instanceof IInAppMessage) {
       addInAppMessageCustom(inAppMessage);
     }
@@ -605,11 +611,11 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   /**
    * @return the html body string from the assets folder or null if the read fails.
    */
-  private String readHtmlBodyFromAssets(HtmlMessageJsType jsType) {
+  private String readHtmlBodyFromAssets(HtmlMessageType jsType) {
     return readHtmlBodyFromAssetsWithFileName(jsType);
   }
 
-  private String readHtmlBodyFromAssetsWithFileName(HtmlMessageJsType jsType) {
+  private String readHtmlBodyFromAssetsWithFileName(HtmlMessageType jsType) {
     String htmlBody = null;
     String filename = "html_inapp_message_body_no_js.html";
     switch (jsType) {
@@ -618,6 +624,9 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         break;
       case EXTERNAL_JS:
         filename = "html_inapp_message_body_external_js.html";
+        break;
+      case STAR_WARS:
+        filename = "html_inapp_message_body_star_wars.html";
         break;
       default:
         break;
