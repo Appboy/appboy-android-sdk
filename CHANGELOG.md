@@ -6,7 +6,7 @@
 - Moves AppboyImageUtils to the private library with an updated api.
 - Moves WebContentUtils to the private library.
 - Renames IInAppMessageHtmlBase to InAppMessageHtmlBase.
-- Method count of the private appboy library has decreased by over 600 since version 1.11.0.
+- Method count of the private Appboy library has decreased by over 600 since version 1.11.0.
 
 ## 1.11.2
 - Fixes bug where large and small icons both rendered at full size in notification remoteviews for 
