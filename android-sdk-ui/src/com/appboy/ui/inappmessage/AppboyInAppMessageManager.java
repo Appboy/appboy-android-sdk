@@ -11,6 +11,7 @@ import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
+import com.appboy.managers.InAppMessageManagerStateListener;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageHtmlFull;
@@ -160,6 +161,7 @@ public final class AppboyInAppMessageManager {
     // which listens to new in-app messages, adds it to the stack, and displays it if it can.
     mInAppMessageEventSubscriber = createInAppMessageEventSubscriber();
     Appboy.getInstance(activity).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
+    InAppMessageManagerStateListener.getInstance().notifyInAppMessageManagerRegistered(mApplicationContext);
   }
 
   /**
@@ -187,6 +189,7 @@ public final class AppboyInAppMessageManager {
       mCarryoverInAppMessage = null;
     }
 
+    InAppMessageManagerStateListener.getInstance().notifyInAppMessageManagerUnregistered(mApplicationContext);
     // In-app message subscriptions are per Activity, so we must remove the subscriber when the host app
     // unregisters the in-app message manager.
     Appboy.getInstance(activity).removeSingleSubscription(mInAppMessageEventSubscriber, InAppMessageEvent.class);

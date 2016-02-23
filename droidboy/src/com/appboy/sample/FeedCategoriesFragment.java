@@ -19,7 +19,7 @@ import java.util.Locale;
 
 public class FeedCategoriesFragment extends DialogFragment {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, FeedCategoriesFragment.class.getName());
-  public static final String CATEGORIES_STRING= "categories";
+  public static final String CATEGORIES_STRING = "categories";
 
   /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
@@ -82,7 +82,7 @@ public class FeedCategoriesFragment extends DialogFragment {
                 ListView lv = ((AlertDialog)getDialog()).getListView();
                 if (which == 0) {
                   // The "All" option is clicked, we should update all other options to be checked/unchecked.
-                  for (int i=0; i<Arrays.asList(CATEGORIES).size(); i++) {
+                  for (int i = 0; i < Arrays.asList(CATEGORIES).size(); i++) {
                     lv.setItemChecked(i, isChecked);
                     mCategoryIsChecked[i] = isChecked;
                   }
@@ -143,7 +143,7 @@ public class FeedCategoriesFragment extends DialogFragment {
       set = CardCategory.ALL_CATEGORIES;
     } else {
       for (int i = 1; i < Arrays.asList(CATEGORIES).size(); i ++) {
-        if(isChecked[i]) {
+        if (isChecked[i]) {
           set.add(CardCategory.get(CATEGORIES[i]));
         }
       }

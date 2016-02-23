@@ -7,6 +7,7 @@ import com.appboy.ui.inappmessage.InAppMessageOperation;
 
 public class AppboyDefaultInAppMessageManagerListener implements IInAppMessageManagerListener {
   @Override
+  @Deprecated
   public boolean onInAppMessageReceived(IInAppMessage inAppMessage) {
     return false;
   }

@@ -127,36 +127,41 @@ public class UserProfileDialog extends DialogPreference {
       int genderId = mGender.indexOfChild(genderRadioButton);
       String avatarImageUrl = mAvatarImageUrl.getText().toString();
 
+      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
+      SharedPreferences.Editor editor = getEditor();
+      if (!StringUtils.isNullOrBlank(firstName)) {
+        appboyUser.setFirstName(firstName);
+        editor.putString(FIRST_NAME_PREFERENCE_KEY, firstName);
+      }
+      if (!StringUtils.isNullOrBlank(lastName)) {
+        appboyUser.setLastName(lastName);
+        editor.putString(LAST_NAME_PREFERENCE_KEY, lastName);
+      }
       if (!StringUtils.isNullOrBlank(email)) {
-        Appboy.getInstance(getContext()).changeUser(email);
+        editor.putString(EMAIL_PREFERENCE_KEY, email);
+        appboyUser.setEmail(email);
+      }
+      if (!StringUtils.isNullOrBlank(avatarImageUrl)) {
+        editor.putString(AVATAR_PREFERENCE_KEY, avatarImageUrl);
+        appboyUser.setAvatarImageUrl(avatarImageUrl);
       }
 
-      SharedPreferences.Editor editor = getEditor();
-      editor.putString(FIRST_NAME_PREFERENCE_KEY, firstName);
-      editor.putString(LAST_NAME_PREFERENCE_KEY, lastName);
-      editor.putString(EMAIL_PREFERENCE_KEY, email);
-      editor.putInt(GENDER_PREFERENCE_KEY, genderId);
-      editor.putString(AVATAR_PREFERENCE_KEY, avatarImageUrl);
-      editor.apply();
-
-      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
-      appboyUser.setFirstName(firstName);
-      appboyUser.setLastName(lastName);
-      appboyUser.setEmail(email);
       switch (genderId) {
         case GENDER_UNSPECIFIED_INDEX:
           appboyUser.setGender(null);
           break;
         case GENDER_MALE_INDEX:
           appboyUser.setGender(Gender.MALE);
+          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
           break;
         case GENDER_FEMALE_INDEX:
           appboyUser.setGender(Gender.FEMALE);
+          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
           break;
         default:
           Log.w(TAG, "Error parsing gender from user preferences.");
       }
-      appboyUser.setAvatarImageUrl(avatarImageUrl);
+      editor.apply();
 
       // Flushing manually is not recommended in almost all production situations as
       // Appboy automatically flushes data to its servers periodically.  This call

@@ -53,6 +53,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
   private boolean mWearHideAppIcon = false;
   private boolean mWearUseBackgroundImage = false;
   private boolean mWearAddExtraPages = false;
+  private boolean mTestTriggerFetch = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,12 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mWearAddExtraPages = isChecked;
+      }
+    });
+    ((CheckBox) findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mTestTriggerFetch = isChecked;
       }
     });
 
@@ -175,6 +182,9 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
             }
             if (mWearAddExtraPages) {
               addWearExtraPagesToNotificationBuilder(notificationExtras);
+            }
+            if (mTestTriggerFetch) {
+              notificationExtras.putString(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY, "true");
             }
 
             // Manually build the appboy extras bundle.
@@ -268,7 +278,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(PushTesterActivity.this, requestCode, grantResults);
   }
 
@@ -293,7 +303,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Open app");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "0"), getString(R.string.exit_to_app_icon_name));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Close");
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "1"), getString(R.string.close_icon_name));
     } else if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI)) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
@@ -305,7 +315,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.google_url));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "1"), getString(R.string.world_icon_name));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), "Close");
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "2"), getString(R.string.close_icon_name));
     } else if (mActionType.equals("deep_link")) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
@@ -317,21 +327,21 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.telephone_uri));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "1"), getString(R.string.heart_icon_name));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), "Close");
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "2"), getString(R.string.close_icon_name));
     } else if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_SHARE)) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_SHARE);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Share");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "0"), getString(R.string.share_icon_name));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Close");
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "1"), getString(R.string.close_icon_name_1));
     } else if (mActionType.equals(getString(R.string.droidboy_custom_action))) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), getString(R.string.droidboy_custom_action));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Droidboy!");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "0"), getString(R.string.droidboy_icon_name));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Close");
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "1"), getString(R.string.close_icon_name_2));
     }
     return notificationExtras;

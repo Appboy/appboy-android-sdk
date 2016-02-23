@@ -120,7 +120,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
         try {
           notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, gcmExtras, appboyExtras);
-        } catch(Exception e) {
+        } catch (Exception e) {
           Log.e(TAG, "Failed to create notification.", e);
           return false;
         }

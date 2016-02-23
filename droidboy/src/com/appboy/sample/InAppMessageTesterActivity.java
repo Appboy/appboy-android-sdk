@@ -41,6 +41,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS
   }
 
+  private static final String NONE_OPTION = "none";
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
   private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
@@ -266,6 +267,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     mHtmlBodyFromAssetsStarWars = readHtmlBodyFromAssets(HtmlMessageType.STAR_WARS);
   }
 
+  @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageImmersive(IInAppMessageImmersive inAppMessage) {
     if (inAppMessage instanceof InAppMessageModal) {
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps.  This is a modal in-app message.");
@@ -275,7 +277,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     } else if (inAppMessage instanceof InAppMessageFull) {
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.");
       inAppMessage.setHeader("Hello from Appboy!");
-      inAppMessage.setImageUrl(getResources().getString(R.string.appboy_image_url));
+      inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url));
     }
     ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
     MessageButton buttonOne = new MessageButton();
@@ -288,6 +290,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     setCloseButtonColor(inAppMessage);
   }
 
+  @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageSlideup(InAppMessageSlideup inAppMessage) {
     inAppMessage.setMessage("Welcome to Appboy! This is a slideup in-app message.");
     inAppMessage.setIcon("\uf091");
@@ -296,6 +299,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     setChevronColor(inAppMessage);
   }
 
+  @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageCustom(IInAppMessage inAppMessage) {
     inAppMessage.setMessage("Welcome to Appboy! This is a custom in-app message.");
     inAppMessage.setIcon("\uf091");
@@ -325,6 +329,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private void addInAppMessage(IInAppMessage inAppMessage) {
     addInAppMessage(inAppMessage, null);
   }
+
   private void addInAppMessage(IInAppMessage inAppMessage, HtmlMessageType messageType) {
     if (inAppMessage instanceof IInAppMessageImmersive) {
       addInAppMessageImmersive((IInAppMessageImmersive) inAppMessage);
@@ -360,28 +365,28 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
 
   private void setBackgroundColor(IInAppMessage inAppMessage) {
     // set background color if defined
-    if (!SpinnerUtils.SpinnerItemNotSet(mBackgroundColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mBackgroundColor)) {
       inAppMessage.setBackgroundColor(parseColorFromString(mBackgroundColor));
     }
   }
 
   private void setChevronColor(InAppMessageSlideup inAppMessage) {
     // set chevron color if defined
-    if (!SpinnerUtils.SpinnerItemNotSet(mCloseButtonColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mCloseButtonColor)) {
       inAppMessage.setChevronColor(parseColorFromString(mCloseButtonColor));
     }
   }
 
   private void setCloseButtonColor(IInAppMessageImmersive inAppMessage) {
     // set close button color if defined
-    if (!SpinnerUtils.SpinnerItemNotSet(mCloseButtonColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mCloseButtonColor)) {
       inAppMessage.setCloseButtonColor(parseColorFromString(mCloseButtonColor));
     }
   }
 
   private void setMessage(IInAppMessage inAppMessage) {
     // set text color if defined
-    if (!SpinnerUtils.SpinnerItemNotSet(mTextColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mTextColor)) {
       inAppMessage.setMessageTextColor(parseColorFromString(mTextColor));
     }
     if ("40".equals(mMessage)) {
@@ -399,16 +404,16 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
 
   private void setIcon(IInAppMessage inAppMessage) {
     // set icon color if defined
-    if (!SpinnerUtils.SpinnerItemNotSet(mIconColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mIconColor)) {
       inAppMessage.setIconColor(parseColorFromString(mIconColor));
     }
     // set icon background color if defined
-    if (!SpinnerUtils.SpinnerItemNotSet(mIconBackgroundColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mIconBackgroundColor)) {
       inAppMessage.setIconBackgroundColor(parseColorFromString(mIconBackgroundColor));
     }
     // set in-app message icon
-    if (!SpinnerUtils.SpinnerItemNotSet(mIcon)) {
-      if (mIcon.equals("none")) {
+    if (!SpinnerUtils.spinnerItemNotSet(mIcon)) {
+      if (mIcon.equals(NONE_OPTION)) {
         inAppMessage.setIcon(null);
       } else {
         inAppMessage.setIcon(mIcon);
@@ -418,11 +423,11 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
 
   private void setImage(IInAppMessage inAppMessage) {
     // set in-app message image url
-    if (!SpinnerUtils.SpinnerItemNotSet(mImage)) {
-      if (mImage.equals("none")) {
-        inAppMessage.setImageUrl(null);
+    if (!SpinnerUtils.spinnerItemNotSet(mImage)) {
+      if (mImage.equals(NONE_OPTION)) {
+        inAppMessage.setRemoteImageUrl(null);
       } else {
-        inAppMessage.setImageUrl(mImage);
+        inAppMessage.setRemoteImageUrl(mImage);
       }
     }
   }
@@ -432,13 +437,13 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     if ("newsfeed".equals(mClickAction)) {
       inAppMessage.setClickAction(ClickAction.NEWS_FEED);
     } else if ("uri".equals(mClickAction)) {
-      if (SpinnerUtils.SpinnerItemNotSet(mUri)) {
+      if (SpinnerUtils.spinnerItemNotSet(mUri)) {
         Toast.makeText(InAppMessageTesterActivity.this, "Please choose a URI.", Toast.LENGTH_LONG).show();
         return false;
       } else {
         inAppMessage.setClickAction(ClickAction.URI, Uri.parse(mUri));
       }
-    } else if ("none".equals(mClickAction)) {
+    } else if (NONE_OPTION.equals(mClickAction)) {
       inAppMessage.setClickAction(ClickAction.NONE);
     }
     return true;
@@ -455,7 +460,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
 
   private void setHeader(IInAppMessageImmersive inAppMessage) {
     // set header text color if defined
-    if (!SpinnerUtils.SpinnerItemNotSet(mHeaderTextColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mHeaderTextColor)) {
       inAppMessage.setHeaderTextColor(parseColorFromString(mHeaderTextColor));
     }
     if ("10".equals(mHeader)) {
@@ -466,21 +471,21 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       inAppMessage.setHeader(HEADER_30);
     } else if ("40".equals(mHeader)) {
       inAppMessage.setHeader(HEADER_40);
-    } else if ("none".equals(mHeader)) {
+    } else if (NONE_OPTION.equals(mHeader)) {
       inAppMessage.setHeader(null);
     }
   }
 
   private void setModalFrameColor(InAppMessageModal inAppMessage) {
-    if (!SpinnerUtils.SpinnerItemNotSet(mModalFrameColor)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mModalFrameColor)) {
       inAppMessage.setModalFrameColor(parseColorFromString(mModalFrameColor));
     }
   }
 
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
     // add message buttons.
-    if (!SpinnerUtils.SpinnerItemNotSet(mButtons)) {
-      if ("none".equals(mButtons)) {
+    if (!SpinnerUtils.spinnerItemNotSet(mButtons)) {
+      if (NONE_OPTION.equals(mButtons)) {
         inAppMessage.setMessageButtons(null);
         return;
       }

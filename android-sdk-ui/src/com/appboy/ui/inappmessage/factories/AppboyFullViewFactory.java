@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageFull;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
@@ -16,7 +17,11 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageFullView fullView = (AppboyInAppMessageFullView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_full, null);
     fullView.inflateStubViews();
     if (FrescoLibraryUtils.canUseFresco(activity.getApplicationContext())) {
-      fullView.setMessageSimpleDrawee(inAppMessage.getImageUrl());
+      if (!StringUtils.isNullOrBlank(inAppMessage.getLocalImageUrl())) {
+        fullView.setMessageSimpleDrawee(inAppMessage.getLocalImageUrl());
+      } else {
+        fullView.setMessageSimpleDrawee(inAppMessage.getRemoteImageUrl());
+      }
     } else {
       fullView.setMessageImageView(inAppMessage.getBitmap());
     }

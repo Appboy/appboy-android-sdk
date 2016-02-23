@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage.listeners;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.view.View;
 
@@ -9,6 +10,7 @@ import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.MessageButton;
+import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
 import com.appboy.support.WebContentUtils;
@@ -17,8 +19,11 @@ import com.appboy.ui.actions.IAction;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
 
+import java.io.File;
+
 public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageViewLifecycleListener {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageViewLifecycleListener.class.getName());
+
   @Override
   public void beforeOpened(View inAppMessageView, IInAppMessage inAppMessage) {
     AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeOpened called.");
@@ -40,7 +45,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
     AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterClosed called.");
     getInAppMessageManager().resetAfterInAppMessageClose();
     if (inAppMessage instanceof IInAppMessageHtml) {
-      startClearHtmlInAppMessageAssetsThread((IInAppMessageHtml) inAppMessage);
+      startClearHtmlInAppMessageAssetsThread();
     }
   }
 
@@ -100,7 +105,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
       AppboyLogger.w(TAG, "Can't perform click action because the cached activity is null.");
       return;
     }
-    switch(clickAction) {
+    switch (clickAction) {
       case NEWS_FEED:
         inAppMessage.setAnimateOut(false);
         inAppMessageCloser.close(false);
@@ -127,12 +132,14 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
     return AppboyInAppMessageManager.getInstance();
   }
 
-  private void startClearHtmlInAppMessageAssetsThread(final IInAppMessageHtml inAppMessageHtml) {
+  private void startClearHtmlInAppMessageAssetsThread() {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        if (inAppMessageHtml != null) {
-          WebContentUtils.clearInAppMessageLocalAssets(inAppMessageHtml);
+        Activity inAppMessageActivity = AppboyInAppMessageManager.getInstance().getActivity();
+        if (inAppMessageActivity != null) {
+          File internalStorageCacheDirectory = WebContentUtils.getHtmlInAppMessageAssetCacheDirectory(inAppMessageActivity);
+          AppboyFileUtils.deleteFileOrDirectory(internalStorageCacheDirectory);
         }
       }
     }).start();

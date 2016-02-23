@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="blue">#30376D</color>
-  <color name="red">#9E4238</color>
-  <color name="green">#869836</color>
-  <color name="yellow">#A68633</color>
   <color name="gray">#DCDCDC</color>
   <color name="light_gray">#F9F9F9</color>
 
-  <color name="custom_inappmessage_green">#FF48D46B</color>
+  <color name="custom_inappmessage_green">#FF89E4DF</color>
 </resources>

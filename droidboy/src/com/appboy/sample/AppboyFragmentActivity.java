@@ -2,12 +2,9 @@ package com.appboy.sample;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;

@@ -30,6 +30,7 @@ import java.math.BigDecimal;
  * Methods containing 'User', such as addToUserCustomAttributeArray(), get called on the current AppboyUser
  * running on the phone.
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class AppboyWearableAdapter implements GoogleApiClient.ConnectionCallbacks {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyWearableAdapter.class.getName());
   private static final String DATA_SYNC_PATH_PREFIX = "/appboy-data-sync/";

@@ -8,7 +8,6 @@ import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageHtmlBase;
 import com.appboy.models.InAppMessageHtmlFull;
-import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
@@ -23,6 +22,7 @@ import java.io.File;
 
 public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, Integer, IInAppMessage> {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyAsyncInAppMessageDisplayer.class.getName());
+
   @Override
   protected IInAppMessage doInBackground(IInAppMessage... inAppMessages) {
     try {
@@ -41,12 +41,6 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         // See http://developer.android.com/reference/android/os/AsyncTask.html#execute(Params...)
         assetDownloadSucceeded = prepareInAppMessageWithHtml(inAppMessage);
       } else {
-        String imageUrl = inAppMessage.getImageUrl();
-        if (StringUtils.isNullOrBlank(imageUrl)) {
-          AppboyLogger.w(TAG, "In-app message has no image URL. Not downloading image from URL.");
-          return inAppMessage;
-        }
-
         if (FrescoLibraryUtils.canUseFresco(activity.getApplicationContext())) {
           assetDownloadSucceeded = prepareInAppMessageWithFresco(inAppMessage);
         } else {
@@ -103,18 +97,21 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
       AppboyLogger.e(TAG, "Can't store HTML in-app message assets because activity is null.");
       return false;
     }
-    // Get the local URL directory for the html display
     InAppMessageHtmlBase inAppMessageHtml = (InAppMessageHtmlBase) inAppMessage;
+    // If the local assets exist already, return right away.
+    String localAssets = inAppMessageHtml.getLocalAssetsDirectoryUrl();
+    if (!StringUtils.isNullOrBlank(localAssets) && new File(localAssets).exists()) {
+      AppboyLogger.i(TAG, "Local assets for html in-app message are already populated. Not downloading assets.");
+      return true;
+    }
+    // Otherwise, return if no remote asset zip location is specified.
     if (StringUtils.isNullOrBlank(inAppMessageHtml.getAssetsZipRemoteUrl())) {
       AppboyLogger.i(TAG, "Html in-app message has no remote asset zip. Continuing with in-app message preparation.");
       return true;
     }
-    if (!StringUtils.isNullOrBlank(inAppMessageHtml.getLocalAssetsDirectoryUrl())) {
-      AppboyLogger.i(TAG, "Local assets for html in-app message are already populated. Not downloading assets.");
-      return true;
-    }
-    File internalStorageCacheDirectory = activity.getCacheDir();
-    String localWebContentUrl = WebContentUtils.getLocalHtmlUrlFromRemoteUrl(internalStorageCacheDirectory, inAppMessageHtml.getAssetsZipRemoteUrl(), true);
+    // Otherwise, download the asset zip.
+    File internalStorageCacheDirectory = WebContentUtils.getHtmlInAppMessageAssetCacheDirectory(activity);
+    String localWebContentUrl = WebContentUtils.getLocalHtmlUrlFromRemoteUrl(internalStorageCacheDirectory, inAppMessageHtml.getAssetsZipRemoteUrl());
     if (!StringUtils.isNullOrBlank(localWebContentUrl)) {
       AppboyLogger.d(TAG, "Local url for html in-app message assets is " + localWebContentUrl);
       inAppMessageHtml.setLocalAssetsDirectoryUrl(localWebContentUrl);
@@ -134,18 +131,28 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
    * @return whether or not asset download succeeded
    */
   boolean prepareInAppMessageWithFresco(IInAppMessage inAppMessage) {
-    String imageUrl = inAppMessage.getImageUrl();
     // If the image already has a local Uri, it will be loaded into the SimpleDrawee view when the in-app
     // message view is instantiated.
-    if (AppboyFileUtils.isLocalUri(Uri.parse(imageUrl))) {
-      AppboyLogger.i(TAG, "In-app message has local image Uri for Fresco display. Not downloading image.");
+    String localImageUrl = inAppMessage.getLocalImageUrl();
+    if (!StringUtils.isNullOrBlank(localImageUrl) && new File(localImageUrl).exists()) {
+      AppboyLogger.i(TAG, "In-app message has local image url for Fresco display. Not downloading image.");
       inAppMessage.setImageDownloadSuccessful(true);
       return true;
+    } else {
+      // If we don't use the local image url, clear it out to ensure we use the correct image url
+      // in the view factory.
+      inAppMessage.setLocalImageUrl(null);
     }
-    // Prefetch the image content via http://frescolib.org/docs/using-image-pipeline.html#prefetching
+    // Otherwise, return if no remote uri is specified.
+    String remoteImageUrl = inAppMessage.getRemoteImageUrl();
+    if (StringUtils.isNullOrBlank(remoteImageUrl)) {
+      AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
+      return true;
+    }
+    // Otherwise, prefetch the image content via http://frescolib.org/docs/using-image-pipeline.html#prefetching
     ImagePipeline imagePipeline = Fresco.getImagePipeline();
     // Create a request for the image
-    ImageRequest imageRequest = ImageRequest.fromUri(imageUrl);
+    ImageRequest imageRequest = ImageRequest.fromUri(remoteImageUrl);
     DataSource dataSource = imagePipeline.prefetchToDiskCache(imageRequest, new Object());
 
     // Since we're in an asyncTask, we can wait for the also asynchronous prefetch by Fresco
@@ -159,9 +166,9 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
       inAppMessage.setImageDownloadSuccessful(true);
     } else {
       if (dataSource.getFailureCause() == null) {
-        AppboyLogger.w(TAG, "Fresco disk prefetch failed with null cause for image url:" + imageUrl);
+        AppboyLogger.w(TAG, "Fresco disk prefetch failed with null cause for remote image url:" + remoteImageUrl);
       } else {
-        AppboyLogger.w(TAG, "Fresco disk prefetch failed with cause: " + dataSource.getFailureCause().getMessage() + " with image url: " + imageUrl);
+        AppboyLogger.w(TAG, "Fresco disk prefetch failed with cause: " + dataSource.getFailureCause().getMessage() + " with remote image url: " + remoteImageUrl);
       }
     }
     // Release the resource reference
@@ -182,7 +189,24 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
       inAppMessage.setImageDownloadSuccessful(true);
       return true;
     }
-    inAppMessage.setBitmap(AppboyImageUtils.getBitmap(Uri.parse(inAppMessage.getImageUrl())));
+    // If the image already has a local Uri, attempt to load it
+    String localImageUrl = inAppMessage.getLocalImageUrl();
+    if (!StringUtils.isNullOrBlank(localImageUrl) && new File(localImageUrl).exists()) {
+      AppboyLogger.i(TAG, "In-app message has local image url.");
+      inAppMessage.setBitmap(AppboyImageUtils.getBitmap(Uri.parse(localImageUrl)));
+    }
+    // If loading fails or no local image is specified, download from the remote url.
+    // Return if no remote uri is specified.
+    if (inAppMessage.getBitmap() == null) {
+      String remoteImageUrl = inAppMessage.getRemoteImageUrl();
+      if (!StringUtils.isNullOrBlank(remoteImageUrl)) {
+        AppboyLogger.i(TAG, "In-app message has remote image url. Downloading.");
+        inAppMessage.setBitmap(AppboyImageUtils.getBitmap(Uri.parse(remoteImageUrl)));
+      } else {
+        AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
+        return true;
+      }
+    }
     if (inAppMessage.getBitmap() != null) {
       inAppMessage.setImageDownloadSuccessful(true);
       return true;

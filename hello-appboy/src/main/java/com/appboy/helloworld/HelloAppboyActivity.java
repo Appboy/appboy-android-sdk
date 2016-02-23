@@ -11,7 +11,9 @@ import android.widget.Toast;
 import com.appboy.Appboy;
 
 public class HelloAppboyActivity extends Activity {
-  private EditText mNickname, mHighScore, mEmail;
+  private EditText mNickname;
+  private EditText mHighScore;
+  private EditText mEmail;
   private Context mApplicationContext;
 
   // These events will be shown in the Appboy dashboard.
@@ -50,8 +52,8 @@ public class HelloAppboyActivity extends Activity {
 
           // Log the custom attribute of "nickname : highScore"
           String attributeString = String.format("%s : %s", nickname, highScore);
-          Appboy.getInstance(mApplicationContext).getCurrentUser().
-            setCustomUserAttribute(HELLO_APPBOY_HIGH_SCORE_ATTRIBUTE_KEY, attributeString);
+          Appboy.getInstance(mApplicationContext).getCurrentUser()
+              .setCustomUserAttribute(HELLO_APPBOY_HIGH_SCORE_ATTRIBUTE_KEY, attributeString);
 
           displayToast("Sent off event and attribute to Appboy!");
         }

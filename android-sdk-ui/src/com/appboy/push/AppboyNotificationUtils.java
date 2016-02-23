@@ -682,12 +682,6 @@ public class AppboyNotificationUtils {
    * {@link #setContentIntentIfPresent}
    */
   private static void logNotificationOpened(Context context, Intent intent) {
-    String campaignId = intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
-    if (campaignId != null) {
-      AppboyLogger.i(TAG, String.format("Logging push click to Appboy. Campaign Id: " + campaignId));
-      Appboy.getInstance(context).logPushNotificationOpened(campaignId);
-    } else {
-      AppboyLogger.i(TAG, String.format("No campaign Id associated with this notification. Not logging push click to Appboy."));
-    }
+    Appboy.getInstance(context).logPushNotificationOpened(intent);
   }
 }

@@ -2,7 +2,6 @@ package com.appboy.ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import com.appboy.support.AppboyLogger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,6 +13,7 @@ import com.appboy.models.cards.Card;
 import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.configuration.XmlUIConfigurationProvider;
 import com.appboy.ui.widget.BannerImageCardView;
 import com.appboy.ui.widget.BaseCardView;
@@ -197,7 +197,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     } else {
       AppboyLogger.d(TAG, String.format("Already counted impression for card %s", cardId));
     }
-    if (!card.getViewed()){
+    if (!card.getViewed()) {
       card.setViewed(true);
     }
   }
@@ -210,8 +210,8 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    *                   be set to viewed. Must be less than endIndex
    * @param endIndex Where to end setting cards to viewed. The card at this index will be set to viewed.
    */
-  public void batchSetCardsToRead(int startIndex, int endIndex){
-    if (getCount() == 0){
+  public void batchSetCardsToRead(int startIndex, int endIndex) {
+    if (getCount() == 0) {
       AppboyLogger.d(TAG, "mAdapter is empty in setting some cards to viewed.");
       return;
     }
@@ -220,15 +220,15 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     startIndex = Math.max(0, startIndex);
     endIndex = Math.min(getCount(), endIndex);
 
-    for (int traversalIndex = startIndex; traversalIndex < endIndex; traversalIndex++){
+    for (int traversalIndex = startIndex; traversalIndex < endIndex; traversalIndex++) {
       // Get the card
       Card card = getItem(traversalIndex);
-      if (card == null){
+      if (card == null) {
         AppboyLogger.d(TAG, "Card was null in setting some cards to viewed.");
         break;
       }
 
-      if (!card.isRead()){
+      if (!card.isRead()) {
         card.setIsRead(true);
       }
     }

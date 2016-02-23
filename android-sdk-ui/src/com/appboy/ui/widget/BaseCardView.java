@@ -167,7 +167,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
    * Calls setImageViewToUrl with respectAspectRatio set to true.
    * @see com.appboy.ui.widget.BaseCardView#setImageViewToUrl(android.widget.ImageView, String, float, boolean)
    */
-  void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio){
+  void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio) {
     setImageViewToUrl(imageView, imageUrl, aspectRatio, true);
   }
 
@@ -189,7 +189,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
       return;
     }
 
-    if (aspectRatio == 0){
+    if (aspectRatio == 0) {
       AppboyLogger.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
       return;
     }
@@ -252,9 +252,9 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     return mCanUseFresco;
   }
 
-  protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag){
+  protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
     card.setIsRead(true);
-    if(cardAction != null){
+    if (cardAction != null) {
       AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
       card.logClick();
       cardAction.execute(context);

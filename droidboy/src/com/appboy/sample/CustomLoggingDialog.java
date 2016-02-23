@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class CustomLoggingDialog extends DialogPreference {
+  private static final String DEFAULT = "default";
   private EditText mCustomAttributeKey;
   private EditText mCustomAttributeValue;
   private EditText mCustomAttributeIncrementKey;
@@ -106,7 +107,7 @@ public class CustomLoggingDialog extends DialogPreference {
 
       if (!StringUtils.isNullOrBlank(customAttributeKeyName)) {
         if (StringUtils.isNullOrBlank(customAttributeValueName)) {
-          customAttributeValueName = "default";
+          customAttributeValueName = DEFAULT;
         }
         AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
         notifyResult(appboyUser.setCustomUserAttribute(customAttributeKeyName, customAttributeValueName), "set user attribute! key=" + customAttributeKeyName + ", value=" + customAttributeValueName);
@@ -128,14 +129,14 @@ public class CustomLoggingDialog extends DialogPreference {
         if (!StringUtils.isNullOrBlank(customEventPropertyKey)) {
           AppboyProperties eventProperties = new AppboyProperties();
           if (StringUtils.isNullOrBlank(customEventPropertyValue)) {
-            customEventPropertyValue = "default";
+            customEventPropertyValue = DEFAULT;
           }
           eventProperties.addProperty(customEventPropertyKey, customEventPropertyValue);
           eventProperties.addProperty("time", new Date(System.currentTimeMillis()));
           eventProperties.addProperty("boolean", false);
           eventProperties.addProperty("double", 2.5);
           eventProperties.addProperty("integer", 3);
-          eventProperties.addProperty("string", "string");
+          eventProperties.addProperty("stringKey", "stringValue");
           notifyResult(Appboy.getInstance(getContext()).logCustomEvent(customEventName, eventProperties),
               String.format("custom event: %s. Custom properties: %s, %s",customEventName, customEventPropertyKey, customEventPropertyValue));
         } else {
@@ -155,14 +156,14 @@ public class CustomLoggingDialog extends DialogPreference {
         } else {
           AppboyProperties purchaseProperties = new AppboyProperties();
           if (StringUtils.isNullOrBlank(customPurchasePropertyValue)) {
-            customPurchasePropertyValue = "default";
+            customPurchasePropertyValue = DEFAULT;
           }
           purchaseProperties.addProperty(customPurchasePropertyKey, customPurchasePropertyValue);
           purchaseProperties.addProperty("time", new Date(System.currentTimeMillis()));
           purchaseProperties.addProperty("boolean", true);
           purchaseProperties.addProperty("double", 1.5);
           purchaseProperties.addProperty("integer", 2);
-          purchaseProperties.addProperty("string", "string");
+          purchaseProperties.addProperty("stringKey", "stringValue");
           if (StringUtils.isNullOrBlank(customPurchaseQuantity)) {
             notifyResult(Appboy.getInstance(getContext()).logPurchase(customPurchaseName, currencyCode, BigDecimal.ONE, purchaseProperties),
                 String.format("single purchase: %s. Custom properties: %s, %s", customPurchaseName, customPurchasePropertyKey, customPurchasePropertyValue));
@@ -174,7 +175,7 @@ public class CustomLoggingDialog extends DialogPreference {
       }
       if (!StringUtils.isNullOrBlank(customAttributeArrayKey)) {
         if (StringUtils.isNullOrBlank(customAttributeArrayValue)) {
-          customAttributeArrayValue = "default";
+          customAttributeArrayValue = DEFAULT;
         }
         AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
         switch (attributeArrayResourceId) {

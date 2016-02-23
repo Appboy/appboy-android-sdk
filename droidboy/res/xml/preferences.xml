@@ -6,19 +6,11 @@
         android:summary="@string/user_dialog_summary"
         android:positiveButtonText="@string/user_dialog_okay"
         android:negativeButtonText="@string/user_dialog_cancel"/>
-
-    <PreferenceCategory
-        android:title="@string/engagement_title">
-        <com.appboy.sample.CustomLoggingDialog
-            android:title="@string/custom_logging_dialog_title"
-            android:summary="@string/custom_logging_dialog_summary"
-            android:positiveButtonText="@string/custom_logging_dialog_okay"
-            android:negativeButtonText="@string/custom_logging_dialog_cancel"/>
-        <Preference
-            android:key="log_iab_purchase"
-            android:title="@string/iab_log_purchase_title"
-            android:summary="@string/iab_log_purchase_summary"/>
-    </PreferenceCategory>
+    <com.appboy.sample.CustomLoggingDialog
+        android:title="@string/custom_logging_dialog_title"
+        android:summary="@string/custom_logging_dialog_summary"
+        android:positiveButtonText="@string/custom_logging_dialog_okay"
+        android:negativeButtonText="@string/custom_logging_dialog_cancel"/>
 
     <PreferenceCategory
         android:title="@string/network_control_title">
@@ -54,6 +46,16 @@
           android:title="@string/log_attribution_title"
           android:summary="@string/log_attribution_summary"/>
     </PreferenceCategory>
+
+  <PreferenceCategory
+      android:title="@string/storage_info_preference_category">
+    <com.appboy.sample.FileDataDialog
+        android:title="@string/file_data_title"
+        android:summary="@string/file_data_summary"/>
+    <com.appboy.sample.SharedPreferencesDataDialog
+        android:title="@string/shared_preferences_title"
+        android:summary="@string/shared_preferences_summary"/>
+  </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/session_title">

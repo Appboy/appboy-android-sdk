@@ -58,7 +58,7 @@ public class WearboyActivity extends Activity implements View.OnClickListener {
         break;
 
       case R.id.wearboy_log_purchase_button:
-        mAppboyAdapter.logPurchase("product id here", "USD", new BigDecimal(3.50d));
+        mAppboyAdapter.logPurchase("product id here", "USD", new BigDecimal("3.50"));
         showToast("Logged purchase");
         break;
 
@@ -75,6 +75,9 @@ public class WearboyActivity extends Activity implements View.OnClickListener {
       case R.id.wearboy_set_screen_type_square_button:
         mAppboyAdapter.logWearScreenShape(WearScreenShape.SQUARE);
         showToast("Logged screen as square");
+        break;
+
+      default:
         break;
     }
   }

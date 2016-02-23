@@ -72,6 +72,12 @@
           android:layout_height="wrap_content"
           android:text="@string/push_tester_wear_add_extra_pages"
           android:textColor="@android:color/black"/>
+        <CheckBox
+            android:id="@+id/push_tester_test_triggers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/push_tester_test_triggers"
+            android:textColor="@android:color/black"/>
         <Spinner
           android:id="@+id/push_image_spinner"
           android:layout_width="fill_parent"

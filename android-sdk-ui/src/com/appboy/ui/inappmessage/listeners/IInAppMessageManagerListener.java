@@ -19,11 +19,15 @@ public interface IInAppMessageManagerListener {
   /**
    * @param inAppMessage the received in-app message.
    *
+   * @deprecated with triggered in-app messages (introduced in Appboy Android sdk 1.13.0), in-app
+   * messages are pre-fetched. Only 'legacy' in-app messages will call this method.
+   *
    * @return boolean flag to indicate to Appboy whether the display of this message
    * has been manually handled. If true, Appboy will do nothing with the in-app message.
    * If false, Appboy will add the message to its internal stack of in-app messages and request
    * display.
    */
+  @Deprecated
   boolean onInAppMessageReceived(IInAppMessage inAppMessage);
 
   /**

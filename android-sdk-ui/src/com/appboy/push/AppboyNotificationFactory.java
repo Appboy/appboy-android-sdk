@@ -18,7 +18,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    */
   public static AppboyNotificationFactory getInstance() {
     if (sInstance == null) {
-      synchronized(AppboyNotificationFactory.class) {
+      synchronized (AppboyNotificationFactory.class) {
         if (sInstance == null) {
           sInstance = new AppboyNotificationFactory();
         }

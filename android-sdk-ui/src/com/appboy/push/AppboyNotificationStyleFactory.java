@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.appboy.Constants;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
 
 public class AppboyNotificationStyleFactory {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationStyleFactory.class.getName());
@@ -87,7 +88,7 @@ public class AppboyNotificationStyleFactory {
     }
 
     String imageUrl = appboyExtras.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
-    if (imageUrl == null) {
+    if (StringUtils.isNullOrBlank(imageUrl)) {
       return null;
     }
 

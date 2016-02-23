@@ -25,14 +25,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_attribute_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_attribute_increment_value"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_span="2"
                 android:inputType="number"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="4"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="4"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -108,14 +108,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_event_property_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="4"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_span="4"
                 android:inputType="number"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -167,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="4"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -184,14 +184,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/purchase_property_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -208,14 +208,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_attribute_array_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserSingleLineText"/>
+                style="@style/UserEmailAddress"/>
         </TableRow>
 
         <TableRow

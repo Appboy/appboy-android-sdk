@@ -8,6 +8,7 @@ import android.net.Uri;
 import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PackageUtils;
+import com.appboy.support.StringUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.controller.ControllerListener;
@@ -21,12 +22,15 @@ import com.facebook.imagepipeline.image.ImageInfo;
  * the Fresco library used in the UI project.
  */
 public class FrescoLibraryUtils {
-  private final static String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, FrescoLibraryUtils.class.getName());
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, FrescoLibraryUtils.class.getName());
   public static final String FRESCO_ENABLED = "com_appboy_enable_fresco_library_use";
   private static boolean sCanUseFresco = false;
   private static boolean sCanUseFrescoSet = false;
+  private static final String FILE_SCHEME = "file";
+  private static final String HTTP_SCHEME = "http";
+  private static final String HTTPS_SCHEME = "https";
 
-  private final static String[] USED_FRESCO_CLASSES = {
+  private static final String[] USED_FRESCO_CLASSES = {
           "com.facebook.drawee.backends.pipeline.Fresco",
           "com.facebook.drawee.interfaces.DraweeController",
           "com.facebook.drawee.view.SimpleDraweeView",
@@ -145,7 +149,7 @@ public class FrescoLibraryUtils {
     // If the Fresco singleton is shutdown prematurely via Fresco.shutdown() then the Fresco.newDraweeControllerBuilder()
     // will throw a NPE. We catch this below to safeguard against this gracefully.
     try {
-      Uri uri = Uri.parse(imageUrl);
+      Uri uri = getFrescoUri(imageUrl);
       DraweeController controller = Fresco.newDraweeControllerBuilder()
               .setUri(uri)
               .setAutoPlayAnimations(true)
@@ -168,5 +172,13 @@ public class FrescoLibraryUtils {
    */
   static boolean canUseFrescoMock(Context context, Resources resources, boolean isFrescoOnPath) {
     return isFrescoOnPath && getIsFrescoEnabledFromXml(resources, PackageUtils.getResourcePackageName(context.getApplicationContext()));
+  }
+
+  static Uri getFrescoUri(String uriString) {
+    Uri uri = Uri.parse(uriString);
+    if (StringUtils.isNullOrBlank(uri.getScheme())) {
+      return Uri.parse(FILE_SCHEME + "://" + uriString);
+    }
+    return uri;
   }
 }

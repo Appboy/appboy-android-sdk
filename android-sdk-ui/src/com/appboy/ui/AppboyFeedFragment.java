@@ -61,7 +61,8 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   private boolean mSkipCardImpressionsReset;
   private EnumSet<CardCategory> mCategories;
   private SwipeRefreshLayout mFeedSwipeLayout;
-  private int previousVisibleHeadCardIndex, currentCardIndexAtBottomOfScreen;
+  private int previousVisibleHeadCardIndex;
+  private int currentCardIndexAtBottomOfScreen;
   private GestureDetectorCompat mGestureDetector;
 
   // This view should only be in the View.VISIBLE state when the listview is not visible. This view's
@@ -130,12 +131,13 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
       @Override
       public void onScrollStateChanged(AbsListView absListView, int scrollState) {}
+
       @Override
       public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         mFeedSwipeLayout.setEnabled(firstVisibleItem == 0);
 
         // Handle read/unread cards functionality below
-        if (visibleItemCount == 0){
+        if (visibleItemCount == 0) {
           // No cards/views have been loaded, do nothing
           return;
         }
@@ -143,7 +145,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
         int currentVisibleHeadCardIndex = firstVisibleItem - 1;
 
         // Head index increased (scroll down)
-        if (currentVisibleHeadCardIndex > previousVisibleHeadCardIndex){
+        if (currentVisibleHeadCardIndex > previousVisibleHeadCardIndex) {
           // Mark all cards in the gap as read
           mAdapter.batchSetCardsToRead(previousVisibleHeadCardIndex, currentVisibleHeadCardIndex);
         }
@@ -344,11 +346,13 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     public boolean onDown(MotionEvent motionEvent) {
       return true;
     }
+
     @Override
     public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float dx, float dy) {
       getListView().smoothScrollBy((int) dy, 0);
       return true;
     }
+
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float velocityX, float velocityY) {
       // We need to find the pixel distance of the scroll from the velocity with units (px / sec)

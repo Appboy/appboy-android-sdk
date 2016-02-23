@@ -1,3 +1,8 @@
+## 1.13.0
+- Adds support for action-based, locally triggered in-app messages. In-app messages are now sent to the device at session start with associated trigger events. The SDK will display in-app messages in near real-time when the trigger event associated with a message occurs. Trigger events can be app opens, push opens, purchases, and custom events. 
+- Deprecates the old system of requesting in-app message display, now collectively known as 'original' in-app messaging, where messages were limited to displaying at app start. 
+- Removes Iab billing example code from Droidboy.
+
 ## 1.12.0
 - Removes the deprecated method Appboy.requestSlideupRefresh().  Please use Appboy.requestInAppMessageRefresh() instead.
 - Removes the deprecated class AppboySlideupManager.  Please use AppboyInAppMessageManager instead.
@@ -24,6 +29,7 @@
 - Updates Appboy WebView to support redirects to deep links and enables DOM storage.
 - Adds a method for setting modal frame color on in-app messages, no longer displays in-app messages on asset download failure and adds robustness.
 - Adds deep link support to AppboyUnityGcmReceiver.
+
 
 ## 1.10.3
 - Adds Android M Support.  Under the runtime permissions model introduced in Android M, location permission must be explicitly obtained from the end user by the integrating app.  Once location permission is granted, Appboy will resume location data collection on the subsequent session.
@@ -84,7 +90,7 @@
 - Blacklisted custom attributes may no longer be incremented.
 
 ## 1.7.2
-- Removes DownloadUtils.java from com.appboy.ui.support.  The downloadImageBitmap function has been moved to com.appboy.AppboyImageUtils.
+- Removes DownloadUtils.java from com.appboy.ui.support.  The downloadImageBitmap function has been moved to com.appboy.support.AppboyImageUtils.
 - Introduces AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) to parse Appboy extras from GCM/ADM intent extras directly
   rather than requiring Appboy extras to be parsed into a Bundle before being passed into AppboyNotificationUtils.getAppboyExtras(Bundle notificationExtras).
 - Adds the ability to send and retrieve extra key-value pairs via a News Feed card.

@@ -238,6 +238,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       public boolean canDismiss(Object token) {
         return true;
       }
+
       @Override
       public void onDismiss(View view, Object token) {
         mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
@@ -253,6 +254,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       public void onTouchStartedOrContinued() {
         mInAppMessageView.removeCallbacks(mDismissRunnable);
       }
+
       @Override
       public void onTouchEnded() {
         if (mInAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
@@ -289,6 +291,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       return new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {}
+
         // This lifecycle callback has been observed to not be called during slideup animations
         // on occasion.  Do not add any code that *MUST* be executed here.
         @Override
@@ -299,6 +302,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
           AppboyLogger.d(TAG, "In-app message animated into view.");
           mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
         }
+
         @Override
         public void onAnimationRepeat(Animation animation) {}
       };
@@ -306,6 +310,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       return new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {}
+
         @Override
         public void onAnimationEnd(Animation animation) {
           mInAppMessageView.clearAnimation();
@@ -313,6 +318,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
           ViewUtils.removeViewFromParent(mInAppMessageView);
           mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
         }
+
         @Override
         public void onAnimationRepeat(Animation animation) {}
       };
@@ -327,7 +333,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
    */
   private SimpleSwipeDismissTouchListener getSimpleSwipeListener() {
     return new SimpleSwipeDismissTouchListener(mInAppMessageView.getContext()) {
-      private final long sSwipeAnimationDurationMillis = 400l;
+      private final long sSwipeAnimationDurationMillis = 400L;
 
       @Override
       public void onSwipeLeft() {

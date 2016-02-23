@@ -18,6 +18,7 @@ public class FeedbackFragmentActivity extends AppboyFragmentActivity {
       public void onFeedbackFinished(AppboyFeedbackFragment.FeedbackResult disposition) {
         finish();
       }
+
       @Override
       public String beforeFeedbackSubmitted(String message) {
         return message;

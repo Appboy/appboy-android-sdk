@@ -46,6 +46,12 @@
   <string name="custom_logging_dialog_okay">OK</string>
   <string name="custom_logging_dialog_cancel">Cancel</string>
 
+  <string name="storage_info_preference_category">Storage Info</string>
+  <string name="file_data_title">File Data</string>
+  <string name="file_data_summary">View the files stored for this app.</string>
+  <string name="shared_preferences_title">SharedPreferences Data</string>
+  <string name="shared_preferences_summary">View the SharedPreferences data for this app.</string>
+
   <string name="attribute_array">Array Operation:</string>
   <string name="attribute_array_set">Set</string>
   <string name="attribute_array_add">Add</string>
@@ -61,11 +67,6 @@
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
   <string name="custom_logging_custom_purchase_currency_code">Currency Code</string>
   <string name="custom_logging_custom_purchase_property">Purchase Property</string>
-
-  <string name="iab_log_purchase_title">Google IAB Purchase Flow</string>
-  <string name="iab_log_purchase_summary">IAB In-app purchase</string>
-  <string name="iab_log_purchase_toast">Thank you for your purchase!</string>
-  <string name="iab_log_purchase_sorry">Sorry, your device does not support Google IAB.</string>
 
   <string name="data_flush_title">Request Flush</string>
   <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>
@@ -112,6 +113,7 @@
   <string name="push_tester_public_version_label">Set Public Version Notification</string>
   <string name="push_tester_wear_hide_app_icon_label">Wear: Hide App Icon</string>
   <string name="push_tester_wear_add_extra_pages">Wear: Add Extra Pages</string>
+  <string name="push_tester_test_triggers">Force request triggers on click</string>
 
   <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
   <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>
@@ -124,9 +126,11 @@
   <string name="log_attribution_summary">Log Creative, AdGroup, Network, and Campaign.</string>
 
   <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
+  <string name="appboy_image_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/569934e8bf5cea1409000027/639cf60262df21a9d190c659e2fc36823fa2dc94/original.?1452881133</string>
   <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
   <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>
   <string name="appboy_siege_gif_url">https://blog.appboy.com/wp-content/uploads/2015/03/BrowserPreview_tmp-1.gif</string>
+  <string name="appboy_gif_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/564cfde56461737ff4080000/0283e284156a896114fc231e918551b959e87a4e/original.?1452806650</string>
   <string name="appboy_homepage_url">http://www.appboy.com</string>
   <string name="google_url">http://www.google.com</string>
   <string name="droidboy_deep_link">droidboy://preferences</string>
@@ -134,6 +138,7 @@
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
 
   <string name="custom_font">doridrobot.ttf</string>
+  <string name="droidboy_close_button_text">close</string>
   <string name="droidboy_custom_action">droidboy_custom_action</string>
   <string name="droidboy_icon_name">ic_stat_notify_droidboy</string>
   <string name="close_icon_name">com_appboy_ic_close_white</string>

@@ -67,11 +67,15 @@ public class AppboyFeedbackFragment extends Fragment {
   public void onAttach(Activity activity) {
     super.onAttach(activity);
     mSendButtonWatcher = new TextWatcher() {
-      @Override public void beforeTextChanged(CharSequence sequence, int start, int count, int after) { }
-      @Override public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
+      @Override
+      public void beforeTextChanged(CharSequence sequence, int start, int count, int after) { }
+
+      @Override
+      public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
+
       @Override
       public void afterTextChanged(Editable sequence) {
-          if (mErrorMessageShown){
+          if (mErrorMessageShown) {
             // Only show error messages after the user has clicked the send button at least once.
             ensureSendButton();
           }
@@ -169,7 +173,7 @@ public class AppboyFeedbackFragment extends Fragment {
   private boolean validatedEmail() {
     boolean validEmail = mEmailEditText.getText() != null && !StringUtils.isNullOrBlank(mEmailEditText.getText().toString()) && ValidationUtils.isValidEmailAddress(mEmailEditText.getText().toString());
     boolean blankEmail = mEmailEditText.getText() != null && StringUtils.isNullOrBlank(mEmailEditText.getText().toString());
-    if (validEmail){
+    if (validEmail) {
         mEmailEditText.setError(null);
     } else if (blankEmail) {
       // Display blank email error message in the email box

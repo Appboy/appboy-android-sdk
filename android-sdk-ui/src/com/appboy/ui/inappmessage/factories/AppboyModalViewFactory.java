@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageModal;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
@@ -16,7 +17,11 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageModalView modalView = (AppboyInAppMessageModalView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_modal, null);
     modalView.inflateStubViews();
     if (FrescoLibraryUtils.canUseFresco(activity.getApplicationContext())) {
-      modalView.setMessageSimpleDrawee(inAppMessage.getImageUrl());
+      if (!StringUtils.isNullOrBlank(inAppMessage.getLocalImageUrl())) {
+        modalView.setMessageSimpleDrawee(inAppMessage.getLocalImageUrl());
+      } else {
+        modalView.setMessageSimpleDrawee(inAppMessage.getRemoteImageUrl());
+      }
     } else {
       modalView.setMessageImageView(inAppMessageModal.getBitmap());
     }

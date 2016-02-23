@@ -104,7 +104,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
         try {
           notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
-        } catch(Exception e) {
+        } catch (Exception e) {
           AppboyLogger.e(TAG, "Failed to create notification.", e);
           return false;
         }

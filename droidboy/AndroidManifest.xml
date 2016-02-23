@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Note:  if you update the versionCode and package here, you must update in Wearboy as well -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="46" android:versionName="1.12.0">
+  xmlns:amazon="http://schemas.amazon.com/apk/res/android" 
+  package="com.appboy.sample" android:versionCode="54" android:versionName="1.13.0">
 
   <!-- Supported versions -->
   <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="23"/>
@@ -55,8 +55,8 @@
       </intent-filter>
     </activity>
 
-    <service android:name="com.appboy.services.AppboyLocationService"/>
-    <service android:name="com.appboy.services.AppboyWearableListenerService">
+    <service android:name="com.appboy.services.AppboyLocationService" />
+    <service android:name="com.appboy.services.AppboyWearableListenerService" >
         <intent-filter>
         <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
         </intent-filter>

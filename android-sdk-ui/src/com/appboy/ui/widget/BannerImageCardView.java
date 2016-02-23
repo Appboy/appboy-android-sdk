@@ -21,6 +21,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
   // aspect ratio, then this value will be the aspect ratio of the card on render.
   private float mAspectRatio = 6f;
+
   public BannerImageCardView(Context context) {
     this(context, null);
   }
@@ -50,7 +51,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
   @Override
   public void onSetCard(final BannerImageCard card) {
     boolean respectAspectRatio = false;
-    if (card.getAspectRatio() != 0f){
+    if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();
       respectAspectRatio = true;
     }

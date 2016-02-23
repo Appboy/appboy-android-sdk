@@ -90,7 +90,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
     String logMessage = String.format("onUnbind called with errorCode %d, requestId %s", errorCode, requestId);
     Log.d(TAG, logMessage);
     updateApplicationMessageLog(context, logMessage);
-  };
+  }
 
   /**
    * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
@@ -104,7 +104,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
    */
   @Override
   public void onSetTags(Context context, int errorCode,
-                        List<String> successTags, List<String> failTags, String requestId) {};
+                        List<String> successTags, List<String> failTags, String requestId) {}
 
   /**
    * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
@@ -117,7 +117,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
    * @param requestId identifier for the delete tags request.
    */
   @Override
-  public void onDelTags(Context context, int errorCode, List<String> successTags, List<String> failTags, String requestId){};
+  public void onDelTags(Context context, int errorCode, List<String> successTags, List<String> failTags, String requestId) {}
 
   /**
    * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
@@ -129,7 +129,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
    * @param requestId identifier for the list tags request.
    */
   @Override
-  public void onListTags(Context context, int errorCode, List<String> tags, String requestId){};
+  public void onListTags(Context context, int errorCode, List<String> tags, String requestId) {}
 
   /**
    * Creates a timestamped message to display to the user in the application's Baidu event message log

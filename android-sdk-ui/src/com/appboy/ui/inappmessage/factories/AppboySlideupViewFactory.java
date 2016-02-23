@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageSlideup;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView;
@@ -16,7 +17,11 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageSlideupView slideupView = (AppboyInAppMessageSlideupView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_slideup, null);
     slideupView.inflateStubViews();
     if (FrescoLibraryUtils.canUseFresco(activity.getApplicationContext())) {
-      slideupView.setMessageSimpleDrawee(inAppMessage.getImageUrl());
+      if (!StringUtils.isNullOrBlank(inAppMessage.getLocalImageUrl())) {
+        slideupView.setMessageSimpleDrawee(inAppMessage.getLocalImageUrl());
+      } else {
+        slideupView.setMessageSimpleDrawee(inAppMessage.getRemoteImageUrl());
+      }
     } else {
       slideupView.setMessageImageView(inAppMessageSlideup.getBitmap());
     }

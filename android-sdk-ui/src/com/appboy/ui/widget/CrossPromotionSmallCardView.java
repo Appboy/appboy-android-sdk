@@ -79,7 +79,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     // If the server sends down the display price, use that,
     if (!StringUtils.isNullOrBlank(card.getDisplayPrice())) {
       mPrice.setText(card.getDisplayPrice());
-    } else{
+    } else {
     // else, format client-side.
       mPrice.setText(getPriceString(card.getPrice()));
     }

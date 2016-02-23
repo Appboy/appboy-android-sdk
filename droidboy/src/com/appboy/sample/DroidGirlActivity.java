@@ -31,7 +31,7 @@ public class DroidGirlActivity extends AppboyFragmentActivity {
     FragmentManager fragmentManager = getSupportFragmentManager();
     if (savedInstanceState == null) {
       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-      fragmentTransaction.replace(R.id.root, new DecisionFragment());
+      fragmentTransaction.replace(R.id.root, new MainFragment());
       fragmentTransaction.commit();
     }
   }

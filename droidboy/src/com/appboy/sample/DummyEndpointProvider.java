@@ -1,4 +1,5 @@
 package com.appboy.sample;
+
 import android.net.Uri;
 
 import com.appboy.IAppboyEndpointProvider;

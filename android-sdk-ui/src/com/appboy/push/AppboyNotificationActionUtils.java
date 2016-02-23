@@ -65,7 +65,7 @@ public class AppboyNotificationActionUtils {
         actionIndex++;
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, String.format("Caught exception while adding notification action buttons.", e));
+      AppboyLogger.e(TAG, "Caught exception while adding notification action buttons.", e);
     }
   }
 
@@ -116,7 +116,7 @@ public class AppboyNotificationActionUtils {
         AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, String.format("Caught exception while handling notification action button click.", e));
+      AppboyLogger.e(TAG, "Caught exception while handling notification action button click.", e);
     }
   }
 
@@ -262,7 +262,7 @@ public class AppboyNotificationActionUtils {
 
     @Override
     protected void onPostExecute(Intent shareIntent) {
-      if (shareIntent != null && mContext != null) {
+      if (mContext != null) {
         if (shareIntent != null) {
           mContext.startActivity(shareIntent);
         } else {
@@ -297,7 +297,7 @@ public class AppboyNotificationActionUtils {
       Bitmap imageBitmap = AppboyImageUtils.getBitmap(Uri.parse(imageUrl));
 
       Uri localImageUri = AppboyImageUtils
-          .storeBitmap(context.getApplicationContext(), imageBitmap, fileName, DEFAULT_LOCAL_STORAGE_FOLDER, true);
+          .storePushBitmapInExternalStorage(context.getApplicationContext(), imageBitmap, fileName, DEFAULT_LOCAL_STORAGE_FOLDER);
 
       shareIntent.setType(IMAGE_MIME_TYPE);
       shareIntent.putExtra(Intent.EXTRA_STREAM, localImageUri);

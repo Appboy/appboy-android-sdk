@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+  <Spinner
+      android:id="@+id/file_chooser_spinner"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+  <ScrollView
+      android:id="@+id/scroller_id"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:scrollbars="vertical"
+      android:fillViewport="true">
+    <TextView android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:id="@+id/data_dialog_text_view">
+    </TextView>
+  </ScrollView>
+</LinearLayout>

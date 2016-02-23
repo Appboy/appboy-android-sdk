@@ -16,16 +16,14 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class DroidboyApplication extends Application
-{
+public class DroidboyApplication extends Application {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidboyApplication.class.getName());
   private static final String QA_FLAVOR = "QA";
   private static final String OVERRIDE_API_KEY = "f9622241-8e26-4366-8183-1c9e310af6b0";
   private static final Locale OVERRIDE_LOCALE = Locale.CHINA;
 
   @Override
-  public void onCreate()
-  {
+  public void onCreate() {
     super.onCreate();
 
     activateStrictMode();
@@ -33,9 +31,9 @@ public class DroidboyApplication extends Application
     // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
     // we don't want to run Appboy on in certain scenarios.
     String disableAppboyNetworkRequestsBooleanString = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, null);
-    if (Boolean.parseBoolean(disableAppboyNetworkRequestsBooleanString) && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(android.os.Build.MODEL)) {
+    if (Boolean.parseBoolean(disableAppboyNetworkRequestsBooleanString) && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(Build.MODEL)) {
       Appboy.disableAllAppboyNetworkRequests();
-      Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", android.os.Build.MODEL));
+      Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", Build.MODEL));
     }
     if (BuildConfig.FLAVOR.equals(QA_FLAVOR)) {
       Log.i(TAG, "QA build detected, configuring Appboy to clear any existing override key regardless of locale.");

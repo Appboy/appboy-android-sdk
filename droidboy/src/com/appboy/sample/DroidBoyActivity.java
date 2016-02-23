@@ -48,7 +48,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         ((AppboyFeedbackFragment) currentFragment).setFeedbackFinishedListener(getFeedbackFinishedListener());
       }
     } else {
-      fragmentManager.beginTransaction().add(R.id.root, new DecisionFragment()).commit();
+      fragmentManager.beginTransaction().add(R.id.root, new MainFragment()).commit();
     }
 
     fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -123,7 +123,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(DroidBoyActivity.this, requestCode, grantResults);
   }
 
@@ -181,7 +181,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
       replaceCurrentFragment(appboyFeedbackFragment);
     } else if (AppboyBroadcastReceiver.HOME.equals(destination)) {
-      replaceCurrentFragment(new DecisionFragment());
+      replaceCurrentFragment(new MainFragment());
     }
   }
 
@@ -201,6 +201,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         Log.i(TAG, "Feedback finished with disposition " + feedbackResult);
         fragmentManager.popBackStack();
       }
+
       @Override
       public String beforeFeedbackSubmitted(String message) {
         return message + " :from droidboy";

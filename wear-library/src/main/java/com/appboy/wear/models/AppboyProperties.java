@@ -2,7 +2,7 @@ package com.appboy.wear.models;
 
 import org.json.JSONObject;
 
-import java.util.Date;
+import java.util.Date;//NOPMD
 
 /**
  * This class acts as a wrapper for your JSONObjects. See the specification for AppboyProperties in the
@@ -19,6 +19,7 @@ import java.util.Date;
  *
  * If you need to add a date to your AppboyProperties json, use {@link com.appboy.wear.support.DateTimeUtils#formatDate(Date)}.
  */
+@SuppressWarnings("PMD")
 public final class AppboyProperties implements IPutIntoJson<JSONObject> {
   private JSONObject mPropertiesJSONObject = new JSONObject();
 
