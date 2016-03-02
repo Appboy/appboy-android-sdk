@@ -117,6 +117,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
 
   @TargetApi(12)
   @Override
+  @SuppressWarnings("checkstyle:operatorwrap")
   public boolean onTouch(View view, MotionEvent motionEvent) {
     // offset because the view is translated during swipe
     motionEvent.offsetLocation(mTranslationX, 0);

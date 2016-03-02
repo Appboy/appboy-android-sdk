@@ -1,3 +1,7 @@
+## 1.13.2
+- Fixes bug where passing a JSONObject with multiple invalid keys or values to the AppboyProperties
+  constructor would cause a ConcurrentModificationException.
+
 ## 1.13.1
 - Adds handling to a case where certain devices were returning null Resources for GCM BroadcastReceiver onReceive contexts.
 

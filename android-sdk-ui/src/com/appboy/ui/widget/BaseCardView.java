@@ -255,8 +255,11 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
     card.setIsRead(true);
     if (cardAction != null) {
-      AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
-      card.logClick();
+      if (card.logClick()) {
+        AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
+      } else {
+        AppboyLogger.d(tag, String.format("Logging click failed for card %s", card.getId()));
+      }
       cardAction.execute(context);
     }
   }

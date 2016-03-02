@@ -57,12 +57,16 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private static final String MESSAGE_40 = "Hello there!  This is an in-app message#";
   private static final String MESSAGE_90 = "Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#";
   private static final String MESSAGE_140 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly one hundred and forty chars#";
-  private static final String MESSAGE_240 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly two hundred and forty chars!  " +
-    "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
-  private static final String MESSAGE_640 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly six hundred and forty chars!  " +
-    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
-    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message & this message is exactly six hundred and forty chars!  " +
-    "We don't recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#";
+  private static final String MESSAGE_240 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly two hundred and forty chars!  "
+      + "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
+  private static final String MESSAGE_640 = "Welcome to Appboy! Appboy is Marketing Automation for "
+      + "Apps. This is an in-app message & this message is exactly six hundred and forty chars!  "
+      + "We don't recommend making in-app messages longer than 140 characters due to variations in "
+      + "screens.  This is an in-app message & this message is exactly six hundred and forty chars!"
+      + "  We don't recommend making in-app messages longer than 140 characters due to variations "
+      + "in screens.  This is an in-app message & this message is exactly six hundred and forty "
+      + "chars!  We don't recommend making in-app messages longer than 140 characters due to "
+      + "variations in screens.  This is a waaaay too long message#";
 
   private static final String HTML_ASSETS_NO_JS_REMOTE_URL = "https://www.dropbox.com/s/rvxloodgmnml2t2/html_iam_image.zip?dl=1";
   private static final String HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL = "https://www.dropbox.com/s/v1hhojkznz7so3s/html_iam_js.zip?dl=1";
@@ -121,8 +125,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mImage;
   private String mButtons;
   private String mHtmlBodyFromAssets;
-  private String mHtmlBodyFromAssetsInlineJS;
-  private String mHtmlBodyFromAssetsExternalJS;
+  private String mHtmlBodyFromAssetsInlineJs;
+  private String mHtmlBodyFromAssetsExternalJs;
   private String mHtmlBodyFromAssetsStarWars;
 
   @Override
@@ -182,7 +186,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     Button createAndAddInAppMessageButton = (Button) findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         if (getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
           // current custom in-app message view is an implementation of a base in-app message.
           addInAppMessage(new CustomInAppMessage());
@@ -240,7 +244,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     Button displayNextInAppMessageButton = (Button) findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage();
       }
     });
@@ -248,7 +252,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     Button requestInAppMessageFromServerButton = (Button) findViewById(R.id.request_inappmessage_from_server_button);
     requestInAppMessageFromServerButton.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         Appboy.getInstance(InAppMessageTesterActivity.this).requestInAppMessageRefresh();
       }
     });
@@ -256,14 +260,14 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     Button hideCurrentInAppMessageButton = (Button) findViewById(R.id.hide_current_inappmessage_button);
     hideCurrentInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true);
       }
     });
 
     mHtmlBodyFromAssets = readHtmlBodyFromAssets(HtmlMessageType.NO_JS);
-    mHtmlBodyFromAssetsInlineJS = readHtmlBodyFromAssets(HtmlMessageType.INLINE_JS);
-    mHtmlBodyFromAssetsExternalJS = readHtmlBodyFromAssets(HtmlMessageType.EXTERNAL_JS);
+    mHtmlBodyFromAssetsInlineJs = readHtmlBodyFromAssets(HtmlMessageType.INLINE_JS);
+    mHtmlBodyFromAssetsExternalJs = readHtmlBodyFromAssets(HtmlMessageType.EXTERNAL_JS);
     mHtmlBodyFromAssetsStarWars = readHtmlBodyFromAssets(HtmlMessageType.STAR_WARS);
   }
 
@@ -312,10 +316,10 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_NO_JS_REMOTE_URL);
         break;
       case INLINE_JS:
-        inAppMessage.setMessage(mHtmlBodyFromAssetsInlineJS);
+        inAppMessage.setMessage(mHtmlBodyFromAssetsInlineJs);
         break;
       case EXTERNAL_JS:
-        inAppMessage.setMessage(mHtmlBodyFromAssetsExternalJS);
+        inAppMessage.setMessage(mHtmlBodyFromAssetsExternalJs);
         inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL);
         break;
       case STAR_WARS:

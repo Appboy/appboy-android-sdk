@@ -132,8 +132,8 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     Fragment currentFragment = fragmentManager.findFragmentById(R.id.root);
 
     if (currentFragment != null && currentFragment.getClass().equals(newFragment.getClass())) {
-      Log.i(TAG, String.format("Fragment of type %s is already the active fragment. Ignoring request to replace " +
-        "current fragment.", currentFragment.getClass()));
+      Log.i(TAG, String.format("Fragment of type %s is already the active fragment. Ignoring request to replace "
+          + "current fragment.", currentFragment.getClass()));
       return;
     }
 
@@ -145,7 +145,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     hideSoftKeyboard();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-      android.R.anim.fade_in, android.R.anim.fade_out);
+        android.R.anim.fade_in, android.R.anim.fade_out);
     fragmentTransaction.replace(R.id.root, newFragment, newFragment.getClass().toString());
     if (currentFragment != null) {
       fragmentTransaction.addToBackStack(newFragment.getClass().toString());
@@ -189,7 +189,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     if (getCurrentFocus() != null) {
       InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
       inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-        InputMethodManager.RESULT_UNCHANGED_SHOWN);
+          InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
   }
 

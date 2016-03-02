@@ -86,7 +86,7 @@ public class UserProfileDialog extends DialogPreference {
 
     final Button populateButton = (Button) view.findViewById(R.id.user_dialog_button_populate);
     populateButton.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) {
+      public void onClick(View view) {
         if (mFirstName.getText().length() == 0) {
           mFirstName.setText(getSharedPreferences().getString(FIRST_NAME_PREFERENCE_KEY, SAMPLE_FIRST_NAME));
         }
@@ -106,7 +106,7 @@ public class UserProfileDialog extends DialogPreference {
     });
     final Button clearButton = (Button) view.findViewById(R.id.user_dialog_button_clear);
     clearButton.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) {
+      public void onClick(View view) {
         mFirstName.getText().clear();
         mLastName.getText().clear();
         mEmail.getText().clear();

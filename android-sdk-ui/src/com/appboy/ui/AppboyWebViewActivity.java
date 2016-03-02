@@ -68,9 +68,9 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
       public void onDownloadStart(String url, String userAgent,
                                   String contentDisposition, String mimetype,
                                   long contentLength) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
       }
     });
 
@@ -93,8 +93,8 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
             return true;
           }
         } catch (Exception e) {
-          AppboyLogger.i(TAG, String.format("Unexpected exception while processing url %s. " +
-              "Passing url back to WebView.", url), e);
+          AppboyLogger.i(TAG, String.format("Unexpected exception while processing url %s. "
+              + "Passing url back to WebView.", url), e);
         }
         return super.shouldOverrideUrlLoading(view, url);
       }

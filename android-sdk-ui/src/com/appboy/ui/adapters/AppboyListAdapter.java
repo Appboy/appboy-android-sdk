@@ -30,19 +30,19 @@ import java.util.Set;
 
 /**
  * Default adapter used to display cards and log card impressions for the Appboy feed.
- *
+ * <p/>
  * This allows the stream to reuse cards when they go out of view.
- *
+ * <p/>
  * IMPORTANT - When you add a new card, be sure to add the new view type and update the view count here
- *
+ * <p/>
  * A card generates an impression once per viewing per open ListView. If a card is viewed more than once
  * in a particular ListView, it generates only one impression. If closed an reopened, a card will again
  * generate an impression. This also takes into account the case of a card being off-screen in the ListView.
  * The card only generates an impression when it actually scrolls onto the screen.
- *
+ * <p/>
  * IMPORTANT - You must call resetCardImpressionTracker() whenever the ListView is displayed. This will ensure
- *             that cards that come into view will be tracked according to the description above.
- *
+ * that cards that come into view will be tracked according to the description above.
+ * <p/>
  * Adding and removing cards to and from the adapter should be done using the following synchronized
  * methods: {@link com.appboy.ui.adapters.AppboyListAdapter#add(Card)},
  * {@link com.appboy.ui.adapters.AppboyListAdapter#clear()}clear(),
@@ -124,6 +124,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     return view;
   }
 
+  @SuppressWarnings("checkstyle:localvariablename")
   public synchronized void replaceFeed(List<Card> cards) {
     setNotifyOnChange(false);
 
@@ -134,9 +135,12 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     }
 
     AppboyLogger.d(TAG, String.format("Replacing existing feed of %d cards with new feed containing %d cards.",
-      getCount(), cards.size()));
-    int i = 0, j = 0, newFeedSize = cards.size();
-    Card existingCard, newCard;
+        getCount(), cards.size()));
+    int i = 0;
+    int j = 0;
+    int newFeedSize = cards.size();
+    Card existingCard;
+    Card newCard;
 
     // Iterate over the entire existing feed, skipping items at the head of the list whenever they're the same as the
     // head of the new list and otherwise removing them.
@@ -206,9 +210,10 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    * Helper method to batch set cards to visually read after either an up or down scroll of the feed.
    * Since scrolls can have multiple cards scrolled off screen at a time, this method can batch set those
    * cards to read.
+   *
    * @param startIndex Where to start setting cards to viewed. The card at this index will
    *                   be set to viewed. Must be less than endIndex
-   * @param endIndex Where to end setting cards to viewed. The card at this index will be set to viewed.
+   * @param endIndex   Where to end setting cards to viewed. The card at this index will be set to viewed.
    */
   public void batchSetCardsToRead(int startIndex, int endIndex) {
     if (getCount() == 0) {

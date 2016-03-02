@@ -17,7 +17,7 @@ public class SimpleSwipeDismissTouchListener implements View.OnTouchListener {
 
   public void onSwipeRight() {}
 
-  public boolean onTouch(View v, MotionEvent event) {
+  public boolean onTouch(View view, MotionEvent event) {
     return mSwipeGestureListener.onTouchEvent(event);
   }
 
@@ -38,8 +38,7 @@ public class SimpleSwipeDismissTouchListener implements View.OnTouchListener {
       if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
         if (distanceX > 0) {
           onSwipeRight();
-        }
-        else {
+        } else {
           onSwipeLeft();
         }
         return true;

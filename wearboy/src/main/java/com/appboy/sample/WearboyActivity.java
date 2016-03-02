@@ -40,8 +40,8 @@ public class WearboyActivity extends Activity implements View.OnClickListener {
   }
 
   @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
+  public void onClick(View view) {
+    switch (view.getId()) {
       case R.id.wearboy_increment_custom_attribute_button:
         mAppboyAdapter.incrementCustomUserAttribute("times pressed button");
         showToast("Incremented attribute");

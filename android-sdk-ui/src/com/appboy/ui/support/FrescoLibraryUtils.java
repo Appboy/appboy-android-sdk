@@ -31,13 +31,13 @@ public class FrescoLibraryUtils {
   private static final String HTTPS_SCHEME = "https";
 
   private static final String[] USED_FRESCO_CLASSES = {
-          "com.facebook.drawee.backends.pipeline.Fresco",
-          "com.facebook.drawee.interfaces.DraweeController",
-          "com.facebook.drawee.view.SimpleDraweeView",
-          "com.facebook.drawee.backends.pipeline.Fresco",
-          "com.facebook.drawee.controller.BaseControllerListener",
-          "com.facebook.drawee.controller.ControllerListener",
-          "com.facebook.imagepipeline.image.ImageInfo"
+      "com.facebook.drawee.backends.pipeline.Fresco",
+      "com.facebook.drawee.interfaces.DraweeController",
+      "com.facebook.drawee.view.SimpleDraweeView",
+      "com.facebook.drawee.backends.pipeline.Fresco",
+      "com.facebook.drawee.controller.BaseControllerListener",
+      "com.facebook.drawee.controller.ControllerListener",
+      "com.facebook.imagepipeline.image.ImageInfo"
   };
 
   /**
@@ -62,6 +62,7 @@ public class FrescoLibraryUtils {
   /**
    * Checks for the existence of the Facebook Fresco Image Library for use in the UI code. Also checks
    * for the provided xml setting.
+   *
    * @return true if the fresco library is on the path AND if use of the fresco library is allowed
    * in the Appboy xml settings.
    */
@@ -101,9 +102,9 @@ public class FrescoLibraryUtils {
    * Helper method for setting the controller on a simple Drawee View. By default, gif urls are set
    * to autoplay and tap to retry is on for all images.
    *
-   * @param simpleDraweeView the fresco SimpleDraweeView in which to display the image
-   * @param imageUrl         the URL of the image resource
-   * @param aspectRatio the desired aspect ratio of the image
+   * @param simpleDraweeView   the fresco SimpleDraweeView in which to display the image
+   * @param imageUrl           the URL of the image resource
+   * @param aspectRatio        the desired aspect ratio of the image
    * @param respectAspectRatio if true, the aspect ratio of the image will be set to that of the value of aspectRatio. If false, the aspect ratio
    *                           will be set to that of the downloaded image dimensions.
    */
@@ -120,7 +121,7 @@ public class FrescoLibraryUtils {
 
     // Create a controller listener to listen for the dimensions of the image once set. Once
     // we get the dimensions, set the aspect ratio of the image based on respectAspectRatio.
-    ControllerListener controllerListener = new BaseControllerListener<ImageInfo>(){
+    ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
       @Override
       public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
         if (imageInfo == null) {
@@ -151,11 +152,11 @@ public class FrescoLibraryUtils {
     try {
       Uri uri = getFrescoUri(imageUrl);
       DraweeController controller = Fresco.newDraweeControllerBuilder()
-              .setUri(uri)
-              .setAutoPlayAnimations(true)
-              .setTapToRetryEnabled(true)
-              .setControllerListener(controllerListener)
-              .build();
+          .setUri(uri)
+          .setAutoPlayAnimations(true)
+          .setTapToRetryEnabled(true)
+          .setControllerListener(controllerListener)
+          .build();
       simpleDraweeView.setController(controller);
     } catch (NullPointerException e) {
       AppboyLogger.e(TAG, "Fresco controller builder could not be retrieved. Fresco most likely prematurely shutdown.", e);
@@ -167,6 +168,7 @@ public class FrescoLibraryUtils {
   /**
    * Test method with same spec as canUseFresco. Use to mock whether the required Fresco classes
    * are on the class path.
+   *
    * @return true if the fresco library is on the path AND if use of the fresco library is allowed
    * in the Appboy xml settings
    */

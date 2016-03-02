@@ -113,6 +113,7 @@ public class FeedCategoriesFragment extends DialogFragment {
     return builder.create();
   }
 
+  @SuppressWarnings("checkstyle:localvariablename")
   private boolean[] getBooleansFromEnumSet(EnumSet<CardCategory> categories) {
     boolean[] array = new boolean[CATEGORIES.length];
     if (categories.equals(CardCategory.ALL_CATEGORIES)) {

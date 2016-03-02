@@ -60,7 +60,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
 
     setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         handleCardClick(mContext, card, mCardAction, TAG);
       }
     });

@@ -6,9 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import com.appboy.support.AppboyLogger;
+
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.actions.ActivityAction;
 import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.activities.AppboyFeedActivity;
@@ -27,8 +28,8 @@ public class AppboyNavigator implements IAppboyNavigator {
       ActivityAction activityAction = new ActivityAction(intent);
       activityAction.execute(context);
     } catch (PackageManager.NameNotFoundException e) {
-      AppboyLogger.d(TAG, "The AppboyFeedActivity is not registered in the manifest. Ignoring request " +
-          "to display the news feed.");
+      AppboyLogger.d(TAG, "The AppboyFeedActivity is not registered in the manifest. Ignoring request "
+          + "to display the news feed.");
     }
   }
 

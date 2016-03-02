@@ -86,7 +86,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false,  card.getAppStore(), card.getKindleId());
     mPrice.setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         handleCardClick(mContext,card, mPriceAction, TAG);
       }
     });

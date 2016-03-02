@@ -110,13 +110,18 @@ public class CustomLoggingDialog extends DialogPreference {
           customAttributeValueName = DEFAULT;
         }
         AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
-        notifyResult(appboyUser.setCustomUserAttribute(customAttributeKeyName, customAttributeValueName), "set user attribute! key=" + customAttributeKeyName + ", value=" + customAttributeValueName);
+        notifyResult(appboyUser
+            .setCustomUserAttribute(customAttributeKeyName, customAttributeValueName),
+            "set user attribute! key=" + customAttributeKeyName
+                + ", value=" + customAttributeValueName);
       }
       if (!StringUtils.isNullOrBlank(customAttributeIncrementKeyName)) {
         AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
         if (!StringUtils.isNullOrBlank(customAttributeIncrementValueName)) {
           int incrementValue = Integer.parseInt(customAttributeIncrementValueName);
-          notifyResult(appboyUser.incrementCustomUserAttribute(customAttributeIncrementKeyName, incrementValue), "Increment user attribute! key=" + customAttributeIncrementKeyName + ", value=" + customAttributeIncrementValueName);
+          notifyResult(appboyUser.incrementCustomUserAttribute(customAttributeIncrementKeyName,
+              incrementValue), "Increment user attribute! key=" + customAttributeIncrementKeyName
+              + ", value=" + customAttributeIncrementValueName);
         } else {
           notifyResult(appboyUser.incrementCustomUserAttribute(customAttributeIncrementKeyName), "Increment user attribute! key=" + customAttributeIncrementKeyName + ", value=1");
         }

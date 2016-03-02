@@ -31,7 +31,8 @@ public final class WearDisplay implements IPutIntoJson<JSONObject> {
     mResolutionHeight = resolutionHeight;
     mDpiX = dpiX;
     mDpiY = dpiY;
-    mDensity = density;    mScreenType = screenType;
+    mDensity = density;
+    mScreenType = screenType;
   }
 
   public String getScreenType() {

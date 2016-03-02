@@ -5,9 +5,9 @@ import android.widget.Toast;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.MessageButton;
-import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
 import com.appboy.ui.inappmessage.InAppMessageOperation;
+import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 
 public class CustomInAppMessageManagerListener implements IInAppMessageManagerListener {
   private final Activity mActivity;

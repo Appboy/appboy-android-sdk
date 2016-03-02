@@ -61,16 +61,16 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       } else if ("ACCOUNT_MISSING".equals(error)) {
         Log.e(TAG, "No Google account found on the phone. For pre-3.0 devices, a Google account is required on the device.");
       } else if ("AUTHENTICATION_FAILED".equals(error)) {
-        Log.e(TAG, "Unable to authenticate Google account. For Android versions <4.0.4, a valid Google Play account " +
-          "is required for Google Cloud Messaging to function. This phone will be unable to receive Google Cloud " +
-          "Messages until the user logs in with a valid Google Play account or upgrades the operating system on this device.");
+        Log.e(TAG, "Unable to authenticate Google account. For Android versions <4.0.4, a valid Google Play account "
+            + "is required for Google Cloud Messaging to function. This phone will be unable to receive Google Cloud "
+            + "Messages until the user logs in with a valid Google Play account or upgrades the operating system on this device.");
       } else if ("INVALID_SENDER".equals(error)) {
         Log.e(TAG, "One or multiple of the sender IDs provided are invalid.");
       } else if ("PHONE_REGISTRATION_ERROR".equals(error)) {
         Log.e(TAG, "Device does not support GCM.");
       } else if ("INVALID_PARAMETERS".equals(error)) {
-        Log.e(TAG, "The request sent by the device does not contain the expected parameters. This phone does not " +
-          "currently support GCM.");
+        Log.e(TAG, "The request sent by the device does not contain the expected parameters. This phone does not "
+            + "currently support GCM.");
       } else {
         AppboyLogger.w(TAG, String.format("Received an unrecognised GCM registration error type. Ignoring. Error: %s", error));
       }
@@ -79,8 +79,8 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     } else if (intent.hasExtra(GCM_UNREGISTERED_KEY)) {
       Appboy.getInstance(context).unregisterAppboyPushMessages();
     } else {
-      AppboyLogger.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration " +
-        "confirmation. Ignoring.");
+      AppboyLogger.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration "
+          + "confirmation. Ignoring.");
       return false;
     }
     return true;

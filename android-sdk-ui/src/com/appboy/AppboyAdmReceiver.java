@@ -64,8 +64,8 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       AppboyLogger.i(TAG, "Unregistering from ADM: " + unregistered);
       Appboy.getInstance(context).unregisterAppboyPushMessages();
     } else {
-      AppboyLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration " +
-          "confirmation. Ignoring.");
+      AppboyLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration "
+          + "confirmation. Ignoring.");
       return false;
     }
     return true;
@@ -169,8 +169,8 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       handleRegistrationIntent(context, intent);
       return true;
     }
-    AppboyLogger.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set " +
-        "com_appboy_push_adm_messaging_registration_enabled to true in your appboy.xml to enable ADM.");
+    AppboyLogger.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set "
+        + "com_appboy_push_adm_messaging_registration_enabled to true in your appboy.xml to enable ADM.");
     return false;
   }
 }

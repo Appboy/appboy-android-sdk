@@ -62,8 +62,8 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
     try {
       Activity activity = getInAppMessageManagerActivity();
       if (activity == null) {
-        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Not displaying" +
-            "in-app message.");
+        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Not displaying"
+            + "in-app message.");
         return;
       }
       AppboyLogger.d(TAG, "Finished asynchronous in-app message preparation. Attempting to display in-app message.");

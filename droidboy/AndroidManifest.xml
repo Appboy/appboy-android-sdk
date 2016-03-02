@@ -2,7 +2,7 @@
 <!-- Note:  if you update the versionCode and package here, you must update in Wearboy as well -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:amazon="http://schemas.amazon.com/apk/res/android" 
-  package="com.appboy.sample" android:versionCode="54" android:versionName="1.13.1">
+  package="com.appboy.sample" android:versionCode="54" android:versionName="1.13.2">
 
   <!-- Supported versions -->
   <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="23"/>

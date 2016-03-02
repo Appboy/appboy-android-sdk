@@ -48,7 +48,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
 
     setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         handleCardClick(mContext, card, mCardAction, TAG);
       }
     });

@@ -2,10 +2,10 @@ package com.appboy.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.app.ListFragment;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.GestureDetector;
@@ -72,7 +72,8 @@ public class AppboyXamarinFormsFeedFragment extends ListFragment implements Swip
   // when their respective views are visible.
   private View mTransparentFullBoundsContainerView;
 
-  public AppboyXamarinFormsFeedFragment() {}
+  public AppboyXamarinFormsFeedFragment() {
+  }
 
   @Override
   public void onAttach(final Activity activity) {
@@ -97,9 +98,9 @@ public class AppboyXamarinFormsFeedFragment extends ListFragment implements Swip
     mFeedSwipeLayout.setOnRefreshListener(this);
     mFeedSwipeLayout.setEnabled(false);
     mFeedSwipeLayout.setColorSchemeResources(R.color.com_appboy_newsfeed_swipe_refresh_color_1,
-      R.color.com_appboy_newsfeed_swipe_refresh_color_2,
-      R.color.com_appboy_newsfeed_swipe_refresh_color_3,
-      R.color.com_appboy_newsfeed_swipe_refresh_color_4);
+        R.color.com_appboy_newsfeed_swipe_refresh_color_2,
+        R.color.com_appboy_newsfeed_swipe_refresh_color_3,
+        R.color.com_appboy_newsfeed_swipe_refresh_color_4);
     mTransparentFullBoundsContainerView = view.findViewById(R.id.com_appboy_feed_transparent_full_bounds_container_view);
     return view;
   }
@@ -132,7 +133,8 @@ public class AppboyXamarinFormsFeedFragment extends ListFragment implements Swip
     // Enable the swipe-to-refresh view only when the user is at the head of the listview.
     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
       @Override
-      public void onScrollStateChanged(AbsListView absListView, int scrollState) {}
+      public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+      }
 
       @Override
       public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -205,8 +207,8 @@ public class AppboyXamarinFormsFeedFragment extends ListFragment implements Swip
             // If we got our feed from offline storage, and it was old, we asynchronously request a new one from the server,
             // putting up a spinner if the old feed was empty.
             if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
-              AppboyLogger.i(TAG, String.format("Feed received was older than the max time to live of %d seconds, displaying it " +
-                  "for now, but requesting an updated view from the server.", MAX_FEED_TTL_SECONDS));
+              AppboyLogger.i(TAG, String.format("Feed received was older than the max time to live of %d seconds, displaying it "
+                  + "for now, but requesting an updated view from the server.", MAX_FEED_TTL_SECONDS));
               mAppboy.requestFeedRefresh();
               // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
               // Eventually displaying an error message if it doesn't.

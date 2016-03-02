@@ -30,8 +30,11 @@ public class DroidboyApplication extends Application {
 
     // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
     // we don't want to run Appboy on in certain scenarios.
-    String disableAppboyNetworkRequestsBooleanString = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, null);
-    if (Boolean.parseBoolean(disableAppboyNetworkRequestsBooleanString) && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(Build.MODEL)) {
+    String disableAppboyNetworkRequestsBooleanString = getApplicationContext().getSharedPreferences(
+        SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(
+        SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, null);
+    if (Boolean.parseBoolean(disableAppboyNetworkRequestsBooleanString)
+        && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(Build.MODEL)) {
       Appboy.disableAllAppboyNetworkRequests();
       Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", Build.MODEL));
     }
@@ -56,9 +59,9 @@ public class DroidboyApplication extends Application {
     if (BuildConfig.DEBUG) {
       StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog();
       StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
-        .detectLeakedSqlLiteObjects()
-        .penaltyLog()
-        .penaltyDeath();
+          .detectLeakedSqlLiteObjects()
+          .penaltyLog()
+          .penaltyDeath();
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
         // Add detectLeakedClosableObjects (available from API 11) if it's available
         addDetectLeakedClosableObjects(vmPolicyBuilder);

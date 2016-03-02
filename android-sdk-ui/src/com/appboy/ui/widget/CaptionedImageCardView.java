@@ -69,7 +69,7 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
 
     setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         handleCardClick(mContext, card, mCardAction, TAG);
       }
     });

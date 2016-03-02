@@ -26,7 +26,9 @@ import org.json.JSONObject;
 
 public class PushTesterActivity extends AppboyFragmentActivity implements AdapterView.OnItemSelectedListener {
   private static final String[] WEAR_EXTRA_PAGE_TITLES = new String[]{"Extra page (title)", "So Many Pages! (title)", "Last Page (title)"};
-  private static final String[] WEAR_EXTRA_PAGE_CONTENTS = new String[]{"Space (content)", "The Final Frontier (content)", "There's a lot of text here. There's so much text here! So many lines! This is also the last extra page (content)"};
+  private static final String[] WEAR_EXTRA_PAGE_CONTENTS = new String[]{"Space (content)",
+      "The Final Frontier (content)",
+      "There's a lot of text here. There's so much text here! So many lines! This is also the last extra page (content)"};
   private static final String TITLE = "Title";
   private static final String CONTENT = "Content";
   private static final String BIG_TITLE = "Big Title";
@@ -139,7 +141,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     Button pushTestButton = (Button) findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         (new Thread(new Runnable() {
           public void run() {
             Bundle notificationExtras = new Bundle();
@@ -202,10 +204,10 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
 
             notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
             Notification notification = AppboyNotificationUtils.getActiveNotificationFactory().createNotification(
-              mAppConfigurationProvider,
-              getApplicationContext(),
-              notificationExtras,
-              appboyExtras);
+                mAppConfigurationProvider,
+                getApplicationContext(),
+                notificationExtras,
+                appboyExtras);
 
             if (notification != null) {
               mNotificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, AppboyNotificationUtils.getNotificationId(notificationExtras), notification);

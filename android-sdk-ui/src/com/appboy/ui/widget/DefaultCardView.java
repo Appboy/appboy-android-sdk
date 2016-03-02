@@ -1,9 +1,10 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import com.appboy.support.AppboyLogger;
+
 import com.appboy.Constants;
 import com.appboy.models.cards.Card;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 
 public class DefaultCardView extends BaseCardView<Card> {

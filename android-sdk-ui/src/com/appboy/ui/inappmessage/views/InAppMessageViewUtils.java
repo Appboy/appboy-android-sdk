@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import com.appboy.support.AppboyLogger;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 import com.appboy.Constants;
 import com.appboy.models.MessageButton;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.support.ViewUtils;

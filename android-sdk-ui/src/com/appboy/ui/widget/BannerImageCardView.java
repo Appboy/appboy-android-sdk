@@ -66,7 +66,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
 
     setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         // We don't set isRead here (like we do in other card views)
         // because Banner Cards don't have read/unread indicators.  They are all images, so there's
         // no free space to put the indicator.
