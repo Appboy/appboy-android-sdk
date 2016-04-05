@@ -52,9 +52,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
   @Override
   public void onClicked(InAppMessageCloser inAppMessageCloser, View inAppMessageView, IInAppMessage inAppMessage) {
     AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onClicked called.");
-    if (inAppMessage.getClickAction() != ClickAction.NONE) {
-      inAppMessage.logClick();
-    }
+    inAppMessage.logClick();
 
     // Perform the in-app message clicked listener action from the host application first. This give
     // the app the option to override the values that are sent from the server and handle the
@@ -74,9 +72,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
   @Override
   public void onButtonClicked(InAppMessageCloser inAppMessageCloser, MessageButton messageButton, IInAppMessageImmersive inAppMessageImmersive) {
     AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onButtonClicked called.");
-    if (messageButton.getClickAction() != ClickAction.NONE) {
-      inAppMessageImmersive.logButtonClick(messageButton);
-    }
+    inAppMessageImmersive.logButtonClick(messageButton);
 
     boolean handled = getInAppMessageManager().getInAppMessageManagerListener().onInAppMessageButtonClicked(messageButton, inAppMessageCloser);
 

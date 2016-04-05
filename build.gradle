@@ -17,12 +17,12 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '1.13.2'
+  version = '1.13.3'
 
   apply plugin: 'android-sdk-manager'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.
 task wrapper(type: Wrapper) {
-  gradleVersion = '2.11'
+  gradleVersion = '2.12'
 }

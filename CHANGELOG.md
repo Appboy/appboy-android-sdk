@@ -1,3 +1,9 @@
+## 1.13.3
+- Updates Baidu push service jar from v4.3.0.4 to v4.6.2.38.
+- Analytics are now logged for in-app messages and in-app message buttons with 'NONE' click actions.
+- Adds the ability to set the large notification icon from within the GCM payload.
+- Fixes a bug where triggered HTML in-app messages would not always send button analytics.
+
 ## 1.13.2
 - Fixes bug where passing a JSONObject with multiple invalid keys or values to the AppboyProperties
   constructor would cause a ConcurrentModificationException.
@@ -141,7 +147,7 @@
   use of this permissions is recommended so that pre-Jelly Bean devices can register with GCM.
 - android.permission.WAKE_LOCK is no longer required during initial GCM registration.  However, use of this permissions is recommended to allow
   notifications to wake the screen and engage users when the notification arrives.
-- No longer overwrite messages in the notification center based on collapse key (gcm) or consolidation key (adm).  Instead, overwrite based on message
+- No longer overwrite messages in the notification center based on collapse key (GCM) or consolidation key (ADM).  Instead, overwrite based on message
   title and message alert, or, if specified, a custom notification id.
 - Fixes News Feed swipe-refresh CalledFromWrongThreadException.
 - Updates Droidboy to use the most recent Google IAB helper classes.
@@ -219,7 +225,7 @@
 - Added swipe to refresh functionality to the newsfeed. The swipe to refresh colors are configurable in
   the colors xml file.
 - Added configurable session timeout to the appboy xml.
-- Added images to gcm push notifications.
+- Added images to GCM push notifications.
 - Removed click logging on slideups when action is None.
 - Added email and push notification subscription types for a user. Subscription types are explicitly opted in, subscribed, and unsubscribed. The old email boolean subscribe method has been deprecated.
 - The feedback form now displays error popups to the user on invalid fields.

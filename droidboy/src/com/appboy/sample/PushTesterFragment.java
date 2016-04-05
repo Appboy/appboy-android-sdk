@@ -4,9 +4,12 @@ import android.Manifest;
 import android.app.Notification;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,7 +27,8 @@ import com.appboy.support.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PushTesterActivity extends AppboyFragmentActivity implements AdapterView.OnItemSelectedListener {
+public class PushTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+  protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PushTesterFragment.class.getName());
   private static final String[] WEAR_EXTRA_PAGE_TITLES = new String[]{"Extra page (title)", "So Many Pages! (title)", "Last Page (title)"};
   private static final String[] WEAR_EXTRA_PAGE_CONTENTS = new String[]{"Space (content)",
       "The Final Frontier (content)",
@@ -43,6 +47,8 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
   private String mVisibility;
   private String mWearBackgroundImageUrl;
   private String mActionType;
+  private String mAccentColorString;
+  private String mLargeIconString;
   private boolean mUseSummary = false;
   private boolean mUseBigSummary = false;
   private boolean mUseImage = false;
@@ -52,61 +58,62 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
   private boolean mUseCategory = false;
   private boolean mUseVisibility = false;
   private boolean mSetPublicVersion = false;
+  private boolean mSetAccentColor = false;
+  private boolean mSetLargeIcon = false;
   private boolean mWearHideAppIcon = false;
   private boolean mWearUseBackgroundImage = false;
   private boolean mWearAddExtraPages = false;
   private boolean mTestTriggerFetch = false;
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.push_tester);
-    setTitle("Push");
-    mNotificationManager = NotificationManagerCompat.from(this);
+  public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = layoutInflater.inflate(R.layout.push_tester, container, false);
 
-    ((CheckBox) findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    mNotificationManager = NotificationManagerCompat.from(getContext());
+
+    ((CheckBox) view.findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mUseBigTitle = isChecked;
       }
     });
-    ((CheckBox) findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) view.findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mUseSummary = isChecked;
       }
     });
-    ((CheckBox) findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) view.findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mUseBigSummary = isChecked;
       }
     });
-    ((CheckBox) findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) view.findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mShouldOverflowText = isChecked;
       }
     });
-    ((CheckBox) findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) view.findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mSetPublicVersion = isChecked;
       }
     });
-    ((CheckBox) findViewById(R.id.push_tester_wear_hide_app_icon)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) view.findViewById(R.id.push_tester_wear_hide_app_icon)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mWearHideAppIcon = isChecked;
       }
     });
-    ((CheckBox) findViewById(R.id.push_tester_wear_add_extra_pages)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) view.findViewById(R.id.push_tester_wear_add_extra_pages)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mWearAddExtraPages = isChecked;
       }
     });
-    ((CheckBox) findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) view.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mTestTriggerFetch = isChecked;
@@ -114,31 +121,37 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     });
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the push priority spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
 
     // Creates the push click action spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
 
     // Creates the notification category spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
 
     // Creates the visibility spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
 
     // Creates the Wear background image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_wear_background_image_spinner), this, R.array.push_wear_background_image_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_wear_background_image_spinner), this, R.array.push_wear_background_image_options);
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the push action spinner.
-    SpinnerUtils.setUpSpinner((Spinner) findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
 
-    mAppConfigurationProvider = new XmlAppConfigurationProvider(this);
-    Button pushTestButton = (Button) findViewById(R.id.test_push_button);
+    // Creates the push accent color spinner.
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_accent_color_spinner), this, R.array.push_accent_color_options);
+
+    // Creates the large icon spinner.
+    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
+
+    mAppConfigurationProvider = new XmlAppConfigurationProvider(getContext());
+    Button pushTestButton = (Button) view.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -188,6 +201,12 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
             if (mTestTriggerFetch) {
               notificationExtras.putString(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY, "true");
             }
+            if (mSetAccentColor) {
+              notificationExtras.putString(Constants.APPBOY_PUSH_ACCENT_KEY, mAccentColorString);
+            }
+            if (mSetLargeIcon) {
+              notificationExtras.putString(Constants.APPBOY_PUSH_LARGE_ICON_KEY, mLargeIconString);
+            }
 
             // Manually build the appboy extras bundle.
             Bundle appboyExtras = new Bundle();
@@ -205,7 +224,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
             notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
             Notification notification = AppboyNotificationUtils.getActiveNotificationFactory().createNotification(
                 mAppConfigurationProvider,
-                getApplicationContext(),
+                getContext(),
                 notificationExtras,
                 appboyExtras);
 
@@ -216,9 +235,14 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
         })).start();
       }
     });
+    return view;
+  }
 
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-        && !PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        && !PermissionUtils.hasPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
       requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, RuntimePermissionUtils.DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE);
     }
   }
@@ -227,7 +251,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     switch (parent.getId()) {
       case R.id.push_image_spinner:
         String pushImageUriString = getResources().getStringArray(R.array.push_image_values)[parent.getSelectedItemPosition()];
-        if (pushImageUriString != null && pushImageUriString.length() > 0) {
+        if (!StringUtils.isNullOrBlank(pushImageUriString)) {
           mUseImage = true;
           mImage = pushImageUriString;
         } else {
@@ -236,7 +260,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
         break;
       case R.id.push_wear_background_image_spinner:
         String pushWearBackgroundImageUriString = getResources().getStringArray(R.array.push_wear_background_image_values)[parent.getSelectedItemPosition()];
-        if (pushWearBackgroundImageUriString != null && pushWearBackgroundImageUriString.length() > 0) {
+        if (!StringUtils.isNullOrBlank(pushWearBackgroundImageUriString)) {
           mWearUseBackgroundImage = true;
           mWearBackgroundImageUrl = pushWearBackgroundImageUriString;
         } else {
@@ -248,7 +272,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
         break;
       case R.id.push_click_action_spinner:
         String pushClickActionUriString = getResources().getStringArray(R.array.push_click_action_values)[parent.getSelectedItemPosition()];
-        if (pushClickActionUriString != null && pushClickActionUriString.length() > 0) {
+        if (!StringUtils.isNullOrBlank(pushClickActionUriString)) {
           mUseClickAction = true;
           mClickActionUrl = pushClickActionUriString;
         } else {
@@ -257,7 +281,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
         break;
       case R.id.push_category_spinner:
         mCategory = getResources().getStringArray(R.array.push_category_values)[parent.getSelectedItemPosition()];
-        if (mCategory != null && mCategory.length() > 0) {
+        if (!StringUtils.isNullOrBlank(mCategory)) {
           mUseCategory = true;
         } else {
           mUseCategory = false;
@@ -265,7 +289,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
         break;
       case R.id.push_visibility_spinner:
         mVisibility = getResources().getStringArray(R.array.push_visibility_values)[parent.getSelectedItemPosition()];
-        if (mVisibility != null && mVisibility.length() > 0) {
+        if (!StringUtils.isNullOrBlank(mVisibility)) {
           mUseVisibility = true;
         } else {
           mUseVisibility = false;
@@ -274,6 +298,25 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
       case R.id.push_action_spinner:
         mActionType = getResources().getStringArray(R.array.push_action_values)[parent.getSelectedItemPosition()];
         break;
+      case R.id.push_accent_color_spinner:
+        String pushAccentColorString = getResources().getStringArray(R.array.push_accent_color_values)[parent.getSelectedItemPosition()];
+        if (!StringUtils.isNullOrBlank(pushAccentColorString)) {
+          mSetAccentColor = true;
+          // Convert our hexadecimal string to the decimal expected by Appboy
+          mAccentColorString = Long.decode(pushAccentColorString).toString();
+        } else {
+          mSetAccentColor = false;
+        }
+        break;
+      case R.id.push_large_icon_spinner:
+        String largeIconString = getResources().getStringArray(R.array.push_large_icon_values)[parent.getSelectedItemPosition()];
+        if (!StringUtils.isNullOrBlank(largeIconString)) {
+          mSetLargeIcon = true;
+          mLargeIconString = largeIconString;
+        } else {
+          mSetLargeIcon = false;
+        }
+        break;
       default:
         Log.e(TAG, "Item selected for unknown spinner");
     }
@@ -281,7 +324,7 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
 
   @Override
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    RuntimePermissionUtils.handleOnRequestPermissionsResult(PushTesterActivity.this, requestCode, grantResults);
+    RuntimePermissionUtils.handleOnRequestPermissionsResult(getContext(), requestCode, grantResults);
   }
 
   public void onNothingSelected(AdapterView<?> parent) {
@@ -349,19 +392,13 @@ public class PushTesterActivity extends AppboyFragmentActivity implements Adapte
     return notificationExtras;
   }
 
-  // If shouldOverflowText is specified we concatenate an append string 5 times
+  // If shouldOverflowText is specified we concatenate an append string
   // This is to test big text and ellipsis cutoff in varying screen sizes
   private String generateDisplayValue(String field) {
-    String appendString = " 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20";
     if (mShouldOverflowText) {
-      String returnText = field;
-      for (int i = 0; i < 5; i++) {
-        returnText = returnText + appendString;
-      }
-      return returnText;
-    } else {
-      return field;
+      return field + getString(R.string.overflow_string);
     }
+    return field;
   }
 
   private void addWearExtraPagesToNotificationBuilder(Bundle notificationExtras) {

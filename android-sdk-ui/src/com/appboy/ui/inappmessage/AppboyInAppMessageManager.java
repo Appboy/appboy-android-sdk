@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
-import android.widget.FrameLayout;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
@@ -433,9 +432,7 @@ public final class AppboyInAppMessageManager {
         AppboyLogger.d(TAG, "Creating view wrapper for in-app message.");
         mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener, openingAnimation, closingAnimation, inAppMessageView);
       }
-
-      FrameLayout root = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
-      mInAppMessageViewWrapper.open(root);
+      mInAppMessageViewWrapper.open(mActivity);
       return true;
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Error running displayInAppMessage", e);

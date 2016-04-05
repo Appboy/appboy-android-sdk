@@ -24,6 +24,7 @@ import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.PackageUtils;
@@ -144,7 +145,8 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Checks the intent to determine whether this is a notification message or a data push.
+   * Checks the intent received from GCM to determine whether this is a notification message or a
+   * data push.
    * <p/>
    * A notification message is an Appboy push message that displays a notification in the
    * notification center (and optionally contains extra information that can be used directly
@@ -355,7 +357,9 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Set the large icon if the drawable is defined in appboy.xml and it exists
+   * Set large icon for devices on Honeycomb and above.  We use the large icon URL if it exists in
+   * the notificationExtras.  Otherwise we search for a drawable defined in appboy.xml.  If that
+   * doesn't exists, we do nothing.
    * <p/>
    * Supported HoneyComb+.
    *
@@ -363,20 +367,40 @@ public class AppboyNotificationUtils {
    */
   public static boolean setLargeIconIfPresentAndSupported(
       Context context, XmlAppConfigurationProvider appConfigurationProvider,
-      NotificationCompat.Builder notificationBuilder) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-      int largeNotificationIconResourceId = appConfigurationProvider.getLargeNotificationIconResourceId();
-      if (largeNotificationIconResourceId != 0) {
-        try {
-          Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(), largeNotificationIconResourceId);
-          notificationBuilder.setLargeIcon(largeNotificationBitmap);
-          return true;
-        } catch (Exception e) {
-          AppboyLogger.e(TAG, "Error setting large notification icon", e);
-        }
+      NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+      return false;
+    }
+    try {
+      if (notificationExtras != null
+          && notificationExtras.containsKey(Constants.APPBOY_PUSH_LARGE_ICON_KEY)) {
+        String bitmapUrl = notificationExtras.getString(Constants.APPBOY_PUSH_LARGE_ICON_KEY);
+        Bitmap largeNotificationBitmap = AppboyImageUtils.getBitmap(Uri.parse(bitmapUrl));
+        notificationBuilder.setLargeIcon(largeNotificationBitmap);
+        return true;
       }
+      int largeNotificationIconResourceId = appConfigurationProvider
+          .getLargeNotificationIconResourceId();
+      if (largeNotificationIconResourceId != 0) {
+        Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(),
+            largeNotificationIconResourceId);
+        notificationBuilder.setLargeIcon(largeNotificationBitmap);
+        return true;
+      }
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Error setting large notification icon", e);
     }
     return false;
+  }
+
+  /**
+   * @Deprecated use {@link #setLargeIconIfPresentAndSupported(Context, XmlAppConfigurationProvider, NotificationCompat.Builder, Bundle)}
+   */
+  @Deprecated
+  public static boolean setLargeIconIfPresentAndSupported(
+      Context context, XmlAppConfigurationProvider appConfigurationProvider,
+      NotificationCompat.Builder notificationBuilder) {
+    return setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, null);
   }
 
   /**

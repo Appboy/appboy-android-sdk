@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <string-array name="push_click_action_options">
-  <item>Click Action: None</item>
+  <item>Click Action: Not Set</item>
   <item>Click Action: Http Link</item>
   <item>Click Action: Telephone Deep Link</item>
-  <item>Click Action: Droidboy Deep Link</item>
+  <item>Click Action: Droidboy Deep Link Custom Scheme</item>
+  <item>Click Action: Droidboy Deep Link Https</item>
 </string-array>
 <string-array name="push_click_action_values">
   <item></item>
   <item>@string/appboy_homepage_url</item>
   <item>@string/telephone_uri</item>
   <item>@string/droidboy_deep_link</item>
+  <item>@string/droidboy_deep_link_https</item>
 </string-array>
 </resources>

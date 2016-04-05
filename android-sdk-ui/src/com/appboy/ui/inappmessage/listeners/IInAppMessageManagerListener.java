@@ -39,7 +39,8 @@ public interface IInAppMessageManagerListener {
 
   /**
    * @param inAppMessage the clicked in-app message.
-   * @param inAppMessageCloser
+   * @param inAppMessageCloser Closing should not be animated if transitioning to a new activity.
+   * If remaining in the same activity, closing should be animated.
    *
    * @return boolean flag to indicate to Appboy whether the click has been manually handled.
    * If true, Appboy will log a click and do nothing. If false, Appboy will also close the in-app message.
@@ -48,7 +49,8 @@ public interface IInAppMessageManagerListener {
 
   /**
    * @param button the clicked message button.
-   * @param inAppMessageCloser
+   * @param inAppMessageCloser Closing should not be animated if transitioning to a new activity.
+   * If remaining in the same activity, closing should be animated.
    *
    * @return boolean flag to indicate to Appboy whether the click has been manually handled.
    * If true, Appboy will log a button click and do nothing. If false, Appboy will also close the in-app message.

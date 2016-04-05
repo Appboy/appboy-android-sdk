@@ -5,6 +5,8 @@ dependencies {
   compile project(':android-sdk-ui')
   // Note: This requires the Android Support Repository to be installed, please see the README.md
   compile 'com.android.support:support-v4:23.0.1'
+  compile 'com.android.support:appcompat-v7:23.0.1'
+  compile 'com.android.support:design:23.0.1'
   compile 'com.google.android.gms:play-services-ads:8.3.0'
   compile 'com.facebook.fresco:fresco:0.9.0'
   // To link the wearboy app with Droidboy

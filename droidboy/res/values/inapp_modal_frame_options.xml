@@ -7,7 +7,7 @@
     <item>Modal Frame: Almost Transparent Blue</item>
   </string-array>
   <string-array name="inapp_modal_frame_values">
-    <item>not set</item>
+    <item>@string/not_set</item>
     <item>transparent</item>
     <item>blue</item>
     <item>almost_transparent_blue</item>

@@ -6,7 +6,7 @@
     <item>Slide From: Bottom</item>
   </string-array>
   <string-array name="inapp_slide_from_values">
-    <item>not set</item>
+    <item>@string/not_set</item>
     <item>top</item>
     <item>bottom</item>
   </string-array>

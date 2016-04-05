@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.appboy.Appboy;
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 public class HelloAppboyActivity extends Activity {
   private EditText mNickname;
@@ -92,4 +93,19 @@ public class HelloAppboyActivity extends Activity {
     super.onStop();
     Appboy.getInstance(mApplicationContext).closeSession(this);
   }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
+  }
+
+
+
 }

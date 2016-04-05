@@ -9,11 +9,11 @@
     <item>Header: 40 Chars</item>
   </string-array>
   <string-array name="inapp_header_values">
-    <item>not set</item>
-    <item>none</item>
-    <item>10</item>
-    <item>20</item>
-    <item>30</item>
-    <item>40</item>
+    <item>@string/not_set</item>
+    <item>@string/none</item>
+    <item>@string/header_10</item>
+    <item>@string/header_20</item>
+    <item>@string/header_30</item>
+    <item>@string/header_40</item>
   </string-array>
 </resources>

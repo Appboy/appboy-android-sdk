@@ -22,6 +22,7 @@ import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.support.FrescoLibraryUtils;
+import com.appboy.ui.support.ViewUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Observable;
@@ -208,7 +209,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
             public void onGlobalLayout() {
               int width = imageView.getWidth();
               imageView.setLayoutParams(new LayoutParams(width, (int) (width / aspectRatio)));
-              removeOnGlobalLayoutListenerSafe(imageView.getViewTreeObserver(), this);
+              ViewUtils.removeOnGlobalLayoutListenerSafe(imageView.getViewTreeObserver(), this);
             }
           });
         }
@@ -217,16 +218,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
       imageView.setImageResource(android.R.color.transparent);
       Appboy.getInstance(getContext()).fetchAndRenderImage(imageUrl, imageView, respectAspectRatio);
       imageView.setTag(imageUrl);
-    }
-  }
-
-  @TargetApi(16)
-  public static void removeOnGlobalLayoutListenerSafe(ViewTreeObserver viewTreeObserver,
-                                                ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener) {
-    if (android.os.Build.VERSION.SDK_INT < 16) {
-      viewTreeObserver.removeGlobalOnLayoutListener(onGlobalLayoutListener);
-    } else {
-      viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener);
     }
   }
 

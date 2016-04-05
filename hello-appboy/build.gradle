@@ -12,4 +12,12 @@ android {
     minSdkVersion 9
     targetSdkVersion 23
   }
+
+  buildTypes {
+    debug {
+    }
+    release {
+      minifyEnabled true
+    }
+  }
 }

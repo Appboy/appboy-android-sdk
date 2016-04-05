@@ -22,8 +22,10 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
   @Override
   public void onCloseAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-    // We do nothing here since we don't call logClick() for closes
     AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onCloseAction called.");
+
+    logHtmlInAppMessageClick(inAppMessage, queryBundle);
+
     getInAppMessageManager().hideCurrentInAppMessage(true, true);
 
     getInAppMessageManager().getHtmlInAppMessageActionListener().onCloseClicked(inAppMessage, url, queryBundle);

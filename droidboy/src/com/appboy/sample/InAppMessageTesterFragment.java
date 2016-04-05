@@ -3,8 +3,11 @@ package com.appboy.sample;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
+import com.appboy.Constants;
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
@@ -35,41 +39,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InAppMessageTesterActivity extends AppboyFragmentActivity implements AdapterView.OnItemSelectedListener {
+public class InAppMessageTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+  protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageTesterFragment.class.getName());
 
   private enum HtmlMessageType {
     NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS
   }
 
-  private static final String NONE_OPTION = "none";
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
   private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
   private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
   private static final String CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY = "inappmessages_custom_appboy_html_inappmessage_action_listener";
-
-  // '#' characters at the end of headers and messages are used to verify that the entire message was displayed.
-  private static final String HEADER_10 = "Hey there#";
-  private static final String HEADER_20 = "Hey hey from Appboy#";
-  private static final String HEADER_30 = "Good morning from us @ Appboy#";
-  private static final String HEADER_40 = "Hello from Appboy! Have a fun day today#";
-
-  private static final String MESSAGE_40 = "Hello there!  This is an in-app message#";
-  private static final String MESSAGE_90 = "Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#";
-  private static final String MESSAGE_140 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly one hundred and forty chars#";
-  private static final String MESSAGE_240 = "Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message & this message is exactly two hundred and forty chars!  "
-      + "We don't recommend making in-app messages longer than 140 characters due to variations in screens#";
-  private static final String MESSAGE_640 = "Welcome to Appboy! Appboy is Marketing Automation for "
-      + "Apps. This is an in-app message & this message is exactly six hundred and forty chars!  "
-      + "We don't recommend making in-app messages longer than 140 characters due to variations in "
-      + "screens.  This is an in-app message & this message is exactly six hundred and forty chars!"
-      + "  We don't recommend making in-app messages longer than 140 characters due to variations "
-      + "in screens.  This is an in-app message & this message is exactly six hundred and forty "
-      + "chars!  We don't recommend making in-app messages longer than 140 characters due to "
-      + "variations in screens.  This is a waaaay too long message#";
-
-  private static final String HTML_ASSETS_NO_JS_REMOTE_URL = "https://www.dropbox.com/s/rvxloodgmnml2t2/html_iam_image.zip?dl=1";
-  private static final String HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL = "https://www.dropbox.com/s/v1hhojkznz7so3s/html_iam_js.zip?dl=1";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -130,16 +111,14 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private String mHtmlBodyFromAssetsStarWars;
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.inappmessage_tester);
-    setTitle("In App Messages");
+  public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = layoutInflater.inflate(R.layout.inappmessage_tester, container, false);
 
     for (Integer key : sSpinnerOptionMap.keySet()) {
-      SpinnerUtils.setUpSpinner((Spinner) findViewById(key), this, sSpinnerOptionMap.get(key));
+      SpinnerUtils.setUpSpinner((Spinner) view.findViewById(key), this, sSpinnerOptionMap.get(key));
     }
 
-    CheckBox customInAppMessageViewCheckBox = (CheckBox) findViewById(R.id.custom_inappmessage_view_factory_checkbox);
+    CheckBox customInAppMessageViewCheckBox = (CheckBox) view.findViewById(R.id.custom_inappmessage_view_factory_checkbox);
     customInAppMessageViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -148,46 +127,46 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
+        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomInAppMessageView = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
+    boolean usingCustomInAppMessageView = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
     customInAppMessageViewCheckBox.setChecked(usingCustomInAppMessageView);
 
-    CheckBox customInAppMessageManagerListenerCheckBox = (CheckBox) findViewById(R.id.custom_inappmessage_manager_listener_checkbox);
+    CheckBox customInAppMessageManagerListenerCheckBox = (CheckBox) view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox);
     customInAppMessageManagerListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-          AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(InAppMessageTesterActivity.this));
+          AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(getActivity()));
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
+        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomInAppMessageManagerListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
+    boolean usingCustomInAppMessageManagerListener = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
     customInAppMessageManagerListenerCheckBox.setChecked(usingCustomInAppMessageManagerListener);
 
-    CheckBox customAppboyNavigatorCheckBox = (CheckBox) findViewById(R.id.custom_appboy_navigator_checkbox);
+    CheckBox customAppboyNavigatorCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_navigator_checkbox);
     customAppboyNavigatorCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-          Appboy.getInstance(InAppMessageTesterActivity.this).setAppboyNavigator(new CustomAppboyNavigator());
+          Appboy.getInstance(getContext()).setAppboyNavigator(new CustomAppboyNavigator());
         } else {
-          Appboy.getInstance(InAppMessageTesterActivity.this).setAppboyNavigator(null);
+          Appboy.getInstance(getContext()).setAppboyNavigator(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
+        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomAppboyNavigator = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
+    boolean usingCustomAppboyNavigator = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
     customAppboyNavigatorCheckBox.setChecked(usingCustomAppboyNavigator);
-    Button createAndAddInAppMessageButton = (Button) findViewById(R.id.create_and_add_inappmessage_button);
+    Button createAndAddInAppMessageButton = (Button) view.findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
+        if (getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
           // current custom in-app message view is an implementation of a base in-app message.
           addInAppMessage(new CustomInAppMessage());
         } else {
@@ -211,7 +190,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         }
       }
     });
-    CheckBox customInAppMessageAnimationCheckBox = (CheckBox) findViewById(R.id.custom_appboy_animation_checkbox);
+    CheckBox customInAppMessageAnimationCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_animation_checkbox);
     customInAppMessageAnimationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -220,28 +199,28 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
+        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomInAppAnimation = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
+    boolean usingCustomInAppAnimation = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
     customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
 
-    CheckBox customHtmlInAppMessageActionListenerCheckBox = (CheckBox) findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
+    CheckBox customHtmlInAppMessageActionListenerCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
     customHtmlInAppMessageActionListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(InAppMessageTesterActivity.this));
+          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(getContext()));
         } else {
           AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
+        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomHtmlInAppActionListener = getPreferences(MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
+    boolean usingCustomHtmlInAppActionListener = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
     customHtmlInAppMessageActionListenerCheckBox.setChecked(usingCustomHtmlInAppActionListener);
 
-    Button displayNextInAppMessageButton = (Button) findViewById(R.id.display_next_inappmessage_button);
+    Button displayNextInAppMessageButton = (Button) view.findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -249,21 +228,27 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       }
     });
 
-    Button requestInAppMessageFromServerButton = (Button) findViewById(R.id.request_inappmessage_from_server_button);
+    Button requestInAppMessageFromServerButton = (Button) view.findViewById(R.id.request_inappmessage_from_server_button);
     requestInAppMessageFromServerButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Appboy.getInstance(InAppMessageTesterActivity.this).requestInAppMessageRefresh();
+        Appboy.getInstance(getContext()).requestInAppMessageRefresh();
       }
     });
 
-    Button hideCurrentInAppMessageButton = (Button) findViewById(R.id.hide_current_inappmessage_button);
+    Button hideCurrentInAppMessageButton = (Button) view.findViewById(R.id.hide_current_inappmessage_button);
     hideCurrentInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true);
       }
     });
+    return view;
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
     mHtmlBodyFromAssets = readHtmlBodyFromAssets(HtmlMessageType.NO_JS);
     mHtmlBodyFromAssetsInlineJs = readHtmlBodyFromAssets(HtmlMessageType.INLINE_JS);
@@ -313,14 +298,14 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     switch (jsType) {
       case NO_JS:
         inAppMessage.setMessage(mHtmlBodyFromAssets);
-        inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_NO_JS_REMOTE_URL);
+        inAppMessage.setAssetsZipRemoteUrl(getString(R.string.html_assets_no_js_remote_url));
         break;
       case INLINE_JS:
         inAppMessage.setMessage(mHtmlBodyFromAssetsInlineJs);
         break;
       case EXTERNAL_JS:
         inAppMessage.setMessage(mHtmlBodyFromAssetsExternalJs);
-        inAppMessage.setAssetsZipRemoteUrl(HTML_ASSETS_WITH_EXTERNAL_JS_REMOTE_URL);
+        inAppMessage.setAssetsZipRemoteUrl(getString(R.string.html_assets_external_js_remote_url));
         break;
       case STAR_WARS:
         inAppMessage.setMessage(mHtmlBodyFromAssetsStarWars);
@@ -393,16 +378,12 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     if (!SpinnerUtils.spinnerItemNotSet(mTextColor)) {
       inAppMessage.setMessageTextColor(parseColorFromString(mTextColor));
     }
-    if ("40".equals(mMessage)) {
-      inAppMessage.setMessage(MESSAGE_40);
-    } else if ("90".equals(mMessage)) {
-      inAppMessage.setMessage(MESSAGE_90);
-    } else if ("140".equals(mMessage)) {
-      inAppMessage.setMessage(MESSAGE_140);
-    } else if ("240".equals(mMessage)) {
-      inAppMessage.setMessage(MESSAGE_240);
-    } else if ("640".equals(mMessage)) {
-      inAppMessage.setMessage(MESSAGE_640);
+    // don't replace message on html IAMs
+    if (inAppMessage instanceof IInAppMessageHtml) {
+      return;
+    }
+    if (!SpinnerUtils.spinnerItemNotSet(mMessage)) {
+      inAppMessage.setMessage(mMessage);
     }
   }
 
@@ -417,7 +398,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     }
     // set in-app message icon
     if (!SpinnerUtils.spinnerItemNotSet(mIcon)) {
-      if (mIcon.equals(NONE_OPTION)) {
+      if (mIcon.equals(getString(R.string.none))) {
         inAppMessage.setIcon(null);
       } else {
         inAppMessage.setIcon(mIcon);
@@ -428,7 +409,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private void setImage(IInAppMessage inAppMessage) {
     // set in-app message image url
     if (!SpinnerUtils.spinnerItemNotSet(mImage)) {
-      if (mImage.equals(NONE_OPTION)) {
+      if (mImage.equals(getString(R.string.none))) {
         inAppMessage.setRemoteImageUrl(null);
       } else {
         inAppMessage.setRemoteImageUrl(mImage);
@@ -442,12 +423,12 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
       inAppMessage.setClickAction(ClickAction.NEWS_FEED);
     } else if ("uri".equals(mClickAction)) {
       if (SpinnerUtils.spinnerItemNotSet(mUri)) {
-        Toast.makeText(InAppMessageTesterActivity.this, "Please choose a URI.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Please choose a URI.", Toast.LENGTH_LONG).show();
         return false;
       } else {
         inAppMessage.setClickAction(ClickAction.URI, Uri.parse(mUri));
       }
-    } else if (NONE_OPTION.equals(mClickAction)) {
+    } else if (getString(R.string.none).equals(mClickAction)) {
       inAppMessage.setClickAction(ClickAction.NONE);
     }
     return true;
@@ -467,16 +448,12 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
     if (!SpinnerUtils.spinnerItemNotSet(mHeaderTextColor)) {
       inAppMessage.setHeaderTextColor(parseColorFromString(mHeaderTextColor));
     }
-    if ("10".equals(mHeader)) {
-      inAppMessage.setHeader(HEADER_10);
-    } else if ("20".equals(mHeader)) {
-      inAppMessage.setHeader(HEADER_20);
-    } else if ("30".equals(mHeader)) {
-      inAppMessage.setHeader(HEADER_30);
-    } else if ("40".equals(mHeader)) {
-      inAppMessage.setHeader(HEADER_40);
-    } else if (NONE_OPTION.equals(mHeader)) {
-      inAppMessage.setHeader(null);
+    if (!SpinnerUtils.spinnerItemNotSet(mHeader)) {
+      if (getString(R.string.none).equals(mHeader)) {
+        inAppMessage.setHeader(null);
+      } else {
+        inAppMessage.setHeader(mHeader);
+      }
     }
   }
 
@@ -489,7 +466,7 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
     // add message buttons.
     if (!SpinnerUtils.spinnerItemNotSet(mButtons)) {
-      if (NONE_OPTION.equals(mButtons)) {
+      if (getString(R.string.none).equals(mButtons)) {
         inAppMessage.setMessageButtons(null);
         return;
       }
@@ -643,7 +620,8 @@ public class InAppMessageTesterActivity extends AppboyFragmentActivity implement
 
     // Get the text of the html from the assets folder
     try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(filename), "UTF-8"));
+      BufferedReader reader = new BufferedReader(new InputStreamReader(getActivity()
+          .getAssets().open(filename), "UTF-8"));
       String line;
       StringBuilder stringBuilder = new StringBuilder();
       while ((line = reader.readLine()) != null) {

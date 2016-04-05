@@ -7,7 +7,7 @@
     <item>Dismiss Type: Manual</item>
   </string-array>
   <string-array name="inapp_dismiss_type_values">
-    <item>not set</item>
+    <item>@string/not_set</item>
     <item>auto</item>
     <item>auto-short</item>
     <item>manual</item>

@@ -15,7 +15,6 @@ import com.appboy.Appboy;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
-import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.support.StringUtils;
 
 import java.math.BigDecimal;
@@ -33,11 +32,12 @@ public class MainFragment extends Fragment {
   private static final String INCREMENT_ATTRIBUTE_KEY = "incrementAttribute";
 
   private EditText mUserIdEditText;
+  private EditText mCustomEventOrPurchaseEditText;
   private Button mUserIdButton;
   private Button mCustomEventButton;
   private Button mLogPurchaseButton;
   private Button mSubmitFeedbackButton;
-  private Button mSetUserDefaultPropertiesButton;
+  private Button mSetUserAttributesButton;
   private Button mUnsetCustomUserAttributesButton;
   private Button mRequestFlushButton;
   private Context mContext;
@@ -54,11 +54,12 @@ public class MainFragment extends Fragment {
     mUserIdEditText.setText(mSharedPreferences.getString(USER_ID_KEY, null));
     mUserIdButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_id_button);
     // Appboy methods
+    mCustomEventOrPurchaseEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_custom_event_or_purchase_edit_text);
     mCustomEventButton = (Button) contentView.findViewById(R.id.com_appboy_sample_log_custom_event_button);
     mLogPurchaseButton = (Button) contentView.findViewById(R.id.com_appboy_sample_log_purchase_button);
     mSubmitFeedbackButton = (Button) contentView.findViewById(R.id.com_appboy_sample_submit_feedback_button);
     // Appboy User methods
-    mSetUserDefaultPropertiesButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_properties_button);
+    mSetUserAttributesButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_attributes_button);
     mUnsetCustomUserAttributesButton = (Button) contentView.findViewById(R.id.com_appboy_sample_unset_custom_attributes_button);
     mRequestFlushButton = (Button) contentView.findViewById(R.id.com_appboy_sample_request_flush_button);
     return contentView;
@@ -77,26 +78,31 @@ public class MainFragment extends Fragment {
           editor.apply();
           Toast.makeText(getContext(), "Set userId to: " + userId, Toast.LENGTH_SHORT).show();
         } else {
-          Toast.makeText(getContext(), "Blank userId entered. Doing nothing.", Toast.LENGTH_SHORT).show();
+          Toast.makeText(getContext(), "Please enter a userId.", Toast.LENGTH_SHORT).show();
         }
       }
     });
     mCustomEventButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
-        Appboy.getInstance(mContext).logCustomEvent("customEventWithoutProperties");
-        Appboy.getInstance(mContext).logCustomEvent("customEventWithProperties", getAppboyProperties());
-        Toast.makeText(getContext(), "Logged custom events.", Toast.LENGTH_SHORT).show();
+        String customEvent = mCustomEventOrPurchaseEditText.getText().toString();
+        if (!StringUtils.isNullOrBlank(customEvent)) {
+          Appboy.getInstance(mContext).logCustomEvent(customEvent);
+          Toast.makeText(getContext(), String.format("Logged custom event %s.", customEvent), Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getContext(), "Please enter a custom event.", Toast.LENGTH_SHORT).show();
+
+        }
       }
     });
     mLogPurchaseButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
-        // should add up to between $90 and $100 in new revenue each time this button is clicked.
-        Appboy.getInstance(mContext).logPurchase("customPurchaseWithPriceInCents", 500);
-        Appboy.getInstance(mContext).logPurchase("customPurchaseJPY", "JPY", new BigDecimal("1000"));
-        Appboy.getInstance(mContext).logPurchase("customPurchaseWithQuantity", "USD", BigDecimal.TEN, 5);
-        Appboy.getInstance(mContext).logPurchase("customPurchaseWithProperties", "USD", new BigDecimal("20"), getAppboyProperties());
-        Appboy.getInstance(mContext).logPurchase("customPurchaseWithQuantityAndProperties", "USD", new BigDecimal("7.5"), 2, getAppboyProperties());
-        Toast.makeText(getContext(), "Logged purchases.", Toast.LENGTH_SHORT).show();
+        String purchase = mCustomEventOrPurchaseEditText.getText().toString();
+        if (!StringUtils.isNullOrBlank(purchase)) {
+          Appboy.getInstance(mContext).logPurchase(purchase, "USD", BigDecimal.TEN);
+          Toast.makeText(getContext(), String.format("Logged purchase %s.", purchase), Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getContext(), "Please enter a purchase.", Toast.LENGTH_SHORT).show();
+        }
       }
     });
     mSubmitFeedbackButton.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +111,7 @@ public class MainFragment extends Fragment {
         Toast.makeText(getContext(), "Submitted feedback.", Toast.LENGTH_SHORT).show();
       }
     });
-    mSetUserDefaultPropertiesButton.setOnClickListener(new View.OnClickListener() {
+    mSetUserAttributesButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
         Appboy.getInstance(mContext).getCurrentUser().setFirstName("firstName");
         Appboy.getInstance(mContext).getCurrentUser().setLastName("lastName");
@@ -129,7 +135,7 @@ public class MainFragment extends Fragment {
         Appboy.getInstance(mContext).getCurrentUser().setCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, new String[]{"a", "b"});
         Appboy.getInstance(mContext).getCurrentUser().addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c");
         Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b");
-        Toast.makeText(getContext(), "Set user properties.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Set user attributes.", Toast.LENGTH_SHORT).show();
       }
     });
     mUnsetCustomUserAttributesButton.setOnClickListener(new View.OnClickListener() {
@@ -151,15 +157,5 @@ public class MainFragment extends Fragment {
         Toast.makeText(getContext(), "Requested data flush.", Toast.LENGTH_SHORT).show();
       }
     });
-  }
-
-  private AppboyProperties getAppboyProperties() {
-    AppboyProperties properties = new AppboyProperties();
-    properties.addProperty("stringProperty", "stringValue");
-    properties.addProperty("intProperty", 100);
-    properties.addProperty("booleanProperty", true);
-    properties.addProperty("doubleProperty", 0.5);
-    properties.addProperty("dateProperty", new Date());
-    return properties;
   }
 }

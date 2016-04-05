@@ -103,6 +103,16 @@
   <string name="set_close_button_color">Set close button color</string>
   <string name="set_text_color">Set text color</string>
   <string name="set_header_text_color">Set header text color</string>
+  <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
+  <string name="header_10">Hey there#</string>
+  <string name="header_20">Hey hey from Appboy#</string>
+  <string name="header_30">Good morning from us @ Appboy#</string>
+  <string name="header_40">Hello from Appboy! Have a fun day today#</string>
+  <string name="message_40">Hello there!  This is an in-app message#</string>
+  <string name="message_90">Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#</string>
+  <string name="message_140">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly one hundred and forty chars#</string>
+  <string name="message_240">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly two hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens#</string>
+  <string name="message_640">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#</string>
 
   <string name="test_push">Send Push</string>
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
@@ -134,8 +144,12 @@
   <string name="appboy_homepage_url">http://www.appboy.com</string>
   <string name="google_url">http://www.google.com</string>
   <string name="droidboy_deep_link">droidboy://preferences</string>
+  <string name="droidboy_deep_link_https">https://www.droidboy.com/preferences</string>
   <string name="telephone_uri">tel:555555555</string>
+  <string name="html_assets_no_js_remote_url">https://www.dropbox.com/s/rvxloodgmnml2t2/html_iam_image.zip?dl=1</string>
+  <string name="html_assets_external_js_remote_url">https://www.dropbox.com/s/v1hhojkznz7so3s/html_iam_js.zip?dl=1</string>
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
+  <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</string>
 
   <string name="custom_font">doridrobot.ttf</string>
   <string name="droidboy_close_button_text">close</string>
@@ -150,4 +164,6 @@
   <string name="share_icon_name">com_appboy_ic_share_white</string>
   <string name="exit_to_app_icon_name">com_appboy_ic_exit_to_app_white</string>
   <string name="world_icon_name">com_appboy_ic_language_white</string>
+  <string name="none">none</string>
+  <string name="not_set">not set</string>
 </resources>
