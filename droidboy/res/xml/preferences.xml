@@ -24,6 +24,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/push_preference_category">
+        <com.appboy.sample.subscriptions.PushSubscriptionStateDialog
+            android:title="@string/set_push_subscription_state_title"
+            android:summary="@string/set_push_subscription_state_summary"
+            android:positiveButtonText="@string/user_dialog_okay"
+            android:negativeButtonText="@string/user_dialog_cancel"/>
+        <Preference
+            android:key="get_registration_id"
+            android:title="@string/get_registration_id_title"
+            android:summary="@string/get_registration_id_summary"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/misc_preference_category">
         <Preference
             android:key="external_storage_runtime_permission_dialog"
@@ -38,24 +51,25 @@
             android:title="@string/disable_appboy_logging_title"
             android:summary="@string/disable_appboy_logging_summary"/>
         <Preference
-            android:key="get_registration_id"
-            android:title="@string/get_registration_id_title"
-            android:summary="@string/get_registration_id_summary"/>
-        <Preference
-          android:key="log_attribution"
-          android:title="@string/log_attribution_title"
-          android:summary="@string/log_attribution_summary"/>
+            android:key="log_attribution"
+            android:title="@string/log_attribution_title"
+            android:summary="@string/log_attribution_summary"/>
+        <com.appboy.sample.subscriptions.EmailSubscriptionStateDialog
+            android:title="@string/set_email_subscription_state_title"
+            android:summary="@string/set_email_subscription_state_summary"
+            android:positiveButtonText="@string/user_dialog_okay"
+            android:negativeButtonText="@string/user_dialog_cancel"/>
     </PreferenceCategory>
 
-  <PreferenceCategory
-      android:title="@string/storage_info_preference_category">
-    <com.appboy.sample.FileDataDialog
-        android:title="@string/file_data_title"
-        android:summary="@string/file_data_summary"/>
-    <com.appboy.sample.SharedPreferencesDataDialog
-        android:title="@string/shared_preferences_title"
-        android:summary="@string/shared_preferences_summary"/>
-  </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/storage_info_preference_category">
+        <com.appboy.sample.FileDataDialog
+            android:title="@string/file_data_title"
+            android:summary="@string/file_data_summary"/>
+        <com.appboy.sample.SharedPreferencesDataDialog
+            android:title="@string/shared_preferences_title"
+            android:summary="@string/shared_preferences_summary"/>
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/session_title">

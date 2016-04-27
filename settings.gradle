@@ -1,7 +1,7 @@
 include ':android-sdk-ui'
+include ':android-sdk-base-unity'
 include ':droidboy'
 include ':hello-appboy'
 include ':china-push-sample'
 include ':wearboy'
 include ':wear-library'
-

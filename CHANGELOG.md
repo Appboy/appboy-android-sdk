@@ -1,8 +1,15 @@
+## 1.13.4
+- Adds ability to set push and email subscription state from Droidboy.
+- Open sources Appboy's Unity plugin library code.
+
 ## 1.13.3
 - Updates Baidu push service jar from v4.3.0.4 to v4.6.2.38.
 - Analytics are now logged for in-app messages and in-app message buttons with 'NONE' click actions.
 - Adds the ability to set the large notification icon from within the GCM payload.
 - Fixes a bug where triggered HTML in-app messages would not always send button analytics.
+- Updates the Droidboy sample app to use material design.
+- Updates the Hello Appboy sample app to use Proguard.
+- Introduces `consumerProguardFiles` automatic Proguard configuration.
 
 ## 1.13.2
 - Fixes bug where passing a JSONObject with multiple invalid keys or values to the AppboyProperties

@@ -1,4 +1,4 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
   compile 'com.appboy:android-sdk-ui:1.13.+'

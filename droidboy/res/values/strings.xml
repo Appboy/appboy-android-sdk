@@ -33,6 +33,10 @@
   <string name="female">Female</string>
   <string name="unspecified">Unspecified</string>
 
+  <string name="subscribed">Subscribed</string>
+  <string name="opted_in">Opted-In</string>
+  <string name="unsubscribed">Unsubscribed</string>
+
   <string name="facebook_share_title">Facebook</string>
   <string name="facebook_share_summary">Share us on Facebook</string>
   <string name="facebook_share_toast">Thank you for sharing on Facebook</string>
@@ -127,11 +131,16 @@
 
   <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
   <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>
+  <string name="push_preference_category">Push</string>
   <string name="misc_preference_category">Misc</string>
   <string name="disable_appboy_logging_title">Toggle Appboy Logging</string>
   <string name="disable_appboy_logging_summary">Toggle Appboy Logging.  This does not persist through app runs.</string>
   <string name="get_registration_id_title">Get Push Registration Id</string>
+  <string name="set_email_subscription_state_title">Set Email Subscription State</string>
+  <string name="set_push_subscription_state_title">Set Push Subscription State</string>
   <string name="get_registration_id_summary">Retrieve the Registration Id used for push on this device.</string>
+  <string name="set_push_subscription_state_summary">Subscribe, opt-in, or opt-out for push.</string>
+  <string name="set_email_subscription_state_summary">Subscribe, opt-in, or opt-out for email.</string>
   <string name="log_attribution_title">Log Attribution For User</string>
   <string name="log_attribution_summary">Log Creative, AdGroup, Network, and Campaign.</string>
 
