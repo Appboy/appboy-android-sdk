@@ -96,6 +96,10 @@
     <PreferenceCategory
         android:title="@string/about_title">
         <Preference
-            android:key="about"/>
+            android:key="sdk_version"
+            android:title="SDK Version"/>
+        <Preference
+            android:key="api_key"
+            android:title="API Key"/>
     </PreferenceCategory>
 </PreferenceScreen>

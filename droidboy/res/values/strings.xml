@@ -28,6 +28,7 @@
   <string name="user_dialog_flush">Flush on close</string>
   <string name="user_dialog_populate">Populate</string>
   <string name="user_dialog_clear">Clear All</string>
+  <string name="user_dialog_birthday_button">Pick Birthday</string>
 
   <string name="male">Male</string>
   <string name="female">Female</string>
@@ -77,7 +78,6 @@
   <string name="data_flush_toast">Data flush requested</string>
 
   <string name="requested_inappmessage_toast">Requested In-App Message</string>
-  <string name="about_summary">Appboy SDK version: %1$s</string>
   <string name="open_session_toast">Opened new Appboy session.</string>
   <string name="resume_session_toast">Resumed existing Appboy session.</string>
   <string name="close_session_toast">Closed existing Appboy session.</string>

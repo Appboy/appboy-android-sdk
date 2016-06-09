@@ -33,14 +33,16 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference locationRuntimePermissionDialogPreference = findPreference("location_runtime_permission_dialog");
     Preference openSessionPreference = findPreference("open_session");
     Preference closeSessionPreference = findPreference("close_session");
-    Preference aboutPreference = findPreference("about");
+    Preference sdkPreference = findPreference("sdk_version");
+    Preference apiKeyPreference = findPreference("api_key");
     Preference externalStorageRuntimePermissionDialogPreference = findPreference("external_storage_runtime_permission_dialog");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference toggleDisableAppboyLoggingPreference = findPreference("toggle_disable_appboy_logging");
     Preference getRegistrationIdPreference = findPreference("get_registration_id");
     Preference logAttributionPreference = findPreference("log_attribution");
 
-    aboutPreference.setSummary(String.format(getResources().getString(R.string.about_summary), Constants.APPBOY_SDK_VERSION));
+    sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
+    apiKeyPreference.setSummary(getResources().getString(R.string.com_appboy_api_key));
 
     setManualLocationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override

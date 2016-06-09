@@ -1,3 +1,10 @@
+## 1.13.5
+- Defines `com_appboy_card_background` to provide simpler control of news feed card background color.
+- Removes optimizations from the private library's Proguard configuration to allow dexing Appboy
+  with Jack and Android Gradle Plugin 2.2.0+.
+- Adds a convenience method to `Month` to allow direct instantiation from a month integer.
+- Fixes a database access race condition in changeUser code.
+
 ## 1.13.4
 - Adds ability to set push and email subscription state from Droidboy.
 - Open sources Appboy's Unity plugin library code.

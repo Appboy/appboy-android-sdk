@@ -36,6 +36,7 @@
 
   <color name="com_appboy_card_background_border">#50CCCCCC</color>
   <color name="com_appboy_card_background_shadow">#30CCCCCC</color>
+  <color name="com_appboy_card_background">@android:color/white</color>
 
   <color name="com_appboy_custom_notification_title">#999999</color>
   <color name="com_appboy_custom_notification_content">#FFFFFF</color>
