@@ -27,7 +27,6 @@ import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
-import com.appboy.support.PackageUtils;
 import com.appboy.support.PermissionUtils;
 
 import org.json.JSONException;
@@ -696,7 +695,7 @@ public class AppboyNotificationUtils {
    *                {@link #setContentIntentIfPresent}
    */
   static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
-    String pushOpenedAction = PackageUtils.getResourcePackageName(context) + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
+    String pushOpenedAction = context.getPackageName() + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
     Intent pushOpenedIntent = new Intent(pushOpenedAction);
     if (intent.getExtras() != null) {
       pushOpenedIntent.putExtras(intent.getExtras());

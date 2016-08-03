@@ -64,56 +64,57 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mWearUseBackgroundImage = false;
   private boolean mWearAddExtraPages = false;
   private boolean mTestTriggerFetch = false;
+  private View mView;
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = layoutInflater.inflate(R.layout.push_tester, container, false);
+    mView = layoutInflater.inflate(R.layout.push_tester, container, false);
 
     mNotificationManager = NotificationManagerCompat.from(getContext());
 
-    ((CheckBox) view.findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mUseBigTitle = isChecked;
       }
     });
-    ((CheckBox) view.findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mUseSummary = isChecked;
       }
     });
-    ((CheckBox) view.findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mUseBigSummary = isChecked;
       }
     });
-    ((CheckBox) view.findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mShouldOverflowText = isChecked;
       }
     });
-    ((CheckBox) view.findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mSetPublicVersion = isChecked;
       }
     });
-    ((CheckBox) view.findViewById(R.id.push_tester_wear_hide_app_icon)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_wear_hide_app_icon)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mWearHideAppIcon = isChecked;
       }
     });
-    ((CheckBox) view.findViewById(R.id.push_tester_wear_add_extra_pages)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_wear_add_extra_pages)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mWearAddExtraPages = isChecked;
       }
     });
-    ((CheckBox) view.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    ((CheckBox) mView.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mTestTriggerFetch = isChecked;
@@ -121,40 +122,40 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     });
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the push priority spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
 
     // Creates the push click action spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
 
     // Creates the notification category spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
 
     // Creates the visibility spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
 
     // Creates the Wear background image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_wear_background_image_spinner), this, R.array.push_wear_background_image_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_wear_background_image_spinner), this, R.array.push_wear_background_image_options);
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the push action spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
 
     // Creates the push accent color spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_accent_color_spinner), this, R.array.push_accent_color_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_accent_color_spinner), this, R.array.push_accent_color_options);
 
     // Creates the large icon spinner.
-    SpinnerUtils.setUpSpinner((Spinner) view.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
 
     mAppConfigurationProvider = new XmlAppConfigurationProvider(getContext());
-    Button pushTestButton = (Button) view.findViewById(R.id.test_push_button);
+    Button pushTestButton = (Button) mView.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View view) {
+      public void onClick(View clickedView) {
         (new Thread(new Runnable() {
           public void run() {
             Bundle notificationExtras = new Bundle();
@@ -235,16 +236,12 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         })).start();
       }
     });
-    return view;
+    return mView;
   }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-        && !PermissionUtils.hasPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-      requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, RuntimePermissionUtils.DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE);
-    }
   }
 
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -254,6 +251,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         if (!StringUtils.isNullOrBlank(pushImageUriString)) {
           mUseImage = true;
           mImage = pushImageUriString;
+          if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_SHARE)) {
+            requestLocalStoragePermission();
+          }
         } else {
           mUseImage = false;
         }
@@ -263,6 +263,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         if (!StringUtils.isNullOrBlank(pushWearBackgroundImageUriString)) {
           mWearUseBackgroundImage = true;
           mWearBackgroundImageUrl = pushWearBackgroundImageUriString;
+          if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_SHARE)) {
+            requestLocalStoragePermission();
+          }
         } else {
           mWearUseBackgroundImage = false;
         }
@@ -297,6 +300,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         break;
       case R.id.push_action_spinner:
         mActionType = getResources().getStringArray(R.array.push_action_values)[parent.getSelectedItemPosition()];
+        if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_SHARE) && (mUseImage || mWearUseBackgroundImage)) {
+          requestLocalStoragePermission();
+        }
         break;
       case R.id.push_accent_color_spinner:
         String pushAccentColorString = getResources().getStringArray(R.array.push_accent_color_values)[parent.getSelectedItemPosition()];
@@ -390,6 +396,13 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE.replace("*", "1"), getString(R.string.close_icon_name_2));
     }
     return notificationExtras;
+  }
+
+  private void requestLocalStoragePermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        && !PermissionUtils.hasPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, RuntimePermissionUtils.DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE);
+    }
   }
 
   // If shouldOverflowText is specified we concatenate an append string

@@ -5,27 +5,42 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.outgoing.AttributionData;
 import com.appboy.sample.util.RuntimePermissionUtils;
-import com.appboy.sample.util.SharedPrefsUtil;
-import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
+import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
   private int attributionUniqueInt = 0;
 
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     addPreferencesFromResource(R.xml.preferences);
+    setContentView(R.layout.preference_wrapper_view);
+
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle(getString(R.string.settings));
+
+    toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        onBackPressed();
+      }
+    });
 
     Preference dataFlushPreference = findPreference("data_flush");
     Preference requestInAppMessagePreference = findPreference("request_inappmessage");
@@ -35,14 +50,22 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference closeSessionPreference = findPreference("close_session");
     Preference sdkPreference = findPreference("sdk_version");
     Preference apiKeyPreference = findPreference("api_key");
+    Preference pushTokenPreference = findPreference("push_token");
     Preference externalStorageRuntimePermissionDialogPreference = findPreference("external_storage_runtime_permission_dialog");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
-    Preference toggleDisableAppboyLoggingPreference = findPreference("toggle_disable_appboy_logging");
-    Preference getRegistrationIdPreference = findPreference("get_registration_id");
     Preference logAttributionPreference = findPreference("log_attribution");
+    CheckBoxPreference sortNewsFeed = (CheckBoxPreference) findPreference("sort_feed");
+    SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
+    sortNewsFeed.setChecked(sharedPrefSort.getBoolean(getString(R.string.sort_feed), false));
+    CheckBoxPreference setCustomNewsFeedClickActionListener = (CheckBoxPreference) findPreference("set_custom_news_feed_card_click_action_listener");
 
     sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
     apiKeyPreference.setSummary(getResources().getString(R.string.com_appboy_api_key));
+    String pushToken = Appboy.getInstance(PreferencesActivity.this).getAppboyPushMessageRegistrationId();
+    if (StringUtils.isNullOrBlank(pushToken)) {
+      pushToken = "None";
+    }
+    pushTokenPreference.setSummary(pushToken);
 
     setManualLocationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
@@ -118,10 +141,10 @@ public class PreferencesActivity extends PreferenceActivity {
       public boolean onPreferenceClick(Preference preference) {
         boolean newDisableAppboyNetworkRequestsPreference = !Boolean
             .parseBoolean(getApplicationContext().getSharedPreferences(
-                SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE)
-                .getString(SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, null));
-        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).edit();
-        sharedPreferencesEditor.putString(SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, String.valueOf(newDisableAppboyNetworkRequestsPreference));
+                getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
+                .getString(getString(R.string.mock_appboy_network_requests), null));
+        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
+        sharedPreferencesEditor.putString(getString(R.string.mock_appboy_network_requests), String.valueOf(newDisableAppboyNetworkRequestsPreference));
         sharedPreferencesEditor.apply();
         if (newDisableAppboyNetworkRequestsPreference) {
           Toast.makeText(PreferencesActivity.this, "Disabling Appboy network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
@@ -132,27 +155,6 @@ public class PreferencesActivity extends PreferenceActivity {
       }
     });
 
-    toggleDisableAppboyLoggingPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        if (AppboyLogger.LogLevel != Log.VERBOSE) {
-          AppboyLogger.LogLevel = Log.VERBOSE;
-          showToast("Set log level back to VERBOSE to show all Appboy messages.");
-        } else {
-          AppboyLogger.LogLevel = AppboyLogger.SUPPRESS;
-          showToast("Disabled Appboy Logging.");
-        }
-        return true;
-      }
-    });
-
-    getRegistrationIdPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        showToast("Registration Id: " + Appboy.getInstance(PreferencesActivity.this).getAppboyPushMessageRegistrationId());
-        return true;
-      }
-    });
     logAttributionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
@@ -162,6 +164,23 @@ public class PreferencesActivity extends PreferenceActivity {
             "creative_val_" + attributionUniqueInt));
         attributionUniqueInt++;
         showToast("Attribution data sent to server");
+        return true;
+      }
+    });
+    sortNewsFeed.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(getString(R.string.sort_feed), (boolean) newValue);
+        editor.commit();
+        return true;
+      }
+    });
+    setCustomNewsFeedClickActionListener.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        AppboyFeedManager.getInstance().setFeedCardClickActionListener((boolean) newValue ? new CustomFeedClickActionListener() : null);
         return true;
       }
     });

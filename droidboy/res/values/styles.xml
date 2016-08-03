@@ -70,5 +70,6 @@
     <item name="colorPrimaryDark">#1c222b</item>
     <item name="colorAccent">#3fc1bf</item>
     <item name="android:windowBackground">@color/window_background</item>
+    <item name="titleTextColor">@android:color/white</item>
   </style>
 </resources>

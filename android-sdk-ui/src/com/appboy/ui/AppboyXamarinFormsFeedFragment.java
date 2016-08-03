@@ -81,7 +81,7 @@ public class AppboyXamarinFormsFeedFragment extends ListFragment implements Swip
     mAppboy = Appboy.getInstance(activity);
     if (mAdapter == null) {
       mAdapter = new AppboyListAdapter(activity, R.id.tag, new ArrayList<Card>());
-      mCategories = CardCategory.ALL_CATEGORIES;
+      mCategories = CardCategory.getAllCategories();
     }
     setRetainInstance(true);
     mGestureDetector = new GestureDetectorCompat(activity, new FeedGestureListener());
@@ -317,7 +317,7 @@ public class AppboyXamarinFormsFeedFragment extends ListFragment implements Swip
   public void setCategories(EnumSet<CardCategory> categories) {
     if (categories == null) {
       AppboyLogger.i(TAG, "The categories passed into setCategories are null, AppboyFeedFragment is going to display all the cards in cache.");
-      mCategories = CardCategory.ALL_CATEGORIES;
+      mCategories = CardCategory.getAllCategories();
     } else if (categories.isEmpty()) {
       AppboyLogger.w(TAG, "The categories set had no elements and have been ignored. Please pass a valid EnumSet of CardCategory.");
       return;

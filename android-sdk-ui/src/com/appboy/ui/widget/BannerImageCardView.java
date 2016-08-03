@@ -6,7 +6,6 @@ import android.widget.ImageView;
 
 import com.appboy.Constants;
 import com.appboy.models.cards.BannerImageCard;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
@@ -70,11 +69,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
         // We don't set isRead here (like we do in other card views)
         // because Banner Cards don't have read/unread indicators.  They are all images, so there's
         // no free space to put the indicator.
-        if (mCardAction != null) {
-          AppboyLogger.d(TAG, String.format("Logged click for card %s", card.getId()));
-          card.logClick();
-          mCardAction.execute(mContext);
-        }
+        handleCardClick(mContext,card, mCardAction, TAG, false);
       }
     });
   }

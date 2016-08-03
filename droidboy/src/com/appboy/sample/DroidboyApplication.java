@@ -10,7 +10,7 @@ import android.util.Log;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.sample.util.EmulatorDetectionUtils;
-import com.appboy.sample.util.SharedPrefsUtil;
+import com.appboy.support.AppboyLogger;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.Arrays;
@@ -31,11 +31,11 @@ public class DroidboyApplication extends Application {
     // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
     // we don't want to run Appboy on in certain scenarios.
     String disableAppboyNetworkRequestsBooleanString = getApplicationContext().getSharedPreferences(
-        SharedPrefsUtil.SharedPrefsFilename, Context.MODE_PRIVATE).getString(
-        SharedPrefsUtil.DISABLE_APPBOY_NETWORK_REQUESTS_KEY, null);
+        getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).getString(
+        getString(R.string.mock_appboy_network_requests), null);
     if (Boolean.parseBoolean(disableAppboyNetworkRequestsBooleanString)
         && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(Build.MODEL)) {
-      Appboy.disableAllAppboyNetworkRequests();
+      Appboy.enableMockAppboyNetworkRequestsAndDropEventsMode();
       Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", Build.MODEL));
     }
     if (BuildConfig.FLAVOR.equals(QA_FLAVOR)) {
@@ -50,6 +50,8 @@ public class DroidboyApplication extends Application {
     }
     Appboy.setAppboyEndpointProvider(new DummyEndpointProvider());
     Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
+    int logLevel = getApplicationContext().getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE).getInt(getString(R.string.current_log_level), Log.VERBOSE);
+    AppboyLogger.LogLevel = logLevel;
 
     Fresco.initialize(getApplicationContext());
   }

@@ -3,6 +3,7 @@ package com.appboy.sample;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -38,10 +39,11 @@ import java.util.List;
 public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidBoyActivity.class.getName());
   private EnumSet<CardCategory> mAppboyFeedCategories;
-  private Context mApplicationContext;
-  private DrawerLayout mDrawerLayout;
+  protected Context mApplicationContext;
+  protected DrawerLayout mDrawerLayout;
   private Adapter mAdapter;
   private static boolean mRequestedLocationPermissions = false;
+  private SharedPreferences.OnSharedPreferenceChangeListener mNewsfeedSortListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,20 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
       mRequestedLocationPermissions = true;
     }
+
+    SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
+    // We implement the listener this way so that it doesn't get garbage collected when we navigate to and from this activity
+    mNewsfeedSortListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+      @Override
+      public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
+        AppboyFeedFragment feedFragment = getFeedFragment();
+        if (feedFragment != null) {
+          feedFragment.setSortEnabled(sharedPref.getBoolean(getString(R.string.sort_feed), false));
+        }
+      }
+    };
+    sharedPref.registerOnSharedPreferenceChangeListener(mNewsfeedSortListener);
   }
 
   private void setupViewPager(ViewPager viewPager) {
@@ -101,17 +117,21 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         new NavigationView.OnNavigationItemSelectedListener() {
           @Override
           public boolean onNavigationItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-              case R.id.feedback:
-                mDrawerLayout.closeDrawers();
-                startActivity(new Intent(mApplicationContext, FeedbackFragmentActivity.class));
-                break;
-              default:
-                Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
-            }
-            return true;
+            return getNavigationItem(item);
           }
         });
+  }
+
+  public boolean getNavigationItem(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.feedback:
+        mDrawerLayout.closeDrawers();
+        startActivity(new Intent(mApplicationContext, FeedbackFragmentActivity.class));
+        break;
+      default:
+        Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
+    }
+    return true;
   }
 
   @Override
@@ -147,7 +167,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
             newFragment.show(getSupportFragmentManager(), "categories");
           } else {
             DialogFragment newFragment = FeedCategoriesFragment
-                .newInstance(CardCategory.ALL_CATEGORIES);
+                .newInstance(CardCategory.getAllCategories());
             newFragment.show(getSupportFragmentManager(), "categories");
           }
         } else {

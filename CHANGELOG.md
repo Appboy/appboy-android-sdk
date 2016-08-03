@@ -1,3 +1,13 @@
+## 1.14.0
+- Removes `keep` rules from `consumerProguardFiles` automatic Proguard configuration for potentially improved optimization for client apps. Note that client apps that Proguard Appboy code must now store release mapping files for Appboy to interpret stack traces. If you would like to continue to `keep` all Appboy code, add `-keep class bo.app.** { *; }` and `-keep class com.appboy.** { *; }` to your Proguard configuration.
+- Removes `onRetainInstance()` from the Appboy News Feed fragment. As a result, the News Feed may be used in nested fragments.
+- Adds the ability to log negatively-priced purchases.
+- Allows the inclusion of file separators in User Ids.
+- Adds the option to sort News Feed cards based on read/unread status.
+- Adds a custom News Feed click delegate. To handle News Feed clicks manually, implement `IFeedClickActionListener` and register an instance using `AppboyFeedManager.getInstance().setFeedCardClickActionListener()`.  This enables use-cases such as selectively using the native browser to open web links.
+- Changes Appboy's default Log Level from VERBOSE to INFO. Previously disabled debug log statements are enabled and available for debugging. To change Appboy's Log Level, update the value of `AppboyLogger.LogLevel`, e.g. `AppboyLogger.LogLevel = Log.VERBOSE`.
+- Renames `disableAllAppboyNetworkRequests()` to `enableMockAppboyNetworkRequestsAndDropEventsMode()` and fixes a bug where calling `Appboy.changeUser()` would cause a network request even in disabled/mocked mode. Note that `enableMockAppboyNetworkRequestsAndDropEventsMode` should only be used in testing environments.
+
 ## 1.13.5
 - Defines `com_appboy_card_background` to provide simpler control of news feed card background color.
 - Removes optimizations from the private library's Proguard configuration to allow dexing Appboy

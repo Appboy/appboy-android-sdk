@@ -116,7 +116,7 @@ public class FeedCategoriesFragment extends DialogFragment {
   @SuppressWarnings("checkstyle:localvariablename")
   private boolean[] getBooleansFromEnumSet(EnumSet<CardCategory> categories) {
     boolean[] array = new boolean[CATEGORIES.length];
-    if (categories.equals(CardCategory.ALL_CATEGORIES)) {
+    if (categories.equals(CardCategory.getAllCategories())) {
       Arrays.fill(array, true);
       return array;
     } else {
@@ -141,7 +141,7 @@ public class FeedCategoriesFragment extends DialogFragment {
   private EnumSet<CardCategory> getEnumSetFromBooleans(boolean[] isChecked) {
     EnumSet<CardCategory> set = EnumSet.noneOf(CardCategory.class);
     if (isChecked[0]) {
-      set = CardCategory.ALL_CATEGORIES;
+      set = CardCategory.getAllCategories();
     } else {
       for (int i = 1; i < Arrays.asList(CATEGORIES).size(); i ++) {
         if (isChecked[i]) {

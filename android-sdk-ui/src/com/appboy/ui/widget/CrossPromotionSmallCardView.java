@@ -83,11 +83,11 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     // else, format client-side.
       mPrice.setText(getPriceString(card.getPrice()));
     }
-    mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false,  card.getAppStore(), card.getKindleId());
+    mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false, card.getAppStore(), card.getKindleId());
     mPrice.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        handleCardClick(mContext,card, mPriceAction, TAG);
+        handleCardClick(mContext, card, mPriceAction, TAG);
       }
     });
 

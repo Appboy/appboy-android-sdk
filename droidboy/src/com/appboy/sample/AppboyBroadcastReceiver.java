@@ -66,7 +66,7 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
     }
   }
 
-  private Intent getStartActivityIntent(Context context, Bundle extras) {
+  protected Intent getStartActivityIntent(Context context, Bundle extras) {
     Intent startActivityIntent = new Intent(context, DroidBoyActivity.class);
     startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     if (extras != null) {

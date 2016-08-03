@@ -21,6 +21,7 @@ import com.appboy.support.PackageUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.support.FrescoLibraryUtils;
 import com.appboy.ui.support.ViewUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -36,7 +37,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   private static Boolean unreadCardVisualIndicatorOn;
   private static final float SQUARE_ASPECT_RATIO = 1f;
   private static final String COM_APPBOY_NEWSFEED_UNREAD_VISUAL_INDICATOR_ON =  "com_appboy_newsfeed_unread_visual_indicator_on";
-
   protected final Context mContext;
   protected T mCard;
   protected ImageSwitcher mImageSwitcher;
@@ -244,14 +244,25 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   }
 
   protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
-    card.setIsRead(true);
+    handleCardClick(context, card, cardAction, tag, true);
+  }
+
+  /**
+   * All card views should handle new feed card clicks through this method
+   */
+  protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag, boolean markAsRead) {
+    if (markAsRead) {
+      card.setIsRead(true);
+    }
     if (cardAction != null) {
       if (card.logClick()) {
         AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
       } else {
         AppboyLogger.d(tag, String.format("Logging click failed for card %s", card.getId()));
       }
-      cardAction.execute(context);
+      if (!AppboyFeedManager.getInstance().getFeedCardClickActionListener().onFeedCardClicked(context, card, cardAction)) {
+        cardAction.execute(context);
+      }
     }
   }
 

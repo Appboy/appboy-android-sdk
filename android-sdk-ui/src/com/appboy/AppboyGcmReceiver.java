@@ -105,6 +105,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       return false;
     } else {
       Bundle gcmExtras = intent.getExtras();
+      AppboyLogger.d(TAG, String.format("Push message payload received: %s", gcmExtras));
 
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.

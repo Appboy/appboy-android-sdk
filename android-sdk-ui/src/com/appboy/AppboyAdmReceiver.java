@@ -90,6 +90,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       return false;
     } else {
       Bundle admExtras = intent.getExtras();
+      AppboyLogger.d(TAG, String.format("Push message payload received: %s", admExtras));
 
       // Parsing the Appboy data extras (data push).
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);

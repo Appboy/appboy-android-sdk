@@ -15,5 +15,3 @@
 -dontwarn bo.app.**
 -dontwarn com.appboy.ui.**
 -dontwarn com.google.android.gms.**
--keep class bo.app.** { *; }
--keep class com.appboy.** { *; }

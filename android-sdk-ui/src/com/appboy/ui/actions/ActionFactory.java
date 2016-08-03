@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.appboy.support.StringUtils;
 
 public class ActionFactory {
+
   public static IAction createUriAction(Context context, String url) {
     return createUriAction(context, url, null);
   }

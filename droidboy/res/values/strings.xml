@@ -2,21 +2,15 @@
 <resources>
   <string name="app_name">@string/droid_boy</string>
   <string name="droid_boy">DroidBoy</string>
-  <string name="droid_girl">DroidGirl</string>
 
-  <string name="feed">News</string>
+  <string name="feed">News Feed</string>
   <string name="settings">Settings</string>
-  <string name="send_feedback">Send Feedback</string>
-
-  <string name="social_preferences_title">Social</string>
-  <string name="engagement_title">Engagement</string>
   <string name="network_control_title">Network Controls</string>
   <string name="session_title">Sessions</string>
   <string name="location_title">Location</string>
   <string name="about_title">About</string>
 
-  <string name="user_dialog_title">Sign up</string>
-  <string name="user_dialog_summary">Receive the latest DroidBoy news and updates!</string>
+  <string name="user_dialog_title">Default Attributes</string>
   <string name="user_dialog_okay">OK</string>
   <string name="user_dialog_cancel">Cancel</string>
 
@@ -51,6 +45,11 @@
   <string name="custom_logging_dialog_okay">OK</string>
   <string name="custom_logging_dialog_cancel">Cancel</string>
 
+  <string name="custom_logging_category_title">Custom Logging</string>
+  <string name="log_user_attributes_title">Custom Attributes</string>
+  <string name="log_events_title">Custom Events</string>
+  <string name="log_purchase_title">Purchases</string>
+
   <string name="storage_info_preference_category">Storage Info</string>
   <string name="file_data_title">File Data</string>
   <string name="file_data_summary">View the files stored for this app.</string>
@@ -66,15 +65,11 @@
   <string name="custom_logging_user_attribute">User Attribute</string>
   <string name="custom_logging_user_attribute_increment">Increment Attribute</string>
   <string name="custom_logging_user_attribute_unset">Unset Attribute</string>
-  <string name="custom_logging_custom_event">Custom Event</string>
-  <string name="custom_logging_custom_event_property">Event Property</string>
-  <string name="custom_logging_custom_purchase">Custom Purchase</string>
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
   <string name="custom_logging_custom_purchase_currency_code">Currency Code</string>
-  <string name="custom_logging_custom_purchase_property">Purchase Property</string>
+  <string name="custom_logging_custom_purchase_price_code">Price</string>
 
   <string name="data_flush_title">Request Flush</string>
-  <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>
   <string name="data_flush_toast">Data flush requested</string>
 
   <string name="requested_inappmessage_toast">Requested In-App Message</string>
@@ -138,11 +133,15 @@
   <string name="get_registration_id_title">Get Push Registration Id</string>
   <string name="set_email_subscription_state_title">Set Email Subscription State</string>
   <string name="set_push_subscription_state_title">Set Push Subscription State</string>
+  <string name="sort_feed">Sort News Feed</string>
+  <string name="custom_news_feed_card_click_action_listener">Custom INewsFeedClickActionListener</string>
   <string name="get_registration_id_summary">Retrieve the Registration Id used for push on this device.</string>
   <string name="set_push_subscription_state_summary">Subscribe, opt-in, or opt-out for push.</string>
   <string name="set_email_subscription_state_summary">Subscribe, opt-in, or opt-out for email.</string>
   <string name="log_attribution_title">Log Attribution For User</string>
   <string name="log_attribution_summary">Log Creative, AdGroup, Network, and Campaign.</string>
+  <string name="sort_feed_summary">Sort the News Feed Cards to Prefer to Display Unread Cards</string>
+  <string name="custom_news_feed_card_click_action_listener_summary">toggles the use of CustomNewsFeedClickActionListener</string>
 
   <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
   <string name="appboy_image_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/569934e8bf5cea1409000027/639cf60262df21a9d190c659e2fc36823fa2dc94/original.?1452881133</string>
@@ -154,11 +153,13 @@
   <string name="google_url">http://www.google.com</string>
   <string name="droidboy_deep_link">droidboy://preferences</string>
   <string name="droidboy_deep_link_https">https://www.droidboy.com/preferences</string>
+  <string name="youtube_https_link">https://www.youtube.com/watch?v=1PJCQTGbLq4</string>
   <string name="telephone_uri">tel:555555555</string>
   <string name="html_assets_no_js_remote_url">https://www.dropbox.com/s/rvxloodgmnml2t2/html_iam_image.zip?dl=1</string>
   <string name="html_assets_external_js_remote_url">https://www.dropbox.com/s/v1hhojkznz7so3s/html_iam_js.zip?dl=1</string>
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
   <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</string>
+  <string name="youtube_regex">^(http\\:\\/\\/|https\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/(.+$|)</string>
 
   <string name="custom_font">doridrobot.ttf</string>
   <string name="droidboy_close_button_text">close</string>
@@ -175,4 +176,12 @@
   <string name="world_icon_name">com_appboy_ic_language_white</string>
   <string name="none">none</string>
   <string name="not_set">not set</string>
+  <string name="custom_logging_name">Name</string>
+  <string name="current_log_level">Current Log Level</string>
+  <string name="log_level_dialog_title">Log Level</string>
+  <string name="log_level_pref_summary">Configure Logger Settings</string>
+  <string name="user_dialog_done">done</string>
+
+  <string name="shared_prefs_location">com.appboy.sample.sharedpreferences</string>
+  <string name="mock_appboy_network_requests">mock_appboy_network_requests</string>
 </resources>

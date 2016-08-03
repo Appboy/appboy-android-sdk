@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.appboy.sample.UserProfileDialog
-        android:title="@string/user_dialog_title"
-        android:summary="@string/user_dialog_summary"
-        android:positiveButtonText="@string/user_dialog_okay"
-        android:negativeButtonText="@string/user_dialog_cancel"/>
-    <com.appboy.sample.CustomLoggingDialog
-        android:title="@string/custom_logging_dialog_title"
-        android:summary="@string/custom_logging_dialog_summary"
-        android:positiveButtonText="@string/custom_logging_dialog_okay"
-        android:negativeButtonText="@string/custom_logging_dialog_cancel"/>
-
+    <PreferenceCategory
+        android:title="@string/custom_logging_category_title">
+        <com.appboy.sample.UserProfileDialog
+            android:title="@string/user_dialog_title"
+            android:positiveButtonText="@string/user_dialog_okay"
+            android:negativeButtonText="@string/user_dialog_cancel"/>
+        <com.appboy.sample.logging.CustomUserAttributeDialog
+            android:title="@string/log_user_attributes_title"
+            android:positiveButtonText="@string/user_dialog_okay"
+            android:negativeButtonText="@string/user_dialog_cancel"/>
+        <com.appboy.sample.logging.CustomPurchaseDialog
+            android:title="@string/log_purchase_title"
+            android:positiveButtonText="@string/user_dialog_okay"
+            android:negativeButtonText="@string/user_dialog_cancel"/>
+        <com.appboy.sample.logging.CustomEventDialog
+            android:title="@string/log_events_title"
+            android:positiveButtonText="@string/user_dialog_okay"
+            android:negativeButtonText="@string/user_dialog_cancel"/>
+    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/network_control_title">
         <Preference
@@ -19,8 +27,7 @@
             android:title="Request In-App Message"/>
         <Preference
             android:key="data_flush"
-            android:title="@string/data_flush_title"
-            android:summary="@string/data_flush_summary"/>
+            android:title="@string/data_flush_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -30,10 +37,20 @@
             android:summary="@string/set_push_subscription_state_summary"
             android:positiveButtonText="@string/user_dialog_okay"
             android:negativeButtonText="@string/user_dialog_cancel"/>
-        <Preference
-            android:key="get_registration_id"
-            android:title="@string/get_registration_id_title"
-            android:summary="@string/get_registration_id_summary"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/feed">
+        <CheckBoxPreference
+            android:key="sort_feed"
+            android:title="@string/sort_feed"
+            android:summary="@string/sort_feed_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="set_custom_news_feed_card_click_action_listener"
+            android:title="@string/custom_news_feed_card_click_action_listener"
+            android:summary="@string/custom_news_feed_card_click_action_listener_summary"
+            android:defaultValue="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -47,10 +64,6 @@
             android:title="@string/disable_appboy_network_requests"
             android:summary="@string/disable_appboy_network_requests_summary"/>
         <Preference
-            android:key="toggle_disable_appboy_logging"
-            android:title="@string/disable_appboy_logging_title"
-            android:summary="@string/disable_appboy_logging_summary"/>
-        <Preference
             android:key="log_attribution"
             android:title="@string/log_attribution_title"
             android:summary="@string/log_attribution_summary"/>
@@ -59,6 +72,11 @@
             android:summary="@string/set_email_subscription_state_summary"
             android:positiveButtonText="@string/user_dialog_okay"
             android:negativeButtonText="@string/user_dialog_cancel"/>
+        <com.appboy.sample.LogLevelDialogPreference
+            android:title="@string/log_level_dialog_title"
+            android:summary="@string/log_level_pref_summary"
+            android:positiveButtonText="@string/user_dialog_done"
+            android:negativeButtonText=""/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -101,5 +119,8 @@
         <Preference
             android:key="api_key"
             android:title="API Key"/>
+        <Preference
+            android:key="push_token"
+            android:title="Push Token"/>
     </PreferenceCategory>
 </PreferenceScreen>
