@@ -15,6 +15,8 @@ com.appboy.ui.actions
 com.appboy.ui.activities
 com.appboy.ui.adapters
 com.appboy.ui.configuration
+com.appboy.ui.feed
+com.appboy.ui.feed.listeners
 com.appboy.ui.inappmessage
 com.appboy.ui.inappmessage.factories
 com.appboy.ui.inappmessage.listeners
