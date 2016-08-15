@@ -11,6 +11,7 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.sample.util.EmulatorDetectionUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.ui.support.FrescoLibraryUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.Arrays;
@@ -53,7 +54,9 @@ public class DroidboyApplication extends Application {
     int logLevel = getApplicationContext().getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE).getInt(getString(R.string.current_log_level), Log.VERBOSE);
     AppboyLogger.LogLevel = logLevel;
 
-    Fresco.initialize(getApplicationContext());
+    if (FrescoLibraryUtils.canUseFresco(getApplicationContext())) {
+      Fresco.initialize(getApplicationContext());
+    }
   }
 
   private void activateStrictMode() {

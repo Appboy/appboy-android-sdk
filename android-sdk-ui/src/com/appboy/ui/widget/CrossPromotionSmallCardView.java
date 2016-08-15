@@ -47,6 +47,8 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
       mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_cross_promotion_small_card_drawee_stub);
     } else {
       mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_cross_promotion_small_card_imageview_stub);
+      mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+      mImage.setAdjustViewBounds(true);
     }
 
     if (card != null) {

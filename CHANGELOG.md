@@ -1,3 +1,7 @@
+## 1.14.1
+- Fixes a bug where images in short news and cross promotion News Feed cards would appear too small on high resolution devices. This bug did not affect Fresco users.
+- Updates Baidu push service jar from v4.6.2.38 to v5.1.0.48.
+
 ## 1.14.0
 - Removes `keep` rules from `consumerProguardFiles` automatic Proguard configuration for potentially improved optimization for client apps. Note that client apps that Proguard Appboy code must now store release mapping files for Appboy to interpret stack traces. If you would like to continue to `keep` all Appboy code, add `-keep class bo.app.** { *; }` and `-keep class com.appboy.** { *; }` to your Proguard configuration.
 - Removes `onRetainInstance()` from the Appboy News Feed fragment. As a result, the News Feed may be used in nested fragments.

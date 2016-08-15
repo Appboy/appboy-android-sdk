@@ -49,7 +49,7 @@
   <!-- Fresco Library Usage -->
   <!-- When set to false, the UI code will not use views from Fresco library. By default, this setting
     is false. -->
-  <bool name="com_appboy_enable_fresco_library_use">true</bool>
+  <bool name="com_appboy_enable_fresco_library_use">false</bool>
 
   <!-- Triggered Action configuration -->
   <!-- The minimum interval in seconds between actions, such as an in-app message, that can be triggered
