@@ -1,8 +1,9 @@
 package com.appboy.ui.inappmessage;
 
-import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 
 import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
@@ -27,13 +28,9 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
   protected IInAppMessage doInBackground(IInAppMessage... inAppMessages) {
     try {
       AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
-      Activity activity = getInAppMessageManagerActivity();
-      if (activity == null) {
-        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Doing nothing.");
-        return null;
-      }
       boolean assetDownloadSucceeded;
       IInAppMessage inAppMessage = inAppMessages[0];
+      Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
       if (inAppMessage instanceof InAppMessageHtmlFull) {
         // Note, this will clear the IAM cache, which is OK because no other IAM is currently displaying
         // and AsyncTasks are are executed on a single thread, which guarantees no other IAM is
@@ -41,7 +38,7 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         // See http://developer.android.com/reference/android/os/AsyncTask.html#execute(Params...)
         assetDownloadSucceeded = prepareInAppMessageWithHtml(inAppMessage);
       } else {
-        if (FrescoLibraryUtils.canUseFresco(activity.getApplicationContext())) {
+        if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
           assetDownloadSucceeded = prepareInAppMessageWithFresco(inAppMessage);
         } else {
           assetDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
@@ -60,20 +57,15 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
   @Override
   protected void onPostExecute(final IInAppMessage inAppMessage) {
     try {
-      Activity activity = getInAppMessageManagerActivity();
-      if (activity == null) {
-        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Not displaying"
-            + "in-app message.");
-        return;
-      }
-      AppboyLogger.d(TAG, "Finished asynchronous in-app message preparation. Attempting to display in-app message.");
-
       if (inAppMessage != null) {
-        activity.runOnUiThread(new Runnable() {
+        AppboyLogger.d(TAG, "Finished asynchronous in-app message preparation. Attempting to display in-app message.");
+        Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
+        Handler mainLooperHandler = new Handler(applicationContext.getMainLooper());
+        mainLooperHandler.post(new Runnable() {
           @Override
           public void run() {
             AppboyLogger.d(TAG, "Displaying in-app message.");
-            AppboyInAppMessageManager.getInstance().displayInAppMessage(inAppMessage);
+            AppboyInAppMessageManager.getInstance().displayInAppMessage(inAppMessage, false);
           }
         });
       } else {
@@ -92,11 +84,6 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
    * @return whether or not asset download succeeded
    */
   boolean prepareInAppMessageWithHtml(IInAppMessage inAppMessage) {
-    Activity activity = getInAppMessageManagerActivity();
-    if (activity == null) {
-      AppboyLogger.e(TAG, "Can't store HTML in-app message assets because activity is null.");
-      return false;
-    }
     InAppMessageHtmlBase inAppMessageHtml = (InAppMessageHtmlBase) inAppMessage;
     // If the local assets exist already, return right away.
     String localAssets = inAppMessageHtml.getLocalAssetsDirectoryUrl();
@@ -110,7 +97,8 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
       return true;
     }
     // Otherwise, download the asset zip.
-    File internalStorageCacheDirectory = WebContentUtils.getHtmlInAppMessageAssetCacheDirectory(activity);
+    Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
+    File internalStorageCacheDirectory = WebContentUtils.getHtmlInAppMessageAssetCacheDirectory(applicationContext);
     String localWebContentUrl = WebContentUtils.getLocalHtmlUrlFromRemoteUrl(internalStorageCacheDirectory, inAppMessageHtml.getAssetsZipRemoteUrl());
     if (!StringUtils.isNullOrBlank(localWebContentUrl)) {
       AppboyLogger.d(TAG, "Local url for html in-app message assets is " + localWebContentUrl);
@@ -212,9 +200,5 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
       return true;
     }
     return false;
-  }
-
-  private Activity getInAppMessageManagerActivity() {
-    return AppboyInAppMessageManager.getInstance().getActivity();
   }
 }

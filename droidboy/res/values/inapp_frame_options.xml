@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_frame_options">
+    <item>Frame Color: Not Set</item>
+    <item>Frame Color: Transparent</item>
+    <item>Frame Color: Opaque Blue</item>
+    <item>Frame Color: Almost Transparent Blue</item>
+  </string-array>
+  <string-array name="inapp_frame_values">
+    <item>not set</item>
+    <item>transparent</item>
+    <item>blue</item>
+    <item>almost_transparent_blue</item>
+  </string-array>
+</resources>

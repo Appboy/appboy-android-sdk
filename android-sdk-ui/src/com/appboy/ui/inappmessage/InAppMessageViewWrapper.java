@@ -257,8 +257,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
     return new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
-        close();
+        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
       }
     };
   }
@@ -268,8 +267,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       mDismissRunnable = new Runnable() {
         @Override
         public void run() {
-          mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
-          close();
+          AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
         }
       };
       mInAppMessageView.postDelayed(mDismissRunnable, mInAppMessage.getDurationInMilliseconds());
@@ -285,9 +283,8 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
 
       @Override
       public void onDismiss(View view, Object token) {
-        mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
         mInAppMessage.setAnimateOut(false);
-        close();
+        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
       }
     };
   }
@@ -390,13 +387,12 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       }
 
       private void animateAndClose(Animation animation) {
-        mInAppMessageViewLifecycleListener.onDismissed(mInAppMessageView, mInAppMessage);
         mInAppMessageView.clearAnimation();
         mInAppMessageView.setAnimation(animation);
         animation.startNow();
         mInAppMessageView.invalidate();
         mInAppMessage.setAnimateOut(false);
-        close();
+        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
       }
     };
   }

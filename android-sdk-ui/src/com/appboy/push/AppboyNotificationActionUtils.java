@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
+import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
@@ -105,6 +106,11 @@ public class AppboyNotificationActionUtils {
           intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
         }
         AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
+
+        XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
+        if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+          AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+        }
       } else if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_SHARE)) {
         AppboyNotificationUtils.cancelNotification(context, notificationId);
         context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_orientation_options">
+    <item>Orientation: Not Set</item>
+    <item>Orientation: Any</item>
+    <item>Orientation: Portrait Only</item>
+    <item>Orientation: Landscape Only</item>
+  </string-array>
+  <string-array name="inapp_orientation_values">
+    <item>not set</item>
+    <item>any</item>
+    <item>portrait</item>
+    <item>landscape</item>
+  </string-array>
+</resources>

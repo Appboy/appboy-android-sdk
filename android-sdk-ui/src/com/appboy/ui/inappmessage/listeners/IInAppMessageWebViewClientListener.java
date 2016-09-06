@@ -9,6 +9,7 @@ import com.appboy.models.IInAppMessage;
  * In-App Message. Button clicks that occur inside an HTML In-App Message are routed to this listener
  * and not the IInAppMessageViewLifecycleListener. However, the display lifecycle of the HTML In-App Message is
  * still handled by the IInAppMessageViewLifecycleListener.
+ *
  * See {@link com.appboy.ui.inappmessage.InAppMessageWebViewClient}.
  */
 public interface IInAppMessageWebViewClientListener {

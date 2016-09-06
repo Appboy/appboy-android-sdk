@@ -98,6 +98,10 @@ public class FrescoLibraryUtils {
     return sCanUseFresco;
   }
 
+  public static void setDraweeControllerHelper(final SimpleDraweeView simpleDraweeView, final String imageUrl, final float aspectRatio, final boolean respectAspectRatio) {
+    setDraweeControllerHelper(simpleDraweeView, imageUrl, aspectRatio, respectAspectRatio, null);
+  }
+
   /**
    * Helper method for setting the controller on a simple Drawee View. By default, gif urls are set
    * to autoplay and tap to retry is on for all images.
@@ -107,9 +111,13 @@ public class FrescoLibraryUtils {
    * @param aspectRatio        the desired aspect ratio of the image
    * @param respectAspectRatio if true, the aspect ratio of the image will be set to that of the value of aspectRatio. If false, the aspect ratio
    *                           will be set to that of the downloaded image dimensions.
+   * @param controllerListener the controllerListener to use, or null if the default should be used.
    */
-  public static void setDraweeControllerHelper(final SimpleDraweeView simpleDraweeView, final String imageUrl, final float aspectRatio, final boolean respectAspectRatio) {
-    if (imageUrl == null) {
+  public static void setDraweeControllerHelper(final SimpleDraweeView simpleDraweeView,
+                                               final String imageUrl, final float aspectRatio,
+                                               final boolean respectAspectRatio,
+                                               ControllerListener<ImageInfo> controllerListener) {
+    if (StringUtils.isNullOrBlank(imageUrl)) {
       AppboyLogger.w(TAG, "The url set for the Drawee controller was null. Controller not set.");
       return;
     }
@@ -121,31 +129,33 @@ public class FrescoLibraryUtils {
 
     // Create a controller listener to listen for the dimensions of the image once set. Once
     // we get the dimensions, set the aspect ratio of the image based on respectAspectRatio.
-    ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
-      @Override
-      public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
-        if (imageInfo == null) {
-          return;
-        }
-
-        final float imageAspectRatio;
-
-        if (respectAspectRatio) {
-          imageAspectRatio = aspectRatio;
-        } else {
-          // Get the image aspect ratio from the imageInfo
-          imageAspectRatio = imageInfo.getWidth() / imageInfo.getHeight();
-        }
-
-        // Set this aspect ratio on the drawee itself on the UI thread
-        simpleDraweeView.post(new Runnable() {
-          @Override
-          public void run() {
-            simpleDraweeView.setAspectRatio(imageAspectRatio);
+    if (controllerListener == null) {
+      controllerListener = new BaseControllerListener<ImageInfo>() {
+        @Override
+        public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
+          if (imageInfo == null) {
+            return;
           }
-        });
-      }
-    };
+
+          final float imageAspectRatio;
+
+          if (respectAspectRatio) {
+            imageAspectRatio = aspectRatio;
+          } else {
+            // Get the image aspect ratio from the imageInfo
+            imageAspectRatio = imageInfo.getWidth() / imageInfo.getHeight();
+          }
+
+          // Set this aspect ratio on the drawee itself on the UI thread
+          simpleDraweeView.post(new Runnable() {
+            @Override
+            public void run() {
+              simpleDraweeView.setAspectRatio(imageAspectRatio);
+            }
+          });
+        }
+      };
+    }
 
     // If the Fresco singleton is shutdown prematurely via Fresco.shutdown() then the Fresco.newDraweeControllerBuilder()
     // will throw a NPE. We catch this below to safeguard against this gracefully.

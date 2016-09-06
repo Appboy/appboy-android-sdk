@@ -4,7 +4,7 @@ configurations {
 }
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.14.+'
+  compile 'com.appboy:android-sdk-ui:1.15.+'
   provided files("libs/Prime31UnityActivity-1.0.jar")
   provided files("libs/unity-4.1.2.jar")
 }

@@ -2,4 +2,5 @@
 <resources>
   <!--Replace this stand-in key with your actual Appboy API key from the dashboard-->
   <string translatable="false" name="com_appboy_api_key">YOUR-APPBOY-API-KEY-HERE</string>
+
 </resources>

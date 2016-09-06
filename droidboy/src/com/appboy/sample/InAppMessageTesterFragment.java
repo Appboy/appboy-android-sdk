@@ -1,6 +1,5 @@
 package com.appboy.sample;
 
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,8 +17,12 @@ import android.widget.Toast;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.enums.inappmessage.ClickAction;
+import com.appboy.enums.inappmessage.CropType;
 import com.appboy.enums.inappmessage.DismissType;
+import com.appboy.enums.inappmessage.ImageStyle;
+import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.enums.inappmessage.SlideFrom;
+import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
@@ -30,6 +33,7 @@ import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.sample.util.SpinnerUtils;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,6 +55,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
   private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
   private static final String CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY = "inappmessages_custom_appboy_html_inappmessage_action_listener";
+  private static final String CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE = "inappmessages_custom_appboy_graphic_modal_max_size";
+  private static final String CUSTOM_INAPPMESSAGE_IMAGE_RADIUS = "inappmessages_custom_appboy_image_radius";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -80,11 +86,18 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     spinnerOptionMap.put(R.id.inapp_close_button_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_text_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_header_text_color_spinner, R.array.inapp_color_options);
-    spinnerOptionMap.put(R.id.inapp_modal_frame_spinner, R.array.inapp_modal_frame_options);
+    spinnerOptionMap.put(R.id.inapp_button_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_button_text_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_frame_spinner, R.array.inapp_frame_options);
     spinnerOptionMap.put(R.id.inapp_uri_spinner, R.array.inapp_uri_options);
     spinnerOptionMap.put(R.id.inapp_icon_spinner, R.array.inapp_icon_options);
     spinnerOptionMap.put(R.id.inapp_image_spinner, R.array.inapp_image_options);
     spinnerOptionMap.put(R.id.inapp_button_spinner, R.array.inapp_button_options);
+    spinnerOptionMap.put(R.id.inapp_orientation_spinner, R.array.inapp_orientation_options);
+    spinnerOptionMap.put(R.id.inapp_header_align_spinner, R.array.inapp_align_options);
+    spinnerOptionMap.put(R.id.inapp_message_align_spinner, R.array.inapp_align_options);
+    spinnerOptionMap.put(R.id.inapp_animate_in_spinner, R.array.inapp_boolean_options);
+    spinnerOptionMap.put(R.id.inapp_animate_out_spinner, R.array.inapp_boolean_options);
     sSpinnerOptionMap = Collections.unmodifiableMap(spinnerOptionMap);
   }
 
@@ -101,10 +114,17 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private String mCloseButtonColor;
   private String mTextColor;
   private String mHeaderTextColor;
-  private String mModalFrameColor;
+  private String mButtonColor;
+  private String mButtonTextColor;
+  private String mFrameColor;
   private String mIcon;
   private String mImage;
   private String mButtons;
+  private String mOrientation;
+  private String mMessageTextAlign;
+  private String mHeaderTextAlign;
+  private String mAnimateIn;
+  private String mAnimateOut;
   private String mHtmlBodyFromAssets;
   private String mHtmlBodyFromAssetsInlineJs;
   private String mHtmlBodyFromAssetsExternalJs;
@@ -162,6 +182,39 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     });
     boolean usingCustomAppboyNavigator = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
     customAppboyNavigatorCheckBox.setChecked(usingCustomAppboyNavigator);
+
+    CheckBox maxSizeCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox);
+    maxSizeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+          AppboyInAppMessageParams.setGraphicModalMaxHeightDp(420);
+          AppboyInAppMessageParams.setGraphicModalMaxWidthDp(320);
+        } else {
+          AppboyInAppMessageParams.setGraphicModalMaxHeightDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
+          AppboyInAppMessageParams.setGraphicModalMaxWidthDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
+        }
+        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, isChecked).apply();
+      }
+    });
+    boolean maxSizedChecked = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, false);
+    maxSizeCheckBox.setChecked(maxSizedChecked);
+
+    CheckBox imageRadiusCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_image_radius_checkbox);
+    imageRadiusCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+          AppboyInAppMessageParams.setModalizedImageRadiusDp(0);
+        } else {
+          AppboyInAppMessageParams.setModalizedImageRadiusDp(AppboyInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
+        }
+        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, isChecked).apply();
+      }
+    });
+    boolean customRadiusChecked = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, false);
+    imageRadiusCheckBox.setChecked(customRadiusChecked);
+
     Button createAndAddInAppMessageButton = (Button) view.findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -174,8 +227,19 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
             addInAppMessage(new InAppMessageSlideup());
           } else if ("modal".equals(mMessageType)) {
             addInAppMessage(new InAppMessageModal());
+          } else if ("modal_graphic".equals(mMessageType)) {
+            InAppMessageModal inAppMessageModal = new InAppMessageModal();
+            inAppMessageModal.setImageStyle(ImageStyle.GRAPHIC);
+            // graphic modals must be center cropped, the default for newly constructed modals
+            // is center_fit
+            inAppMessageModal.setCropType(CropType.CENTER_CROP);
+            addInAppMessage(inAppMessageModal);
           } else if ("full".equals(mMessageType)) {
             addInAppMessage(new InAppMessageFull());
+          } else if ("full_graphic".equals(mMessageType)) {
+            InAppMessageFull inAppMessageFull = new InAppMessageFull();
+            inAppMessageFull.setImageStyle(ImageStyle.GRAPHIC);
+            addInAppMessage(inAppMessageFull);
           } else if ("html_full_no_js".equals(mMessageType)) {
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.NO_JS);
           } else if ("html_full_inline_js".equals(mMessageType)) {
@@ -240,7 +304,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     hideCurrentInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true);
+        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false);
       }
     });
     return view;
@@ -259,15 +323,29 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageImmersive(IInAppMessageImmersive inAppMessage) {
     if (inAppMessage instanceof InAppMessageModal) {
-      inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps.  This is a modal in-app message.");
-      inAppMessage.setHeader("Hello from Appboy!");
-      inAppMessage.setIcon("\uf091");
-      setModalFrameColor(((InAppMessageModal) inAppMessage));
+      inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps!");
+      if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
+        inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_1000h));
+      } else {
+        inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1160w_400h));
+      }
     } else if (inAppMessage instanceof InAppMessageFull) {
       inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.");
-      inAppMessage.setHeader("Hello from Appboy!");
-      inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url));
+      if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
+        if (inAppMessage.getOrientation().equals(Orientation.LANDSCAPE)) {
+          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1600w_1000h));
+        } else {
+          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_1600h));
+        }
+      } else {
+        if (inAppMessage.getOrientation().equals(Orientation.LANDSCAPE)) {
+          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1600w_500h));
+        } else {
+          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_800h));
+        }
+      }
     }
+    inAppMessage.setHeader("Hello from Appboy!");
     ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
     MessageButton buttonOne = new MessageButton();
     buttonOne.setText("NEWSFEED");
@@ -277,6 +355,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     addMessageButtons(inAppMessage);
     setHeader(inAppMessage);
     setCloseButtonColor(inAppMessage);
+    setFrameColor(inAppMessage);
+    setHeaderTextAlign(inAppMessage);
   }
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
@@ -320,6 +400,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   }
 
   private void addInAppMessage(IInAppMessage inAppMessage, HtmlMessageType messageType) {
+    // set orientation early to help determine which default image to use
+    setOrientation(inAppMessage);
     if (inAppMessage instanceof IInAppMessageImmersive) {
       addInAppMessageImmersive((IInAppMessageImmersive) inAppMessage);
     } else if (inAppMessage instanceof InAppMessageSlideup) {
@@ -337,7 +419,26 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setMessage(inAppMessage);
     setIcon(inAppMessage);
     setImage(inAppMessage);
+    setMessageTextAlign(inAppMessage);
+    setAnimation(inAppMessage);
     AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
+  }
+
+  private void setAnimation(IInAppMessage inAppMessage) {
+    if (!SpinnerUtils.spinnerItemNotSet(mAnimateIn)) {
+      if (mAnimateIn.equals("true")) {
+        inAppMessage.setAnimateIn(true);
+      } else if (mAnimateIn.equals("false")) {
+        inAppMessage.setAnimateIn(false);
+      }
+    }
+    if (!SpinnerUtils.spinnerItemNotSet(mAnimateOut)) {
+      if (mAnimateOut.equals("true")) {
+        inAppMessage.setAnimateOut(true);
+      } else if (mAnimateOut.equals("false")) {
+        inAppMessage.setAnimateOut(false);
+      }
+    }
   }
 
   private void setDismissType(IInAppMessage inAppMessage) {
@@ -417,6 +518,19 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
   }
 
+  private void setOrientation(IInAppMessage inAppMessage) {
+    // set in-app message preferred orientation
+    if (!SpinnerUtils.spinnerItemNotSet(mOrientation)) {
+      if (mOrientation.equals("any")) {
+        inAppMessage.setOrientation(Orientation.ANY);
+      } else if (mOrientation.equals("portrait")) {
+        inAppMessage.setOrientation(Orientation.PORTRAIT);
+      } else if (mOrientation.equals("landscape")) {
+        inAppMessage.setOrientation(Orientation.LANDSCAPE);
+      }
+    }
+  }
+
   private boolean addClickAction(IInAppMessage inAppMessage) {
     // set click action if defined
     if ("newsfeed".equals(mClickAction)) {
@@ -457,10 +571,33 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
   }
 
-  private void setModalFrameColor(InAppMessageModal inAppMessage) {
-    if (!SpinnerUtils.spinnerItemNotSet(mModalFrameColor)) {
-      inAppMessage.setModalFrameColor(parseColorFromString(mModalFrameColor));
+  private void setFrameColor(IInAppMessageImmersive inAppMessage) {
+    if (!SpinnerUtils.spinnerItemNotSet(mFrameColor)) {
+      inAppMessage.setFrameColor(parseColorFromString(mFrameColor));
     }
+  }
+
+  private void setHeaderTextAlign(IInAppMessageImmersive inAppMessage) {
+    if (!SpinnerUtils.spinnerItemNotSet(mHeaderTextAlign)) {
+      inAppMessage.setHeaderTextAlign(parseTextAlign(mHeaderTextAlign));
+    }
+  }
+
+  private void setMessageTextAlign(IInAppMessage inAppMessage) {
+    if (!SpinnerUtils.spinnerItemNotSet(mMessageTextAlign)) {
+      inAppMessage.setMessageTextAlign(parseTextAlign(mMessageTextAlign));
+    }
+  }
+
+  private TextAlign parseTextAlign(String textAlign) {
+    if (textAlign.equals("start")) {
+      return TextAlign.START;
+    } else if (textAlign.equals("end")) {
+      return TextAlign.END;
+    } else if (textAlign.equals("center")) {
+      return TextAlign.CENTER;
+    }
+    return null;
   }
 
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
@@ -473,7 +610,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
       MessageButton buttonOne = new MessageButton();
       if ("one".equals(mButtons)) {
-        buttonOne.setBackgroundColor(Color.BLACK);
         buttonOne.setClickAction(ClickAction.NEWS_FEED);
         buttonOne.setText("NEWSFEED");
         messageButtons.add(buttonOne);
@@ -499,6 +635,16 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       messageButtons.add(buttonOne);
       messageButtons.add(buttonTwo);
       inAppMessage.setMessageButtons(messageButtons);
+    }
+    if (!SpinnerUtils.spinnerItemNotSet(mButtonColor) && inAppMessage.getMessageButtons() != null) {
+      for (MessageButton button : inAppMessage.getMessageButtons()) {
+        button.setBackgroundColor(parseColorFromString(mButtonColor));
+      }
+    }
+    if (!SpinnerUtils.spinnerItemNotSet(mButtonTextColor) && inAppMessage.getMessageButtons() != null) {
+      for (MessageButton button : inAppMessage.getMessageButtons()) {
+        button.setTextColor(parseColorFromString(mButtonTextColor));
+      }
     }
   }
 
@@ -543,8 +689,14 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       case R.id.inapp_header_text_color_spinner:
         mHeaderTextColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
         break;
-      case R.id.inapp_modal_frame_spinner:
-        mModalFrameColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_modal_frame_values);
+      case R.id.inapp_button_color_spinner:
+        mButtonColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_button_text_color_spinner:
+        mButtonTextColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_frame_spinner:
+        mFrameColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_frame_values);
         break;
       case R.id.inapp_icon_spinner:
         mIcon = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_icon_values);
@@ -554,6 +706,21 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         break;
       case R.id.inapp_button_spinner:
         mButtons = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_button_values);
+        break;
+      case R.id.inapp_orientation_spinner:
+        mOrientation = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_orientation_values);
+        break;
+      case R.id.inapp_header_align_spinner:
+        mHeaderTextAlign = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_align_values);
+        break;
+      case R.id.inapp_message_align_spinner:
+        mMessageTextAlign = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_align_values);
+        break;
+      case R.id.inapp_animate_in_spinner:
+        mAnimateIn = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_boolean_values);
+        break;
+      case R.id.inapp_animate_out_spinner:
+        mAnimateOut = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_boolean_values);
         break;
       default:
         Log.e(TAG, "Item selected for unknown spinner");

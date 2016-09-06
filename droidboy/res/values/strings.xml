@@ -93,21 +93,32 @@
   <string name="custom_iappboy_animation">Custom IInAppMessageAnimationFactory</string>
   <string name="custom_iinappmessagemanager_listener">Custom IInAppMessageManagerListener</string>
   <string name="custom_html_inappmessage_action_listener">Custom IHtmlInAppMessageActionListener</string>
+  <string name="custom_inappmessage_modal_size">Custom Max Graphic Modal Size</string>
+  <string name="custom_inappmessage_image_radius">Custom Image Radius (remove radius)</string>
   <string name="inappmessage_activity">In-App Messages</string>
   <string name="custom_iinappmessage_view_factory">Custom IInAppMessageViewFactory</string>
   <string name="push_testing">Push</string>
+  <string name="set_header_align">Set header align</string>
+  <string name="set_message_align">Set message align</string>
   <string name="set_background_color">Set background color</string>
   <string name="set_icon_color">Set icon color</string>
   <string name="set_icon_background_color">Set icon background color</string>
   <string name="set_close_button_color">Set close button color</string>
   <string name="set_text_color">Set text color</string>
   <string name="set_header_text_color">Set header text color</string>
+  <string name="set_button_color">Set button color</string>
+  <string name="set_button_text_color">Set button text color</string>
+  <string name="set_animate_in">Set animate in</string>
+  <string name="set_animate_out">Set animate out</string>
+
   <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
   <string name="header_10">Hey there#</string>
   <string name="header_20">Hey hey from Appboy#</string>
   <string name="header_30">Good morning from us @ Appboy#</string>
-  <string name="header_40">Hello from Appboy! Have a fun day today#</string>
+  <string name="header_80">Hello from Appboy! Have a fun day okay. Hello from Appboy! Have a fun day today#</string>
+  <string name="message_20">Hey hey from Appboy#</string>
   <string name="message_40">Hello there!  This is an in-app message#</string>
+  <string name="message_70">Hello there! This is an in-app message. Yo, this is an in-app message#</string>
   <string name="message_90">Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#</string>
   <string name="message_140">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly one hundred and forty chars#</string>
   <string name="message_240">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly two hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens#</string>
@@ -144,6 +155,12 @@
   <string name="custom_news_feed_card_click_action_listener_summary">toggles the use of CustomNewsFeedClickActionListener</string>
 
   <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
+  <string name="appboy_image_url_1600w_1000h">https://www.dropbox.com/s/uarvtlcrpro6dpy/wow1600x1000.png?dl=1</string>
+  <string name="appboy_image_url_1000w_1000h">https://www.dropbox.com/s/vp8xic22wuo20c9/wow1000x1000.png?dl=1</string>
+  <string name="appboy_image_url_1000w_800h">https://www.dropbox.com/s/rnfxchj8zn6vf2b/wow1000x800.png?dl=1</string>
+  <string name="appboy_image_url_1000w_1600h">https://www.dropbox.com/s/04sh1u47vf02ayt/wow1000x1600.png?dl=1</string>
+  <string name="appboy_image_url_1600w_500h">https://www.dropbox.com/s/baam4syqx4ig42z/wow1600x500.png?dl=1</string>
+  <string name="appboy_image_url_1160w_400h">https://www.dropbox.com/s/r3uj7t7qx6jgzyy/wow1160x400.png?dl=1</string>
   <string name="appboy_image_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/569934e8bf5cea1409000027/639cf60262df21a9d190c659e2fc36823fa2dc94/original.?1452881133</string>
   <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
   <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>

@@ -2,15 +2,18 @@ package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
+import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
-import com.appboy.managers.InAppMessageManagerStateListener;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageHtmlFull;
@@ -94,6 +97,7 @@ public final class AppboyInAppMessageManager {
   private IInAppMessage mCarryoverInAppMessage;
   private AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
   private Context mApplicationContext;
+  private Integer mOriginalOrientation;
 
   // view listeners
   private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new AppboyInAppMessageWebViewClientListener();
@@ -152,7 +156,7 @@ public final class AppboyInAppMessageManager {
     if (mCarryoverInAppMessage != null) {
       AppboyLogger.d(TAG, "Displaying carryover in-app message.");
       mCarryoverInAppMessage.setAnimateIn(false);
-      displayInAppMessage(mCarryoverInAppMessage);
+      displayInAppMessage(mCarryoverInAppMessage, true);
       mCarryoverInAppMessage = null;
     }
 
@@ -160,7 +164,6 @@ public final class AppboyInAppMessageManager {
     // which listens to new in-app messages, adds it to the stack, and displays it if it can.
     mInAppMessageEventSubscriber = createInAppMessageEventSubscriber();
     Appboy.getInstance(activity).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
-    InAppMessageManagerStateListener.getInstance().notifyInAppMessageManagerRegistered(mApplicationContext);
   }
 
   /**
@@ -188,7 +191,6 @@ public final class AppboyInAppMessageManager {
       mCarryoverInAppMessage = null;
     }
 
-    InAppMessageManagerStateListener.getInstance().notifyInAppMessageManagerUnregistered(mApplicationContext);
     // In-app message subscriptions are per Activity, so we must remove the subscriber when the host app
     // unregisters the in-app message manager.
     Appboy.getInstance(activity).removeSingleSubscription(mInAppMessageEventSubscriber, InAppMessageEvent.class);
@@ -260,7 +262,9 @@ public final class AppboyInAppMessageManager {
   public boolean requestDisplayInAppMessage() {
     try {
       if (mActivity == null) {
-        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Doing nothing.");
+        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Registering in-app message as carry-over "
+                + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
+        mCarryoverInAppMessage = mInAppMessageStack.pop();
         return false;
       }
       if (mDisplayingInAppMessage.get()) {
@@ -295,8 +299,9 @@ public final class AppboyInAppMessageManager {
               + "implementation.");
           return false;
       }
-      // Asynchronously display the in-app message.
-      mActivity.runOnUiThread(new Runnable() {
+
+      Handler mainLooperHandler = new Handler(mApplicationContext.getMainLooper());
+      mainLooperHandler.post(new Runnable() {
         @Override
         public void run() {
           new AppboyAsyncInAppMessageDisplayer().execute(inAppMessage);
@@ -312,29 +317,55 @@ public final class AppboyInAppMessageManager {
   /**
    * Hides any currently displaying in-app message.
    *
-   * @param animate   whether to animate the message out of view
-   * @param dismissed whether the message was dismissed by the user
-   */
-  public void hideCurrentInAppMessage(boolean animate, boolean dismissed) {
-    IInAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
-    if (inAppMessageWrapperView != null && dismissed) {
-      mInAppMessageViewLifecycleListener.onDismissed(inAppMessageWrapperView.getInAppMessageView(),
-          inAppMessageWrapperView.getInAppMessage());
-    }
-    hideCurrentInAppMessage(animate);
-  }
-
-  /**
-   * Hides any currently displaying in-app message.
+   * @deprecated Use {@link #hideCurrentlyDisplayingInAppMessage(boolean)}
    *
-   * @param animate whether to animate the message out of view
+   * @param animate   whether to animate the message out of view. Note that in-app message animation
+   *                  is configurable on the in-app message model itself and should be configured
+   *                  there instead.
+   * @param dismissed whether the message was dismissed by the user. If dismissed is true,
+   *                  IInAppMessageViewLifecycleListener.onDismissed() will be called on the current
+   *                  IInAppMessageViewLifecycleListener.
    */
-  public void hideCurrentInAppMessage(boolean animate) {
+  @Deprecated
+  public void hideCurrentInAppMessage(boolean animate, boolean dismissed) {
     IInAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
     if (inAppMessageWrapperView != null) {
       IInAppMessage inAppMessage = inAppMessageWrapperView.getInAppMessage();
       if (inAppMessage != null) {
         inAppMessage.setAnimateOut(animate);
+      }
+      hideCurrentlyDisplayingInAppMessage(dismissed);
+    }
+  }
+
+  /**
+   * Hides any currently displaying in-app message.
+   *
+   * @deprecated Use {@link #hideCurrentlyDisplayingInAppMessage(boolean)}
+   *
+   * @param animate whether to animate the message out of view. Note that in-app message animation
+   *                  is configurable on the in-app message model itself and should be configured
+   *                  there instead.
+   */
+  @Deprecated
+  public void hideCurrentInAppMessage(boolean animate) {
+    hideCurrentInAppMessage(animate, false);
+  }
+
+  /**
+   * Hides any currently displaying in-app message. Note that in-app message animation
+   * is configurable on the in-app message model itself and should be configured there.
+   *
+   * @param dismissed whether the message was dismissed by the user. If dismissed is true,
+   *                  IInAppMessageViewLifecycleListener.onDismissed() will be called on the current
+   *                  IInAppMessageViewLifecycleListener.
+   */
+  public void hideCurrentlyDisplayingInAppMessage(boolean dismissed) {
+    IInAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
+    if (inAppMessageWrapperView != null) {
+      if (dismissed) {
+        mInAppMessageViewLifecycleListener.onDismissed(inAppMessageWrapperView.getInAppMessageView(),
+            inAppMessageWrapperView.getInAppMessage());
       }
       inAppMessageWrapperView.close();
     }
@@ -357,9 +388,18 @@ public final class AppboyInAppMessageManager {
     return mActivity;
   }
 
+  public Context getApplicationContext() {
+    return mApplicationContext;
+  }
+
   public void resetAfterInAppMessageClose() {
     mInAppMessageViewWrapper = null;
     mDisplayingInAppMessage.set(false);
+    if (mActivity != null && mOriginalOrientation != null) {
+      mActivity.setRequestedOrientation(mOriginalOrientation);
+      AppboyLogger.d(TAG, "Setting requested orientation to original orientation " + mOriginalOrientation);
+      mOriginalOrientation = null;
+    }
   }
 
   private IInAppMessageAnimationFactory getInAppMessageAnimationFactory() {
@@ -382,7 +422,7 @@ public final class AppboyInAppMessageManager {
     }
   }
 
-  boolean displayInAppMessage(IInAppMessage inAppMessage) {
+  boolean displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
     // Note:  for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
     // of this try/catch when we know whether we are successfully displaying the IAM or not.
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
@@ -393,13 +433,31 @@ public final class AppboyInAppMessageManager {
 
     try {
       if (mActivity == null) {
-        throw new Exception("No activity is currently registered to receive in-app messages. Doing nothing.");
+        mCarryoverInAppMessage = inAppMessage;
+        throw new Exception("No activity is currently registered to receive in-app messages. Registering in-app message as carry-over "
+            + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
+      }
+      if (!isCarryOver) {
+        long inAppMessageExpirationTimestamp = inAppMessage.getExpirationTimestamp();
+        if (inAppMessageExpirationTimestamp > 0) {
+          long currentTimeMillis = System.currentTimeMillis();
+          if (currentTimeMillis > inAppMessageExpirationTimestamp) {
+            throw new Exception(String.format("In-app message is expired. Doing nothing. Expiration: $%d. Current time: %d",
+                inAppMessageExpirationTimestamp, currentTimeMillis));
+          }
+        } else {
+          AppboyLogger.d(TAG, "Expiration timestamp not defined. Continuing.");
+        }
+      } else {
+        AppboyLogger.d(TAG, "Not checking expiration status for carry-over in-app message.");
+      }
+      if (!verifyOrientationStatus(inAppMessage)) {
+        throw new Exception("Current orientation did not match specified orientation for in-app message. Doing nothing.");
       }
       IInAppMessageViewFactory inAppMessageViewFactory = getInAppMessageViewFactory(inAppMessage);
       if (inAppMessageViewFactory == null) {
         throw new Exception("ViewFactory from getInAppMessageViewFactory was null.");
       }
-
       final View inAppMessageView = inAppMessageViewFactory.createInAppMessageView(mActivity, inAppMessage);
 
       if (inAppMessageView == null) {
@@ -435,9 +493,63 @@ public final class AppboyInAppMessageManager {
       mInAppMessageViewWrapper.open(mActivity);
       return true;
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error running displayInAppMessage", e);
-      mInAppMessageViewWrapper = null;
-      mDisplayingInAppMessage.set(false);
+      AppboyLogger.e(TAG, "Could not display in-app message", e);
+      resetAfterInAppMessageClose();
+      return false;
+    }
+  }
+
+  /**
+   *
+   * For in-app messages that have a preferred orientation, locks the screen orientation and
+   * returns true if the screen is currently in the preferred orientation.  If the screen is not
+   * currently in the preferred orientation, returns false.
+   *
+   * Always returns true for tablets, regardless of current orientation.
+   *
+   * Always returns true if the in-app message doesn't have a preferred orientation.
+   *
+   * @param inAppMessage
+   * @return
+   */
+  boolean verifyOrientationStatus(IInAppMessage inAppMessage) {
+    if (ViewUtils.isRunningOnTablet(mActivity)) {
+      AppboyLogger.d(TAG, "Running on tablet. In-app message can be displayed in any orientation.");
+      return true;
+    }
+    Orientation preferredOrientation = inAppMessage.getOrientation();
+    if (preferredOrientation == null) {
+      AppboyLogger.d(TAG, "No orientation specified. In-app message can be displayed in any orientation.");
+      return true;
+    }
+    if (preferredOrientation == Orientation.ANY) {
+      AppboyLogger.d(TAG, "Any orientation specified. In-app message can be displayed in any orientation.");
+      return true;
+    }
+    int currentScreenOrientation = mActivity.getResources().getConfiguration().orientation;
+    if (currentOrientationIsValid(currentScreenOrientation, preferredOrientation)) {
+      if (mOriginalOrientation == null) {
+        AppboyLogger.d(TAG, "Requesting orientation lock.");
+        mOriginalOrientation = mActivity.getRequestedOrientation();
+        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private boolean currentOrientationIsValid(int currentScreenOrientation, Orientation preferredOrientation) {
+    if (currentScreenOrientation == Configuration.ORIENTATION_LANDSCAPE
+        && preferredOrientation == Orientation.LANDSCAPE) {
+      AppboyLogger.d(TAG, "Current and preferred orientation are landscape.");
+      return true;
+    } else if (currentScreenOrientation == Configuration.ORIENTATION_PORTRAIT
+        && preferredOrientation == Orientation.PORTRAIT) {
+      AppboyLogger.d(TAG, "Current and preferred orientation are portrait.");
+      return true;
+    } else {
+      AppboyLogger.d(TAG, String.format("Current orientation %d and preferred orientation %s don't match",
+          currentScreenOrientation, preferredOrientation));
       return false;
     }
   }

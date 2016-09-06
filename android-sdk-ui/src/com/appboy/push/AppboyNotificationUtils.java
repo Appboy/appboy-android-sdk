@@ -6,6 +6,7 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
@@ -28,6 +31,7 @@ import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.PermissionUtils;
+import com.appboy.support.StringUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,15 +71,65 @@ public class AppboyNotificationUtils {
    * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
    *
    * @param context
-   * @param intent  the internal notification clicked intent constructed in
-   *                {@link #setContentIntentIfPresent}
+   * @param intent the internal notification clicked intent constructed in
+   *               {@link #setContentIntentIfPresent}
    */
   public static void handleNotificationOpened(Context context, Intent intent) {
     try {
       logNotificationOpened(context, intent);
       sendNotificationOpenedBroadcast(context, intent);
+      XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
+      if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+        routeUserWithNotificationOpenedIntent(context, intent);
+      }
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Exception occurred attempting to handle notification.", e);
+    }
+  }
+
+  /**
+   * Opens any available deep links with an Intent.ACTION_VIEW intent, placing the main activity
+   * on the back stack. If no deep link is available, opens the main activity.
+   *
+   * @param context
+   * @param intent the internal notification clicked intent constructed in
+   *                {@link #setContentIntentIfPresent}
+   */
+  public static void routeUserWithNotificationOpenedIntent(Context context, Intent intent) {
+    // get extras bundle.
+    Bundle extras = intent.getBundleExtra(Constants.APPBOY_PUSH_EXTRAS_KEY);
+    if (extras == null) {
+      extras = new Bundle();
+    }
+    extras.putString(AppboyGcmReceiver.CAMPAIGN_ID_KEY, intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY));
+    extras.putString(SOURCE_KEY, Constants.APPBOY);
+
+    // get main activity intent.
+    Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    if (extras != null) {
+      startActivityIntent.putExtras(extras);
+    }
+
+    // If a deep link exists, start an ACTION_VIEW intent pointing at the deep link.
+    // The intent returned from getStartActivityIntent() is placed on the back stack.
+    // Otherwise, start the intent defined in getStartActivityIntent().
+    String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
+    if (!StringUtils.isNullOrBlank(deepLink)) {
+      Log.d(TAG, String.format("Found a deep link %s.", deepLink));
+      Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
+          .putExtras(extras);
+      TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+      stackBuilder.addNextIntent(startActivityIntent);
+      stackBuilder.addNextIntent(uriIntent);
+      try {
+        stackBuilder.startActivities(extras);
+      } catch (ActivityNotFoundException e) {
+        Log.w(TAG, String.format("Could not find appropriate activity to open for deep link %s.", deepLink));
+      }
+    } else {
+      Log.d(TAG, "Push notification had no deep link. Opening main activity.");
+      context.startActivity(startActivityIntent);
     }
   }
 

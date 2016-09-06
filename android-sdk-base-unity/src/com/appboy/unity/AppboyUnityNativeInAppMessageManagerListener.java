@@ -93,7 +93,7 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
       finishOverlayActivity();
       return;
     }
-    AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true, false);
+    AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false);
     AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(mOverlayActivity);
     if (mContainerActivity != null) {
       AppboyInAppMessageManager.getInstance().registerInAppMessageManager(mContainerActivity);

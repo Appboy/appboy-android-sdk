@@ -101,16 +101,11 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         admExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
         XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
 
-        Notification notification = null;
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
-        try {
-          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
-        } catch (Exception e) {
-          AppboyLogger.e(TAG, "Failed to create notification.", e);
-          return false;
-        }
+        Notification notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
 
         if (notification == null) {
+          AppboyLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
           return false;
         }
 
@@ -139,18 +134,22 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
    * notification, which cannot be downloaded on the main thread.
    */
   public class HandleAppboyAdmMessageTask extends AsyncTask<Void, Void, Void> {
-    private final Context context;
-    private final Intent intent;
+    private final Context mContext;
+    private final Intent mIntent;
 
     public HandleAppboyAdmMessageTask(Context context, Intent intent) {
-      this.context = context;
-      this.intent = intent;
-      this.execute();
+      mContext = context;
+      mIntent = intent;
+      execute();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-      handleAppboyAdmMessage(this.context, this.intent);
+      try {
+        handleAppboyAdmMessage(mContext, mIntent);
+      } catch (Exception e) {
+        AppboyLogger.e(TAG, "Failed to create and display notification.", e);
+      }
       return null;
     }
   }

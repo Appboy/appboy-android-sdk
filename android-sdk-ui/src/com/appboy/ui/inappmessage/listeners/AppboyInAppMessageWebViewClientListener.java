@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
-import com.appboy.models.InAppMessageHtmlFull;
+import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
@@ -26,7 +26,7 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
     logHtmlInAppMessageClick(inAppMessage, queryBundle);
 
-    getInAppMessageManager().hideCurrentInAppMessage(true, true);
+    getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
 
     getInAppMessageManager().getHtmlInAppMessageActionListener().onCloseClicked(inAppMessage, url, queryBundle);
   }
@@ -43,7 +43,8 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
     boolean handled = getInAppMessageManager().getHtmlInAppMessageActionListener().onNewsfeedClicked(inAppMessage, url, queryBundle);
     if (!handled) {
-      getInAppMessageManager().hideCurrentInAppMessage(false);
+      inAppMessage.setAnimateOut(false);
+      getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
       Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
       inAppMessageBundle.putAll(queryBundle);
       getInAppMessageManager().getAppboyNavigator().gotoNewsFeed(getInAppMessageManager().getActivity(), inAppMessageBundle);
@@ -81,7 +82,8 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
     boolean handled = getInAppMessageManager().getHtmlInAppMessageActionListener().onOtherUrlAction(inAppMessage, url, queryBundle);
     if (!handled) {
-      getInAppMessageManager().hideCurrentInAppMessage(false);
+      inAppMessage.setAnimateOut(false);
+      getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
       boolean doExternalOpen = false;
       if (queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN)) {
         doExternalOpen = Boolean.parseBoolean(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN));
@@ -109,8 +111,8 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
   private void logHtmlInAppMessageClick(IInAppMessage inAppMessage, Bundle queryBundle) {
     if (queryBundle != null && queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_BUTTON_ID)) {
-      InAppMessageHtmlFull inAppMessageHtmlFull = (InAppMessageHtmlFull) inAppMessage;
-      inAppMessageHtmlFull.logButtonClick(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_BUTTON_ID));
+      IInAppMessageHtml inAppMessageHtml = (IInAppMessageHtml) inAppMessage;
+      inAppMessageHtml.logButtonClick(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_BUTTON_ID));
     } else {
       inAppMessage.logClick();
     }

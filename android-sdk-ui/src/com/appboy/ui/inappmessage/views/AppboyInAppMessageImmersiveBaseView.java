@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.MessageButton;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
@@ -42,6 +43,14 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
     getMessageHeaderTextView().setText(text);
   }
 
+  public void setMessageHeaderTextAlignment(TextAlign textAlign) {
+    InAppMessageViewUtils.setTextAlignment(getMessageHeaderTextView(), textAlign);
+  }
+
+  public void setFrameColor(Integer color) {
+    InAppMessageViewUtils.setFrameColor(getFrameView(), color);
+  }
+
   public void resetMessageMargins() {
     boolean successful = false;
     if (getMessageImageView() != null && getMessageImageView().getDrawable() != null) {
@@ -51,6 +60,7 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
     resetMessageMargins(successful);
   }
 
+  @Override
   public void resetMessageMargins(boolean imageRetrievalSuccessful) {
     super.resetMessageMargins(imageRetrievalSuccessful);
     if (StringUtils.isNullOrBlank(getMessageTextView().getText().toString())) {
@@ -61,6 +71,8 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
     }
     InAppMessageViewUtils.resetMessageMarginsIfNecessary(getMessageTextView(), getMessageHeaderTextView());
   }
+
+  public abstract View getFrameView();
 
   public abstract View getMessageButtonsView();
 

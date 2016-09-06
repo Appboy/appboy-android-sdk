@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_boolean_options">
+    <item>Not Set</item>
+    <item>True</item>
+    <item>False</item>
+  </string-array>
+  <string-array name="inapp_boolean_values">
+    <item>@string/not_set</item>
+    <item>true</item>
+    <item>false</item>
+  </string-array>
+</resources>
