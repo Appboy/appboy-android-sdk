@@ -3,7 +3,6 @@ com.appboy.configuration
 com.appboy.enums
 com.appboy.enums.inappmessage
 com.appboy.events
-com.appboy.managers
 com.appboy.models
 com.appboy.models.cards
 com.appboy.models.outgoing
@@ -18,6 +17,7 @@ com.appboy.ui.configuration
 com.appboy.ui.feed
 com.appboy.ui.feed.listeners
 com.appboy.ui.inappmessage
+com.appboy.ui.inappmessage.config
 com.appboy.ui.inappmessage.factories
 com.appboy.ui.inappmessage.listeners
 com.appboy.ui.inappmessage.views
