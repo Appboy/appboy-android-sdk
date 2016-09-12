@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <style name="Theme.DroidBoy" parent="@android:style/Theme"/>
-  <style name="Theme.Feedback" parent="@android:style/Theme"/>
-  <style name="Theme.Feed" parent="@android:style/Theme"/>
-  <style name="Theme.Preferences" parent="@android:style/Theme">
-    <item name="android:textColor">@android:color/white</item>
-  </style>
-</resources>

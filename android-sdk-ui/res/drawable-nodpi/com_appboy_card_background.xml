@@ -23,7 +23,7 @@
   <!-- Background -->
   <item>
     <shape>
-      <solid android:color="@android:color/white"/>
+      <solid android:color="@color/com_appboy_card_background"/>
       <corners android:radius="@dimen/com_appboy_card_background_corner_radius"/>
     </shape>
   </item>

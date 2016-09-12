@@ -62,14 +62,14 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
     boolean respectAspectRatio = false;
-    if (card.getAspectRatio() != 0f){
+    if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();
       respectAspectRatio = true;
     }
 
     setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         handleCardClick(mContext, card, mCardAction, TAG);
       }
     });

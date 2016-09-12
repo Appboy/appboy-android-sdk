@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.appboy.chinapush" android:versionCode="1" android:versionName="1.11.0">
+          package="com.appboy.chinapush" android:versionCode="1" android:versionName="1.15.0">
 
   <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19"/>
   <uses-permission android:name="android.permission.INTERNET" />
@@ -13,12 +13,17 @@
   <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.appboy.chinapush" />
+  <!-- 适配Android N系统必需的ContentProvider写权限声明，写权限包含应用包名-->
+  <permission
+      android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.appboy.chinapush"
+      android:protectionLevel="normal">
+  </permission>
 
   <application
     android:icon="@drawable/ic_launcher_china_push"
     android:allowBackup="true"
-    android:label="@string/app_name"
-    android:name=".ChinaPushApplication">
+    android:label="@string/app_name">
     <activity
       android:name=".ChinaPushActivity"
       android:launchMode="singleTask"
@@ -70,6 +75,15 @@
         <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE"/>
       </intent-filter>
     </service>
+    <service
+        android:name="com.baidu.android.pushservice.CommandService"
+        android:exported="true" />
+    <!-- 适配Android N系统必需的ContentProvider声明，写权限包含应用包名-->
+    <provider
+        android:name="com.baidu.android.pushservice.PushInfoProvider"
+        android:authorities="com.appboy.chinapush.bdpush"
+        android:writePermission="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.appboy.chinapush"
+        android:exported="true" />
     <!-- 在百度开发者中心查询应用的API Key -->
 <meta-data android:name="api_key" android:value="YOUR-BAIDU-API-KEY-HERE" />
   </application>

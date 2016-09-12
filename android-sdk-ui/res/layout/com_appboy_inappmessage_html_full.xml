@@ -5,7 +5,7 @@
     android:orientation="vertical"
     style="@style/Appboy.InAppMessage.Html">
 
-    <WebView
+    <com.appboy.ui.inappmessage.views.AppboyInAppMessageWebView
         android:id="@+id/com_appboy_inappmessage_html_full_webview"
         style="@style/Appboy.InAppMessage.Html.Webview"/>
 </com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlFullView>

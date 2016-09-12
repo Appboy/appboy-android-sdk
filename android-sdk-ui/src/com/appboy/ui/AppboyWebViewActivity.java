@@ -68,9 +68,9 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
       public void onDownloadStart(String url, String userAgent,
                                   String contentDisposition, String mimetype,
                                   long contentLength) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
       }
     });
 
@@ -84,7 +84,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
           // If the Uri scheme is not supported by a web action (i.e. if it's not a web url),
           // allow the system to try to open the uri first.  This allows the system to handle,
           // for example, redirects to the play store via a "store://" Uri.
-          if(!WebAction.getSupportedSchemes().contains(Uri.parse(url).getScheme())) {
+          if (!WebAction.getSupportedSchemes().contains(Uri.parse(url).getScheme())) {
             IAction action = ActionFactory.createViewUriAction(url, getIntent().getExtras());
             action.execute(view.getContext());
 
@@ -93,8 +93,8 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
             return true;
           }
         } catch (Exception e) {
-          AppboyLogger.i(TAG, String.format("Unexpected exception while processing url %s. " +
-              "Passing url back to WebView.", url), e);
+          AppboyLogger.i(TAG, String.format("Unexpected exception while processing url %s. "
+              + "Passing url back to WebView.", url), e);
         }
         return super.shouldOverrideUrlLoading(view, url);
       }
@@ -117,7 +117,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
 
   @TargetApi(11)
   private void setWebLayerTypeSafe(WebView webView) {
-    if (Build.VERSION.SDK_INT >= 11) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
   }

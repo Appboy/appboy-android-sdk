@@ -1,21 +1,25 @@
 package com.appboy.ui;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import com.appboy.support.AppboyLogger;
+
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
+import com.appboy.support.AppboyLogger;
+import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.ActivityAction;
-import com.appboy.ui.actions.WebAction;
+import com.appboy.ui.actions.IAction;
 import com.appboy.ui.activities.AppboyFeedActivity;
 
 public class AppboyNavigator implements IAppboyNavigator {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNavigator.class.getName());
 
+  @SuppressLint("WrongConstant")
   @Override
   public void gotoNewsFeed(Context context, Bundle extras) {
     // Checks to see if the AppboyFeedActivity is registered in the manifest. If it is, we can
@@ -27,8 +31,8 @@ public class AppboyNavigator implements IAppboyNavigator {
       ActivityAction activityAction = new ActivityAction(intent);
       activityAction.execute(context);
     } catch (PackageManager.NameNotFoundException e) {
-      AppboyLogger.d(TAG, "The AppboyFeedActivity is not registered in the manifest. Ignoring request " +
-          "to display the news feed.");
+      AppboyLogger.d(TAG, "The AppboyFeedActivity is not registered in the manifest. Ignoring request "
+          + "to display the news feed.");
     }
   }
 
@@ -38,7 +42,7 @@ public class AppboyNavigator implements IAppboyNavigator {
       AppboyLogger.e(TAG, "IAppboyNavigator cannot open URI because the URI is null.");
       return;
     }
-    WebAction webAction = new WebAction(uri.toString());
-    webAction.execute(context);
+    IAction action = ActionFactory.createUriAction(context, uri.toString(), extras);
+    action.execute(context);
   }
 }

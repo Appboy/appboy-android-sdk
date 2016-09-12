@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="push_image_options">
-    <item>Image: None</item>
-    <item>Image: Normal</item>
-    <item>Image: Taller Than Wide</item>
+    <item>Image: Not Set</item>
+    <item>Image: Appboy</item>
+    <item>Image: s3</item>
+    <item>Image: Blue</item>
   </string-array>
   <string-array name="push_image_values">
     <item></item>
-    <item>https://blog.appboy.com/wp-content/uploads/2014/08/Appboy-News-Banner_4.png</item>
-    <item>https://www.appboy.com/assets/index/carousel-phone-77dedc6be0397f136d8482db2f6c01f1a80f7a46d57a6a1e1f1f7a82886be2d9.png</item>
+    <item>@string/appboy_image_url</item>
+    <item>@string/appboy_image_url_s3</item>
+    <item>@string/blue_url</item>
   </string-array>
 </resources>

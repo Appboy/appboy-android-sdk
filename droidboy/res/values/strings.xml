@@ -2,21 +2,15 @@
 <resources>
   <string name="app_name">@string/droid_boy</string>
   <string name="droid_boy">DroidBoy</string>
-  <string name="droid_girl">DroidGirl</string>
 
-  <string name="feed">News</string>
+  <string name="feed">News Feed</string>
   <string name="settings">Settings</string>
-  <string name="send_feedback">Send Feedback</string>
-
-  <string name="social_preferences_title">Social</string>
-  <string name="engagement_title">Engagement</string>
   <string name="network_control_title">Network Controls</string>
   <string name="session_title">Sessions</string>
   <string name="location_title">Location</string>
   <string name="about_title">About</string>
 
-  <string name="user_dialog_title">Sign up</string>
-  <string name="user_dialog_summary">Receive the latest DroidBoy news and updates!</string>
+  <string name="user_dialog_title">Default Attributes</string>
   <string name="user_dialog_okay">OK</string>
   <string name="user_dialog_cancel">Cancel</string>
 
@@ -28,10 +22,15 @@
   <string name="user_dialog_flush">Flush on close</string>
   <string name="user_dialog_populate">Populate</string>
   <string name="user_dialog_clear">Clear All</string>
+  <string name="user_dialog_birthday_button">Pick Birthday</string>
 
   <string name="male">Male</string>
   <string name="female">Female</string>
   <string name="unspecified">Unspecified</string>
+
+  <string name="subscribed">Subscribed</string>
+  <string name="opted_in">Opted-In</string>
+  <string name="unsubscribed">Unsubscribed</string>
 
   <string name="facebook_share_title">Facebook</string>
   <string name="facebook_share_summary">Share us on Facebook</string>
@@ -46,6 +45,17 @@
   <string name="custom_logging_dialog_okay">OK</string>
   <string name="custom_logging_dialog_cancel">Cancel</string>
 
+  <string name="custom_logging_category_title">Custom Logging</string>
+  <string name="log_user_attributes_title">Custom Attributes</string>
+  <string name="log_events_title">Custom Events</string>
+  <string name="log_purchase_title">Purchases</string>
+
+  <string name="storage_info_preference_category">Storage Info</string>
+  <string name="file_data_title">File Data</string>
+  <string name="file_data_summary">View the files stored for this app.</string>
+  <string name="shared_preferences_title">SharedPreferences Data</string>
+  <string name="shared_preferences_summary">View the SharedPreferences data for this app.</string>
+
   <string name="attribute_array">Array Operation:</string>
   <string name="attribute_array_set">Set</string>
   <string name="attribute_array_add">Add</string>
@@ -55,24 +65,14 @@
   <string name="custom_logging_user_attribute">User Attribute</string>
   <string name="custom_logging_user_attribute_increment">Increment Attribute</string>
   <string name="custom_logging_user_attribute_unset">Unset Attribute</string>
-  <string name="custom_logging_custom_event">Custom Event</string>
-  <string name="custom_logging_custom_event_property">Event Property</string>
-  <string name="custom_logging_custom_purchase">Custom Purchase</string>
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
   <string name="custom_logging_custom_purchase_currency_code">Currency Code</string>
-  <string name="custom_logging_custom_purchase_property">Purchase Property</string>
-
-  <string name="iab_log_purchase_title">Google IAB Purchase Flow</string>
-  <string name="iab_log_purchase_summary">IAB In-app purchase</string>
-  <string name="iab_log_purchase_toast">Thank you for your purchase!</string>
-  <string name="iab_log_purchase_sorry">Sorry, your device does not support Google IAB.</string>
+  <string name="custom_logging_custom_purchase_price_code">Price</string>
 
   <string name="data_flush_title">Request Flush</string>
-  <string name="data_flush_summary">Asks Appboy to immediately flush any data waiting to be sent to the server.</string>
   <string name="data_flush_toast">Data flush requested</string>
 
   <string name="requested_inappmessage_toast">Requested In-App Message</string>
-  <string name="about_summary">Appboy SDK version: %1$s</string>
   <string name="open_session_toast">Opened new Appboy session.</string>
   <string name="resume_session_toast">Resumed existing Appboy session.</string>
   <string name="close_session_toast">Closed existing Appboy session.</string>
@@ -93,15 +93,36 @@
   <string name="custom_iappboy_animation">Custom IInAppMessageAnimationFactory</string>
   <string name="custom_iinappmessagemanager_listener">Custom IInAppMessageManagerListener</string>
   <string name="custom_html_inappmessage_action_listener">Custom IHtmlInAppMessageActionListener</string>
+  <string name="custom_inappmessage_modal_size">Custom Max Graphic Modal Size</string>
+  <string name="custom_inappmessage_image_radius">Custom Image Radius (remove radius)</string>
   <string name="inappmessage_activity">In-App Messages</string>
   <string name="custom_iinappmessage_view_factory">Custom IInAppMessageViewFactory</string>
   <string name="push_testing">Push</string>
+  <string name="set_header_align">Set header align</string>
+  <string name="set_message_align">Set message align</string>
   <string name="set_background_color">Set background color</string>
   <string name="set_icon_color">Set icon color</string>
   <string name="set_icon_background_color">Set icon background color</string>
   <string name="set_close_button_color">Set close button color</string>
   <string name="set_text_color">Set text color</string>
   <string name="set_header_text_color">Set header text color</string>
+  <string name="set_button_color">Set button color</string>
+  <string name="set_button_text_color">Set button text color</string>
+  <string name="set_animate_in">Set animate in</string>
+  <string name="set_animate_out">Set animate out</string>
+
+  <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
+  <string name="header_10">Hey there#</string>
+  <string name="header_20">Hey hey from Appboy#</string>
+  <string name="header_30">Good morning from us @ Appboy#</string>
+  <string name="header_80">Hello from Appboy! Have a fun day okay. Hello from Appboy! Have a fun day today#</string>
+  <string name="message_20">Hey hey from Appboy#</string>
+  <string name="message_40">Hello there!  This is an in-app message#</string>
+  <string name="message_70">Hello there! This is an in-app message. Yo, this is an in-app message#</string>
+  <string name="message_90">Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#</string>
+  <string name="message_140">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly one hundred and forty chars#</string>
+  <string name="message_240">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly two hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens#</string>
+  <string name="message_640">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#</string>
 
   <string name="test_push">Send Push</string>
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
@@ -112,28 +133,53 @@
   <string name="push_tester_public_version_label">Set Public Version Notification</string>
   <string name="push_tester_wear_hide_app_icon_label">Wear: Hide App Icon</string>
   <string name="push_tester_wear_add_extra_pages">Wear: Add Extra Pages</string>
+  <string name="push_tester_test_triggers">Force request triggers on click</string>
 
   <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
   <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>
+  <string name="push_preference_category">Push</string>
   <string name="misc_preference_category">Misc</string>
   <string name="disable_appboy_logging_title">Toggle Appboy Logging</string>
   <string name="disable_appboy_logging_summary">Toggle Appboy Logging.  This does not persist through app runs.</string>
   <string name="get_registration_id_title">Get Push Registration Id</string>
+  <string name="set_email_subscription_state_title">Set Email Subscription State</string>
+  <string name="set_push_subscription_state_title">Set Push Subscription State</string>
+  <string name="sort_feed">Sort News Feed</string>
+  <string name="custom_news_feed_card_click_action_listener">Custom INewsFeedClickActionListener</string>
   <string name="get_registration_id_summary">Retrieve the Registration Id used for push on this device.</string>
+  <string name="set_push_subscription_state_summary">Subscribe, opt-in, or opt-out for push.</string>
+  <string name="set_email_subscription_state_summary">Subscribe, opt-in, or opt-out for email.</string>
   <string name="log_attribution_title">Log Attribution For User</string>
   <string name="log_attribution_summary">Log Creative, AdGroup, Network, and Campaign.</string>
+  <string name="sort_feed_summary">Sort the News Feed Cards to Prefer to Display Unread Cards</string>
+  <string name="custom_news_feed_card_click_action_listener_summary">toggles the use of CustomNewsFeedClickActionListener</string>
 
   <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
+  <string name="appboy_image_url_1600w_1000h">https://www.dropbox.com/s/uarvtlcrpro6dpy/wow1600x1000.png?dl=1</string>
+  <string name="appboy_image_url_1000w_1000h">https://www.dropbox.com/s/vp8xic22wuo20c9/wow1000x1000.png?dl=1</string>
+  <string name="appboy_image_url_1000w_800h">https://www.dropbox.com/s/rnfxchj8zn6vf2b/wow1000x800.png?dl=1</string>
+  <string name="appboy_image_url_1000w_1600h">https://www.dropbox.com/s/04sh1u47vf02ayt/wow1000x1600.png?dl=1</string>
+  <string name="appboy_image_url_1600w_500h">https://www.dropbox.com/s/baam4syqx4ig42z/wow1600x500.png?dl=1</string>
+  <string name="appboy_image_url_1160w_400h">https://www.dropbox.com/s/r3uj7t7qx6jgzyy/wow1160x400.png?dl=1</string>
+  <string name="appboy_image_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/569934e8bf5cea1409000027/639cf60262df21a9d190c659e2fc36823fa2dc94/original.?1452881133</string>
   <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
   <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>
   <string name="appboy_siege_gif_url">https://blog.appboy.com/wp-content/uploads/2015/03/BrowserPreview_tmp-1.gif</string>
+  <string name="appboy_gif_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/564cfde56461737ff4080000/0283e284156a896114fc231e918551b959e87a4e/original.?1452806650</string>
   <string name="appboy_homepage_url">http://www.appboy.com</string>
   <string name="google_url">http://www.google.com</string>
   <string name="droidboy_deep_link">droidboy://preferences</string>
+  <string name="droidboy_deep_link_https">https://www.droidboy.com/preferences</string>
+  <string name="youtube_https_link">https://www.youtube.com/watch?v=1PJCQTGbLq4</string>
   <string name="telephone_uri">tel:555555555</string>
+  <string name="html_assets_no_js_remote_url">https://www.dropbox.com/s/rvxloodgmnml2t2/html_iam_image.zip?dl=1</string>
+  <string name="html_assets_external_js_remote_url">https://www.dropbox.com/s/v1hhojkznz7so3s/html_iam_js.zip?dl=1</string>
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
+  <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</string>
+  <string name="youtube_regex">^(http\\:\\/\\/|https\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/(.+$|)</string>
 
   <string name="custom_font">doridrobot.ttf</string>
+  <string name="droidboy_close_button_text">close</string>
   <string name="droidboy_custom_action">droidboy_custom_action</string>
   <string name="droidboy_icon_name">ic_stat_notify_droidboy</string>
   <string name="close_icon_name">com_appboy_ic_close_white</string>
@@ -145,4 +191,14 @@
   <string name="share_icon_name">com_appboy_ic_share_white</string>
   <string name="exit_to_app_icon_name">com_appboy_ic_exit_to_app_white</string>
   <string name="world_icon_name">com_appboy_ic_language_white</string>
+  <string name="none">none</string>
+  <string name="not_set">not set</string>
+  <string name="custom_logging_name">Name</string>
+  <string name="current_log_level">Current Log Level</string>
+  <string name="log_level_dialog_title">Log Level</string>
+  <string name="log_level_pref_summary">Configure Logger Settings</string>
+  <string name="user_dialog_done">done</string>
+
+  <string name="shared_prefs_location">com.appboy.sample.sharedpreferences</string>
+  <string name="mock_appboy_network_requests">mock_appboy_network_requests</string>
 </resources>

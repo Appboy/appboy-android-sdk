@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.appboy.Appboy;
-import com.baidu.frontia.api.FrontiaPushMessageReceiver;
+import com.baidu.android.pushservice.PushMessageReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +16,7 @@ import java.util.List;
  * events for display in the app's message log.  We also register the Baidu user with Appboy when
  * the service binds and log notification clicks to Appboy when notifications are clicked.
  */
-public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
+public class ChinaPushMessageReceiver extends PushMessageReceiver {
   public static final String TAG = ChinaPushMessageReceiver.class.getSimpleName();
   public static final String NOTIFICATION_CLICKED_KEY = "notification_clicked";
   public static final String LOG_MESSAGE_KEY = "log_message";
@@ -39,7 +39,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
     String logMessage = String.format("onBind called with errorCode %d, appId %s, userId %s, channelId %s, requestId %s.",
         errorCode, appId, userId, channelId, requestId);
     Log.d(TAG, logMessage);
-    updateApplicationMessageLog(context, logMessage);
+    updateApplicationMessageLog(context, logMessage, true);
 
     // register user with Appboy
     Appboy.getInstance(context).registerAppboyPushMessages(userId);
@@ -56,7 +56,23 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
   public void onMessage(Context context, String message, String customContentString) {
     String logMessage = String.format("onMessage called with message %s, customContentString %s", message, customContentString);
     Log.d(TAG, logMessage);
-    updateApplicationMessageLog(context, logMessage);
+    updateApplicationMessageLog(context, logMessage, true);
+  }
+
+  /**
+   * Called when a notification arrives.
+   *
+   * @param context context in which the receiver is running.
+   * @param title the notification's title.
+   * @param message the notification's message content.
+   * @param customContentString notification extras.
+   */
+  @Override
+  public void onNotificationArrived(Context context, String title, String message, String customContentString) {
+    String logMessage = String.format("onNotificationArrived called with title %s, message %s, customContentString %s",
+        title, message, customContentString);
+    Log.d(TAG, logMessage);
+    updateApplicationMessageLog(context, logMessage, false);
   }
 
   /**
@@ -72,7 +88,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
     String logMessage = String.format("onNotificationClicked called with title %s, message %s, customContentString %s",
         title, message, customContentString);
     Log.d(TAG, logMessage);
-    updateApplicationMessageLog(context, logMessage);
+    updateApplicationMessageLog(context, logMessage, true);
 
     // log notification click with Appboy
     updateNotificationClicked(context, customContentString);
@@ -89,8 +105,8 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
   public void onUnbind(Context context, int errorCode, String requestId) {
     String logMessage = String.format("onUnbind called with errorCode %d, requestId %s", errorCode, requestId);
     Log.d(TAG, logMessage);
-    updateApplicationMessageLog(context, logMessage);
-  };
+    updateApplicationMessageLog(context, logMessage, true);
+  }
 
   /**
    * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
@@ -104,7 +120,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
    */
   @Override
   public void onSetTags(Context context, int errorCode,
-                        List<String> successTags, List<String> failTags, String requestId) {};
+                        List<String> successTags, List<String> failTags, String requestId) {}
 
   /**
    * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
@@ -117,7 +133,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
    * @param requestId identifier for the delete tags request.
    */
   @Override
-  public void onDelTags(Context context, int errorCode, List<String> successTags, List<String> failTags, String requestId){};
+  public void onDelTags(Context context, int errorCode, List<String> successTags, List<String> failTags, String requestId) {}
 
   /**
    * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
@@ -129,7 +145,7 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
    * @param requestId identifier for the list tags request.
    */
   @Override
-  public void onListTags(Context context, int errorCode, List<String> tags, String requestId){};
+  public void onListTags(Context context, int errorCode, List<String> tags, String requestId) {}
 
   /**
    * Creates a timestamped message to display to the user in the application's Baidu event message log
@@ -137,14 +153,17 @@ public class ChinaPushMessageReceiver extends FrontiaPushMessageReceiver {
    *
    * @param context context in which the receiver is running.
    * @param logMessage the message to log.
+   * @param startActivity whether to start the main activity
    */
-  private void updateApplicationMessageLog(Context context, String logMessage) {
+  private void updateApplicationMessageLog(Context context, String logMessage, boolean startActivity) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String currentTimeStamp = dateFormat.format(new Date());
     mApplicationMessageLog = mApplicationMessageLog + "\n" + currentTimeStamp + " " + logMessage;
-    Intent intent = getUpdateIntent(context);
-    intent.putExtra(LOG_MESSAGE_KEY, mApplicationMessageLog);
-    context.getApplicationContext().startActivity(intent);
+    if (startActivity) {
+      Intent intent = getUpdateIntent(context);
+      intent.putExtra(LOG_MESSAGE_KEY, mApplicationMessageLog);
+      context.getApplicationContext().startActivity(intent);
+    }
   }
 
   /**

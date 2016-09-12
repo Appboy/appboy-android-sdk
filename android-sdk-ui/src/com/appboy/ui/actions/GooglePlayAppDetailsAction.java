@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import com.appboy.support.AppboyLogger;
 
 import com.appboy.Constants;
 import com.appboy.enums.AppStore;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.AppboyWebViewActivity;
 
 /**

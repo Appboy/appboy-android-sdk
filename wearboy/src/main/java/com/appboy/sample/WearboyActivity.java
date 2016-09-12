@@ -40,8 +40,8 @@ public class WearboyActivity extends Activity implements View.OnClickListener {
   }
 
   @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
+  public void onClick(View view) {
+    switch (view.getId()) {
       case R.id.wearboy_increment_custom_attribute_button:
         mAppboyAdapter.incrementCustomUserAttribute("times pressed button");
         showToast("Incremented attribute");
@@ -58,7 +58,7 @@ public class WearboyActivity extends Activity implements View.OnClickListener {
         break;
 
       case R.id.wearboy_log_purchase_button:
-        mAppboyAdapter.logPurchase("product id here", "USD", new BigDecimal(3.50d));
+        mAppboyAdapter.logPurchase("product id here", "USD", new BigDecimal("3.50"));
         showToast("Logged purchase");
         break;
 
@@ -75,6 +75,9 @@ public class WearboyActivity extends Activity implements View.OnClickListener {
       case R.id.wearboy_set_screen_type_square_button:
         mAppboyAdapter.logWearScreenShape(WearScreenShape.SQUARE);
         showToast("Logged screen as square");
+        break;
+
+      default:
         break;
     }
   }

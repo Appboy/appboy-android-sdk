@@ -1,12 +1,13 @@
 buildscript {
   repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
   }
 
   dependencies {
-      classpath 'com.android.tools.build:gradle:1.0.0'
-      classpath 'com.github.dcendents:android-maven-plugin:1.2'
-      classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
+    classpath 'com.android.tools.build:gradle:2.1.2'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+    classpath 'com.github.JakeWharton:sdk-manager-plugin:0ce4cdf08009d79223850a59959d9d6e774d0f77'
   }
 }
 
@@ -17,12 +18,12 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '1.11.0'
+  version = '1.15.0'
 
   apply plugin: 'android-sdk-manager'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.
 task wrapper(type: Wrapper) {
-  gradleVersion = '2.2.1'
+  gradleVersion = '2.14.1'
 }

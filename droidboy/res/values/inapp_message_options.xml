@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string-array name="inapp_message_options">
-    <item>Message: Not Set</item>
-    <item>Message: 40 Chars</item>
-    <item>Message: 90 Chars</item>
-    <item>Message: 140 Chars</item>
-    <item>Message: 240 Chars</item>
-    <item>Message: 640 Chars</item>
-  </string-array>
-  <string-array name="inapp_message_values">
-    <item>not set</item>
-    <item>40</item>
-    <item>90</item>
-    <item>140</item>
-    <item>240</item>
-    <item>640</item>
-  </string-array>
+    <string-array name="inapp_message_options">
+        <item>Message: Not Set</item>
+        <item>Message: 20 Chars</item>
+        <item>Message: 40 Chars</item>
+        <item>Message: 70 Chars</item>
+        <item>Message: 90 Chars</item>
+        <item>Message: 140 Chars</item>
+        <item>Message: 240 Chars</item>
+        <item>Message: 640 Chars</item>
+    </string-array>
+    <string-array name="inapp_message_values">
+        <item>@string/not_set</item>
+        <item>@string/message_20</item>
+        <item>@string/message_40</item>
+        <item>@string/message_70</item>
+        <item>@string/message_90</item>
+        <item>@string/message_140</item>
+        <item>@string/message_240</item>
+        <item>@string/message_640</item>
+    </string-array>
 </resources>

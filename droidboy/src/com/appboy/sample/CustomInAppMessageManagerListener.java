@@ -5,9 +5,11 @@ import android.widget.Toast;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.MessageButton;
-import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
 import com.appboy.ui.inappmessage.InAppMessageOperation;
+import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
+
+import java.util.Map;
 
 public class CustomInAppMessageManagerListener implements IInAppMessageManagerListener {
   private final Activity mActivity;
@@ -38,7 +40,7 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
   @Override
   public boolean onInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
     Toast.makeText(mActivity, "The click was ignored.", Toast.LENGTH_LONG).show();
-    
+
     // Closing should not be animated if transitioning to a new activity.
     // If remaining in the same activity, closing should be animated.
     inAppMessageCloser.close(true);
@@ -63,6 +65,16 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
    */
   @Override
   public void onInAppMessageDismissed(IInAppMessage inAppMessage) {
-    Toast.makeText(mActivity, "The in-app message was dismissed.", Toast.LENGTH_LONG).show();
+    if (inAppMessage.getExtras() != null && !inAppMessage.getExtras().isEmpty()) {
+      Map<String, String> extras = inAppMessage.getExtras();
+      String keyValuePairs = "Dismissed IAM with extras payload containing [";
+      for (String key : extras.keySet()) {
+        keyValuePairs += " '" + key + " = " + extras.get(key) + "'";
+      }
+      keyValuePairs += "]";
+      Toast.makeText(mActivity, keyValuePairs, Toast.LENGTH_LONG).show();
+    } else {
+      Toast.makeText(mActivity, "The in-app message was dismissed.", Toast.LENGTH_LONG).show();
+    }
   }
 }

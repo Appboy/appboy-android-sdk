@@ -2,6 +2,7 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
@@ -9,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.appboy.enums.inappmessage.TextAlign;
+import com.appboy.models.IInAppMessage;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
+import com.appboy.ui.inappmessage.AppboyInAppMessageSimpleDraweeView;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.support.FrescoLibraryUtils;
-import com.appboy.ui.support.StringUtils;
 import com.appboy.ui.support.ViewUtils;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public abstract class AppboyInAppMessageBaseView extends RelativeLayout implements IInAppMessageView {
 
@@ -23,6 +26,15 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
   public AppboyInAppMessageBaseView(Context context, AttributeSet attrs) {
     super(context, attrs);
     mCanUseFresco = FrescoLibraryUtils.canUseFresco(context);
+    /**
+     * {@link android.graphics.Canvas#clipPath}, used in {@link AppboyInAppMessageSimpleDraweeView}
+     * and {@link AppboyInAppMessageImageView}, is not compatible with hardware acceleration.
+     *
+     * See http://android-developers.blogspot.com/2011/03/android-30-hardware-acceleration.html
+     */
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+      setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    }
   }
 
   public void setMessageBackgroundColor(int color) {
@@ -33,6 +45,10 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
     InAppMessageViewUtils.setTextViewColor(getMessageTextView(), color);
   }
 
+  public void setMessageTextAlign(TextAlign textAlign) {
+    InAppMessageViewUtils.setTextAlignment(getMessageTextView(), textAlign);
+  }
+
   public void setMessage(String text) {
     getMessageTextView().setText(text);
   }
@@ -41,12 +57,27 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
     InAppMessageViewUtils.setImage(bitmap, getMessageImageView());
   }
 
-  public void setMessageSimpleDrawee(String imageUrl) {
-    FrescoLibraryUtils.setDraweeControllerHelper((SimpleDraweeView) getMessageSimpleDraweeView(), imageUrl, 0f, false);
+  public void setMessageSimpleDrawee(IInAppMessage inAppMessage) {
+    FrescoLibraryUtils.setDraweeControllerHelper((AppboyInAppMessageSimpleDraweeView) getMessageSimpleDraweeView(), getAppropriateImageUrl(inAppMessage), 0f, false);
+  }
+
+  /**
+   * @param inAppMessage
+   * @return return the local image Url, if present. Otherwise, return the remote image Url. Local
+   * image Urls are Urls for images pre-fetched by the SDK for triggers.
+   */
+  public String getAppropriateImageUrl(IInAppMessage inAppMessage) {
+    if (!StringUtils.isNullOrBlank(inAppMessage.getLocalImageUrl())) {
+      return inAppMessage.getLocalImageUrl();
+    } else {
+      return inAppMessage.getRemoteImageUrl();
+    }
   }
 
   public void setMessageIcon(String icon, int iconColor, int iconBackgroundColor) {
-    InAppMessageViewUtils.setIcon(getContext(), icon, iconColor, iconBackgroundColor, getMessageIconView());
+    if (getMessageIconView() != null) {
+      InAppMessageViewUtils.setIcon(getContext(), icon, iconColor, iconBackgroundColor, getMessageIconView());
+    }
   }
 
   @Deprecated
@@ -97,7 +128,6 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
       ViewUtils.removeViewFromParent(getMessageIconView());
     }
   }
-
 
   public View getMessageClickableView() {
     return this;

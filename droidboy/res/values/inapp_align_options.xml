@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="inapp_align_options">
+    <item>Not Set</item>
+    <item>Start</item>
+    <item>End</item>
+    <item>Center</item>
+  </string-array>
+  <string-array name="inapp_align_values">
+    <item>@string/not_set</item>
+    <item>start</item>
+    <item>end</item>
+    <item>center</item>
+  </string-array>
+</resources>

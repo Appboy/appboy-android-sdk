@@ -13,12 +13,9 @@
       style="@style/Appboy.Feedback.NavigationBar">
     <Button
         android:id="@+id/test_push_button"
-        android:layout_width="0.0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
         android:text="@string/test_push"
-        android:textSize="12dp"
-        android:textStyle="bold"/>
+        style="@style/DroidboyButton"/>
   </LinearLayout>
   <ScrollView
       android:layout_width="match_parent"
@@ -34,44 +31,42 @@
           android:id="@+id/push_tester_big_title"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_big_title_label"
-          android:textColor="@android:color/black"/>
+          android:text="@string/push_tester_big_title_label"/>
         <CheckBox
           android:id="@+id/push_tester_big_summary"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_big_summary_label"
-          android:textColor="@android:color/black"/>
+          android:text="@string/push_tester_big_summary_label"/>
         <CheckBox
           android:id="@+id/push_tester_summary"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_summary_label"
-          android:textColor="@android:color/black"/>
+          android:text="@string/push_tester_summary_label"/>
         <CheckBox
           android:id="@+id/push_tester_overflow_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_overflow_text_label"
-          android:textColor="@android:color/black"/>
+          android:text="@string/push_tester_overflow_text_label"/>
         <CheckBox
           android:id="@+id/push_tester_set_public_version"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_public_version_label"
-          android:textColor="@android:color/black"/>
+          android:text="@string/push_tester_public_version_label"/>
         <CheckBox
           android:id="@+id/push_tester_wear_hide_app_icon"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_wear_hide_app_icon_label"
-          android:textColor="@android:color/black"/>
+          android:text="@string/push_tester_wear_hide_app_icon_label"/>
         <CheckBox
           android:id="@+id/push_tester_wear_add_extra_pages"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_wear_add_extra_pages"
-          android:textColor="@android:color/black"/>
+          android:text="@string/push_tester_wear_add_extra_pages"/>
+        <CheckBox
+            android:id="@+id/push_tester_test_triggers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/push_tester_test_triggers"/>
         <Spinner
           android:id="@+id/push_image_spinner"
           android:layout_width="fill_parent"
@@ -98,6 +93,14 @@
           android:layout_height="wrap_content"/>
         <Spinner
             android:id="@+id/push_action_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/push_accent_color_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/push_large_icon_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
       </LinearLayout>

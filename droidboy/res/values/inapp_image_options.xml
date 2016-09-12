@@ -3,17 +3,31 @@
   <string-array name="inapp_image_options">
     <item>Image: Not Set</item>
     <item>Image: None</item>
-    <item>Image: [png] Appboy</item>
+    <item>Image: [png] Grid 1160x400 (modal)</item>
+    <item>Image: [png] Grid 1000x1000 (graphic modal)</item>
+    <item>Image: [png] Grid 1000x800 (full - portrait)</item>
+    <item>Image: [png] Grid 1600x500 (full - landscape)</item>
+    <item>Image: [png] Grid 1000x1600 (graphic full - portrait)</item>
+    <item>Image: [png] Grid 1600x1000 (graphic full - landscape)</item>
+    <item>Image: [png] s3</item>
     <item>Image: [jpg] Blue</item>
     <item>Image: [gif] Appboy</item>
     <item>Image: [gif] Appboy Siege</item>
+    <item>Image: [gif] s3</item>
   </string-array>
   <string-array name="inapp_image_values">
-    <item>not set</item>
-    <item>none</item>
-    <item>@string/appboy_image_url</item>
+    <item>@string/not_set</item>
+    <item>@string/none</item>
+    <item>@string/appboy_image_url_1160w_400h</item>
+    <item>@string/appboy_image_url_1000w_1000h</item>
+    <item>@string/appboy_image_url_1000w_800h</item>
+    <item>@string/appboy_image_url_1600w_500h</item>
+    <item>@string/appboy_image_url_1000w_1600h</item>
+    <item>@string/appboy_image_url_1600w_1000h</item>
+    <item>@string/appboy_image_url_s3</item>
     <item>@string/blue_url</item>
     <item>@string/appboy_gif_url</item>
     <item>@string/appboy_siege_gif_url</item>
+    <item>@string/appboy_gif_url_s3</item>
   </string-array>
 </resources>

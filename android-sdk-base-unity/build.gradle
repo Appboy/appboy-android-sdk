@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+
+configurations {
+}
+
+dependencies {
+  compile 'com.appboy:android-sdk-ui:1.15.+'
+  provided files("libs/Prime31UnityActivity-1.0.jar")
+  provided files("libs/unity-4.1.2.jar")
+}
+
+android {
+  compileSdkVersion 23
+  buildToolsVersion '24.0.0'
+
+  dexOptions {
+    preDexLibraries = true
+  }
+
+  defaultConfig {
+    minSdkVersion 9
+    targetSdkVersion 23
+  }
+
+  sourceSets {
+    main.setRoot(".")
+    // Note: We'll be moving this project to the new Android Build System conventional folder structure in a future
+    // release.
+    main {
+      manifest.srcFile 'AndroidManifest.xml'
+      java.srcDirs = ['src']
+      resources.srcDirs = ['src']
+      aidl.srcDirs = ['src']
+      renderscript.srcDirs = ['src']
+      res.srcDirs = ['res']
+      assets.srcDirs = ['assets']
+    }
+  }
+}
+
+// rename release variant output aar file to appboy-unity.aar
+android.libraryVariants.all { variant ->
+  def name = variant.buildType.name
+  if (name.equals("debug")) {
+    return; // Skip debug builds.
+  }
+  variant.outputs.each { output ->
+    def file = output.outputFile
+    if (file != null && file.name.endsWith('.aar')) {
+      output.outputFile =
+          new File(file.parent, "appboy-unity.aar")
+    }
+  }
+}

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Note:  if you update the versionCode and package here, you must update in Wearboy as well -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-  package="com.appboy.sample" android:versionCode="44" android:versionName="1.11.0">
+          xmlns:amazon="http://schemas.amazon.com/apk/res/android" 
+          package="com.appboy.sample" android:versionCode="58" android:versionName="1.15.0">
 
   <!-- Supported versions -->
-  <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="22"/>
+  <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="23"/>
 
   <!-- Permissions -->
   <uses-permission android:name="android.permission.INTERNET" />
@@ -20,53 +20,43 @@
   <permission android:name="com.appboy.sample.permission.C2D_MESSAGE" android:protectionLevel="signature" />
   <uses-permission android:name="com.appboy.sample.permission.C2D_MESSAGE" />
 
-  <!-- In-app purchases -->
-  <uses-permission android:name="com.android.vending.BILLING" />
-
   <!-- Permissions for ADM -->
   <permission android:name="com.appboy.sample.permission.RECEIVE_ADM_MESSAGE" android:protectionLevel="signature" />
   <uses-permission android:name="com.appboy.sample.permission.RECEIVE_ADM_MESSAGE" />
   <uses-permission android:name="com.amazon.device.messaging.permission.RECEIVE" />
 
-  <application android:label="@string/app_name" android:icon="@drawable/ic_launcher_droidboy" android:allowBackup="true" android:name="DroidboyApplication">
+  <application android:label="@string/app_name" android:icon="@drawable/ic_launcher_droidboy" android:allowBackup="true" android:name="DroidboyApplication" android:theme="@style/Theme.Droidboy">
     <amazon:enable-feature android:name="com.amazon.device.messaging" android:required="false" />
 
     <receiver android:name="com.appboy.AppboyAdmReceiver" android:permission="com.amazon.device.messaging.permission.SEND">
       <intent-filter>
-          <action android:name="com.amazon.device.messaging.intent.RECEIVE" />
-          <action android:name="com.amazon.device.messaging.intent.REGISTRATION" />
-          <category android:name="com.appboy.sample" />
+        <action android:name="com.amazon.device.messaging.intent.RECEIVE" />
+        <action android:name="com.amazon.device.messaging.intent.REGISTRATION" />
+        <category android:name="com.appboy.sample" />
       </intent-filter>
     </receiver>
 
     <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:icon="@drawable/ic_launcher_droidboy"
-              android:theme="@style/Theme.DroidBoy" android:windowSoftInputMode="stateUnchanged">
+              android:windowSoftInputMode="stateUnchanged">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
 
-    <activity android:name=".DroidGirlActivity" android:label="@string/droid_girl" android:icon="@drawable/ic_launcher_droidgirl"
-              android:theme="@style/Theme.DroidBoy" android:windowSoftInputMode="stateUnchanged">
+    <service android:name="com.appboy.services.AppboyLocationService" />
+    <service android:name="com.appboy.services.AppboyWearableListenerService" >
       <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
+        <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+        <data android:scheme="wear" android:host="*" android:pathPrefix="/appboy-data-sync/" />
       </intent-filter>
-    </activity>
-
-    <service android:name="com.appboy.services.AppboyLocationService"/>
-    <service android:name="com.appboy.services.AppboyWearableListenerService">
-        <intent-filter>
-        <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-        </intent-filter>
     </service>
 
-    <activity android:name="com.appboy.ui.AppboyWebViewActivity" android:theme="@style/Theme.DroidBoy" />
-    <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" android:theme="@style/Theme.DroidBoy" />
+    <activity android:name="com.appboy.ui.AppboyWebViewActivity" />
+    <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" />
 
     <!-- Deep link example -->
-    <activity android:name=".PreferencesActivity" android:label="Preferences" android:theme="@style/Theme.Preferences">
+    <activity android:name=".PreferencesActivity" android:label="Preferences">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
@@ -75,11 +65,18 @@
         <data android:scheme="droidboy"
               android:host="preferences"/>
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <!-- Accepts URIs that begin with "https://www.droidboy.com/preferences” -->
+        <data android:scheme="https"
+              android:host="www.droidboy.com"
+              android:pathPrefix="/preferences" />
+      </intent-filter>
     </activity>
-    <activity android:name=".FeedbackFragmentActivity" android:theme="@style/Theme.Feed" />
-    <activity android:name=".FeedFragmentActivity" android:theme="@style/Theme.Feed" />
-    <activity android:name=".InAppMessageTesterActivity" android:windowSoftInputMode="stateHidden" android:theme="@style/Theme.DroidBoy" />
-    <activity android:name=".PushTesterActivity" android:theme="@style/Theme.DroidBoy" />
+    <activity android:name=".FeedbackFragmentActivity" />
+    <activity android:name=".FeedFragmentActivity" />
 
     <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND">
       <intent-filter>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="push_category_options">
-    <item>Category: None</item>
+    <item>Category: Not Set</item>
     <item>Category: Invalid Category</item>
     <item>Category: Alarm</item>
     <item>Category: Progress</item>

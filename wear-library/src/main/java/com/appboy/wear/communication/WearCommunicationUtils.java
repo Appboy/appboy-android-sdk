@@ -209,7 +209,7 @@ public class WearCommunicationUtils {
     dataMap.putString(ACTION_VALUE_0, device.forJsonPut().toString());
   }
 
-  public static void modifyDataMapWithUserProfileString(DataMap dataMap, WearSdkActions actionType, String value){
+  public static void modifyDataMapWithUserProfileString(DataMap dataMap, WearSdkActions actionType, String value) {
     dataMap.putString(ACTION_TYPE, actionType.name());
     dataMap.putBoolean(ACTION_HAS_APPBOY_PROPERTIES, false);
     dataMap.putString(ACTION_VALUE_0, value);

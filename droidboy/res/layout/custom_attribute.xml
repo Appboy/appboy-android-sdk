@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4.0dp"
+        android:paddingRight="4.0dp"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/custom_attribute_button"
+                style="@style/PopulateButton"
+                android:text="@string/custom_logging_user_attribute"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserEmailAddress"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserEmailAddress"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/custom_attribute_increment_button"
+                style="@style/PopulateButton"
+                android:text="@string/custom_logging_user_attribute_increment"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_increment_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserEmailAddress"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_increment_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:inputType="number"
+                style="@style/UserEmailAddress"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/custom_attribute_unset_button"
+                style="@style/PopulateButton"
+                android:text="@string/custom_logging_user_attribute_unset"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_unset_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="4"
+                style="@style/UserEmailAddress"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/custom_attribute_array_button"
+                style="@style/PopulateButton"
+                android:text="@string/attribute_array_key"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_array_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserEmailAddress"/>
+
+            <EditText
+                android:id="@+id/custom_attribute_array_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserEmailAddress"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="1"
+                android:text="@string/attribute_array"/>
+
+            <RadioGroup
+                android:id="@+id/custom_attribute_array_radio"
+                android:layout_span="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/custom_attribute_array_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attribute_array_set"/>
+
+                <RadioButton
+                    android:id="@+id/custom_attribute_array_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attribute_array_add"/>
+
+                <RadioButton
+                    android:id="@+id/custom_attribute_array_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attribute_array_remove"/>
+            </RadioGroup>
+        </TableRow>
+
+        <include layout="@layout/request_flush"/>
+    </TableLayout>
+</LinearLayout>

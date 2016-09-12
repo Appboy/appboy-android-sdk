@@ -5,11 +5,13 @@
   <item>URI: Http Link</item>
   <item>URI: Telephone Deep Link</item>
   <item>URI: Droidboy Deep Link</item>
+  <item>URI: Youtube Link</item>
 </string-array>
 <string-array name="inapp_uri_values">
-  <item>not set</item>
+  <item>@string/not_set</item>
   <item>@string/appboy_homepage_url</item>
-  <item>tel:555555555</item>
-  <item>droidboy://preferences</item>
+  <item>@string/telephone_uri</item>
+  <item>@string/droidboy_deep_link</item>
+  <item>@string/youtube_https_link</item>
 </string-array>
 </resources>

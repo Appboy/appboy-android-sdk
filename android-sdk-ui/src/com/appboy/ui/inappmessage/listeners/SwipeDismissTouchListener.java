@@ -54,6 +54,7 @@ import android.view.ViewGroup;
  *
  * @see SwipeDismissListViewTouchListener
  */
+@SuppressWarnings("checkstyle:missingswitchdefault")
 public class SwipeDismissTouchListener implements View.OnTouchListener {
   // Cached ViewConfiguration and system-wide constant values
   private int mSlop;
@@ -116,6 +117,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
 
   @TargetApi(12)
   @Override
+  @SuppressWarnings("checkstyle:operatorwrap")
   public boolean onTouch(View view, MotionEvent motionEvent) {
     // offset because the view is translated during swipe
     motionEvent.offsetLocation(mTranslationX, 0);
@@ -153,7 +155,6 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
           dismiss = true;
           dismissRight = deltaX > 0;
         } else if (mMinFlingVelocity <= absVelocityX && absVelocityX <= mMaxFlingVelocity
-            && absVelocityY < absVelocityX
             && absVelocityY < absVelocityX && mSwiping) {
           // dismiss only if flinging in the same direction as dragging
           dismiss = (velocityX < 0) == (deltaX < 0);

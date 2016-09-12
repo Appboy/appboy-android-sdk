@@ -1,9 +1,9 @@
 package com.appboy.ui.support;
 
 import android.net.Uri;
-import com.appboy.support.AppboyLogger;
 
 import com.appboy.Constants;
+import com.appboy.support.AppboyLogger;
 
 import java.util.Collections;
 import java.util.HashMap;

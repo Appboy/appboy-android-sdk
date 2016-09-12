@@ -50,7 +50,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
   @Override
   public void onSetCard(final BannerImageCard card) {
     boolean respectAspectRatio = false;
-    if (card.getAspectRatio() != 0f){
+    if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();
       respectAspectRatio = true;
     }
@@ -65,15 +65,11 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
 
     setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         // We don't set isRead here (like we do in other card views)
         // because Banner Cards don't have read/unread indicators.  They are all images, so there's
         // no free space to put the indicator.
-        if (mCardAction != null) {
-          AppboyLogger.d(TAG, String.format("Logged click for card %s", card.getId()));
-          card.logClick();
-          mCardAction.execute(mContext);
-        }
+        handleCardClick(mContext,card, mCardAction, TAG, false);
       }
     });
   }

@@ -10,8 +10,8 @@ import com.appboy.services.AppboyLocationService;
 
 public class RuntimePermissionUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, RuntimePermissionUtils.class.getName());
-  public static final int DROIDBOY_PERMISSION_LOCATION = 408;
-  public static final int DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE = 510;
+  public static final int DROIDBOY_PERMISSION_LOCATION = 40;
+  public static final int DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE = 100;
 
   public static void handleOnRequestPermissionsResult(Context context, int requestCode, int[] grantResults) {
     switch (requestCode) {

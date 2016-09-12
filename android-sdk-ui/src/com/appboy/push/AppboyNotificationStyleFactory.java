@@ -3,15 +3,17 @@ package com.appboy.push;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
+import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
 
 public class AppboyNotificationStyleFactory {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationStyleFactory.class.getName());
@@ -86,13 +88,11 @@ public class AppboyNotificationStyleFactory {
     }
 
     String imageUrl = appboyExtras.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
-
-    if (imageUrl == null) {
+    if (StringUtils.isNullOrBlank(imageUrl)) {
       return null;
     }
 
-    Bitmap imageBitmap = AppboyImageUtils.downloadImageBitmap(imageUrl);
-
+    Bitmap imageBitmap = AppboyImageUtils.getBitmap(Uri.parse(imageUrl));
     if (imageBitmap == null) {
       return null;
     }

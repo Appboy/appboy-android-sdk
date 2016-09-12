@@ -37,6 +37,8 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
       mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_drawee_stub);
     } else {
       mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_imageview_stub);
+      mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+      mImage.setAdjustViewBounds(true);
     }
 
     if (card != null) {
@@ -60,7 +62,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
 
     setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         handleCardClick(mContext, card, mCardAction, TAG);
       }
     });

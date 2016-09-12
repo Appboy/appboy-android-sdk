@@ -104,6 +104,22 @@
         </TableRow>
 
         <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:id="@+id/birthday_button"
+                    style="@style/PopulateButton"
+                    android:text="@string/user_dialog_birthday_button"/>
+
+            <TextView
+                    android:id="@+id/birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="3"/>
+        </TableRow>
+        
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

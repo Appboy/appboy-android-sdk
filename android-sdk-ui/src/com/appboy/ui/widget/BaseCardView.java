@@ -18,10 +18,12 @@ import com.appboy.Constants;
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PackageUtils;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.support.FrescoLibraryUtils;
-import com.appboy.ui.support.StringUtils;
+import com.appboy.ui.support.ViewUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Observable;
@@ -35,7 +37,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   private static Boolean unreadCardVisualIndicatorOn;
   private static final float SQUARE_ASPECT_RATIO = 1f;
   private static final String COM_APPBOY_NEWSFEED_UNREAD_VISUAL_INDICATOR_ON =  "com_appboy_newsfeed_unread_visual_indicator_on";
-
   protected final Context mContext;
   protected T mCard;
   protected ImageSwitcher mImageSwitcher;
@@ -167,7 +168,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
    * Calls setImageViewToUrl with respectAspectRatio set to true.
    * @see com.appboy.ui.widget.BaseCardView#setImageViewToUrl(android.widget.ImageView, String, float, boolean)
    */
-  void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio){
+  void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio) {
     setImageViewToUrl(imageView, imageUrl, aspectRatio, true);
   }
 
@@ -189,7 +190,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
       return;
     }
 
-    if (aspectRatio == 0){
+    if (aspectRatio == 0) {
       AppboyLogger.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
       return;
     }
@@ -208,7 +209,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
             public void onGlobalLayout() {
               int width = imageView.getWidth();
               imageView.setLayoutParams(new LayoutParams(width, (int) (width / aspectRatio)));
-              removeOnGlobalLayoutListenerSafe(imageView.getViewTreeObserver(), this);
+              ViewUtils.removeOnGlobalLayoutListenerSafe(imageView.getViewTreeObserver(), this);
             }
           });
         }
@@ -217,16 +218,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
       imageView.setImageResource(android.R.color.transparent);
       Appboy.getInstance(getContext()).fetchAndRenderImage(imageUrl, imageView, respectAspectRatio);
       imageView.setTag(imageUrl);
-    }
-  }
-
-  @TargetApi(16)
-  public static void removeOnGlobalLayoutListenerSafe(ViewTreeObserver viewTreeObserver,
-                                                ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener) {
-    if (android.os.Build.VERSION.SDK_INT < 16) {
-      viewTreeObserver.removeGlobalOnLayoutListener(onGlobalLayoutListener);
-    } else {
-      viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener);
     }
   }
 
@@ -252,12 +243,26 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     return mCanUseFresco;
   }
 
-  protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag){
-    card.setIsRead(true);
-    if(cardAction != null){
-      AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
-      card.logClick();
-      cardAction.execute(context);
+  protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
+    handleCardClick(context, card, cardAction, tag, true);
+  }
+
+  /**
+   * All card views should handle new feed card clicks through this method
+   */
+  protected static void handleCardClick(Context context, Card card, IAction cardAction, String tag, boolean markAsRead) {
+    if (markAsRead) {
+      card.setIsRead(true);
+    }
+    if (cardAction != null) {
+      if (card.logClick()) {
+        AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
+      } else {
+        AppboyLogger.d(tag, String.format("Logging click failed for card %s", card.getId()));
+      }
+      if (!AppboyFeedManager.getInstance().getFeedCardClickActionListener().onFeedCardClicked(context, card, cardAction)) {
+        cardAction.execute(context);
+      }
     }
   }
 

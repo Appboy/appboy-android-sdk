@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.appboy.ui">
   <application>
+    <!-- Internal Appboy networking service - may be removed in future versions. No integration required client-side. -->
     <service android:name="com.appboy.services.AppboyDataSyncService"/>
   </application>
 </manifest>

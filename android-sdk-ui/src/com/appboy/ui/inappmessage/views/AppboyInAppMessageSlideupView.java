@@ -7,13 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appboy.enums.inappmessage.ClickAction;
+import com.appboy.models.IInAppMessage;
 import com.appboy.ui.R;
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
+import com.appboy.ui.inappmessage.AppboyInAppMessageSimpleDraweeView;
 
 public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
-  private ImageView mImageView;
+  private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
   /**
    * @see AppboyInAppMessageBaseView#getMessageSimpleDraweeView()
    */
@@ -23,16 +23,14 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
     super(context, attrs);
   }
 
-  public void inflateStubViews() {
+  public void inflateStubViews(IInAppMessage inAppMessage) {
     if (mCanUseFresco) {
       mSimpleDraweeView = getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_slideup_drawee_stub);
-      SimpleDraweeView castedSimpleDraweeView = (SimpleDraweeView) mSimpleDraweeView;
-
-      // Since we can't set fresco attributes in the xml (inflation error), we'll do it here
-      GenericDraweeHierarchy genericDraweeHierarchy = castedSimpleDraweeView.getHierarchy();
-      genericDraweeHierarchy.setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
+      AppboyInAppMessageSimpleDraweeView castedSimpleDraweeView = (AppboyInAppMessageSimpleDraweeView) mSimpleDraweeView;
+      castedSimpleDraweeView.setInAppMessageImageCropType(inAppMessage.getCropType());
     } else {
-      mImageView = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_slideup_imageview_stub);
+      mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_slideup_imageview_stub);
+      mAppboyInAppMessageImageView.setInAppMessageImageCropType(inAppMessage.getCropType());
     }
   }
 
@@ -59,7 +57,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
 
   @Override
   public ImageView getMessageImageView() {
-    return mImageView;
+    return mAppboyInAppMessageImageView;
   }
 
   @Override

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The name of this file must not be changed in order for AppboyGCMReceiver to properly render
+     long push notifications in Android [3.0-4.1). Without this view, devices before Android 4.1 (which
+     cannot use BigTextStyle notifications) will truncate the display of push notifications in the notification
+     center at only a single line. -->
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/status_bar_latest_event_content"
+             android:layout_width="match_parent"
+             android:layout_height="65dp"
+             tools:targetApi="11">
+    <include layout="@layout/com_appboy_notification_base"/>
+</FrameLayout>

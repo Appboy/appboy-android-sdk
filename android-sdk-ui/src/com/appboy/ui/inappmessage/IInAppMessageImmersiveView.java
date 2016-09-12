@@ -16,7 +16,7 @@ import java.util.List;
  * Immersive views extend the base in-app message view with header text, message buttons,
  * and a close button.
  *
- * Known implementing classes include
+ * All Known Implementing Classes:
  * {@link AppboyInAppMessageImmersiveBaseView}
  * {@link AppboyInAppMessageModalView}
  * {@link AppboyInAppMessageFullView}

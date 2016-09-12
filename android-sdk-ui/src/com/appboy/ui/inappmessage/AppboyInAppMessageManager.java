@@ -2,58 +2,40 @@ package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.os.Handler;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.FrameLayout;
 
 import com.appboy.Appboy;
-import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
-import com.appboy.enums.inappmessage.ClickAction;
-import com.appboy.enums.inappmessage.SlideFrom;
+import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
 import com.appboy.models.IInAppMessage;
-import com.appboy.models.IInAppMessageHtml;
-import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
-import com.appboy.models.MessageButton;
-import com.appboy.models.outgoing.AppboyProperties;
-import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
-import com.appboy.support.BundleUtils;
 import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.R;
-import com.appboy.ui.actions.ActionFactory;
-import com.appboy.ui.actions.IAction;
+import com.appboy.ui.inappmessage.factories.AppboyFullViewFactory;
+import com.appboy.ui.inappmessage.factories.AppboyHtmlFullViewFactory;
+import com.appboy.ui.inappmessage.factories.AppboyInAppMessageAnimationFactory;
+import com.appboy.ui.inappmessage.factories.AppboyModalViewFactory;
+import com.appboy.ui.inappmessage.factories.AppboySlideupViewFactory;
+import com.appboy.ui.inappmessage.listeners.AppboyDefaultHtmlInAppMessageActionListener;
+import com.appboy.ui.inappmessage.listeners.AppboyDefaultInAppMessageManagerListener;
+import com.appboy.ui.inappmessage.listeners.AppboyInAppMessageViewLifecycleListener;
+import com.appboy.ui.inappmessage.listeners.AppboyInAppMessageWebViewClientListener;
 import com.appboy.ui.inappmessage.listeners.IHtmlInAppMessageActionListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
-import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
-import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlFullView;
-import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
-import com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView;
-import com.appboy.ui.support.AnimationUtils;
-import com.appboy.ui.support.FrescoLibraryUtils;
-import com.appboy.ui.support.StringUtils;
 import com.appboy.ui.support.ViewUtils;
-import com.appboy.ui.support.WebContentUtils;
-import com.facebook.datasource.DataSource;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipeline;
-import com.facebook.imagepipeline.request.ImageRequest;
 
-import java.io.File;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -104,21 +86,39 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class AppboyInAppMessageManager {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageManager.class.getName());
   private static volatile AppboyInAppMessageManager sInstance = null;
-  private static final String HTML_IAM_CUSTOM_EVENT_NAME_KEY = "name";
 
-  private final Stack<IInAppMessage> mInAppMessageBaseStack = new Stack<IInAppMessage>();
+  private final Stack<IInAppMessage> mInAppMessageStack = new Stack<IInAppMessage>();
   private final IAppboyNavigator mDefaultAppboyNavigator = new AppboyNavigator();
   private Activity mActivity;
   private IEventSubscriber<InAppMessageEvent> mInAppMessageEventSubscriber;
-  private IInAppMessageManagerListener mCustomInAppMessageManagerListener;
   private IInAppMessageViewFactory mCustomInAppMessageViewFactory;
   private IInAppMessageAnimationFactory mCustomInAppMessageAnimationFactory;
-  private InAppMessageViewWrapper mInAppMessageViewWrapper;
-  private IInAppMessage mCarryoverInAppMessageBase;
+  private IInAppMessageViewWrapper mInAppMessageViewWrapper;
+  private IInAppMessage mCarryoverInAppMessage;
   private AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
-  private IHtmlInAppMessageActionListener mCustomHtmlInAppMessageActionListener;
-  private boolean mCanUseFresco;
   private Context mApplicationContext;
+  private Integer mOriginalOrientation;
+
+  // view listeners
+  private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new AppboyInAppMessageWebViewClientListener();
+  private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new AppboyInAppMessageViewLifecycleListener();
+
+  // manager listeners
+  private IInAppMessageManagerListener mDefaultInAppMessageManagerListener = new AppboyDefaultInAppMessageManagerListener();
+  private IInAppMessageManagerListener mCustomInAppMessageManagerListener;
+
+  // html action listeners
+  private IHtmlInAppMessageActionListener mDefaultHtmlInAppMessageActionListener = new AppboyDefaultHtmlInAppMessageActionListener();
+  private IHtmlInAppMessageActionListener mCustomHtmlInAppMessageActionListener;
+
+  // view factories
+  private IInAppMessageViewFactory mInAppMessageSlideupViewFactory = new AppboySlideupViewFactory();
+  private IInAppMessageViewFactory mInAppMessageModalViewFactory = new AppboyModalViewFactory();
+  private IInAppMessageViewFactory mInAppMessageFullViewFactory = new AppboyFullViewFactory();
+  private IInAppMessageViewFactory mInAppMessageHtmlFullViewFactory = new AppboyHtmlFullViewFactory(mInAppMessageWebViewClientListener);
+
+  // animation factory
+  private IInAppMessageAnimationFactory mInAppMessageAnimationFactory = new AppboyInAppMessageAnimationFactory();
 
   public static AppboyInAppMessageManager getInstance() {
     if (sInstance == null) {
@@ -151,16 +151,13 @@ public final class AppboyInAppMessageManager {
       mApplicationContext = mActivity.getApplicationContext();
     }
 
-    // Initialize the Fresco library
-    mCanUseFresco = FrescoLibraryUtils.canUseFresco(activity.getApplicationContext());
-
     // We have a special check to see if the host app switched to a different Activity (or recreated
     // the same Activity during an orientation change) so that we can redisplay the in-app message.
-    if (mCarryoverInAppMessageBase != null) {
+    if (mCarryoverInAppMessage != null) {
       AppboyLogger.d(TAG, "Displaying carryover in-app message.");
-      mCarryoverInAppMessageBase.setAnimateIn(false);
-      displayInAppMessage(mCarryoverInAppMessageBase);
-      mCarryoverInAppMessageBase = null;
+      mCarryoverInAppMessage.setAnimateIn(false);
+      displayInAppMessage(mCarryoverInAppMessage, true);
+      mCarryoverInAppMessage = null;
     }
 
     // Every time the AppboyInAppMessageManager is registered to an Activity, we add a in-app message subscriber
@@ -183,21 +180,22 @@ public final class AppboyInAppMessageManager {
       ViewUtils.removeViewFromParent(mInAppMessageViewWrapper.getInAppMessageView());
       // Only continue if we're not animating a close
       if (mInAppMessageViewWrapper.getIsAnimatingClose()) {
-        mInAppMessageViewWrapper.callAfterClosed();
-        mCarryoverInAppMessageBase = null;
+        mInAppMessageViewLifecycleListener.afterClosed(mInAppMessageViewWrapper.getInAppMessage());
+        mCarryoverInAppMessage = null;
       } else {
-        mCarryoverInAppMessageBase = mInAppMessageViewWrapper.getInAppMessage();
+        mCarryoverInAppMessage = mInAppMessageViewWrapper.getInAppMessage();
       }
 
       mInAppMessageViewWrapper = null;
     } else {
-      mCarryoverInAppMessageBase = null;
+      mCarryoverInAppMessage = null;
     }
 
     // In-app message subscriptions are per Activity, so we must remove the subscriber when the host app
     // unregisters the in-app message manager.
     Appboy.getInstance(activity).removeSingleSubscription(mInAppMessageEventSubscriber, InAppMessageEvent.class);
     mActivity = null;
+    mDisplayingInAppMessage.set(false);
   }
 
   /**
@@ -251,7 +249,7 @@ public final class AppboyInAppMessageManager {
    * @param inAppMessage The in-app message to add.
    */
   public void addInAppMessage(IInAppMessage inAppMessage) {
-    mInAppMessageBaseStack.push(inAppMessage);
+    mInAppMessageStack.push(inAppMessage);
     requestDisplayInAppMessage();
   }
 
@@ -259,55 +257,54 @@ public final class AppboyInAppMessageManager {
    * Asks the InAppMessageManager to display the next in-app message if one is not currently being displayed.
    * If one is being displayed, this method will return false and will not display the next in-app message.
    *
-   * @return A boolean value indicating whether an asychronous task to display the in-app message display was executed.
+   * @return A boolean value indicating whether an asynchronous task to display the in-app message display was executed.
    */
   public boolean requestDisplayInAppMessage() {
     try {
       if (mActivity == null) {
-        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Doing nothing.");
+        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Registering in-app message as carry-over "
+                + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
+        mCarryoverInAppMessage = mInAppMessageStack.pop();
         return false;
       }
-      if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
+      if (mDisplayingInAppMessage.get()) {
         AppboyLogger.d(TAG, "A in-app message is currently being displayed. Ignoring request to display in-app message.");
         return false;
       }
-      if (mInAppMessageBaseStack.isEmpty()) {
+      if (mInAppMessageStack.isEmpty()) {
         AppboyLogger.d(TAG, "The in-app message stack is empty. No in-app message will be displayed.");
-        mDisplayingInAppMessage.set(false);
         return false;
       }
 
-      final IInAppMessage inAppMessage = mInAppMessageBaseStack.pop();
+      final IInAppMessage inAppMessage = mInAppMessageStack.pop();
       InAppMessageOperation inAppMessageOperation = getInAppMessageManagerListener().beforeInAppMessageDisplayed(inAppMessage);
 
       switch (inAppMessageOperation) {
         case DISPLAY_NOW:
-          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_NOW. The " +
-              "in-app message will be displayed.");
+          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_NOW. The "
+              + "in-app message will be displayed.");
           break;
         case DISPLAY_LATER:
-          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_LATER. The " +
-              "in-app message will be pushed back onto the stack.");
-          mInAppMessageBaseStack.push(inAppMessage);
-          mDisplayingInAppMessage.set(false);
+          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_LATER. The "
+              + "in-app message will be pushed back onto the stack.");
+          mInAppMessageStack.push(inAppMessage);
           return false;
         case DISCARD:
-          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISCARD. The " +
-              "in-app message will not be displayed and will not be put back on the stack.");
-          mDisplayingInAppMessage.set(false);
+          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISCARD. The "
+              + "in-app message will not be displayed and will not be put back on the stack.");
           return false;
         default:
-          AppboyLogger.e(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a " +
-              "InAppMessageOperation. Ignoring the in-app message. Please check the IInAppMessageStackBehaviour " +
-              "implementation.");
-          mDisplayingInAppMessage.set(false);
+          AppboyLogger.e(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a "
+              + "InAppMessageOperation. Ignoring the in-app message. Please check the IInAppMessageStackBehaviour "
+              + "implementation.");
           return false;
       }
-      // Asynchronously display the in-app message.
-      mActivity.runOnUiThread(new Runnable() {
+
+      Handler mainLooperHandler = new Handler(mApplicationContext.getMainLooper());
+      mainLooperHandler.post(new Runnable() {
         @Override
         public void run() {
-          new AsyncInAppMessageDisplayer().execute(inAppMessage);
+          new AppboyAsyncInAppMessageDisplayer().execute(inAppMessage);
         }
       });
       return true;
@@ -320,203 +317,93 @@ public final class AppboyInAppMessageManager {
   /**
    * Hides any currently displaying in-app message.
    *
-   * @param animate   whether to animate the message out of view
-   * @param dismissed whether the message was dismissed by the user
-   */
-  public void hideCurrentInAppMessage(boolean animate, boolean dismissed) {
-    InAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
-    if (inAppMessageWrapperView != null && dismissed) {
-      inAppMessageWrapperView.callOnDismissed();
-    }
-    hideCurrentInAppMessage(animate);
-  }
-
-  /**
-   * Hides any currently displaying in-app message.
+   * @deprecated Use {@link #hideCurrentlyDisplayingInAppMessage(boolean)}
    *
-   * @param animate whether to animate the message out of view
+   * @param animate   whether to animate the message out of view. Note that in-app message animation
+   *                  is configurable on the in-app message model itself and should be configured
+   *                  there instead.
+   * @param dismissed whether the message was dismissed by the user. If dismissed is true,
+   *                  IInAppMessageViewLifecycleListener.onDismissed() will be called on the current
+   *                  IInAppMessageViewLifecycleListener.
    */
-  public void hideCurrentInAppMessage(boolean animate) {
-    InAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
+  @Deprecated
+  public void hideCurrentInAppMessage(boolean animate, boolean dismissed) {
+    IInAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
     if (inAppMessageWrapperView != null) {
       IInAppMessage inAppMessage = inAppMessageWrapperView.getInAppMessage();
       if (inAppMessage != null) {
         inAppMessage.setAnimateOut(animate);
       }
+      hideCurrentlyDisplayingInAppMessage(dismissed);
+    }
+  }
+
+  /**
+   * Hides any currently displaying in-app message.
+   *
+   * @deprecated Use {@link #hideCurrentlyDisplayingInAppMessage(boolean)}
+   *
+   * @param animate whether to animate the message out of view. Note that in-app message animation
+   *                  is configurable on the in-app message model itself and should be configured
+   *                  there instead.
+   */
+  @Deprecated
+  public void hideCurrentInAppMessage(boolean animate) {
+    hideCurrentInAppMessage(animate, false);
+  }
+
+  /**
+   * Hides any currently displaying in-app message. Note that in-app message animation
+   * is configurable on the in-app message model itself and should be configured there.
+   *
+   * @param dismissed whether the message was dismissed by the user. If dismissed is true,
+   *                  IInAppMessageViewLifecycleListener.onDismissed() will be called on the current
+   *                  IInAppMessageViewLifecycleListener.
+   */
+  public void hideCurrentlyDisplayingInAppMessage(boolean dismissed) {
+    IInAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
+    if (inAppMessageWrapperView != null) {
+      if (dismissed) {
+        mInAppMessageViewLifecycleListener.onDismissed(inAppMessageWrapperView.getInAppMessageView(),
+            inAppMessageWrapperView.getInAppMessage());
+      }
       inAppMessageWrapperView.close();
     }
   }
 
-  private void startClearHtmlInAppMessageAssetsThread(final IInAppMessageHtml inAppMessageHtml) {
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        if (inAppMessageHtml != null) {
-          WebContentUtils.clearInAppMessageLocalAssets(inAppMessageHtml);
-        }
-      }
-    }).start();
-  }
-
-  class AsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, Integer, IInAppMessage> {
-
-    @Override
-    protected IInAppMessage doInBackground(IInAppMessage... inAppMessages) {
-      try {
-        AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
-        boolean assetDownloadSucceeded;
-        IInAppMessage inAppMessage = inAppMessages[0];
-        if (inAppMessage instanceof InAppMessageHtmlFull) {
-          // Note, this will clear the IAM cache, which is OK because we currently have mDisplayingInAppMessage
-          // set to true, which guarantees no other IAM is relying on the cache dir right now.
-          assetDownloadSucceeded = prepareInAppMessageWithHtml(inAppMessage);
-        } else {
-          String imageUrl = inAppMessage.getImageUrl();
-          if (StringUtils.isNullOrBlank(imageUrl)) {
-            AppboyLogger.w(TAG, "In-app message has no image URL. Not downloading image from URL.");
-            return inAppMessage;
-          }
-
-          if (mCanUseFresco) {
-            assetDownloadSucceeded = prepareInAppMessageWithFresco(inAppMessage, imageUrl);
-          } else {
-            assetDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage, imageUrl);
-          }
-        }
-        if (!assetDownloadSucceeded) {
-          return null;
-        }
-        return inAppMessage;
-      } catch (Exception e) {
-        AppboyLogger.e(TAG, "Error running AsyncInAppMessageDisplayer", e);
-        return null;
-      }
-    }
-
-    @Override
-    protected void onPostExecute(final IInAppMessage inAppMessage) {
-      try {
-        if (mActivity == null) {
-          AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Doing nothing.");
-          return;
-        }
-        AppboyLogger.d(TAG, "Finished asynchronous in-app message preparation. Attempting to display in-app message.");
-
-        if (inAppMessage != null) {
-          mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-              AppboyLogger.d(TAG, "Displaying in-app message.");
-              displayInAppMessage(inAppMessage);
-            }
-          });
-        } else {
-          AppboyLogger.e(TAG, "Cannot display the in-app message because the in-app message was null.");
-          mDisplayingInAppMessage.set(false);
-        }
-      } catch (Exception e) {
-        AppboyLogger.e(TAG, "Error running onPostExecute", e);
-      }
-    }
-
-    /**
-     * Prepares the In-App Message for displaying Html content.
-     *
-     * @param inAppMessage the In-App Message to be prepared
-     *
-     * @return whether or not the asset preparation succeeded
-     */
-    boolean prepareInAppMessageWithHtml(IInAppMessage inAppMessage) {
-      if (mApplicationContext == null) {
-        AppboyLogger.w(TAG, "Can't store HTML in-app message assets because cached application context is null.");
-        return false;
-      }
-      if (mActivity == null) {
-        AppboyLogger.e(TAG, "Can't store HTML in-app message assets because activity is null.");
-        return false;
-      }
-      // Get the local URL directory for the html display
-      InAppMessageHtmlFull inAppMessageHtmlFull = (InAppMessageHtmlFull) inAppMessage;
-      File internalStorageCacheDirectory = mApplicationContext.getCacheDir();
-      String localWebContentUrl = WebContentUtils.getLocalHtmlUrlFromRemoteUrl(internalStorageCacheDirectory, inAppMessageHtmlFull.getAssetsZipRemoteUrl());
-      if (!StringUtils.isNullOrBlank(localWebContentUrl)) {
-        AppboyLogger.d(TAG, "Local url for html in-app message is " + localWebContentUrl);
-        inAppMessageHtmlFull.setLocalAssetsDirectoryUrl(localWebContentUrl);
-        return true;
-      } else {
-        AppboyLogger.w(TAG, String.format("Download of html content to local directory failed for remote url: %s . Returned local url is: %s",
-            inAppMessageHtmlFull.getAssetsZipRemoteUrl(), localWebContentUrl));
-        return false;
-      }
-    }
-
-    /**
-     * Prepares the In-App Message for displaying images using the Fresco library.
-     *
-     * @param inAppMessage the In-App Message to be prepared
-     * @param imageUrl     the URL of the image content to be displayed
-     *
-     * @return whether or not the asset preparation succeeded
-     */
-    private boolean prepareInAppMessageWithFresco(IInAppMessage inAppMessage, String imageUrl) {
-      // Prefetch the image content via http://frescolib.org/docs/using-image-pipeline.html#prefetching
-      ImagePipeline imagePipeline = Fresco.getImagePipeline();
-      // Create a request for the image
-      ImageRequest imageRequest = ImageRequest.fromUri(imageUrl);
-      DataSource dataSource = imagePipeline.prefetchToDiskCache(imageRequest, new Object());
-
-      // Since we're in an asyncTask, we can wait for the also asynchronous prefetch by Fresco
-      // to finish.
-      while (!dataSource.isFinished()) {
-        // Wait for the prefetch to finish
-      }
-
-      if (dataSource.hasFailed()) {
-        if (dataSource.getFailureCause() == null) {
-          AppboyLogger.w(TAG, "Fresco disk prefetch failed with a null cause.");
-          return false;
-        } else {
-          AppboyLogger.w(TAG, "Fresco disk prefetch failed with cause: " + dataSource.getFailureCause().getMessage() + " with image url: " + imageUrl);
-          return false;
-        }
-      } else {
-        inAppMessage.setImageDownloadSuccessful(true);
-      }
-
-      // Release the resource reference
-      dataSource.close();
-      return true;
-    }
-
-    /**
-     * Prepares the In-App Message for displaying images using a bitmap downloader.
-     *
-     * @param inAppMessage the In-App Message to be prepared
-     * @param imageUrl     the URL of the image content to be displayed
-     *
-     * @return whether or not the asset preparation succeeded
-     */
-    boolean prepareInAppMessageWithBitmapDownload(IInAppMessage inAppMessage, String imageUrl) {
-      if (inAppMessage.getBitmap() == null) {
-        inAppMessage.setBitmap(AppboyImageUtils.downloadImageBitmap(imageUrl));
-        if (inAppMessage.getBitmap() != null) {
-          inAppMessage.setImageDownloadSuccessful(true);
-        } else {
-          return false;
-        }
-      } else {
-        AppboyLogger.i(TAG, "In-app message already contains image bitmap. Not downloading image from URL.");
-      }
-      return true;
-    }
-  }
-
-  private IInAppMessageManagerListener getInAppMessageManagerListener() {
+  public IInAppMessageManagerListener getInAppMessageManagerListener() {
     return mCustomInAppMessageManagerListener != null ? mCustomInAppMessageManagerListener : mDefaultInAppMessageManagerListener;
   }
 
-  private IHtmlInAppMessageActionListener getHtmlInAppMessageActionListener() {
+  public IHtmlInAppMessageActionListener getHtmlInAppMessageActionListener() {
     return mCustomHtmlInAppMessageActionListener != null ? mCustomHtmlInAppMessageActionListener : mDefaultHtmlInAppMessageActionListener;
+  }
+
+  public IAppboyNavigator getAppboyNavigator() {
+    IAppboyNavigator customAppboyNavigator = Appboy.getInstance(mActivity).getAppboyNavigator();
+    return customAppboyNavigator != null ? customAppboyNavigator : mDefaultAppboyNavigator;
+  }
+
+  public Activity getActivity() {
+    return mActivity;
+  }
+
+  public Context getApplicationContext() {
+    return mApplicationContext;
+  }
+
+  public void resetAfterInAppMessageClose() {
+    mInAppMessageViewWrapper = null;
+    mDisplayingInAppMessage.set(false);
+    if (mActivity != null && mOriginalOrientation != null) {
+      mActivity.setRequestedOrientation(mOriginalOrientation);
+      AppboyLogger.d(TAG, "Setting requested orientation to original orientation " + mOriginalOrientation);
+      mOriginalOrientation = null;
+    }
+  }
+
+  private IInAppMessageAnimationFactory getInAppMessageAnimationFactory() {
+    return mCustomInAppMessageAnimationFactory != null ? mCustomInAppMessageAnimationFactory : mInAppMessageAnimationFactory;
   }
 
   private IInAppMessageViewFactory getInAppMessageViewFactory(IInAppMessage inAppMessage) {
@@ -535,38 +422,58 @@ public final class AppboyInAppMessageManager {
     }
   }
 
-  private boolean displayInAppMessage(IInAppMessage inAppMessage) {
+  boolean displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
+    // Note:  for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
+    // of this try/catch when we know whether we are successfully displaying the IAM or not.
+    if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
+      AppboyLogger.d(TAG, "A in-app message is currently being displayed.  Adding in-app message back on the stack.");
+      mInAppMessageStack.push(inAppMessage);
+      return false;
+    }
+
     try {
       if (mActivity == null) {
-        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Doing nothing.");
-        return false;
+        mCarryoverInAppMessage = inAppMessage;
+        throw new Exception("No activity is currently registered to receive in-app messages. Registering in-app message as carry-over "
+            + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
+      }
+      if (!isCarryOver) {
+        long inAppMessageExpirationTimestamp = inAppMessage.getExpirationTimestamp();
+        if (inAppMessageExpirationTimestamp > 0) {
+          long currentTimeMillis = System.currentTimeMillis();
+          if (currentTimeMillis > inAppMessageExpirationTimestamp) {
+            throw new Exception(String.format("In-app message is expired. Doing nothing. Expiration: $%d. Current time: %d",
+                inAppMessageExpirationTimestamp, currentTimeMillis));
+          }
+        } else {
+          AppboyLogger.d(TAG, "Expiration timestamp not defined. Continuing.");
+        }
+      } else {
+        AppboyLogger.d(TAG, "Not checking expiration status for carry-over in-app message.");
+      }
+      if (!verifyOrientationStatus(inAppMessage)) {
+        throw new Exception("Current orientation did not match specified orientation for in-app message. Doing nothing.");
       }
       IInAppMessageViewFactory inAppMessageViewFactory = getInAppMessageViewFactory(inAppMessage);
       if (inAppMessageViewFactory == null) {
-        AppboyLogger.d(TAG, "ViewFactory from getInAppMessageViewFactory was null.");
-        return false;
+        throw new Exception("ViewFactory from getInAppMessageViewFactory was null.");
       }
-
       final View inAppMessageView = inAppMessageViewFactory.createInAppMessageView(mActivity, inAppMessage);
 
       if (inAppMessageView == null) {
-        AppboyLogger.e(TAG, "The in-app message view returned from the IInAppMessageViewFactory was null. The in-app message will " +
-            "not be displayed and will not be put back on the stack.");
-        mDisplayingInAppMessage.set(false);
-        return false;
+        throw new Exception("The in-app message view returned from the IInAppMessageViewFactory was null. The in-app message will "
+            + "not be displayed and will not be put back on the stack.");
       }
 
       if (inAppMessageView.getParent() != null) {
-        AppboyLogger.e(TAG, "The in-app message view returned from the IInAppMessageViewFactory already has a parent. This " +
-            "is a sign that the view is being reused. The IInAppMessageViewFactory method createInAppMessageView" +
-            "must return a new view without a parent. The in-app message will not be displayed and will not " +
-            "be put back on the stack.");
-        mDisplayingInAppMessage.set(false);
-        return false;
+        throw new Exception("The in-app message view returned from the IInAppMessageViewFactory already has a parent. This "
+            + "is a sign that the view is being reused. The IInAppMessageViewFactory method createInAppMessageView"
+            + "must return a new view without a parent. The in-app message will not be displayed and will not "
+            + "be put back on the stack.");
       }
 
-      Animation openingAnimation = getInAppMessageAnimationFactory(inAppMessage).getOpeningAnimation(inAppMessage);
-      Animation closingAnimation = getInAppMessageAnimationFactory(inAppMessage).getClosingAnimation(inAppMessage);
+      Animation openingAnimation = getInAppMessageAnimationFactory().getOpeningAnimation(inAppMessage);
+      Animation closingAnimation = getInAppMessageAnimationFactory().getClosingAnimation(inAppMessage);
 
       if (inAppMessageView instanceof IInAppMessageImmersiveView) {
         AppboyLogger.d(TAG, "Creating view wrapper for immersive in-app message.");
@@ -583,12 +490,66 @@ public final class AppboyInAppMessageManager {
         AppboyLogger.d(TAG, "Creating view wrapper for in-app message.");
         mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener, openingAnimation, closingAnimation, inAppMessageView);
       }
-
-      FrameLayout root = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
-      mInAppMessageViewWrapper.open(root);
+      mInAppMessageViewWrapper.open(mActivity);
       return true;
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error running displayInAppMesasge", e);
+      AppboyLogger.e(TAG, "Could not display in-app message", e);
+      resetAfterInAppMessageClose();
+      return false;
+    }
+  }
+
+  /**
+   *
+   * For in-app messages that have a preferred orientation, locks the screen orientation and
+   * returns true if the screen is currently in the preferred orientation.  If the screen is not
+   * currently in the preferred orientation, returns false.
+   *
+   * Always returns true for tablets, regardless of current orientation.
+   *
+   * Always returns true if the in-app message doesn't have a preferred orientation.
+   *
+   * @param inAppMessage
+   * @return
+   */
+  boolean verifyOrientationStatus(IInAppMessage inAppMessage) {
+    if (ViewUtils.isRunningOnTablet(mActivity)) {
+      AppboyLogger.d(TAG, "Running on tablet. In-app message can be displayed in any orientation.");
+      return true;
+    }
+    Orientation preferredOrientation = inAppMessage.getOrientation();
+    if (preferredOrientation == null) {
+      AppboyLogger.d(TAG, "No orientation specified. In-app message can be displayed in any orientation.");
+      return true;
+    }
+    if (preferredOrientation == Orientation.ANY) {
+      AppboyLogger.d(TAG, "Any orientation specified. In-app message can be displayed in any orientation.");
+      return true;
+    }
+    int currentScreenOrientation = mActivity.getResources().getConfiguration().orientation;
+    if (currentOrientationIsValid(currentScreenOrientation, preferredOrientation)) {
+      if (mOriginalOrientation == null) {
+        AppboyLogger.d(TAG, "Requesting orientation lock.");
+        mOriginalOrientation = mActivity.getRequestedOrientation();
+        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private boolean currentOrientationIsValid(int currentScreenOrientation, Orientation preferredOrientation) {
+    if (currentScreenOrientation == Configuration.ORIENTATION_LANDSCAPE
+        && preferredOrientation == Orientation.LANDSCAPE) {
+      AppboyLogger.d(TAG, "Current and preferred orientation are landscape.");
+      return true;
+    } else if (currentScreenOrientation == Configuration.ORIENTATION_PORTRAIT
+        && preferredOrientation == Orientation.PORTRAIT) {
+      AppboyLogger.d(TAG, "Current and preferred orientation are portrait.");
+      return true;
+    } else {
+      AppboyLogger.d(TAG, String.format("Current orientation %d and preferred orientation %s don't match",
+          currentScreenOrientation, preferredOrientation));
       return false;
     }
   }
@@ -603,427 +564,5 @@ public final class AppboyInAppMessageManager {
         addInAppMessage(event.getInAppMessage());
       }
     };
-  }
-
-  private IInAppMessageManagerListener mDefaultInAppMessageManagerListener = new IInAppMessageManagerListener() {
-    @Override
-    public boolean onInAppMessageReceived(IInAppMessage inAppMessage) {
-      return false;
-    }
-
-    @Override
-    public InAppMessageOperation beforeInAppMessageDisplayed(IInAppMessage inAppMessage) {
-      return InAppMessageOperation.DISPLAY_NOW;
-    }
-
-    @Override
-    public boolean onInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
-      return false;
-    }
-
-    @Override
-    public boolean onInAppMessageButtonClicked(MessageButton button, InAppMessageCloser inAppMessageCloser) {
-      return false;
-    }
-
-    @Override
-    public void onInAppMessageDismissed(IInAppMessage inAppMessage) {
-    }
-  };
-
-  private IHtmlInAppMessageActionListener mDefaultHtmlInAppMessageActionListener = new IHtmlInAppMessageActionListener() {
-    @Override
-    public void onCloseClicked(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-    }
-
-    @Override
-    public boolean onNewsfeedClicked(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-      return false;
-    }
-
-    @Override
-    public boolean onCustomEventFired(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-      return false;
-    }
-
-    @Override
-    public boolean onOtherUrlAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-      return false;
-    }
-  };
-
-  private IInAppMessageViewFactory mInAppMessageSlideupViewFactory = new IInAppMessageViewFactory() {
-    @Override
-    public View createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
-      InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) inAppMessage;
-      AppboyInAppMessageSlideupView slideupView = (AppboyInAppMessageSlideupView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_slideup, null);
-      slideupView.inflateStubViews();
-      if (mCanUseFresco) {
-        slideupView.setMessageSimpleDrawee(inAppMessage.getImageUrl());
-      } else {
-        slideupView.setMessageImageView(inAppMessageSlideup.getBitmap());
-      }
-
-      slideupView.setMessageBackgroundColor(inAppMessageSlideup.getBackgroundColor());
-      slideupView.setMessage(inAppMessageSlideup.getMessage());
-      slideupView.setMessageTextColor(inAppMessageSlideup.getMessageTextColor());
-      slideupView.setMessageIcon(inAppMessageSlideup.getIcon(), inAppMessageSlideup.getIconColor(), inAppMessageSlideup.getIconBackgroundColor());
-      slideupView.setMessageChevron(inAppMessageSlideup.getChevronColor(), inAppMessageSlideup.getClickAction());
-      slideupView.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
-
-      return slideupView;
-    }
-  };
-
-  private IInAppMessageViewFactory mInAppMessageModalViewFactory = new IInAppMessageViewFactory() {
-    @Override
-    public View createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
-      InAppMessageModal inAppMessageModal = (InAppMessageModal) inAppMessage;
-      AppboyInAppMessageModalView modalView = (AppboyInAppMessageModalView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_modal, null);
-      modalView.inflateStubViews();
-      if (mCanUseFresco) {
-        modalView.setMessageSimpleDrawee(inAppMessage.getImageUrl());
-      } else {
-        modalView.setMessageImageView(inAppMessageModal.getBitmap());
-      }
-
-      modalView.setMessageBackgroundColor(inAppMessage.getBackgroundColor());
-      modalView.setMessage(inAppMessage.getMessage());
-      modalView.setMessageTextColor(inAppMessage.getMessageTextColor());
-      modalView.setMessageHeaderText(inAppMessageModal.getHeader());
-      modalView.setMessageHeaderTextColor(inAppMessageModal.getHeaderTextColor());
-      modalView.setModalFrameColor(inAppMessageModal.getModalFrameColor());
-      modalView.setMessageIcon(inAppMessage.getIcon(), inAppMessage.getIconColor(), inAppMessage.getIconBackgroundColor());
-      modalView.setMessageButtons(inAppMessageModal.getMessageButtons());
-      modalView.setMessageCloseButtonColor(inAppMessageModal.getCloseButtonColor());
-      modalView.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
-
-      return modalView;
-    }
-  };
-
-  private IInAppMessageViewFactory mInAppMessageFullViewFactory = new IInAppMessageViewFactory() {
-    @Override
-    public View createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
-      InAppMessageFull inAppMessageFull = (InAppMessageFull) inAppMessage;
-      AppboyInAppMessageFullView fullView = (AppboyInAppMessageFullView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_full, null);
-      fullView.inflateStubViews();
-      if (mCanUseFresco) {
-        fullView.setMessageSimpleDrawee(inAppMessage.getImageUrl());
-      } else {
-        fullView.setMessageImageView(inAppMessage.getBitmap());
-      }
-
-      fullView.setMessageBackgroundColor(inAppMessageFull.getBackgroundColor());
-      fullView.setMessage(inAppMessageFull.getMessage());
-      fullView.setMessageTextColor(inAppMessageFull.getMessageTextColor());
-      fullView.setMessageHeaderText(inAppMessageFull.getHeader());
-      fullView.setMessageHeaderTextColor(inAppMessageFull.getHeaderTextColor());
-      fullView.setMessageButtons(inAppMessageFull.getMessageButtons());
-      fullView.setMessageCloseButtonColor(inAppMessageFull.getCloseButtonColor());
-      fullView.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
-
-      return fullView;
-    }
-  };
-
-  private IInAppMessageViewFactory mInAppMessageHtmlFullViewFactory = new IInAppMessageViewFactory() {
-    @Override
-    public View createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
-      InAppMessageHtmlFull inAppMessageHtmlFull = (InAppMessageHtmlFull) inAppMessage;
-      AppboyInAppMessageHtmlFullView htmlFullView = (AppboyInAppMessageHtmlFullView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_html_full, null);
-
-      htmlFullView.setWebViewContent(inAppMessage.getMessage(), inAppMessageHtmlFull.getLocalAssetsDirectoryUrl());
-      htmlFullView.setInAppMessageWebViewClient(new InAppMessageWebViewClient(inAppMessage, mInAppMessageWebViewClientListener));
-
-      return htmlFullView;
-    }
-  };
-
-  private IInAppMessageAnimationFactory getInAppMessageAnimationFactory(IInAppMessage inAppMessage) {
-    if (mCustomInAppMessageAnimationFactory != null) {
-      return mCustomInAppMessageAnimationFactory;
-    } else {
-      return mInAppMessageAnimationFactory;
-    }
-  }
-
-  private IInAppMessageAnimationFactory mInAppMessageAnimationFactory = new IInAppMessageAnimationFactory() {
-    private final long sSlideupAnimationDurationMillis = 400l;
-    private final int mShortAnimationDurationMillis = Resources.getSystem().getInteger(android.R.integer.config_shortAnimTime);
-
-    @Override
-    public Animation getOpeningAnimation(IInAppMessage inAppMessage) {
-      Animation animation;
-      if (inAppMessage instanceof InAppMessageSlideup) {
-        InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) inAppMessage;
-        if (inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP) {
-          animation = AnimationUtils.createVerticalAnimation(-1, 0, sSlideupAnimationDurationMillis, false);
-        } else {
-          animation = AnimationUtils.createVerticalAnimation(1, 0, sSlideupAnimationDurationMillis, false);
-        }
-      } else {
-        animation = new AlphaAnimation(0, 1);
-      }
-      return AnimationUtils.setAnimationParams(animation, mShortAnimationDurationMillis, true);
-    }
-
-    @Override
-    public Animation getClosingAnimation(IInAppMessage inAppMessage) {
-      Animation animation;
-      if (inAppMessage instanceof InAppMessageSlideup) {
-        InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) inAppMessage;
-        if (inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP) {
-          animation = AnimationUtils.createVerticalAnimation(0, -1, sSlideupAnimationDurationMillis, false);
-        } else {
-          animation = AnimationUtils.createVerticalAnimation(0, 1, sSlideupAnimationDurationMillis, false);
-        }
-      } else {
-        animation = new AlphaAnimation(1, 0);
-      }
-      return AnimationUtils.setAnimationParams(animation, mShortAnimationDurationMillis, false);
-    }
-  };
-
-  private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new IInAppMessageViewLifecycleListener() {
-    @Override
-    public void beforeOpened(View inAppMessageView, IInAppMessage inAppMessage) {
-      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeOpened called.");
-      inAppMessage.logImpression();
-    }
-
-    @Override
-    public void afterOpened(View inAppMessageView, IInAppMessage inAppMessage) {
-      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterOpened called.");
-    }
-
-    @Override
-    public void beforeClosed(View inAppMessageView, IInAppMessage inAppMessage) {
-      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeClosed called.");
-    }
-
-    @Override
-    public void afterClosed(IInAppMessage inAppMessage) {
-      mInAppMessageViewWrapper = null;
-      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterClosed called.");
-      mDisplayingInAppMessage.set(false);
-      if (inAppMessage instanceof IInAppMessageHtml) {
-        startClearHtmlInAppMessageAssetsThread((IInAppMessageHtml) inAppMessage);
-      }
-    }
-
-    @Override
-    public void onClicked(InAppMessageCloser inAppMessageCloser, View inAppMessageView, IInAppMessage inAppMessage) {
-      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onClicked called.");
-      if (inAppMessage.getClickAction() != ClickAction.NONE) {
-        inAppMessage.logClick();
-      }
-
-      // Perform the in-app message clicked listener action from the host application first. This give
-      // the app the option to override the values that are sent from the server and handle the
-      // in-app message differently depending on where the user is in the app.
-      //
-      // To modify the default in-app message clicked behavior, mutate the necessary in-app message members. As
-      // an example, if the in-app message were to navigate to the news feed when it was clicked, the
-      // behavior can be cancelled by setting the click action to NONE.
-      boolean handled = getInAppMessageManagerListener().onInAppMessageClicked(inAppMessage, inAppMessageCloser);
-
-      if (!handled) {
-        // Perform the default (or modified) in-app message clicked behavior.
-        performInAppMessageClicked(inAppMessage, inAppMessageCloser);
-      }
-    }
-
-    @Override
-    public void onButtonClicked(InAppMessageCloser inAppMessageCloser, MessageButton messageButton, IInAppMessageImmersive inAppMessageImmersive) {
-      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onButtonClicked called.");
-      if (messageButton.getClickAction() != ClickAction.NONE) {
-        inAppMessageImmersive.logButtonClick(messageButton);
-      }
-
-      boolean handled = getInAppMessageManagerListener().onInAppMessageButtonClicked(messageButton, inAppMessageCloser);
-
-      if (!handled) {
-        // Perform the default (or modified) in-app message button clicked behavior.
-        performInAppMessageButtonClicked(messageButton, inAppMessageImmersive, inAppMessageCloser);
-      }
-    }
-
-    @Override
-    public void onDismissed(View inAppMessageView, IInAppMessage inAppMessage) {
-      AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onDismissed called.");
-      getInAppMessageManagerListener().onInAppMessageDismissed(inAppMessage);
-    }
-
-    private void performInAppMessageButtonClicked(MessageButton messageButton, IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
-      performClickAction(messageButton.getClickAction(), inAppMessage, inAppMessageCloser, messageButton.getUri());
-    }
-
-    private void performInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
-      performClickAction(inAppMessage.getClickAction(), inAppMessage, inAppMessageCloser, inAppMessage.getUri());
-    }
-
-    private void performClickAction(ClickAction clickAction, IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser, Uri clickUri) {
-      if (mActivity == null) {
-        AppboyLogger.w(TAG, "Can't perform click action because the cached activity is null.");
-        return;
-      }
-      switch(clickAction) {
-        case NEWS_FEED:
-          inAppMessage.setAnimateOut(false);
-          inAppMessageCloser.close(false);
-          getAppboyNavigator().gotoNewsFeed(mActivity, BundleUtils.mapToBundle(inAppMessage.getExtras()));
-          break;
-        case URI:
-          inAppMessage.setAnimateOut(false);
-          inAppMessageCloser.close(false);
-          IAction action = ActionFactory.createUriAction(mActivity, clickUri.toString());
-          action.execute(mActivity);
-          break;
-        case NONE:
-          inAppMessageCloser.close(true);
-          break;
-        default:
-          inAppMessageCloser.close(false);
-          break;
-      }
-    }
-  };
-
-  String parseCustomEventNameFromQueryBundle(Bundle queryBundle) {
-    return queryBundle.getString(HTML_IAM_CUSTOM_EVENT_NAME_KEY);
-  }
-
-  AppboyProperties parsePropertiesFromQueryBundle(Bundle queryBundle) {
-    AppboyProperties customEventProperties = new AppboyProperties();
-    for (String key: queryBundle.keySet()) {
-      if (!key.equals(HTML_IAM_CUSTOM_EVENT_NAME_KEY)) {
-        String propertyValue = AppboyNotificationUtils.bundleOptString(queryBundle, key, null);
-        if (!StringUtils.isNullOrBlank(propertyValue)) {
-          customEventProperties.addProperty(key, propertyValue);
-        }
-      }
-    }
-    return customEventProperties;
-  }
-
-  private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new IInAppMessageWebViewClientListener() {
-
-    @Override
-    public void onCloseAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-      // We do nothing here since we don't call logClick() for closes
-      AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onCloseAction called.");
-      hideCurrentInAppMessage(true, true);
-
-      getHtmlInAppMessageActionListener().onCloseClicked(inAppMessage, url, queryBundle);
-    }
-
-    @Override
-    public void onNewsfeedAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-      AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onNewsfeedAction called.");
-      if (mActivity == null) {
-        AppboyLogger.w(TAG, "Can't perform news feed action because the cached activity is null.");
-        return;
-      }
-      // Log a click since the user left to the newsfeed
-      logHtmlInAppMessageClick(inAppMessage, queryBundle);
-
-      boolean handled = getHtmlInAppMessageActionListener().onNewsfeedClicked(inAppMessage, url, queryBundle);
-      if (!handled) {
-        hideCurrentInAppMessage(false);
-        Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
-        inAppMessageBundle.putAll(queryBundle);
-        getAppboyNavigator().gotoNewsFeed(mActivity, inAppMessageBundle);
-      }
-    }
-
-    @Override
-    public void onCustomEventAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-      AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onCustomEventAction called.");
-      if (mApplicationContext == null) {
-        AppboyLogger.w(TAG, "Can't perform custom event action because the cached application context is null.");
-        return;
-      }
-
-      boolean handled = getHtmlInAppMessageActionListener().onCustomEventFired(inAppMessage, url, queryBundle);
-      if (!handled) {
-        String customEventName = parseCustomEventNameFromQueryBundle(queryBundle);
-        if (StringUtils.isNullOrBlank(customEventName)) {
-          return;
-        }
-        AppboyProperties customEventProperties = parsePropertiesFromQueryBundle(queryBundle);
-        Appboy.getInstance(mApplicationContext).logCustomEvent(customEventName, customEventProperties);
-      }
-    }
-
-    @Override
-    public void onOtherUrlAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-      AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onOtherUrlAction called.");
-      if (mActivity == null) {
-        AppboyLogger.w(TAG, "Can't perform other url action because the cached activity is null.");
-        return;
-      }
-      // Log a click since the uri link was followed
-      logHtmlInAppMessageClick(inAppMessage, queryBundle);
-
-      boolean handled = getHtmlInAppMessageActionListener().onOtherUrlAction(inAppMessage, url, queryBundle);
-      if (!handled) {
-        hideCurrentInAppMessage(false);
-        boolean doExternalOpen = false;
-        if (queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN)) {
-          doExternalOpen = Boolean.parseBoolean(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN));
-        }
-
-        // Handle the action
-        IAction urlAction;
-        if (doExternalOpen) {
-          // Create an Action using using the ACTION_VIEW intent
-          Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
-          inAppMessageBundle.putAll(queryBundle);
-          urlAction = ActionFactory.createViewUriAction(url, inAppMessageBundle);
-        } else {
-          urlAction = ActionFactory.createUriAction(mActivity, url);
-        }
-        if (urlAction != null) {
-          urlAction.execute(mActivity);
-        }
-      }
-    }
-
-    private void logHtmlInAppMessageClick(IInAppMessage inAppMessage, Bundle queryBundle) {
-      if (queryBundle != null && queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_BUTTON_ID)) {
-        InAppMessageHtmlFull inAppMessageHtmlFull = (InAppMessageHtmlFull) inAppMessage;
-        inAppMessageHtmlFull.logButtonClick(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_BUTTON_ID));
-      } else {
-        inAppMessage.logClick();
-      }
-    }
-  };
-
-  private IAppboyNavigator getAppboyNavigator() {
-    IAppboyNavigator customAppboyNavigator = Appboy.getInstance(mActivity).getAppboyNavigator();
-    return customAppboyNavigator != null ? customAppboyNavigator : mDefaultAppboyNavigator;
-  }
-
-  /**
-   * @deprecated use {@link AppboyInAppMessageManager#registerInAppMessageManager(android.app.Activity)} instead.
-   */
-  @Deprecated
-  public void registerSlideupManager(Activity activity) {
-    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
-  }
-
-  /**
-   * @deprecated use {@link AppboyInAppMessageManager#unregisterInAppMessageManager(android.app.Activity)} instead.
-   */
-  @Deprecated
-  public void unregisterSlideupManager(Activity activity) {
-    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
-  }
-
-  // Default visibility for testing. The displayer cannot be enclosed in this class due to
-  // not being static.
-  AsyncInAppMessageDisplayer createAsyncInAppMessageDisplayer() {
-    return new AsyncInAppMessageDisplayer();
   }
 }

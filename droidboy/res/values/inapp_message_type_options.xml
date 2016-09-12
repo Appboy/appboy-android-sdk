@@ -3,17 +3,23 @@
   <string-array name="inapp_message_type_options">
     <item>Message Type: Slideup</item>
     <item>Message Type: Modal</item>
+    <item>Message Type: Modal - Graphic</item>
     <item>Message Type: Full</item>
+    <item>Message Type: Full - Graphic</item>
     <item>Message Type: HTML Full No JS</item>
     <item>Message Type: HTML Full Inline JS</item>
     <item>Message Type: HTML Full External JS</item>
+    <item>Message Type: HTML Full Star Wars</item>
   </string-array>
   <string-array name="inapp_message_type_values">
     <item>slideup</item>
     <item>modal</item>
+    <item>modal_graphic</item>
     <item>full</item>
+    <item>full_graphic</item>
     <item>html_full_no_js</item>
     <item>html_full_inline_js</item>
     <item>html_full_external_js</item>
+    <item>html_full_star_wars</item>
   </string-array>
 </resources>

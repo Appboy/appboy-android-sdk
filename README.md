@@ -1,4 +1,4 @@
-![Appboy Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/Appboy_Logo_Smiley_Red-01.png)
+![Appboy Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/Appboy_Logo_400x100.png)
 
 # Android SDK
 
@@ -45,7 +45,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:1.11.+'
+   compile 'com.appboy:android-sdk-ui:1.15.+'
    ...
 }
 ```
@@ -65,7 +65,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.11.+'
+  compile 'com.appboy:android-sdk-ui:1.15.+'
 }
 ```
 
@@ -84,7 +84,7 @@ The Android SDK supports Android 2.3+ (Gingerbread and up).
 
 Appboy uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons.  Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
 
-Appboy requires Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images.  Fresco is not included nor enabled by default in the Appboy library, and must be included and enabled explicitly by the parent app. Appboy supports Fresco 0.6.0 through 0.7.0.
+Appboy requires Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images.  Fresco is not included nor enabled by default in the Appboy library, and must be included and enabled explicitly by the parent app. Appboy supports Fresco 0.6.0 through 0.9.0.
 
 ## Questions?
 

@@ -65,17 +65,20 @@
   </style>
   <style name="Appboy.InAppMessage.Header">
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:background">@android:color/transparent</item>
     <item name="android:textColor">@color/com_appboy_inappmessage_header_text_light</item>
     <item name="android:textSize">19.0sp</item>
-    <item name="android:layout_gravity">center</item>
-    <item name="android:singleLine">true</item>
+    <item name="android:gravity">center</item>
     <item name="android:textStyle">bold</item>
+    <item name="android:layout_centerHorizontal">true</item>
   </style>
   <style name="Appboy.InAppMessage.Message">
     <item name="android:background">@android:color/transparent</item>
+  </style>
+  <style name="Appboy.InAppMessage.ScrollView">
+    <item name="android:fillViewport">true</item>
   </style>
   <style name="Appboy.InAppMessage.Image">
   </style>
@@ -93,6 +96,10 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:padding">0.0dp</item>
   </style>
+  <style name="Appboy.InAppMessage.Layout.Image">
+  </style>
+  <style name="Appboy.InAppMessage.Layout.ButtonAndText">
+  </style>
   <style name="Appboy.InAppMessage.Layout.Button">
     <item name="android:layout_width">match_parent</item>
     <item name="android:orientation">horizontal</item>
@@ -101,7 +108,6 @@
   <style name="Appboy.InAppMessage.Layout.Text">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_centerHorizontal">true</item>
-    <item name="android:layout_marginBottom">20.0dp</item>
     <item name="android:orientation">vertical</item>
   </style>
   <style name="Appboy.InAppMessage.Button">
@@ -135,6 +141,11 @@
     <item name="android:layout_alignParentRight">true</item>
     <item name="android:layout_centerVertical">true</item>
   </style>
+  <style name="Appboy.InAppMessage.Frame">
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:background">@color/com_appboy_inappmessage_frame_light</item>
+  </style>
 
   <!-- In-App Message Slideup -->
   <style name="Appboy.InAppMessage.Slideup">
@@ -149,8 +160,8 @@
     <item name="android:textColor">@color/com_appboy_inappmessage_text_dark</item>
     <item name="android:textSize">14.0sp</item>
     <item name="android:maxLines">3</item>
-    <item name="android:layout_gravity">left</item>
-    <item name="android:gravity">center_vertical</item>
+    <item name="android:gravity">start</item>
+    <item name="android:layout_gravity">center_vertical</item>
     <item name="android:layout_centerVertical">true</item>
     <item name="android:layout_toLeftOf">@id/com_appboy_inappmessage_slideup_chevron</item>
     <item name="android:layout_toRightOf">@id/com_appboy_inappmessage_slideup_image_layout</item>
@@ -172,41 +183,66 @@
   <style name="Appboy.InAppMessage.Modal">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">290.0dp</item>
-    <item name="android:padding">10.0dp</item>
+    <item name="android:paddingTop">0.0dp</item>
+    <item name="android:paddingRight">0.0dp</item>
+    <item name="android:paddingLeft">0.0dp</item>
+    <item name="android:paddingBottom">20.0dp</item>
     <item name="android:layout_centerInParent">true</item>
     <item name="android:background">@drawable/com_appboy_inappmessage_modal_background</item>
   </style>
-  <style name="Appboy.InAppMessage.Modal.Frame">
-    <item name="android:layout_height">match_parent</item>
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:background">@color/com_appboy_inappmessage_modal_frame_light</item>
-  </style>
   <style name="Appboy.InAppMessage.Header.Modal">
+    <item name="android:layout_width">250.0dp</item>
   </style>
   <style name="Appboy.InAppMessage.Message.Modal">
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_width">250.0dp</item>
     <item name="android:textColor">@color/com_appboy_inappmessage_text_light</item>
     <item name="android:textSize">14.0sp</item>
-    <item name="android:maxLines">4</item>
     <item name="android:gravity">center</item>
+    <item name="android:maxLines">16</item>
     <item name="android:layout_gravity">center</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:layout_marginTop">14.0dp</item>
   </style>
+  <style name="Appboy.InAppMessage.Layout.Image.Modal">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:padding">0.0dp</item>
+    <item name="android:layout_marginTop">20.0dp</item>
+  </style>
   <style name="Appboy.InAppMessage.Image.Modal">
-    <item name="android:layout_height">50.0dp</item>
-    <item name="android:layout_width">200.0dp</item>
+    <item name="android:layout_height">100.0dp</item>
+    <item name="android:layout_width">290.0dp</item>
   </style>
   <style name="Appboy.InAppMessage.Icon.Modal">
+    <item name="android:layout_marginTop">20.0dp</item>
     <item name="android:layout_centerHorizontal">true</item>
+    <item name="android:layout_gravity">center</item>
+  </style>
+  <style name="Appboy.InAppMessage.ScrollView.Modal">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_weight">1.0</item>
+    <item name="android:layout_marginTop">20.0dp</item>
+    <item name="android:gravity">center</item>
+  </style>
+  <style name="Appboy.InAppMessage.Layout.ButtonAndText.Modal">
+    <item name="android:layout_below">@id/com_appboy_inappmessage_modal_image_layout</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_centerInParent">true</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:layout_marginLeft">20.0dp</item>
+    <item name="android:layout_marginRight">20.0dp</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:weightSum">1.0</item>
   </style>
   <style name="Appboy.InAppMessage.Layout.Button.Modal">
-    <item name="android:layout_below">@id/com_appboy_inappmessage_modal_text_layout</item>
+    <item name="android:layout_marginTop">20.0dp</item>
+    <item name="android:layout_weight">0.0</item>
   </style>
   <style name="Appboy.InAppMessage.Layout.Text.Modal">
-    <item name="android:layout_marginTop">20.0dp</item>
-    <item name="android:layout_below">@id/com_appboy_inappmessage_modal_image_layout</item>
+    <item name="android:orientation">vertical</item>
   </style>
   <style name="Appboy.InAppMessage.Button.Modal">
   </style>
@@ -216,12 +252,46 @@
     <item name="android:layout_marginLeft">10.0dp</item>
   </style>
   <style name="Appboy.InAppMessage.CloseButton.Modal">
+    <item name="android:layout_marginRight">10.0dp</item>
+    <item name="android:layout_marginTop">10.0dp</item>
+  </style>
+  <style name="Appboy.InAppMessage.Frame.Modal">
+  </style>
+
+  <!-- In-App Message Graphic Modal -->
+  <style name="Appboy.InAppMessage.Modal.Graphic">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:padding">0.0dp</item>
+  </style>
+  <style name="Appboy.InAppMessage.Image.Modal.Graphic">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+  <style name="Appboy.InAppMessage.Layout.Button.Modal.Graphic">
+    <item name="android:layout_below">@id/com_appboy_inappmessage_modal_text_layout</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_marginLeft">10.0dp</item>
+    <item name="android:layout_marginRight">10.0dp</item>
+    <item name="android:layout_marginBottom">10.0dp</item>
+    <item name="android:layout_alignParentBottom">true</item>
+  </style>
+  <style name="Appboy.InAppMessage.Button.Modal.One.Graphic">
+  </style>
+  <style name="Appboy.InAppMessage.Button.Modal.Two.Graphic">
+    <item name="android:layout_marginLeft">10.0dp</item>
+  </style>
+  <style name="Appboy.InAppMessage.CloseButton.Modal.Graphic">
+  </style>
+  <style name="Appboy.InAppMessage.Frame.Modal.Graphic">
   </style>
 
   <!-- In-App Message Full -->
   <style name="Appboy.InAppMessage.Full">
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_centerInParent">true</item>
     <item name="android:background">@color/com_appboy_inappmessage_background_light</item>
     <item name="android:padding">0.0dp</item>
   </style>
@@ -229,49 +299,39 @@
     <item name="android:background">@android:color/transparent</item>
     <item name="android:orientation">vertical</item>
     <item name="android:padding">20.0dp</item>
-  </style>
-  <style name="Appboy.InAppMessage.Full.TextArea.Portrait">
+    <item name="android:layout_weight">0.5</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">0.0dp</item>
-    <item name="android:layout_weight">0.5</item>
-  </style>
-  <style name="Appboy.InAppMessage.Full.TextArea.Landscape">
-    <item name="android:layout_width">0.0dp</item>
-    <item name="android:layout_height">match_parent</item>
-    <item name="android:layout_weight">0.5</item>
   </style>
   <style name="Appboy.InAppMessage.Header.Full">
   </style>
   <style name="Appboy.InAppMessage.Message.Full">
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
     <item name="android:textColor">@color/com_appboy_inappmessage_text_light</item>
     <item name="android:textSize">14.0sp</item>
-    <item name="android:maxLines">8</item>
     <item name="android:gravity">center</item>
-    <item name="android:layout_gravity">center</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:layout_marginTop">14.0dp</item>
-    <item name="android:layout_marginLeft">14.0dp</item>
-    <item name="android:layout_marginRight">14.0dp</item>
+  </style>
+  <style name="Appboy.InAppMessage.ScrollView.Full">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_marginBottom">10.0dp</item>
+    <item name="android:layout_above">@id/com_appboy_inappmessage_full_button_layout</item>
   </style>
   <style name="Appboy.InAppMessage.Image.Full">
     <item name="android:layout_centerHorizontal">true</item>
-  </style>
-  <style name="Appboy.InAppMessage.Image.Full.Portrait">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">0.0dp</item>
-    <item name="android:layout_weight">0.5</item>
-  </style>
-  <style name="Appboy.InAppMessage.Image.Full.Landscape">
-    <item name="android:layout_width">0.0dp</item>
-    <item name="android:layout_height">match_parent</item>
     <item name="android:layout_weight">0.5</item>
   </style>
   <style name="Appboy.InAppMessage.Layout.Button.Full">
     <item name="android:layout_alignParentBottom">true</item>
   </style>
   <style name="Appboy.InAppMessage.Layout.Text.Full">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
   </style>
   <style name="Appboy.InAppMessage.Button.Full">
   </style>
@@ -281,6 +341,38 @@
     <item name="android:layout_marginLeft">10.0dp</item>
   </style>
   <style name="Appboy.InAppMessage.CloseButton.Full">
+  </style>
+  <style name="Appboy.InAppMessage.Frame.Full">
+  </style>
+
+  <!-- In-App Message Graphic Full -->
+  <style name="Appboy.InAppMessage.Full.Graphic">
+  </style>
+  <style name="Appboy.InAppMessage.Image.Full.Graphic">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+  <style name="Appboy.InAppMessage.Layout.Button.Full.Graphic">
+  </style>
+  <style name="Appboy.InAppMessage.Button.Full.One.Graphic">
+  </style>
+  <style name="Appboy.InAppMessage.Button.Full.Two.Graphic">
+  </style>
+  <style name="Appboy.InAppMessage.Frame.Full.Graphic">
+  </style>
+  <style name="Appboy.InAppMessage.CloseButton.Full.Graphic">
+    <item name="android:layout_marginTop">10.0dp</item>
+    <item name="android:layout_marginRight">10.0dp</item>
+  </style>
+
+  <!-- In-App Message Html Full -->
+  <style name="Appboy.InAppMessage.Html">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+  <style name="Appboy.InAppMessage.Html.Webview">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
   </style>
 
   <!-- In-App Message Html Full -->

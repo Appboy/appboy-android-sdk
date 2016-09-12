@@ -9,7 +9,6 @@ public class FeedbackFragmentActivity extends AppboyFragmentActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.com_appboy_feedback_activity);
-    setTitle("DroidGirl");
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     AppboyFeedbackFragment appboyFeedbackFragment = (AppboyFeedbackFragment) fragmentManager.findFragmentById(R.id.com_appboy_feedback);
@@ -18,6 +17,7 @@ public class FeedbackFragmentActivity extends AppboyFragmentActivity {
       public void onFeedbackFinished(AppboyFeedbackFragment.FeedbackResult disposition) {
         finish();
       }
+
       @Override
       public String beforeFeedbackSubmitted(String message) {
         return message;

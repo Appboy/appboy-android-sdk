@@ -1,70 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The name of this file, @+id/com_appboy_notification_title, @+id/com_appboy_notification_content,
-     @+id/com_appboy_notification_time, and @+id/com_appboy_notification_icon
-     must not be changed in order for AppboyGCMReceiver to properly render
+<!-- The name of this file must not be changed in order for AppboyGCMReceiver to properly render
      long push notifications in Android [3.0-4.1). Without this view, devices before Android 4.1 (which
      cannot use BigTextStyle notifications) will truncate the display of push notifications in the notification
      center at only a single line. -->
-
-<!-- The AppboyGcmReceiver ensures that this layout is only used for Honeycomb and above, so we mark this class with
-     tools:targetApi="11" to soothe lint analysis into complacency. -->
 <FrameLayout xmlns:tools="http://schemas.android.com/tools"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/status_bar_latest_event_content"
              android:layout_width="match_parent"
              android:layout_height="65dp"
              tools:targetApi="11">
-  <ImageView android:id="@+id/com_appboy_notification_icon"
+    <ImageView android:id="@+id/com_appboy_notification_icon"
              android:layout_width="@android:dimen/notification_large_icon_width"
              android:layout_height="@android:dimen/notification_large_icon_height"
              android:scaleType="center"/>
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="@android:dimen/notification_large_icon_width"
-      android:paddingBottom="2dp"
-      android:paddingTop="0dp"
-      android:gravity="top"
-      android:orientation="vertical"
-      android:layout_gravity="fill_vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:paddingTop="4dp"
-        android:orientation="horizontal"
-        android:layout_gravity="top"
-        android:layout_weight="0">
-      <TextView android:id="@+id/com_appboy_notification_title"
-                android:textAppearance="@style/Appboy.EventContent.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:fadingEdge="horizontal"
-                android:layout_weight="1"/>
-      <TextView android:id="@+id/com_appboy_notification_time"
-                android:textAppearance="@style/Appboy.EventContent.Time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0"
-                android:singleLine="true"
-                android:gravity="center"
-                android:paddingLeft="8dp"/>
-    </LinearLayout>
-    <TextView android:id="@+id/com_appboy_notification_content"
-              android:textAppearance="@style/Appboy.EventContent"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginLeft="8dp"
-              android:layout_marginRight="8dp"
-              android:layout_marginBottom="4dp"
-              android:singleLine="false"
-              android:maxLines="2"
-              android:ellipsize="end"
-              android:text=""
-              android:layout_weight="1"/>
-  </LinearLayout>
+    <include layout="@layout/com_appboy_notification_base"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="@android:dimen/notification_large_icon_width"/>
 </FrameLayout>

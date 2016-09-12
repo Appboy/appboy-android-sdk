@@ -8,15 +8,15 @@
   </style>
   <style name="Appboy.InAppMessage.Header">
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:background">@android:color/transparent</item>
     <item name="android:textColor">@color/com_appboy_inappmessage_header_text_light</item>
-    <item name="android:layout_gravity">center</item>
-    <item name="android:singleLine">true</item>
+    <item name="android:gravity">center</item>
     <item name="android:textSize">15.0sp</item>
     <item name="android:textStyle">italic</item>
     <item name="android:typeface">serif</item>
+    <item name="android:layout_centerHorizontal">true</item>
   </style>
   <style name="Appboy.InAppMessage.Button">
     <item name="android:layout_height">wrap_content</item>
@@ -31,8 +31,8 @@
     <item name="android:layout_weight">0.5</item>
     <item name="android:paddingLeft">10.0dp</item>
     <item name="android:paddingRight">10.0dp</item>
-    <item name="android:paddingTop">22.5dp</item>
-    <item name="android:paddingBottom">22.5dp</item>
+    <item name="android:paddingTop">15.0dp</item>
+    <item name="android:paddingBottom">15.0dp</item>
     <item name="appboyInAppMessageCustomFontFile">@string/custom_font</item>
   </style>
 </resources>

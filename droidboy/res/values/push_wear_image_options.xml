@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="push_wear_background_image_options">
-        <item>Wear Background Image: None</item>
-        <item>Wear Background Image: Weekly Notes</item>
-        <item>Wear Background Image: Community</item>
+        <item>Wear Background Image: Not Set</item>
+        <item>Wear Background Image: Appboy</item>
+        <item>Wear Background Image: s3</item>
+        <item>Wear Background Image: Blue</item>
     </string-array>
     <string-array name="push_wear_background_image_values">
         <item></item>
-        <item>https://blog.appboy.com/wp-content/uploads/2014/08/academy-weeklynotes-banner.png</item>
-        <item>https://blog.appboy.com/wp-content/uploads/2015/07/Appboy-Community-Badge.png</item>
+        <item>@string/appboy_image_url</item>
+        <item>@string/appboy_image_url_s3</item>
+        <item>@string/blue_url</item>
     </string-array>
 </resources>

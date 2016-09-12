@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="push_accent_color_options">
+    <item>Accent Color: Not Set</item>
+    <item>Accent Color: Black</item>
+    <item>Accent Color: White</item>
+    <item>Accent Color: Blue</item>
+    <item>Accent Color: Transparent</item>
+  </string-array>
+  <string-array name="push_accent_color_values">
+    <item></item>
+    <item>0xFF000000</item>
+    <item>0xFFFFFFFF</item>
+    <item>0xFF0073d5</item>
+    <item>0x00000000</item>
+  </string-array>
+</resources>

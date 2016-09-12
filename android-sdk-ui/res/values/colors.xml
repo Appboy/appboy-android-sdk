@@ -7,11 +7,11 @@
   <color name="com_appboy_inappmessage_icon">@android:color/white</color>
   <color name="com_appboy_inappmessage_icon_background">#ff0073d5</color>
   <color name="com_appboy_inappmessage_chevron">@android:color/white</color>
+  <color name="com_appboy_inappmessage_frame_light">#C0333333</color>
 
   <color name="com_appboy_inappmessage_background_dark">#E6000000</color>
   <color name="com_appboy_inappmessage_text_dark">@android:color/white</color>
 
-  <color name="com_appboy_inappmessage_modal_frame_light">#E6000000</color>
   <color name="com_appboy_inappmessage_background_light">@android:color/white</color>
   <color name="com_appboy_inappmessage_header_text_light">@android:color/black</color>
   <color name="com_appboy_inappmessage_text_light">@android:color/black</color>
@@ -36,6 +36,7 @@
 
   <color name="com_appboy_card_background_border">#50CCCCCC</color>
   <color name="com_appboy_card_background_shadow">#30CCCCCC</color>
+  <color name="com_appboy_card_background">@android:color/white</color>
 
   <color name="com_appboy_custom_notification_title">#999999</color>
   <color name="com_appboy_custom_notification_content">#FFFFFF</color>

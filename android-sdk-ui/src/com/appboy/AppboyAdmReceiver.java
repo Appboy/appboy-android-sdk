@@ -64,8 +64,8 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       AppboyLogger.i(TAG, "Unregistering from ADM: " + unregistered);
       Appboy.getInstance(context).unregisterAppboyPushMessages();
     } else {
-      AppboyLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration " +
-          "confirmation. Ignoring.");
+      AppboyLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration "
+          + "confirmation. Ignoring.");
       return false;
     }
     return true;
@@ -90,6 +90,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       return false;
     } else {
       Bundle admExtras = intent.getExtras();
+      AppboyLogger.d(TAG, String.format("Push message payload received: %s", admExtras));
 
       // Parsing the Appboy data extras (data push).
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);
@@ -100,16 +101,11 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         admExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
         XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
 
-        Notification notification = null;
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
-        try {
-          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
-        } catch(Exception e) {
-          AppboyLogger.e(TAG, "Failed to create notification.", e);
-          return false;
-        }
+        Notification notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
 
         if (notification == null) {
+          AppboyLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
           return false;
         }
 
@@ -138,18 +134,22 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
    * notification, which cannot be downloaded on the main thread.
    */
   public class HandleAppboyAdmMessageTask extends AsyncTask<Void, Void, Void> {
-    private final Context context;
-    private final Intent intent;
+    private final Context mContext;
+    private final Intent mIntent;
 
     public HandleAppboyAdmMessageTask(Context context, Intent intent) {
-      this.context = context;
-      this.intent = intent;
-      this.execute();
+      mContext = context;
+      mIntent = intent;
+      execute();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-      handleAppboyAdmMessage(this.context, this.intent);
+      try {
+        handleAppboyAdmMessage(mContext, mIntent);
+      } catch (Exception e) {
+        AppboyLogger.e(TAG, "Failed to create and display notification.", e);
+      }
       return null;
     }
   }
@@ -169,8 +169,8 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       handleRegistrationIntent(context, intent);
       return true;
     }
-    AppboyLogger.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set " +
-        "com_appboy_push_adm_messaging_registration_enabled to true in your appboy.xml to enable ADM.");
+    AppboyLogger.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set "
+        + "com_appboy_push_adm_messaging_registration_enabled to true in your appboy.xml to enable ADM.");
     return false;
   }
 }

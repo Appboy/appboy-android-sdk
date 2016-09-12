@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="push_large_icon_options">
+    <item>Large Icon: Not Set</item>
+    <item>Large Icon: Appboy</item>
+    <item>Large Icon: s3</item>
+    <item>Large Icon: Blue</item>
+  </string-array>
+  <string-array name="push_large_icon_values">
+    <item></item>
+    <item>@string/appboy_image_url</item>
+    <item>@string/appboy_image_url_s3</item>
+    <item>@string/blue_url</item>
+  </string-array>
+</resources>

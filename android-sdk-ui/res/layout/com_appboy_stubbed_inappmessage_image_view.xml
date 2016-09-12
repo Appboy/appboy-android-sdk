@@ -11,7 +11,7 @@
     view must be set programmatically post-inflation. This ImageView must be wrapped in a layout tag
     and not a merge tag due to this issue: http://stackoverflow.com/questions/29344787/including-views-using-merge-tag-and-viewstub.
     -->
-    <ImageView
+    <com.appboy.ui.inappmessage.AppboyInAppMessageImageView
         android:id="@+id/com_appboy_stubbed_inappmessage_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

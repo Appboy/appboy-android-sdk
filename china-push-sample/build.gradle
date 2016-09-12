@@ -1,17 +1,17 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.11.+'
-  compile files('libs/pushservice-4.3.0.4.jar')
+  compile 'com.appboy:android-sdk-ui:1.15.+'
+  compile files('libs/pushservice-5.1.0.48.jar')
 }
 
 android {
-  compileSdkVersion 19
-  buildToolsVersion "19.1.0"
+  compileSdkVersion 23
+  buildToolsVersion '24.0.0'
 
   defaultConfig {
     minSdkVersion 9
-    targetSdkVersion 19
+    targetSdkVersion 23
   }
 
   lintOptions {

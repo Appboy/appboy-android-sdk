@@ -5,6 +5,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.util.List;
+
 public class SpinnerUtils {
   public static final String NOT_SET = "not set";
 
@@ -15,7 +17,14 @@ public class SpinnerUtils {
     spinner.setOnItemSelectedListener(listener);
   }
 
-  public static boolean SpinnerItemNotSet(String spinnerItem) {
+  public static void setUpSpinnerWithList(Spinner spinner, OnItemSelectedListener listener, List list) {
+    ArrayAdapter arrayAdapter = new ArrayAdapter(spinner.getContext(), android.R.layout.simple_spinner_item, list);
+    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    spinner.setAdapter(arrayAdapter);
+    spinner.setOnItemSelectedListener(listener);
+  }
+
+  public static boolean spinnerItemNotSet(String spinnerItem) {
     return (spinnerItem == null || spinnerItem.equalsIgnoreCase(NOT_SET));
   }
 

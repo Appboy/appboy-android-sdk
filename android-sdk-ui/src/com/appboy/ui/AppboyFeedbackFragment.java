@@ -17,8 +17,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.appboy.Appboy;
+import com.appboy.support.StringUtils;
 import com.appboy.support.ValidationUtils;
-import com.appboy.ui.support.StringUtils;
 
 public class AppboyFeedbackFragment extends Fragment {
 
@@ -36,7 +36,7 @@ public class AppboyFeedbackFragment extends Fragment {
 
     /**
      * Called just before a user-submitted feedback message is sent to Appboy.
-     *
+     * <p/>
      * Allows modification or augmentation of the message before it is sent to Appboy.
      *
      * @param message the feedback message as written by the user
@@ -61,20 +61,27 @@ public class AppboyFeedbackFragment extends Fragment {
   private int mOriginalSoftInputMode;
   private boolean mErrorMessageShown;
 
-  public AppboyFeedbackFragment() {}
+  public AppboyFeedbackFragment() {
+  }
 
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
     mSendButtonWatcher = new TextWatcher() {
-      @Override public void beforeTextChanged(CharSequence sequence, int start, int count, int after) { }
-      @Override public void onTextChanged(CharSequence sequence, int start, int before, int count) { }
+      @Override
+      public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+      }
+
+      @Override
+      public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+      }
+
       @Override
       public void afterTextChanged(Editable sequence) {
-          if (mErrorMessageShown){
-            // Only show error messages after the user has clicked the send button at least once.
-            ensureSendButton();
-          }
+        if (mErrorMessageShown) {
+          // Only show error messages after the user has clicked the send button at least once.
+          ensureSendButton();
+        }
       }
     };
     mCancelListener = new View.OnClickListener() {
@@ -158,7 +165,7 @@ public class AppboyFeedbackFragment extends Fragment {
   private boolean validatedMessage() {
     boolean validMessage = mMessageEditText.getText() != null && !StringUtils.isNullOrBlank(mMessageEditText.getText().toString());
     if (validMessage) {
-        mMessageEditText.setError(null);
+      mMessageEditText.setError(null);
     } else {
       // Display error message in the message box
       mMessageEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_invalid_message));
@@ -167,10 +174,12 @@ public class AppboyFeedbackFragment extends Fragment {
   }
 
   private boolean validatedEmail() {
-    boolean validEmail = mEmailEditText.getText() != null && !StringUtils.isNullOrBlank(mEmailEditText.getText().toString()) && ValidationUtils.isValidEmailAddress(mEmailEditText.getText().toString());
+    boolean validEmail = mEmailEditText.getText() != null
+        && !StringUtils.isNullOrBlank(mEmailEditText.getText().toString())
+        && ValidationUtils.isValidEmailAddress(mEmailEditText.getText().toString());
     boolean blankEmail = mEmailEditText.getText() != null && StringUtils.isNullOrBlank(mEmailEditText.getText().toString());
-    if (validEmail){
-        mEmailEditText.setError(null);
+    if (validEmail) {
+      mEmailEditText.setError(null);
     } else if (blankEmail) {
       // Display blank email error message in the email box
       mEmailEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_empty_email));

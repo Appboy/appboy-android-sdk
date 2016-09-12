@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 import com.appboy.Constants;
 import com.appboy.models.cards.CrossPromotionSmallCard;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.support.StringUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.NumberFormat;
@@ -47,6 +47,8 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
       mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_cross_promotion_small_card_drawee_stub);
     } else {
       mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_cross_promotion_small_card_imageview_stub);
+      mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+      mImage.setAdjustViewBounds(true);
     }
 
     if (card != null) {
@@ -79,15 +81,15 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     // If the server sends down the display price, use that,
     if (!StringUtils.isNullOrBlank(card.getDisplayPrice())) {
       mPrice.setText(card.getDisplayPrice());
-    } else{
+    } else {
     // else, format client-side.
       mPrice.setText(getPriceString(card.getPrice()));
     }
-    mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false,  card.getAppStore(), card.getKindleId());
+    mPriceAction = new GooglePlayAppDetailsAction(card.getPackage(), false, card.getAppStore(), card.getKindleId());
     mPrice.setOnClickListener(new OnClickListener() {
       @Override
-      public void onClick(View v) {
-        handleCardClick(mContext,card, mPriceAction, TAG);
+      public void onClick(View view) {
+        handleCardClick(mContext, card, mPriceAction, TAG);
       }
     });
 

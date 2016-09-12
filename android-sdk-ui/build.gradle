@@ -1,29 +1,25 @@
-apply plugin: 'android-library'
-apply plugin: 'maven-publish'
-
-version = '1.11.0.1'
-
-version = version + '-ihr'
+apply plugin: 'com.android.library'
+apply plugin: 'android-maven'
 
 dependencies {
-    compile 'com.appboy:closed-lib:0.0.3'
-
-    // Note: This requires the Android Support Repository to be installed, please see the README.md. The jar is
-    // also available in the libs/ directory to help support people who are using older build systems.
-    compile 'com.android.support:support-v4:23.0.1'
-    provided ("com.facebook.fresco:fresco:0.6.1") {
-        exclude group: 'com.android.support', module: 'support-v4'
-    }
+  compile files('libs/appboy.jar')
+  // Note: This requires the Android Support Repository to be installed, please see the README.md. The jar is
+  // also available in the libs/ directory to help support people who are using older build systems.
+  compile 'com.android.support:support-v4:23.0.1'
+  provided ("com.facebook.fresco:fresco:0.9.0") {
+    exclude group: 'com.android.support', module: 'support-v4'
+  }
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+  compileSdkVersion 23
+  buildToolsVersion '24.0.0'
 
-    defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 23
-    }
+  defaultConfig {
+    minSdkVersion 9
+    targetSdkVersion 23
+    consumerProguardFiles 'appboy-proguard-rules.pro'
+  }
 
   sourceSets {
     main.setRoot(".")
@@ -39,43 +35,4 @@ android {
       assets.srcDirs = ['assets']
     }
   }
-}
-
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-}
-
-publishing {
-    publications {
-        release(MavenPublication) {
-            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
-            groupId 'com.appboy'
-            artifactId 'sdk'
-
-            artifact sourceJar {
-                classifier "sources"
-            }
-
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                configurations.compile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            url "http://iheart.artifactoryonline.com/iheart/internal"
-            credentials {
-                username artifactoryUsername
-                password artifactoryPassword
-            }
-        }
-    }
 }

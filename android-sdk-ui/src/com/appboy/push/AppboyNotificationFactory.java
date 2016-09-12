@@ -18,7 +18,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    */
   public static AppboyNotificationFactory getInstance() {
     if (sInstance == null) {
-      synchronized(AppboyNotificationFactory.class) {
+      synchronized (AppboyNotificationFactory.class) {
         if (sInstance == null) {
           sInstance = new AppboyNotificationFactory();
         }
@@ -56,13 +56,14 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     int smallNotificationIconResourceId = AppboyNotificationUtils.setSmallIcon(appConfigurationProvider, notificationBuilder);
 
     // Honeycomb added large icons and sound
-    AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder);
+    boolean usingLargeIcon = AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setSoundIfPresentAndSupported(notificationBuilder, notificationExtras);
 
     // From Honeycomb to ICS, we can use a custom view for our notifications which will allow them to be taller than
     // the standard one line of text.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-      RemoteViews remoteViews = AppboyNotificationRemoteViewsUtils.createMultiLineContentNotificationView(context, notificationExtras, smallNotificationIconResourceId);
+      // Pass in !usingLargeIcon because if no large icon is present, we want to display the small icon in its place.
+      RemoteViews remoteViews = AppboyNotificationRemoteViewsUtils.createMultiLineContentNotificationView(context, notificationExtras, smallNotificationIconResourceId, !usingLargeIcon);
       if (remoteViews != null) {
         notificationBuilder.setContent(remoteViews);
         return notificationBuilder.build();

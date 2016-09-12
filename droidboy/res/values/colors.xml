@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="blue">#30376D</color>
-  <color name="red">#9E4238</color>
-  <color name="green">#869836</color>
-  <color name="yellow">#A68633</color>
-  <color name="gray">#DCDCDC</color>
-  <color name="light_gray">#F9F9F9</color>
-
-  <color name="custom_inappmessage_green">#FF48D46B</color>
+  <color name="custom_inappmessage_green">#FF89E4DF</color>
+  <color name="window_background">#f0f0f0</color>
+  <color name="appboy_red">#FFf33e3e</color>
+  <color name="google_orange">#FFFF5722</color>
+  <color name="google_yellow">#FFFFEB3B</color>
+  <color name="google_green">#FF4CAF50</color>
+  <color name="appboy_blue">#FF0073d5</color>
+  <color name="transparent_appboy_blue">#220073d5</color>
+  <color name="google_purple">#FF673AB7</color>
+  <color name="google_brown">#FF795548</color>
+  <color name="google_grey">#FF9E9E9E</color>
+  <color name="black">#FF000000</color>
+  <color name="white">#FFFFFFFF</color>
 </resources>

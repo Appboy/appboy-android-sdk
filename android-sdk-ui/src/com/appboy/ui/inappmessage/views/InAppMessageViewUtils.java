@@ -6,7 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import com.appboy.support.AppboyLogger;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appboy.Constants;
+import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.MessageButton;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.support.ViewUtils;
@@ -69,7 +71,7 @@ public class InAppMessageViewUtils {
     }
   }
 
-  public static void setModalFrameColor(View view, Integer color) {
+  public static void setFrameColor(View view, Integer color) {
     if (color != null) {
       view.setBackgroundColor(color);
     }
@@ -123,8 +125,8 @@ public class InAppMessageViewUtils {
 
   protected static void resetMessageMarginsIfNecessary(TextView messageView, TextView headerView) {
     if (headerView == null && messageView != null) {
-      // If header is not present but message is present, reset message margins to 0 (Typically, the message's top margin set to 14 to accommodate the header.)
-      LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+      // If header is not present but message is present, reset message margins to 0 (Typically, the message's has a top margin to accommodate the header.)
+      LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messageView.getLayoutParams().width, messageView.getLayoutParams().height);
       layoutParams.setMargins(0, 0, 0, 0);
       messageView.setLayoutParams(layoutParams);
     }
@@ -139,6 +141,16 @@ public class InAppMessageViewUtils {
 
   public static void closeInAppMessageOnKeycodeBack() {
     AppboyLogger.d(TAG, "Back button intercepted by in-app message view, closing in-app message.");
-    AppboyInAppMessageManager.getInstance().hideCurrentInAppMessage(true, true);
+    AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
+  }
+
+  public static void setTextAlignment(TextView textView, TextAlign textAlign) {
+    if (textAlign.equals(TextAlign.START)) {
+      textView.setGravity(Gravity.START);
+    } else if (textAlign.equals(TextAlign.END)) {
+      textView.setGravity(Gravity.END);
+    } else if (textAlign.equals(TextAlign.CENTER)) {
+      textView.setGravity(Gravity.CENTER);
+    }
   }
 }

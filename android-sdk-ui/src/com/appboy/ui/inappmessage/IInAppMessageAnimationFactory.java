@@ -1,6 +1,6 @@
 package com.appboy.ui.inappmessage;
 
-import android.view.View;
+import android.view.View;//NOPMD
 import android.view.animation.Animation;
 
 import com.appboy.models.IInAppMessage;

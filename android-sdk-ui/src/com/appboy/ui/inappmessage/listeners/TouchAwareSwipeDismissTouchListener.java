@@ -14,6 +14,7 @@ public class TouchAwareSwipeDismissTouchListener extends SwipeDismissTouchListen
 
   public interface ITouchListener {
     void onTouchStartedOrContinued();
+
     void onTouchEnded();
   }
 
@@ -38,6 +39,8 @@ public class TouchAwareSwipeDismissTouchListener extends SwipeDismissTouchListen
         if (mTouchListener != null) {
           mTouchListener.onTouchEnded();
         }
+        break;
+      default:
         break;
     }
     return super.onTouch(view, motionEvent);

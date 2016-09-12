@@ -1,5 +1,6 @@
 package com.appboy.push;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,12 +14,14 @@ import android.support.v4.app.NotificationCompat;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
-import com.appboy.AppboyImageUtils;
 import com.appboy.Constants;
+import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.PackageUtils;
-import com.appboy.ui.support.StringUtils;
+import com.appboy.support.PermissionUtils;
+import com.appboy.support.StringUtils;
 
 public class AppboyNotificationActionUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationActionUtils.class.getName());
@@ -63,7 +66,7 @@ public class AppboyNotificationActionUtils {
         actionIndex++;
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, String.format("Caught exception while adding notification action buttons.", e));
+      AppboyLogger.e(TAG, "Caught exception while adding notification action buttons.", e);
     }
   }
 
@@ -103,6 +106,11 @@ public class AppboyNotificationActionUtils {
           intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
         }
         AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
+
+        XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
+        if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+          AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+        }
       } else if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_SHARE)) {
         AppboyNotificationUtils.cancelNotification(context, notificationId);
         context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
@@ -114,7 +122,7 @@ public class AppboyNotificationActionUtils {
         AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, String.format("Caught exception while handling notification action button click.", e));
+      AppboyLogger.e(TAG, "Caught exception while handling notification action button click.", e);
     }
   }
 
@@ -131,7 +139,7 @@ public class AppboyNotificationActionUtils {
   static boolean canShareImage(Context context, Bundle appboyExtras) {
     return appboyExtras != null
         && appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)
-        && AppboyImageUtils.isWriteExternalPermissionGranted(context);
+        && PermissionUtils.hasPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
   }
 
   /**
@@ -260,7 +268,7 @@ public class AppboyNotificationActionUtils {
 
     @Override
     protected void onPostExecute(Intent shareIntent) {
-      if (shareIntent != null && mContext != null) {
+      if (mContext != null) {
         if (shareIntent != null) {
           mContext.startActivity(shareIntent);
         } else {
@@ -292,10 +300,10 @@ public class AppboyNotificationActionUtils {
       String fileName = Long.toString(System.currentTimeMillis());
 
       String imageUrl = appboyExtras.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
-      Bitmap imageBitmap = AppboyImageUtils.downloadImageBitmap(imageUrl);
+      Bitmap imageBitmap = AppboyImageUtils.getBitmap(Uri.parse(imageUrl));
 
       Uri localImageUri = AppboyImageUtils
-          .storeBitmapLocally(context.getApplicationContext(), imageBitmap, fileName, DEFAULT_LOCAL_STORAGE_FOLDER);
+          .storePushBitmapInExternalStorage(context.getApplicationContext(), imageBitmap, fileName, DEFAULT_LOCAL_STORAGE_FOLDER);
 
       shareIntent.setType(IMAGE_MIME_TYPE);
       shareIntent.putExtra(Intent.EXTRA_STREAM, localImageUri);

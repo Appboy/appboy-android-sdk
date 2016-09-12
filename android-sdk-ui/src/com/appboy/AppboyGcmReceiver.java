@@ -13,7 +13,6 @@ import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.push.AppboyNotificationActionUtils;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
-import com.iheartradio.appboy.AppboyDependencies;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyGcmReceiver.class.getName());
@@ -31,25 +30,18 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
   public void onReceive(Context context, Intent intent) {
     AppboyLogger.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
     String action = intent.getAction();
-
-    boolean isPush = GCM_RECEIVE_INTENT_ACTION.equals(action) && AppboyNotificationUtils.isAppboyPushMessage(intent);
-
-    if (isPush && AppboyDependencies.ihr.isOptedOut()) {
-        AppboyDependencies.listener.onPushSquelched();
-    } else if (GCM_REGISTRATION_INTENT_ACTION.equals(action)) {
-        handleRegistrationEventIfEnabled(new XmlAppConfigurationProvider(context), context, intent);
-    } else if (isPush) {
-        new HandleAppboyGcmMessageTask(context, intent);
+    if (GCM_REGISTRATION_INTENT_ACTION.equals(action)) {
+      handleRegistrationEventIfEnabled(new XmlAppConfigurationProvider(context), context, intent);
     } else if (GCM_RECEIVE_INTENT_ACTION.equals(action)) {
-        handleAppboyGcmReceiveIntent(context, intent);
+      handleAppboyGcmReceiveIntent(context, intent);
     } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action)) {
-        AppboyNotificationUtils.handleCancelNotificationAction(context, intent);
+      AppboyNotificationUtils.handleCancelNotificationAction(context, intent);
     } else if (Constants.APPBOY_ACTION_CLICKED_ACTION.equals(action)) {
-        AppboyNotificationActionUtils.handleNotificationActionClicked(context, intent);
+      AppboyNotificationActionUtils.handleNotificationActionClicked(context, intent);
     } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
-        AppboyNotificationUtils.handleNotificationOpened(context, intent);
+      AppboyNotificationUtils.handleNotificationOpened(context, intent);
     } else {
-        AppboyLogger.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
+      AppboyLogger.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
     }
   }
 
@@ -69,16 +61,16 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       } else if ("ACCOUNT_MISSING".equals(error)) {
         Log.e(TAG, "No Google account found on the phone. For pre-3.0 devices, a Google account is required on the device.");
       } else if ("AUTHENTICATION_FAILED".equals(error)) {
-        Log.e(TAG, "Unable to authenticate Google account. For Android versions <4.0.4, a valid Google Play account " +
-          "is required for Google Cloud Messaging to function. This phone will be unable to receive Google Cloud " +
-          "Messages until the user logs in with a valid Google Play account or upgrades the operating system on this device.");
+        Log.e(TAG, "Unable to authenticate Google account. For Android versions <4.0.4, a valid Google Play account "
+            + "is required for Google Cloud Messaging to function. This phone will be unable to receive Google Cloud "
+            + "Messages until the user logs in with a valid Google Play account or upgrades the operating system on this device.");
       } else if ("INVALID_SENDER".equals(error)) {
         Log.e(TAG, "One or multiple of the sender IDs provided are invalid.");
       } else if ("PHONE_REGISTRATION_ERROR".equals(error)) {
         Log.e(TAG, "Device does not support GCM.");
       } else if ("INVALID_PARAMETERS".equals(error)) {
-        Log.e(TAG, "The request sent by the device does not contain the expected parameters. This phone does not " +
-          "currently support GCM.");
+        Log.e(TAG, "The request sent by the device does not contain the expected parameters. This phone does not "
+            + "currently support GCM.");
       } else {
         AppboyLogger.w(TAG, String.format("Received an unrecognised GCM registration error type. Ignoring. Error: %s", error));
       }
@@ -87,8 +79,8 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     } else if (intent.hasExtra(GCM_UNREGISTERED_KEY)) {
       Appboy.getInstance(context).unregisterAppboyPushMessages();
     } else {
-      AppboyLogger.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration " +
-        "confirmation. Ignoring.");
+      AppboyLogger.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration "
+          + "confirmation. Ignoring.");
       return false;
     }
     return true;
@@ -113,6 +105,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       return false;
     } else {
       Bundle gcmExtras = intent.getExtras();
+      AppboyLogger.d(TAG, String.format("Push message payload received: %s", gcmExtras));
 
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.
@@ -124,16 +117,11 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         gcmExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
         XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
 
-        Notification notification = null;
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
-        try {
-          notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, gcmExtras, appboyExtras);
-        } catch(Exception e) {
-          Log.e(TAG, "Failed to create notification.", e);
-          return false;
-        }
+        Notification notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, gcmExtras, appboyExtras);
 
         if (notification == null) {
+          AppboyLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
           return false;
         }
 
@@ -162,18 +150,22 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
    * notification, which cannot be downloaded on the main thread.
    */
   public class HandleAppboyGcmMessageTask extends AsyncTask<Void, Void, Void> {
-    private final Context context;
-    private final Intent intent;
+    private final Context mContext;
+    private final Intent mIntent;
 
     public HandleAppboyGcmMessageTask(Context context, Intent intent) {
-      this.context = context;
-      this.intent = intent;
-      this.execute();
+      mContext = context;
+      mIntent = intent;
+      execute();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-      handleAppboyGcmMessage(this.context, this.intent);
+      try {
+        handleAppboyGcmMessage(mContext, mIntent);
+      } catch (Exception e) {
+        AppboyLogger.e(TAG, "Failed to create and display notification.", e);
+      }
       return null;
     }
   }

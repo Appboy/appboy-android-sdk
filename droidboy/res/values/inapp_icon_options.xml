@@ -13,8 +13,8 @@
     <item>Icon: Visa</item>
   </string-array>
   <string-array name="inapp_icon_values">
-    <item>not set</item>
-    <item>none</item>
+    <item>@string/not_set</item>
+    <item>@string/none</item>
     <item></item>
     <item></item>
     <item></item>
