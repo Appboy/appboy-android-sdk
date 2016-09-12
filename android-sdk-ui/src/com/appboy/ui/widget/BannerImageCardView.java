@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.appboy.Constants;
 import com.appboy.models.cards.BannerImageCard;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
@@ -20,7 +21,6 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
   // aspect ratio, then this value will be the aspect ratio of the card on render.
   private float mAspectRatio = 6f;
-
   public BannerImageCardView(Context context) {
     this(context, null);
   }

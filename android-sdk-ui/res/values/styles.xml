@@ -375,6 +375,16 @@
     <item name="android:layout_height">match_parent</item>
   </style>
 
+  <!-- In-App Message Html Full -->
+  <style name="Appboy.InAppMessage.Html">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+  <style name="Appboy.InAppMessage.Html.Webview">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+
   <!-- Feed -->
   <style name="Appboy.Feed"/>
   <!-- Styling the ListView background will require you to set the cacheColorHint, otherwise the
