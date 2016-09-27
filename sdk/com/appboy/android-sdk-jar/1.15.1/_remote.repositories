@@ -1,0 +1,4 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Sep 26 17:19:16 PDT 2016
+android-sdk-jar-1.15.1.jar>=
+android-sdk-jar-1.15.1.pom>=
