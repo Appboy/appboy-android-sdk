@@ -1,6 +1,6 @@
 ## 1.15.1
 - Improves the initialization time of the Appboy SDK.
-- Removes the use of device identifiers as per Google Play policy.
+- Removes fetching of the device hardware serial number as part of device metadata collection.
 - Adds Hebrew localization strings.
 
 ## 1.15.0
