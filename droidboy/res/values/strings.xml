@@ -155,12 +155,12 @@
   <string name="custom_news_feed_card_click_action_listener_summary">toggles the use of CustomNewsFeedClickActionListener</string>
 
   <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
-  <string name="appboy_image_url_1600w_1000h">https://www.dropbox.com/s/uarvtlcrpro6dpy/wow1600x1000.png?dl=1</string>
-  <string name="appboy_image_url_1000w_1000h">https://www.dropbox.com/s/vp8xic22wuo20c9/wow1000x1000.png?dl=1</string>
-  <string name="appboy_image_url_1000w_800h">https://www.dropbox.com/s/rnfxchj8zn6vf2b/wow1000x800.png?dl=1</string>
-  <string name="appboy_image_url_1000w_1600h">https://www.dropbox.com/s/04sh1u47vf02ayt/wow1000x1600.png?dl=1</string>
-  <string name="appboy_image_url_1600w_500h">https://www.dropbox.com/s/baam4syqx4ig42z/wow1600x500.png?dl=1</string>
-  <string name="appboy_image_url_1160w_400h">https://www.dropbox.com/s/r3uj7t7qx6jgzyy/wow1160x400.png?dl=1</string>
+  <string name="appboy_image_url_1600w_1000h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c761151b0e4d207934d109/original.?1472684309</string>
+  <string name="appboy_image_url_1000w_1000h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c760fb1b0e4d414534d0e8/original.?1472684283</string>
+  <string name="appboy_image_url_1000w_800h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c760ef56ec310d03f55668/original.?1472684271</string>
+  <string name="appboy_image_url_1000w_1600h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c761025c5a686cbd72479f/original.?1472684290</string>
+  <string name="appboy_image_url_1600w_500h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c7610e56ec313c63f556cd/original.?1472684302</string>
+  <string name="appboy_image_url_1160w_400h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c7610856ec31384ef556bf/original.?1472684296</string>
   <string name="appboy_image_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/569934e8bf5cea1409000027/639cf60262df21a9d190c659e2fc36823fa2dc94/original.?1452881133</string>
   <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
   <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>

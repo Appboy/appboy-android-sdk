@@ -100,6 +100,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   private void setCardViewedIndicator() {
     if (getCard() != null) {
       if (mImageSwitcher != null) {
+        AppboyLogger.d(TAG, "Setting the read/unread indicator for the card.");
         int resourceId;
         if (getCard().isRead()) {
           resourceId = R.drawable.icon_read;
@@ -109,8 +110,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
         mImageSwitcher.setImageResource(resourceId);
         // Used to identify the current Drawable in the imageSwitcher
         mImageSwitcher.setTag(String.valueOf(resourceId));
-      } else {
-        AppboyLogger.d(TAG, "The imageSwitcher for the read/unread feature is null. Did you include it in your xml?");
       }
     } else {
       AppboyLogger.d(TAG, "The card is null.");

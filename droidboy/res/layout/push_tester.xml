@@ -13,7 +13,6 @@
       style="@style/Appboy.Feedback.NavigationBar">
     <Button
         android:id="@+id/test_push_button"
-        android:layout_alignParentBottom="true"
         android:text="@string/test_push"
         style="@style/DroidboyButton"/>
   </LinearLayout>

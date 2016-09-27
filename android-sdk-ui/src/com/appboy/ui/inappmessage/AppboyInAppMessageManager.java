@@ -141,6 +141,7 @@ public final class AppboyInAppMessageManager {
    * @param activity The current Activity.
    */
   public void registerInAppMessageManager(Activity activity) {
+    AppboyLogger.d(TAG, "registerInAppMessageManager called");
     // We need the current Activity so that we can inflate or programmatically create the in-app message
     // View for each Activity. We cannot share the View because doing so would create a memory leak.
     mActivity = activity;
@@ -172,6 +173,8 @@ public final class AppboyInAppMessageManager {
    * @param activity The current Activity.
    */
   public void unregisterInAppMessageManager(Activity activity) {
+    AppboyLogger.d(TAG, "unregisterInAppMessageManager called");
+
     // If there is an in-app message being displayed when the host app transitions to another Activity (or
     // requests an orientation change), we save it in memory so that we can redisplay it when the
     // operation is done.
@@ -207,6 +210,7 @@ public final class AppboyInAppMessageManager {
    *                                    default IInAppMessageManagerListener).
    */
   public void setCustomInAppMessageManagerListener(IInAppMessageManagerListener inAppMessageManagerListener) {
+    AppboyLogger.d(TAG, "Custom InAppMessageManagerListener set");
     mCustomInAppMessageManagerListener = inAppMessageManagerListener;
   }
 
@@ -217,6 +221,7 @@ public final class AppboyInAppMessageManager {
    *                                       default IHtmlInAppMessageActionListener).
    */
   public void setCustomHtmlInAppMessageActionListener(IHtmlInAppMessageActionListener htmlInAppMessageActionListener) {
+    AppboyLogger.d(TAG, "Custom htmlInAppMessageActionListener set");
     mCustomHtmlInAppMessageActionListener = htmlInAppMessageActionListener;
   }
 
@@ -228,6 +233,7 @@ public final class AppboyInAppMessageManager {
    *                                     IInAppMessageAnimationFactory).
    */
   public void setCustomInAppMessageAnimationFactory(IInAppMessageAnimationFactory inAppMessageAnimationFactory) {
+    AppboyLogger.d(TAG, "Custom InAppMessageAnimationFactory set");
     mCustomInAppMessageAnimationFactory = inAppMessageAnimationFactory;
   }
 
@@ -239,6 +245,7 @@ public final class AppboyInAppMessageManager {
    *                                IInAppMessageViewFactory).
    */
   public void setCustomInAppMessageViewFactory(IInAppMessageViewFactory inAppMessageViewFactory) {
+    AppboyLogger.d(TAG, "Custom InAppMessageViewFactory set");
     mCustomInAppMessageViewFactory = inAppMessageViewFactory;
   }
 

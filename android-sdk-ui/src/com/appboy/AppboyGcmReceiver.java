@@ -41,7 +41,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
       AppboyNotificationUtils.handleNotificationOpened(context, intent);
     } else {
-      AppboyLogger.w(TAG, String.format("The GCM receiver received a message not sent from Appboy. Ignoring the message."));
+      AppboyLogger.w(TAG, "The GCM receiver received a message not sent from Appboy. Ignoring the message.");
     }
   }
 
@@ -105,7 +105,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       return false;
     } else {
       Bundle gcmExtras = intent.getExtras();
-      AppboyLogger.d(TAG, String.format("Push message payload received: %s", gcmExtras));
+      AppboyLogger.i(TAG, String.format("Push message payload received: %s", gcmExtras));
 
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.
@@ -113,6 +113,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       gcmExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
+        AppboyLogger.d(TAG, "Received notification push");
         int notificationId = AppboyNotificationUtils.getNotificationId(gcmExtras);
         gcmExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
         XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
@@ -139,6 +140,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
 
         return true;
       } else {
+        AppboyLogger.d(TAG, "Received data push");
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, gcmExtras);
         return false;
       }

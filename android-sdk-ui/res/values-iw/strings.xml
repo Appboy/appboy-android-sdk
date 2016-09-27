@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cards -->
+    <string name="com_appboy_recommendation_free">חינם</string>
+
+    <!-- Feedback form -->
+    <string name="com_appboy_feedback_form_is_bug">דיווח על בעיה?</string>
+    <string name="com_appboy_feedback_form_message">הודעה</string>
+    <string name="com_appboy_feedback_form_email">כתובת מייל</string>
+    <string name="com_appboy_feedback_form_cancel">בטל</string>
+    <string name="com_appboy_feedback_form_send">שלח</string>
+    <string name="com_appboy_feedback_form_invalid_message">אנא הכנס הודעת משוב</string>
+    <string name="com_appboy_feedback_form_invalid_email">כתובת מייל שגוי</string>
+    <string name="com_appboy_feedback_form_empty_email">כתובת מייל נדרש</string>
+
+    <!-- News feed -->
+    <string name="com_appboy_feed_empty">אין לנו עדכונים. בבקשה בדוק שוב בקרוב.</string>
+    <string name="com_appboy_feed_connection_error_title">שגיאת חיבור רשת</string>
+    <string name="com_appboy_feed_connection_error_body">לא ניתן לקבוע חיבור רשת. בבקשה נסה שוב בקרוב.</string>
+
+    <!-- Notification time formats -->
+    <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
+    <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
+</resources>

@@ -1,3 +1,8 @@
+## 1.15.1
+- Improves the initialization time of the Appboy SDK.
+- Removes the use of device identifiers as per Google Play policy.
+- Adds Hebrew localization strings.
+
 ## 1.15.0
 - Adds the ability for session tracking and `InAppMessageManager` registration to be handled automatically via `Activity` lifecycle methods on API level 14 and above. See the Hello Appboy sample for an example.
 - Adds support for upgraded in-app messages including image-only messages, improved image sizing/cropping, text scrolling, text alignment, configurable orientation, and configurable frame color.
