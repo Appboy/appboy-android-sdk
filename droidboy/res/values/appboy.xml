@@ -54,6 +54,6 @@
   <!-- Triggered Action configuration -->
   <!-- The minimum interval in seconds between actions, such as an in-app message, that can be triggered
     by an in-app event, such as the logging of a custom event.  This is a general rate limit for
-    actions to prevent overloading a user with messages. Defaults to zero. -->
+    actions to prevent overloading a user with messages. Defaults to 30s. -->
   <integer name="com_appboy_trigger_action_minimum_time_interval_seconds">5</integer>
 </resources>
