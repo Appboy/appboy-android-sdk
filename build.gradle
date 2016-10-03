@@ -18,7 +18,7 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '1.15.1'
+  version = '1.15.2'
 
   apply plugin: 'android-sdk-manager'
 }

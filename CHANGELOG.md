@@ -1,3 +1,6 @@
+## 1.15.2
+- Fixes a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be displayed without assets.
+
 ## 1.15.1
 - Improves the initialization time of the Appboy SDK.
 - Removes fetching of the device hardware serial number as part of device metadata collection.

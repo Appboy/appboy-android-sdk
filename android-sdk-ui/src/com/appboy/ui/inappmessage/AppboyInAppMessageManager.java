@@ -95,6 +95,7 @@ public final class AppboyInAppMessageManager {
   private IInAppMessageAnimationFactory mCustomInAppMessageAnimationFactory;
   private IInAppMessageViewWrapper mInAppMessageViewWrapper;
   private IInAppMessage mCarryoverInAppMessage;
+  private IInAppMessage mUnRegisteredInAppMessage;
   private AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
   private Context mApplicationContext;
   private Integer mOriginalOrientation;
@@ -155,10 +156,14 @@ public final class AppboyInAppMessageManager {
     // We have a special check to see if the host app switched to a different Activity (or recreated
     // the same Activity during an orientation change) so that we can redisplay the in-app message.
     if (mCarryoverInAppMessage != null) {
-      AppboyLogger.d(TAG, "Displaying carryover in-app message.");
+      AppboyLogger.d(TAG, "Requesting display of carryover in-app message.");
       mCarryoverInAppMessage.setAnimateIn(false);
       displayInAppMessage(mCarryoverInAppMessage, true);
       mCarryoverInAppMessage = null;
+    } else if (mUnRegisteredInAppMessage != null) {
+      AppboyLogger.d(TAG, "Adding previously unregistered in-app message.");
+      addInAppMessage(mUnRegisteredInAppMessage);
+      mUnRegisteredInAppMessage = null;
     }
 
     // Every time the AppboyInAppMessageManager is registered to an Activity, we add a in-app message subscriber
@@ -269,9 +274,13 @@ public final class AppboyInAppMessageManager {
   public boolean requestDisplayInAppMessage() {
     try {
       if (mActivity == null) {
-        AppboyLogger.e(TAG, "No activity is currently registered to receive in-app messages. Registering in-app message as carry-over "
-                + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
-        mCarryoverInAppMessage = mInAppMessageStack.pop();
+        if (!mInAppMessageStack.empty()) {
+          AppboyLogger.w(TAG, "No activity is currently registered to receive in-app messages. Saving in-app message as unregistered "
+              + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
+          mUnRegisteredInAppMessage = mInAppMessageStack.pop();
+        } else {
+          AppboyLogger.d(TAG, "No activity is currently registered to receive in-app messages and the in-app message stack is empty. Doing nothing.");
+        }
         return false;
       }
       if (mDisplayingInAppMessage.get()) {

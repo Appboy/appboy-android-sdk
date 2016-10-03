@@ -15,6 +15,7 @@ Successful marketing automation is essential to the future of your mobile app. A
 - `droidboy` - a sample application which demonstrates how to use Appboy.
 - `hello-appboy` - a sample gradle application demonstrating a simple use case of Appboy.
 - `wearboy` - a sample Android Wear app demonstrating Appboy SDK support for Wear devices.
+- `android-sdk-unity` - a library that enables Appboy SDK integrations on Unity.
 
 ## Building and Running the Sample Applications
 
