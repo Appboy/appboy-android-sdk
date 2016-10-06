@@ -73,28 +73,31 @@ public class FrescoLibraryUtils {
 
     context = context.getApplicationContext();
     boolean isFrescoEnabledFromXml = getIsFrescoEnabledFromXml(context.getResources(), PackageUtils.getResourcePackageName(context));
-    boolean isFrescoOnPath;
+    if (!isFrescoEnabledFromXml) {
+      sCanUseFresco = false;
+      sCanUseFrescoSet = true;
+      return false;
+    }
     try {
       // Check for a subset of classes used from the Fresco library.
       ClassLoader staticClassLoader = FrescoLibraryUtils.class.getClassLoader();
-      isFrescoOnPath = true;
+      sCanUseFresco = true;
       for (String classPath : USED_FRESCO_CLASSES) {
         if (Class.forName(classPath, false, staticClassLoader) == null) {
-          isFrescoOnPath = false;
+          // The class doesn't exist on the path
+          sCanUseFresco = false;
           break;
         }
       }
     } catch (Exception e) {
-      isFrescoOnPath = false;
+      sCanUseFresco = false;
     } catch (NoClassDefFoundError ncd) {
-      isFrescoOnPath = false;
+      sCanUseFresco = false;
     } catch (Throwable t) {
-      isFrescoOnPath = false;
+      sCanUseFresco = false;
     }
 
     sCanUseFrescoSet = true;
-    sCanUseFresco = isFrescoOnPath && isFrescoEnabledFromXml;
-
     return sCanUseFresco;
   }
 

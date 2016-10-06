@@ -18,7 +18,6 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   private final boolean mRegisterInAppMessageManager;
   private final boolean mSessionHandlingEnabled;
 
-
   /**
    * A default constructor equivalent to calling AppboyLifecycleCallbackListener(true, true)
    */
@@ -66,7 +65,11 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   }
 
   @Override
-  public void onActivityCreated(Activity activity, Bundle bundle) {}
+  public void onActivityCreated(Activity activity, Bundle bundle) {
+    if (mRegisterInAppMessageManager) {
+      AppboyInAppMessageManager.getInstance().ensureSubscribedToInAppMessageEvents(activity.getApplicationContext());
+    }
+  }
 
   @Override
   public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {}

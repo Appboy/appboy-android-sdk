@@ -1,3 +1,6 @@
+## 1.15.3
+- Fixes a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be dropped.
+
 ## 1.15.2
 - Fixes a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be displayed without assets.
 

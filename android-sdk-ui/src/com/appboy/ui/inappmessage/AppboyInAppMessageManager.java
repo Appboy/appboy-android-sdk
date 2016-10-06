@@ -133,6 +133,30 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
+   * Ensures the InAppMessageManager is subscribed in-app message events if not already subscribed.
+   * Before this method gets called, the InAppMessageManager is not subscribed to in-app message events
+   * and cannot display them. Every call to registerInAppMessageManager() calls this method.
+   *
+   * If events with triggers are logged before the first call to registerInAppMessageManager(), then the
+   * corresponding in-app message won't display. Thus, if logging events with triggers before the first call
+   * to registerInAppMessageManager(), then call this method to ensure that in-app message events
+   * are correctly handled by the AppboyInAppMessageManager.
+   *
+   * For example, if logging custom events with triggers in your first activity's onCreate(), be sure
+   * to call this method manually beforehand so that the in-app message will get displayed by the time
+   * registerInAppMessageManager() gets called.
+   *
+   * @param context The application context
+   */
+  public void ensureSubscribedToInAppMessageEvents(Context context) {
+    if (mInAppMessageEventSubscriber == null) {
+      AppboyLogger.d(TAG, "Subscribing in-app message event subscriber");
+      mInAppMessageEventSubscriber = createInAppMessageEventSubscriber();
+      Appboy.getInstance(context).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
+    }
+  }
+
+  /**
    * Registers the in-app message manager, which will listen to and display incoming in-app messages. The
    * current Activity is required in order to properly inflate and display the in-app message view.
    * <p/>
@@ -166,10 +190,7 @@ public final class AppboyInAppMessageManager {
       mUnRegisteredInAppMessage = null;
     }
 
-    // Every time the AppboyInAppMessageManager is registered to an Activity, we add a in-app message subscriber
-    // which listens to new in-app messages, adds it to the stack, and displays it if it can.
-    mInAppMessageEventSubscriber = createInAppMessageEventSubscriber();
-    Appboy.getInstance(activity).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
+    ensureSubscribedToInAppMessageEvents(mApplicationContext);
   }
 
   /**
@@ -184,7 +205,6 @@ public final class AppboyInAppMessageManager {
     // requests an orientation change), we save it in memory so that we can redisplay it when the
     // operation is done.
     if (mInAppMessageViewWrapper != null) {
-
       ViewUtils.removeViewFromParent(mInAppMessageViewWrapper.getInAppMessageView());
       // Only continue if we're not animating a close
       if (mInAppMessageViewWrapper.getIsAnimatingClose()) {
@@ -199,9 +219,6 @@ public final class AppboyInAppMessageManager {
       mCarryoverInAppMessage = null;
     }
 
-    // In-app message subscriptions are per Activity, so we must remove the subscriber when the host app
-    // unregisters the in-app message manager.
-    Appboy.getInstance(activity).removeSingleSubscription(mInAppMessageEventSubscriber, InAppMessageEvent.class);
     mActivity = null;
     mDisplayingInAppMessage.set(false);
   }
