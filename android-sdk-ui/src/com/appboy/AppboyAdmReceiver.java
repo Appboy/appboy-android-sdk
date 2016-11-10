@@ -40,7 +40,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
       AppboyNotificationUtils.handleNotificationOpened(context, intent);
     } else {
-      AppboyLogger.w(TAG, String.format("The ADM receiver received a message not sent from Appboy. Ignoring the message."));
+      AppboyLogger.w(TAG, "The ADM receiver received a message not sent from Appboy. Ignoring the message.");
     }
   }
 

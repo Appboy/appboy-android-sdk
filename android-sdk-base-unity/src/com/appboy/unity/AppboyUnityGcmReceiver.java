@@ -13,9 +13,11 @@ import com.appboy.Constants;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.StringUtils;
 
-// This BroadcastReceiver is not compatible with Prime31 plugins. If you are using any Prime31 plugins, you
-// must use the AppboyUnityGcmReceiver BroadcastReceiver in the com.appboy.unity.prime31compatible package instead.
-
+/**
+ * @Deprecated To open Appboy push deep links, set the boolean configuration parameter
+ * `com_appboy_inapp_show_inapp_messages_automatically` to true in your `appboy.xml`.
+ */
+@Deprecated
 public class AppboyUnityGcmReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyUnityGcmReceiver.class.getName());
   public static final String CONTAINS_GCM_MESSAGE_KEY = "contains_gcm_message";

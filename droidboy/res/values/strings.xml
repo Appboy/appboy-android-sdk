@@ -77,6 +77,8 @@
   <string name="resume_session_toast">Resumed existing Appboy session.</string>
   <string name="close_session_toast">Closed existing Appboy session.</string>
   <string name="no_session_toast">No Appboy session to close.</string>
+  <string name="enabled_outbound_network_requests_toast">Enabled Appboy outbound network requests</string>
+  <string name="disabled_outbound_network_requests_toast">Disabled Appboy outbound network requests</string>
 
   <string name="spinner_content_description">Spinner</string>
   <string name="spin">Spin!</string>

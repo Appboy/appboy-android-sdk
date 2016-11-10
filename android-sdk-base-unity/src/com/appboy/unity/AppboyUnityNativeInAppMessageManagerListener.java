@@ -109,11 +109,7 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
     if (mAppboyUnityInAppMessageListener != null) {
       return mAppboyUnityInAppMessageListener.onInAppMessageReceived(inAppMessage);
     }
-    if (mShowInAppMessagesManually) {
-      return true;
-    } else {
-      return false;
-    }
+    return mShowInAppMessagesManually;
   }
 
   /**

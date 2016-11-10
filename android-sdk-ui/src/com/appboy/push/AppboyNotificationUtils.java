@@ -182,7 +182,7 @@ public class AppboyNotificationUtils {
       }
       return bundle;
     } catch (JSONException e) {
-      AppboyLogger.e(TAG, String.format("Unable parse JSON into a bundle."), e);
+      AppboyLogger.e(TAG, "Unable parse JSON into a bundle.", e);
       return null;
     }
   }
@@ -255,20 +255,20 @@ public class AppboyNotificationUtils {
       if (notificationExtras.containsKey(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID)) {
         try {
           int notificationId = Integer.parseInt(notificationExtras.getString(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID));
-          AppboyLogger.d(TAG, String.format("Using notification id provided in the message's extras bundle: " + notificationId));
+          AppboyLogger.d(TAG, "Using notification id provided in the message's extras bundle: " + notificationId);
           return notificationId;
 
         } catch (NumberFormatException e) {
-          AppboyLogger.e(TAG, String.format("Unable to parse notification id provided in the "
+          AppboyLogger.e(TAG, "Unable to parse notification id provided in the "
               + "message's extras bundle. Using default notification id instead: "
-              + Constants.APPBOY_DEFAULT_NOTIFICATION_ID), e);
+              + Constants.APPBOY_DEFAULT_NOTIFICATION_ID, e);
           return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
         }
       } else {
         String messageKey = AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_TITLE_KEY, "")
             + AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
         int notificationId = messageKey.hashCode();
-        AppboyLogger.d(TAG, String.format("Message without notification id provided in the extras bundle received.  Using a hash of the message: " + notificationId));
+        AppboyLogger.d(TAG, "Message without notification id provided in the extras bundle received.  Using a hash of the message: " + notificationId);
         return notificationId;
       }
     } else {
@@ -292,7 +292,7 @@ public class AppboyNotificationUtils {
           AppboyLogger.e(TAG, String.format("Received invalid notification priority %d", notificationPriority));
         }
       } catch (NumberFormatException e) {
-        AppboyLogger.e(TAG, String.format("Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT), e);
+        AppboyLogger.e(TAG, "Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT, e);
       }
     }
     return Notification.PRIORITY_DEFAULT;

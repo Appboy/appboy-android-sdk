@@ -196,8 +196,8 @@ public class AppboyFeedbackFragment extends Fragment {
   }
 
   private void clearData() {
-    mEmailEditText.setText(StringUtils.EMPTY_STRING);
-    mMessageEditText.setText(StringUtils.EMPTY_STRING);
+    mEmailEditText.setText("");
+    mMessageEditText.setText("");
     mIsBugCheckBox.setChecked(false);
     mErrorMessageShown = false;
     mEmailEditText.setError(null);

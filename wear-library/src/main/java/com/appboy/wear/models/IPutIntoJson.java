@@ -4,5 +4,5 @@ package com.appboy.wear.models;
 // or JSONArray.put(). Thus, if you do something like create an IPutIntoJson<String> you should
 // make sure that whatever is returned is not already encoded once as it'll get encoded again.
 public interface IPutIntoJson<T> {
-  public T forJsonPut();
+  T forJsonPut();
 }

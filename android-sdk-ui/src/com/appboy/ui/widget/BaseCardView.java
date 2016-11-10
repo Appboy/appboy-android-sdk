@@ -18,7 +18,6 @@ import com.appboy.Constants;
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PackageUtils;
-import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.AppboyFeedManager;
@@ -133,11 +132,11 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   }
 
   void setOptionalTextView(TextView view, String value) {
-    if (value != null && !value.trim().equals(StringUtils.EMPTY_STRING)) {
+    if (value != null && !value.trim().equals("")) {
       view.setText(value);
       view.setVisibility(VISIBLE);
     } else {
-      view.setText(StringUtils.EMPTY_STRING);
+      view.setText("");
       view.setVisibility(GONE);
     }
   }

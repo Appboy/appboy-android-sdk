@@ -54,6 +54,8 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference externalStorageRuntimePermissionDialogPreference = findPreference("external_storage_runtime_permission_dialog");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference logAttributionPreference = findPreference("log_attribution");
+    Preference enableAutomaticNetworkRequestsPreference = findPreference("enable_outbound_network_requests");
+    Preference disableAutomaticNetworkRequestsPreference = findPreference("disable_outbound_network_requests");
     CheckBoxPreference sortNewsFeed = (CheckBoxPreference) findPreference("sort_feed");
     SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     sortNewsFeed.setChecked(sharedPrefSort.getBoolean(getString(R.string.sort_feed), false));
@@ -83,6 +85,23 @@ public class PreferencesActivity extends PreferenceActivity {
         } else {
           Toast.makeText(PreferencesActivity.this, "Below Android M there is no need to check for runtime permissions.", Toast.LENGTH_SHORT).show();
         }
+        return true;
+      }
+    });
+
+    disableAutomaticNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.setOutboundNetworkRequestsOffline(true);
+        showToast(getString(R.string.disabled_outbound_network_requests_toast));
+        return true;
+      }
+    });
+    enableAutomaticNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.setOutboundNetworkRequestsOffline(false);
+        showToast(getString(R.string.enabled_outbound_network_requests_toast));
         return true;
       }
     });

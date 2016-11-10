@@ -19,7 +19,6 @@ import com.appboy.configuration.XmlAppConfigurationProvider;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
-import com.appboy.support.PackageUtils;
 import com.appboy.support.PermissionUtils;
 import com.appboy.support.StringUtils;
 
@@ -38,7 +37,6 @@ public class AppboyNotificationActionUtils {
    * “ab_a*_t”: action button text - optional
    * “ab_a*_a”: action type, one of “ab_uri”, ”ab_none”, “ab_share”, “ab_open” (open the app), or a custom defined action - required
    * “ab_a*_uri”: uri, only used when the action is “uri” - required only when action is “uri”
-   * “ab_a*_ic”: name of an icon drawable - optional
    *
    * The * is replaced with an integer string depending on the button being described
    * (e.g. the uri for the second button is “ab_a1_uri”).
@@ -52,7 +50,7 @@ public class AppboyNotificationActionUtils {
   public static void addNotificationActions(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     try {
       if (notificationExtras == null) {
-        AppboyLogger.w(TAG, String.format("Notification extras were null. Doing nothing."));
+        AppboyLogger.w(TAG, "Notification extras were null. Doing nothing.");
         return;
       }
       // Notification actions were added in Jelly Bean
@@ -85,7 +83,7 @@ public class AppboyNotificationActionUtils {
     try {
       String actionType = intent.getStringExtra(Constants.APPBOY_ACTION_TYPE_KEY);
       if (StringUtils.isNullOrBlank(actionType)) {
-        AppboyLogger.w(TAG, String.format("Notification action button type was blank or null.  Doing nothing."));
+        AppboyLogger.w(TAG, "Notification action button type was blank or null.  Doing nothing.");
         return;
       }
       int notificationId = intent.getIntExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
@@ -118,7 +116,7 @@ public class AppboyNotificationActionUtils {
       } else if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_NONE)) {
         AppboyNotificationUtils.cancelNotification(context, notificationId);
       } else {
-        AppboyLogger.i(TAG, String.format("Custom notification action button clicked. Doing nothing and passing on data to client receiver."));
+        AppboyLogger.i(TAG, "Custom notification action button clicked. Doing nothing and passing on data to client receiver.");
         AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
       }
     } catch (Exception e) {
@@ -140,25 +138,6 @@ public class AppboyNotificationActionUtils {
     return appboyExtras != null
         && appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)
         && PermissionUtils.hasPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-  }
-
-  /**
-   * Get the icon drawable resource Id for this action button, using a custom icon if defined.
-   *
-   * @param context
-   * @param iconDrawableName
-   * @return the icon drawable resource Id for this action button, or 0 if not found successfully.
-   * Actions buttons will still display if the icon resource Id is 0, however, there will be no icon.
-   */
-  static int getIconDrawableResourceId(Context context, String iconDrawableName) {
-    if (context == null) {
-      return 0;
-    }
-    if (!StringUtils.isNullOrBlank(iconDrawableName)) {
-      return context.getResources().getIdentifier(iconDrawableName, "drawable", PackageUtils.getResourcePackageName(context));
-    } else {
-      return 0;
-    }
   }
 
   /**
@@ -196,8 +175,6 @@ public class AppboyNotificationActionUtils {
     notificationActionExtras.putString(Constants.APPBOY_ACTION_ID_KEY, getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_ID_KEY_TEMPLATE));
     notificationActionExtras.putString(Constants.APPBOY_ACTION_URI_KEY, getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE));
     notificationActionExtras.putBoolean(Constants.APPBOY_ACTION_IS_CUSTOM_ACTION_KEY, isCustomActionType(actionType));
-    String iconDrawableName = getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE);
-    notificationActionExtras.putString(Constants.APPBOY_ACTION_ICON_KEY, getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_ICON_KEY_TEMPLATE));
 
     Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
     sendIntent.putExtras(notificationActionExtras);
@@ -205,8 +182,7 @@ public class AppboyNotificationActionUtils {
     String actionText = getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE);
     PendingIntent pendingSendIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-    int iconDrawableResourceId = getIconDrawableResourceId(context, iconDrawableName);
-    NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(iconDrawableResourceId, actionText, pendingSendIntent);
+    NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(0, actionText, pendingSendIntent);
     notificationActionBuilder.addExtras(new Bundle(notificationActionExtras));
     notificationBuilder.addAction(notificationActionBuilder.build());
   }
@@ -221,14 +197,14 @@ public class AppboyNotificationActionUtils {
     String campaignId = intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
     String actionButtonId = intent.getStringExtra(Constants.APPBOY_ACTION_ID_KEY);
     if (StringUtils.isNullOrBlank(campaignId)) {
-      AppboyLogger.i(TAG, String.format("No campaign Id associated with this notification.  Not logging push action click to Appboy."));
+      AppboyLogger.i(TAG, "No campaign Id associated with this notification.  Not logging push action click to Appboy.");
       return;
     }
     if (StringUtils.isNullOrBlank(actionButtonId)) {
-      AppboyLogger.i(TAG, String.format("No action button Id associated with this notification action.  Not logging push action click to Appboy."));
+      AppboyLogger.i(TAG, "No action button Id associated with this notification action.  Not logging push action click to Appboy.");
       return;
     }
-    AppboyLogger.i(TAG, String.format("Logging push action click to Appboy. Campaign Id: " + campaignId + " Action Button Id: " + actionButtonId));
+    AppboyLogger.i(TAG, "Logging push action click to Appboy. Campaign Id: " + campaignId + " Action Button Id: " + actionButtonId);
     Appboy.getInstance(context).logPushNotificationActionClicked(campaignId, actionButtonId);
 
   }

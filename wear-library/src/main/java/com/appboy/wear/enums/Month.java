@@ -15,5 +15,5 @@ public enum Month {
   SEPTEMBER,
   OCTOBER,
   NOVEMBER,
-  DECEMBER;
+  DECEMBER
 }

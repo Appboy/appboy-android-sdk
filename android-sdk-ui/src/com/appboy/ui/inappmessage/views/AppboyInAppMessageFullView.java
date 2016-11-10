@@ -127,7 +127,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
     scrollViewChild.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View scrollView) {
-        AppboyLogger.d(TAG, String.format("Passing scrollView click event to message clickable view."));
+        AppboyLogger.d(TAG, "Passing scrollView click event to message clickable view.");
         getMessageClickableView().performClick();
       }
     });

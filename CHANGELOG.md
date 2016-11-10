@@ -1,3 +1,8 @@
+## 1.16.0
+- Adds the ability to toggle outbound network requests from the Appboy SDK online/offline. See `Appboy.setOutboundNetworkRequestsOffline()` for more details.
+- Removes Appboy notification action button icons and icon constants.
+- Fixes a bug that caused session sealed automatic data flushes to not occur.
+
 ## 1.15.3
 - Fixes a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be dropped.
 

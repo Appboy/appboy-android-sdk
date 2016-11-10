@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 
+import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PackageUtils;
@@ -15,6 +16,8 @@ import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 /**
  * Since Fresco is a provided dependency, we have to check for its existence at runtime. To safeguard
@@ -130,6 +133,11 @@ public class FrescoLibraryUtils {
       return;
     }
 
+    // Selectively cancel network loading based on the Appboy network state
+    ImageRequest.RequestLevel requestLevel = Appboy.getOutboundNetworkRequestsOffline()
+        ? ImageRequest.RequestLevel.DISK_CACHE : ImageRequest.RequestLevel.FULL_FETCH;
+    AppboyLogger.d(TAG, "Setting Fresco image request level to: " + requestLevel);
+
     // Create a controller listener to listen for the dimensions of the image once set. Once
     // we get the dimensions, set the aspect ratio of the image based on respectAspectRatio.
     if (controllerListener == null) {
@@ -160,15 +168,20 @@ public class FrescoLibraryUtils {
       };
     }
 
+
     // If the Fresco singleton is shutdown prematurely via Fresco.shutdown() then the Fresco.newDraweeControllerBuilder()
     // will throw a NPE. We catch this below to safeguard against this gracefully.
     try {
       Uri uri = getFrescoUri(imageUrl);
+      ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+          .setLowestPermittedRequestLevel(requestLevel)
+          .build();
       DraweeController controller = Fresco.newDraweeControllerBuilder()
           .setUri(uri)
           .setAutoPlayAnimations(true)
           .setTapToRetryEnabled(true)
           .setControllerListener(controllerListener)
+          .setImageRequest(request)
           .build();
       simpleDraweeView.setController(controller);
     } catch (NullPointerException e) {

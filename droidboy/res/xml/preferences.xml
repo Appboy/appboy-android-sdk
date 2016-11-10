@@ -28,6 +28,12 @@
         <Preference
             android:key="data_flush"
             android:title="@string/data_flush_title" />
+        <Preference
+            android:key="enable_outbound_network_requests"
+            android:title="Re-Enable Outbound Network Requests" />
+        <Preference
+            android:key="disable_outbound_network_requests"
+            android:title="Disable Outbound Network Requests" />
     </PreferenceCategory>
 
     <PreferenceCategory

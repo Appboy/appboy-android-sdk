@@ -74,7 +74,7 @@ public class FileDataDialog extends DialogPreference implements AdapterView.OnIt
 
     if (fileOrDirectory.isFile() && !fileOrDirectory.getName().endsWith(".cnt")) {
       try {
-        inputArray.add(fileOrDirectory.getCanonicalPath().toString());
+        inputArray.add(fileOrDirectory.getCanonicalPath());
       } catch (IOException e) {
         Log.w(TAG, "Experienced IOException while retrieving contents of directory: " + fileOrDirectory.getPath(), e);
       }
