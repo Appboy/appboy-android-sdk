@@ -23,6 +23,7 @@
   <string name="user_dialog_populate">Populate</string>
   <string name="user_dialog_clear">Clear All</string>
   <string name="user_dialog_birthday_button">Pick Birthday</string>
+  <string name="user_dialog_done">done</string>
 
   <string name="male">Male</string>
   <string name="female">Female</string>
@@ -199,7 +200,10 @@
   <string name="current_log_level">Current Log Level</string>
   <string name="log_level_dialog_title">Log Level</string>
   <string name="log_level_pref_summary">Configure Logger Settings</string>
-  <string name="user_dialog_done">done</string>
+  <string name="set_environment_title">Set Environment</string>
+  <string name="set_environment_summary">Override API key and Endpoint</string>
+  <string name="set_environment_override_api_key_hint">API Key (empty sets default)</string>
+  <string name="set_environment_override_endpoint_url_hint">Endpoint (empty sets default)</string>
 
   <string name="shared_prefs_location">com.appboy.sample.sharedpreferences</string>
   <string name="mock_appboy_network_requests">mock_appboy_network_requests</string>

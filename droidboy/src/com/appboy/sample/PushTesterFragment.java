@@ -17,7 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 
 import com.appboy.Constants;
-import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.SpinnerUtils;
@@ -38,7 +38,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private static final String BIG_TITLE = "Big Title";
   private static final String BIG_SUMMARY = "Big Summary";
   private static final String SUMMARY_TEXT = "Summary Text";
-  private XmlAppConfigurationProvider mAppConfigurationProvider;
+  private AppboyConfigurationProvider mAppConfigurationProvider;
   private NotificationManagerCompat mNotificationManager;
   private String mPriority = String.valueOf(Notification.PRIORITY_DEFAULT);
   private String mImage;
@@ -151,7 +151,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     // Creates the large icon spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
 
-    mAppConfigurationProvider = new XmlAppConfigurationProvider(getContext());
+    mAppConfigurationProvider = new AppboyConfigurationProvider(getContext());
     Button pushTestButton = (Button) mView.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(new View.OnClickListener() {
       @Override

@@ -192,7 +192,7 @@ public class PreferencesActivity extends PreferenceActivity {
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(getString(R.string.sort_feed), (boolean) newValue);
-        editor.commit();
+        editor.apply();
         return true;
       }
     });

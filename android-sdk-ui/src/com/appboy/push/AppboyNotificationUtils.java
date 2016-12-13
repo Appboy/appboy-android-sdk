@@ -26,7 +26,7 @@ import com.appboy.AppboyAdmReceiver;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
-import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
@@ -78,7 +78,7 @@ public class AppboyNotificationUtils {
     try {
       logNotificationOpened(context, intent);
       sendNotificationOpenedBroadcast(context, intent);
-      XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
+      AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
       if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
         routeUserWithNotificationOpenedIntent(context, intent);
       }
@@ -403,7 +403,7 @@ public class AppboyNotificationUtils {
    *
    * @return the resource id of the small icon to be used.
    */
-  public static int setSmallIcon(XmlAppConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
+  public static int setSmallIcon(AppboyConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
     int smallNotificationIconResourceId = appConfigurationProvider.getSmallNotificationIconResourceId();
     if (smallNotificationIconResourceId == 0) {
       AppboyLogger.d(TAG, "Small notification icon resource was not found. Will use the app icon when "
@@ -426,7 +426,7 @@ public class AppboyNotificationUtils {
    * @return whether a large icon was successfully set.
    */
   public static boolean setLargeIconIfPresentAndSupported(
-      Context context, XmlAppConfigurationProvider appConfigurationProvider,
+      Context context, AppboyConfigurationProvider appConfigurationProvider,
       NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
       AppboyLogger.d(TAG, "Setting large icon for notification not supported on this android version");
@@ -461,11 +461,11 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * @Deprecated use {@link #setLargeIconIfPresentAndSupported(Context, XmlAppConfigurationProvider, NotificationCompat.Builder, Bundle)}
+   * @Deprecated use {@link #setLargeIconIfPresentAndSupported(Context, AppboyConfigurationProvider, NotificationCompat.Builder, Bundle)}
    */
   @Deprecated
   public static boolean setLargeIconIfPresentAndSupported(
-      Context context, XmlAppConfigurationProvider appConfigurationProvider,
+      Context context, AppboyConfigurationProvider appConfigurationProvider,
       NotificationCompat.Builder notificationBuilder) {
     return setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, null);
   }
@@ -556,7 +556,7 @@ public class AppboyNotificationUtils {
    * <p/>
    * Supported Lollipop+.
    */
-  public static void setAccentColorIfPresentAndSupported(XmlAppConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+  public static void setAccentColorIfPresentAndSupported(AppboyConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_ACCENT_KEY)) {
         // Color is an unsigned integer, so we first parse it as a long.
@@ -627,8 +627,7 @@ public class AppboyNotificationUtils {
    * <p/>
    * Supported Lollipop+.
    */
-  public static void setPublicVersionIfPresentAndSupported(
-      Context context, XmlAppConfigurationProvider xmlAppConfigurationProvider,
+  public static void setPublicVersionIfPresentAndSupported(Context context, AppboyConfigurationProvider appboyConfigurationProvider,
       NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY)) {
@@ -638,8 +637,8 @@ public class AppboyNotificationUtils {
         setContentIfPresent(publicNotificationBuilder, publicNotificationExtras);
         setTitleIfPresent(publicNotificationBuilder, publicNotificationExtras);
         setSummaryTextIfPresentAndSupported(publicNotificationBuilder, publicNotificationExtras);
-        setSmallIcon(xmlAppConfigurationProvider, publicNotificationBuilder);
-        setAccentColorIfPresentAndSupported(xmlAppConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
+        setSmallIcon(appboyConfigurationProvider, publicNotificationBuilder);
+        setAccentColorIfPresentAndSupported(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
         notificationBuilder.setPublicVersion(publicNotificationBuilder.build());
       }
     }

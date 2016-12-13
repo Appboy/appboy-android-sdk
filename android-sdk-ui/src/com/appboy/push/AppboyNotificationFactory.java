@@ -8,7 +8,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.appboy.IAppboyNotificationFactory;
-import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.configuration.AppboyConfigurationProvider;
 
 public class AppboyNotificationFactory implements IAppboyNotificationFactory {
   private static volatile AppboyNotificationFactory sInstance = null;
@@ -36,7 +36,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    *
    * Note: Gingerbread notifications are limited to one line of content.
    */
-  public Notification createNotification(XmlAppConfigurationProvider appConfigurationProvider,
+  public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
                                                 Context context, Bundle notificationExtras, Bundle appboyExtras) {
 
     // We build up the notification by setting values if they are present in the extras and supported

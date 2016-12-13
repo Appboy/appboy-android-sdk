@@ -15,7 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import com.appboy.Appboy;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
-import com.appboy.configuration.XmlAppConfigurationProvider;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
@@ -105,7 +105,7 @@ public class AppboyNotificationActionUtils {
         }
         AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
 
-        XmlAppConfigurationProvider appConfigurationProvider = new XmlAppConfigurationProvider(context);
+        AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
         if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
           AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
         }

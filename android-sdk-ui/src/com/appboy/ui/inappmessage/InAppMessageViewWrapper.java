@@ -12,7 +12,6 @@ import com.appboy.Constants;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
-import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
@@ -21,6 +20,7 @@ import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
 import com.appboy.ui.inappmessage.listeners.SimpleSwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.listeners.SwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.listeners.TouchAwareSwipeDismissTouchListener;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlBaseView;
 import com.appboy.ui.support.AnimationUtils;
 import com.appboy.ui.support.ViewUtils;
 
@@ -152,10 +152,6 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
   private void open(FrameLayout frameLayout, int displayHeight) {
     mInAppMessageViewLifecycleListener.beforeOpened(mInAppMessageView, mInAppMessage);
     AppboyLogger.d(TAG, "Adding In-app message view to root FrameLayout.");
-    if (mInAppMessage instanceof IInAppMessageImmersive || mInAppMessage instanceof IInAppMessageHtml) {
-      mInAppMessageView.setFocusableInTouchMode(true);
-      mInAppMessageView.requestFocus();
-    }
     frameLayout.addView(mInAppMessageView, getLayoutParams(frameLayout, displayHeight));
     if (mInAppMessage.getAnimateIn()) {
       AppboyLogger.d(TAG, "In-app message view will animate into the visible area.");
@@ -167,7 +163,20 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       if (mInAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
         addDismissRunnable();
       }
+      mInAppMessageView.setFocusableInTouchMode(true);
+      mInAppMessageView.requestFocus();
+      announceForAccessibilityIfNecessary();
       mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
+    }
+  }
+
+  private void announceForAccessibilityIfNecessary() {
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+      if (mInAppMessageView instanceof IInAppMessageImmersiveView) {
+        mInAppMessageView.announceForAccessibility(mInAppMessage.getMessage());
+      } else if (mInAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
+        mInAppMessageView.announceForAccessibility("In-app message displayed.");
+      }
     }
   }
 
@@ -341,6 +350,9 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
             addDismissRunnable();
           }
           AppboyLogger.d(TAG, "In-app message animated into view.");
+          mInAppMessageView.setFocusableInTouchMode(true);
+          mInAppMessageView.requestFocus();
+          announceForAccessibilityIfNecessary();
           mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
         }
 

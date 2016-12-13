@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.16.+'
-  compile files('libs/pushservice-5.1.0.48.jar')
+  compile 'com.appboy:android-sdk-ui:1.17.+'
+  compile files('libs/pushservice-5.3.0.99.jar')
 }
 
 android {

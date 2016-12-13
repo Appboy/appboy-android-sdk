@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.appboy.chinapush" android:versionCode="1" android:versionName="1.16.0">
+          package="com.appboy.chinapush" android:versionCode="1" android:versionName="1.17.0">
 
   <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19"/>
   <uses-permission android:name="android.permission.INTERNET" />
@@ -83,6 +83,7 @@
         android:name="com.baidu.android.pushservice.PushInfoProvider"
         android:authorities="com.appboy.chinapush.bdpush"
         android:writePermission="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.appboy.chinapush"
+        android:protectionLevel="signature"
         android:exported="true" />
     <!-- 在百度开发者中心查询应用的API Key -->
 <meta-data android:name="api_key" android:value="YOUR-BAIDU-API-KEY-HERE" />

@@ -6,7 +6,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.0'
+    classpath 'com.android.tools.build:gradle:2.2.2'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     classpath 'com.github.JakeWharton:sdk-manager-plugin:0ce4cdf08009d79223850a59959d9d6e774d0f77'
   }
@@ -19,7 +19,7 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '1.16.0'
+  version = '1.17.0'
 
   apply plugin: 'android-sdk-manager'
 }

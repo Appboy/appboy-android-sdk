@@ -106,7 +106,7 @@ Note that custom feed click listeners should be set before the News Feed is disp
 
 Droidboy has examples of creating custom styles for Appboy UI elements. For more, see Droidboy's [styles file][7].
 
-To override a style, all elements of the style must be copied to tne new style. For all of Appboy's available styles, see the UI [styles file][1].
+To override a style, all elements of the style must be copied to the new style. For all of Appboy's available styles, see the UI [styles file][1].
 
 Note that there are also styles files for larger devices [here][5] and [here][6].
 

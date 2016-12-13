@@ -1,14 +1,13 @@
 package com.appboy.ui.support;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.support.AppboyLogger;
-import com.appboy.support.PackageUtils;
 import com.appboy.support.StringUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -26,7 +25,6 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
  */
 public class FrescoLibraryUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, FrescoLibraryUtils.class.getName());
-  public static final String FRESCO_ENABLED = "com_appboy_enable_fresco_library_use";
   private static boolean sCanUseFresco = false;
   private static boolean sCanUseFrescoSet = false;
   private static final String FILE_SCHEME = "file";
@@ -44,22 +42,12 @@ public class FrescoLibraryUtils {
   };
 
   /**
-   * Returns the xml value for Fresco out of the Appboy xml location. If the xml setting is not present,
-   * then this method returns true.
+   * Returns the configuration value for Fresco enabled status. If the setting is not present, defaults to
+   * true.
    */
-  private static boolean getIsFrescoEnabledFromXml(Resources resources, String resourcePackageName) {
-    // Read from appboy xml for the xml setting
-    boolean frescoEnabledXmlSetting;
-    int resId = resources.getIdentifier(FRESCO_ENABLED, "bool", resourcePackageName);
-    if (resId != 0) {
-      // Resources are loaded, retrieve the xml setting
-      frescoEnabledXmlSetting = resources.getBoolean(resId);
-    } else {
-      // If the xml setting isn't present, default to false.
-      frescoEnabledXmlSetting = false;
-    }
-
-    return frescoEnabledXmlSetting;
+  private static boolean getIsFrescoEnabled(Context context) {
+    AppboyConfigurationProvider appboyConfigurationProvider = new AppboyConfigurationProvider(context);
+    return appboyConfigurationProvider.getIsFrescoLibraryUseEnabled();
   }
 
   /**
@@ -67,7 +55,7 @@ public class FrescoLibraryUtils {
    * for the provided xml setting.
    *
    * @return true if the fresco library is on the path AND if use of the fresco library is allowed
-   * in the Appboy xml settings.
+   * in the Appboy configuration settings.
    */
   public static boolean canUseFresco(Context context) {
     if (sCanUseFrescoSet) {
@@ -75,7 +63,7 @@ public class FrescoLibraryUtils {
     }
 
     context = context.getApplicationContext();
-    boolean isFrescoEnabledFromXml = getIsFrescoEnabledFromXml(context.getResources(), PackageUtils.getResourcePackageName(context));
+    boolean isFrescoEnabledFromXml = getIsFrescoEnabled(context);
     if (!isFrescoEnabledFromXml) {
       sCanUseFresco = false;
       sCanUseFrescoSet = true;
@@ -189,17 +177,6 @@ public class FrescoLibraryUtils {
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Fresco controller builder could not be retrieved. Fresco most likely prematurely shutdown.", e);
     }
-  }
-
-  /**
-   * Test method with same spec as canUseFresco. Use to mock whether the required Fresco classes
-   * are on the class path.
-   *
-   * @return true if the fresco library is on the path AND if use of the fresco library is allowed
-   * in the Appboy xml settings
-   */
-  static boolean canUseFrescoMock(Context context, Resources resources, boolean isFrescoOnPath) {
-    return isFrescoOnPath && getIsFrescoEnabledFromXml(resources, PackageUtils.getResourcePackageName(context.getApplicationContext()));
   }
 
   static Uri getFrescoUri(String uriString) {
