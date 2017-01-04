@@ -7,9 +7,12 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# turning off optimization because it can cause build failures for users using Google Play Services
-# with Appboy. See https://github.com/Appboy/appboy-android-sdk/issues/49
--dontoptimize
+# Keeping classes in com.appboy.ui and com.appboy.services because not keeping
+# them can cause build failures for users using Google Play Services with
+# Appboy. Alternative fix for:
+# https://github.com/Appboy/appboy-android-sdk/issues/49
+-keepnames class com.appboy.ui.** { *; }
+-keep class com.appboy.services.** { *; }
 
 -dontwarn com.amazon.device.messaging.**
 -dontwarn bo.app.**
