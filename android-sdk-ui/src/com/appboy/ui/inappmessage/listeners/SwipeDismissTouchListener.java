@@ -89,7 +89,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
     /**
      * Called when the user has indicated they she would like to dismiss the view.
      *
-     * @param view  The originating {@link View} to be dismissed.
+     * @param view The originating {@link View} to be dismissed.
      * @param token The optional token passed to this object's constructor.
      */
     void onDismiss(View view, Object token);

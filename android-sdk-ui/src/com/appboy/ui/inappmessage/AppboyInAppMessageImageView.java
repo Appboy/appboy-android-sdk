@@ -27,7 +27,7 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
    */
   private RectF mRect;
   /**
-   * Array of 8 values, 4 pairs of [X,Y] radii.  Each corner receives
+   * Array of 8 values, 4 pairs of [X,Y] radii. Each corner receives
    * two radius values [X, Y]. The corners are ordered top-left, top-right,
    * bottom-right, bottom-left
    */

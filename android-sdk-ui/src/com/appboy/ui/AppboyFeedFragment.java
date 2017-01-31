@@ -393,7 +393,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
    * When the passed in categories are null, all cards will be returned.
    * When the passed in categories are empty EnumSet, an empty list will be returned.
    *
-   * @param categories an EnumSet of CardCategory. Please pass in  a non-empty EnumSet of CardCategory,
+   * @param categories an EnumSet of CardCategory. Please pass in a non-empty EnumSet of CardCategory,
    *                   or a null. An empty EnumSet is considered invalid.
    */
   public void setCategories(EnumSet<CardCategory> categories) {

@@ -7,4 +7,8 @@
   <declare-styleable name="com.appboy.ui.inappmessage.AppboyInAppMessageButtonView">
     <attr name="appboyInAppMessageCustomFontFile"/>
   </declare-styleable>
+  <declare-styleable name="com.appboy.ui.feed.AppboyImageSwitcher">
+    <attr name="appboyFeedCustomReadIcon" format="integer"/>
+    <attr name="appboyFeedCustomUnReadIcon" format="integer"/>
+  </declare-styleable>
 </resources>

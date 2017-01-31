@@ -17,7 +17,7 @@ public class HelloAppboyApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    AppboyLogger.LogLevel = Log.VERBOSE;
+    AppboyLogger.setLogLevel(Log.VERBOSE);
     configureAppboyAtRuntime();
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }

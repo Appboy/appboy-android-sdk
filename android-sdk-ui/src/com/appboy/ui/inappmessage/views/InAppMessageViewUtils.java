@@ -133,7 +133,7 @@ public class InAppMessageViewUtils {
   }
 
   protected static void resetButtonSizesIfNecessary(List<View> buttonViews, List<MessageButton> messageButtons) {
-    if (messageButtons != null &&  messageButtons.size() == 1) {
+    if (messageButtons != null && messageButtons.size() == 1) {
       LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
       buttonViews.get(0).setLayoutParams(layoutParams);
     }

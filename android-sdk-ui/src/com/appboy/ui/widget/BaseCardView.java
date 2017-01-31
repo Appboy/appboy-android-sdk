@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.ViewTreeObserver;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.AppboyFeedManager;
+import com.appboy.ui.feed.AppboyImageSwitcher;
 import com.appboy.ui.support.FrescoLibraryUtils;
 import com.appboy.ui.support.ViewUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -37,7 +37,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   private static final float SQUARE_ASPECT_RATIO = 1f;
   protected final Context mContext;
   protected T mCard;
-  protected ImageSwitcher mImageSwitcher;
+  protected AppboyImageSwitcher mImageSwitcher;
   private final boolean mCanUseFresco;
 
   public BaseCardView(Context context) {
@@ -51,7 +51,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     // All implementing views of BaseCardView must include this switcher view in order to have the
     // read/unread functionality. Views that don't have the indicator (like banner views) won't have the image switcher
     // in them and thus we do the null-check below.
-    mImageSwitcher = (ImageSwitcher) findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
+    mImageSwitcher = (AppboyImageSwitcher) findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
     if (mImageSwitcher != null) {
       mImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
         @Override
@@ -94,15 +94,22 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     if (getCard() != null) {
       if (mImageSwitcher != null) {
         AppboyLogger.d(TAG, "Setting the read/unread indicator for the card.");
-        int resourceId;
         if (getCard().isRead()) {
-          resourceId = R.drawable.icon_read;
+          if (mImageSwitcher.getReadIcon() != null) {
+            mImageSwitcher.setImageDrawable(mImageSwitcher.getReadIcon());
+          } else {
+            mImageSwitcher.setImageResource(R.drawable.icon_read);
+          }
+          mImageSwitcher.setTag("icon_read");
         } else {
-          resourceId = R.drawable.icon_unread;
+          if (mImageSwitcher.getUnReadIcon() != null) {
+            mImageSwitcher.setImageDrawable(mImageSwitcher.getUnReadIcon());
+            return;
+          } else {
+            mImageSwitcher.setImageResource(R.drawable.icon_unread);
+          }
+          mImageSwitcher.setTag("icon_unread");
         }
-        mImageSwitcher.setImageResource(resourceId);
-        // Used to identify the current Drawable in the imageSwitcher
-        mImageSwitcher.setTag(String.valueOf(resourceId));
       }
     } else {
       AppboyLogger.d(TAG, "The card is null.");

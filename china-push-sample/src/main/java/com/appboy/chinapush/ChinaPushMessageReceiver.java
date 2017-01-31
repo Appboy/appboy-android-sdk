@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class receives event updates from the Baidu push service.  We forward a subset of these
- * events for display in the app's message log.  We also register the Baidu user with Appboy when
+ * This class receives event updates from the Baidu push service. We forward a subset of these
+ * events for display in the app's message log. We also register the Baidu user with Appboy when
  * the service binds and log notification clicks to Appboy when notifications are clicked.
  */
 public class ChinaPushMessageReceiver extends PushMessageReceiver {
@@ -109,7 +109,7 @@ public class ChinaPushMessageReceiver extends PushMessageReceiver {
   }
 
   /**
-   * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
+   * Baidu tags are used to segment users. However, Appboy does not use Baidu tags,
    * so we do nothing when tags are set.
    *
    * @param context context in which the receiver is running.
@@ -123,7 +123,7 @@ public class ChinaPushMessageReceiver extends PushMessageReceiver {
                         List<String> successTags, List<String> failTags, String requestId) {}
 
   /**
-   * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
+   * Baidu tags are used to segment users. However, Appboy does not use Baidu tags,
    * so we do nothing when tags are deleted.
    *
    * @param context context in which the receiver is running.
@@ -136,7 +136,7 @@ public class ChinaPushMessageReceiver extends PushMessageReceiver {
   public void onDelTags(Context context, int errorCode, List<String> successTags, List<String> failTags, String requestId) {}
 
   /**
-   * Baidu tags are used to segment users.  However, Appboy does not use Baidu tags,
+   * Baidu tags are used to segment users. However, Appboy does not use Baidu tags,
    * so we do nothing when tags are listed.
    *
    * @param context context in which the receiver is running.

@@ -65,7 +65,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Handles a push notification click.  Called by GCM/ADM receiver when an
+   * Handles a push notification click. Called by GCM/ADM receiver when an
    * Appboy push notification click intent is received.
    * <p/>
    * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
@@ -134,7 +134,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Get the Appboy extras Bundle from the notification extras.  Notification extras must be in GCM/ADM format.
+   * Get the Appboy extras Bundle from the notification extras. Notification extras must be in GCM/ADM format.
    *
    * @param notificationExtras Notification extras as provided by GCM/ADM.
    * @return Returns the Appboy extras Bundle from the notification extras. Amazon ADM recursively flattens all JSON messages,
@@ -168,7 +168,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Parses the JSON into a bundle.  The JSONObject parsed from the input string must be a flat
+   * Parses the JSON into a bundle. The JSONObject parsed from the input string must be a flat
    * dictionary with all string values.
    */
   public static Bundle parseJSONStringDictionaryIntoBundle(String jsonStringDictionary) {
@@ -268,11 +268,11 @@ public class AppboyNotificationUtils {
         String messageKey = AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_TITLE_KEY, "")
             + AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
         int notificationId = messageKey.hashCode();
-        AppboyLogger.d(TAG, "Message without notification id provided in the extras bundle received.  Using a hash of the message: " + notificationId);
+        AppboyLogger.d(TAG, "Message without notification id provided in the extras bundle received. Using a hash of the message: " + notificationId);
         return notificationId;
       }
     } else {
-      AppboyLogger.d(TAG, String.format("Message without extras bundle received.  Using default notification id: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
+      AppboyLogger.d(TAG, String.format("Message without extras bundle received. Using default notification id: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
       return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
     }
   }
@@ -309,7 +309,7 @@ public class AppboyNotificationUtils {
   /**
    * This method will wake the device using a wake lock if the WAKE_LOCK permission is present in the
    * manifest. If the permission is not present, this does nothing. If the screen is already on,
-   * and the permission is present, this does nothing.  If the priority of the incoming notification
+   * and the permission is present, this does nothing. If the priority of the incoming notification
    * is min, this does nothing.
    */
   public static boolean wakeScreenIfHasPermission(Context context, Bundle notificationExtras) {
@@ -399,7 +399,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Sets the icon used in the notification bar itself.
-   * If a drawable defined in appboy.xml is found, we use that.  Otherwise, fall back to the application icon.
+   * If a drawable defined in appboy.xml is found, we use that. Otherwise, fall back to the application icon.
    *
    * @return the resource id of the small icon to be used.
    */
@@ -417,8 +417,8 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Set large icon for devices on Honeycomb and above.  We use the large icon URL if it exists in
-   * the notificationExtras.  Otherwise we search for a drawable defined in appboy.xml.  If that
+   * Set large icon for devices on Honeycomb and above. We use the large icon URL if it exists in
+   * the notificationExtras. Otherwise we search for a drawable defined in appboy.xml. If that
    * doesn't exists, we do nothing.
    * <p/>
    * Supported HoneyComb+.
@@ -550,7 +550,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Set accent color for devices on Lollipop and above.  We use the push-specific accent color if it exists in the notificationExtras,
+   * Set accent color for devices on Lollipop and above. We use the push-specific accent color if it exists in the notificationExtras,
    * otherwise we search for a default set in appboy.xml or don't set the color at all (and the system notification gray
    * default is used).
    * <p/>
@@ -570,7 +570,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Set category for devices on Lollipop and above.  Category is one of the predefined notification categories (see the CATEGORY_* constants in Notification)
+   * Set category for devices on Lollipop and above. Category is one of the predefined notification categories (see the CATEGORY_* constants in Notification)
    * that best describes a Notification. May be used by the system for ranking and filtering.
    * <p/>
    * Supported Lollipop+.
@@ -678,7 +678,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Handles a request to cancel a push notification in the notification center.  Called by GCM/ADM receiver when an
+   * Handles a request to cancel a push notification in the notification center. Called by GCM/ADM receiver when an
    * Appboy cancel notification intent is received.
    * <p/>
    * Any existing notification in the notification center with the integer Id specified in the
@@ -687,7 +687,7 @@ public class AppboyNotificationUtils {
    * If no Id is found, the defaut Appboy notification Id is used.
    *
    * @param context
-   * @param intent  the cancel notification intent
+   * @param intent the cancel notification intent
    */
   public static void handleCancelNotificationAction(Context context, Intent intent) {
     try {
@@ -777,7 +777,7 @@ public class AppboyNotificationUtils {
    * The broadcast message action is <host-app-package-name>.intent.APPBOY_NOTIFICATION_OPENED.
    *
    * @param context
-   * @param intent  the internal notification clicked intent constructed in
+   * @param intent the internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
@@ -794,7 +794,7 @@ public class AppboyNotificationUtils {
    * Logs a push notification open.
    *
    * @param context
-   * @param intent  the internal notification clicked intent constructed in
+   * @param intent the internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   private static void logNotificationOpened(Context context, Intent intent) {

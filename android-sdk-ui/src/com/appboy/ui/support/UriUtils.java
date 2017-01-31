@@ -18,6 +18,7 @@ public class UriUtils {
    * Note: A Uri such as tel:+1-555-555-5555 is not hierarchical and does not accept a query
    * string, so an empty Map will be returned.
    */
+  @SuppressWarnings("checkstyle:rightcurly")
   public static Map<String, String> getQueryParameters(Uri uri) {
     if (uri.isOpaque()) {
       AppboyLogger.d(TAG, "URI is not hierarchical. There are no query parameters to parse.");

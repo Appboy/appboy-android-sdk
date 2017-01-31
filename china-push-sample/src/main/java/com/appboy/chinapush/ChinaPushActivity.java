@@ -76,7 +76,7 @@ public class ChinaPushActivity extends Activity {
       return getPackageManager().getApplicationInfo(getPackageName(),
           PackageManager.GET_META_DATA).metaData.getString(API_KEY);
     } catch (NameNotFoundException e) {
-      Log.w(TAG, "Could not retrieve China push API key from AndroidManifest.xml.  Cannot receive push messages!", e);
+      Log.w(TAG, "Could not retrieve China push API key from AndroidManifest.xml. Cannot receive push messages!", e);
       return null;
     }
   }

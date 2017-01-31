@@ -82,7 +82,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
       public boolean shouldOverrideUrlLoading(WebView view, String url) {
         try {
           // If the Uri scheme is not supported by a web action (i.e. if it's not a web url),
-          // allow the system to try to open the uri first.  This allows the system to handle,
+          // allow the system to try to open the uri first. This allows the system to handle,
           // for example, redirects to the play store via a "store://" Uri.
           if (!WebAction.getSupportedSchemes().contains(Uri.parse(url).getScheme())) {
             IAction action = ActionFactory.createViewUriAction(url, getIntent().getExtras());

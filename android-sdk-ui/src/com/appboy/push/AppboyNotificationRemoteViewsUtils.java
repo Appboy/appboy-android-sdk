@@ -27,13 +27,13 @@ public class AppboyNotificationRemoteViewsUtils {
   public static final String APPBOY_NOTIFICATION_TWELVE_HOUR_FORTMAT_ID = "com_appboy_notification_time_twelve_hour_format";
 
   /**
-   * Returns a custom multi-line push notification view.  For devices running Jelly Bean+, you should use
+   * Returns a custom multi-line push notification view. For devices running Jelly Bean+, you should use
    * the native BigTextStyle to get this functionality.
    *
    * @param context
    * @param notificationExtras
    * @param smallIconResourceId the resource id of the small icon defined in appboy.xml as com_appboy_push_small_notification_icon
-   * @param showSmallIcon       whether or not to custom display the small icon in the remote view.  If an icon outside of the remote view
+   * @param showSmallIcon       whether or not to custom display the small icon in the remote view. If an icon outside of the remote view
    *                            itself will be displayed, pass in false to avoid redundant icon display.
    * @return a RemoteViews instance representing the notification or null if the view cannot be created.
    */

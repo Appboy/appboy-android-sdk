@@ -1,3 +1,22 @@
+## 1.18.0
+
+##### Breaking
+- Renamed the `android-sdk-jar` artifact in the `gh-pages` branch to `android-sdk-base` and changed its format from `jar` to `aar`. Most integrations depend on `android-sdk-ui` and won't need to take any action.
+  - Note: If you were compiling `android-sdk-jar` in your `build.gradle`, you must now compile `android-sdk-base`.
+
+##### Added
+- Added the ability to set custom read and unread icons for News Feed cards. To do so, override the `Appboy.Cards.ImageSwitcher` style in your `styles.xml` and add `appboyFeedCustomReadIcon` and `appboyFeedCustomUnReadIcon` drawable attributes.
+- Added a sample app showcasing the FCM + Appboy push integration. See `/samples/firebase-push`.
+- Added a sample app for manual session integration. See `/samples/manual-session-integration`.
+
+##### Removed
+- Removed the `-dontoptimize` flag from Appboy's UI consumer proguard rules. See https://github.com/Appboy/appboy-android-sdk/blob/master/android-sdk-ui/appboy-proguard-rules.pro for the latest Proguard config.
+  - Thanks to [mnonnenmacher](https://github.com/mnonnenmacher)
+  - See https://github.com/Appboy/appboy-android-sdk/pull/69
+
+##### Changed
+- Updated the Droidboy project to use the conventional Android Build System folder structure.
+
 ## 1.17.0
 
 ##### Breaking
@@ -56,7 +75,7 @@
 - Deprecates `AppboyInAppMessageManager.hideCurrentInAppMessage()`. Please use `AppboyInAppMessageManager.hideCurrentlyDisplayingInAppMessage()` instead.
 
 ##### Added
-- Adds the ability for session tracking and `InAppMessageManager` registration to be handled automatically via `Activity` lifecycle methods on API level 14 and above. See the Hello Appboy sample for an example.
+- Adds the option to handle session tracking and `InAppMessageManager` registration automatically on apps with a minimum supported SDK of API level 14 or above. This is done by registering an `AppboyLifecycleCallbackListener` instance using [`Application.registerActivityLifecycleCallbacks()`](https://developer.android.com/reference/android/app/Application.html#registerActivityLifecycleCallbacks(android.app.Application.ActivityLifecycleCallbacks)). See the Hello Appboy sample app's [application class](https://github.com/Appboy/appboy-android-sdk/blob/master/hello-appboy/src/main/java/com/appboy/helloworld/HelloAppboyApplication.java) for an example.
 - Adds support for upgraded in-app messages including image-only messages, improved image sizing/cropping, text scrolling, text alignment, configurable orientation, and configurable frame color.
 - Adds support for in-app messages triggered on custom event properties, purchase properties, and in-app message clicks.
 - Adds support for templating event properties within in-app messages.

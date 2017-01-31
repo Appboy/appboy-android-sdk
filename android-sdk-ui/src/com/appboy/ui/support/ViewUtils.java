@@ -25,7 +25,7 @@ public class ViewUtils {
 
   /**
    * Retrieve the coordinate of the top of the "available area where content can be placed and
-   * remain visible to users" within the FrameLayout view.  In most cases, this will be equivalent
+   * remain visible to users" within the FrameLayout view. In most cases, this will be equivalent
    * to the height of the status bar.
    *
    * @param view
@@ -38,7 +38,7 @@ public class ViewUtils {
   }
 
   /**
-   * Retrieve the size of the display in dp.  The display height includes all screen decorations,
+   * Retrieve the size of the display in dp. The display height includes all screen decorations,
    * such as the status bar.
    *
    * @param activity

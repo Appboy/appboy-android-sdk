@@ -415,6 +415,12 @@
 
   <!-- Cards -->
   <style name="Appboy.Cards"/>
+  <style name="Appboy.Cards.ImageSwitcher">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_alignParentRight">true</item>
+    <item name="android:gravity">right|top</item>
+  </style>
 
   <!-- Banner Card -->
   <style name="Appboy.Cards.BannerImage"/>

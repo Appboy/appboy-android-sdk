@@ -20,7 +20,7 @@ public class AppboyNotificationStyleFactory {
   public static final int BIG_PICTURE_STYLE_IMAGE_HEIGHT = 192;
 
   /**
-   * Returns a big style NotificationCompat.Style.  If an image is present, this will be a BigPictureStyle,
+   * Returns a big style NotificationCompat.Style. If an image is present, this will be a BigPictureStyle,
    * otherwise it will be a BigTextStyle.
    */
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -155,7 +155,7 @@ public class AppboyNotificationStyleFactory {
     }
 
     // If summary is null (which we set to the subtext in setSummaryTextIfPresentAndSupported in AppboyNotificationUtils)
-    // and bigSummary is null, set the summary to the message.  Without this, the message would be blank in expanded mode.
+    // and bigSummary is null, set the summary to the message. Without this, the message would be blank in expanded mode.
     String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
     if (summaryText == null && bigSummary == null) {
       bigPictureNotificationStyle.setSummaryText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));

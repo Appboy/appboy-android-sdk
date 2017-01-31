@@ -19,7 +19,7 @@ public interface IInAppMessageWebViewClientListener {
    *
    * @param inAppMessage the inAppMessage
    * @param url          the url that triggered the close
-   * @param queryBundle  a bundle of the query part of url
+   * @param queryBundle a bundle of the query part of url
    */
   void onCloseAction(IInAppMessage inAppMessage, String url, Bundle queryBundle);
 
@@ -28,7 +28,7 @@ public interface IInAppMessageWebViewClientListener {
    *
    * @param inAppMessage the inAppMessage
    * @param url          the url that triggered the action
-   * @param queryBundle  a bundle of the query part of url
+   * @param queryBundle a bundle of the query part of url
    */
   void onNewsfeedAction(IInAppMessage inAppMessage, String url, Bundle queryBundle);
 
@@ -37,7 +37,7 @@ public interface IInAppMessageWebViewClientListener {
    *
    * @param inAppMessage the inAppMessage
    * @param url          the url that triggered the action
-   * @param queryBundle  a bundle of the query part of url
+   * @param queryBundle a bundle of the query part of url
    */
   void onCustomEventAction(IInAppMessage inAppMessage, String url, Bundle queryBundle);
 
@@ -46,7 +46,7 @@ public interface IInAppMessageWebViewClientListener {
    *
    * @param inAppMessage the inAppMessage
    * @param url          the url pressed
-   * @param queryBundle  a bundle of the query part of url
+   * @param queryBundle a bundle of the query part of url
    */
   void onOtherUrlAction(IInAppMessage inAppMessage, String url, Bundle queryBundle);
 }

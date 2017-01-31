@@ -1,17 +1,19 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.17.+'
-  compile files('libs/pushservice-5.3.0.99.jar')
+  compile 'com.appboy:android-sdk-ui:1.18.+'
+  compile files("libs/pushservice-${BAIDU_CLOUD_PUSH_VERSION}.jar")
 }
 
 android {
-  compileSdkVersion 24
-  buildToolsVersion '24.0.0'
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    minSdkVersion 9
-    targetSdkVersion 24
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionName rootProject.ext.appVersionName
+    versionCode 1
   }
 
   lintOptions {

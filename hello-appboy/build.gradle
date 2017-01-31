@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.17.+'
+  compile 'com.appboy:android-sdk-ui:1.18.+'
 }
 
 android {
-  compileSdkVersion 24
-  buildToolsVersion '24.0.0'
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    minSdkVersion 14
-    targetSdkVersion 24
+    minSdkVersion rootProject.ext.minSdkVersionForLifecycleListener
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionName rootProject.ext.appVersionName
   }
 
   buildTypes {

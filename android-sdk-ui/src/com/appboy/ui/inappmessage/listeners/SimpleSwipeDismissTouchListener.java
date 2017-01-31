@@ -24,8 +24,8 @@ public class SimpleSwipeDismissTouchListener implements View.OnTouchListener {
   private final class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener {
 
     /**
-     * Swipe distance and speed threshold constants, in pixels.  These represent the speed and distance
-     * a fling gesture must exceed to be interpreted as a slideup dismiss gesture.  Specific values
+     * Swipe distance and speed threshold constants, in pixels. These represent the speed and distance
+     * a fling gesture must exceed to be interpreted as a slideup dismiss gesture. Specific values
      * determined through user acceptance tests.
      */
     private static final int SWIPE_DISTANCE_THRESHOLD = 120;

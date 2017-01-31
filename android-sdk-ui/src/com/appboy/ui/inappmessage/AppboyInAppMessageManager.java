@@ -459,7 +459,7 @@ public final class AppboyInAppMessageManager {
     // Note:  for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
     // of this try/catch when we know whether we are successfully displaying the IAM or not.
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
-      AppboyLogger.d(TAG, "A in-app message is currently being displayed.  Adding in-app message back on the stack.");
+      AppboyLogger.d(TAG, "A in-app message is currently being displayed. Adding in-app message back on the stack.");
       mInAppMessageStack.push(inAppMessage);
       return false;
     }
@@ -535,7 +535,7 @@ public final class AppboyInAppMessageManager {
   /**
    *
    * For in-app messages that have a preferred orientation, locks the screen orientation and
-   * returns true if the screen is currently in the preferred orientation.  If the screen is not
+   * returns true if the screen is currently in the preferred orientation. If the screen is not
    * currently in the preferred orientation, returns false.
    *
    * Always returns true for tablets, regardless of current orientation.

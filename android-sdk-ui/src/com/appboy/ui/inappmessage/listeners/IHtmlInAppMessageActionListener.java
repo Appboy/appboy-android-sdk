@@ -31,7 +31,7 @@ public interface IHtmlInAppMessageActionListener {
    * @param url the url clicked.
    * @param queryBundle a bundle of the query part of the url.
    * @return boolean flag to indicate to Appboy whether the click has been manually handled. If
-   * true, Appboy will  do nothing. If false, Appboy will log the custom event.
+   * true, Appboy will do nothing. If false, Appboy will log the custom event.
    */
   boolean onCustomEventFired(IInAppMessage inAppMessage, String url, Bundle queryBundle);
 

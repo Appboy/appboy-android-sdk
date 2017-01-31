@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stored_api_key_scrollview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_environment_override_api_key_description"/>
+        <EditText
+            android:id="@+id/set_environment_override_api_key_alias"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/set_environment_override_api_key_alias_hint"
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/set_environment_override_api_key"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/set_environment_override_api_key_hint"
+            android:inputType="text" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_environment_override_prev_api_key_description"/>
+        <LinearLayout
+            android:id="@+id/stored_api_key_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_environment_override_endpoint_description"/>
+        <EditText
+            android:id="@+id/set_environment_override_endpoint_url"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/set_environment_override_endpoint_url_hint"
+            android:inputType="textUri" />
+    </LinearLayout>
+</ScrollView>

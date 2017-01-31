@@ -69,8 +69,8 @@ public class AppboyNotificationActionUtils {
   }
 
   /**
-   * Handles clicks on notification action buttons in the notification center.  Called by GCM/ADM
-   * receiver when an Appboy notification action button is clicked.  The GCM/ADM receiver passes on
+   * Handles clicks on notification action buttons in the notification center. Called by GCM/ADM
+   * receiver when an Appboy notification action button is clicked. The GCM/ADM receiver passes on
    * the intent from the notification action button click intent.
    *
    * See {@link #logNotificationActionClicked} and {@link #handleShareActionClicked}
@@ -83,7 +83,7 @@ public class AppboyNotificationActionUtils {
     try {
       String actionType = intent.getStringExtra(Constants.APPBOY_ACTION_TYPE_KEY);
       if (StringUtils.isNullOrBlank(actionType)) {
-        AppboyLogger.w(TAG, "Notification action button type was blank or null.  Doing nothing.");
+        AppboyLogger.w(TAG, "Notification action button type was blank or null. Doing nothing.");
         return;
       }
       int notificationId = intent.getIntExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
@@ -188,7 +188,7 @@ public class AppboyNotificationActionUtils {
   }
 
   /**
-   * Log an action button clicked event.  Logging requires a valid campaign Id and action button Id.
+   * Log an action button clicked event. Logging requires a valid campaign Id and action button Id.
    *
    * @param context
    * @param intent the action button click intent
@@ -197,11 +197,11 @@ public class AppboyNotificationActionUtils {
     String campaignId = intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
     String actionButtonId = intent.getStringExtra(Constants.APPBOY_ACTION_ID_KEY);
     if (StringUtils.isNullOrBlank(campaignId)) {
-      AppboyLogger.i(TAG, "No campaign Id associated with this notification.  Not logging push action click to Appboy.");
+      AppboyLogger.i(TAG, "No campaign Id associated with this notification. Not logging push action click to Appboy.");
       return;
     }
     if (StringUtils.isNullOrBlank(actionButtonId)) {
-      AppboyLogger.i(TAG, "No action button Id associated with this notification action.  Not logging push action click to Appboy.");
+      AppboyLogger.i(TAG, "No action button Id associated with this notification action. Not logging push action click to Appboy.");
       return;
     }
     AppboyLogger.i(TAG, "Logging push action click to Appboy. Campaign Id: " + campaignId + " Action Button Id: " + actionButtonId);
@@ -248,7 +248,7 @@ public class AppboyNotificationActionUtils {
         if (shareIntent != null) {
           mContext.startActivity(shareIntent);
         } else {
-          AppboyLogger.w(TAG, "Null share intent received.  Not starting share intent.");
+          AppboyLogger.w(TAG, "Null share intent received. Not starting share intent.");
         }
       }
     }

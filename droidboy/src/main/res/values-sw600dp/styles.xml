@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- In-App Message Overrides for tablets -->
+  <style name="Appboy.InAppMessage.Message">
+    <item name="android:background">@android:color/transparent</item>
+    <item name="appboyInAppMessageCustomFontFile">@string/custom_font</item>
+  </style>
+  <style name="Appboy.InAppMessage.Header">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:padding">0.0dp</item>
+    <item name="android:background">@android:color/transparent</item>
+    <item name="android:textColor">@color/com_appboy_inappmessage_header_text_light</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textSize">15.0sp</item>
+    <item name="android:textStyle">italic</item>
+    <item name="android:typeface">serif</item>
+    <item name="android:layout_centerHorizontal">true</item>
+  </style>
+  <style name="Appboy.InAppMessage.Button">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">0.0dp</item>
+    <item name="android:textColor">@color/com_appboy_inappmessage_button_text_light</item>
+    <item name="android:background">@drawable/com_appboy_inappmessage_button_background</item>
+    <item name="android:textSize">12.0sp</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:layout_weight">0.5</item>
+    <item name="android:paddingLeft">10.0dp</item>
+    <item name="android:paddingRight">10.0dp</item>
+    <item name="android:paddingTop">15.0dp</item>
+    <item name="android:paddingBottom">15.0dp</item>
+    <item name="appboyInAppMessageCustomFontFile">@string/custom_font</item>
+  </style>
+  <style name="Appboy.Cards.ImageSwitcher">
+    <item name="appboyFeedCustomReadIcon">@drawable/icon_unread</item>
+    <item name="appboyFeedCustomUnReadIcon">@drawable/icon_read</item>
+    <item name="android:layout_width">30.0dp</item>
+    <item name="android:layout_height">30.0dp</item>
+    <item name="android:layout_alignParentRight">true</item>
+    <item name="android:gravity">right|top</item>
+  </style>
+</resources>
