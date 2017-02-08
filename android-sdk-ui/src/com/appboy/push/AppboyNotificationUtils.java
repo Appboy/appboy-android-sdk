@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class AppboyNotificationUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationUtils.class.getName());
@@ -119,6 +121,18 @@ public class AppboyNotificationUtils {
       Log.d(TAG, String.format("Found a deep link %s.", deepLink));
       Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
           .putExtras(extras);
+
+      // If the current app can already handle the deep link, default to using it
+      List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(uriIntent, 0);
+      if (resolveInfos.size() > 1) {
+        for (ResolveInfo resolveInfo : resolveInfos) {
+          if (resolveInfo.activityInfo.packageName.equals(context.getPackageName())) {
+            uriIntent.setPackage(resolveInfo.activityInfo.packageName);
+            break;
+          }
+        }
+      }
+
       TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
       stackBuilder.addNextIntent(startActivityIntent);
       stackBuilder.addNextIntent(uriIntent);
