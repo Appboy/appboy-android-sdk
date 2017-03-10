@@ -138,6 +138,7 @@
   <string name="push_tester_wear_hide_app_icon_label">Wear: Hide App Icon</string>
   <string name="push_tester_wear_add_extra_pages">Wear: Add Extra Pages</string>
   <string name="push_tester_test_triggers">Force request triggers on click</string>
+  <string name="push_tester_constant_nid">Use constant notification Id</string>
 
   <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
   <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>

@@ -22,12 +22,13 @@ ext {
 
 subprojects {
   repositories {
+    mavenLocal()
     mavenCentral()
     maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
   }
 
   group = 'com.appboy'
-  version = '1.18.0'
+  version = '1.19.0'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.

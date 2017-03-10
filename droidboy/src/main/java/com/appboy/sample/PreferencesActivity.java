@@ -21,9 +21,7 @@ import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 public class PreferencesActivity extends PreferenceActivity {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
-  private int attributionUniqueInt = 0;
-
+  private int mAttributionUniqueInt = 0;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -163,7 +161,7 @@ public class PreferencesActivity extends PreferenceActivity {
                 getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
                 .getString(getString(R.string.mock_appboy_network_requests), null));
         SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
-        sharedPreferencesEditor.putString(getString(R.string.mock_appboy_network_requests), String.valueOf(newDisableAppboyNetworkRequestsPreference));
+        sharedPreferencesEditor.putBoolean(getString(R.string.mock_appboy_network_requests), newDisableAppboyNetworkRequestsPreference);
         sharedPreferencesEditor.apply();
         if (newDisableAppboyNetworkRequestsPreference) {
           Toast.makeText(PreferencesActivity.this, "Disabling Appboy network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
@@ -177,11 +175,11 @@ public class PreferencesActivity extends PreferenceActivity {
     logAttributionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(getApplicationContext()).getCurrentUser().setAttributionData(new AttributionData("network_val_" + attributionUniqueInt,
-            "campaign_val_" + attributionUniqueInt,
-            "adgroup_val_" + attributionUniqueInt,
-            "creative_val_" + attributionUniqueInt));
-        attributionUniqueInt++;
+        Appboy.getInstance(getApplicationContext()).getCurrentUser().setAttributionData(new AttributionData("network_val_" + mAttributionUniqueInt,
+            "campaign_val_" + mAttributionUniqueInt,
+            "adgroup_val_" + mAttributionUniqueInt,
+            "creative_val_" + mAttributionUniqueInt));
+        mAttributionUniqueInt++;
         showToast("Attribution data sent to server");
         return true;
       }

@@ -154,6 +154,10 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         mDrawerLayout.closeDrawers();
         startActivity(new Intent(mApplicationContext, FeedbackFragmentActivity.class));
         break;
+      case R.id.geofences_map:
+        mDrawerLayout.closeDrawers();
+        startActivity(new Intent(mApplicationContext, GeofencesMapActivity.class));
+        break;
       default:
         Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
     }
@@ -183,6 +187,9 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     switch (item.getItemId()) {
       case R.id.action_settings:
         startActivity(new Intent(this, PreferencesActivity.class));
+        break;
+      case R.id.geofences_map:
+        startActivity(new Intent(this, GeofencesMapActivity.class));
         break;
       case R.id.feed_categories:
         AppboyFeedFragment feedFragment = getFeedFragment();

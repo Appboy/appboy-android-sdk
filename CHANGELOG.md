@@ -1,3 +1,17 @@
+## 1.19.0
+
+##### Added
+- Added support for registering geofences with Google Play Services and messaging on geofence events. Please reach out to success@appboy.com for more information about this feature.
+
+##### Removed
+- Support for share type notification action buttons and custom notification action buttons has been removed.
+
+##### Changed
+- Push deep links that can be handled by the current app are automatically opened using the current app. Previously, if another app could handle the deep link as well, a chooser dialog would open.
+  - Thanks to [catacom](https://github.com/catacom)
+  - See https://github.com/Appboy/appboy-android-sdk/pull/71
+- `AppboyImageUtils.storePushBitmapInExternalStorage()` has been deprecated.
+
 ## 1.18.0
 
 ##### Breaking

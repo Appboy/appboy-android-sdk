@@ -131,7 +131,7 @@ public class MainFragment extends Fragment {
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttribute(LONG_ATTRIBUTE_KEY, 10L);
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1);
         Appboy.getInstance(mContext).getCurrentUser().incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4);
-        Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttributeToSecondsFromEpoch(DATE_ATTRIBUTE_KEY, new Date().getTime());
+        Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttributeToSecondsFromEpoch(DATE_ATTRIBUTE_KEY, new Date().getTime() / 1000L);
         Appboy.getInstance(mContext).getCurrentUser().setCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, new String[]{"a", "b"});
         Appboy.getInstance(mContext).getCurrentUser().addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c");
         Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b");

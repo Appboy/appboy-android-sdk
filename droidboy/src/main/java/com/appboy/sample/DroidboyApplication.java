@@ -18,13 +18,9 @@ import com.appboy.ui.support.FrescoLibraryUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 public class DroidboyApplication extends Application {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidboyApplication.class.getName());
-  private static final String QA_FLAVOR = "QA";
-  private static final String OVERRIDE_API_KEY = "f9622241-8e26-4366-8183-1c9e310af6b0";
-  private static final Locale OVERRIDE_LOCALE = Locale.CHINA;
   protected static final String OVERRIDE_API_KEY_PREF_KEY = "override_api_key";
   protected static final String OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url";
   private static String sOverrideApiKeyInUse;
@@ -32,43 +28,21 @@ public class DroidboyApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    activateStrictMode();
 
-    // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
-    // we don't want to run Appboy on in certain scenarios.
-    String disableAppboyNetworkRequestsBooleanString = getApplicationContext().getSharedPreferences(
-        getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).getString(
-        getString(R.string.mock_appboy_network_requests), null);
-    if (Boolean.parseBoolean(disableAppboyNetworkRequestsBooleanString)
-        && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(Build.MODEL)) {
-      Appboy.enableMockAppboyNetworkRequestsAndDropEventsMode();
-      Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", Build.MODEL));
+    if (BuildConfig.DEBUG) {
+      activateStrictMode();
     }
+
+    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), MODE_PRIVATE);
+    disableNetworkRequestsIfConfigured(sharedPreferences);
 
     // Clear the configuration cache with null
     Appboy.configure(this, null);
     AppboyConfig.Builder appboyConfigBuilder = new AppboyConfig.Builder();
-
-    if (BuildConfig.FLAVOR.equalsIgnoreCase(QA_FLAVOR)) {
-      Log.i(TAG, "QA build detected, configuring Appboy to clear any existing override key regardless of locale.");
-    } else if (Locale.getDefault().equals(OVERRIDE_LOCALE)) {
-      Log.i(TAG, String.format("Matched %s locale, configuring Appboy with override key.", OVERRIDE_LOCALE));
-      appboyConfigBuilder.setApiKey(OVERRIDE_API_KEY);
-      sOverrideApiKeyInUse = OVERRIDE_API_KEY;
-    } else {
-      Log.i(TAG, String.format("Did not match %s locale, configuring Appboy to clear any existing override key.", OVERRIDE_LOCALE));
-    }
-
-    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), MODE_PRIVATE);
-    String overrideApiKey = sharedPreferences.getString(OVERRIDE_API_KEY_PREF_KEY, null);
-    String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
-    if (!StringUtils.isNullOrBlank(overrideApiKey)) {
-      Log.i(TAG, String.format("Override API key found, configuring Appboy with override key %s.", overrideApiKey));
-      appboyConfigBuilder.setApiKey(overrideApiKey);
-      sOverrideApiKeyInUse = overrideApiKey;
-    }
-
+    setOverrideApiKeyIfConfigured(sharedPreferences, appboyConfigBuilder);
     Appboy.configure(this, appboyConfigBuilder.build());
+
+    String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
     Appboy.setAppboyEndpointProvider(new DroidboyEndpointProvider(overrideEndpointUrl));
 
     Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
@@ -82,25 +56,35 @@ public class DroidboyApplication extends Application {
   }
 
   private void activateStrictMode() {
-    // Set the activity to Strict mode so that we get LogCat warnings when code misbehaves on the main thread.
-    if (BuildConfig.DEBUG) {
-      StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder()
-          .detectAll()
-          .penaltyLog();
-      StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
-          .detectAll()
-          .penaltyLog();
-      if (BuildConfig.FLAVOR.equalsIgnoreCase("qa")) {
-        Log.i(TAG, "QA flavor detected. Setting strict mode penalty death.");
-        vmPolicyBuilder.penaltyDeath();
-        // threadPolicyBuilder.penaltyDeath();
-      }
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-        // Add detectLeakedClosableObjects (available from API 11) if it's available
-        addDetectLeakedClosableObjects(vmPolicyBuilder);
-      }
-      StrictMode.setThreadPolicy(threadPolicyBuilder.build());
-      StrictMode.setVmPolicy(vmPolicyBuilder.build());
+    StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder()
+        .detectAll()
+        .penaltyLog();
+    StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
+        .detectAll()
+        .penaltyLog();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      addDetectLeakedClosableObjects(vmPolicyBuilder);
+    }
+    StrictMode.setThreadPolicy(threadPolicyBuilder.build());
+    StrictMode.setVmPolicy(vmPolicyBuilder.build());
+  }
+
+  // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
+  // we don't want to run Appboy on in certain scenarios.
+  private void disableNetworkRequestsIfConfigured(SharedPreferences sharedPreferences) {
+    boolean disableAppboyNetworkRequestsBooleanString = sharedPreferences.getBoolean(getString(R.string.mock_appboy_network_requests), false);
+    if (disableAppboyNetworkRequestsBooleanString && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(Build.MODEL)) {
+      Appboy.enableMockAppboyNetworkRequestsAndDropEventsMode();
+      Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", Build.MODEL));
+    }
+  }
+
+  private void setOverrideApiKeyIfConfigured(SharedPreferences sharedPreferences, AppboyConfig.Builder appboyConfigBuilder) {
+    String overrideApiKey = sharedPreferences.getString(OVERRIDE_API_KEY_PREF_KEY, null);
+    if (!StringUtils.isNullOrBlank(overrideApiKey)) {
+      Log.i(TAG, String.format("Override API key found, configuring Appboy with override key %s.", overrideApiKey));
+      appboyConfigBuilder.setApiKey(overrideApiKey);
+      sOverrideApiKeyInUse = overrideApiKey;
     }
   }
 

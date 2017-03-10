@@ -25,6 +25,7 @@ import android.util.Log;
 import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
 import com.appboy.AppboyGcmReceiver;
+import com.appboy.AppboyInternal;
 import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -240,6 +241,27 @@ public class AppboyNotificationUtils {
     }
     AppboyLogger.d(TAG, "Sending push message received broadcast");
     context.sendBroadcast(pushReceivedIntent);
+  }
+
+  /**
+   * Requests a geofence refresh from Appboy if appropriate based on the payload of the push notification.
+   *
+   * @param context
+   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @return True iff a geofence refresh was requested from Appboy.
+   */
+  public static boolean requestGeofenceRefreshIfAppropriate(Context context, Bundle notificationExtras) {
+    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_SYNC_GEOFENCES_KEY)) {
+      if (Boolean.parseBoolean(notificationExtras.getString(Constants.APPBOY_PUSH_SYNC_GEOFENCES_KEY))) {
+        AppboyInternal.requestGeofenceRefresh(context, true);
+        return true;
+      } else {
+        AppboyLogger.d(TAG, "Geofence sync key was false. Not syncing geofences.");
+      }
+    } else {
+      AppboyLogger.d(TAG, "Geofence sync key not included in push payload. Not syncing geofences.");
+    }
+    return false;
   }
 
   /**
@@ -642,7 +664,7 @@ public class AppboyNotificationUtils {
    * Supported Lollipop+.
    */
   public static void setPublicVersionIfPresentAndSupported(Context context, AppboyConfigurationProvider appboyConfigurationProvider,
-      NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+                                                           NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY)) {
         String publicNotificationExtrasString = notificationExtras.getString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY);

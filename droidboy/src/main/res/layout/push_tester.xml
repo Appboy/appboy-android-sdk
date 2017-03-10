@@ -66,6 +66,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/push_tester_test_triggers"/>
+        <CheckBox
+            android:id="@+id/push_tester_constant_nid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/push_tester_constant_nid"/>
         <Spinner
           android:id="@+id/push_image_spinner"
           android:layout_width="fill_parent"

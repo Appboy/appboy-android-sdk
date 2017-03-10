@@ -124,6 +124,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         return true;
       } else {
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, admExtras);
+        AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, admExtras);
         return false;
       }
     }

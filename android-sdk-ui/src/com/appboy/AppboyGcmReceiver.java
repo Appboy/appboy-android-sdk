@@ -142,6 +142,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       } else {
         AppboyLogger.d(TAG, "Received data push");
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, gcmExtras);
+        AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, gcmExtras);
         return false;
       }
     }

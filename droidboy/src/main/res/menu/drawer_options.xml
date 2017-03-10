@@ -3,4 +3,7 @@
     <item
         android:id="@+id/feedback"
         android:title="Feedback" />
+    <item
+        android:id="@+id/geofences_map"
+        android:title="Geofences" />
 </menu>

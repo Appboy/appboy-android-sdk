@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.appboy.Constants;
 import com.appboy.push.AppboyNotificationUtils;
@@ -31,11 +30,7 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
         Log.d(TAG, "Got uninstall tracking push");
       }
     } else if (notificationOpenedAction.equals(action)) {
-      if (intent.getBooleanExtra(Constants.APPBOY_ACTION_IS_CUSTOM_ACTION_KEY, false)) {
-        Toast.makeText(context, "You clicked a Droidboy custom action!", Toast.LENGTH_LONG).show();
-      } else {
-        AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
-      }
+      AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
     } else {
       Log.d(TAG, String.format("Ignoring intent with unsupported action %s", action));
     }

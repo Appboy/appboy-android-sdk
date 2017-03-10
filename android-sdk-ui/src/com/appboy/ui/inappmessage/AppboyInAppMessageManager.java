@@ -1,6 +1,7 @@
 package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -136,12 +137,12 @@ public final class AppboyInAppMessageManager {
    * Ensures the InAppMessageManager is subscribed in-app message events if not already subscribed.
    * Before this method gets called, the InAppMessageManager is not subscribed to in-app message events
    * and cannot display them. Every call to registerInAppMessageManager() calls this method.
-   *
+   * <p/>
    * If events with triggers are logged before the first call to registerInAppMessageManager(), then the
    * corresponding in-app message won't display. Thus, if logging events with triggers before the first call
    * to registerInAppMessageManager(), then call this method to ensure that in-app message events
    * are correctly handled by the AppboyInAppMessageManager.
-   *
+   * <p/>
    * For example, if logging custom events with triggers in your first activity's onCreate(), be sure
    * to call this method manually beforehand so that the in-app message will get displayed by the time
    * registerInAppMessageManager() gets called.
@@ -162,7 +163,10 @@ public final class AppboyInAppMessageManager {
    * <p/>
    * Important note: Every Activity must call registerInAppMessageManager in the onResume lifecycle
    * method, otherwise in-app messages may be lost!
-   *
+   * <p/>
+   * This method also calls {@link AppboyInAppMessageManager#ensureSubscribedToInAppMessageEvents(Context)}.
+   * To be sure that no in-app messages are lost, you should call {@link AppboyInAppMessageManager#ensureSubscribedToInAppMessageEvents(Context)} as early
+   * as possible in your app, preferably in your {@link Application#onCreate()}.
    * @param activity The current Activity.
    */
   public void registerInAppMessageManager(Activity activity) {

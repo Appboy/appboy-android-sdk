@@ -9,6 +9,7 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
   <!-- Permissions for GCM -->
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -25,6 +26,13 @@
                android:allowBackup="true" android:name="DroidboyApplication" android:theme="@style/Theme.Droidboy">
     <amazon:enable-feature android:name="com.amazon.device.messaging" android:required="false" />
 
+    <meta-data
+      android:name="com.google.android.gms.version"
+      android:value="@integer/google_play_services_version" />
+    <meta-data
+      android:name="com.google.android.geo.API_KEY"
+      android:value="@string/google_maps_key" />
+
     <receiver android:name="com.appboy.AppboyAdmReceiver" android:permission="com.amazon.device.messaging.permission.SEND">
       <intent-filter>
         <action android:name="com.amazon.device.messaging.intent.RECEIVE" />
@@ -40,7 +48,7 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-
+    <service android:name="com.appboy.services.AppboyGeofenceService"/>
     <service android:name="com.appboy.services.AppboyLocationService"/>
     <service android:name="com.appboy.services.AppboyWearableListenerService">
       <intent-filter>
@@ -51,6 +59,8 @@
 
     <activity android:name="com.appboy.ui.AppboyWebViewActivity" />
     <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" />
+
+    <activity android:name=".GeofencesMapActivity" />
 
     <!-- Deep link example -->
     <activity android:name=".PreferencesActivity" android:label="Preferences">
@@ -74,6 +84,12 @@
     </activity>
     <activity android:name=".FeedbackFragmentActivity" />
     <activity android:name=".FeedFragmentActivity" />
+
+    <receiver android:name="com.appboy.AppboyBootReceiver">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+      </intent-filter>
+    </receiver>
 
     <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND">
       <intent-filter>

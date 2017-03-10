@@ -26,7 +26,7 @@
   <!-- This integer sets the default accent color for push notifications on Android Lollipop and higher. If not specified,
     the default background color is gray (the same gray Lollipop uses for system notifications). This value can
     be overridden at runtime by a push notification that sets a custom accent color. -->
-  <integer name="com_appboy_default_notification_accent_color">0xFFf33e3e</integer>
+  <integer name="com_appboy_default_notification_accent_color">0xFF000000</integer>
 
   <!-- This is a string because parsing it out of a resource file as a numeric value isn't properly handled by Android.
     Also, it's not shown to the user and thus we don't require it to be translated. -->
