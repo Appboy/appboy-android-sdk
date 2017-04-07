@@ -23,7 +23,7 @@ public class AppboyHtmlFullViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageHtmlFullView view = (AppboyInAppMessageHtmlFullView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_html_full, null);
 
     view.setWebViewContent(inAppMessage.getMessage(), inAppMessageHtmlFull.getLocalAssetsDirectoryUrl());
-    view.setInAppMessageWebViewClient(new InAppMessageWebViewClient(inAppMessage, mInAppMessageWebViewClientListener));
+    view.setInAppMessageWebViewClient(new InAppMessageWebViewClient(activity.getApplicationContext(), inAppMessage, mInAppMessageWebViewClientListener));
 
     return view;
   }

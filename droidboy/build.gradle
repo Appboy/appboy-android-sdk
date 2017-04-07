@@ -11,8 +11,7 @@ dependencies {
   compile "com.google.android.gms:play-services-location:${PLAY_SERVICES_VERSION}"
   compile "com.google.android.gms:play-services-maps:${PLAY_SERVICES_VERSION}"
   compile "com.facebook.fresco:fresco:${FACEBOOK_FRESCO_VERSION}"
-  // To link the wearboy app with Droidboy
-  wearApp project(':wearboy')
+  compile "io.branch.sdk.android:library:${BRANCH_VERSION}"
 }
 
 android {
@@ -24,7 +23,7 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     applicationId "com.appboy.sample"
     versionName rootProject.ext.appVersionName
-    versionCode 64
+    versionCode 65
     resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
   }
 }

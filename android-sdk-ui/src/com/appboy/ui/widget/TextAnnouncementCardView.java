@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.appboy.Constants;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.R;
-import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 
 public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard> {
@@ -44,7 +43,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
     mTitle.setText(card.getTitle());
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
-    mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
+    mCardAction = getUriActionForCard(card);
 
     setOnClickListener(new OnClickListener() {
       @Override

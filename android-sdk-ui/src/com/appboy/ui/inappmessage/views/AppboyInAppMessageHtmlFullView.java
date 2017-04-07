@@ -13,9 +13,11 @@ import android.webkit.WebView;
 import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
+import com.appboy.ui.inappmessage.jsinterface.AppboyInAppMessageHtmlJavascriptInterface;
 
 public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseView {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageHtmlFullView.class.getName());
+  public static final String APPBOY_BRIDGE_PREFIX = "appboyInternalBridge";
 
   private WebView mMessageWebView;
 
@@ -48,6 +50,8 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
             return true;
           }
         });
+
+        mMessageWebView.addJavascriptInterface(new AppboyInAppMessageHtmlJavascriptInterface(getContext()), APPBOY_BRIDGE_PREFIX);
       }
     }
     return mMessageWebView;

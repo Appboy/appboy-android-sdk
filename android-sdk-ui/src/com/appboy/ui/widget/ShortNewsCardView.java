@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.appboy.Constants;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.ui.R;
-import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -58,7 +57,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
     mDescription.setText(card.getDescription());
     setOptionalTextView(mTitle, card.getTitle());
     setOptionalTextView(mDomain, card.getDomain());
-    mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
+    mCardAction = getUriActionForCard(card);
 
     setOnClickListener(new OnClickListener() {
       @Override

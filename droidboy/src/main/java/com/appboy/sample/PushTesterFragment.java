@@ -26,12 +26,9 @@ import org.json.JSONObject;
 
 import java.security.SecureRandom;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PushTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
   protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PushTesterFragment.class.getName());
-  private static final String[] WEAR_EXTRA_PAGE_TITLES = new String[]{"Extra page (title)", "So Many Pages! (title)", "Last Page (title)"};
-  private static final String[] WEAR_EXTRA_PAGE_CONTENTS = new String[]{"Space (content)",
-      "The Final Frontier (content)",
-      "There's a lot of text here. There's so much text here! So many lines! This is also the last extra page (content)"};
   private static final String TITLE = "Title";
   private static final String CONTENT = "Content";
   private static final String BIG_TITLE = "Big Title";
@@ -45,7 +42,6 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private String mClickActionUrl;
   private String mCategory;
   private String mVisibility;
-  private String mWearBackgroundImageUrl;
   private String mActionType;
   private String mAccentColorString;
   private String mLargeIconString;
@@ -60,9 +56,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mSetPublicVersion = false;
   private boolean mSetAccentColor = false;
   private boolean mSetLargeIcon = false;
-  private boolean mWearHideAppIcon = false;
-  private boolean mWearUseBackgroundImage = false;
-  private boolean mWearAddExtraPages = false;
+  private boolean mOpenInWebview = false;
   private boolean mTestTriggerFetch = false;
   private boolean mUseConstantNotificationId = false;
   private View mView;
@@ -103,18 +97,6 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         mSetPublicVersion = isChecked;
       }
     });
-    ((CheckBox) mView.findViewById(R.id.push_tester_wear_hide_app_icon)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mWearHideAppIcon = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_wear_add_extra_pages)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mWearAddExtraPages = isChecked;
-      }
-    });
     ((CheckBox) mView.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -125,6 +107,12 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mUseConstantNotificationId = isChecked;
+      }
+    });
+    ((CheckBox) mView.findViewById(R.id.push_tester_set_open_webview)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mOpenInWebview = isChecked;
       }
     });
 
@@ -142,9 +130,6 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
 
     // Creates the visibility spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
-
-    // Creates the Wear background image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_wear_background_image_spinner), this, R.array.push_wear_background_image_options);
 
     // Creates the push image spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
@@ -168,7 +153,6 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
             Bundle notificationExtras = new Bundle();
             notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
             notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
-            notificationExtras.putString(Constants.APPBOY_PUSH_WEAR_HIDE_APP_ICON_KEY, String.valueOf(mWearHideAppIcon));
 
             int notificationId;
             if (mUseConstantNotificationId) {
@@ -198,18 +182,15 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
             if (mUseVisibility) {
               notificationExtras.putString(Constants.APPBOY_PUSH_VISIBILITY_KEY, mVisibility);
             }
+            if (mOpenInWebview) {
+              notificationExtras.putString(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, "true");
+            }
             if (mSetPublicVersion) {
               try {
                 notificationExtras.putString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY, getPublicVersionNotificationString());
               } catch (JSONException jsonException) {
                 Log.e(TAG, "Failed to created public version notification JSON string", jsonException);
               }
-            }
-            if (mWearUseBackgroundImage) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_WEAR_BACKGROUND_IMAGE_URL_KEY, mWearBackgroundImageUrl);
-            }
-            if (mWearAddExtraPages) {
-              addWearExtraPagesToNotificationBuilder(notificationExtras);
             }
             if (mTestTriggerFetch) {
               notificationExtras.putString(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY, "true");
@@ -265,15 +246,6 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
           mImage = pushImageUriString;
         } else {
           mUseImage = false;
-        }
-        break;
-      case R.id.push_wear_background_image_spinner:
-        String pushWearBackgroundImageUriString = getResources().getStringArray(R.array.push_wear_background_image_values)[parent.getSelectedItemPosition()];
-        if (!StringUtils.isNullOrBlank(pushWearBackgroundImageUriString)) {
-          mWearUseBackgroundImage = true;
-          mWearBackgroundImageUrl = pushWearBackgroundImageUriString;
-        } else {
-          mWearUseBackgroundImage = false;
         }
         break;
       case R.id.push_priority_spinner:
@@ -359,13 +331,19 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
     } else if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI)) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy");
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy (webview)");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.appboy_homepage_url));
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Google");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.google_url));
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "false");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
+      if (mOpenInWebview) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "true");
+      }
     } else if (mActionType.equals("deep_link")) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Preferences");
@@ -386,16 +364,5 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       return field + getString(R.string.overflow_string);
     }
     return field;
-  }
-
-  private void addWearExtraPagesToNotificationBuilder(Bundle notificationExtras) {
-    for (int i = 0; i < WEAR_EXTRA_PAGE_TITLES.length; i++) {
-      String titleKey = Constants.APPBOY_PUSH_WEAR_EXTRA_PAGE_TITLE_KEY_PREFIX + i;
-      notificationExtras.putString(titleKey, WEAR_EXTRA_PAGE_TITLES[i]);
-    }
-    for (int i = 0; i < WEAR_EXTRA_PAGE_CONTENTS.length; i++) {
-      String contentKey = Constants.APPBOY_PUSH_WEAR_EXTRA_PAGE_CONTENT_KEY_PREFIX + i;
-      notificationExtras.putString(contentKey, WEAR_EXTRA_PAGE_CONTENTS[i]);
-    }
   }
 }

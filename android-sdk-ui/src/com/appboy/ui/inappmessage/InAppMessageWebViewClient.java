@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -7,6 +8,7 @@ import android.webkit.WebViewClient;
 
 import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
+import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
@@ -31,17 +33,42 @@ public class InAppMessageWebViewClient extends WebViewClient {
    * the INTENT.ACTION_VIEW intent. Links beginning with the appboy:// scheme are unaffected by this query key.
    */
   public static final String QUERY_NAME_EXTERNAL_OPEN = "abExternalOpen";
+  /**
+   * Query key for directing Appboy to open Url intents using the INTENT.ACTION_VIEW.
+   */
+  public static final String QUERY_NAME_DEEPLINK = "abDeepLink";
+  public static final String JAVASCRIPT_PREFIX = "javascript:";
 
   private IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
   private final IInAppMessage mInAppMessage;
+  private Context mContext;
 
   /**
    * @param inAppMessage                      the In-App Message being displayed in this WebView
    * @param inAppMessageWebViewClientListener the client listener. Should be non-null.
    */
-  public InAppMessageWebViewClient(IInAppMessage inAppMessage, IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {
+  public InAppMessageWebViewClient(Context context, IInAppMessage inAppMessage, IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {
     mInAppMessageWebViewClientListener = inAppMessageWebViewClientListener;
     mInAppMessage = inAppMessage;
+    mContext = context;
+  }
+
+  @Override
+  public void onPageFinished(WebView view, String url) {
+    appendBridgeJavascript(view);
+  }
+
+  private void appendBridgeJavascript(WebView view) {
+    String javascriptString = AppboyFileUtils.getAssetFileStringContents(mContext.getAssets(), "appboy-html-in-app-message-javascript-component.js");
+    if (javascriptString == null) {
+
+      // Fail instead of present a broken WebView
+      AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false);
+      AppboyLogger.e(TAG, "Failed to get HTML in-app message javascript additions");
+      return;
+    }
+
+    view.loadUrl(JAVASCRIPT_PREFIX + javascriptString);
   }
 
   /**

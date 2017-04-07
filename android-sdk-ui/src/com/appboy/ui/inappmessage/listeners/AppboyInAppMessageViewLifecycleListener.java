@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.appboy.Constants;
+import com.appboy.enums.Channel;
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
@@ -14,6 +15,10 @@ import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
 import com.appboy.support.WebContentUtils;
+import com.appboy.ui.AppboyNavigator;
+import com.appboy.ui.actions.ActionFactory;
+import com.appboy.ui.actions.NewsfeedAction;
+import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
 
@@ -88,14 +93,14 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
   }
 
   private void performInAppMessageButtonClicked(MessageButton messageButton, IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
-    performClickAction(messageButton.getClickAction(), inAppMessage, inAppMessageCloser, messageButton.getUri());
+    performClickAction(messageButton.getClickAction(), inAppMessage, inAppMessageCloser, messageButton.getUri(), messageButton.getOpenUriInWebview());
   }
 
   private void performInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
-    performClickAction(inAppMessage.getClickAction(), inAppMessage, inAppMessageCloser, inAppMessage.getUri());
+    performClickAction(inAppMessage.getClickAction(), inAppMessage, inAppMessageCloser, inAppMessage.getUri(), inAppMessage.getOpenUriInWebView());
   }
 
-  private void performClickAction(ClickAction clickAction, IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser, Uri clickUri) {
+  private void performClickAction(ClickAction clickAction, IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser, Uri clickUri, boolean openUriInWebview) {
     if (getInAppMessageManager().getActivity() == null) {
       AppboyLogger.w(TAG, "Can't perform click action because the cached activity is null.");
       return;
@@ -103,12 +108,15 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
     switch (clickAction) {
       case NEWS_FEED:
         inAppMessageCloser.close(false);
-        getInAppMessageManager().getAppboyNavigator().gotoNewsFeed(getInAppMessageManager().getActivity(),
-            BundleUtils.mapToBundle(inAppMessage.getExtras()));
+        NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.mapToBundle(inAppMessage.getExtras()),
+            Channel.INAPP_MESSAGE);
+        AppboyNavigator.getAppboyNavigator().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
         break;
       case URI:
         inAppMessageCloser.close(false);
-        getInAppMessageManager().getAppboyNavigator().gotoURI(getInAppMessageManager().getActivity(), clickUri, BundleUtils.mapToBundle(inAppMessage.getExtras()));
+        UriAction uriAction = ActionFactory.createUriActionFromUri(clickUri, BundleUtils.mapToBundle(inAppMessage.getExtras()),
+            openUriInWebview, Channel.INAPP_MESSAGE);
+        AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getActivity(), uriAction);
         break;
       case NONE:
         inAppMessageCloser.close(inAppMessage.getAnimateOut());

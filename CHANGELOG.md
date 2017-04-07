@@ -1,3 +1,46 @@
+## 2.0.0
+
+##### Breaking
+- Removed the following deprecated methods and fields:
+  - Removed the unsupported method `Appboy.logShare()`.
+  - Removed `Appboy.logPurchase(String, int)`.
+  - Removed `Appboy.logFeedCardImpression()` and `Appboy.logFeedCardClick()`. Please use `Card.logClick()` and `Card.logImpression()` instead.
+  - Removed the unsupported method `Appboy.getAppboyResourceEndpoint()`.
+  - Removed `IAppboyEndpointProvider.getResourceEndpoint()`. Please update your interface implementation if applicable.
+  - Removed `Appboy.registerAppboyGcmMessages()`. Please use `Appboy.registerAppboyPushMessages()` instead.
+  - Removed `AppboyInAppMessageBaseView.resetMessageMargins()`. Please use `AppboyInAppMessageBaseView.resetMessageMargins(boolean)` instead.
+  - Removed `com.appboy.unity.AppboyUnityGcmReceiver`. To open Appboy push deep links automatically in Unity, set the boolean configuration parameter `com_appboy_inapp_show_inapp_messages_automatically` to true in your `appboy.xml`.
+  - Removed the unsupported method `AppboyUser.setBio()`.
+  - Removed `AppboyUser.setIsSubscribedToEmails()`. Please use `AppboyUser.setEmailNotificationSubscriptionType()` instead.
+  - Removed `Constants.APPBOY_PUSH_CUSTOM_URI_KEY`. Please use `Constants.APPBOY_PUSH_DEEP_LINK_KEY` instead.
+  - Removed `Constants.APPBOY_CANCEL_NOTIFICATION_TAG`.
+  - Removed `Appboy.logPushNotificationOpened()`.
+  - Removed `com.appboy.ui.actions.ViewAction` and `com.appboy.ui.actions.WebAction`.
+  - Removed `CardCategory.ALL_CATEGORIES`. Please use `CardCategory.getAllCategories()` instead.
+  - Removed `AppboyImageUtils.storePushBitmapInExternalStorage()`.
+  - Removed `AppboyFileUtils.canStoreAssetsLocally()` and `AppboyFileUtils.getApplicationCacheDir()`.
+  - Removed `InAppMessageModal.getModalFrameColor()` and `InAppMessageModal.setModalFrameColor()`. Please use `InAppMessageModal.getFrameColor()` and `InAppMessageModal.setFrameColor()` instead.
+  - Removed `com.appboy.enums.SocialNetwork`.
+  - Removed `AppboyNotificationUtils.getAppboyExtras()`. Please use `AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing()` instead.
+  - Removed `AppboyNotificationUtils.setLargeIconIfPresentAndSupported(Context, AppboyConfigurationProvider, NotificationCompat.Builder)`. Please use `AppboyNotificationUtils.setLargeIconIfPresentAndSupported(Context, AppboyConfigurationProvider, NotificationCompat.Builder, Bundle)` instead.
+  - Removed `AppboyInAppMessageManager.hideCurrentInAppMessage()`. Please use `AppboyInAppMessageManager.hideCurrentlyDisplayingInAppMessage()` instead.
+- Changed method signatures for `gotoNewsFeed()` and `gotoURI()` in `IAppboyNavigator`. Please update your interface implementation if applicable.
+- Removed `Appboy.unregisterAppboyPushMessages()`. Please use `AppboyUser.setPushNotificationSubscriptionType()` instead.
+- Moved `getAppboyNavigator()` and `setAppboyNavigator()` from `Appboy.java` to `AppboyNavigator.java`.
+- The Appboy Baidu China Push integration now uses the Baidu `channelId` as the push token. Please update your push token registration code to pass `channelId` instead of `userId` into `Appboy.registerAppboyPushMessages()`. The China Push sample has been updated.
+- Removed the `wearboy` and `wear-library` modules. Android Wear 1.0 is no longer supported. Please remove `AppboyWearableListenerService` from your `AndroidManifest.xml` if applicable.
+
+##### Added
+- Added a javascript interface to HTML in-app messages	with ability to	log custom events, purchases, user attributes, navigate users, and close the messaage.
+- Added the ability to set a single delegate object to custom handle all Uris opened by Appboy across in-app messages, push, and the news feed. Your delegate object should implement the `IAppboyNavigator` interface and be set using `AppboyNavigator.setAppboyNavigator()`.
+  - See https://github.com/Appboy/appboy-android-sdk/blob/master/droidboy/src/main/java/com/appboy/sample/CustomAppboyNavigator.java for an example implementation.
+  - You must also provide instructions for Appboy to navigate to your app's (optional) news feed implementation. To use Appboy's default handling, call `AppboyNavigator.executeNewsFeedAction(context, uriAction);`.
+  - Note: Previously, Appboy Navigator was only used when opening in-app messages.
+
+##### Changed
+- Removed the need to manually add declarations for Appboy's news feed and in-app message activities (`AppboyFeedActivity` and `AppboyWebViewActivity`) to the app `AndroidManifest.xml`. If you have these declarations in your manifest, they can be safely removed.
+- Push notifications with web url click actions now open in an in-app webview instead of the external mobile web browser when clicked.
+
 ## 1.19.0
 
 ##### Added
@@ -54,13 +97,13 @@
 ## 1.16.0
 
 ##### Added
-- Adds the ability to toggle outbound network requests from the Appboy SDK online/offline. See `Appboy.setOutboundNetworkRequestsOffline()` for more details.
+- Added the ability to toggle outbound network requests from the Appboy SDK online/offline. See `Appboy.setOutboundNetworkRequestsOffline()` for more details.
 
 ##### Fixed
-- Fixes a bug that caused session sealed automatic data flushes to not occur.
+- Fixed a bug that caused session sealed automatic data flushes to not occur.
 
 ##### Removed
-- Removes Appboy notification action button icons and icon constants.
+- Removed Appboy notification action button icons and icon constants.
 
 ## 1.15.3
 

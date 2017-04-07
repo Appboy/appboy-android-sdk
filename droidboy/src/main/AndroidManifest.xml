@@ -25,6 +25,7 @@
   <application android:label="@string/app_name" android:icon="@drawable/ic_launcher_droidboy"
                android:allowBackup="true" android:name="DroidboyApplication" android:theme="@style/Theme.Droidboy">
     <amazon:enable-feature android:name="com.amazon.device.messaging" android:required="false" />
+    <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_flzo8WNh8i9tdQl713oTFkhlrri9uA8k" />
 
     <meta-data
       android:name="com.google.android.gms.version"
@@ -50,18 +51,8 @@
     </activity>
     <service android:name="com.appboy.services.AppboyGeofenceService"/>
     <service android:name="com.appboy.services.AppboyLocationService"/>
-    <service android:name="com.appboy.services.AppboyWearableListenerService">
-      <intent-filter>
-        <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
-        <data android:scheme="wear" android:host="*" android:pathPrefix="/appboy-data-sync/" />
-      </intent-filter>
-    </service>
-
-    <activity android:name="com.appboy.ui.AppboyWebViewActivity" />
-    <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" />
 
     <activity android:name=".GeofencesMapActivity" />
-
     <!-- Deep link example -->
     <activity android:name=".PreferencesActivity" android:label="Preferences">
       <intent-filter>
@@ -103,6 +94,12 @@
       <intent-filter>
         <action android:name="${applicationId}.intent.APPBOY_PUSH_RECEIVED" />
         <action android:name="${applicationId}.intent.APPBOY_NOTIFICATION_OPENED" />
+      </intent-filter>
+    </receiver>
+
+    <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
+      <intent-filter>
+        <action android:name="com.android.vending.INSTALL_REFERRER" />
       </intent-filter>
     </receiver>
   </application>

@@ -8,10 +8,15 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appboy.Appboy;
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.support.AppboyLogger;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 
@@ -27,6 +32,7 @@ public class ChinaPushActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.china_push);
+    AppboyLogger.setLogLevel(Log.VERBOSE);
 
     // It is good practice to always get an instance of the Appboy singleton using the application
     // context.
@@ -40,6 +46,25 @@ public class ChinaPushActivity extends Activity {
 
     TextView messageLog = (TextView) findViewById(R.id.com_appboy_china_push_message_log);
     messageLog.setMovementMethod(new ScrollingMovementMethod());
+
+    final EditText userIdInput = (EditText) findViewById(R.id.com_appboy_china_push_edit_text_user_id);
+    Button submitUserId = (Button) findViewById(R.id.com_appboy_china_push_button_change_user);
+
+    submitUserId.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        String userId = userIdInput.getText().toString();
+        if (userId == null || userId.length() == 0) {
+          showMessage("User Id should not be null or empty. Doing nothing.");
+          return;
+        } else {
+          showMessage(String.format("Changed user to %s and requested flush to Appboy", userId));
+          Appboy.getInstance(mApplicationContext).changeUser(userId);
+        }
+
+        Appboy.getInstance(mApplicationContext).requestImmediateDataFlush();
+      }
+    });
   }
 
   @Override
@@ -89,5 +114,9 @@ public class ChinaPushActivity extends Activity {
   private void updateMessageLog(String logMessage) {
     TextView messageLog = (TextView) findViewById(R.id.com_appboy_china_push_message_log);
     messageLog.setText(logMessage);
+  }
+
+  private void showMessage(String message) {
+    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
   }
 }

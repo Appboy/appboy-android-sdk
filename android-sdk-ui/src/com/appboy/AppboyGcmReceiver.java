@@ -77,7 +77,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     } else if (registrationId != null) {
       Appboy.getInstance(context).registerAppboyPushMessages(registrationId);
     } else if (intent.hasExtra(GCM_UNREGISTERED_KEY)) {
-      Appboy.getInstance(context).unregisterAppboyPushMessages();
+      AppboyLogger.w(TAG, "The device was un-registered from GCM.");
     } else {
       AppboyLogger.w(TAG, "The GCM registration message is missing error information, registration id, and unregistration "
           + "confirmation. Ignoring.");

@@ -11,7 +11,6 @@ import android.view.animation.Animation;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.IAppboyNavigator;
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
@@ -21,7 +20,6 @@ import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.support.AppboyLogger;
-import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.inappmessage.factories.AppboyFullViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyHtmlFullViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyInAppMessageAnimationFactory;
@@ -89,7 +87,6 @@ public final class AppboyInAppMessageManager {
   private static volatile AppboyInAppMessageManager sInstance = null;
 
   private final Stack<IInAppMessage> mInAppMessageStack = new Stack<IInAppMessage>();
-  private final IAppboyNavigator mDefaultAppboyNavigator = new AppboyNavigator();
   private Activity mActivity;
   private IEventSubscriber<InAppMessageEvent> mInAppMessageEventSubscriber;
   private IInAppMessageViewFactory mCustomInAppMessageViewFactory;
@@ -352,44 +349,6 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
-   * Hides any currently displaying in-app message.
-   *
-   * @deprecated Use {@link #hideCurrentlyDisplayingInAppMessage(boolean)}
-   *
-   * @param animate   whether to animate the message out of view. Note that in-app message animation
-   *                  is configurable on the in-app message model itself and should be configured
-   *                  there instead.
-   * @param dismissed whether the message was dismissed by the user. If dismissed is true,
-   *                  IInAppMessageViewLifecycleListener.onDismissed() will be called on the current
-   *                  IInAppMessageViewLifecycleListener.
-   */
-  @Deprecated
-  public void hideCurrentInAppMessage(boolean animate, boolean dismissed) {
-    IInAppMessageViewWrapper inAppMessageWrapperView = mInAppMessageViewWrapper;
-    if (inAppMessageWrapperView != null) {
-      IInAppMessage inAppMessage = inAppMessageWrapperView.getInAppMessage();
-      if (inAppMessage != null) {
-        inAppMessage.setAnimateOut(animate);
-      }
-      hideCurrentlyDisplayingInAppMessage(dismissed);
-    }
-  }
-
-  /**
-   * Hides any currently displaying in-app message.
-   *
-   * @deprecated Use {@link #hideCurrentlyDisplayingInAppMessage(boolean)}
-   *
-   * @param animate whether to animate the message out of view. Note that in-app message animation
-   *                  is configurable on the in-app message model itself and should be configured
-   *                  there instead.
-   */
-  @Deprecated
-  public void hideCurrentInAppMessage(boolean animate) {
-    hideCurrentInAppMessage(animate, false);
-  }
-
-  /**
    * Hides any currently displaying in-app message. Note that in-app message animation
    * is configurable on the in-app message model itself and should be configured there.
    *
@@ -414,11 +373,6 @@ public final class AppboyInAppMessageManager {
 
   public IHtmlInAppMessageActionListener getHtmlInAppMessageActionListener() {
     return mCustomHtmlInAppMessageActionListener != null ? mCustomHtmlInAppMessageActionListener : mDefaultHtmlInAppMessageActionListener;
-  }
-
-  public IAppboyNavigator getAppboyNavigator() {
-    IAppboyNavigator customAppboyNavigator = Appboy.getInstance(mActivity).getAppboyNavigator();
-    return customAppboyNavigator != null ? customAppboyNavigator : mDefaultAppboyNavigator;
   }
 
   public Activity getActivity() {

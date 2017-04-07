@@ -80,19 +80,6 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
     }
   }
 
-  @Deprecated
-  /**
-   * Please use {@link AppboyInAppMessageBaseView#resetMessageMargins(boolean)} instead.
-   */
-  public void resetMessageMargins() {
-    boolean successful = false;
-    if (getMessageImageView() != null && getMessageImageView().getDrawable() != null) {
-      successful = true;
-    }
-
-    resetMessageMargins(successful);
-  }
-
   /**
    * Since SimpleDraweeViews use placeholders, we cannot directly check the nullity of its View Drawable
    * to check if the view should be removed.

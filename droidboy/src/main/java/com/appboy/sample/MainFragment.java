@@ -22,7 +22,9 @@ import java.util.Date;
 
 public class MainFragment extends Fragment {
   private static final String USER_ID_KEY = "user.id";
+  private static final String STRING_ARRAY_ATTRIBUTE_KEY = "stringArrayAttribute";
   private static final String ARRAY_ATTRIBUTE_KEY = "arrayAttribute";
+  private static final String PETS_ARRAY_ATTRIBUTE_KEY = "arrayAttributePets";
   private static final String DATE_ATTRIBUTE_KEY = "dateAttribute";
   private static final String FLOAT_ATTRIBUTE_KEY = "floatAttribute";
   private static final String BOOL_ATTRIBUTE_KEY = "boolAttribute";
@@ -132,9 +134,13 @@ public class MainFragment extends Fragment {
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1);
         Appboy.getInstance(mContext).getCurrentUser().incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4);
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttributeToSecondsFromEpoch(DATE_ATTRIBUTE_KEY, new Date().getTime() / 1000L);
-        Appboy.getInstance(mContext).getCurrentUser().setCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, new String[]{"a", "b"});
+        Appboy.getInstance(mContext).getCurrentUser().setCustomAttributeArray(STRING_ARRAY_ATTRIBUTE_KEY, new String[]{"a", "b"});
         Appboy.getInstance(mContext).getCurrentUser().addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c");
         Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b");
+        Appboy.getInstance(mContext).getCurrentUser().addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "cat");
+        Appboy.getInstance(mContext).getCurrentUser().addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "dog");
+        Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "bird");
+        Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "deer");
         Toast.makeText(getContext(), "Set user attributes.", Toast.LENGTH_SHORT).show();
       }
     });

@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.VisibleForTesting;
 
 import com.appboy.Constants;
 import com.appboy.enums.AppStore;
+import com.appboy.enums.Channel;
 import com.appboy.support.AppboyLogger;
-import com.appboy.ui.AppboyWebViewActivity;
 
 /**
  * Action that opens the Google Play market to a specific app in either the Google Play store app
@@ -23,48 +24,48 @@ public final class GooglePlayAppDetailsAction implements IAction {
   private static final String AMAZON_STORE_WEB_BASE = "http://www.amazon.com/gp/mas/dl/android?asin=";
 
   private final String mPackageName;
-  private boolean mUseAppboyWebView;
+  private boolean mUseWebView;
   private final AppStore mAppStore;
-  private String mKindleId;
+  private final String mKindleId;
+  private final Channel mChannel;
 
-  public GooglePlayAppDetailsAction(String packageName, boolean useAppboyWebView, AppStore appStore) {
+  public GooglePlayAppDetailsAction(String packageName, boolean useAppboyWebView, AppStore appStore,
+                                    String kindleId, Channel channel) {
     mPackageName = packageName;
-    mUseAppboyWebView = useAppboyWebView;
-    mAppStore = appStore;
-  }
-
-  public GooglePlayAppDetailsAction(String packageName, boolean useAppboyWebView, AppStore appStore, String kindleId) {
-    mPackageName = packageName;
-    mUseAppboyWebView = useAppboyWebView;
+    mUseWebView = useAppboyWebView;
     mAppStore = appStore;
     mKindleId = kindleId;
+    mChannel = channel;
+  }
+
+  @Override
+  public Channel getChannel() {
+    return mChannel;
   }
 
   @Override
   public void execute(Context context) {
-
     if (mAppStore != AppStore.KINDLE_STORE) {
       try {
         context.getPackageManager().getPackageInfo(("com.google.android.gsf"), 0);
       } catch (PackageManager.NameNotFoundException e) {
         AppboyLogger.i(TAG, "Google Play Store not found, launching Play Store with WebView");
-        mUseAppboyWebView = true;
+        mUseWebView = true;
       } catch (Exception e) {
-        AppboyLogger.e(TAG, String.format("Unexpected exception while checking for %s.", "com.google.android.gsf"));
-        mUseAppboyWebView = true;
+        AppboyLogger.e(TAG, "Unexpected exception while checking for com.google.android.gsf.");
+        mUseWebView = true;
       }
     }
 
-    String uriString = "";
-    if (mUseAppboyWebView) {
+    String uriString;
+    if (mUseWebView) {
       if (mAppStore == AppStore.KINDLE_STORE) {
         uriString = AMAZON_STORE_WEB_BASE + mKindleId;
       } else {
         uriString = PLAY_STORE_WEB_BASE + mPackageName;
       }
       Uri uri = Uri.parse(uriString);
-      Intent intent = new Intent(Intent.ACTION_VIEW, uri, context, AppboyWebViewActivity.class);
-      context.startActivity(intent);
+      UriAction.openUriWithWebView(context, uri, null);
     } else {
       if (mAppStore == AppStore.KINDLE_STORE) {
         uriString = AMAZON_STORE_APP_BASE + mKindleId;
@@ -75,5 +76,10 @@ public final class GooglePlayAppDetailsAction implements IAction {
       Intent intent = new Intent(Intent.ACTION_VIEW, uri);
       context.startActivity(intent);
     }
+  }
+
+  @VisibleForTesting
+  public boolean getUseWebView() {
+    return mUseWebView;
   }
 }

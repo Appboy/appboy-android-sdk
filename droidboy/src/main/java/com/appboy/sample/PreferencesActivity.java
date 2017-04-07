@@ -2,6 +2,7 @@ package com.appboy.sample;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,7 +22,13 @@ import com.appboy.support.StringUtils;
 import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
+import org.json.JSONObject;
+
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+
 public class PreferencesActivity extends PreferenceActivity {
+  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
   private int mAttributionUniqueInt = 0;
 
   @Override
@@ -213,6 +221,31 @@ public class PreferencesActivity extends PreferenceActivity {
     super.onStart();
     // Opens a new Appboy session. You can now start logging custom events.
     Appboy.getInstance(this).openSession(this);
+
+    Branch branch = Branch.getInstance();
+    branch.initSession(new Branch.BranchReferralInitListener() {
+      @Override
+      public void onInitFinished(JSONObject referringParams, BranchError error) {
+        if (error == null) {
+          String param1 = referringParams.optString("$param_1", "");
+          String param2 = referringParams.optString("$param_2", "");
+          if (param1.equals("hello")) {
+            showToast("This activity was opened by a Branch deep link with custom param 1.");
+          } else if (param2.equals("goodbye")) {
+            showToast("This activity was opened by a Branch deep link with custom param 2.");
+          } else {
+            showToast("This activity was opened by a Branch deep link with no custom params!");
+          }
+        } else {
+          Log.i(TAG, error.getMessage());
+        }
+      }
+    }, this.getIntent().getData(), this);
+  }
+
+  @Override
+  public void onNewIntent(Intent intent) {
+    this.setIntent(intent);
   }
 
   @Override
@@ -241,6 +274,7 @@ public class PreferencesActivity extends PreferenceActivity {
     super.onStop();
     // Closes the Appboy session.
     Appboy.getInstance(this).closeSession(this);
+    Branch.getInstance(getApplicationContext()).closeSession();
   }
 
   @Override

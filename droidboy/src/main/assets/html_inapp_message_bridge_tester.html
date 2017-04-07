@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <script type="text/javascript" src="HTML_ZIP_STOPWATCH/myscript.js"></script>
+    <script type="text/javascript">
+      function setCustomAttributes() {
+        appboyBridge.getUser().setCustomUserAttribute('abStringAttribute', 'atts');
+        appboyBridge.getUser().setCustomUserAttribute('abDateAttribute', new Date());
+        appboyBridge.getUser().setCustomUserAttribute('abIntAttribute', 6);
+        appboyBridge.getUser().setCustomUserAttribute('abDoubleAttribute', 7.8);
+        appboyBridge.getUser().setCustomUserAttribute('abBoolAttribute', true);
+        appboyBridge.getUser().setCustomUserAttribute('abArrayAttribute', ['a', 'b']);
+      };
+      function logCustomEvents() {
+        appboyBridge.logCustomEvent('abEvent');
+        appboyBridge.logCustomEvent('abEventNullProp', null);
+        appboyBridge.logCustomEvent('abEventWithProp', { intProp: 1, doubleProp: 4.4, stringProp: 'asdf', boolProp: true, dateProp:new Date()});
+      };
+      function logPurchases() {
+        appboyBridge.logPurchase('abPurchase', 5.5, 'USD');
+        appboyBridge.logPurchase('abPurchaseWithQuantity', 5.5, 'USD', 6);
+        appboyBridge.logPurchase('abPurchaseWithQuantityAndProperties', 5.5, 'USD', 6, { intProp: 1, doubleProp: 4.4, stringProp: 'string property', boolProp: false, dateProp:new Date()});
+        appboyBridge.logPurchase('abPurchaseWithPropertiesNoQuantity', 5.5, 'USD', null, { intProp: 1, doubleProp: 4.4, stringProp: 'string property', boolProp: false, dateProp:new Date()});
+      };
+    </script>
+    <link href="HTML_ZIP_STOPWATCH/iamcss.css" rel="stylesheet" type="text/css" />
+    <style>
+    a, button {
+      color: blue;
+      padding: 2px 25px;
+      font-family: "Avenir";
+      text-transform: none;
+    }
+    button {
+      display: block;
+      margin: 4px auto;
+      background: antiquewhite;
+      width: 75%;
+      padding: 10px;
+    }
+    .firstLink {
+      clear: right;
+    }
+    </style>
+</head>
+
+<body>
+<div class="box">
+    <div class="relativeTopRight">
+        <a href="appboy://close">X</a>
+    </div>
+
+    <a class="firstLink" href="https://www.appboy.com?abExternalOpen=false&abButtonId=1">Appboy.com</a>
+    <button onClick="document.body.style.backgroundColor = 'rgba(232, 125, 232, .75)'">Make more transparent</button>
+    <a href="droidboy://preferences">Deep Link</a>
+    <a href="appboy://feed">Open the Newsfeed</a>
+    <button id="color-change" onclick="javascript:sayHi();">Change Color To Red</button>
+    <button onclick="window.location = 'appboy://customEvent?name=androidHtmlIamCustomEvent&pOne=pTwo'">Custom Event Url Style</button>
+    <button onClick="appboyBridge.closeMessage()" />ab: closeMessage</button>
+    <button onClick="appboyBridge.requestImmediateDataFlush()" />ab: requestImmediateDataFlush</button>
+    <button onClick="logCustomEvents()" />ab: logCustomEvent</button>
+    <button onClick="logPurchases()" />ab: logPurchase</button>
+    <button onClick="appboyBridge.display.showFeed()" />ab: display.showFeed</button>
+    <button onClick="appboyBridge.getUser().setFirstName('abFirstName')" />ab: setFirstName</button>
+    <button onClick="appboyBridge.getUser().setLastName('abLastName')" />ab: setLastName</button>
+    <button onClick="appboyBridge.getUser().setEmail('abEmail@appboy.com')" />ab: setEmail</button>
+    <button onClick="appboyBridge.getUser().setGender('m')" />ab: setGender Male</button>
+    <button onClick="appboyBridge.getUser().setGender('f')" />ab: setGender Female</button>
+    <button onClick="appboyBridge.getUser().setHomeCity('abHomeCity')" />ab: setHomeCity</button>
+    <button onClick="appboyBridge.getUser().setEmailNotificationSubscriptionType('unsubscribed')" />ab: setEmailNotificationSubscriptionType Unsubscribed</button>
+    <button onClick="appboyBridge.getUser().setEmailNotificationSubscriptionType('subscribed')" />ab: setEmailNotificationSubscriptionType Subscribed</button>
+    <button onClick="appboyBridge.getUser().setEmailNotificationSubscriptionType('opted_in')" />ab: setEmailNotificationSubscriptionType Opted-in</button>
+    <button onClick="appboyBridge.getUser().setPushNotificationSubscriptionType('unsubscribed')" />ab: setPushNotificationSubscriptionType</button>
+    <button onClick="appboyBridge.getUser().addToCustomAttributeArray('abAtArray', 'myval')" />ab: addToCustomAttributeArray</button>
+    <button onClick="appboyBridge.getUser().removeFromCustomAttributeArray('abAtArray', 'myval')" />ab: removeFromCustomAttributeArray</button>
+    <button onClick="appboyBridge.getUser().incrementCustomUserAttribute('abInc')" />ab: incrementCustomUserAttribute</button>
+    <button onClick="appboyBridge.getUser().setDateOfBirth(1960, 11, 11)" />ab: setDateOfBirth</button>
+    <button onClick="appboyBridge.getUser().setCountry('USA')" />ab: setCountry</button>
+    <button onClick="appboyBridge.getUser().setPhoneNumber('9084894848')" />ab: setPhone</button>
+    <button onClick="setCustomAttributes()" />ab: setCustomAttribute</button>
+
+    <img src="HTML_ZIP_STOPWATCH/jpg_3.jpg" width="100%">
+    <div class="relativeLeft">
+        <a href="https://twitter.com/appboy?abButtonId=0&abExternalOpen=true&">Appboy Twitter</a>
+    </div>
+    <div class="relativeRight">
+        <a href="appboy://close">Close</a>
+    </div>
+</div>
+</body>
+</html>

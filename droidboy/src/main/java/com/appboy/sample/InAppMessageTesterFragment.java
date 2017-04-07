@@ -32,6 +32,7 @@ import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.sample.util.SpinnerUtils;
+import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 
@@ -47,7 +48,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageTesterFragment.class.getName());
 
   private enum HtmlMessageType {
-    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS
+    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS, BRIDGE_TESTER
   }
 
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
@@ -98,6 +99,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     spinnerOptionMap.put(R.id.inapp_message_align_spinner, R.array.inapp_align_options);
     spinnerOptionMap.put(R.id.inapp_animate_in_spinner, R.array.inapp_boolean_options);
     spinnerOptionMap.put(R.id.inapp_animate_out_spinner, R.array.inapp_boolean_options);
+    spinnerOptionMap.put(R.id.inapp_open_uri_in_webview_spinner, R.array.inapp_boolean_options);
     sSpinnerOptionMap = Collections.unmodifiableMap(spinnerOptionMap);
   }
 
@@ -125,10 +127,12 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private String mHeaderTextAlign;
   private String mAnimateIn;
   private String mAnimateOut;
+  private String mUseWebview;
   private String mHtmlBodyFromAssets;
   private String mHtmlBodyFromAssetsInlineJs;
   private String mHtmlBodyFromAssetsExternalJs;
   private String mHtmlBodyFromAssetsStarWars;
+  private String mHtmlBodyFromBridgeTester;
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -173,9 +177,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-          Appboy.getInstance(getContext()).setAppboyNavigator(new CustomAppboyNavigator());
+          AppboyNavigator.setAppboyNavigator(new CustomAppboyNavigator());
         } else {
-          Appboy.getInstance(getContext()).setAppboyNavigator(null);
+          AppboyNavigator.setAppboyNavigator(null);
         }
         getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
       }
@@ -248,6 +252,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.EXTERNAL_JS);
           } else if ("html_full_star_wars".equals(mMessageType)) {
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.STAR_WARS);
+          } else if ("html_full_bridge_tester".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.BRIDGE_TESTER);
           } else {
             addInAppMessage(new InAppMessageSlideup());
           }
@@ -318,6 +324,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     mHtmlBodyFromAssetsInlineJs = readHtmlBodyFromAssets(HtmlMessageType.INLINE_JS);
     mHtmlBodyFromAssetsExternalJs = readHtmlBodyFromAssets(HtmlMessageType.EXTERNAL_JS);
     mHtmlBodyFromAssetsStarWars = readHtmlBodyFromAssets(HtmlMessageType.STAR_WARS);
+    mHtmlBodyFromBridgeTester = readHtmlBodyFromAssets(HtmlMessageType.BRIDGE_TESTER);
   }
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
@@ -390,6 +397,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       case STAR_WARS:
         inAppMessage.setMessage(mHtmlBodyFromAssetsStarWars);
         break;
+      case BRIDGE_TESTER:
+        inAppMessage.setMessage(mHtmlBodyFromBridgeTester);
+        inAppMessage.setAssetsZipRemoteUrl("https://appboy-images.com/HTML_ZIP_STOPWATCH.zip");
+        break;
       default:
         break;
     }
@@ -421,7 +432,18 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setImage(inAppMessage);
     setMessageTextAlign(inAppMessage);
     setAnimation(inAppMessage);
+    setUseWebview(inAppMessage);
     AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
+  }
+
+  private void setUseWebview(IInAppMessage inAppMessage) {
+    if (!SpinnerUtils.spinnerItemNotSet(mUseWebview)) {
+      if (mUseWebview.equals("true")) {
+        inAppMessage.setOpenUriInWebView(true);
+      } else if (mUseWebview.equals("false")) {
+        inAppMessage.setOpenUriInWebView(false);
+      }
+    }
   }
 
   private void setAnimation(IInAppMessage inAppMessage) {
@@ -618,13 +640,14 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       }
       MessageButton buttonTwo = new MessageButton();
       if ("two".equals(mButtons) || "long".equals(mButtons)) {
-        buttonOne.setText("ACCEPT");
+        buttonOne.setText("No Webview");
         buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.appboy_homepage_url)));
-        buttonTwo.setText("CLOSE");
-        buttonTwo.setClickAction(ClickAction.NONE);
+        buttonTwo.setText("Webview");
+        buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.appboy_homepage_url)));
+        buttonTwo.setOpenUriInWebview(true);
         if ("long".equals(mButtons)) {
-          buttonOne.setText("ACCEPT WITH A VERY LONG TITLE");
-          buttonTwo.setText("CLOSE WITH A VERY LONG TITLE");
+          buttonOne.setText("No Webview WITH A VERY LONG TITLE");
+          buttonTwo.setText("Webview WITH A VERY LONG TITLE");
         }
       } else if ("deeplink".equals(mButtons)) {
         buttonOne.setText("TELEPHONE");
@@ -722,6 +745,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       case R.id.inapp_animate_out_spinner:
         mAnimateOut = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_boolean_values);
         break;
+      case R.id.inapp_open_uri_in_webview_spinner:
+        mUseWebview = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_boolean_values);
+        break;
       default:
         Log.e(TAG, "Item selected for unknown spinner");
     }
@@ -780,6 +806,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         break;
       case STAR_WARS:
         filename = "html_inapp_message_body_star_wars.html";
+        break;
+      case BRIDGE_TESTER:
+        filename = "html_inapp_message_bridge_tester.html";
         break;
       default:
         break;

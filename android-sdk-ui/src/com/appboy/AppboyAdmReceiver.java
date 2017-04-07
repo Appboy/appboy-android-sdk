@@ -61,8 +61,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       AppboyLogger.i(TAG, "Registering for ADM messages with registrationId: " + registrationId);
       Appboy.getInstance(context).registerAppboyPushMessages(registrationId);
     } else if (unregistered != null) {
-      AppboyLogger.i(TAG, "Unregistering from ADM: " + unregistered);
-      Appboy.getInstance(context).unregisterAppboyPushMessages();
+      AppboyLogger.w(TAG, "The device was un-registered from ADM: " + unregistered);
     } else {
       AppboyLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration "
           + "confirmation. Ignoring.");

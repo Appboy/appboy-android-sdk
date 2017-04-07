@@ -52,31 +52,22 @@
           android:layout_height="wrap_content"
           android:text="@string/push_tester_public_version_label"/>
         <CheckBox
-          android:id="@+id/push_tester_wear_hide_app_icon"
+          android:id="@+id/push_tester_test_triggers"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_wear_hide_app_icon_label"/>
+          android:text="@string/push_tester_test_triggers"/>
         <CheckBox
-          android:id="@+id/push_tester_wear_add_extra_pages"
+          android:id="@+id/push_tester_constant_nid"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/push_tester_wear_add_extra_pages"/>
+          android:text="@string/push_tester_constant_nid"/>
         <CheckBox
-            android:id="@+id/push_tester_test_triggers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/push_tester_test_triggers"/>
-        <CheckBox
-            android:id="@+id/push_tester_constant_nid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/push_tester_constant_nid"/>
+          android:id="@+id/push_tester_set_open_webview"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/set_open_uri_in_webview"/>
         <Spinner
           android:id="@+id/push_image_spinner"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"/>
-        <Spinner
-          android:id="@+id/push_wear_background_image_spinner"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"/>
         <Spinner

@@ -15,16 +15,21 @@ import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
 import com.appboy.Constants;
+import com.appboy.enums.Channel;
+import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.WebAction;
 import com.appboy.ui.activities.AppboyBaseActivity;
 
 public class AppboyWebViewActivity extends AppboyBaseActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyWebViewActivity.class.getName());
   // The Intent extra string containing the URL to open.
-  public static final String URL_EXTRA = "url";
+  /**
+   * @Deprecated use {@link Constants#APPBOY_WEBVIEW_URL_EXTRA} instead.
+   */
+  @Deprecated
+  public static final String URL_EXTRA = Constants.APPBOY_WEBVIEW_URL_EXTRA;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -84,8 +89,9 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
           // If the Uri scheme is not supported by a web action (i.e. if it's not a web url),
           // allow the system to try to open the uri first. This allows the system to handle,
           // for example, redirects to the play store via a "store://" Uri.
-          if (!WebAction.getSupportedSchemes().contains(Uri.parse(url).getScheme())) {
-            IAction action = ActionFactory.createViewUriAction(url, getIntent().getExtras());
+          if (!AppboyFileUtils.REMOTE_SCHEMES.contains(Uri.parse(url).getScheme())) {
+            IAction action = ActionFactory.createUriActionFromUrlString(url, getIntent().getExtras(), false, Channel.UNKNOWN);
+            // Instead of using AppboyNavigator, just open directly.
             action.execute(view.getContext());
 
             // Close the WebView if the action was executed successfully

@@ -41,8 +41,8 @@ public class ChinaPushMessageReceiver extends PushMessageReceiver {
     Log.d(TAG, logMessage);
     updateApplicationMessageLog(context, logMessage, true);
 
-    // register user with Appboy
-    Appboy.getInstance(context).registerAppboyPushMessages(userId);
+    // Register channelId with Appboy.
+    Appboy.getInstance(context).registerAppboyPushMessages(channelId);
   }
 
   /**

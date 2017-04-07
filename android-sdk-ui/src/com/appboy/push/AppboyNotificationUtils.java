@@ -6,10 +6,8 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,7 +17,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.appboy.Appboy;
@@ -29,43 +26,27 @@ import com.appboy.AppboyInternal;
 import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.enums.Channel;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.PermissionUtils;
 import com.appboy.support.StringUtils;
+import com.appboy.ui.AppboyNavigator;
+import com.appboy.ui.actions.ActionFactory;
+import com.appboy.ui.actions.UriAction;
+import com.appboy.ui.support.UriUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class AppboyNotificationUtils {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationUtils.class.getName());
   private static final String SOURCE_KEY = "source";
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
-
-  /**
-   * Get the Appboy extras Bundle from the notification extras. Notification extras must be in a Bundle.
-   * <p/>
-   * Amazon ADM recursively flattens all JSON messages, so we just return the original bundle.
-   *
-   * @deprecated use {@link AppboyNotificationUtils#getAppboyExtrasWithoutPreprocessing(android.os.Bundle) instead.
-   * Note that notification extras must be in GCM/ADM format instead of a Bundle.}
-   */
-  @Deprecated
-  public static Bundle getAppboyExtras(Bundle notificationExtras) {
-    if (notificationExtras == null) {
-      return null;
-    }
-    if (!Constants.IS_AMAZON) {
-      return notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
-    } else {
-      return notificationExtras;
-    }
-  }
 
   /**
    * Handles a push notification click. Called by GCM/ADM receiver when an
@@ -107,44 +88,19 @@ public class AppboyNotificationUtils {
     extras.putString(AppboyGcmReceiver.CAMPAIGN_ID_KEY, intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY));
     extras.putString(SOURCE_KEY, Constants.APPBOY);
 
-    // get main activity intent.
-    Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    if (extras != null) {
-      startActivityIntent.putExtras(extras);
-    }
-
     // If a deep link exists, start an ACTION_VIEW intent pointing at the deep link.
     // The intent returned from getStartActivityIntent() is placed on the back stack.
     // Otherwise, start the intent defined in getStartActivityIntent().
     String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
     if (!StringUtils.isNullOrBlank(deepLink)) {
       Log.d(TAG, String.format("Found a deep link %s.", deepLink));
-      Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
-          .putExtras(extras);
-
-      // If the current app can already handle the deep link, default to using it
-      List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(uriIntent, 0);
-      if (resolveInfos.size() > 1) {
-        for (ResolveInfo resolveInfo : resolveInfos) {
-          if (resolveInfo.activityInfo.packageName.equals(context.getPackageName())) {
-            uriIntent.setPackage(resolveInfo.activityInfo.packageName);
-            break;
-          }
-        }
-      }
-
-      TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-      stackBuilder.addNextIntent(startActivityIntent);
-      stackBuilder.addNextIntent(uriIntent);
-      try {
-        stackBuilder.startActivities(extras);
-      } catch (ActivityNotFoundException e) {
-        Log.w(TAG, String.format("Could not find appropriate activity to open for deep link %s.", deepLink));
-      }
+      boolean useWebView = "true".equalsIgnoreCase(intent.getStringExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY));
+      Log.d(TAG, "Use webview set to: " + useWebView);
+      UriAction uriAction = ActionFactory.createUriActionFromUrlString(deepLink, extras, useWebView, Channel.PUSH);
+      AppboyNavigator.getAppboyNavigator().gotoUri(context, uriAction);
     } else {
       Log.d(TAG, "Push notification had no deep link. Opening main activity.");
-      context.startActivity(startActivityIntent);
+      context.startActivity(UriUtils.getMainActivityIntent(context, extras));
     }
   }
 
@@ -494,16 +450,6 @@ public class AppboyNotificationUtils {
 
     AppboyLogger.d(TAG, "Large icon not set for notification");
     return false;
-  }
-
-  /**
-   * @Deprecated use {@link #setLargeIconIfPresentAndSupported(Context, AppboyConfigurationProvider, NotificationCompat.Builder, Bundle)}
-   */
-  @Deprecated
-  public static boolean setLargeIconIfPresentAndSupported(
-      Context context, AppboyConfigurationProvider appConfigurationProvider,
-      NotificationCompat.Builder notificationBuilder) {
-    return setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, null);
   }
 
   /**

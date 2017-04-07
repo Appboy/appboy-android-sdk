@@ -64,6 +64,7 @@
   <string name="attribute_array_key">Create Attribute Array</string>
 
   <string name="custom_logging_user_attribute">User Attribute</string>
+  <string name="custom_logging_user_number_attribute">User Attribute (Number)</string>
   <string name="custom_logging_user_attribute_increment">Increment Attribute</string>
   <string name="custom_logging_user_attribute_unset">Unset Attribute</string>
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
@@ -114,6 +115,7 @@
   <string name="set_button_text_color">Set button text color</string>
   <string name="set_animate_in">Set animate in</string>
   <string name="set_animate_out">Set animate out</string>
+  <string name="set_open_uri_in_webview">Open Web Links In WebView</string>
 
   <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
   <string name="header_10">Hey there#</string>
@@ -135,8 +137,6 @@
   <string name="push_tester_summary_label">Add Summary Text</string>
   <string name="push_tester_overflow_text_label">Overflow Text</string>
   <string name="push_tester_public_version_label">Set Public Version Notification</string>
-  <string name="push_tester_wear_hide_app_icon_label">Wear: Hide App Icon</string>
-  <string name="push_tester_wear_add_extra_pages">Wear: Add Extra Pages</string>
   <string name="push_tester_test_triggers">Force request triggers on click</string>
   <string name="push_tester_constant_nid">Use constant notification Id</string>
 
@@ -175,6 +175,9 @@
   <string name="google_url">http://www.google.com</string>
   <string name="droidboy_deep_link">droidboy://preferences</string>
   <string name="droidboy_deep_link_https">https://www.droidboy.com/preferences</string>
+  <string name="firebase_dynamic_link">https://rkt5u.app.goo.gl/TPlw</string>
+  <string name="branch_link_p1">https://droid.app.link/preferences</string>
+  <string name="branch_link_p2">https://droid.app.link/tYyoN3LRnB</string>
   <string name="youtube_https_link">https://www.youtube.com/watch?v=1PJCQTGbLq4</string>
   <string name="telephone_uri">tel:555555555</string>
   <string name="html_assets_no_js_remote_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/zip_uploads/files/585c1776bf5cea3cbe1b36b2/124fae83d6ba4023d4ede28e9177980e6373747c/original.zip?1482430326</string>

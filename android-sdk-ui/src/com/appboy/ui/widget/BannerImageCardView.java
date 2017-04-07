@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import com.appboy.Constants;
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.ui.R;
-import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -61,7 +60,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
       setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
     }
 
-    mCardAction = ActionFactory.createUriAction(getContext(), card.getUrl());
+    mCardAction = getUriActionForCard(card);
 
     setOnClickListener(new OnClickListener() {
       @Override

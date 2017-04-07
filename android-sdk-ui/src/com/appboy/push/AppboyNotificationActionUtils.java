@@ -28,6 +28,7 @@ public class AppboyNotificationActionUtils {
    * “ab_a*_t”: action button text - optional
    * “ab_a*_a”: action type, one of “ab_uri”, ”ab_none”, “ab_open” (open the app) - required
    * “ab_a*_uri”: uri, only used when the action is “uri” - required only when action is “uri”
+   * “ab_a*_use_webview”: whether to open the web link in a web view - optional
    *
    * The * is replaced with an integer string depending on the button being described
    * (e.g. the uri for the second button is “ab_a1_uri”).
@@ -87,6 +88,10 @@ public class AppboyNotificationActionUtils {
         if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI) && intent.getExtras().containsKey(Constants.APPBOY_ACTION_URI_KEY)) {
           // Set the deep link that to open to the correct action's deep link.
           intent.putExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY, intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY));
+          if (intent.getExtras().containsKey(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY)) {
+            intent.putExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY,
+                intent.getStringExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY));
+          }
         } else {
           // Otherwise, remove any existing deep links.
           intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
@@ -124,6 +129,8 @@ public class AppboyNotificationActionUtils {
     notificationActionExtras.putString(Constants.APPBOY_ACTION_TYPE_KEY, actionType);
     notificationActionExtras.putString(Constants.APPBOY_ACTION_ID_KEY, getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_ID_KEY_TEMPLATE));
     notificationActionExtras.putString(Constants.APPBOY_ACTION_URI_KEY, getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE));
+    notificationActionExtras.putString(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY,
+        getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE));
 
     Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
     sendIntent.putExtras(notificationActionExtras);

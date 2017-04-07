@@ -41,6 +41,31 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/custom_number_attribute_button"
+                style="@style/PopulateButton"
+                android:text="@string/custom_logging_user_number_attribute"/>
+
+            <EditText
+                android:id="@+id/custom_number_attribute_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                style="@style/UserEmailAddress"/>
+
+            <EditText
+                android:id="@+id/custom_number_attribute_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:inputType="number"
+                style="@style/UserEmailAddress"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
                 android:id="@+id/custom_attribute_increment_button"
                 style="@style/PopulateButton"
                 android:text="@string/custom_logging_user_attribute_increment"/>

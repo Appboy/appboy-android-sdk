@@ -6,6 +6,9 @@
   <item>Click Action: Telephone Deep Link</item>
   <item>Click Action: Droidboy Deep Link Custom Scheme</item>
   <item>Click Action: Droidboy Deep Link Https</item>
+  <item>Click Action: Firebase Dynamic Link</item>
+  <item>Click Action: Branch Link Param 1</item>
+  <item>Click Action: Branch Link Param 2</item>
 </string-array>
 <string-array name="push_click_action_values">
   <item></item>
@@ -13,5 +16,8 @@
   <item>@string/telephone_uri</item>
   <item>@string/droidboy_deep_link</item>
   <item>@string/droidboy_deep_link_https</item>
+  <item>@string/firebase_dynamic_link</item>
+  <item>@string/branch_link_p1</item>
+  <item>@string/branch_link_p2</item>
 </string-array>
 </resources>

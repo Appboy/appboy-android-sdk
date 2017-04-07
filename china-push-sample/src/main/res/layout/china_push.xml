@@ -5,15 +5,36 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    tools:context=".ChinaPush">
+    android:paddingBottom="16dp">
+    <EditText
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:id="@+id/com_appboy_china_push_edit_text_user_id"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:hint="@string/set_user_id_edit_text_hint"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentEnd="true"/>
+
+    <Button
+      android:text="@string/set_userid_button_prompt"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/com_appboy_china_push_button_change_user"
+      android:layout_below="@+id/com_appboy_china_push_edit_text_user_id"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentEnd="true" />
     <TextView
         android:text="@string/com_appboy_china_push_message_log_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/com_appboy_china_push_message_log_title"
         android:textColor="#f33e3e"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/com_appboy_china_push_button_change_user"
         android:layout_centerHorizontal="true"/>
     <TextView
         android:layout_width="wrap_content"

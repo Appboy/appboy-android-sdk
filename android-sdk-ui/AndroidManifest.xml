@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.appboy.ui">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.appboy.ui">
+    <application>
+        <activity android:name="com.appboy.ui.AppboyWebViewActivity" />
+        <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" />
+    </application>
 </manifest>

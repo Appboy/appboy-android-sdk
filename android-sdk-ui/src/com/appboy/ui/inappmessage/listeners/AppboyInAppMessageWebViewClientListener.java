@@ -1,9 +1,11 @@
 package com.appboy.ui.inappmessage.listeners;
 
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.enums.Channel;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
@@ -11,8 +13,10 @@ import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
 import com.appboy.support.StringUtils;
+import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.ActionFactory;
-import com.appboy.ui.actions.IAction;
+import com.appboy.ui.actions.NewsfeedAction;
+import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
 
@@ -45,9 +49,9 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
     if (!handled) {
       inAppMessage.setAnimateOut(false);
       getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-      Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
-      inAppMessageBundle.putAll(queryBundle);
-      getInAppMessageManager().getAppboyNavigator().gotoNewsFeed(getInAppMessageManager().getActivity(), inAppMessageBundle);
+      NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.mapToBundle(inAppMessage.getExtras()),
+          Channel.INAPP_MESSAGE);
+      AppboyNavigator.getAppboyNavigator().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
     }
   }
 
@@ -84,25 +88,37 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
     if (!handled) {
       inAppMessage.setAnimateOut(false);
       getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-      boolean doExternalOpen = false;
-      if (queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN)) {
-        doExternalOpen = Boolean.parseBoolean(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN));
-      }
 
+      boolean useWebViewForWebLinks = parseUseWebViewFromQueryBundle(inAppMessage, queryBundle);
       // Handle the action
-      IAction urlAction;
-      if (doExternalOpen) {
-        // Create an Action using using the ACTION_VIEW intent
-        Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
-        inAppMessageBundle.putAll(queryBundle);
-        urlAction = ActionFactory.createViewUriAction(url, inAppMessageBundle);
-      } else {
-        urlAction = ActionFactory.createUriAction(getInAppMessageManager().getActivity(), url);
-      }
-      if (urlAction != null) {
-        urlAction.execute(getInAppMessageManager().getActivity());
+      UriAction uriAction;
+      Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
+      inAppMessageBundle.putAll(queryBundle);
+      uriAction = ActionFactory.createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
+      if (uriAction != null) {
+        AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getApplicationContext(), uriAction);
       }
     }
+  }
+
+  @VisibleForTesting
+  static boolean parseUseWebViewFromQueryBundle(IInAppMessage inAppMessage, Bundle queryBundle) {
+    boolean anyQueryFlagSet = false;
+    boolean deepLinkFlag = false;
+    if (queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_DEEPLINK)) {
+      deepLinkFlag = Boolean.parseBoolean(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_DEEPLINK));
+      anyQueryFlagSet = true;
+    }
+    boolean externalOpenFlag = false;
+    if (queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN)) {
+      externalOpenFlag = Boolean.parseBoolean(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_EXTERNAL_OPEN));
+      anyQueryFlagSet = true;
+    }
+    boolean useWebViewForWebLinks = inAppMessage.getOpenUriInWebView();
+    if (anyQueryFlagSet) {
+      useWebViewForWebLinks = !(deepLinkFlag || externalOpenFlag);
+    }
+    return useWebViewForWebLinks;
   }
 
   private AppboyInAppMessageManager getInAppMessageManager() {

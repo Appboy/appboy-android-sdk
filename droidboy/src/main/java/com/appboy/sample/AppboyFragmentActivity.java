@@ -7,6 +7,8 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
+import io.branch.referral.Branch;
+
 /*
  * Appboy integration sample
  *
@@ -32,6 +34,7 @@ public class AppboyFragmentActivity extends AppCompatActivity {
     if (Appboy.getInstance(this).openSession(this)) {
       mRefreshData = true;
     }
+    Branch.getInstance(getApplicationContext()).initSession();
   }
 
   @Override
@@ -60,5 +63,6 @@ public class AppboyFragmentActivity extends AppCompatActivity {
     // Note: This must be called in the onStop lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
     Appboy.getInstance(this).closeSession(this);
+    Branch.getInstance(getApplicationContext()).closeSession();
   }
 }

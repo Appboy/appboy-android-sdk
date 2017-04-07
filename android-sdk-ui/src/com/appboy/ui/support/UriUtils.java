@@ -1,6 +1,9 @@
 package com.appboy.ui.support;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
@@ -51,5 +54,15 @@ public class UriUtils {
       start = end + 1;
     } while (start < query.length());
     return Collections.unmodifiableMap(parameters);
+  }
+
+  public static Intent getMainActivityIntent(Context context, Bundle extras) {
+    // get main activity intent.
+    Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    if (extras != null) {
+      startActivityIntent.putExtras(extras);
+    }
+    return startActivityIntent;
   }
 }

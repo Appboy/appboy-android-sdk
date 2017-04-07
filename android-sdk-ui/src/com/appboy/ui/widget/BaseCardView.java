@@ -3,6 +3,7 @@ package com.appboy.ui.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -15,10 +16,14 @@ import android.widget.ViewSwitcher;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.enums.Channel;
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
+import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
+import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.feed.AppboyImageSwitcher;
 import com.appboy.ui.support.FrescoLibraryUtils;
@@ -260,9 +265,22 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
         AppboyLogger.d(tag, String.format("Logging click failed for card %s", card.getId()));
       }
       if (!AppboyFeedManager.getInstance().getFeedCardClickActionListener().onFeedCardClicked(context, card, cardAction)) {
-        cardAction.execute(context);
+        if (cardAction instanceof UriAction) {
+          AppboyNavigator.getAppboyNavigator().gotoUri(context, (UriAction) cardAction);
+        } else {
+          // Some other action received, execute directly.
+          cardAction.execute(context);
+        }
       }
     }
+  }
+
+  protected static UriAction getUriActionForCard(Card card) {
+    Bundle extras = new Bundle();
+    for (String key : card.getExtras().keySet()) {
+      extras.putString(key, card.getExtras().get(key));
+    }
+    return ActionFactory.createUriActionFromUrlString(card.getUrl(), extras, card.getOpenUriInWebView(), Channel.NEWS_FEED);
   }
 
   /**

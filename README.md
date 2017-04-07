@@ -11,10 +11,8 @@ Successful marketing automation is essential to the future of your mobile app. A
 ## Components
 
 - `android-sdk-ui` - the Appboy SDK user interface containing the Appboy jar.
-- `wear-library` - a small library to support the Appboy SDK on Android Wear devices.
 - `droidboy` - a sample application which demonstrates how to use Appboy.
 - `hello-appboy` - a sample gradle application demonstrating a simple use case of Appboy.
-- `wearboy` - a sample Android Wear app demonstrating Appboy SDK support for Wear devices.
 - `android-sdk-unity` - a library that enables Appboy SDK integrations on Unity.
 
 ## Building and Running the Sample Applications
@@ -39,7 +37,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:1.19.+'
+   compile 'com.appboy:android-sdk-ui:2.0.+'
    ...
 }
 ```
@@ -59,18 +57,9 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:1.19.+'
+  compile 'com.appboy:android-sdk-ui:2.0.+'
 }
 ```
-
-## Using wear-library in Your Android Wear App
-We have included a sample Wear app in this project. As a reference, the main app is Droidboy and the Wear App is wearboy.
-
-1. Copy the wear-library module into your project.
-2. Register the AppboyWearableListenerService in your main app's manifest (see Droidboy's manifest.xml).
-3. Obtain an instance of the AppboyWearableAdapter in your Wear app to use a subset of methods of the Appboy singleton. See the Wearboy sample app.
-4. The feature "android.hardware.type.watch" must be declared in your Wear app's manifest for sdk actions to be properly logged from the watch.
-
 
 ## Version Support
 

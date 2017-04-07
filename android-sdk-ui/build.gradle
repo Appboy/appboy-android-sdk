@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'android-maven'
 
 dependencies {
-  compile 'com.appboy:android-sdk-base:1.19.+'
+  compile 'com.appboy:android-sdk-base:2.0.+'
   compile 'com.android.support:support-v4:23.0.1'
   provided ("com.facebook.fresco:fresco:0.9.0") {
     exclude group: 'com.android.support', module: 'support-v4'
