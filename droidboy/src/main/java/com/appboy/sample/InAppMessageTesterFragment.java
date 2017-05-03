@@ -48,7 +48,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageTesterFragment.class.getName());
 
   private enum HtmlMessageType {
-    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS, BRIDGE_TESTER
+    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS, YOUTUBE, BRIDGE_TESTER
   }
 
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
@@ -132,6 +132,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private String mHtmlBodyFromAssetsInlineJs;
   private String mHtmlBodyFromAssetsExternalJs;
   private String mHtmlBodyFromAssetsStarWars;
+  private String mHtmlBodyFromAssetsYoutube;
   private String mHtmlBodyFromBridgeTester;
 
   @Override
@@ -252,6 +253,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.EXTERNAL_JS);
           } else if ("html_full_star_wars".equals(mMessageType)) {
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.STAR_WARS);
+          } else if ("html_full_youtube".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.YOUTUBE);
           } else if ("html_full_bridge_tester".equals(mMessageType)) {
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.BRIDGE_TESTER);
           } else {
@@ -325,6 +328,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     mHtmlBodyFromAssetsExternalJs = readHtmlBodyFromAssets(HtmlMessageType.EXTERNAL_JS);
     mHtmlBodyFromAssetsStarWars = readHtmlBodyFromAssets(HtmlMessageType.STAR_WARS);
     mHtmlBodyFromBridgeTester = readHtmlBodyFromAssets(HtmlMessageType.BRIDGE_TESTER);
+    mHtmlBodyFromAssetsYoutube = readHtmlBodyFromAssets(HtmlMessageType.YOUTUBE);
   }
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
@@ -396,6 +400,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         break;
       case STAR_WARS:
         inAppMessage.setMessage(mHtmlBodyFromAssetsStarWars);
+        break;
+      case YOUTUBE:
+        inAppMessage.setMessage(mHtmlBodyFromAssetsYoutube);
         break;
       case BRIDGE_TESTER:
         inAppMessage.setMessage(mHtmlBodyFromBridgeTester);
@@ -806,6 +813,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         break;
       case STAR_WARS:
         filename = "html_inapp_message_body_star_wars.html";
+        break;
+      case YOUTUBE:
+        filename = "html_inapp_message_body_youtube_iframe.html";
         break;
       case BRIDGE_TESTER:
         filename = "html_inapp_message_bridge_tester.html";

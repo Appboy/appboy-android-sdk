@@ -10,6 +10,7 @@
     <item>Message Type: HTML Full Inline JS</item>
     <item>Message Type: HTML Full External JS</item>
     <item>Message Type: HTML Full Star Wars</item>
+    <item>Message Type: HTML Full Youtube</item>
     <item>Message Type: HTML Full Appboy Bridge Tester</item>
   </string-array>
   <string-array name="inapp_message_type_values">
@@ -22,6 +23,7 @@
     <item>html_full_inline_js</item>
     <item>html_full_external_js</item>
     <item>html_full_star_wars</item>
+    <item>html_full_youtube</item>
     <item>html_full_bridge_tester</item>
   </string-array>
 </resources>

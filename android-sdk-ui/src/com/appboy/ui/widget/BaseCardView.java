@@ -98,7 +98,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
   private void setCardViewedIndicator() {
     if (getCard() != null) {
       if (mImageSwitcher != null) {
-        AppboyLogger.d(TAG, "Setting the read/unread indicator for the card.");
+        AppboyLogger.v(TAG, "Setting the read/unread indicator for the card.");
         if (getCard().isRead()) {
           if (mImageSwitcher.getReadIcon() != null) {
             mImageSwitcher.setImageDrawable(mImageSwitcher.getReadIcon());

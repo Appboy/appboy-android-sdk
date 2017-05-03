@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -14,12 +15,10 @@ public class DroidboyNotificationFactory implements IAppboyNotificationFactory {
 
   public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
                                          Context context, Bundle notificationExtras, Bundle appboyExtras) {
-    Notification notification = AppboyNotificationFactory.getInstance().createNotification(appConfigurationProvider, context, notificationExtras, appboyExtras);
+    NotificationCompat.Builder notificationBuilder = AppboyNotificationFactory.getInstance().populateNotificationBuilder(appConfigurationProvider, context, notificationExtras, appboyExtras);
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1) {
-      if (notification.sound == null) {
-        notification.sound = Settings.System.DEFAULT_NOTIFICATION_URI;
-      }
+      notificationBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
     }
-    return notification;
+    return notificationBuilder.build();
   }
 }

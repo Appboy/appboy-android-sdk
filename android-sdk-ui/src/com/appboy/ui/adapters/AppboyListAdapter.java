@@ -110,11 +110,11 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
         view = new DefaultCardView(mContext);
       }
     } else {
-      AppboyLogger.d(TAG, "Reusing convertView for rendering of item " + position);
+      AppboyLogger.v(TAG, "Reusing convertView for rendering of item " + position);
       view = (BaseCardView) convertView;
     }
 
-    AppboyLogger.d(TAG, String.format("Using view of type: %s for card at position %d: %s", view.getClass().getName(),
+    AppboyLogger.v(TAG, String.format("Using view of type: %s for card at position %d: %s", view.getClass().getName(),
         position, card.toString()));
     view.setCard(card);
     logCardImpression(card);
@@ -194,9 +194,9 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     if (!mCardIdImpressions.contains(cardId)) {
       mCardIdImpressions.add(cardId);
       card.logImpression();
-      AppboyLogger.d(TAG, String.format("Logged impression for card %s", cardId));
+      AppboyLogger.v(TAG, String.format("Logged impression for card %s", cardId));
     } else {
-      AppboyLogger.d(TAG, String.format("Already counted impression for card %s", cardId));
+      AppboyLogger.v(TAG, String.format("Already counted impression for card %s", cardId));
     }
     if (!card.getViewed()) {
       card.setViewed(true);

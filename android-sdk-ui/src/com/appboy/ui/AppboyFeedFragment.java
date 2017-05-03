@@ -195,7 +195,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
         activity.runOnUiThread(new Runnable() {
           @Override
           public void run() {
-            AppboyLogger.d(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
+            AppboyLogger.v(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
             // If a FeedUpdatedEvent comes in, we make sure that the network error isn't visible. It could become
             // visible again later if we need to request a new feed and it doesn't return in time, but we display a
             // network spinner while we wait, instead of keeping the network error up.

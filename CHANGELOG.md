@@ -1,3 +1,10 @@
+## 2.0.1
+
+##### Added
+- Added support for displaying Youtube videos inside of HTML in-app messages and the Appboy Webview. For HTML in-app messages, this requires hardware acceleration to be enabled in the Activity where the in-app message is being displayed, please see https://developer.android.com/guide/topics/graphics/hardware-accel.html#controlling. Please note that hardware acceleration is only available on API versions 11 and above.
+- Added the ability to access Appboy's default notification builder instance from custom `IAppboyNotificationFactory` instances. This simplifies making small changes to Appboy's default notification handling.
+- Improved `AppboyImageUtils.getBitmap()` by adding the ability to sample images using preset view bounds.
+
 ## 2.0.0
 
 ##### Breaking
@@ -86,7 +93,7 @@
           .build();
   Appboy.configure(this, appboyConfig);
   ```
-  
+
 ##### Fixed
 - Fixed an issue where in-app messages triggered off of push clicks wouldn't fire because the push click happened before the in-app message configuration was synced to the device.
 
@@ -214,7 +221,7 @@
 ## 1.13.0
 
 ##### Added
-- Adds support for action-based, locally triggered in-app messages. In-app messages are now sent to the device at session start with associated trigger events. The SDK will display in-app messages in near real-time when the trigger event associated with a message occurs. Trigger events can be app opens, push opens, purchases, and custom events. 
+- Adds support for action-based, locally triggered in-app messages. In-app messages are now sent to the device at session start with associated trigger events. The SDK will display in-app messages in near real-time when the trigger event associated with a message occurs. Trigger events can be app opens, push opens, purchases, and custom events.
 
 ##### Changed
 - Deprecates the old system of requesting in-app message display, now collectively known as 'original' in-app messaging, where messages were limited to displaying at app start.
@@ -381,7 +388,7 @@
 ## 1.6.2
 
 ##### Added
-- Adds a major performance upgrade that reduces CPU usage, memory footprint, and network traffic. 
+- Adds a major performance upgrade that reduces CPU usage, memory footprint, and network traffic.
 - Adds 26 additional languages to localization support for Appboy UI elements.
 - Adds local blocking for blacklisted custom attributes, events, and purchases.  However, blacklisted attributes may still be incremented (removed in release 1.7.3).
 - Adds the ability to set the accent color for notification in Android Lollipop and above.  This can be done by setting the `com_appboy_default_notification_accent_color` integer in your `appboy.xml`.
@@ -555,7 +562,7 @@ New AppboySlideupManager
 Slideup model
 - A key value `extras` java.util.Map has been added to provide additional data to the slideup. `Extras` can be on defined on a per slideup basis via the dashboard.
 - The `SlideFrom` field defines whether the slideup originates from the top or the bottom of the screen.
-- The `DismissType` property controls whether the slideup will dismiss automatically after a period of time has lapsed, or if it will wait for interaction with the user before disappearing. 
+- The `DismissType` property controls whether the slideup will dismiss automatically after a period of time has lapsed, or if it will wait for interaction with the user before disappearing.
   - The slideup will be dismissed automatically after the number of milliseconds defined by the duration field have elapsed if the slideup's DismissType is set to AUTO_DISMISS.
 - The ClickAction field defines the behavior after the slideup is clicked: display a news feed, redirect to a uri, or nothing but dismissing the slideup. This can be changed by calling any of the following methods: `setClickActionToNewsFeed()`, `setClickActionToUri(Uri uri)`, or `setClickActionToNone()`.
 - The uri field defines the uri string that the slide up will open when the ClickAction is set to URI. To change this value, use the `setClickActionToUri(Uri uri)` method.
@@ -590,7 +597,7 @@ Other
 - Adds support for reporting purchases in multiple currencies.
 
 ##### Fixed
-- Fixes a bug in caching custom events to a SQLite database.  
+- Fixes a bug in caching custom events to a SQLite database.
 - Fixes a validation bug when logging custom events.
 
 ##### Changed

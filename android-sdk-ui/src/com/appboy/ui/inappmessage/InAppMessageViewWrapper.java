@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 
 import com.appboy.Constants;
@@ -196,7 +197,6 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
     return layoutParams;
   }
 
-
   @Override
   public void close() {
     mInAppMessageView.removeCallbacks(mDismissRunnable);
@@ -205,8 +205,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       mIsAnimatingClose = true;
       setAndStartAnimation(false);
     } else {
-      ViewUtils.removeViewFromParent(mInAppMessageView);
-      mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
+      closeInAppMessageView();
     }
   }
 
@@ -368,8 +367,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
         public void onAnimationEnd(Animation animation) {
           mInAppMessageView.clearAnimation();
           mInAppMessageView.setVisibility(View.GONE);
-          ViewUtils.removeViewFromParent(mInAppMessageView);
-          mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
+          closeInAppMessageView();
         }
 
         @Override
@@ -407,5 +405,28 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
         AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
       }
     };
+  }
+
+  /**
+   * Closes the in-app message view.
+   * In this order, the following actions are performed:
+   * <ul>
+   *  <li> The view is removed from the parent. </li>
+   *  <li> Any WebViews have their {@link WebView#destroy()} methods called. </li>
+   *  <li> {@link IInAppMessageViewLifecycleListener#afterClosed(IInAppMessage)} is called. </li>
+   * </ul>
+   */
+  private void closeInAppMessageView() {
+    AppboyLogger.d(TAG, "Closing in-app message view");
+    ViewUtils.removeViewFromParent(mInAppMessageView);
+    // In the case of HTML in-app messages, we need to make sure the WebView stops once the in-app message is removed.
+    if (mInAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
+      final AppboyInAppMessageHtmlBaseView inAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) mInAppMessageView;
+      if (inAppMessageHtmlBaseView.getMessageWebView() != null) {
+        AppboyLogger.d(TAG, "Called destroy on the AppboyInAppMessageHtmlBaseView WebView");
+        inAppMessageHtmlBaseView.getMessageWebView().destroy();
+      }
+    }
+    mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
   }
 }

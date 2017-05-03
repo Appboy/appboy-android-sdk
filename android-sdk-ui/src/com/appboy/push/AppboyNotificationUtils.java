@@ -26,6 +26,7 @@ import com.appboy.AppboyInternal;
 import com.appboy.Constants;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
@@ -417,8 +418,7 @@ public class AppboyNotificationUtils {
    *
    * @return whether a large icon was successfully set.
    */
-  public static boolean setLargeIconIfPresentAndSupported(
-      Context context, AppboyConfigurationProvider appConfigurationProvider,
+  public static boolean setLargeIconIfPresentAndSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
       NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
       AppboyLogger.d(TAG, "Setting large icon for notification not supported on this android version");
@@ -429,7 +429,7 @@ public class AppboyNotificationUtils {
           && notificationExtras.containsKey(Constants.APPBOY_PUSH_LARGE_ICON_KEY)) {
         AppboyLogger.d(TAG, "Setting large icon for notification");
         String bitmapUrl = notificationExtras.getString(Constants.APPBOY_PUSH_LARGE_ICON_KEY);
-        Bitmap largeNotificationBitmap = AppboyImageUtils.getBitmap(Uri.parse(bitmapUrl));
+        Bitmap largeNotificationBitmap = AppboyImageUtils.getBitmap(context, Uri.parse(bitmapUrl), AppboyViewBounds.NOTIFICATION_LARGE_ICON);
         notificationBuilder.setLargeIcon(largeNotificationBitmap);
         return true;
       }

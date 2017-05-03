@@ -8,15 +8,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
 
 import com.appboy.Constants;
+import com.appboy.enums.AppboyViewBounds;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 
 public class AppboyNotificationStyleFactory {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationStyleFactory.class.getName());
+  /**
+   * BigPictureHeight is set in https://android.googlesource.com/platform/frameworks/base/+/6387d2f6dae27ba6e8481883325adad96d3010f4/core/res/res/layout/notification_template_big_picture.xml.
+   */
   public static final int BIG_PICTURE_STYLE_IMAGE_HEIGHT = 192;
 
   /**
@@ -92,7 +95,7 @@ public class AppboyNotificationStyleFactory {
       return null;
     }
 
-    Bitmap imageBitmap = AppboyImageUtils.getBitmap(Uri.parse(imageUrl));
+    Bitmap imageBitmap = AppboyImageUtils.getBitmap(context, Uri.parse(imageUrl), AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
     if (imageBitmap == null) {
       return null;
     }
@@ -103,10 +106,7 @@ public class AppboyNotificationStyleFactory {
       // Note: if the height is greater than the width it's going to look poor, so we might
       // as well let the system modify it and not complicate things by trying to smoosh it here.
       if (imageBitmap.getWidth() > imageBitmap.getHeight()) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        // BigPictureHeight is set in https://android.googlesource.com/platform/frameworks/base/+/6387d2f6dae27ba6e8481883325adad96d3010f4/core/res/res/layout/notification_template_big_picture.xml.
+        DisplayMetrics displayMetrics = AppboyImageUtils.getDefaultScreenDisplayMetrics(context);
         int bigPictureHeightPixels = AppboyImageUtils.getPixelsFromDensityAndDp(displayMetrics.densityDpi, BIG_PICTURE_STYLE_IMAGE_HEIGHT);
         // 2:1 aspect ratio
         int bigPictureWidthPixels = 2 * bigPictureHeightPixels;

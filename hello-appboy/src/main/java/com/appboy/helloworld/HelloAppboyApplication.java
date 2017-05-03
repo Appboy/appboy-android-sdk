@@ -29,7 +29,7 @@ public class HelloAppboyApplication extends Application {
 
     Resources resources = getResources();
     AppboyConfig appboyConfig = new AppboyConfig.Builder()
-        .setApiKey("2fc268e6-93f9-4176-8b67-42f62f245ad6")
+        .setApiKey("dd162bff-b14e-4d87-9bf0-fec609a77ca4")
         .setGcmMessagingRegistrationEnabled(false)
         .setAdmMessagingRegistrationEnabled(false)
         .setDisableUilImageCache(true)

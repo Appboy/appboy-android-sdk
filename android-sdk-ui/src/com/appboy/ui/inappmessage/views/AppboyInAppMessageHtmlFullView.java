@@ -37,7 +37,8 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
         webSettings.setLoadWithOverviewMode(true);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
           webSettings.setDisplayZoomControls(false);
-          mMessageWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+          // This enables hardware acceleration if the manifest also has it defined. If not defined, then the layer type will fallback to software
+          mMessageWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         }
         mMessageWebView.setBackgroundColor(Color.TRANSPARENT);
 

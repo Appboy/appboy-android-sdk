@@ -28,24 +28,20 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
   }
 
   /**
-   * Creates the rich notification. The notification content varies based on the Android version on the
-   * device, but each notification can contain an icon, image, title, and content.
+   * Returns a notification builder populated with all fields from the notification extras and
+   * Appboy extras.
    *
-   * Opening a notification from the notification center triggers a broadcast message to be sent.
-   * The broadcast message action is <host-app-package-name>.intent.APPBOY_NOTIFICATION_OPENED.
-   *
-   * Note: Gingerbread notifications are limited to one line of content.
+   * To create a notification object, call `build()` on the returned builder instance.
    */
-  public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
-                                                Context context, Bundle notificationExtras, Bundle appboyExtras) {
-
+  public NotificationCompat.Builder populateNotificationBuilder(AppboyConfigurationProvider appConfigurationProvider,
+                                                                Context context, Bundle notificationExtras, Bundle appboyExtras) {
     // We build up the notification by setting values if they are present in the extras and supported
     // on the device. The notification building is currently order/combination independent, but
     // the addition of new RemoteViews options could mean that some methods conflict/overwrite. For clarity
     // we build the notification up in the order that each feature was supported.
 
     NotificationCompat.Builder notificationBuilder =
-            new NotificationCompat.Builder(context).setAutoCancel(true);
+        new NotificationCompat.Builder(context).setAutoCancel(true);
 
     AppboyNotificationUtils.setTitleIfPresent(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setContentIfPresent(notificationBuilder, notificationExtras);
@@ -66,7 +62,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
       RemoteViews remoteViews = AppboyNotificationRemoteViewsUtils.createMultiLineContentNotificationView(context, notificationExtras, smallNotificationIconResourceId, !usingLargeIcon);
       if (remoteViews != null) {
         notificationBuilder.setContent(remoteViews);
-        return notificationBuilder.build();
+        return notificationBuilder;
       }
     }
 
@@ -82,6 +78,20 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setVisibilityIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setPublicVersionIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
 
-    return notificationBuilder.build();
+    return notificationBuilder;
+  }
+
+  /**
+   * Creates the rich notification. The notification content varies based on the Android version on the
+   * device, but each notification can contain an icon, image, title, and content.
+   *
+   * Opening a notification from the notification center triggers a broadcast message to be sent.
+   * The broadcast message action is <host-app-package-name>.intent.APPBOY_NOTIFICATION_OPENED.
+   *
+   * Note: Gingerbread notifications are limited to one line of content.
+   */
+  public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
+                                                Context context, Bundle notificationExtras, Bundle appboyExtras) {
+    return populateNotificationBuilder(appConfigurationProvider, context, notificationExtras, appboyExtras).build();
   }
 }
