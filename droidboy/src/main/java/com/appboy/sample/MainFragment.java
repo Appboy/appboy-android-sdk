@@ -24,8 +24,8 @@ public class MainFragment extends Fragment {
   private static final String USER_ID_KEY = "user.id";
   private static final String STRING_ARRAY_ATTRIBUTE_KEY = "stringArrayAttribute";
   private static final String ARRAY_ATTRIBUTE_KEY = "arrayAttribute";
-  private static final String PETS_ARRAY_ATTRIBUTE_KEY = "arrayAttributePets";
   private static final String DATE_ATTRIBUTE_KEY = "dateAttribute";
+  private static final String PETS_ARRAY_ATTRIBUTE_KEY = "arrayAttributePets";
   private static final String FLOAT_ATTRIBUTE_KEY = "floatAttribute";
   private static final String BOOL_ATTRIBUTE_KEY = "boolAttribute";
   private static final String INT_ATTRIBUTE_KEY = "intAttribute";

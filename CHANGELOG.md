@@ -1,3 +1,8 @@
+## 2.0.2
+
+##### Fixed
+- Fixed a bug where identifying a user while a request was in flight could cause newly written attributes on the old user to be orphaned in local storage.
+
 ## 2.0.1
 
 ##### Added
