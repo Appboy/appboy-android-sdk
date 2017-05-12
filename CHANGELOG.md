@@ -26,7 +26,6 @@
   - Removed `AppboyUser.setIsSubscribedToEmails()`. Please use `AppboyUser.setEmailNotificationSubscriptionType()` instead.
   - Removed `Constants.APPBOY_PUSH_CUSTOM_URI_KEY`. Please use `Constants.APPBOY_PUSH_DEEP_LINK_KEY` instead.
   - Removed `Constants.APPBOY_CANCEL_NOTIFICATION_TAG`.
-  - Removed `Appboy.logPushNotificationOpened()`.
   - Removed `com.appboy.ui.actions.ViewAction` and `com.appboy.ui.actions.WebAction`.
   - Removed `CardCategory.ALL_CATEGORIES`. Please use `CardCategory.getAllCategories()` instead.
   - Removed `AppboyImageUtils.storePushBitmapInExternalStorage()`.
