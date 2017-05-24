@@ -97,6 +97,11 @@ public class AppboyNotificationUtils {
       Log.d(TAG, String.format("Found a deep link %s.", deepLink));
       boolean useWebView = "true".equalsIgnoreCase(intent.getStringExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY));
       Log.d(TAG, "Use webview set to: " + useWebView);
+
+      // pass deep link and use webview values to target activity.
+      extras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, deepLink);
+      extras.putBoolean(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebView);
+
       UriAction uriAction = ActionFactory.createUriActionFromUrlString(deepLink, extras, useWebView, Channel.PUSH);
       AppboyNavigator.getAppboyNavigator().gotoUri(context, uriAction);
     } else {

@@ -1,3 +1,8 @@
+## 2.0.3
+
+##### Fixed
+- Improved Appboy singleton initialization performance.
+
 ## 2.0.2
 
 ##### Fixed
