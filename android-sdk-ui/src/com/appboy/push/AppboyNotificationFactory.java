@@ -90,6 +90,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    *
    * Note: Gingerbread notifications are limited to one line of content.
    */
+  @Override
   public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
                                                 Context context, Bundle notificationExtras, Bundle appboyExtras) {
     return populateNotificationBuilder(appConfigurationProvider, context, notificationExtras, appboyExtras).build();

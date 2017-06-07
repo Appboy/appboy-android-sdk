@@ -1,11 +1,8 @@
 package com.appboy.sample;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -14,13 +11,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.appboy.Constants;
-import com.appboy.support.AppboyLogger;
+import com.appboy.sample.util.LifecycleUtils;
 
 import java.util.Map;
 
 public class SetEnvironmentPreference extends DialogPreference implements DialogInterface.OnDismissListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, SetEnvironmentPreference.class.getName());
   private static final String OVERRIDE_API_KEY_ALIAS_PREF_KEY = "override_api_key_alias";
 
   private TextView mApiKeyAliasTextView;
@@ -122,17 +117,7 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
       }
 
       sharedPreferencesEditor.commit();
-      restartApp();
+      LifecycleUtils.restartApp(mApplicationContext);
     }
-  }
-
-  private void restartApp() {
-    Intent startActivity = new Intent(mApplicationContext, DroidBoyActivity.class);
-    int pendingIntentId = 109829837;
-    PendingIntent pendingIntent = PendingIntent.getActivity(mApplicationContext, pendingIntentId, startActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-    AlarmManager alarmManager = (AlarmManager) mApplicationContext.getSystemService(Context.ALARM_SERVICE);
-    alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
-    AppboyLogger.i(TAG, "Restarting application to apply new environment values");
-    System.exit(0);
   }
 }

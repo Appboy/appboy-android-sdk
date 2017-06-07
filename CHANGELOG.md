@@ -1,10 +1,13 @@
-## 2.0.3
+## 2.0.4
 
-##### Fixed
-- Improved Appboy singleton initialization performance.
+##### Changed
+- Made further improvements to Appboy singleton initialization performance.
+
+## 2.0.3
 
 ##### Changed
 - Enabled TLS 1.2 for Appboy HTTPS connections running on API 16+ devices. Previously, for devices running on API 16-20, only TLS 1.0 was enabled by default.
+- Improved Appboy singleton initialization performance.
 
 ## 2.0.2
 

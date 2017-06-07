@@ -88,6 +88,10 @@
             android:summary="@string/log_level_pref_summary"
             android:positiveButtonText="@string/user_dialog_done"
             android:negativeButtonText=""/>
+        <Preference
+            android:key="anonymous_revert"
+            android:title="Revert to Anonymous User"
+            android:summary="Will cause an app restart."/>
     </PreferenceCategory>
 
     <PreferenceCategory

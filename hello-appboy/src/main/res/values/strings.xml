@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Hello Appboy</string>
+  <string translatable="false" name="app_name">Hello Appboy</string>
 
-  <string name="com_appboy_hello_high_score_nickname_hint">nickname</string>
-  <string name="com_appboy_hello_high_score_hint">score</string>
-  <string name="com_appboy_hello_high_score_submit_hint">Submit to Appboy</string>
-  <string name="com_appboy_hello_instructions_body">Submit a nickname with your high score.</string>
-  <string name="com_appboy_hello_email_address_hint">dummy email address</string>
+  <string translatable="false" name="com_appboy_hello_high_score_nickname_hint">nickname</string>
+  <string translatable="false" name="com_appboy_hello_high_score_hint">score</string>
+  <string translatable="false" name="com_appboy_hello_high_score_submit_hint">Submit to Appboy</string>
+  <string translatable="false" name="com_appboy_hello_instructions_body">Submit a nickname with your high score.</string>
+  <string translatable="false" name="com_appboy_hello_email_address_hint">dummy email address</string>
 </resources>

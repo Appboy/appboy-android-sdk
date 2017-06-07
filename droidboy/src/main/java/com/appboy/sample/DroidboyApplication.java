@@ -44,8 +44,6 @@ public class DroidboyApplication extends Application {
 
     String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
     Appboy.setAppboyEndpointProvider(new DroidboyEndpointProvider(overrideEndpointUrl));
-
-    Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
     int logLevel = getApplicationContext().getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE)
         .getInt(getString(R.string.current_log_level), Log.VERBOSE);
     AppboyLogger.setLogLevel(logLevel);

@@ -1,6 +1,7 @@
 package com.appboy.sample;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.models.outgoing.AttributionData;
+import com.appboy.sample.util.LifecycleUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.feed.AppboyFeedManager;
@@ -54,6 +56,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference locationRuntimePermissionDialogPreference = findPreference("location_runtime_permission_dialog");
     Preference openSessionPreference = findPreference("open_session");
     Preference closeSessionPreference = findPreference("close_session");
+    Preference anonymousUserRevertPreference = findPreference("anonymous_revert");
     Preference sdkPreference = findPreference("sdk_version");
     Preference apiKeyPreference = findPreference("api_key");
     Preference pushTokenPreference = findPreference("push_token");
@@ -147,6 +150,24 @@ public class PreferencesActivity extends PreferenceActivity {
         } else {
           showToast(getString(R.string.no_session_toast));
         }
+        return true;
+      }
+    });
+    anonymousUserRevertPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      @SuppressLint("CommitPrefEdits")
+      public boolean onPreferenceClick(Preference preference) {
+        SharedPreferences userSharedPreferences = getSharedPreferences("com.appboy.offline.storagemap", Context.MODE_PRIVATE);
+        userSharedPreferences
+            .edit()
+            .clear()
+            .commit();
+        SharedPreferences droidboySharedPrefs = getSharedPreferences("droidboy", Context.MODE_PRIVATE);
+        droidboySharedPrefs
+            .edit()
+            .remove(MainFragment.USER_ID_KEY)
+            .commit();
+        LifecycleUtils.restartApp(getApplicationContext());
         return true;
       }
     });

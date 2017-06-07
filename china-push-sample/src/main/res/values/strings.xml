@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">China Push Sample</string>
-  <string name="set_userid_button_prompt">Set User Id and request data flush</string>
-  <string name="set_user_id_edit_text_hint">Set a user id here</string>
-  <string name="com_appboy_china_push_message_log_title">Message Log</string>
+  <string translatable="false" name="app_name">China Push Sample</string>
+  <string translatable="false" name="set_userid_button_prompt">Set User Id and request data flush</string>
+  <string translatable="false" name="set_user_id_edit_text_hint">Set a user id here</string>
+  <string translatable="false" name="com_appboy_china_push_message_log_title">Message Log</string>
 </resources>

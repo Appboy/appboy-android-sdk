@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 
+import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.push.AppboyNotificationUtils;
@@ -45,6 +46,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private String mActionType;
   private String mAccentColorString;
   private String mLargeIconString;
+  private String mNotificationFactoryType;
   private boolean mUseSummary = false;
   private boolean mUseBigSummary = false;
   private boolean mUseImage = false;
@@ -60,6 +62,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mTestTriggerFetch = false;
   private boolean mUseConstantNotificationId = false;
   private View mView;
+  static final String EXAMPLE_APPBOY_EXTRA_KEY_1 = "Entree";
+  static final String EXAMPLE_APPBOY_EXTRA_KEY_2 = "Side";
+  static final String EXAMPLE_APPBOY_EXTRA_KEY_3 = "Drink";
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -143,6 +148,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     // Creates the large icon spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
 
+    // Creates the notification factory spinner.
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_notification_factory_spinner), this, R.array.push_notification_factory_options);
+
     mAppConfigurationProvider = new AppboyConfigurationProvider(getContext());
     Button pushTestButton = (Button) mView.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(new View.OnClickListener() {
@@ -201,6 +209,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
             if (mSetLargeIcon) {
               notificationExtras.putString(Constants.APPBOY_PUSH_LARGE_ICON_KEY, mLargeIconString);
             }
+            setNotificationFactory();
 
             // Manually build the appboy extras bundle.
             Bundle appboyExtras = new Bundle();
@@ -214,7 +223,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
                 appboyExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
               }
             }
-
+            appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_1, "Hamburger");
+            appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_2, "Fries");
+            appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_3, "Lemonade");
             notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
             Notification notification = AppboyNotificationUtils.getActiveNotificationFactory().createNotification(
                 mAppConfigurationProvider,
@@ -298,6 +309,10 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
           mSetLargeIcon = false;
         }
         break;
+      case R.id.push_notification_factory_spinner:
+        String notificationFactoryType = getResources().getStringArray(R.array.push_notification_factory_values)[parent.getSelectedItemPosition()];
+        mNotificationFactoryType = notificationFactoryType;
+        break;
       default:
         Log.e(TAG, "Item selected for unknown spinner");
     }
@@ -364,5 +379,15 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       return field + getString(R.string.overflow_string);
     }
     return field;
+  }
+
+  private void setNotificationFactory() {
+    if ("DroidboyNotificationFactory".equals(mNotificationFactoryType)) {
+      Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
+    } else if ("FullyCustomNotificationFactory".equals(mNotificationFactoryType)) {
+      Appboy.setCustomAppboyNotificationFactory(new FullyCustomNotificationFactory());
+    } else {
+      Appboy.setCustomAppboyNotificationFactory(null);
+    }
   }
 }

@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class MainFragment extends Fragment {
-  private static final String USER_ID_KEY = "user.id";
+  static final String USER_ID_KEY = "user.id";
   private static final String STRING_ARRAY_ATTRIBUTE_KEY = "stringArrayAttribute";
   private static final String ARRAY_ATTRIBUTE_KEY = "arrayAttribute";
   private static final String DATE_ATTRIBUTE_KEY = "dateAttribute";

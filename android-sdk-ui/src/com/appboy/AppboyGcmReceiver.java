@@ -15,7 +15,7 @@ import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
 
 public final class AppboyGcmReceiver extends BroadcastReceiver {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyGcmReceiver.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyGcmReceiver.class);
   private static final String GCM_RECEIVE_INTENT_ACTION = "com.google.android.c2dm.intent.RECEIVE";
   private static final String GCM_REGISTRATION_INTENT_ACTION = "com.google.android.c2dm.intent.REGISTRATION";
   private static final String GCM_ERROR_KEY = "error";
@@ -28,7 +28,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    AppboyLogger.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
+    AppboyLogger.i(TAG, "Received broadcast message. Message: " + intent.toString());
     String action = intent.getAction();
     if (GCM_REGISTRATION_INTENT_ACTION.equals(action)) {
       handleRegistrationEventIfEnabled(new AppboyConfigurationProvider(context), context, intent);
@@ -72,7 +72,7 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         Log.e(TAG, "The request sent by the device does not contain the expected parameters. This phone does not "
             + "currently support GCM.");
       } else {
-        AppboyLogger.w(TAG, String.format("Received an unrecognised GCM registration error type. Ignoring. Error: %s", error));
+        AppboyLogger.w(TAG, "Received an unrecognised GCM registration error type. Ignoring. Error: " + error);
       }
     } else if (registrationId != null) {
       Appboy.getInstance(context).registerAppboyPushMessages(registrationId);
@@ -98,14 +98,14 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
     if (GCM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(GCM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
-        Log.e(TAG, String.format("Unable to parse GCM message. Intent: %s", intent.toString()));
+        Log.e(TAG, "Unable to parse GCM message. Intent: " + intent.toString());
       } else {
-        AppboyLogger.i(TAG, String.format("GCM deleted %d messages. Fetch them from Appboy.", totalDeleted));
+        AppboyLogger.i(TAG, "GCM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
       }
       return false;
     } else {
       Bundle gcmExtras = intent.getExtras();
-      AppboyLogger.i(TAG, String.format("Push message payload received: %s", gcmExtras));
+      AppboyLogger.i(TAG, "Push message payload received: " + gcmExtras);
 
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.

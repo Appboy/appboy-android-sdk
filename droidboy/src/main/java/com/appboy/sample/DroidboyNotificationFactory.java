@@ -13,6 +13,7 @@ import com.appboy.push.AppboyNotificationFactory;
 
 public class DroidboyNotificationFactory implements IAppboyNotificationFactory {
 
+  @Override
   public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
                                          Context context, Bundle notificationExtras, Bundle appboyExtras) {
     NotificationCompat.Builder notificationBuilder = AppboyNotificationFactory.getInstance().populateNotificationBuilder(appConfigurationProvider, context, notificationExtras, appboyExtras);
