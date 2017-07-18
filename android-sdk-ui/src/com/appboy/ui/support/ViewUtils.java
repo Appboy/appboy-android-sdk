@@ -18,7 +18,10 @@ public class ViewUtils {
   public static void removeViewFromParent(View view) {
     if (view != null) {
       if (view.getParent() instanceof ViewGroup) {
-        ((ViewGroup) view.getParent()).removeView(view);
+        final ViewGroup parent = (ViewGroup) view.getParent();
+        parent.setFocusableInTouchMode(true);
+        parent.requestFocus();
+        parent.removeView(view);
       }
     }
   }

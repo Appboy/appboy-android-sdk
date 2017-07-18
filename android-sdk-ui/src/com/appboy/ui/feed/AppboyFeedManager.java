@@ -3,7 +3,7 @@ package com.appboy.ui.feed;
 import com.appboy.ui.feed.listeners.AppboyDefaultFeedClickActionListener;
 import com.appboy.ui.feed.listeners.IFeedClickActionListener;
 
-public final class AppboyFeedManager {
+public class AppboyFeedManager {
   private static volatile AppboyFeedManager sInstance = null;
 
   // card click listeners

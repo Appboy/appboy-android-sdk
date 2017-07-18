@@ -56,4 +56,7 @@
     by an in-app event, such as the logging of a custom event. This is a general rate limit for
     actions to prevent overloading a user with messages. Defaults to 30s. -->
   <integer name="com_appboy_trigger_action_minimum_time_interval_seconds">5</integer>
+
+  <!--Handle Deep Links Automatically-->
+  <bool name="com_appboy_handle_push_deep_links_automatically">true</bool>
 </resources>

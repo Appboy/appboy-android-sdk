@@ -1,0 +1,25 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    applicationId "com.appboy.custombroadcast"
+    minSdkVersion rootProject.ext.minSdkVersionForLifecycleListener
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode 1
+    versionName "1.0"
+
+  }
+  buildTypes {
+    release {
+      minifyEnabled true
+    }
+  }
+}
+
+dependencies {
+  compile project(':android-sdk-ui')
+  compile "com.android.support:appcompat-v7:${SUPPORT_LIBS_VERSION}"
+}

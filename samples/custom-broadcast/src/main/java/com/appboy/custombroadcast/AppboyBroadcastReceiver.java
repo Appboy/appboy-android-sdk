@@ -1,4 +1,4 @@
-package com.appboy.sample;
+package com.appboy.custombroadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,11 +10,6 @@ import com.appboy.push.AppboyNotificationUtils;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyBroadcastReceiver.class.getName());
-  public static final String SOURCE_KEY = "source";
-  public static final String DESTINATION_VIEW = "destination";
-  public static final String HOME = "home";
-  public static final String FEED = "feed";
-  public static final String FEEDBACK = "feedback";
 
   @Override
   public void onReceive(Context context, Intent intent) {

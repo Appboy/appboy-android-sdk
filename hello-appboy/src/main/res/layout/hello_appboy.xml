@@ -5,8 +5,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    tools:context=".HelloWorld">
+    android:paddingBottom="16dp">
 
     <TextView
         android:text="@string/com_appboy_hello_instructions_body"
@@ -46,12 +45,11 @@
   <EditText
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:inputType="textEmailAddress"
     android:ems="10"
-    android:id="@+id/com_appboy_hello_email"
+    android:id="@+id/com_appboy_hello_user_id"
     android:layout_alignBottom="@+id/com_appboy_hello_high_score_nickname"
     android:layout_alignParentLeft="true"
-    android:hint="@string/com_appboy_hello_email_address_hint"
+    android:hint="@string/com_appboy_hello_user_id_hint"
     android:layout_alignParentStart="true"
     android:layout_marginBottom="31dp"/>
 </RelativeLayout>

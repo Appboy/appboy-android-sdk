@@ -90,13 +90,6 @@
       </intent-filter>
     </receiver>
 
-    <receiver android:name=".AppboyBroadcastReceiver" android:exported="false" >
-      <intent-filter>
-        <action android:name="${applicationId}.intent.APPBOY_PUSH_RECEIVED" />
-        <action android:name="${applicationId}.intent.APPBOY_NOTIFICATION_OPENED" />
-      </intent-filter>
-    </receiver>
-
     <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
       <intent-filter>
         <action android:name="com.android.vending.INSTALL_REFERRER" />

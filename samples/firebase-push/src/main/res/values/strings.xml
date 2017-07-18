@@ -1,9 +1,9 @@
 <resources>
-  <string name="app_name">Firebase Push</string>
-  <string name="droid_boy">DroidBoyFirebase</string>
-  <string name="firebase_register">Register Firebase Token With Appboy</string>
-  <string name="sender_id">498092073032</string>
-  <string name="firebase_scope">FCM</string>
-  <string name="set_userid_button_prompt">Set User Id and request data flush</string>
-  <string name="set_user_id_edit_text_hint">Set a user id here</string>
+  <string translatable="false" name="app_name">Firebase Push</string>
+  <string translatable="false" name="droid_boy">DroidBoyFirebase</string>
+  <string translatable="false" name="firebase_register">Register Firebase Token With Appboy</string>
+  <string translatable="false" name="sender_id">498092073032</string>
+  <string translatable="false" name="firebase_scope">FCM</string>
+  <string translatable="false" name="set_userid_button_prompt">Set User Id and request data flush</string>
+  <string translatable="false" name="set_user_id_edit_text_hint">Set a user id here</string>
 </resources>

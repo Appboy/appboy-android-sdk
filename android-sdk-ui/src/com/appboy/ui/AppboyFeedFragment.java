@@ -1,6 +1,7 @@
 package com.appboy.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -85,14 +86,14 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   }
 
   @Override
-  public void onAttach(final Activity activity) {
-    super.onAttach(activity);
-    mAppboy = Appboy.getInstance(activity);
+  public void onAttach(final Context context) {
+    super.onAttach(context);
+    mAppboy = Appboy.getInstance(context);
     if (mAdapter == null) {
-      mAdapter = new AppboyListAdapter(activity, R.id.tag, new ArrayList<Card>());
+      mAdapter = new AppboyListAdapter(context, R.id.tag, new ArrayList<Card>());
       mCategories = CardCategory.getAllCategories();
     }
-    mGestureDetector = new GestureDetectorCompat(activity, new FeedGestureListener());
+    mGestureDetector = new GestureDetectorCompat(context, new FeedGestureListener());
   }
 
   @Override

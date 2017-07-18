@@ -1,15 +1,16 @@
 package com.appboy.ui.inappmessage.listeners;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.enums.Channel;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
 import com.appboy.support.StringUtils;
@@ -21,7 +22,7 @@ import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
 
 public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWebViewClientListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageWebViewClientListener.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageWebViewClientListener.class);
   private static final String HTML_IAM_CUSTOM_EVENT_NAME_KEY = "name";
 
   @Override
@@ -86,15 +87,23 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
     boolean handled = getInAppMessageManager().getHtmlInAppMessageActionListener().onOtherUrlAction(inAppMessage, url, queryBundle);
     if (!handled) {
-      inAppMessage.setAnimateOut(false);
-      getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-
+      // Parse the action
       boolean useWebViewForWebLinks = parseUseWebViewFromQueryBundle(inAppMessage, queryBundle);
-      // Handle the action
       UriAction uriAction;
       Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
       inAppMessageBundle.putAll(queryBundle);
       uriAction = ActionFactory.createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
+
+      // If a local Uri is being handled here, then we want to keep the user in the Html IAM and not hide the current IAM.
+      Uri uri = uriAction.getUri();
+      if (uri != null && AppboyFileUtils.isLocalUri(uri)) {
+        AppboyLogger.w(TAG, "Not passing local URI to AppboyNavigator. Got local uri: " + uri);
+        return;
+      }
+
+      // Handle the action if it's not a local Uri
+      inAppMessage.setAnimateOut(false);
+      getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
       if (uriAction != null) {
         AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getApplicationContext(), uriAction);
       }

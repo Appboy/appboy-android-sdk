@@ -1,3 +1,12 @@
+## 2.0.5
+
+##### Fixed
+- Fixed a bug where relative links in `href` tags in HTML In-App Messages would get passed as file Uris to the `AppboyNavigator`.
+
+##### Added
+- Adds `Double` as a valid value type on `AppboyUser.setCustomUserAttribute()`.
+- Adds user aliasing capability. Aliases can be used in the API and dashboard to identify users in addition to their ID.  See the `addAlias` method on [`AppboyUser`](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/AppboyUser.html) for more information.
+
 ## 2.0.4
 
 ##### Changed

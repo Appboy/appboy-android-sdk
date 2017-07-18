@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
@@ -15,6 +16,7 @@ import com.appboy.support.AppboyLogger;
  * Extends ImageView with the ability to clip the view's corners by a defined radius on all image
  * types.
  */
+@SuppressLint("AppCompatCustomView")
 public class AppboyInAppMessageImageView extends ImageView implements IInAppMessageImageView {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageImageView.class.getName());
   /**

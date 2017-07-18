@@ -217,4 +217,13 @@
   <string name="shared_prefs_location">com.appboy.sample.sharedpreferences</string>
   <string name="api_key_shared_prefs_location">com.appboy.sample.sharedpreferences.api_key</string>
   <string name="mock_appboy_network_requests">mock_appboy_network_requests</string>
+
+  <string name="droidboy_feedback_use_listener_checkbox">Use Feedback Finished Listener</string>
+  <string name="droidboy_feedback_toolbar">Feedback</string>
+
+  <string name = "source_key">source</string>
+  <string name = "destination_view">destination</string>
+  <string name = "home">home</string>
+  <string name = "feed_key">feed</string>
+  <string name = "feedback">feedback</string>
 </resources>

@@ -50,5 +50,23 @@
             android:id="@+id/com_appboy_sample_request_flush_button"
             style="@style/DroidboyButton"
             android:text="Request Flush"/>
+        <EditText
+          android:id="@+id/com_appboy_sample_set_alias_edit_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:inputType="textEmailAddress"
+          android:hint="Enter Alias here"/>
+        <EditText
+          android:id="@+id/com_appboy_sample_set_alias_label_edit_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:inputType="textNoSuggestions"
+          android:hint="Enter Alias Label here"/>
+        <Button
+          android:id="@+id/com_appboy_sample_set_user_alias_button"
+          style="@style/DroidboyButton"
+          android:text="Add User Alias"/>
     </LinearLayout>
 </ScrollView>

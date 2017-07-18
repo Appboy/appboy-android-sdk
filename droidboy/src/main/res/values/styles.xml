@@ -46,9 +46,15 @@
   </style>
 
   <style name="Appboy.Feedback.Layout">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
     <item name="android:background">@color/window_background</item>
   </style>
   <style name="Appboy.Feedback.NavigationBar">
+    <item name="android:padding">4dp</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_alignParentBottom">true</item>
     <item name="android:background">@color/window_background</item>
   </style>
 

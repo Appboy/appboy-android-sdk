@@ -1,6 +1,7 @@
 package com.appboy.sample;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -102,6 +103,8 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       }
     };
     sharedPref.registerOnSharedPreferenceChangeListener(mNewsfeedSortListener);
+
+    Log.i(TAG, "Appboy device id is " + Appboy.getInstance(getApplicationContext()).getDeviceId());
   }
 
   private void setupViewPager(final ViewPager viewPager) {
@@ -243,10 +246,10 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   }
 
   private void processIntent() {
-    // Check to see if the Activity was opened by the AppboyBroadcastReceiver. If it was, navigate to the
+    // Check to see if the Activity was opened by the Broadcast Receiver. If it was, navigate to the
     // correct fragment.
     Bundle extras = getIntent().getExtras();
-    if (extras != null && Constants.APPBOY.equals(extras.getString(AppboyBroadcastReceiver.SOURCE_KEY))) {
+    if (extras != null && Constants.APPBOY.equals(extras.getString(getResources().getString(R.string.source_key)))) {
       navigateToDestination(extras);
       String bundleLogString = convertBundleToAppboyLogString(extras);
       Toast.makeText(DroidBoyActivity.this, bundleLogString, Toast.LENGTH_LONG).show();
@@ -259,15 +262,15 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
   private void navigateToDestination(Bundle extras) {
     // DESTINATION_VIEW holds the name of the fragment we're trying to visit.
-    String destination = extras.getString(AppboyBroadcastReceiver.DESTINATION_VIEW);
-    if (AppboyBroadcastReceiver.FEED.equals(destination)) {
+    String destination = extras.getString(getResources().getString(R.string.destination_view));
+    if (getResources().getString(R.string.feed_key).equals(destination)) {
       AppboyFeedFragment appboyFeedFragment = new AppboyFeedFragment();
       appboyFeedFragment.setCategories(mAppboyFeedCategories);
       replaceCurrentFragment(appboyFeedFragment);
-    } else if (AppboyBroadcastReceiver.FEEDBACK.equals(destination)) {
+    } else if (getResources().getString(R.string.feedback).equals(destination)) {
       AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
       replaceCurrentFragment(appboyFeedbackFragment);
-    } else if (AppboyBroadcastReceiver.HOME.equals(destination)) {
+    } else if (getResources().getString(R.string.home).equals(destination)) {
       replaceCurrentFragment(new MainFragment());
     }
   }
@@ -300,7 +303,8 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     bundleString += " ].";
     return bundleString;
   }
-
+  
+  @SuppressLint("RestrictedApi")
   private AppboyFeedFragment getFeedFragment() {
     List<Fragment> fragments = getSupportFragmentManager().getFragments();
     for (int i = 0; i < fragments.size(); i++) {

@@ -65,8 +65,8 @@ public class AppboyFeedbackFragment extends Fragment {
   }
 
   @Override
-  public void onAttach(Activity activity) {
-    super.onAttach(activity);
+  public void onAttach(Context context) {
+    super.onAttach(context);
     mSendButtonWatcher = new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
@@ -160,6 +160,14 @@ public class AppboyFeedbackFragment extends Fragment {
 
   public void setFeedbackFinishedListener(FeedbackFinishedListener feedbackFinishedListener) {
     mFeedbackFinishedListener = feedbackFinishedListener;
+  }
+
+  public EditText getMessageEditText() {
+    return mMessageEditText;
+  }
+
+  public EditText getEmailEditText() {
+    return mEmailEditText;
   }
 
   private boolean validatedMessage() {

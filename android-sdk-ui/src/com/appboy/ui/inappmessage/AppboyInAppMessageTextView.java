@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -10,6 +11,7 @@ import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 
+@SuppressLint("AppCompatCustomView")
 public class AppboyInAppMessageTextView extends TextView {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageTextView.class.getName());
 

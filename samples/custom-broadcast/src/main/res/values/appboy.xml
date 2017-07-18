@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- General configuration -->
+  <!-- The API key is not shown to the user and thus we don't require that it be translated. -->
+  <string translatable="false" name="com_appboy_api_key">YOUR-APPBOY-API-KEY-HERE</string>
+
+
+  <bool name="com_appboy_push_gcm_messaging_registration_enabled">true</bool>
+  <string translatable="false" name="com_appboy_push_gcm_sender_id">901477453852</string>
+</resources>

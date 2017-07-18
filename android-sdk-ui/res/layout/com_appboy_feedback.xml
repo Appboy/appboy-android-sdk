@@ -3,63 +3,38 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_appboy_feedback_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     style="@style/Appboy.Feedback.Layout">
 
   <LinearLayout
       android:id="@+id/com_appboy_feedback_navigation_bar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
       style="@style/Appboy.Feedback.NavigationBar">
 
     <Button
         android:id="@+id/com_appboy_feedback_cancel"
-        android:layout_width="0.0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
         style="@style/Appboy.Feedback.NavigationBarCancelButton"/>
 
     <Button
         android:id="@+id/com_appboy_feedback_send"
-        android:layout_width="0.0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
         style="@style/Appboy.Feedback.NavigationBarSendButton"/>
   </LinearLayout>
 
   <ScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_alignParentTop="true"
-      android:fillViewport="true"
-      android:layout_above="@id/com_appboy_feedback_navigation_bar">
+      android:id="@+id/com_appboy_feedback_scroll"
+      style="@style/Appboy.Feedback.Scroll">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="4.0dp"
-        android:paddingLeft="4.0dp"
-        android:paddingRight="4.0dp">
+        android:id="@+id/com_appboy_feedback_body"
+        style="@style/Appboy.Feedback.Body">
 
       <EditText
           android:id="@+id/com_appboy_feedback_message"
-          android:layout_width="match_parent"
-          android:layout_height="0.0dp"
-          android:layout_weight="1"
           style="@style/Appboy.Feedback.MessageEditText"/>
 
       <EditText
           android:id="@+id/com_appboy_feedback_email"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
           style="@style/Appboy.Feedback.EmailEditText"/>
       <CheckBox
           android:id="@+id/com_appboy_feedback_is_bug"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
           style="@style/Appboy.Feedback.IsBugCheckBox"/>
     </LinearLayout>
   </ScrollView>

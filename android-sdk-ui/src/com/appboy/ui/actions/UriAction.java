@@ -27,7 +27,13 @@ public class UriAction implements IAction {
   private Uri mUri;
   private boolean mUseWebView;
 
-  UriAction(@NonNull Uri uri, Bundle extras, boolean useWebView, Channel channel) {
+  /**
+   * @param uri The Uri.
+   * @param extras Any extras to be passed in the start intent.
+   * @param useWebView If this Uri should use the Webview, if the Uri is a remote Uri
+   * @param channel The channel for the Uri. Must not be null.
+   */
+  UriAction(@NonNull Uri uri, Bundle extras, boolean useWebView, @NonNull Channel channel) {
     mUri = uri;
     mExtras = extras;
     mUseWebView = useWebView;
@@ -44,6 +50,10 @@ public class UriAction implements IAction {
    */
   @Override
   public void execute(Context context) {
+    if (AppboyFileUtils.isLocalUri(mUri)) {
+      AppboyLogger.d(TAG, "Not executing local Uri: " + mUri);
+      return;
+    }
     AppboyLogger.d(TAG, "Executing Uri action from channel " + mChannel + ": " + mUri + ". UseWebView: " + mUseWebView);
     if (mUseWebView) {
       openUriWithWebView(context, mUri, mExtras);
@@ -100,7 +110,7 @@ public class UriAction implements IAction {
   /**
    * Uses an Intent.ACTION_VIEW intent to open the Uri.
    */
-  static void openUriWithActionView(Context context, Uri uri, Bundle extras) {
+  private static void openUriWithActionView(Context context, Uri uri, Bundle extras) {
     Intent intent = getActionViewIntent(context, uri, extras);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     if (intent.resolveActivity(context.getPackageManager()) != null) {
@@ -114,7 +124,7 @@ public class UriAction implements IAction {
    * Uses an Intent.ACTION_VIEW intent to open the Uri and places the main activity of the
    * activity on the back stack. Primarily used to open Uris from push.
    */
-  static void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
+  private static void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
     Intent uriIntent = getActionViewIntent(context, uri, extras);
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
     stackBuilder.addNextIntent(UriUtils.getMainActivityIntent(context, extras));

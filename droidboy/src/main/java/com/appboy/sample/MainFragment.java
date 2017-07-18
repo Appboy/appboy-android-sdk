@@ -15,6 +15,7 @@ import com.appboy.Appboy;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
+import com.appboy.models.outgoing.AttributionData;
 import com.appboy.support.StringUtils;
 
 import java.math.BigDecimal;
@@ -31,11 +32,17 @@ public class MainFragment extends Fragment {
   private static final String INT_ATTRIBUTE_KEY = "intAttribute";
   private static final String LONG_ATTRIBUTE_KEY = "longAttribute";
   private static final String STRING_ATTRIBUTE_KEY = "stringAttribute";
+  private static final String DOUBLE_ATTRIBUTE_KEY = "doubleAttribute";
   private static final String INCREMENT_ATTRIBUTE_KEY = "incrementAttribute";
 
   private EditText mUserIdEditText;
   private EditText mCustomEventOrPurchaseEditText;
   private Button mUserIdButton;
+
+  private EditText mAliasEditText;
+  private EditText mAliasLabelEditText;
+  private Button mUserAliasButton;
+
   private Button mCustomEventButton;
   private Button mLogPurchaseButton;
   private Button mSubmitFeedbackButton;
@@ -55,6 +62,11 @@ public class MainFragment extends Fragment {
     mUserIdEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_set_user_id_edit_text);
     mUserIdEditText.setText(mSharedPreferences.getString(USER_ID_KEY, null));
     mUserIdButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_id_button);
+
+    mAliasEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_set_alias_edit_text);
+    mAliasLabelEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_set_alias_label_edit_text);
+    mUserAliasButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_alias_button);
+
     // Appboy methods
     mCustomEventOrPurchaseEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_custom_event_or_purchase_edit_text);
     mCustomEventButton = (Button) contentView.findViewById(R.id.com_appboy_sample_log_custom_event_button);
@@ -132,6 +144,7 @@ public class MainFragment extends Fragment {
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttribute(BOOL_ATTRIBUTE_KEY, true);
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttribute(LONG_ATTRIBUTE_KEY, 10L);
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1);
+        Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY, 3.1d);
         Appboy.getInstance(mContext).getCurrentUser().incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4);
         Appboy.getInstance(mContext).getCurrentUser().setCustomUserAttributeToSecondsFromEpoch(DATE_ATTRIBUTE_KEY, new Date().getTime() / 1000L);
         Appboy.getInstance(mContext).getCurrentUser().setCustomAttributeArray(STRING_ARRAY_ATTRIBUTE_KEY, new String[]{"a", "b"});
@@ -141,6 +154,7 @@ public class MainFragment extends Fragment {
         Appboy.getInstance(mContext).getCurrentUser().addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "dog");
         Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "bird");
         Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "deer");
+        Appboy.getInstance(mContext).getCurrentUser().setAttributionData(new AttributionData("network", "campaign", "ad group", "creative"));
         Toast.makeText(getContext(), "Set user attributes.", Toast.LENGTH_SHORT).show();
       }
     });
@@ -163,5 +177,21 @@ public class MainFragment extends Fragment {
         Toast.makeText(getContext(), "Requested data flush.", Toast.LENGTH_SHORT).show();
       }
     });
+    mUserAliasButton.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View view) {
+        handleAliasClick();
+      }
+    });
+  }
+
+  private void handleAliasClick() {
+    String alias = mAliasEditText.getText().toString();
+    String label = mAliasLabelEditText.getText().toString();
+    if (Appboy.getInstance(mContext).getCurrentUser().addAlias(alias, label)) {
+      Toast.makeText(getContext(), "Added alias " + alias + " with label "
+          + label, Toast.LENGTH_SHORT).show();
+    } else {
+      Toast.makeText(getContext(), "Failed to add alias", Toast.LENGTH_SHORT).show();
+    }
   }
 }

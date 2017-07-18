@@ -17,8 +17,8 @@ public class CustomAppboyNavigator implements IAppboyNavigator {
     Intent intent = new Intent(context, DroidBoyActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     intent.putExtras(newsfeedAction.getExtras());
-    intent.putExtra(AppboyBroadcastReceiver.SOURCE_KEY, Constants.APPBOY);
-    intent.putExtra(AppboyBroadcastReceiver.DESTINATION_VIEW, AppboyBroadcastReceiver.FEED);
+    intent.putExtra(context.getResources().getString(R.string.source_key), Constants.APPBOY);
+    intent.putExtra(context.getResources().getString(R.string.destination_view), context.getResources().getString(R.string.feed_key));
     context.startActivity(intent);
   }
 

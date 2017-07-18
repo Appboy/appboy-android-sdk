@@ -29,8 +29,21 @@ import org.json.JSONObject;
 import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
+  private static final Map<String, String> API_KEY_TO_APP_MAP;
+
+  static {
+    Map<String, String> keyToAppMap = new HashMap<>();
+    keyToAppMap.put("1d502a81-f92f-48d4-96a7-1cbafc42b425","App:Droidboy, App group:Droidboy, Company:Appboy, Environment:Staging");
+    keyToAppMap.put("b9514ba7-993b-4e81-b339-8447dde48547","App:Fireos, App group:Droidboy, Company:Appboy, Environment:Staging");
+    API_KEY_TO_APP_MAP = Collections.unmodifiableMap(keyToAppMap);
+  }
+
   private int mAttributionUniqueInt = 0;
 
   @Override
@@ -42,7 +55,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setTitle(getString(R.string.settings));
 
-    toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+    toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button_droidboy));
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -60,6 +73,15 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference sdkPreference = findPreference("sdk_version");
     Preference apiKeyPreference = findPreference("api_key");
     Preference pushTokenPreference = findPreference("push_token");
+    Preference buildTypePreference = findPreference("build_type");
+    Preference flavorPreference = findPreference("flavor");
+    Preference versionCodePreference = findPreference("version_code");
+    Preference buildNamePreference = findPreference("build_name");
+    Preference currentUserIdPreference = findPreference("current_user_id");
+    Preference apiKeyBackendPreference = findPreference("api_key_backend");
+    Preference branchNamePreference = findPreference("branch_name");
+    Preference commitHashPreference = findPreference("commit_hash");
+    Preference installTimePreference = findPreference("install_time");
     Preference externalStorageRuntimePermissionDialogPreference = findPreference("external_storage_runtime_permission_dialog");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference logAttributionPreference = findPreference("log_attribution");
@@ -77,7 +99,16 @@ public class PreferencesActivity extends PreferenceActivity {
       pushToken = "None";
     }
     pushTokenPreference.setSummary(pushToken);
-
+    buildTypePreference.setSummary(BuildConfig.BUILD_TYPE);
+    flavorPreference.setSummary(BuildConfig.FLAVOR);
+    versionCodePreference.setSummary(String.valueOf(BuildConfig.VERSION_CODE));
+    buildNamePreference.setSummary(BuildConfig.VERSION_NAME);
+    currentUserIdPreference.setSummary(getUserId());
+    String apiKeyBackendString = getApiKeyBackendString();
+    apiKeyBackendPreference.setSummary(apiKeyBackendString);
+    commitHashPreference.setSummary(BuildConfig.COMMIT_HASH);
+    branchNamePreference.setSummary(BuildConfig.CURRENT_BRANCH);
+    installTimePreference.setSummary(BuildConfig.BUILD_TIME);
     setManualLocationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
@@ -237,6 +268,23 @@ public class PreferencesActivity extends PreferenceActivity {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
+  private String getApiKeyBackendString() {
+    String apiKey = PreferencesActivity.this.getResources().getString(R.string.com_appboy_api_key);
+    String apiKeyTarget = API_KEY_TO_APP_MAP.get(apiKey);
+    if (StringUtils.isNullOrBlank(apiKeyTarget)) {
+      return "Unknown";
+    }
+    return apiKeyTarget;
+  }
+
+  private String getUserId() {
+    String userId = Appboy.getInstance(PreferencesActivity.this).getCurrentUser().getUserId();
+    if (StringUtils.isNullOrBlank(userId)) {
+      userId = "Anonymous User";
+    }
+    return userId;
+  }
+
   @Override
   public void onStart() {
     super.onStart();
@@ -278,7 +326,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
     // Shows a toast if the activity detects that it was opened via a deep link.
     Bundle extras = getIntent().getExtras();
-    if (extras != null && Constants.APPBOY.equals(extras.getString(AppboyBroadcastReceiver.SOURCE_KEY))) {
+    if (extras != null && Constants.APPBOY.equals(extras.getString(getResources().getString(R.string.source_key)))) {
       showToast("This activity was opened by a deep link!");
     }
   }

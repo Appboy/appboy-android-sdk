@@ -6,5 +6,5 @@
   <string translatable="false" name="com_appboy_hello_high_score_hint">score</string>
   <string translatable="false" name="com_appboy_hello_high_score_submit_hint">Submit to Appboy</string>
   <string translatable="false" name="com_appboy_hello_instructions_body">Submit a nickname with your high score.</string>
-  <string translatable="false" name="com_appboy_hello_email_address_hint">dummy email address</string>
+  <string translatable="false" name="com_appboy_hello_user_id_hint">Set a User Id</string>
 </resources>

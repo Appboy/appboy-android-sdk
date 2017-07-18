@@ -1,0 +1,6 @@
+<resources>
+    <string translatable="false" name="app_name">Custom Broadcast</string>
+
+    <string translatable="false" name="set_user_id_edit_text_hint">Set a User ID here</string>
+    <string translatable="false" name="set_userid_button_prompt">Set User ID and request data flush</string>
+</resources>
