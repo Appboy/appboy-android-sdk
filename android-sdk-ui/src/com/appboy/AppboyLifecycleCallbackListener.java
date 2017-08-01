@@ -1,6 +1,5 @@
 package com.appboy;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
@@ -8,12 +7,11 @@ import android.os.Bundle;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 /**
- * Can be used on API level 14 and above to automatically handle Appboy lifecycle methods.
+ * Can be used to automatically handle Appboy lifecycle methods.
  * Optionally, openSession() and closeSession() are called on onActivityStarted and onActivityStopped respectively.
  * The InAppMessageManager methods of registerInAppMessageManager() and unregisterInAppMessageManager() can
  * be optionally called here as well.
  */
-@TargetApi(14)
 public class AppboyLifecycleCallbackListener implements Application.ActivityLifecycleCallbacks {
   private final boolean mRegisterInAppMessageManager;
   private final boolean mSessionHandlingEnabled;

@@ -51,13 +51,12 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setContentIntentIfPresent(context, notificationBuilder, notificationExtras);
     int smallNotificationIconResourceId = AppboyNotificationUtils.setSmallIcon(appConfigurationProvider, notificationBuilder);
 
-    // Honeycomb added large icons and sound
     boolean usingLargeIcon = AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setSoundIfPresentAndSupported(notificationBuilder, notificationExtras);
 
-    // From Honeycomb to ICS, we can use a custom view for our notifications which will allow them to be taller than
+    // For ICS, we can use a custom view for our notifications which will allow them to be taller than
     // the standard one line of text.
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
       // Pass in !usingLargeIcon because if no large icon is present, we want to display the small icon in its place.
       RemoteViews remoteViews = AppboyNotificationRemoteViewsUtils.createMultiLineContentNotificationView(context, notificationExtras, smallNotificationIconResourceId, !usingLargeIcon);
       if (remoteViews != null) {
@@ -78,6 +77,12 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setVisibilityIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setPublicVersionIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
 
+    // Android NotificationChannels were added in Android O. Note, once the official support comes out, this method may change.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      AppboyNotificationUtils.setNotificationChannelIfSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
+    }
+    AppboyNotificationUtils.setNotificationBadgeNumberIfPresent(notificationBuilder, notificationExtras);
+
     return notificationBuilder;
   }
 
@@ -87,8 +92,6 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    *
    * Opening a notification from the notification center triggers a broadcast message to be sent.
    * The broadcast message action is <host-app-package-name>.intent.APPBOY_NOTIFICATION_OPENED.
-   *
-   * Note: Gingerbread notifications are limited to one line of content.
    */
   @Override
   public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,

@@ -18,11 +18,9 @@ import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
-import com.appboy.ui.inappmessage.listeners.SimpleSwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.listeners.SwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.listeners.TouchAwareSwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlBaseView;
-import com.appboy.ui.support.AnimationUtils;
 import com.appboy.ui.support.ViewUtils;
 
 import java.util.List;
@@ -64,10 +62,8 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       mClickableInAppMessageView = mInAppMessageView;
     }
 
-    // We only apply the swipe touch listener to slideup in-app message Views on devices running Android version
-    // 12 or higher. Pre-12 devices will have to click to close the slideup in-app message.
     // Only slideup in-app messages can be swiped.
-    if (Build.VERSION.SDK_INT >= 12 && mInAppMessage instanceof InAppMessageSlideup) {
+    if (mInAppMessage instanceof InAppMessageSlideup) {
       // Adds the swipe listener to the in-app message View. All slideup in-app messages should be dismissible via a swipe
       // (even auto close slideup in-app messages).
       SwipeDismissTouchListener.DismissCallbacks dismissCallbacks = createDismissCallbacks();
@@ -76,8 +72,6 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       // a new runnable when the touch ends.
       touchAwareSwipeListener.setTouchListener(createTouchAwareListener());
       mClickableInAppMessageView.setOnTouchListener(touchAwareSwipeListener);
-    } else if (mInAppMessage instanceof InAppMessageSlideup) {
-      mClickableInAppMessageView.setOnTouchListener(getSimpleSwipeListener());
     }
 
     mOpeningAnimation = openingAnimation;
@@ -331,7 +325,6 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
     mInAppMessageView.clearAnimation();
     mInAppMessageView.setAnimation(animation);
     animation.startNow();
-    // We need to explicitly call invalidate on Gingerbread, otherwise the animation won't start :(
     mInAppMessageView.invalidate();
   }
 
@@ -374,37 +367,6 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
         public void onAnimationRepeat(Animation animation) {}
       };
     }
-  }
-
-  /**
-   * Adds swipe event handling to the SimpleSwipeDismissTouchListener.
-   *
-   * Used in API levels 11 and below. Detected swipe left and right events
-   * cause the slideup inapp message to animate off the screen in the direction of the swipe.
-   */
-  private SimpleSwipeDismissTouchListener getSimpleSwipeListener() {
-    return new SimpleSwipeDismissTouchListener(mInAppMessageView.getContext()) {
-      private final long sSwipeAnimationDurationMillis = 400L;
-
-      @Override
-      public void onSwipeLeft() {
-        animateAndClose(AnimationUtils.createHorizontalAnimation(0, -1, sSwipeAnimationDurationMillis, false));
-      }
-
-      @Override
-      public void onSwipeRight() {
-        animateAndClose(AnimationUtils.createHorizontalAnimation(0, 1, sSwipeAnimationDurationMillis, false));
-      }
-
-      private void animateAndClose(Animation animation) {
-        mInAppMessageView.clearAnimation();
-        mInAppMessageView.setAnimation(animation);
-        animation.startNow();
-        mInAppMessageView.invalidate();
-        mInAppMessage.setAnimateOut(false);
-        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
-      }
-    };
   }
 
   /**

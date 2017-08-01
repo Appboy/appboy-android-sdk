@@ -12,8 +12,13 @@ public class CustomBroadcastApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    AppboyLogger.setLogLevel(Log.VERBOSE);
+
+    AppboyConfig.Builder appboyConfig = new AppboyConfig.Builder()
+        .setDefaultNotificationChannelName("Appboy Push")
+        .setDefaultNotificationChannelDescription("Appboy related push");
+    Appboy.configure(this, appboyConfig.build());
 
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
-    AppboyLogger.setLogLevel(Log.VERBOSE);
   }
 }

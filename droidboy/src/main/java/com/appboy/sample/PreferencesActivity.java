@@ -22,7 +22,6 @@ import com.appboy.sample.util.LifecycleUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.feed.AppboyFeedManager;
-import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 import org.json.JSONObject;
 
@@ -288,8 +287,6 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onStart() {
     super.onStart();
-    // Opens a new Appboy session. You can now start logging custom events.
-    Appboy.getInstance(this).openSession(this);
 
     Branch branch = Branch.getInstance();
     branch.initSession(new Branch.BranchReferralInitListener() {
@@ -320,9 +317,6 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onResume() {
     super.onResume();
-    // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
-    // in-app messages from Appboy.
-    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
 
     // Shows a toast if the activity detects that it was opened via a deep link.
     Bundle extras = getIntent().getExtras();
@@ -332,17 +326,8 @@ public class PreferencesActivity extends PreferenceActivity {
   }
 
   @Override
-  public void onPause() {
-    super.onPause();
-    // Unregisters the AppboyInAppMessageManager.
-    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
-  }
-
-  @Override
   public void onStop() {
     super.onStop();
-    // Closes the Appboy session.
-    Appboy.getInstance(this).closeSession(this);
     Branch.getInstance(getApplicationContext()).closeSession();
   }
 

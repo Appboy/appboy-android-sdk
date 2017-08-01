@@ -42,7 +42,7 @@ public class LogLevelDialogPreference extends DialogPreference {
     ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, OPTIONS);
     mLogLevelSpinner.setAdapter(adapter);
 
-    int currentLogLevel = AppboyLogger.LogLevel;
+    int currentLogLevel = AppboyLogger.getLogLevel();
     int initialSelection;
 
     switch (currentLogLevel) {
@@ -76,50 +76,50 @@ public class LogLevelDialogPreference extends DialogPreference {
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (OPTIONS[position]) {
           case VERBOSE:
-            if (AppboyLogger.LogLevel != Log.VERBOSE) {
+            if (AppboyLogger.getLogLevel() != Log.VERBOSE) {
               showToast(LOG_LEVEL_TOAST, OPTIONS[position]);
             }
-            AppboyLogger.LogLevel = Log.VERBOSE;
+            AppboyLogger.setLogLevel(Log.VERBOSE);
             AppboyLogger.v(TAG, LOG_SELECT_PREFIX + VERBOSE);
             saveLogLevel(Log.VERBOSE);
             break;
           case DEBUG:
-            if (AppboyLogger.LogLevel != Log.DEBUG) {
+            if (AppboyLogger.getLogLevel() != Log.DEBUG) {
               showToast(LOG_LEVEL_TOAST, OPTIONS[position]);
             }
-            AppboyLogger.LogLevel = Log.DEBUG;
+            AppboyLogger.setLogLevel(Log.DEBUG);
             AppboyLogger.d(TAG, LOG_SELECT_PREFIX + DEBUG);
             saveLogLevel(Log.DEBUG);
             break;
           case INFO:
-            if (AppboyLogger.LogLevel != Log.INFO) {
+            if (AppboyLogger.getLogLevel() != Log.INFO) {
               showToast(LOG_LEVEL_TOAST, OPTIONS[position]);
             }
-            AppboyLogger.LogLevel = Log.INFO;
+            AppboyLogger.setLogLevel(Log.INFO);
             AppboyLogger.i(TAG, LOG_SELECT_PREFIX + INFO);
             saveLogLevel(Log.INFO);
             break;
           case WARN:
-            if (AppboyLogger.LogLevel != Log.WARN) {
+            if (AppboyLogger.getLogLevel() != Log.WARN) {
               showToast(LOG_LEVEL_TOAST, OPTIONS[position]);
             }
-            AppboyLogger.LogLevel = Log.WARN;
+            AppboyLogger.setLogLevel(Log.WARN);
             AppboyLogger.w(TAG, LOG_SELECT_PREFIX + WARN);
             saveLogLevel(Log.WARN);
             break;
           case ERROR:
-            if (AppboyLogger.LogLevel != Log.ERROR) {
+            if (AppboyLogger.getLogLevel() != Log.ERROR) {
               showToast(LOG_LEVEL_TOAST, OPTIONS[position]);
             }
-            AppboyLogger.LogLevel = Log.ERROR;
+            AppboyLogger.setLogLevel(Log.ERROR);
             AppboyLogger.e(TAG, LOG_SELECT_PREFIX + ERROR);
             saveLogLevel(Log.ERROR);
             break;
           case SUPPRESS:
-            if (AppboyLogger.LogLevel != AppboyLogger.SUPPRESS) {
+            if (AppboyLogger.getLogLevel() != AppboyLogger.SUPPRESS) {
               showToast("Disabled Appboy Logging.", null);
             }
-            AppboyLogger.LogLevel = AppboyLogger.SUPPRESS;
+            AppboyLogger.setLogLevel(AppboyLogger.SUPPRESS);
             saveLogLevel(AppboyLogger.SUPPRESS);
             break;
           default:

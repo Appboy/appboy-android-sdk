@@ -24,6 +24,11 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
   private static final String GCM_MESSAGE_TYPE_KEY = "message_type";
   private static final String GCM_DELETED_MESSAGES_KEY = "deleted_messages";
   private static final String GCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
+  /**
+   * @deprecated use {@link Constants#APPBOY_PUSH_CAMPAIGN_ID_KEY} instead. This key will be removed
+   * in a future release.
+   */
+  @Deprecated
   public static final String CAMPAIGN_ID_KEY = Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY;
 
   @Override

@@ -1,9 +1,7 @@
 package com.appboy.push;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
@@ -37,7 +35,6 @@ public class AppboyNotificationRemoteViewsUtils {
    *                            itself will be displayed, pass in false to avoid redundant icon display.
    * @return a RemoteViews instance representing the notification or null if the view cannot be created.
    */
-  @TargetApi(Build.VERSION_CODES.HONEYCOMB)
   public static RemoteViews createMultiLineContentNotificationView(Context context, Bundle notificationExtras, int smallIconResourceId, boolean showSmallIcon) {
     if (notificationExtras != null) {
       String title = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY);

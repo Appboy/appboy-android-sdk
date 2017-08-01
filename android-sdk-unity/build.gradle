@@ -4,22 +4,22 @@ configurations {
 }
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.0.+'
+  compile 'com.appboy:android-sdk-ui:2.1.+'
   provided files("libs/Prime31UnityActivity-1.0.jar")
   provided files("libs/unity-4.1.2.jar")
 }
 
 android {
-  compileSdkVersion 24
-  buildToolsVersion '25.0.3'
+  compileSdkVersion 26
+  buildToolsVersion '26.0.0'
 
   dexOptions {
     preDexLibraries = true
   }
 
   defaultConfig {
-    minSdkVersion 9
-    targetSdkVersion 24
+    minSdkVersion 14
+    targetSdkVersion 26
   }
 
   sourceSets {

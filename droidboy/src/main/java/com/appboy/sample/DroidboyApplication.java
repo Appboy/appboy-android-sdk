@@ -1,6 +1,5 @@
 package com.appboy.sample;
 
-import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +8,7 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import com.appboy.Appboy;
+import com.appboy.AppboyLifecycleCallbackListener;
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfig;
 import com.appboy.sample.util.EmulatorDetectionUtils;
@@ -33,6 +33,10 @@ public class DroidboyApplication extends Application {
       activateStrictMode();
     }
 
+    int logLevel = getApplicationContext().getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE)
+        .getInt(getString(R.string.current_log_level), Log.VERBOSE);
+    AppboyLogger.setLogLevel(logLevel);
+
     SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), MODE_PRIVATE);
     disableNetworkRequestsIfConfigured(sharedPreferences);
 
@@ -44,13 +48,12 @@ public class DroidboyApplication extends Application {
 
     String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
     Appboy.setAppboyEndpointProvider(new DroidboyEndpointProvider(overrideEndpointUrl));
-    int logLevel = getApplicationContext().getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE)
-        .getInt(getString(R.string.current_log_level), Log.VERBOSE);
-    AppboyLogger.setLogLevel(logLevel);
 
     if (FrescoLibraryUtils.canUseFresco(getApplicationContext())) {
       Fresco.initialize(getApplicationContext());
     }
+
+    registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }
 
   private void activateStrictMode() {
@@ -59,10 +62,8 @@ public class DroidboyApplication extends Application {
         .penaltyLog();
     StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
         .detectAll()
+        .detectLeakedClosableObjects()
         .penaltyLog();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-      addDetectLeakedClosableObjects(vmPolicyBuilder);
-    }
     StrictMode.setThreadPolicy(threadPolicyBuilder.build());
     StrictMode.setVmPolicy(vmPolicyBuilder.build());
   }
@@ -92,10 +93,5 @@ public class DroidboyApplication extends Application {
     } else {
       return context.getResources().getString(R.string.com_appboy_api_key);
     }
-  }
-
-  @TargetApi(11)
-  private void addDetectLeakedClosableObjects(StrictMode.VmPolicy.Builder vmPolicyBuilder) {
-    vmPolicyBuilder.detectLeakedClosableObjects();
   }
 }

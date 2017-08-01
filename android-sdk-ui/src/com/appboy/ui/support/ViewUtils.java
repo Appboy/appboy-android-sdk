@@ -2,7 +2,6 @@ package com.appboy.ui.support;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
@@ -52,15 +51,10 @@ public class ViewUtils {
       return sDisplayHeight;
     }
     Display display = activity.getWindowManager().getDefaultDisplay();
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2) {
-      sDisplayHeight = display.getHeight();
-      return sDisplayHeight;
-    } else {
-      Point point = new Point();
-      display.getSize(point);
-      sDisplayHeight = point.y;
-      return sDisplayHeight;
-    }
+    Point point = new Point();
+    display.getSize(point);
+    sDisplayHeight = point.y;
+    return sDisplayHeight;
   }
 
   public static double convertDpToPixels(Activity activity, double valueInDp) {
@@ -69,14 +63,8 @@ public class ViewUtils {
   }
 
   public static boolean isRunningOnTablet(Activity activity) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-      return activity.getResources().getConfiguration().smallestScreenWidthDp
-          >= TABLET_SMALLEST_WIDTH_DP;
-    } else {
-      return (activity.getResources().getConfiguration().screenLayout
-          & Configuration.SCREENLAYOUT_SIZE_MASK)
-          >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-    }
+    return activity.getResources().getConfiguration().smallestScreenWidthDp
+        >= TABLET_SMALLEST_WIDTH_DP;
   }
 
   /**

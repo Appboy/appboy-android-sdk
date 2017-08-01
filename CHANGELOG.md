@@ -1,11 +1,27 @@
+## 2.1.0
+
+##### Breaking
+- Updated the minimum SDK version from 9 (Gingerbread) to 14 (Ice Cream Sandwich). 
+  - We recommend that session tracking and In-App Messages registration be done via an `AppboyLifecycleCallbackListener` instance using [`Application.registerActivityLifecycleCallbacks()`](https://developer.android.com/reference/android/app/Application.html#registerActivityLifecycleCallbacks(android.app.Application.ActivityLifecycleCallbacks)).
+- Removed the deprecated field: `AppboyLogger.LogLevel`. Please use `AppboyLogger.setLogLevel()` and `AppboyLogger.getLogLevel()` instead.
+
+##### Added
+- Added support for Android O notification channels. In the case that an Appboy notification does not contain the id for a notification channel, Appboy will fallback to a default notification channel. Other than the default notification channel, Appboy will not create any channels.
+  - To set the user facing name of the default Appboy notification channel, please use `AppboyConfig.setDefaultNotificationChannelName()`.
+  - To set the user facing description of the default Appboy notification channel, please use `AppboyConfig.setDefaultNotificationChannelDescription()`.
+
+##### Changed
+- Updated the v4 support library dependency to version 26.0.0.
+- Updated the target SDK version to 26.
+
 ## 2.0.5
 
 ##### Fixed
 - Fixed a bug where relative links in `href` tags in HTML In-App Messages would get passed as file Uris to the `AppboyNavigator`.
 
 ##### Added
-- Adds `Double` as a valid value type on `AppboyUser.setCustomUserAttribute()`.
-- Adds user aliasing capability. Aliases can be used in the API and dashboard to identify users in addition to their ID.  See the `addAlias` method on [`AppboyUser`](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/AppboyUser.html) for more information.
+- Added `Double` as a valid value type on `AppboyUser.setCustomUserAttribute()`.
+- Added user aliasing capability. Aliases can be used in the API and dashboard to identify users in addition to their ID.  See the `addAlias` method on [`AppboyUser`](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/AppboyUser.html) for more information.
 
 ## 2.0.4
 

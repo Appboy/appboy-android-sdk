@@ -167,6 +167,8 @@ public class MainFragment extends Fragment {
         Appboy.getInstance(mContext).getCurrentUser().unsetCustomUserAttribute(LONG_ATTRIBUTE_KEY);
         Appboy.getInstance(mContext).getCurrentUser().unsetCustomUserAttribute(DATE_ATTRIBUTE_KEY);
         Appboy.getInstance(mContext).getCurrentUser().unsetCustomUserAttribute(ARRAY_ATTRIBUTE_KEY);
+        Appboy.getInstance(mContext).getCurrentUser().unsetCustomUserAttribute(STRING_ARRAY_ATTRIBUTE_KEY);
+        Appboy.getInstance(mContext).getCurrentUser().unsetCustomUserAttribute(PETS_ARRAY_ATTRIBUTE_KEY);
         Appboy.getInstance(mContext).getCurrentUser().unsetCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY);
         Toast.makeText(getContext(), "Unset custom user attributes.", Toast.LENGTH_SHORT).show();
       }

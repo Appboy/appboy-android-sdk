@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.appboy.Appboy;
-import com.appboy.AppboyGcmReceiver;
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.support.AppboyLogger;
@@ -150,19 +149,9 @@ public class AppboyNotificationActionUtils {
    * @param intent the action button click intent
    */
   private static void logNotificationActionClicked(Context context, Intent intent) {
-    String campaignId = intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY);
+    String campaignId = intent.getStringExtra(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
     String actionButtonId = intent.getStringExtra(Constants.APPBOY_ACTION_ID_KEY);
-    if (StringUtils.isNullOrBlank(campaignId)) {
-      AppboyLogger.i(TAG, "No campaign Id associated with this notification. Not logging push action click to Appboy.");
-      return;
-    }
-    if (StringUtils.isNullOrBlank(actionButtonId)) {
-      AppboyLogger.i(TAG, "No action button Id associated with this notification action. Not logging push action click to Appboy.");
-      return;
-    }
-    AppboyLogger.i(TAG, "Logging push action click to Appboy. Campaign Id: " + campaignId + " Action Button Id: " + actionButtonId);
     Appboy.getInstance(context).logPushNotificationActionClicked(campaignId, actionButtonId);
-
   }
 
   /**

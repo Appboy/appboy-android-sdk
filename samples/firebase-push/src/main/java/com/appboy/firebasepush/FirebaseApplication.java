@@ -15,6 +15,8 @@ public class FirebaseApplication extends Application {
 
     AppboyConfig.Builder appboyConfig = new AppboyConfig.Builder()
         .setGcmMessagingRegistrationEnabled(false)
+        .setDefaultNotificationChannelName("Appboy Push")
+        .setDefaultNotificationChannelDescription("Appboy related push")
         .setHandlePushDeepLinksAutomatically(true);
     Appboy.configure(this, appboyConfig.build());
 

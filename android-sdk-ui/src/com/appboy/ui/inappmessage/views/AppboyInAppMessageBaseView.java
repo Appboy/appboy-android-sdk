@@ -2,7 +2,6 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
@@ -32,9 +31,7 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
      *
      * See http://android-developers.blogspot.com/2011/03/android-30-hardware-acceleration.html
      */
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-      setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-    }
+    setLayerType(View.LAYER_TYPE_SOFTWARE, null);
   }
 
   public void setMessageBackgroundColor(int color) {

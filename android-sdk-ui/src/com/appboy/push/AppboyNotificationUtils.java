@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -86,7 +87,8 @@ public class AppboyNotificationUtils {
     if (extras == null) {
       extras = new Bundle();
     }
-    extras.putString(AppboyGcmReceiver.CAMPAIGN_ID_KEY, intent.getStringExtra(AppboyGcmReceiver.CAMPAIGN_ID_KEY));
+    extras.putString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY,
+        intent.getStringExtra(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY));
     extras.putString(SOURCE_KEY, Constants.APPBOY);
 
     // If a deep link exists, start an ACTION_VIEW intent pointing at the deep link.
@@ -122,7 +124,7 @@ public class AppboyNotificationUtils {
       return null;
     }
     if (!Constants.IS_AMAZON) {
-      return AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
+      return AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(notificationExtras.getString(Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
     } else {
       return new Bundle(notificationExtras);
     }
@@ -130,18 +132,12 @@ public class AppboyNotificationUtils {
 
   /**
    * Returns the specified String if it is found in the bundle; otherwise it returns the defaultString.
+   *
+   * @Deprecated use Bundle.getString() instead.
    */
-  @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+  @Deprecated
   public static String bundleOptString(Bundle bundle, String key, String defaultValue) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-      return bundle.getString(key, defaultValue);
-    } else {
-      String result = bundle.getString(key);
-      if (result == null) {
-        result = defaultValue;
-      }
-      return result;
-    }
+    return bundle.getString(key, defaultValue);
   }
 
   /**
@@ -263,8 +259,8 @@ public class AppboyNotificationUtils {
           return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
         }
       } else {
-        String messageKey = AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_TITLE_KEY, "")
-            + AppboyNotificationUtils.bundleOptString(notificationExtras, Constants.APPBOY_PUSH_CONTENT_KEY, "");
+        String messageKey = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY, "")
+            + notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY, "");
         int notificationId = messageKey.hashCode();
         AppboyLogger.d(TAG, "Message without notification id provided in the extras bundle received. Using a hash of the message: " + notificationId);
         return notificationId;
@@ -415,20 +411,14 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Set large icon for devices on Honeycomb and above. We use the large icon URL if it exists in
-   * the notificationExtras. Otherwise we search for a drawable defined in appboy.xml. If that
-   * doesn't exists, we do nothing.
+   * Set large icon. We use the large icon URL if it exists in the notificationExtras.
+   * Otherwise we search for a drawable defined in appboy.xml. If that doesn't exists, we do nothing.
    * <p/>
-   * Supported HoneyComb+.
    *
    * @return whether a large icon was successfully set.
    */
   public static boolean setLargeIconIfPresentAndSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
       NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-      AppboyLogger.d(TAG, "Setting large icon for notification not supported on this android version");
-      return false;
-    }
     try {
       if (notificationExtras != null
           && notificationExtras.containsKey(Constants.APPBOY_PUSH_LARGE_ICON_KEY)) {
@@ -458,29 +448,24 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * In devices running Honeycomb+ notifications can optionally include a sound to play when the notification is delivered.
+   * Notifications can optionally include a sound to play when the notification is delivered.
    * <p/>
-   * Supported HoneyComb+.
    */
   public static void setSoundIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-      if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY)) {
-        // Retrieve sound uri if included in notificationExtras bundle.
-        String soundUri = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY);
-        if (soundUri != null) {
-          if (soundUri.equals(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE)) {
-            AppboyLogger.d(TAG, "Setting default sound for notification.");
-            notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
-          } else {
-            AppboyLogger.d(TAG, "Setting sound for notification via uri.");
-            notificationBuilder.setSound(Uri.parse(soundUri));
-          }
+    if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY)) {
+      // Retrieve sound uri if included in notificationExtras bundle.
+      String soundUri = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY);
+      if (soundUri != null) {
+        if (soundUri.equals(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE)) {
+          AppboyLogger.d(TAG, "Setting default sound for notification.");
+          notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
+        } else {
+          AppboyLogger.d(TAG, "Setting sound for notification via uri.");
+          notificationBuilder.setSound(Uri.parse(soundUri));
         }
-      } else {
-        AppboyLogger.d(TAG, "Sound key not present in notification extras. Not setting sound for notification.");
       }
     } else {
-      AppboyLogger.d(TAG, "Notification sound not supported on this android version. Not setting sound for notification.");
+      AppboyLogger.d(TAG, "Sound key not present in notification extras. Not setting sound for notification.");
     }
   }
 
@@ -508,7 +493,10 @@ public class AppboyNotificationUtils {
    * Sets the priority of the notification if a priority is present in the notification extras.
    * <p/>
    * Supported JellyBean+.
+   *
+   * @deprecated Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
+  @Deprecated
   public static void setPriorityIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       if (notificationExtras != null) {
@@ -746,6 +734,62 @@ public class AppboyNotificationUtils {
       }
     }
     return false;
+  }
+
+  /**
+   * Sets a notification channel on all Android O and above notifications. If not present in the extras, then a default notification channel is used.
+   *
+   * To change the default notification channel name and description, please use {@link com.appboy.configuration.AppboyConfig.Builder#setDefaultNotificationChannelName(String)} and
+   * {@link com.appboy.configuration.AppboyConfig.Builder#setDefaultNotificationChannelDescription(String)}.
+   *
+   * The default notification channel uses the id {@link Constants#APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID}.
+   */
+  @TargetApi(Build.VERSION_CODES.O)
+  public static void setNotificationChannelIfSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
+                                                       NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+    // Check if the notification channel id is present in the extras and if that notification channel exists.
+    String channelIdFromExtras = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, null);
+    if (!StringUtils.isNullOrBlank(channelIdFromExtras)) {
+      if (notificationManager.getNotificationChannel(channelIdFromExtras) != null) {
+        // Apply that channel to the notification
+        AppboyLogger.d(TAG, "Using extras provided notification channel with id: " + channelIdFromExtras);
+        notificationBuilder.setChannelId(channelIdFromExtras);
+        return;
+      } else {
+        AppboyLogger.i(TAG, "Notification channel from extras is invalid, no channel found with id: " + channelIdFromExtras);
+      }
+    } else {
+      AppboyLogger.i(TAG, "Device uses Android O or above, but notification did not contain a notification channel.");
+    }
+
+    // Create the default NotificationChannel or update the name/description if their values have changed.
+    NotificationChannel notificationChannel = new NotificationChannel(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID,
+        appConfigurationProvider.getDefaultNotificationChannelName(), NotificationManager.IMPORTANCE_DEFAULT);
+    notificationChannel.setDescription(appConfigurationProvider.getDefaultNotificationChannelDescription());
+    notificationManager.createNotificationChannel(notificationChannel);
+
+    // Use the default notification channel
+    notificationBuilder.setChannelId(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
+    AppboyLogger.d(TAG, "Using default notification channel with id: " + Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
+  }
+
+  /**
+   * Sets the notification number, set via {@link android.support.v4.app.NotificationCompat.Builder#setNumber(int)}. On Android O, this number is used with notification badges.
+   */
+  public static void setNotificationBadgeNumberIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      final String extrasBadgeCount = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_BADGE_COUNT_KEY, null);
+      if (!StringUtils.isNullOrBlank(extrasBadgeCount)) {
+        try {
+          int badgeCount = Integer.parseInt(extrasBadgeCount);
+          notificationBuilder.setNumber(badgeCount);
+        } catch (NumberFormatException e) {
+          AppboyLogger.e(TAG, "Caught exception while setting number on notification.", e);
+        }
+      }
+    }
   }
 
   /**

@@ -9,9 +9,9 @@
     <item name="android:textColor">@color/com_appboy_button</item>
   </style>
 
-  <!-- Custom Push Notification View Styles. AppboyGcmReceiver ensures that this is only used for Android versions from
-   Honeycomb to Ice Cream Sandwich, so we mark it with targetApi 11 for Lint purposes. -->
-  <style name="Appboy.EventContent" tools:targetApi="11">
+  <!-- Custom Push Notification View Styles. AppboyGcmReceiver ensures that this is only used for
+  Ice Cream Sandwich, so we mark it with targetApi 14 for Lint purposes. -->
+  <style name="Appboy.EventContent" tools:targetApi="14">
     <item name="android:textColor">@color/com_appboy_custom_notification_content</item>
     <item name="android:textSize">12dp</item>
   </style>

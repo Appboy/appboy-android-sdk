@@ -115,7 +115,6 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
     mCallbacks = callbacks;
   }
 
-  @TargetApi(12)
   @Override
   @SuppressWarnings("checkstyle:operatorwrap")
   public boolean onTouch(View view, MotionEvent motionEvent) {

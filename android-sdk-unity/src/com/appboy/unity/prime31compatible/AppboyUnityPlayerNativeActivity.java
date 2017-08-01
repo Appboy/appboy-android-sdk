@@ -13,8 +13,7 @@ import com.prime31.UnityPlayerNativeActivity;
  *
  * This is a wrapper subclass of the UnityPlayerNativeActivity class. It calls the necessary Appboy methods
  * to ensure that analytics are collected and that push notifications are properly forwarded to
- * the Unity application. The AppboyUnityPlayerNativeActivity will only work on devices running
- * Android OS's Gingerbread or newer and provides improvements for input handling.
+ * the Unity application.
  */
 public class AppboyUnityPlayerNativeActivity extends UnityPlayerNativeActivity {
   private AppboyUnityPlayerNativeActivityWrapper mAppboyUnityPlayerNativeActivityWrapper;

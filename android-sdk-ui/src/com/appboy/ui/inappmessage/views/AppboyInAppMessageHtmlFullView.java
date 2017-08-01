@@ -2,7 +2,6 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -35,11 +34,9 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
 
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-          webSettings.setDisplayZoomControls(false);
-          // This enables hardware acceleration if the manifest also has it defined. If not defined, then the layer type will fallback to software
-          mMessageWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        }
+        webSettings.setDisplayZoomControls(false);
+        // This enables hardware acceleration if the manifest also has it defined. If not defined, then the layer type will fallback to software
+        mMessageWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         mMessageWebView.setBackgroundColor(Color.TRANSPARENT);
 
         // Set the client for console logging. See https://developer.android.com/guide/webapps/debugging.html

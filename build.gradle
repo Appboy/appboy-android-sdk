@@ -13,12 +13,11 @@ buildscript {
 }
 
 ext {
-  compileSdkVersion = 24
-  buildToolsVersion = '25.0.3'
-  minSdkVersion = 9
-  targetSdkVersion = 24
+  compileSdkVersion = 26
+  buildToolsVersion = '26.0.0'
+  minSdkVersion = 14
+  targetSdkVersion = 26
   appVersionName = project.version
-  minSdkVersionForLifecycleListener = 14
 }
 
 subprojects {
@@ -26,10 +25,13 @@ subprojects {
     mavenLocal()
     mavenCentral()
     maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+    maven {
+      url "https://maven.google.com"
+    }
   }
 
   group = 'com.appboy'
-  version = '2.0.5'
+  version = '2.1.0'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.

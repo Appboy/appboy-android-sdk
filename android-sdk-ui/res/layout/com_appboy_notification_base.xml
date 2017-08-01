@@ -5,8 +5,8 @@
  cannot use BigTextStyle notifications) will truncate the display of push notifications in the notification
  center at only a single line. -->
 
-<!-- The AppboyNotificationFactory ensures that this layout is only used for Honeycomb and ICS, so we mark this class with
-     tools:targetApi="11" to soothe lint analysis into complacency. -->
+<!-- The AppboyNotificationFactory ensures that this layout is only used for ICS, so we mark this class with
+     tools:targetApi="14" to soothe lint analysis into complacency. -->
 <LinearLayout
     android:id="@+id/com_appboy_notification_base"
     xmlns:tools="http://schemas.android.com/tools"
@@ -18,7 +18,7 @@
     android:gravity="top"
     android:orientation="vertical"
     android:layout_gravity="fill_vertical"
-    tools:targetApi="11">
+    tools:targetApi="14">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

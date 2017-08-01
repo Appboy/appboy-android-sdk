@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.0.+'
+  compile 'com.appboy:android-sdk-ui:2.1.+'
 }
 
 android {
@@ -9,7 +9,7 @@ android {
   buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersionForLifecycleListener
+    minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionName rootProject.ext.appVersionName
   }

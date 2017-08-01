@@ -1,9 +1,7 @@
 package com.appboy.ui;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -37,7 +35,12 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_PROGRESS);
     requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-    setWindowFlagsSafe();
+
+    // Enables hardware acceleration for the window. See https://developer.android.com/guide/topics/graphics/hardware-accel.html#controlling.
+    // With this flag, we can view Youtube videos since HTML5 requires hardware acceleration.
+    getWindow().setFlags(
+        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
     setContentView(R.layout.com_appboy_webview_activity);
     setProgressBarVisibility(true);
 
@@ -50,7 +53,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     webSettings.setAllowFileAccess(false);
     // Plugin support is disabled by default. If plugins, such as flash, are required, change the PluginState.
     webSettings.setPluginState(WebSettings.PluginState.OFF);
-    setZoomSafe(webSettings);
+    webSettings.setDisplayZoomControls(false);
 
     webSettings.setBuiltInZoomControls(true);
     webSettings.setUseWideViewPort(true);
@@ -82,7 +85,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     });
 
     webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-    setWebLayerTypeSafe(webView);
+    webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
     webView.setWebViewClient(new WebViewClient() {
       @Override
@@ -113,34 +116,6 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     if (extras != null && extras.containsKey(URL_EXTRA)) {
       String url = extras.getString(URL_EXTRA);
       webView.loadUrl(url);
-    }
-  }
-
-  /**
-   * Enables hardware acceleration for the window. See https://developer.android.com/guide/topics/graphics/hardware-accel.html#controlling . With this flag, we can view Youtube
-   * videos since HTML5 requires hardware acceleration.
-   */
-  @TargetApi(11)
-  private void setWindowFlagsSafe() {
-    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-      getWindow().setFlags(
-          WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-          WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-    }
-  }
-
-  @TargetApi(11)
-  private void setZoomSafe(WebSettings webSettings) {
-    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-      webSettings.setDisplayZoomControls(false);
-    }
-  }
-
-  @TargetApi(11)
-  private void setWebLayerTypeSafe(WebView webView) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-      // This enables hardware acceleration if the manifest also has it defined. If not defined, then the layer type will fallback to software
-      webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
     }
   }
 }

@@ -9,7 +9,6 @@ import com.appboy.enums.Channel;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
-import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
@@ -151,7 +150,7 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
     AppboyProperties customEventProperties = new AppboyProperties();
     for (String key: queryBundle.keySet()) {
       if (!key.equals(HTML_IAM_CUSTOM_EVENT_NAME_KEY)) {
-        String propertyValue = AppboyNotificationUtils.bundleOptString(queryBundle, key, null);
+        String propertyValue = queryBundle.getString(key, null);
         if (!StringUtils.isNullOrBlank(propertyValue)) {
           customEventProperties.addProperty(key, propertyValue);
         }

@@ -1,6 +1,5 @@
 package com.appboy.ui;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
@@ -32,7 +31,6 @@ import com.appboy.ui.adapters.AppboyListAdapter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-@TargetApi(11)
 public class AppboyXamarinFormsFeedFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
   private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyXamarinFormsFeedFragment.class.getName());
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;
