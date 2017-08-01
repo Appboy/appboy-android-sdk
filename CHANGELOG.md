@@ -4,6 +4,12 @@
 - Updated the minimum SDK version from 9 (Gingerbread) to 14 (Ice Cream Sandwich). 
   - We recommend that session tracking and In-App Messages registration be done via an `AppboyLifecycleCallbackListener` instance using [`Application.registerActivityLifecycleCallbacks()`](https://developer.android.com/reference/android/app/Application.html#registerActivityLifecycleCallbacks(android.app.Application.ActivityLifecycleCallbacks)).
 - Removed the deprecated field: `AppboyLogger.LogLevel`. Please use `AppboyLogger.setLogLevel()` and `AppboyLogger.getLogLevel()` instead.
+- Updated the v4 support library dependency to version 26.0.0. To download Android Support Libraries versions 26.0.0 and above, you must add the following line to your top-level `build.gradle` repositories block:
+  ```
+  maven {
+    url "https://maven.google.com"
+  }
+  ```
 
 ##### Added
 - Added support for Android O notification channels. In the case that an Appboy notification does not contain the id for a notification channel, Appboy will fallback to a default notification channel. Other than the default notification channel, Appboy will not create any channels.
@@ -11,7 +17,6 @@
   - To set the user facing description of the default Appboy notification channel, please use `AppboyConfig.setDefaultNotificationChannelDescription()`.
 
 ##### Changed
-- Updated the v4 support library dependency to version 26.0.0.
 - Updated the target SDK version to 26.
 
 ## 2.0.5
