@@ -1,3 +1,11 @@
+## 2.1.1
+
+##### Added
+- Added the ability to set a custom API endpoint via `appboy.xml` using the `com_appboy_custom_endpoint` string attribute or via `AppboyConfig.Builder.setCustomEndpoint()`.
+
+##### Fixed
+- Fixed a bug where date custom attributes were formatted in the device's locale, which could result in incorrectly formatted dates. Date custom attributes are now always formatted in `Locale.US`.
+
 ## 2.1.0
 
 ##### Breaking

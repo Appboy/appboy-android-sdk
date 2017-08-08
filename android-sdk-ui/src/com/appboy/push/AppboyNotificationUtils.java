@@ -450,7 +450,9 @@ public class AppboyNotificationUtils {
   /**
    * Notifications can optionally include a sound to play when the notification is delivered.
    * <p/>
+   * @deprecated Starting with Android O, sound is set on a notification channel and not individually on notifications.
    */
+  @Deprecated
   public static void setSoundIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY)) {
       // Retrieve sound uri if included in notificationExtras bundle.

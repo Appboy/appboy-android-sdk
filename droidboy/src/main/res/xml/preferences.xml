@@ -164,5 +164,8 @@
         <Preference
             android:key="install_time"
             android:title="Install Time"/>
+        <Preference
+            android:key="device_id"
+            android:title="Device Id"/>
     </PreferenceCategory>
 </PreferenceScreen>

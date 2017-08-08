@@ -81,6 +81,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference branchNamePreference = findPreference("branch_name");
     Preference commitHashPreference = findPreference("commit_hash");
     Preference installTimePreference = findPreference("install_time");
+    Preference deviceIdPreference = findPreference("device_id");
     Preference externalStorageRuntimePermissionDialogPreference = findPreference("external_storage_runtime_permission_dialog");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference logAttributionPreference = findPreference("log_attribution");
@@ -108,6 +109,7 @@ public class PreferencesActivity extends PreferenceActivity {
     commitHashPreference.setSummary(BuildConfig.COMMIT_HASH);
     branchNamePreference.setSummary(BuildConfig.CURRENT_BRANCH);
     installTimePreference.setSummary(BuildConfig.BUILD_TIME);
+    deviceIdPreference.setSummary(Appboy.getInstance(getApplicationContext()).getDeviceId());
     setManualLocationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
