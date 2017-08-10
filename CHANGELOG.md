@@ -20,7 +20,8 @@
   ```
 
 ##### Added
-- Added support for Android O notification channels. In the case that an Appboy notification does not contain the id for a notification channel, Appboy will fallback to a default notification channel. Other than the default notification channel, Appboy will not create any channels.
+- Added support for Android O notification channels. In the case that an Appboy notification does not contain the id for a notification channel, Appboy will fallback to a default notification channel. Other than the default notification channel, Appboy will not create any channels. All other channels must be programatically defined by the host app.
+  - Note that default notification channel creation will occur even if your app does not target Android O. If you would like to avoid default channel creation until your app targets Android O, do not upgrade to this version.
   - To set the user facing name of the default Appboy notification channel, please use `AppboyConfig.setDefaultNotificationChannelName()`.
   - To set the user facing description of the default Appboy notification channel, please use `AppboyConfig.setDefaultNotificationChannelDescription()`.
 
