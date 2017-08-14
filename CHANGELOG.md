@@ -1,3 +1,8 @@
+## 2.1.2
+
+##### Fixed
+- Fixed a bug where sealed session flushes would not be sent on apps with long session timeouts due to Android O background service limitations.
+
 ## 2.1.1
 
 ##### Added
