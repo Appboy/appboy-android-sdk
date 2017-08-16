@@ -1,5 +1,8 @@
 ## 2.1.2
 
+##### Important
+- If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x.
+
 ##### Fixed
 - Fixed a bug where sealed session flushes would not be sent on apps with long session timeouts due to Android O background service limitations.
 
