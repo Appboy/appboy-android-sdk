@@ -198,7 +198,7 @@ public class AppboyNotificationUtils {
       pushReceivedIntent.putExtras(notificationExtras);
     }
     AppboyLogger.d(TAG, "Sending push message received broadcast");
-    context.sendBroadcast(pushReceivedIntent);
+    IntentUtils.addComponentAndSendBroadcast(context, pushReceivedIntent);
   }
 
   /**
@@ -695,7 +695,7 @@ public class AppboyNotificationUtils {
       AppboyLogger.d(TAG, String.format("Cancelling notification action with id: %d", notificationId));
       Intent cancelNotificationIntent = new Intent(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
       cancelNotificationIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
-      context.sendBroadcast(cancelNotificationIntent);
+      IntentUtils.addComponentAndSendBroadcast(context, cancelNotificationIntent);
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Exception occurred attempting to cancel notification.", e);
     }
@@ -820,7 +820,7 @@ public class AppboyNotificationUtils {
     if (intent.getExtras() != null) {
       pushOpenedIntent.putExtras(intent.getExtras());
     }
-    context.sendBroadcast(pushOpenedIntent);
+    IntentUtils.addComponentAndSendBroadcast(context, pushOpenedIntent);
   }
 
   /**

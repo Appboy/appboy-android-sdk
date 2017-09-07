@@ -1,7 +1,13 @@
-## 2.1.2
+## 2.1.3
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x.
+
+##### Fixed
+- Fixed a bug where implicit intents for custom push broadcast receivers would be suppressed in devices running Android O.
+- Updates the Appboy ProGuard configuration to ensure Google Play Services classes required by Geofencing aren't renamed.
+
+## 2.1.2
 
 ##### Fixed
 - Fixed a bug where sealed session flushes would not be sent on apps with long session timeouts due to Android O background service limitations.

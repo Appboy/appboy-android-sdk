@@ -7,8 +7,8 @@ public class AppboyFeedManager {
   private static volatile AppboyFeedManager sInstance = null;
 
   // card click listeners
-  private IFeedClickActionListener mCustomFeedCardClickActionListener;
-  private IFeedClickActionListener mDefaultFeedCardClickActionListener = new AppboyDefaultFeedClickActionListener();
+  private IFeedClickActionListener mCustomFeedClickActionListener;
+  private IFeedClickActionListener mDefaultFeedClickActionListener = new AppboyDefaultFeedClickActionListener();
 
   public static AppboyFeedManager getInstance() {
     if (sInstance == null) {
@@ -22,18 +22,20 @@ public class AppboyFeedManager {
   }
 
   /**
-   * Assigns a custom IFeedClickActionListener that will be used to handle news feed card click actions.
+   * Assigns a custom {@link IFeedClickActionListener} that will be used to handle news feed card
+   * click actions.
    *
-   * @param customNewsFeedCardClickActionListener A custom implementation of IFeedClickActionListener
+   * @param customNewsFeedClickActionListener A custom implementation of
+   * {@link IFeedClickActionListener}
    */
-  public void setFeedCardClickActionListener(IFeedClickActionListener customNewsFeedCardClickActionListener) {
-    mCustomFeedCardClickActionListener = customNewsFeedCardClickActionListener;
+  public void setFeedCardClickActionListener(IFeedClickActionListener customNewsFeedClickActionListener) {
+    mCustomFeedClickActionListener = customNewsFeedClickActionListener;
   }
 
   /**
-   * @return the assigned implementation of the INewFeedCardClickActionListener interface.
+   * @return the assigned implementation of the {@link IFeedClickActionListener} interface.
    */
   public IFeedClickActionListener getFeedCardClickActionListener() {
-    return mCustomFeedCardClickActionListener != null ? mCustomFeedCardClickActionListener : mDefaultFeedCardClickActionListener;
+    return mCustomFeedClickActionListener != null ? mCustomFeedClickActionListener : mDefaultFeedClickActionListener;
   }
 }
