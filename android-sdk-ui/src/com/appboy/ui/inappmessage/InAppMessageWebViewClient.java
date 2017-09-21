@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
 import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
@@ -17,7 +16,7 @@ import com.appboy.ui.support.UriUtils;
 import java.util.Map;
 
 public class InAppMessageWebViewClient extends WebViewClient {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageWebViewClient.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageWebViewClient.class);
   private static final String APPBOY_INAPP_MESSAGE_SCHEME = "appboy";
   private static final String AUTHORITY_NAME_CLOSE = "close";
   private static final String AUTHORITY_NAME_NEWSFEED = "feed";

@@ -11,10 +11,11 @@ import com.appboy.support.PackageUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class AppboyNotificationRemoteViewsUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationRemoteViewsUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationRemoteViewsUtils.class);
   public static final String APPBOY_NOTIFICATION_ID = "com_appboy_notification";
   public static final String APPBOY_NOTIFICATION_ID_NO_ICON = "com_appboy_notification_no_icon";
   public static final String APPBOY_NOTIFICATION_TITLE_ID = "com_appboy_notification_title";
@@ -65,10 +66,10 @@ public class AppboyNotificationRemoteViewsUtils {
 
       if (layoutResourceId == 0 || titleResourceId == 0 || contentResourceId == 0 || iconResourceId == 0
           || timeViewResourceId == 0) {
-        AppboyLogger.w(TAG, String.format("Couldn't find all resource IDs for custom notification view, extended view will "
-                + "not be used for push notifications. Received %d for layout, %d for title, %d for content, %d for icon, "
-                + "and %d for time.",
-            layoutResourceId, titleResourceId, contentResourceId, iconResourceId, timeViewResourceId));
+        AppboyLogger.w(TAG, "Couldn't find all resource IDs for custom notification view, extended view will "
+            + "not be used for push notifications. Received " + layoutResourceId + " for layout, " + titleResourceId
+            + " for title, " + contentResourceId + " for content, " + iconResourceId + " for icon, "
+            + "and " + timeViewResourceId + " for time.");
       } else {
         AppboyLogger.d(TAG, "Using RemoteViews for rendering of push notification.");
 
@@ -76,11 +77,11 @@ public class AppboyNotificationRemoteViewsUtils {
         try {
           remoteViews = new RemoteViews(PackageUtils.getResourcePackageName(context), layoutResourceId);
         } catch (Exception e) {
-          AppboyLogger.e(TAG, String.format("Failed to initialize remote views with package %s", PackageUtils.getResourcePackageName(context)), e);
+          AppboyLogger.e(TAG, "Failed to initialize remote views with package " + PackageUtils.getResourcePackageName(context), e);
           try {
             remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
           } catch (Exception e2) {
-            AppboyLogger.e(TAG, String.format("Failed to initialize remote views with package %s", context.getPackageName()), e2);
+            AppboyLogger.e(TAG, "Failed to initialize remote views with package " + context.getPackageName(), e2);
             return null;
           }
         }
@@ -94,8 +95,9 @@ public class AppboyNotificationRemoteViewsUtils {
 
         // Custom views cannot be used as part of a RemoteViews so we're using a TextView widget instead. This
         // view will always display the time without date information (even after the day has changed).
+        // Using the device's default locale since we're displaying a notification to the user
         SimpleDateFormat timeFormat = new SimpleDateFormat(
-            android.text.format.DateFormat.is24HourFormat(context) ? twentyFourHourTimeFormat : twelveHourTimeFormat);
+            android.text.format.DateFormat.is24HourFormat(context) ? twentyFourHourTimeFormat : twelveHourTimeFormat, Locale.getDefault());
         String notificationTime = timeFormat.format(new Date());
         remoteViews.setTextViewText(timeViewResourceId, notificationTime);
         return remoteViews;

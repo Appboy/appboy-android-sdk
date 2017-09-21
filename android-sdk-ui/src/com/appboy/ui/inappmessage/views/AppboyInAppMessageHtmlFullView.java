@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -9,13 +10,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.jsinterface.AppboyInAppMessageHtmlJavascriptInterface;
 
 public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseView {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageHtmlFullView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlFullView.class);
   public static final String APPBOY_BRIDGE_PREFIX = "appboyInternalBridge";
 
   private WebView mMessageWebView;
@@ -24,6 +24,7 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
     super(context, attrs);
   }
 
+  @SuppressLint({"AddJavascriptInterface", "SetJavaScriptEnabled"})
   @Override
   public WebView getMessageWebView() {
     if (mMessageWebView == null) {
@@ -43,8 +44,7 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
         mMessageWebView.setWebChromeClient(new WebChromeClient() {
           @Override
           public boolean onConsoleMessage(ConsoleMessage cm) {
-            AppboyLogger.d(TAG, String.format("Html In-app log. Line: %s. SourceId: %s. Log Level: %s. Message: %s",
-                cm.lineNumber(), cm.sourceId(), cm.messageLevel(), cm.message()));
+            AppboyLogger.d(TAG, "Html In-app log. Line: " + cm.lineNumber() + ". SourceId: " + cm.sourceId() + ". Log Level: " + cm.messageLevel() + ". Message: " + cm.message());
             return true;
           }
         });

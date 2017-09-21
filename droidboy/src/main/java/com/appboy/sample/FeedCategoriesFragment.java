@@ -9,8 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.ListView;
 
-import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
+import com.appboy.support.AppboyLogger;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class FeedCategoriesFragment extends DialogFragment {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, FeedCategoriesFragment.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(FeedCategoriesFragment.class);
   public static final String CATEGORIES_STRING = "categories";
 
   /* The activity that creates an instance of this dialog fragment must

@@ -3,12 +3,12 @@ package com.appboy.firebasepush;
 import android.util.Log;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
+import com.appboy.support.AppboyLogger;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class AppboyFirebaseInstanceIdService extends FirebaseInstanceIdService {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFirebaseInstanceIdService.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFirebaseInstanceIdService.class);
 
   @Override
   public void onTokenRefresh() {

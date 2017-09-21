@@ -2,13 +2,13 @@ package com.appboy.unity.utils;
 
 import android.util.Log;
 
-import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.unity3d.player.UnityPlayer;
 
 public class MessagingUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, MessagingUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(MessagingUtils.class);
 
   public static boolean sendInAppMessageReceivedMessage(String unityGameObjectName, String unityCallbackFunctionName, IInAppMessage inAppMessage) {
     if (StringUtils.isNullOrBlank(unityGameObjectName)) {
@@ -21,7 +21,7 @@ public class MessagingUtils {
           + "the appboy.xml configuration file. Not sending the message to the Unity Player.");
       return false;
     }
-    Log.d(TAG, String.format("Sending a message to %s:%s.", unityGameObjectName, unityCallbackFunctionName));
+    Log.d(TAG, "Sending a message to " + unityGameObjectName + ":" + unityCallbackFunctionName + ".");
     UnityPlayer.UnitySendMessage(unityGameObjectName, unityCallbackFunctionName, inAppMessage.forJsonPut().toString());
     return true;
   }

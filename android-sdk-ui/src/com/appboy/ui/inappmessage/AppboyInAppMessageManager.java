@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.animation.Animation;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
@@ -83,7 +82,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * methods of every Activity.
  */
 public final class AppboyInAppMessageManager {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageManager.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageManager.class);
   private static volatile AppboyInAppMessageManager sInstance = null;
 
   private final Stack<IInAppMessage> mInAppMessageStack = new Stack<IInAppMessage>();
@@ -433,8 +432,7 @@ public final class AppboyInAppMessageManager {
         if (inAppMessageExpirationTimestamp > 0) {
           long currentTimeMillis = System.currentTimeMillis();
           if (currentTimeMillis > inAppMessageExpirationTimestamp) {
-            throw new Exception(String.format("In-app message is expired. Doing nothing. Expiration: $%d. Current time: %d",
-                inAppMessageExpirationTimestamp, currentTimeMillis));
+            throw new Exception("In-app message is expired. Doing nothing. Expiration: $" + inAppMessageExpirationTimestamp + ". Current time: " + currentTimeMillis);
           }
         } else {
           AppboyLogger.d(TAG, "Expiration timestamp not defined. Continuing.");
@@ -539,8 +537,7 @@ public final class AppboyInAppMessageManager {
       AppboyLogger.d(TAG, "Current and preferred orientation are portrait.");
       return true;
     } else {
-      AppboyLogger.d(TAG, String.format("Current orientation %d and preferred orientation %s don't match",
-          currentScreenOrientation, preferredOrientation));
+      AppboyLogger.d(TAG, "Current orientation " + currentScreenOrientation + " and preferred orientation " + preferredOrientation + " don't match");
       return false;
     }
   }

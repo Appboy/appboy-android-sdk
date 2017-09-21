@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StarRatingView extends LinearLayout {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, StarRatingView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(StarRatingView.class);
 
   private static final int MAX_NUMBER_OF_STARS = 5;
   private List<ImageView> mStarRating;
@@ -43,7 +42,7 @@ public class StarRatingView extends LinearLayout {
 
   public boolean setRating(float rating) {
     if (rating < 0 || rating > MAX_NUMBER_OF_STARS) {
-      AppboyLogger.e(TAG, String.format("Unable to set rating to %f. Rating must be between 0 and %d", rating, MAX_NUMBER_OF_STARS));
+      AppboyLogger.e(TAG, "Unable to set rating to " + rating + ". Rating must be between 0 and " + MAX_NUMBER_OF_STARS);
       return false;
     }
 

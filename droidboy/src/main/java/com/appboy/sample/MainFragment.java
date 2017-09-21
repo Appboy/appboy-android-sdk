@@ -132,6 +132,7 @@ public class MainFragment extends Fragment {
         Appboy.getInstance(mContext).getCurrentUser().setEmail("email@test.com");
         Appboy.getInstance(mContext).getCurrentUser().setGender(Gender.FEMALE);
         Appboy.getInstance(mContext).getCurrentUser().setCountry("USA");
+        Appboy.getInstance(mContext).getCurrentUser().setLanguage("cs");
         Appboy.getInstance(mContext).getCurrentUser().setHomeCity("New York");
         Appboy.getInstance(mContext).getCurrentUser().setPhoneNumber("1234567890");
         Appboy.getInstance(mContext).getCurrentUser().setDateOfBirth(1984, Month.AUGUST, 18);

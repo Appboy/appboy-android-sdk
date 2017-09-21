@@ -77,10 +77,8 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setVisibilityIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setPublicVersionIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
 
-    // Android NotificationChannels were added in Android O. Note, once the official support comes out, this method may change.
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      AppboyNotificationUtils.setNotificationChannelIfSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
-    }
+    // Notification priority and sound were deprecated in Android O
+    AppboyNotificationUtils.setNotificationChannelIfSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setNotificationBadgeNumberIfPresent(notificationBuilder, notificationExtras);
 
     return notificationBuilder;

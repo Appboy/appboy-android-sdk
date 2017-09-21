@@ -1,6 +1,7 @@
 package com.appboy.push;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 public class AppboyNotificationUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationUtils.class);
   private static final String SOURCE_KEY = "source";
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
@@ -96,7 +97,7 @@ public class AppboyNotificationUtils {
     // Otherwise, start the intent defined in getStartActivityIntent().
     String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
     if (!StringUtils.isNullOrBlank(deepLink)) {
-      Log.d(TAG, String.format("Found a deep link %s.", deepLink));
+      Log.d(TAG, "Found a deep link " + deepLink);
       boolean useWebView = "true".equalsIgnoreCase(intent.getStringExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY));
       Log.d(TAG, "Use webview set to: " + useWebView);
 
@@ -233,7 +234,7 @@ public class AppboyNotificationUtils {
     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     if (durationInMillis >= Constants.APPBOY_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
-      AppboyLogger.d(TAG, String.format("Setting Notification duration alarm for %d ms", durationInMillis));
+      AppboyLogger.d(TAG, "Setting Notification duration alarm for " + durationInMillis + " ms");
       alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + durationInMillis, pendingIntent);
     }
   }
@@ -266,7 +267,7 @@ public class AppboyNotificationUtils {
         return notificationId;
       }
     } else {
-      AppboyLogger.d(TAG, String.format("Message without extras bundle received. Using default notification id: " + Constants.APPBOY_DEFAULT_NOTIFICATION_ID));
+      AppboyLogger.d(TAG, "Message without extras bundle received. Using default notification id: ");
       return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
     }
   }
@@ -274,6 +275,8 @@ public class AppboyNotificationUtils {
   /**
    * This method will retrieve notification priority from notificationExtras bundle if it has been set.
    * Otherwise returns the default priority.
+   *
+   * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static int getNotificationPriority(Bundle notificationExtras) {
@@ -283,7 +286,7 @@ public class AppboyNotificationUtils {
         if (isValidNotificationPriority(notificationPriority)) {
           return notificationPriority;
         } else {
-          AppboyLogger.e(TAG, String.format("Received invalid notification priority %d", notificationPriority));
+          AppboyLogger.e(TAG, "Received invalid notification priority " + notificationPriority);
         }
       } catch (NumberFormatException e) {
         AppboyLogger.e(TAG, "Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT, e);
@@ -294,6 +297,8 @@ public class AppboyNotificationUtils {
 
   /**
    * Checks whether the given integer value is a valid Android notification priority constant.
+   *
+   * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static boolean isValidNotificationPriority(int priority) {
@@ -301,7 +306,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * This method will wake the device using a wake lock if the WAKE_LOCK permission is present in the
+   * This method will wake the device using a wake lock if the {@link android.Manifest.permission#WAKE_LOCK} permission is present in the
    * manifest. If the permission is not present, this does nothing. If the screen is already on,
    * and the permission is present, this does nothing. If the priority of the incoming notification
    * is min, this does nothing.
@@ -311,8 +316,23 @@ public class AppboyNotificationUtils {
     if (!PermissionUtils.hasPermission(context, Manifest.permission.WAKE_LOCK)) {
       return false;
     }
-    // Don't wake lock if this is a minimum priority notification.
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+    // Don't wake lock if this is a minimum priority/importance notification.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      // Get the channel for this notification
+      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      NotificationChannel notificationChannel = getValidNotificationChannel(notificationManager, notificationExtras);
+
+      if (notificationChannel == null) {
+        AppboyLogger.d(TAG, "Not waking screen on Android O+ device, could not find notification channel.");
+        return false;
+      }
+
+      int importance = getNotificationChannelImportance(notificationChannel);
+      if (importance == NotificationManager.IMPORTANCE_MIN) {
+        AppboyLogger.d(TAG, "Not acquiring wake-lock for Android O+ notification with importance: " + importance);
+        return false;
+      }
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       if (getNotificationPriority(notificationExtras) == Notification.PRIORITY_MIN) {
         return false;
       }
@@ -450,9 +470,8 @@ public class AppboyNotificationUtils {
   /**
    * Notifications can optionally include a sound to play when the notification is delivered.
    * <p/>
-   * @deprecated Starting with Android O, sound is set on a notification channel and not individually on notifications.
+   * Starting with Android O, sound is set on a notification channel and not individually on notifications.
    */
-  @Deprecated
   public static void setSoundIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY)) {
       // Retrieve sound uri if included in notificationExtras bundle.
@@ -495,10 +514,9 @@ public class AppboyNotificationUtils {
    * Sets the priority of the notification if a priority is present in the notification extras.
    * <p/>
    * Supported JellyBean+.
-   *
-   * @deprecated Starting with Android O, priority is set on a notification channel and not individually on notifications.
+   * <p/>
+   * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
-  @Deprecated
   public static void setPriorityIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       if (notificationExtras != null) {
@@ -588,7 +606,7 @@ public class AppboyNotificationUtils {
             AppboyLogger.d(TAG, "Setting visibility for notification");
             notificationBuilder.setVisibility(visibility);
           } else {
-            AppboyLogger.e(TAG, String.format("Received invalid notification visibility %d", visibility));
+            AppboyLogger.e(TAG, "Received invalid notification visibility " + visibility);
           }
         } catch (Exception e) {
           AppboyLogger.e(TAG, "Failed to parse visibility from notificationExtras", e);
@@ -650,7 +668,7 @@ public class AppboyNotificationUtils {
         Appboy.getInstance(context).logPushNotificationOpened(campaignId);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, String.format("Caught an exception processing customContentString: %s", customContentString), e);
+      AppboyLogger.e(TAG, "Caught an exception processing customContentString: " + customContentString, e);
     }
   }
 
@@ -670,7 +688,7 @@ public class AppboyNotificationUtils {
     try {
       if (intent.hasExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID)) {
         int notificationId = intent.getIntExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
-        AppboyLogger.d(TAG, String.format("Cancelling notification action with id: %d", notificationId));
+        AppboyLogger.d(TAG, "Cancelling notification action with id: " + notificationId);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
       }
@@ -692,7 +710,7 @@ public class AppboyNotificationUtils {
    */
   public static void cancelNotification(Context context, int notificationId) {
     try {
-      AppboyLogger.d(TAG, String.format("Cancelling notification action with id: %d", notificationId));
+      AppboyLogger.d(TAG, "Cancelling notification action with id: " + notificationId);
       Intent cancelNotificationIntent = new Intent(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
       cancelNotificationIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
       IntentUtils.addComponentAndSendBroadcast(context, cancelNotificationIntent);
@@ -746,35 +764,27 @@ public class AppboyNotificationUtils {
    *
    * The default notification channel uses the id {@link Constants#APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID}.
    */
-  @TargetApi(Build.VERSION_CODES.O)
+  @SuppressLint({"InlinedApi", "NewApi"})
   public static void setNotificationChannelIfSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
                                                        NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      NotificationChannel notificationChannel = getValidNotificationChannel(notificationManager, notificationExtras);
+      if (notificationChannel != null) {
+        AppboyLogger.d(TAG, "Using notification channel with id: " + notificationChannel.getId());
+        notificationBuilder.setChannelId(notificationChannel.getId());
+      } else if (notificationChannel == null || notificationChannel.getId().equals(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID)) {
+        // Create the default NotificationChannel or update the name/description if their values have changed.
+        notificationChannel = new NotificationChannel(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID,
+            appConfigurationProvider.getDefaultNotificationChannelName(), NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.setDescription(appConfigurationProvider.getDefaultNotificationChannelDescription());
+        notificationManager.createNotificationChannel(notificationChannel);
 
-    // Check if the notification channel id is present in the extras and if that notification channel exists.
-    String channelIdFromExtras = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, null);
-    if (!StringUtils.isNullOrBlank(channelIdFromExtras)) {
-      if (notificationManager.getNotificationChannel(channelIdFromExtras) != null) {
-        // Apply that channel to the notification
-        AppboyLogger.d(TAG, "Using extras provided notification channel with id: " + channelIdFromExtras);
-        notificationBuilder.setChannelId(channelIdFromExtras);
-        return;
-      } else {
-        AppboyLogger.i(TAG, "Notification channel from extras is invalid, no channel found with id: " + channelIdFromExtras);
+        // Use the default notification channel
+        notificationBuilder.setChannelId(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
+        AppboyLogger.d(TAG, "Using default notification channel with id: " + Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
       }
-    } else {
-      AppboyLogger.i(TAG, "Device uses Android O or above, but notification did not contain a notification channel.");
     }
-
-    // Create the default NotificationChannel or update the name/description if their values have changed.
-    NotificationChannel notificationChannel = new NotificationChannel(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID,
-        appConfigurationProvider.getDefaultNotificationChannelName(), NotificationManager.IMPORTANCE_DEFAULT);
-    notificationChannel.setDescription(appConfigurationProvider.getDefaultNotificationChannelDescription());
-    notificationManager.createNotificationChannel(notificationChannel);
-
-    // Use the default notification channel
-    notificationBuilder.setChannelId(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
-    AppboyLogger.d(TAG, "Using default notification channel with id: " + Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
   }
 
   /**
@@ -832,5 +842,45 @@ public class AppboyNotificationUtils {
    */
   private static void logNotificationOpened(Context context, Intent intent) {
     Appboy.getInstance(context).logPushNotificationOpened(intent);
+  }
+
+  /**
+   * Returns an existing notification channel. The notification extras are first checked for a notification channel that exists. If not, then the default
+   * Appboy notification channel is returned if it exists. If neither exist on the device, then null is returned.
+   *
+   * This method does not create a notification channel if a valid channel cannot be found.
+   *
+   * @param notificationExtras The extras that will be checked for a valid notification channel id.
+   * @return A already created notification channel on the device, or null if one cannot be found.
+   */
+  @TargetApi(Build.VERSION_CODES.O)
+  static NotificationChannel getValidNotificationChannel(NotificationManager notificationManager, Bundle notificationExtras) {
+    if (notificationExtras == null) {
+      AppboyLogger.d(TAG, "Notification extras bundle was null. Could not find a valid notification channel");
+      return null;
+    }
+    String channelIdFromExtras = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, null);
+    if (!StringUtils.isNullOrBlank(channelIdFromExtras)) {
+      final NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelIdFromExtras);
+      if (notificationChannel != null) {
+        AppboyLogger.d(TAG, "Found notification channel in extras with id: " + channelIdFromExtras);
+        return notificationChannel;
+      } else {
+        AppboyLogger.d(TAG, "Notification channel from extras is invalid, no channel found with id: " + channelIdFromExtras);
+      }
+    }
+
+    final NotificationChannel defaultNotificationChannel = notificationManager.getNotificationChannel(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
+    if (defaultNotificationChannel != null) {
+      return defaultNotificationChannel;
+    } else {
+      AppboyLogger.d(TAG, "Appboy default notification channel does not exist on device.");
+    }
+    return null;
+  }
+
+  @TargetApi(Build.VERSION_CODES.O)
+  private static int getNotificationChannelImportance(NotificationChannel notificationChannel) {
+    return notificationChannel.getImportance();
   }
 }

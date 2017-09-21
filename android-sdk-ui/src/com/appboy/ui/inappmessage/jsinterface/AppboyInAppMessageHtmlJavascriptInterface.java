@@ -4,7 +4,6 @@ import android.content.Context;
 import android.webkit.JavascriptInterface;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.support.AppboyLogger;
 import com.facebook.common.internal.VisibleForTesting;
@@ -15,7 +14,7 @@ import java.math.BigDecimal;
 
 // Used to generate the javascript API in html in-app messages.  See https://documentation.appboy.com for more information.
 public class AppboyInAppMessageHtmlJavascriptInterface {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageHtmlJavascriptInterface.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlJavascriptInterface.class);
 
   private Context mContext;
   private AppboyInAppMessageHtmlUserJavascriptInterface mUserInterface;

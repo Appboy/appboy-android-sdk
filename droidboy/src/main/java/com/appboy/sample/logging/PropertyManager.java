@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
 import com.appboy.support.AppboyLogger;

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.InAppMessageUtils;
@@ -17,7 +17,7 @@ import com.unity3d.player.UnityPlayerNativeActivity;
  * functionality by calling appropriate methods during each phase of the Android Activity lifecycle.
  */
 public class AppboyUnityPlayerNativeActivityWrapper {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyUnityPlayerNativeActivityWrapper.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityPlayerNativeActivityWrapper.class);
 
   private UnityConfigurationProvider mUnityConfigurationProvider;
 
@@ -29,7 +29,7 @@ public class AppboyUnityPlayerNativeActivityWrapper {
     mUnityConfigurationProvider = new UnityConfigurationProvider(unityPlayerNativeActivity);
     Appboy.getInstance(unityPlayerNativeActivity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(mUnityConfigurationProvider));
     Appboy.getInstance(unityPlayerNativeActivity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(mUnityConfigurationProvider));
-    Log.d(TAG, String.format("%s finished onCreateCalled setup.", AppboyUnityPlayerNativeActivityWrapper.class.getSimpleName()));
+    Log.d(TAG, AppboyUnityPlayerNativeActivityWrapper.class.getSimpleName() + " finished onCreateCalled setup.");
   }
 
   /**
@@ -44,7 +44,7 @@ public class AppboyUnityPlayerNativeActivityWrapper {
     }
     AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(AppboyUnityNativeInAppMessageManagerListener.getInstance());
     AppboyUnityNativeInAppMessageManagerListener.getInstance().registerContainerActivity(unityPlayerNativeActivity);
-    Log.d(TAG, String.format("Starting %s.", AppboyUnityPlayerNativeActivityWrapper.class.getSimpleName()));
+    Log.d(TAG, "Starting " + AppboyUnityPlayerNativeActivityWrapper.class.getSimpleName() + ".");
   }
 
   /**

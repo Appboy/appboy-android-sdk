@@ -5,12 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.appboy.Constants;
 import com.appboy.sample.DroidBoyActivity;
 import com.appboy.support.AppboyLogger;
 
 public class LifecycleUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, LifecycleUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(LifecycleUtils.class);
 
   public static void restartApp(Context context) {
     Intent startActivity = new Intent(context, DroidBoyActivity.class);

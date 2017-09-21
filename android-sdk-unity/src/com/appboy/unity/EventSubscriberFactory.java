@@ -2,7 +2,6 @@ package com.appboy.unity;
 
 import android.util.Log;
 
-import com.appboy.Constants;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
@@ -20,7 +19,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class EventSubscriberFactory {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, EventSubscriberFactory.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(EventSubscriberFactory.class);
 
   public static IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber(final UnityConfigurationProvider unityConfigurationProvider) {
     return new IEventSubscriber<InAppMessageEvent>() {

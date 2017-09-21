@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.appboy.Appboy;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;

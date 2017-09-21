@@ -2,14 +2,13 @@ package com.appboy.ui;
 
 import android.content.Context;
 
-import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
 
 public class AppboyNavigator implements IAppboyNavigator {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNavigator.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNavigator.class);
   private static volatile IAppboyNavigator sDefaultAppboyNavigator = new AppboyNavigator();
   private static volatile IAppboyNavigator sCustomAppboyNavigator;
 

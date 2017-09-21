@@ -20,6 +20,7 @@ import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.SpinnerUtils;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 
 import org.json.JSONException;
@@ -29,7 +30,7 @@ import java.security.SecureRandom;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PushTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-  protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PushTesterFragment.class.getName());
+  protected static final String TAG = AppboyLogger.getAppboyLogTag(PushTesterFragment.class);
   private static final String TITLE = "Title";
   private static final String CONTENT = "Content";
   private static final String BIG_TITLE = "Big Title";
@@ -47,6 +48,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private String mAccentColorString;
   private String mLargeIconString;
   private String mNotificationFactoryType;
+  private String mChannel;
   private boolean mUseSummary = false;
   private boolean mUseBigSummary = false;
   private boolean mUseImage = false;
@@ -60,6 +62,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mSetLargeIcon = false;
   private boolean mOpenInWebview = false;
   private boolean mTestTriggerFetch = false;
+  private boolean mSetChannel = false;
   private boolean mUseConstantNotificationId = false;
   private View mView;
   static final String EXAMPLE_APPBOY_EXTRA_KEY_1 = "Entree";
@@ -151,6 +154,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     // Creates the notification factory spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_notification_factory_spinner), this, R.array.push_notification_factory_options);
 
+    // Creates the notification channel spinner.
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_channel_spinner), this, R.array.push_channel_options);
+
     mAppConfigurationProvider = new AppboyConfigurationProvider(getContext());
     Button pushTestButton = (Button) mView.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(new View.OnClickListener() {
@@ -208,6 +214,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
             }
             if (mSetLargeIcon) {
               notificationExtras.putString(Constants.APPBOY_PUSH_LARGE_ICON_KEY, mLargeIconString);
+            }
+            if (mSetChannel) {
+              notificationExtras.putString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, mChannel);
             }
             setNotificationFactory();
 
@@ -310,8 +319,15 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         }
         break;
       case R.id.push_notification_factory_spinner:
-        String notificationFactoryType = getResources().getStringArray(R.array.push_notification_factory_values)[parent.getSelectedItemPosition()];
-        mNotificationFactoryType = notificationFactoryType;
+        mNotificationFactoryType = getResources().getStringArray(R.array.push_notification_factory_values)[parent.getSelectedItemPosition()];
+        break;
+      case R.id.push_channel_spinner:
+        mChannel = getResources().getStringArray(R.array.push_channel_values)[parent.getSelectedItemPosition()];
+        if (!StringUtils.isNullOrBlank(mChannel)) {
+          mSetChannel = true;
+        } else {
+          mSetChannel = false;
+        }
         break;
       default:
         Log.e(TAG, "Item selected for unknown spinner");

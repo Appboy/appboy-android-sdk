@@ -2,13 +2,12 @@ package com.appboy.ui.widget;
 
 import android.content.Context;
 
-import com.appboy.Constants;
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 
 public class DefaultCardView extends BaseCardView<Card> {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DefaultCardView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(DefaultCardView.class);
 
   public DefaultCardView(Context context) {
     this(context, null);

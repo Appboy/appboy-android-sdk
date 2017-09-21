@@ -16,7 +16,7 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 
 public class AppboyNotificationStyleFactory {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationStyleFactory.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationStyleFactory.class);
   /**
    * BigPictureHeight is set in https://android.googlesource.com/platform/frameworks/base/+/6387d2f6dae27ba6e8481883325adad96d3010f4/core/res/res/layout/notification_template_big_picture.xml.
    */

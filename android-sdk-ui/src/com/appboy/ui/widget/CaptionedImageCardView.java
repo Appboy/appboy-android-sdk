@@ -5,20 +5,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appboy.Constants;
 import com.appboy.models.cards.CaptionedImageCard;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(CaptionedImageCardView.class);
   private ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;
   private SimpleDraweeView mDrawee;
   private IAction mCardAction;
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CaptionedImageCardView.class.getName());
 
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
   // aspect ratio, then this value will be the aspect ratio of the card on render.

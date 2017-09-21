@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="push_channel_options">
+        <item>Notification Channel: Not Set</item>
+        <item>Notification Channel: Messages</item>
+        <item>Notification Channel: Matches</item>
+        <item>Notification Channel: Offers</item>
+        <item>Notification Channel: Recommendations</item>
+    </string-array>
+    <string-array name="push_channel_values">
+        <item></item>
+        <item>@string/droidboy_notification_channel_01_id</item>
+        <item>@string/droidboy_notification_channel_02_id</item>
+        <item>@string/droidboy_notification_channel_03_id</item>
+        <item>@string/droidboy_notification_channel_04_id</item>
+    </string-array>
+</resources>

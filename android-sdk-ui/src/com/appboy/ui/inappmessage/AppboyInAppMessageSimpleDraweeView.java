@@ -6,7 +6,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
-import com.appboy.Constants;
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.support.AppboyLogger;
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -17,7 +16,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
  * image types.
  */
 public class AppboyInAppMessageSimpleDraweeView extends SimpleDraweeView implements IInAppMessageImageView {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageSimpleDraweeView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageSimpleDraweeView.class);
   /**
    * Clip path that will be set to a closed round-rectangle contour based on the radii in
    * {@link #mInAppRadii} and used to clip the image view.

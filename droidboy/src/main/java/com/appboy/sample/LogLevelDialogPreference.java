@@ -11,11 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 
 public class LogLevelDialogPreference extends DialogPreference {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, LogLevelDialogPreference.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(LogLevelDialogPreference.class);
   private static final String WARN = "warn";
   private static final String ERROR = "error";
   private static final String VERBOSE = "verbose";

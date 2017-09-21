@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.net.Uri;
 import android.view.View;
 
-import com.appboy.Constants;
 import com.appboy.enums.Channel;
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.models.IInAppMessage;
@@ -25,7 +24,7 @@ import com.appboy.ui.inappmessage.InAppMessageCloser;
 import java.io.File;
 
 public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageViewLifecycleListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageViewLifecycleListener.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageViewLifecycleListener.class);
 
   @Override
   public void beforeOpened(View inAppMessageView, IInAppMessage inAppMessage) {

@@ -3,7 +3,6 @@ package com.appboy.unity;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.MessageButton;
 import com.appboy.support.AppboyLogger;
@@ -14,7 +13,7 @@ import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.unity3d.player.UnityPlayerNativeActivity;
 
 public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessageManagerListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyUnityNativeInAppMessageManagerListener.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityNativeInAppMessageManagerListener.class);
   private static volatile AppboyUnityNativeInAppMessageManagerListener sInstance;
   private UnityPlayerNativeActivity mContainerActivity;
   private AppboyOverlayActivity mOverlayActivity;
@@ -136,6 +135,17 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
       inAppMessage.setAnimateIn(false);
       return InAppMessageOperation.DISPLAY_NOW;
     } else {
+      if (mAppboyUnityInAppMessageListener != null) {
+        InAppMessageOperation operation = mAppboyUnityInAppMessageListener.beforeInAppMessageDisplayed(inAppMessage);
+        if (InAppMessageOperation.DISPLAY_NOW.equals(operation)) {
+          startOverlayActivity();
+          return InAppMessageOperation.DISPLAY_LATER;
+        } else if (InAppMessageOperation.DISCARD.equals(operation)) {
+          return InAppMessageOperation.DISCARD;
+        } else if (InAppMessageOperation.DISPLAY_LATER.equals(operation)) {
+          return InAppMessageOperation.DISPLAY_LATER;
+        }
+      }
       startOverlayActivity();
       return InAppMessageOperation.DISPLAY_LATER;
     }
@@ -173,6 +183,9 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
   @Override
   public void onInAppMessageDismissed(IInAppMessage inAppMessage) {
     finishOverlayActivity();
+    if (mAppboyUnityInAppMessageListener != null) {
+      mAppboyUnityInAppMessageListener.onInAppMessageDismissed(inAppMessage);
+    }
   }
 
   /**

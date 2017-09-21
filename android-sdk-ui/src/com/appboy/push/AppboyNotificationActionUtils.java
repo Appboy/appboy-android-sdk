@@ -16,7 +16,7 @@ import com.appboy.support.IntentUtils;
 import com.appboy.support.StringUtils;
 
 public class AppboyNotificationActionUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyNotificationActionUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationActionUtils.class);
 
   /**
    * Add notification actions to the provided notification builder.

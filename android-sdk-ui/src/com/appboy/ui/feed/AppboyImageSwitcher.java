@@ -7,12 +7,11 @@ import android.support.annotation.VisibleForTesting;
 import android.util.AttributeSet;
 import android.widget.ImageSwitcher;
 
-import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 
 public class AppboyImageSwitcher extends ImageSwitcher {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyImageSwitcher.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyImageSwitcher.class);
 
   private Drawable mReadIcon;
   private Drawable mUnReadIcon;

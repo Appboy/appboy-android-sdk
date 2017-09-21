@@ -15,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.enums.inappmessage.DismissType;
@@ -32,6 +31,7 @@ import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.sample.util.SpinnerUtils;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InAppMessageTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-  protected static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageTesterFragment.class.getName());
+  protected static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageTesterFragment.class);
 
   private enum HtmlMessageType {
     NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS, YOUTUBE, BRIDGE_TESTER

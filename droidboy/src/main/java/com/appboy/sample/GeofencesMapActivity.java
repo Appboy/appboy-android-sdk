@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import com.appboy.Constants;
 import com.appboy.models.AppboyGeofence;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
@@ -28,7 +27,7 @@ import java.util.Set;
 import static com.appboy.sample.R.id.map;
 
 public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMapReadyCallback {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, GeofencesMapActivity.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(GeofencesMapActivity.class);
   private static final String REGISTERED_GEOFENCE_SHARED_PREFS_LOCATION = "com.appboy.support.geofences";
 
   @Override

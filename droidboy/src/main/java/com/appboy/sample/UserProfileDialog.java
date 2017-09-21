@@ -13,18 +13,19 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import com.appboy.Appboy;
 import com.appboy.AppboyUser;
-import com.appboy.Constants;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.sample.util.ButtonUtils;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 
 import java.util.Calendar;
 
 public class UserProfileDialog extends DialogPreference implements View.OnClickListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, UserProfileDialog.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(UserProfileDialog.class);
   private static final int GENDER_UNSPECIFIED_INDEX = 0;
   private static final int GENDER_MALE_INDEX = 1;
   private static final int GENDER_FEMALE_INDEX = 2;

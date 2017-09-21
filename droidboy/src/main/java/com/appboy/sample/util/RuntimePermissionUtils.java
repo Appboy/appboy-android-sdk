@@ -5,11 +5,11 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.appboy.Constants;
 import com.appboy.services.AppboyLocationService;
+import com.appboy.support.AppboyLogger;
 
 public class RuntimePermissionUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, RuntimePermissionUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(RuntimePermissionUtils.class);
   public static final int DROIDBOY_PERMISSION_LOCATION = 40;
   public static final int DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE = 100;
 

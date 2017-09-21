@@ -22,7 +22,7 @@ import com.appboy.ui.actions.IAction;
 import com.appboy.ui.activities.AppboyBaseActivity;
 
 public class AppboyWebViewActivity extends AppboyBaseActivity {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyWebViewActivity.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyWebViewActivity.class);
   // The Intent extra string containing the URL to open.
   /**
    * @Deprecated use {@link Constants#APPBOY_WEBVIEW_URL_EXTRA} instead.
@@ -104,8 +104,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
             return true;
           }
         } catch (Exception e) {
-          AppboyLogger.i(TAG, String.format("Unexpected exception while processing url %s. "
-              + "Passing url back to WebView.", url), e);
+          AppboyLogger.i(TAG, "Unexpected exception while processing url " + url + ". Passing url back to WebView.", e);
         }
         return super.shouldOverrideUrlLoading(view, url);
       }

@@ -9,7 +9,6 @@ import android.view.animation.Animation;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
-import com.appboy.Constants;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
@@ -26,7 +25,7 @@ import com.appboy.ui.support.ViewUtils;
 import java.util.List;
 
 public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageViewWrapper.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageViewWrapper.class);
 
   private final View mInAppMessageView;
   private View mClickableInAppMessageView;
@@ -129,8 +128,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
             new ViewTreeObserver.OnGlobalLayoutListener() {
               @Override
               public void onGlobalLayout() {
-                AppboyLogger.d(TAG, String.format("Detected root view height of %d, display height of %d in onGlobalLayout",
-                    frameLayout.getHeight(), displayHeight));
+                AppboyLogger.d(TAG, "Detected root view height of " + frameLayout.getHeight() + ", display height of " + displayHeight + " in onGlobalLayout");
                 frameLayout.removeView(mInAppMessageView);
                 open(frameLayout, displayHeight);
                 ViewUtils.removeOnGlobalLayoutListenerSafe(frameLayout.getViewTreeObserver(), this);
@@ -138,8 +136,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
             });
       }
     } else {
-      AppboyLogger.d(TAG, String.format("Detected root view height of %d, display height of %d",
-          frameLayoutHeight, displayHeight));
+      AppboyLogger.d(TAG, "Detected root view height of " + frameLayoutHeight + ", display height of " + displayHeight);
       open(frameLayout, displayHeight);
     }
   }
@@ -185,7 +182,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
     // equal to the top visible coordinate to compensate for the status bar.
     if (displayHeight > 0 && displayHeight == frameLayout.getHeight()) {
       int topVisibleCoordinate = ViewUtils.getTopVisibleCoordinate(frameLayout);
-      AppboyLogger.d(TAG, String.format("Detected status bar height of %d.", topVisibleCoordinate));
+      AppboyLogger.d(TAG, "Detected status bar height of " + topVisibleCoordinate + ".");
       layoutParams.setMargins(0, topVisibleCoordinate, 0, 0);
     }
     return layoutParams;

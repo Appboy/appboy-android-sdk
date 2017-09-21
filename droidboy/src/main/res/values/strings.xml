@@ -159,6 +159,21 @@
   <string name="sort_feed_summary">Sort the News Feed Cards to Prefer to Display Unread Cards</string>
   <string name="custom_news_feed_card_click_action_listener_summary">toggles the use of CustomNewsFeedClickActionListener</string>
 
+  <string name="droidboy_notification_group_01_id">my_group_01</string>
+  <string name="droidboy_notification_group_01_name">Group 1</string>
+  <string name="droidboy_notification_channel_01_id">db_channel_01</string>
+  <string name="droidboy_notification_channel_02_id">db_channel_02</string>
+  <string name="droidboy_notification_channel_03_id">db_channel_03</string>
+  <string name="droidboy_notification_channel_04_id">db_channel_04</string>
+  <string name="droidboy_notification_channel_messages_name">Messages</string>
+  <string name="droidboy_notification_channel_messages_desc">Private messages from your matches</string>
+  <string name="droidboy_notification_channel_matches_name">Matches</string>
+  <string name="droidboy_notification_channel_matches_desc">New matches we\'ve found for you - don\'t delay in reaching out!</string>
+  <string name="droidboy_notification_channel_offers_name">Promotions</string>
+  <string name="droidboy_notification_channel_offers_desc">Droidboy offers and exciting Droidboy news</string>
+  <string name="droidboy_notification_channel_recommendations_name">Recommendations</string>
+  <string name="droidboy_notification_channel_recommendations_desc">Recommended suitors, hand-picked just for you</string>
+
   <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
   <string name="appboy_image_url_1600w_1000h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c761151b0e4d207934d109/original.?1472684309</string>
   <string name="appboy_image_url_1000w_1000h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c760fb1b0e4d414534d0e8/original.?1472684283</string>

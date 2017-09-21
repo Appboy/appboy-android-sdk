@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.appboy.Constants;
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.support.AppboyLogger;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyBroadcastReceiver.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyBroadcastReceiver.class);
 
   @Override
   public void onReceive(Context context, Intent intent) {

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.appboy.Constants;
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.support.AppboyLogger;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBaseView {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageModalView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageModalView.class);
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
   /**
    * @see AppboyInAppMessageBaseView#getMessageSimpleDraweeView()

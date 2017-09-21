@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.enums.NotificationSubscriptionType;
+import com.appboy.support.AppboyLogger;
 
 public class EmailSubscriptionStateDialog extends SubscriptionStateDialogBase {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, EmailSubscriptionStateDialog.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(EmailSubscriptionStateDialog.class);
 
   public EmailSubscriptionStateDialog(Context context, AttributeSet attrs) {
     super(context, attrs);

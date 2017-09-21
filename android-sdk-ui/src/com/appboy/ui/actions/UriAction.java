@@ -11,9 +11,11 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.appboy.Constants;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.Channel;
 import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyWebViewActivity;
 import com.appboy.ui.support.UriUtils;
 
@@ -116,7 +118,7 @@ public class UriAction implements IAction {
     if (intent.resolveActivity(context.getPackageManager()) != null) {
       context.startActivity(intent);
     } else {
-      Log.w(TAG, String.format("Could not find appropriate activity to open for deep link %s.", uri));
+      Log.w(TAG, "Could not find appropriate activity to open for deep link " + uri + ".");
     }
   }
 
@@ -125,14 +127,33 @@ public class UriAction implements IAction {
    * activity on the back stack. Primarily used to open Uris from push.
    */
   private static void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
     Intent uriIntent = getActionViewIntent(context, uri, extras);
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-    stackBuilder.addNextIntent(UriUtils.getMainActivityIntent(context, extras));
+    if (configurationProvider.getIsPushDeepLinkBackStackActivityEnabled()) {
+      // If a custom back stack class is defined, then set it
+      final String pushDeepLinkBackStackActivityClassName = configurationProvider.getPushDeepLinkBackStackActivityClassName();
+      if (StringUtils.isNullOrBlank(pushDeepLinkBackStackActivityClassName)) {
+        AppboyLogger.i(TAG, "Adding main activity intent to back stack while opening uri from push");
+        stackBuilder.addNextIntent(UriUtils.getMainActivityIntent(context, extras));
+      } else {
+        // Check if the activity is registered in the manifest. If not, then add nothing to the back stack
+        if (UriUtils.isActivityRegisteredInManifest(context, pushDeepLinkBackStackActivityClassName)) {
+          AppboyLogger.i(TAG, "Adding custom back stack activity while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
+          Intent customBackStackActivityIntent = new Intent().setClassName(context, pushDeepLinkBackStackActivityClassName);
+          stackBuilder.addNextIntent(customBackStackActivityIntent);
+        } else {
+          AppboyLogger.i(TAG, "Not adding unregistered activity to the back stack while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
+        }
+      }
+    } else {
+      AppboyLogger.i(TAG, "Not adding back stack activity while opening uri from push due to disabled configuration setting.");
+    }
     stackBuilder.addNextIntent(uriIntent);
     try {
       stackBuilder.startActivities(extras);
     } catch (ActivityNotFoundException e) {
-      Log.w(TAG, String.format("Could not find appropriate activity to open for deep link %s.", uri));
+      Log.w(TAG, "Could not find appropriate activity to open for deep link " + uri, e);
     }
   }
 
@@ -149,7 +170,7 @@ public class UriAction implements IAction {
     if (resolveInfos.size() > 1) {
       for (ResolveInfo resolveInfo : resolveInfos) {
         if (resolveInfo.activityInfo.packageName.equals(context.getPackageName())) {
-          Log.d(TAG, String.format("Setting deep link activity to %s.", resolveInfo.activityInfo.packageName));
+          Log.d(TAG, "Setting deep link activity to " + resolveInfo.activityInfo.packageName + ".");
           intent.setPackage(resolveInfo.activityInfo.packageName);
           break;
         }

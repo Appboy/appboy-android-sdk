@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
 
-import com.appboy.Constants;
 import com.appboy.enums.AppStore;
 import com.appboy.enums.Channel;
 import com.appboy.support.AppboyLogger;
@@ -17,7 +16,7 @@ import com.appboy.support.AppboyLogger;
  * time spent viewing the app in the web view counts toward the session duration.
  */
 public final class GooglePlayAppDetailsAction implements IAction {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, GooglePlayAppDetailsAction.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(GooglePlayAppDetailsAction.class);
   private static final String PLAY_STORE_APP_BASE = "market://details?id=";
   private static final String PLAY_STORE_WEB_BASE = "https://play.google.com/store/apps/details?id=";
   private static final String AMAZON_STORE_APP_BASE = "amzn://apps/android?asin=";

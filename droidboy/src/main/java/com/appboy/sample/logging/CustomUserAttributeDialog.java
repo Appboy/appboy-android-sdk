@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import com.appboy.Appboy;
 import com.appboy.AppboyUser;
 import com.appboy.sample.R;

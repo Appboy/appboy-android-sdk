@@ -6,9 +6,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appboy.Constants;
 import com.appboy.enums.Channel;
 import com.appboy.models.cards.CrossPromotionSmallCard;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
@@ -19,6 +19,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmallCard> {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(CrossPromotionSmallCardView.class);
   private final TextView mTitle;
   private final TextView mSubtitle;
   private final TextView mReviewCount;
@@ -29,7 +30,6 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
   private final Button mPrice;
   private IAction mPriceAction;
   private final float mAspectRatio = 1f;
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, CrossPromotionSmallCardView.class.getName());
 
   public CrossPromotionSmallCardView(Context context) {
     this(context, null);
@@ -76,7 +76,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
       mReviewCount.setVisibility(View.GONE);
       mStarRating.setVisibility(View.GONE);
     } else {
-      mReviewCount.setText(String.format("(%s)", NumberFormat.getInstance().format(card.getReviewCount())));
+      mReviewCount.setText("(" + NumberFormat.getInstance().format(card.getReviewCount()) + ")");
       mStarRating.setRating((float) card.getRating());
     }
     // If the server sends down the display price, use that,

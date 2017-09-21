@@ -2,6 +2,7 @@ package com.appboy.sample.logging;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import com.appboy.Appboy;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;

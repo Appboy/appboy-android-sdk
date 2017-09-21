@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.appboy.Constants;
 import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.MessageButton;
 import com.appboy.support.AppboyLogger;
@@ -24,7 +23,7 @@ import com.appboy.ui.support.ViewUtils;
 import java.util.List;
 
 public class InAppMessageViewUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageViewUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageViewUtils.class);
 
   public static void setImage(Bitmap bitmap, ImageView imageView) {
     if (bitmap != null) {

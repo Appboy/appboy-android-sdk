@@ -17,6 +17,8 @@ public class FirebaseApplication extends Application {
         .setGcmMessagingRegistrationEnabled(false)
         .setDefaultNotificationChannelName("Appboy Push")
         .setDefaultNotificationChannelDescription("Appboy related push")
+        .setPushDeepLinkBackStackActivityEnabled(true)
+        .setPushDeepLinkBackStackActivityClass(MainActivity.class)
         .setHandlePushDeepLinksAutomatically(true);
     Appboy.configure(this, appboyConfig.build());
 

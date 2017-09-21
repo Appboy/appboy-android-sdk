@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
@@ -35,7 +34,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyFeedFragment.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFeedFragment.class);
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;
   private static final int MAX_FEED_TTL_SECONDS = 60;
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;
@@ -217,14 +216,13 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
             // If we got our feed from offline storage, and it was old, we asynchronously request a new one from the server,
             // putting up a spinner if the old feed was empty.
             if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
-              AppboyLogger.i(TAG, String.format("Feed received was older than the max time to live of %d seconds, displaying it "
-                  + "for now, but requesting an updated view from the server.", MAX_FEED_TTL_SECONDS));
+              AppboyLogger.i(TAG, "Feed received was older than the max time to live of " + MAX_FEED_TTL_SECONDS + " seconds, displaying it "
+                  + "for now, but requesting an updated view from the server.");
               mAppboy.requestFeedRefresh();
               // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
               // Eventually displaying an error message if it doesn't.
               if (event.getCardCount(mCategories) == 0) {
-                AppboyLogger.d(TAG, String.format("Old feed was empty, putting up a network spinner and registering the network error message on a delay of %dms.",
-                    NETWORK_PROBLEM_WARNING_MS));
+                AppboyLogger.d(TAG, "Old feed was empty, putting up a network spinner and registering the network error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + "ms.");
                 mEmptyFeedLayout.setVisibility(View.GONE);
                 mLoadingSpinner.setVisibility(View.VISIBLE);
                 mTransparentFullBoundsContainerView.setVisibility(View.VISIBLE);

@@ -20,20 +20,21 @@ import com.appboy.Constants;
 import com.appboy.models.outgoing.AttributionData;
 import com.appboy.sample.util.LifecycleUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.feed.AppboyFeedManager;
 
 import org.json.JSONObject;
 
-import io.branch.referral.Branch;
-import io.branch.referral.BranchError;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+
 public class PreferencesActivity extends PreferenceActivity {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, PreferencesActivity.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(PreferencesActivity.class);
   private static final Map<String, String> API_KEY_TO_APP_MAP;
 
   static {
@@ -187,7 +188,7 @@ public class PreferencesActivity extends PreferenceActivity {
     });
     anonymousUserRevertPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
-      @SuppressLint("CommitPrefEdits")
+      @SuppressLint("ApplySharedPref")
       public boolean onPreferenceClick(Preference preference) {
         SharedPreferences userSharedPreferences = getSharedPreferences("com.appboy.offline.storagemap", Context.MODE_PRIVATE);
         userSharedPreferences

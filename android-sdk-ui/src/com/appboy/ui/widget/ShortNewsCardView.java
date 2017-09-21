@@ -5,13 +5,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appboy.Constants;
 import com.appboy.models.cards.ShortNewsCard;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(ShortNewsCardView.class);
   private ImageView mImage;
   private SimpleDraweeView mDrawee;
   private final TextView mTitle;
@@ -19,7 +20,6 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
   private final TextView mDomain;
   private IAction mCardAction;
   private final float mAspectRatio = 1f;
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY, ShortNewsCardView.class.getName());
 
 
   public ShortNewsCardView(Context context) {

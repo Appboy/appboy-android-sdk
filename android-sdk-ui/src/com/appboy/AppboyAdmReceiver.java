@@ -14,7 +14,7 @@ import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
 
 public final class AppboyAdmReceiver extends BroadcastReceiver {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyAdmReceiver.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyAdmReceiver.class);
   private static final String ADM_RECEIVE_INTENT_ACTION = "com.amazon.device.messaging.intent.RECEIVE";
   private static final String ADM_REGISTRATION_INTENT_ACTION = "com.amazon.device.messaging.intent.REGISTRATION";
   private static final String ADM_ERROR_KEY = "error";
@@ -27,7 +27,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    AppboyLogger.i(TAG, String.format("Received broadcast message. Message: %s", intent.toString()));
+    AppboyLogger.i(TAG, "Received broadcast message. Message: " + intent.toString());
     String action = intent.getAction();
     if (ADM_REGISTRATION_INTENT_ACTION.equals(action)) {
       handleRegistrationEventIfEnabled(new AppboyConfigurationProvider(context), context, intent);
@@ -82,14 +82,14 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     if (ADM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(ADM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
-        AppboyLogger.e(TAG, String.format("Unable to parse ADM message. Intent: %s", intent.toString()));
+        AppboyLogger.e(TAG, "Unable to parse ADM message. Intent: " + intent.toString());
       } else {
-        AppboyLogger.i(TAG, String.format("ADM deleted %d messages. Fetch them from Appboy.", totalDeleted));
+        AppboyLogger.i(TAG, "ADM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
       }
       return false;
     } else {
       Bundle admExtras = intent.getExtras();
-      AppboyLogger.d(TAG, String.format("Push message payload received: %s", admExtras));
+      AppboyLogger.d(TAG, "Push message payload received: " + admExtras);
 
       // Parsing the Appboy data extras (data push).
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);
@@ -161,7 +161,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
   }
 
   boolean handleRegistrationEventIfEnabled(AppboyConfigurationProvider appConfigurationProvider, Context context, Intent intent) {
-    AppboyLogger.i(TAG, String.format("Received ADM registration. Message: %s", intent.toString()));
+    AppboyLogger.i(TAG, "Received ADM registration. Message: " + intent.toString());
     // Only handle ADM registration events if ADM registration handling is turned on in the
     // configuration file.
     if (appConfigurationProvider.isAdmMessagingRegistrationEnabled()) {

@@ -29,6 +29,7 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
 import com.appboy.sample.util.RuntimePermissionUtils;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.PermissionUtils;
 import com.appboy.ui.AppboyFeedFragment;
 import com.appboy.ui.AppboyFeedbackFragment;
@@ -38,7 +39,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidBoyActivity.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(DroidBoyActivity.class);
   private EnumSet<CardCategory> mAppboyFeedCategories;
   protected Context mApplicationContext;
   protected DrawerLayout mDrawerLayout;

@@ -9,8 +9,8 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.appboy.Constants;
 import com.appboy.sample.util.SpinnerUtils;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 
 import java.io.File;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FileDataDialog extends DialogPreference implements AdapterView.OnItemSelectedListener {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, FileDataDialog.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(FileDataDialog.class);
   private static final String FILES_DIR = "Files Dir";
   private static final String CACHE_FILES_DIR = "Cache Files Dir";
   private List mOptionList;

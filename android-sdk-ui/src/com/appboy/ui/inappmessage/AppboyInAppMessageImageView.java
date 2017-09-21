@@ -8,7 +8,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.appboy.Constants;
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.support.AppboyLogger;
 
@@ -18,7 +17,7 @@ import com.appboy.support.AppboyLogger;
  */
 @SuppressLint("AppCompatCustomView")
 public class AppboyInAppMessageImageView extends ImageView implements IInAppMessageImageView {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageImageView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageImageView.class);
   /**
    * Clip path that will be set to a closed round-rectangle contour based on the radii in
    * {@link #mInAppRadii} and used to clip the image view.

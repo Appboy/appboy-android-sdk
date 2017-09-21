@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.Channel;
 import com.appboy.models.cards.Card;
@@ -37,7 +36,7 @@ import java.util.Observer;
  * Base class for Appboy feed card views
  */
 public abstract class BaseCardView<T extends Card> extends RelativeLayout implements Observer {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, BaseCardView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(BaseCardView.class);
   private static Boolean unreadCardVisualIndicatorOn;
   private static final float SQUARE_ASPECT_RATIO = 1f;
   protected final Context mContext;
@@ -260,9 +259,9 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
     }
     if (cardAction != null) {
       if (card.logClick()) {
-        AppboyLogger.d(tag, String.format("Logged click for card %s", card.getId()));
+        AppboyLogger.d(tag, "Logged click for card " + card.getId());
       } else {
-        AppboyLogger.d(tag, String.format("Logging click failed for card %s", card.getId()));
+        AppboyLogger.d(tag, "Logging click failed for card " + card.getId());
       }
       if (!AppboyFeedManager.getInstance().getFeedCardClickActionListener().onFeedCardClicked(context, card, cardAction)) {
         if (cardAction instanceof UriAction) {

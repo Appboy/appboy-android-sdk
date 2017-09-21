@@ -7,13 +7,12 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 
 @SuppressLint("AppCompatCustomView")
 public class AppboyInAppMessageTextView extends TextView {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageTextView.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageTextView.class);
 
   public AppboyInAppMessageTextView(Context context, AttributeSet attrs) {
     super(context, attrs);

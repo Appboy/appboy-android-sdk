@@ -4,13 +4,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.appboy.Appboy;
-import com.appboy.Constants;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.MessageButton;
+import com.appboy.support.AppboyLogger;
 
 public class InAppMessageUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, InAppMessageUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageUtils.class);
 
   public static IInAppMessage inAppMessageFromString(Context context, String messageJSONString) {
     return Appboy.getInstance(context).deserializeInAppMessageString(messageJSONString);

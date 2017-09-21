@@ -1,11 +1,13 @@
 package com.appboy.ui.support;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 
 import java.util.Collections;
@@ -13,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UriUtils {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, UriUtils.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(UriUtils.class);
 
   /**
    * Backport of the Uri.getQueryParameters method.
@@ -64,5 +66,22 @@ public class UriUtils {
       startActivityIntent.putExtras(extras);
     }
     return startActivityIntent;
+  }
+
+  /**
+   * @param context The context used to create the checked component identifier.
+   * @param className The class name for a registered activity with the given context
+   * @return true if the class name matches a registered activity in the Android Manifest.
+   */
+  public static boolean isActivityRegisteredInManifest(Context context, String className) {
+    try {
+      // If the activity is registered, then a non-null ActivityInfo is returned by the package manager.
+      // If unregistered, then an exception is thrown by the package manager.
+      ActivityInfo activityInfo = context.getPackageManager().getActivityInfo(new ComponentName(context, className), 0);
+      return activityInfo != null;
+    } catch (PackageManager.NameNotFoundException e) {
+      AppboyLogger.w(TAG, "Could not find activity info for class with name: " + className, e);
+      return false;
+    }
   }
 }

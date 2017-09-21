@@ -5,7 +5,6 @@ import android.webkit.JavascriptInterface;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyUser;
-import com.appboy.Constants;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
@@ -17,9 +16,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AppboyInAppMessageHtmlUserJavascriptInterface {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, AppboyInAppMessageHtmlUserJavascriptInterface.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlUserJavascriptInterface.class);
   public static final String JS_BRIDGE_UNSUBSCRIBED = "unsubscribed";
   public static final String JS_BRIDGE_SUBSCRIBED = "subscribed";
   public static final String JS_BRIDGE_OPTED_IN = "opted_in";
@@ -64,7 +64,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
       return null;
     }
 
-    String genderStringLowerCase = genderString.toLowerCase();
+    String genderStringLowerCase = genderString.toLowerCase(Locale.US);
     if (genderStringLowerCase.equals(JS_BRIDGE_MALE)) {
       return Gender.MALE;
     } else if (genderStringLowerCase.equals(JS_BRIDGE_FEMALE)) {
@@ -100,6 +100,11 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   }
 
   @JavascriptInterface
+  public void setLanguage(String language) {
+    Appboy.getInstance(mContext).getCurrentUser().setLanguage(language);
+  }
+
+  @JavascriptInterface
   public void setHomeCity(String homeCity) {
     Appboy.getInstance(mContext).getCurrentUser().setHomeCity(homeCity);
   }
@@ -128,7 +133,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @VisibleForTesting
   NotificationSubscriptionType subscriptionTypeFromJavascriptString(String subscriptionType) {
-    String subscriptionTypeLowerCase = subscriptionType.toLowerCase();
+    String subscriptionTypeLowerCase = subscriptionType.toLowerCase(Locale.US);
     if (subscriptionTypeLowerCase.equals(JS_BRIDGE_SUBSCRIBED)) {
       return NotificationSubscriptionType.SUBSCRIBED;
     } else if (subscriptionTypeLowerCase.equals(JS_BRIDGE_UNSUBSCRIBED)) {

@@ -2,6 +2,7 @@ package com.appboy.unity;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.MessageButton;
+import com.appboy.ui.inappmessage.InAppMessageOperation;
 
 /**
  * The Unity version of {@link com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener}.
@@ -29,6 +30,13 @@ public interface IAppboyUnityInAppMessageListener {
    * display.
    */
   boolean onInAppMessageReceived(IInAppMessage inAppMessage);
+  
+  /**
+   * @param inAppMessage the in-app message that is currently requested for display.
+   *
+   * @return InAppMessageOperation indicating how to handle the candidate in-app message.
+   */
+  InAppMessageOperation beforeInAppMessageDisplayed(IInAppMessage inAppMessage);
 
   /**
    * @param inAppMessage the in-app message that was clicked.
@@ -47,4 +55,9 @@ public interface IAppboyUnityInAppMessageListener {
    * etc).
    */
   boolean onInAppMessageButtonClicked(MessageButton messageButton);
+  
+  /**
+   * @param inAppMessage the in-app message that was closed.
+   */
+  void onInAppMessageDismissed(IInAppMessage inAppMessage);
 }

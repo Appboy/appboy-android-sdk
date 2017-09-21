@@ -1,15 +1,19 @@
 package com.appboy.sample;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyLifecycleCallbackListener;
-import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfig;
 import com.appboy.sample.util.EmulatorDetectionUtils;
 import com.appboy.support.AppboyLogger;
@@ -20,7 +24,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import java.util.Arrays;
 
 public class DroidboyApplication extends Application {
-  private static final String TAG = String.format("%s.%s", Constants.APPBOY_LOG_TAG_PREFIX, DroidboyApplication.class.getName());
+  private static final String TAG = AppboyLogger.getAppboyLogTag(DroidboyApplication.class);
   protected static final String OVERRIDE_API_KEY_PREF_KEY = "override_api_key";
   protected static final String OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url";
   private static String sOverrideApiKeyInUse;
@@ -54,6 +58,45 @@ public class DroidboyApplication extends Application {
     }
 
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
+
+    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+    createNotificationGroup(notificationManager, R.string.droidboy_notification_group_01_id, R.string.droidboy_notification_group_01_name);
+    createNotificationChannel(notificationManager, R.string.droidboy_notification_channel_01_id, R.string.droidboy_notification_channel_messages_name,
+        R.string.droidboy_notification_channel_messages_desc, R.string.droidboy_notification_group_01_id);
+    createNotificationChannel(notificationManager, R.string.droidboy_notification_channel_02_id, R.string.droidboy_notification_channel_matches_name,
+        R.string.droidboy_notification_channel_matches_desc, R.string.droidboy_notification_group_01_id);
+    createNotificationChannel(notificationManager, R.string.droidboy_notification_channel_03_id, R.string.droidboy_notification_channel_offers_name,
+        R.string.droidboy_notification_channel_offers_desc, R.string.droidboy_notification_group_01_id);
+    createNotificationChannel(notificationManager, R.string.droidboy_notification_channel_04_id, R.string.droidboy_notification_channel_recommendations_name,
+        R.string.droidboy_notification_channel_recommendations_desc, R.string.droidboy_notification_group_01_id);
+  }
+
+  @SuppressLint("NewApi")
+  private void createNotificationGroup(NotificationManager notificationManager, int idResource, int nameResource) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      notificationManager.createNotificationChannelGroup(new NotificationChannelGroup(
+          getString(idResource),
+          getString(nameResource)
+      ));
+    }
+  }
+
+  @SuppressLint("NewApi")
+  private void createNotificationChannel(NotificationManager notificationManager, int idResource, int nameResource, int descResource, int groupResource) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel channel = new NotificationChannel(
+          getString(idResource),
+          getString(nameResource),
+          NotificationManager.IMPORTANCE_LOW);
+      channel.setDescription(getString(descResource));
+      channel.enableLights(true);
+      channel.setLightColor(Color.RED);
+      channel.setGroup(getString(groupResource));
+      channel.enableVibration(true);
+      channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+      notificationManager.createNotificationChannel(channel);
+    }
   }
 
   private void activateStrictMode() {
