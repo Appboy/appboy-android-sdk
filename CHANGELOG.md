@@ -9,6 +9,7 @@
   - Enabled via `appboy.xml` using the `com_appboy_push_deep_link_back_stack_activity_enabled` boolean attribute or via `AppboyConfig.Builder.setPushDeepLinkBackStackActivityEnabled()`.
 - Added the ability to specify a custom activity to open on the back stack when automatically following push deep links. Previously, only the app's main activity could be used.
   - The custom activity is set via `appboy.xml` using the `com_appboy_push_deep_link_back_stack_activity_class_name` string attribute or via `AppboyConfig.Builder.setPushDeepLinkBackStackActivityClass()`. Note that the class name used in the `appboy.xml` must be the exact class name string as returned from `YourClass.class.getName()`.
+- Added the `setLanguage()` method to `AppboyUser` to allow explicit control over the language you use in the Appboy dashboard to localize your messaging content.
 
 ##### Changed
 - Added support for acquiring wake locks on Android O using the notification channel importance instead of the individual notification's priority.
