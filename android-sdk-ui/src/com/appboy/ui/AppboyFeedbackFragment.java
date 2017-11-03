@@ -25,12 +25,15 @@ public class AppboyFeedbackFragment extends Fragment {
   /**
    * Listener called in response to feedback lifecycle events.
    */
-  public interface FeedbackFinishedListener {
+  public interface IFeedbackFinishedListener {
 
     /**
-     * Called when the user finishes the feedback fragment by submitting feedback or cancelling.
+     * Called when the user finishes the feedback fragment by submitting feedback or cancelling. Note that {@link FeedbackResult#SUBMITTED} will always be fired if the user sends
+     * feedback, even if the subsequent request fails.
      *
-     * @param feedbackResult
+     * Note that the value of {@link FeedbackResult} returns immediately and does not take into account the success of the feedback request.
+     *
+     * @param feedbackResult the result of the user pressing submit or cancelling the feedback.
      */
     void onFeedbackFinished(FeedbackResult feedbackResult);
 
@@ -46,7 +49,7 @@ public class AppboyFeedbackFragment extends Fragment {
   }
 
   public enum FeedbackResult {
-    SENT, CANCELLED, ERROR
+    SUBMITTED, CANCELLED
   }
 
   private Button mCancelButton;
@@ -57,7 +60,7 @@ public class AppboyFeedbackFragment extends Fragment {
   private TextWatcher mSendButtonWatcher;
   private View.OnClickListener mCancelListener;
   private View.OnClickListener mSendListener;
-  private FeedbackFinishedListener mFeedbackFinishedListener;
+  private IFeedbackFinishedListener mFeedbackFinishedListener;
   private int mOriginalSoftInputMode;
   private boolean mErrorMessageShown;
 
@@ -105,9 +108,9 @@ public class AppboyFeedbackFragment extends Fragment {
           if (mFeedbackFinishedListener != null) {
             message = mFeedbackFinishedListener.beforeFeedbackSubmitted(message);
           }
-          boolean result = Appboy.getInstance(getActivity()).submitFeedback(email, message, isBug);
+          Appboy.getInstance(getActivity()).submitFeedback(email, message, isBug);
           if (mFeedbackFinishedListener != null) {
-            mFeedbackFinishedListener.onFeedbackFinished(result ? FeedbackResult.SENT : FeedbackResult.ERROR);
+            mFeedbackFinishedListener.onFeedbackFinished(FeedbackResult.SUBMITTED);
           }
           clearData();
         } else {
@@ -158,7 +161,7 @@ public class AppboyFeedbackFragment extends Fragment {
     mEmailEditText.removeTextChangedListener(mSendButtonWatcher);
   }
 
-  public void setFeedbackFinishedListener(FeedbackFinishedListener feedbackFinishedListener) {
+  public void setFeedbackFinishedListener(IFeedbackFinishedListener feedbackFinishedListener) {
     mFeedbackFinishedListener = feedbackFinishedListener;
   }
 

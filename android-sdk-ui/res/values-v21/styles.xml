@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="Appboy.Story.TextView"
+         parent="@android:style/TextAppearance.Material.Notification">
+    <item name="android:padding">0dp</item>
+    <item name="android:layout_margin">0dp</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:fadingEdge">vertical</item>
+    <item name="android:gravity">center</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:maxLines">2</item>
+  </style>
+</resources>

@@ -15,6 +15,7 @@ import android.widget.ViewSwitcher;
 
 import com.appboy.Appboy;
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
@@ -219,7 +220,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
       }
 
       imageView.setImageResource(android.R.color.transparent);
-      Appboy.getInstance(getContext()).fetchAndRenderImage(imageUrl, imageView, respectAspectRatio);
+      Appboy.getInstance(getContext()).getAppboyImageLoader().renderUrlIntoView(getContext(), imageUrl, imageView, AppboyViewBounds.BASE_CARD_VIEW);
       imageView.setTag(imageUrl);
     }
   }

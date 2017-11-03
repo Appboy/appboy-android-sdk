@@ -32,7 +32,7 @@ public class FeedbackFragmentActivity extends AppboyFragmentActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final AppboyFeedbackFragment appboyFeedbackFragment = (AppboyFeedbackFragment) fragmentManager.findFragmentById(R.id.com_appboy_feedback);
 
-    final AppboyFeedbackFragment.FeedbackFinishedListener droidboyFeedbackFinishedListener = new AppboyFeedbackFragment.FeedbackFinishedListener() {
+    final AppboyFeedbackFragment.IFeedbackFinishedListener droidboyFeedbackFinishedListener = new AppboyFeedbackFragment.IFeedbackFinishedListener() {
       @Override
       public void onFeedbackFinished(AppboyFeedbackFragment.FeedbackResult disposition) {
         finish();

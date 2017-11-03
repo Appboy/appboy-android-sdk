@@ -39,7 +39,7 @@ public class CustomPurchaseDialog extends CustomLogger {
   }
 
   @Override
-  protected boolean customLog(String name, AppboyProperties properties) {
+  protected void customLog(String name, AppboyProperties properties) {
     String currencyCode = mCustomPurchaseCurrencyCodeName.getText().toString();
     String quantity = mCustomPurchaseQuantity.getText().toString();
     String price = mCustomPurchasePrice.getText().toString();
@@ -51,8 +51,9 @@ public class CustomPurchaseDialog extends CustomLogger {
       price = DEFAULT_PRICE;
     }
     if (StringUtils.isNullOrBlank(quantity)) {
-      return Appboy.getInstance(getContext()).logPurchase(name, currencyCode, new BigDecimal(price), properties);
+      Appboy.getInstance(getContext()).logPurchase(name, currencyCode, new BigDecimal(price), properties);
+      return;
     }
-    return Appboy.getInstance(getContext()).logPurchase(name, currencyCode, new BigDecimal(price), Integer.parseInt(quantity), properties);
+    Appboy.getInstance(getContext()).logPurchase(name, currencyCode, new BigDecimal(price), Integer.parseInt(quantity), properties);
   }
 }

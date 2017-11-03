@@ -1,7 +1,34 @@
-## 2.1.4
+## 2.2.0
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x.
+
+##### Breaking
+- Removed `Appboy.requestInAppMessageRefresh()` and removed support for Original in-app messages. Note that all customers on version 2.2.0 and newer should use triggered in-app messages.
+- Changed the signature of most methods on the `IAppboy` interface. Methods that logged values now return void instead of boolean. 
+  - `IAppboy.openSession()` now returns void.   
+  - `IAppboy.closeSession` now returns void.
+  - `IAppboy.changeUser()` now returns void. To get the current user, please call `IAppboy.getCurrentUser()`.
+  - `IAppboy.logCustomEvent()` and all method overloads now return void.
+  - `IAppboy.logPurchase()` and all method overloads now return void.
+  - `IAppboy.submitFeedback()` now returns void.
+  - `IAppboy.logPushNotificationOpened()` now returns void.
+  - `IAppboy.logPushNotificationActionClicked()` now returns void.
+  - `IAppboy.logFeedDisplayed()` now returns void.
+  - `IAppboy.logFeedbackDisplayed()` now returns void.
+- Removed `AppboyFeedbackFragment.FeedbackResult.ERROR`.
+- Changed `AppboyFeedbackFragment.FeedbackFinishedListener` to `AppboyFeedbackFragment.IFeedbackFinishedListener`.
+- Changed `AppboyFeedbackFragment.FeedbackResult.SENT` to `AppboyFeedbackFragment.FeedbackResult.SUBMITTED`. 
+- Removed `Appboy.fetchAndRenderImage()`. Please use `getAppboyImageLoader().renderUrlIntoView()` instead.
+- Removed `AppboyFileUtils.getExternalStorage()`.
+
+##### Added
+- Added Push Stories, a new push type that uses `DecoratedCustomViewStyle` to display multiple images in a single notification. We recommend posting push stories to a notification channel with vibration disabled to avoid repeated vibrations as the user navigates through the story.
+
+##### Changed
+- The Appboy singleton now internally performs most actions on a background thread, giving a very substantial performance boost to all actions on the Appboy singleton.
+
+## 2.1.4
 
 ##### Added
 - Added a check on Appboy initialization for the "Calypso AppCrawler" indexing bot that disables all Appboy network requests when found. This prevents erroneous Appboy data from being sent for Firebase app indexing crawlers.

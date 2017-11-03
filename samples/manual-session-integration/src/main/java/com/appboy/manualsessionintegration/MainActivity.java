@@ -7,7 +7,6 @@ import com.appboy.Appboy;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 public class MainActivity extends AppCompatActivity {
-  private boolean mRefreshData;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +20,7 @@ public class MainActivity extends AppCompatActivity {
     // Opens (or reopens) an Appboy session.
     // Note: This must be called in the onStart lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
-    if (Appboy.getInstance(this).openSession(this)) {
-      mRefreshData = true;
-    }
+    Appboy.getInstance(this).openSession(this);
   }
 
   @Override
@@ -32,10 +29,6 @@ public class MainActivity extends AppCompatActivity {
     // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
     // in-app messages from Appboy.
     AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
-    if (mRefreshData) {
-      Appboy.getInstance(this).requestInAppMessageRefresh();
-      mRefreshData = false;
-    }
   }
 
   @Override

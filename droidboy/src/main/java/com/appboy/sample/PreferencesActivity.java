@@ -64,7 +64,6 @@ public class PreferencesActivity extends PreferenceActivity {
     });
 
     Preference dataFlushPreference = findPreference("data_flush");
-    Preference requestInAppMessagePreference = findPreference("request_inappmessage");
     Preference setManualLocationPreference = findPreference("set_manual_location");
     Preference locationRuntimePermissionDialogPreference = findPreference("location_runtime_permission_dialog");
     Preference openSessionPreference = findPreference("open_session");
@@ -156,33 +155,18 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
-    requestInAppMessagePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(PreferencesActivity.this).requestInAppMessageRefresh();
-        showToast(getString(R.string.requested_inappmessage_toast));
-        return true;
-      }
-    });
     openSessionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
-        if (Appboy.getInstance(PreferencesActivity.this).openSession(PreferencesActivity.this)) {
-          showToast(getString(R.string.open_session_toast));
-        } else {
-          showToast(getString(R.string.resume_session_toast));
-        }
+        Appboy.getInstance(PreferencesActivity.this).openSession(PreferencesActivity.this);
         return true;
       }
     });
     closeSessionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
-        if (Appboy.getInstance(PreferencesActivity.this).closeSession(PreferencesActivity.this)) {
-          showToast(getString(R.string.close_session_toast));
-        } else {
-          showToast(getString(R.string.no_session_toast));
-        }
+        Appboy.getInstance(PreferencesActivity.this).closeSession(PreferencesActivity.this);
+        showToast(getString(R.string.close_session_toast));
         return true;
       }
     });

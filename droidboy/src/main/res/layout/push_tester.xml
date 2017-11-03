@@ -66,10 +66,37 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/set_open_uri_in_webview"/>
+        <CheckBox
+            android:id="@+id/push_tester_story_deep_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/story_toggle_deep_link"/>
+        <CheckBox
+            android:id="@+id/push_tester_story_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/story_toggle_title"/>
+        <CheckBox
+            android:id="@+id/push_tester_story_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/story_toggle_subtitle"/>
         <Spinner
           android:id="@+id/push_image_spinner"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/push_image_number_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/push_story_title_align_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/push_story_subtitle_align_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
         <Spinner
           android:id="@+id/push_priority_spinner"
           android:layout_width="fill_parent"

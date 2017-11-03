@@ -10,10 +10,13 @@ Successful marketing automation is essential to the future of your mobile app. A
 
 ## Components
 
-- `android-sdk-ui` - the Appboy SDK user interface containing the Appboy jar.
-- `droidboy` - a sample application which demonstrates how to use Appboy.
-- `hello-appboy` - a sample gradle application demonstrating a simple use case of Appboy.
+- `android-sdk-base` - the Appboy SDK base analytics library.
+- `android-sdk-ui` - the Appboy SDK user interface library for in-app messages, push, and the news feed.
+- `droidboy` - a sample app demonstrating how to use Appboy in-depth.
+- `hello-appboy` - a sample app demonstrating a basic Appboy integration.
+- `china-push-sample` - a sample app demonstrating the Appboy + Baidu push integration.
 - `android-sdk-unity` - a library that enables Appboy SDK integrations on Unity.
+- `samples` - a folder containing several sample apps for various integration options.
 
 ## Building and Running the Sample Applications
 
@@ -37,7 +40,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:2.1.+'
+   compile 'com.appboy:android-sdk-ui:2.2.+'
    ...
 }
 ```
@@ -57,7 +60,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.1.+'
+  compile 'com.appboy:android-sdk-ui:2.2.+'
 }
 ```
 

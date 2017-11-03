@@ -162,11 +162,25 @@ public class AppboyNotificationActionUtils {
    * @param actionFieldKeyTemplate the template of the action field
    * @return the desired notification action field value or the empty string if not present
    */
-  static String getActionFieldAtIndex(int actionIndex, Bundle notificationExtras, String actionFieldKeyTemplate) {
+  public static String getActionFieldAtIndex(int actionIndex, Bundle notificationExtras, String actionFieldKeyTemplate) {
+    return getActionFieldAtIndex(actionIndex, notificationExtras, actionFieldKeyTemplate, "");
+  }
+
+  /**
+   * Returns the value for the given action field key template at the specified index.
+   *
+   * @param actionIndex the index of the desired action
+   * @param notificationExtras GCM/ADM notification extras
+   * @param actionFieldKeyTemplate the template of the action field
+   * @param defaultValue the default value to return if the value for the key in notificationExtras
+   *                     is null.
+   * @return the desired notification action field value or the empty string if not present
+   */
+  public static String getActionFieldAtIndex(int actionIndex, Bundle notificationExtras, String actionFieldKeyTemplate, String defaultValue) {
     String actionFieldKey = actionFieldKeyTemplate.replace("*", String.valueOf(actionIndex));
     String actionFieldValue = notificationExtras.getString(actionFieldKey);
     if (actionFieldValue == null) {
-      return "";
+      return defaultValue;
     } else {
       return actionFieldValue;
     }

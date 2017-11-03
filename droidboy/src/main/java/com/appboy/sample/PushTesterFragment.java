@@ -27,6 +27,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PushTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -48,7 +50,12 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private String mAccentColorString;
   private String mLargeIconString;
   private String mNotificationFactoryType;
+  private String mPushStoryTitleGravity;
+  private String mPushStorySubtitleGravity;
+  private int mPushStoryType = 0;
+  private int mPushStoryNumPages;
   private String mChannel;
+
   private boolean mUseSummary = false;
   private boolean mUseBigSummary = false;
   private boolean mUseImage = false;
@@ -64,10 +71,27 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mTestTriggerFetch = false;
   private boolean mSetChannel = false;
   private boolean mUseConstantNotificationId = false;
+  private boolean mStoryDeepLink = false;
+  private boolean mStoryTitles = true;
+  private boolean mStorySubtitles = true;
   private View mView;
   static final String EXAMPLE_APPBOY_EXTRA_KEY_1 = "Entree";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_2 = "Side";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_3 = "Drink";
+  private static final Map<Integer, String[]> PUSH_STORY_PAGE_VALUES;
+
+  static {
+    Map<Integer, String[]> pushStoryPageValues = new HashMap<Integer, String[]>();
+    pushStoryPageValues.put(0, new String[]{"http://appboy.com", "Twenty WWWWWWW WWWW#", "Twenty WWWWWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/09/AB17_blog_header_REVEAL.png?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(1, new String[]{"http://google.com", "Twenty Five WW WWWW WWWW#", "Twenty Five WW WWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/08/abcnews_blog.png?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(2, new String[]{"http://appboy.com", "Thirty WW WWWW WWWW WWWW WWWW#", "Thirty WW WWWW WWWW WWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/02/Man-Using_Smartphone-While-Watching-TV.jpg?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(3, new String[]{"http://appboy.com", "Forty WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "Forty WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2015/12/Appboy_Web_Push_Notifications_Announcement.png?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(4, new String[]{"http://appboy.com", "Forty Five WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "Forty Five WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2017/04/Workers-Shaking-Hands_Featured-Image.jpg?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(5, new String[]{"http://appboy.com", "Fifteen W WWW#", "Fifteen W WWW#", "https://i1.wp.com/www.appboy.com/blog/wp-content/uploads/2017/09/Concerned-Voter_Featured-Image.jpg?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(6, new String[]{"http://appboy.com", "Ten  WWWW#", "Ten  WWWW#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2017/04/Male-and-Female-Coworkers-Laptop_Featured-Image.jpg?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(7, new String[]{"http://appboy.com", "Five#", "Five#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2016/05/Jack.jpg?resize=1200%2C600&ssl=1"});
+    PUSH_STORY_PAGE_VALUES = pushStoryPageValues;
+  }
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -123,9 +147,30 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         mOpenInWebview = isChecked;
       }
     });
+    ((CheckBox) mView.findViewById(R.id.push_tester_story_deep_link)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mStoryDeepLink = isChecked;
+      }
+    });
+    ((CheckBox) mView.findViewById(R.id.push_tester_story_title)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mStoryTitles = !isChecked;
+      }
+    });
+    ((CheckBox) mView.findViewById(R.id.push_tester_story_subtitle)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mStorySubtitles = !isChecked;
+      }
+    });
 
     // Creates the push image spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+
+    // Creates the push image number spinner.
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_number_spinner), this, R.array.push_image_number_options);
 
     // Creates the push priority spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
@@ -141,6 +186,12 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
 
     // Creates the push image spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+
+    // Creates the story title align spinner
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_story_title_align_spinner), this, R.array.push_story_title_align_options);
+
+    // Creates the story subtitle align spinner
+    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_story_subtitle_align_spinner), this, R.array.push_story_subtitle_align_options);
 
     // Creates the push action spinner.
     SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
@@ -167,6 +218,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
             Bundle notificationExtras = new Bundle();
             notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
             notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
+            notificationExtras.putString(Constants.APPBOY_PUSH_APPBOY_KEY, "true");
 
             int notificationId;
             if (mUseConstantNotificationId) {
@@ -220,6 +272,11 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
             }
             setNotificationFactory();
 
+            if (mPushStoryType != 0) {
+              addPushStoryPages(notificationExtras);
+              notificationExtras.putString(Constants.APPBOY_PUSH_STORY_KEY, Integer.toString(mPushStoryType));
+            }
+
             // Manually build the appboy extras bundle.
             Bundle appboyExtras = new Bundle();
             if (mUseImage) {
@@ -262,11 +319,28 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       case R.id.push_image_spinner:
         String pushImageUriString = getResources().getStringArray(R.array.push_image_values)[parent.getSelectedItemPosition()];
         if (!StringUtils.isNullOrBlank(pushImageUriString)) {
-          mUseImage = true;
-          mImage = pushImageUriString;
+          if (pushImageUriString.equals(getString(R.string.push_story))) {
+            mPushStoryType = 1;
+            mUseImage = false;
+          } else {
+            mPushStoryType = 0;
+            mUseImage = true;
+            mImage = pushImageUriString;
+          }
         } else {
           mUseImage = false;
+          mPushStoryType = 0;
         }
+        break;
+      case R.id.push_image_number_spinner:
+        String pushImageNumberString = getResources().getStringArray(R.array.push_image_number_values)[parent.getSelectedItemPosition()];
+        mPushStoryNumPages = Integer.parseInt(pushImageNumberString);
+        break;
+      case R.id.push_story_title_align_spinner:
+        mPushStoryTitleGravity = getResources().getStringArray(R.array.push_story_title_align_values)[parent.getSelectedItemPosition()];
+        break;
+      case R.id.push_story_subtitle_align_spinner:
+        mPushStorySubtitleGravity = getResources().getStringArray(R.array.push_story_subtitle_align_values)[parent.getSelectedItemPosition()];
         break;
       case R.id.push_priority_spinner:
         mPriority = getResources().getStringArray(R.array.push_priority_values)[parent.getSelectedItemPosition()];
@@ -351,6 +425,38 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     return publicVersionJSON.toString();
   }
 
+  /**
+   * Add the push story fields to the notificationExtras bundle.
+   *
+   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @return the modified notificationExtras, now including the image/text information for the push story.
+   */
+  private Bundle addPushStoryPages(Bundle notificationExtras) {
+    for (int i = 0; i < mPushStoryNumPages; i++) {
+      if (mStoryDeepLink) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_DEEP_LINK_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[0]);
+      }
+      if (mStoryTitles) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_TITLE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[1]);
+      }
+      if (mStorySubtitles) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_SUBTITLE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[2]);
+      }
+      notificationExtras.putString(Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[3]);
+      if (!StringUtils.isNullOrBlank(mPushStoryTitleGravity)) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_TITLE_JUSTIFICATION_KEY_TEMPLATE.replace("*", Integer.toString(i)), mPushStoryTitleGravity);
+      }
+      if (!StringUtils.isNullOrBlank(mPushStorySubtitleGravity)) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_SUBTITLE_JUSTIFICATION_KEY_TEMPLATE.replace("*", Integer.toString(i)), mPushStorySubtitleGravity);
+      }
+      if (mOpenInWebview) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_USE_WEBVIEW_KEY_TEMPLATE.replace("*", Integer.toString(i)), "true");
+      }
+    }
+    notificationExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
+    return notificationExtras;
+  }
+
   private Bundle addActionButtons(Bundle notificationExtras) {
     if (StringUtils.isNullOrBlank(mActionType)) {
       return notificationExtras;
@@ -397,6 +503,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     return field;
   }
 
+  /**
+   * Sets the Appboy instance's notification factory.
+   */
   private void setNotificationFactory() {
     if ("DroidboyNotificationFactory".equals(mNotificationFactoryType)) {
       Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());

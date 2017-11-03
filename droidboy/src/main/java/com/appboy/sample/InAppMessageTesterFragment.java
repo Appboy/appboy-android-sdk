@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.appboy.Appboy;
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.enums.inappmessage.DismissType;
@@ -298,14 +297,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       @Override
       public void onClick(View view) {
         AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage();
-      }
-    });
-
-    Button requestInAppMessageFromServerButton = (Button) view.findViewById(R.id.request_inappmessage_from_server_button);
-    requestInAppMessageFromServerButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Appboy.getInstance(getContext()).requestInAppMessageRefresh();
       }
     });
 

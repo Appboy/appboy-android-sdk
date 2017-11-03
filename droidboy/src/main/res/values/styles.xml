@@ -28,7 +28,7 @@
     <item name="android:layout_width">0.0dp</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_weight">1</item>
-    <item name="android:textSize">12dp</item>
+    <item name="android:textSize">14dp</item>
   </style>
 
   <style name="InAppMessageTesterCheckBox">

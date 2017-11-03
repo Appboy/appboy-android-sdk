@@ -19,6 +19,7 @@
   <string name="user_dialog_email_address">Email Address</string>
   <string name="user_dialog_gender">Gender:</string>
   <string name="user_dialog_avatar_image_url">Avatar Image URL</string>
+  <string name="user_dialog_language">Language</string>
   <string name="user_dialog_flush">Flush on close</string>
   <string name="user_dialog_populate">Populate</string>
   <string name="user_dialog_clear">Clear All</string>
@@ -74,11 +75,7 @@
   <string name="data_flush_title">Request Flush</string>
   <string name="data_flush_toast">Data flush requested</string>
 
-  <string name="requested_inappmessage_toast">Requested In-App Message</string>
-  <string name="open_session_toast">Opened new Appboy session.</string>
-  <string name="resume_session_toast">Resumed existing Appboy session.</string>
   <string name="close_session_toast">Closed existing Appboy session.</string>
-  <string name="no_session_toast">No Appboy session to close.</string>
   <string name="enabled_outbound_network_requests_toast">Enabled Appboy outbound network requests</string>
   <string name="disabled_outbound_network_requests_toast">Disabled Appboy outbound network requests</string>
 
@@ -87,12 +84,9 @@
 
   <string name="red">Red</string>
   <string name="blue">Blue</string>
-  <string name="yellow">Yellow</string>
-  <string name="green">Green</string>
   <string name="inappmessage_tester_tab_title">IAMS</string>
   <string name="create_and_add_inappmessage">Create and Add In-App Message</string>
   <string name="display_next_inappmessage">Display Next In-App Message</string>
-  <string name="request_inappmessage_from_appboy">Request In-App Message from Appboy</string>
   <string name="hide_current_inappmessage">Hide Current In-App Message</string>
   <string name="custom_iappboy_navigator">Custom IAppboyNavigator</string>
   <string name="custom_iappboy_animation">Custom IInAppMessageAnimationFactory</string>
@@ -116,6 +110,9 @@
   <string name="set_animate_in">Set animate in</string>
   <string name="set_animate_out">Set animate out</string>
   <string name="set_open_uri_in_webview">Open Web Links In WebView</string>
+  <string name="story_toggle_deep_link">Toggle Story Deep Link</string>
+  <string name="story_toggle_title">Toggle Story Title</string>
+  <string name="story_toggle_subtitle">Toggle Story Subtitle</string>
 
   <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
   <string name="header_10">Hey there#</string>
@@ -195,6 +192,7 @@
   <string name="branch_link_p2">https://droid.app.link/tYyoN3LRnB</string>
   <string name="youtube_https_link">https://www.youtube.com/watch?v=1PJCQTGbLq4</string>
   <string name="telephone_uri">tel:555555555</string>
+  <string name="push_story">story1</string>
   <string name="html_assets_no_js_remote_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/zip_uploads/files/585c1776bf5cea3cbe1b36b2/124fae83d6ba4023d4ede28e9177980e6373747c/original.zip?1482430326</string>
   <string name="html_assets_external_js_remote_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/zip_uploads/files/585c18c3bf5cea3c861b36ba/b0c7e536230b34ef800c8e0ef0747eaac53545a5/original.zip?1482430659</string>
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>

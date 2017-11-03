@@ -40,12 +40,17 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     // the addition of new RemoteViews options could mean that some methods conflict/overwrite. For clarity
     // we build the notification up in the order that each feature was supported.
 
+    // If this notification is a push story,
+    // make a best effort to preload bitmap images into the cache.
+    AppboyNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras);
+
     NotificationCompat.Builder notificationBuilder =
         new NotificationCompat.Builder(context).setAutoCancel(true);
 
     AppboyNotificationUtils.setTitleIfPresent(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setContentIfPresent(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setTickerIfPresent(notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setSetShowWhen(notificationBuilder, notificationExtras);
 
     // Add intent to fire when the notification is opened.
     AppboyNotificationUtils.setContentIntentIfPresent(context, notificationBuilder, notificationExtras);

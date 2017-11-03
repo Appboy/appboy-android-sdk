@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="push_image_options">
-    <item>Image: Not Set</item>
-    <item>Image: Appboy</item>
-    <item>Image: s3</item>
-    <item>Image: Blue</item>
+    <item>Push Type: Not Set (Default)</item>
+    <item>Push Type: Image (Appboy)</item>
+    <item>Push Type: Image (s3)</item>
+    <item>Push Type: Image (Blue)</item>
+    <item>Push Type: Push Story</item>
   </string-array>
   <string-array name="push_image_values">
     <item></item>
     <item>@string/appboy_image_url</item>
     <item>@string/appboy_image_url_s3</item>
     <item>@string/blue_url</item>
+    <item>@string/push_story</item>
   </string-array>
 </resources>

@@ -55,12 +55,8 @@ public abstract class CustomLogger extends DialogPreference {
     return mView;
   }
 
-  private void notifyResult(boolean result, String input) {
-    if (result) {
-      Toast.makeText(mContext, "Successfully logged " + input + ".", Toast.LENGTH_LONG).show();
-    } else {
-      Toast.makeText(mContext, "Failed to log " + input + ".", Toast.LENGTH_LONG).show();
-    }
+  private void notifyResult(String input) {
+    Toast.makeText(mContext, "Successfully submitted " + input + ".", Toast.LENGTH_LONG).show();
   }
 
   @Override
@@ -69,7 +65,7 @@ public abstract class CustomLogger extends DialogPreference {
     if (positiveResult) {
       String customName = mName.getText().toString();
       if (!StringUtils.isNullOrBlank(customName)) {
-        notifyResult(customLog(customName, mPropertyManager.getAppboyProperties()), customName);
+        notifyResult(customName);
       } else {
         Toast.makeText(mContext, "Must input a name", Toast.LENGTH_LONG).show();
       }
@@ -83,5 +79,5 @@ public abstract class CustomLogger extends DialogPreference {
     }
   }
 
-  protected abstract boolean customLog(String name, AppboyProperties properties);
+  protected abstract void customLog(String name, AppboyProperties properties);
 }

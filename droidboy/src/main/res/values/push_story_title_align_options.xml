@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="push_story_title_align_options">
+    <item>Story Title Alignment: Not Set</item>
+    <item>Story Title Alignment: Start</item>
+    <item>Story Title Alignment: Center</item>
+    <item>Story Title Alignment: End</item>
+  </string-array>
+  <string-array name="push_story_title_align_values">
+    <item></item>
+    <item>start</item>
+    <item>center</item>
+    <item>end</item>
+  </string-array>
+</resources>

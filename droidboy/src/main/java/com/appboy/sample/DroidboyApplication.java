@@ -99,16 +99,37 @@ public class DroidboyApplication extends Application {
     }
   }
 
+  @SuppressLint("NewApi")
   private void activateStrictMode() {
     StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder()
         .detectAll()
         .penaltyLog();
+
+    // We are explicitly not detecting detectLeakedClosableObjects(), detectLeakedSqlLiteObjects(), and detectUntaggedSockets()
+    // The okhttp library used on most https calls trips the detectUntaggedSockets() check
+    // com.google.android.gms.internal trips both the detectLeakedClosableObjects() and detectLeakedSqlLiteObjects() checks
     StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
-        .detectAll()
-        .detectLeakedClosableObjects()
+        .detectActivityLeaks()
         .penaltyLog();
+
+    // Note that some detections require a specific sdk version or higher to enable.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      vmPolicyBuilder.detectLeakedRegistrationObjects();
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+      vmPolicyBuilder.detectFileUriExposure();
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      vmPolicyBuilder.detectCleartextNetwork();
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      vmPolicyBuilder.detectContentUriWithoutPermission();
+    }
     StrictMode.setThreadPolicy(threadPolicyBuilder.build());
     StrictMode.setVmPolicy(vmPolicyBuilder.build());
+
+    StrictMode.allowThreadDiskReads();
+    StrictMode.allowThreadDiskWrites();
   }
 
   // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators

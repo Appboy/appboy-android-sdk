@@ -26,6 +26,7 @@ import com.appboy.AppboyAdmReceiver;
 import com.appboy.AppboyGcmReceiver;
 import com.appboy.AppboyInternal;
 import com.appboy.Constants;
+import com.appboy.IAppboyImageLoader;
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.AppboyViewBounds;
@@ -123,6 +124,10 @@ public class AppboyNotificationUtils {
   public static Bundle getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) {
     if (notificationExtras == null) {
       return null;
+    }
+    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)
+        && !notificationExtras.getBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
+      return notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
     }
     if (!Constants.IS_AMAZON) {
       return AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(notificationExtras.getString(Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
@@ -361,6 +366,31 @@ public class AppboyNotificationUtils {
   }
 
   /**
+   * Checks that the notification is a story that has only just been received. If so, each
+   * image within the story is put in the Appboy image loader's cache.
+   *
+   * @param context Application context.
+   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   */
+  public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras) {
+    if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
+      return;
+    }
+    if ((notificationExtras.getBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, false))) {
+      int count = 0;
+      String imageUrl = AppboyNotificationActionUtils.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
+      while (!StringUtils.isNullOrBlank(imageUrl)) {
+        AppboyLogger.v(TAG, "Pre-fetching bitmap at URL: " + imageUrl);
+        IAppboyImageLoader imageLoader = Appboy.getInstance(context).getAppboyImageLoader();
+        imageLoader.getBitmapFromUrl(context, imageUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
+        count++;
+        imageUrl = AppboyNotificationActionUtils.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
+      }
+      notificationExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, false);
+    }
+  }
+
+  /**
    * Sets notification title if it exists in the notificationExtras.
    */
   public static void setTitleIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
@@ -431,6 +461,17 @@ public class AppboyNotificationUtils {
   }
 
   /**
+   * This method exists to disable {@link NotificationCompat.Builder#setShowWhen(boolean)} for push
+   * stories.
+   */
+  public static void setSetShowWhen(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
+      AppboyLogger.d(TAG, "Set show when not supported in story push.");
+      notificationBuilder.setShowWhen(false);
+    }
+  }
+
+  /**
    * Set large icon. We use the large icon URL if it exists in the notificationExtras.
    * Otherwise we search for a drawable defined in appboy.xml. If that doesn't exists, we do nothing.
    * <p/>
@@ -439,6 +480,10 @@ public class AppboyNotificationUtils {
    */
   public static boolean setLargeIconIfPresentAndSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
       NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
+      AppboyLogger.d(TAG, "Large icon not supported in story push.");
+      return false;
+    }
     try {
       if (notificationExtras != null
           && notificationExtras.containsKey(Constants.APPBOY_PUSH_LARGE_ICON_KEY)) {
@@ -538,7 +583,7 @@ public class AppboyNotificationUtils {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       if (notificationExtras != null) {
         AppboyLogger.d(TAG, "Setting style for notification");
-        NotificationCompat.Style style = AppboyNotificationStyleFactory.getBigNotificationStyle(context, notificationExtras, appboyExtras);
+        NotificationCompat.Style style = AppboyNotificationStyleFactory.getBigNotificationStyle(context, notificationExtras, appboyExtras, notificationBuilder);
         notificationBuilder.setStyle(style);
       }
     }
@@ -842,6 +887,40 @@ public class AppboyNotificationUtils {
    */
   private static void logNotificationOpened(Context context, Intent intent) {
     Appboy.getInstance(context).logPushNotificationOpened(intent);
+  }
+
+  /**
+   * Handles a push story page click. Called by GCM/ADM receiver when an
+   * Appboy push story click intent is received.
+   *
+   * @param context Application context.
+   * @param intent The push story click intent.
+   */
+  public static void handlePushStoryPageClicked(Context context, Intent intent) {
+    try {
+      Appboy.getInstance(context).logPushStoryPageClicked(intent.getStringExtra(Constants.APPBOY_CAMPAIGN_ID), intent.getStringExtra(Constants.APPBOY_STORY_PAGE_ID));
+      String deepLink = intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY);
+      if (!StringUtils.isNullOrBlank(deepLink)) {
+        // Set the global deep link value to the correct action's deep link.
+        intent.putExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY, intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY));
+        String useWebviewString = intent.getStringExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY);
+        if (!StringUtils.isNullOrBlank(useWebviewString)) {
+          intent.putExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebviewString);
+        }
+      } else {
+        // Otherwise, remove any existing deep links.
+        intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
+      }
+      context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+      AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
+
+      AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+      if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+        AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+      }
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Caught exception while handling story click.", e);
+    }
   }
 
   /**

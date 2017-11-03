@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="push_image_number_options">
+    <item>Story Images: 6</item>
+    <item>Story Images: 2</item>
+    <item>Story Images: 3</item>
+    <item>Story Images: 4</item>
+    <item>Story Images: 5</item>
+    <item>Story Images: 7</item>
+    <item>Story Images: 8</item>
+  </string-array>
+  <string-array name="push_image_number_values">
+    <item>6</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>7</item>
+    <item>8</item>
+  </string-array>
+</resources>

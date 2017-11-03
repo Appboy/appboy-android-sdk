@@ -23,9 +23,6 @@
     <PreferenceCategory
         android:title="@string/network_control_title">
         <Preference
-            android:key="request_inappmessage"
-            android:title="Request In-App Message"/>
-        <Preference
             android:key="data_flush"
             android:title="@string/data_flush_title" />
         <Preference

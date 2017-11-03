@@ -34,6 +34,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
 
   private static final String FIRST_NAME_PREFERENCE_KEY = "user.firstname";
   private static final String LAST_NAME_PREFERENCE_KEY = "user.lastname";
+  private static final String LANGUAGE_PREFERENCE_KEY = "user.language";
   private static final String EMAIL_PREFERENCE_KEY = "user.email";
   private static final String GENDER_PREFERENCE_KEY = "user.gender_resource_id";
   private static final String AVATAR_PREFERENCE_KEY = "user.avatar_image_url";
@@ -41,6 +42,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
 
   private static final String SAMPLE_FIRST_NAME = "Jane";
   private static final String SAMPLE_LAST_NAME = "Doe";
+  private static final String SAMPLE_LANGUAGE = "hi";
   private static final String SAMPLE_EMAIL = "jane@appboy.com";
   private static final int SAMPLE_GENDER = R.id.female;
   private static final String SAMPLE_AVATAR_URL = "https://s3.amazonaws.com/appboy-dashboard-uploads/news/default-news-image.png";
@@ -50,6 +52,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   private EditText mLastName;
   private EditText mEmail;
   private RadioGroup mGender;
+  private EditText mLanguage;
   private EditText mAvatarImageUrl;
   private CheckBox mRequestFlush;
   private TextView mBirthday;
@@ -79,6 +82,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     mLastName = (EditText) view.findViewById(R.id.last_name);
     mEmail = (EditText) view.findViewById(R.id.email);
     mGender = (RadioGroup) view.findViewById(R.id.gender);
+    mLanguage = (EditText) view.findViewById(R.id.language);
     mAvatarImageUrl = (EditText) view.findViewById(R.id.avatar_image_url);
     mRequestFlush = (CheckBox) view.findViewById(R.id.user_dialog_flush_checkbox);
     mBirthday = (TextView) view.findViewById(R.id.birthday);
@@ -94,6 +98,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     mLastName.setText(sharedPreferences.getString(LAST_NAME_PREFERENCE_KEY, null));
     mEmail.setText(sharedPreferences.getString(EMAIL_PREFERENCE_KEY, null));
     mGender.check(parseGenderFromSharedPreferences());
+    mLanguage.setText(sharedPreferences.getString(LANGUAGE_PREFERENCE_KEY, null));
     mAvatarImageUrl.setText(sharedPreferences.getString(AVATAR_PREFERENCE_KEY, null));
     mBirthday.setText(sharedPreferences.getString(BIRTHDAY_PREFERENCE_KEY, null));
     mRequestFlush.setChecked(false);
@@ -101,6 +106,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     ButtonUtils.setUpPopulateButton(view, R.id.first_name_button, mFirstName, getSharedPreferences().getString(FIRST_NAME_PREFERENCE_KEY, SAMPLE_FIRST_NAME));
     ButtonUtils.setUpPopulateButton(view, R.id.last_name_button, mLastName, getSharedPreferences().getString(LAST_NAME_PREFERENCE_KEY, SAMPLE_LAST_NAME));
     ButtonUtils.setUpPopulateButton(view, R.id.email_button, mEmail, getSharedPreferences().getString(EMAIL_PREFERENCE_KEY, SAMPLE_EMAIL));
+    ButtonUtils.setUpPopulateButton(view, R.id.language_button, mLanguage, getSharedPreferences().getString(LANGUAGE_PREFERENCE_KEY, SAMPLE_LANGUAGE));
     ButtonUtils.setUpPopulateButton(view, R.id.avatar_image_url_button, mAvatarImageUrl, getSharedPreferences().getString(AVATAR_PREFERENCE_KEY, SAMPLE_AVATAR_URL));
 
     final Button populateButton = (Button) view.findViewById(R.id.user_dialog_button_populate);
@@ -157,6 +163,9 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     if (mLastName.getText().length() == 0) {
       mLastName.setText(getSharedPreferences().getString(LAST_NAME_PREFERENCE_KEY, SAMPLE_LAST_NAME));
     }
+    if (mLanguage.getText().length() == 0) {
+      mLanguage.setText(getSharedPreferences().getString(LANGUAGE_PREFERENCE_KEY, SAMPLE_LANGUAGE));
+    }
     if (mEmail.getText().length() == 0) {
       mEmail.setText(getSharedPreferences().getString(EMAIL_PREFERENCE_KEY, SAMPLE_EMAIL));
     }
@@ -181,6 +190,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
       int genderResourceId = mGender.getCheckedRadioButtonId();
       View genderRadioButton = mGender.findViewById(genderResourceId);
       int genderId = mGender.indexOfChild(genderRadioButton);
+      String language = mLanguage.getText().toString();
       String avatarImageUrl = mAvatarImageUrl.getText().toString();
 
       AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
@@ -192,6 +202,10 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
       if (!StringUtils.isNullOrBlank(lastName)) {
         appboyUser.setLastName(lastName);
         editor.putString(LAST_NAME_PREFERENCE_KEY, lastName);
+      }
+      if (!StringUtils.isNullOrBlank(language)) {
+        appboyUser.setLanguage(language);
+        editor.putString(LANGUAGE_PREFERENCE_KEY, language);
       }
       if (!StringUtils.isNullOrBlank(email)) {
         editor.putString(EMAIL_PREFERENCE_KEY, email);

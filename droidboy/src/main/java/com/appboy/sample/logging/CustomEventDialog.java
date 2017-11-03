@@ -14,7 +14,7 @@ public class CustomEventDialog extends CustomLogger {
   }
 
   @Override
-  protected boolean customLog(String name, AppboyProperties properties) {
-    return Appboy.getInstance(getContext()).logCustomEvent(name, properties);
+  protected void customLog(String name, AppboyProperties properties) {
+    Appboy.getInstance(getContext()).logCustomEvent(name, properties);
   }
 }

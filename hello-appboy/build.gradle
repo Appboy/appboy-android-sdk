@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.1.+'
+  compile 'com.appboy:android-sdk-ui:2.2.+'
 }
 
 android {
