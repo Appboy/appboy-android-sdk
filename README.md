@@ -1,21 +1,21 @@
-![Appboy Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/Appboy_Logo_400x100.png)
+![Braze Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png)
 
 # Android SDK
 
-Successful marketing automation is essential to the future of your mobile app. Appboy helps you engage your users beyond the download. Visit the following links for details and we'll have you up and running in no time!
+Successful marketing automation is essential to the future of your mobile app. Braze helps you engage your users beyond the download. Visit the following links for details and we'll have you up and running in no time!
 
-- [Appboy Academy](http://www.appboy.com/academy "Appboy Academy")
-- [Technical Documentation](http://documentation.appboy.com "Appboy Technical Documentation")
-- [JavaDocs](http://appboy.github.io/appboy-android-sdk/javadocs/ "Appboy Android SDK Class Documentation")
+- [Braze Academy](http://www.braze.com/academy "Braze Academy")
+- [Technical Documentation](http://documentation.braze.com "Braze Technical Documentation")
+- [JavaDocs](http://appboy.github.io/appboy-android-sdk/javadocs/ "Braze Android SDK Class Documentation")
 
 ## Components
 
-- `android-sdk-base` - the Appboy SDK base analytics library.
-- `android-sdk-ui` - the Appboy SDK user interface library for in-app messages, push, and the news feed.
-- `droidboy` - a sample app demonstrating how to use Appboy in-depth.
-- `hello-appboy` - a sample app demonstrating a basic Appboy integration.
-- `china-push-sample` - a sample app demonstrating the Appboy + Baidu push integration.
-- `android-sdk-unity` - a library that enables Appboy SDK integrations on Unity.
+- `android-sdk-base` - the Braze SDK base analytics library.
+- `android-sdk-ui` - the Braze SDK user interface library for in-app messages, push, and the news feed.
+- `droidboy` - a sample app demonstrating how to use Braze in-depth.
+- `hello-appboy` - a sample app demonstrating a basic Braze integration.
+- `china-push-sample` - a sample app demonstrating the Braze + Baidu push integration.
+- `android-sdk-unity` - a library that enables Braze SDK integrations on Unity.
 - `samples` - a folder containing several sample apps for various integration options.
 
 ## Building and Running the Sample Applications
@@ -68,10 +68,10 @@ dependencies {
 
 The Android SDK supports Android 4.0+ (Ice Cream Sandwich and up).
 
-Appboy uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons.  Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
+Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons.  Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
 
-Appboy requires Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images.  Fresco is not included nor enabled by default in the Appboy library, and must be included and enabled explicitly by the parent app. Appboy supports Fresco 0.6.0 through 1.3.0.
+Braze requires Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images.  Fresco is not included nor enabled by default in the Braze library, and must be included and enabled explicitly by the parent app. Braze supports Fresco 0.6.0 through 1.3.0.
 
 ## Questions?
 
-If you have questions, please contact [support@appboy.com](mailto:support@appboy.com).
+If you have questions, please contact [support@braze.com](mailto:support@braze.com).
