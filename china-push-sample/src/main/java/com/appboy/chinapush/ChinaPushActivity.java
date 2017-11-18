@@ -34,7 +34,7 @@ public class ChinaPushActivity extends Activity {
     setContentView(R.layout.china_push);
     AppboyLogger.setLogLevel(Log.VERBOSE);
 
-    // It is good practice to always get an instance of the Appboy singleton using the application
+    // It is good practice to always get an instance of the Braze singleton using the application
     // context.
     mApplicationContext = this.getApplicationContext();
 

@@ -61,7 +61,7 @@ public class AppboyNotificationActionUtils {
 
   /**
    * Handles clicks on notification action buttons in the notification center. Called by GCM/ADM
-   * receiver when an Appboy notification action button is clicked. The GCM/ADM receiver passes on
+   * receiver when an Braze notification action button is clicked. The GCM/ADM receiver passes on
    * the intent from the notification action button click intent.
    *
    * @param context

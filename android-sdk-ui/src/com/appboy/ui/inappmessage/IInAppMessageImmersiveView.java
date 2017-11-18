@@ -24,13 +24,13 @@ import java.util.List;
 public interface IInAppMessageImmersiveView extends IInAppMessageView {
 
   /**
-   * Gets the close button View so that Appboy can add click listeners to it.
+   * Gets the close button View so that Braze can add click listeners to it.
    * @return the child View that displays the close button.
    */
   View getMessageCloseButtonView();
 
   /**
-   * Gets the message button Views so that Appboy can add click listeners to them.
+   * Gets the message button Views so that Braze can add click listeners to them.
    * @return the child Views that display the message buttons. They should
    * be returned in the same order as the List<MessageButton> on the in-app message
    * object so that listeners are set correctly.

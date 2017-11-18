@@ -19,9 +19,9 @@ public interface IFeedClickActionListener {
    * @param card the news feed card that has been clicked.
    * @param cardAction the action associated with the card being clicked
    *
-   * @return boolean flag to indicate to Appboy whether the click is being handled by
-   * the host app. If true Appboy will log a card click and do nothing. If false
-   * Appboy will continue its typical handling of the news feed card click.
+   * @return boolean flag to indicate to Braze whether the click is being handled by
+   * the host app. If true Braze will log a card click and do nothing. If false
+   * Braze will continue its typical handling of the news feed card click.
    */
   boolean onFeedCardClicked(Context context, Card card, IAction cardAction);
 }

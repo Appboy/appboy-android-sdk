@@ -34,7 +34,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Base class for Appboy feed card views
+ * Base class for Braze feed card views
  */
 public abstract class BaseCardView<T extends Card> extends RelativeLayout implements Observer {
   private static final String TAG = AppboyLogger.getAppboyLogTag(BaseCardView.class);

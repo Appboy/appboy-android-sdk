@@ -23,8 +23,12 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public static final String JS_BRIDGE_UNSUBSCRIBED = "unsubscribed";
   public static final String JS_BRIDGE_SUBSCRIBED = "subscribed";
   public static final String JS_BRIDGE_OPTED_IN = "opted_in";
-  public static final String JS_BRIDGE_MALE = "m";
-  public static final String JS_BRIDGE_FEMALE = "f";
+  public static final String JS_BRIDGE_GENDER_MALE = Gender.MALE.forJsonPut();
+  public static final String JS_BRIDGE_GENDER_FEMALE = Gender.FEMALE.forJsonPut();
+  public static final String JS_BRIDGE_GENDER_OTHER = Gender.OTHER.forJsonPut();
+  public static final String JS_BRIDGE_GENDER_UNKNOWN = Gender.UNKNOWN.forJsonPut();
+  public static final String JS_BRIDGE_GENDER_NOT_APPLICABLE = Gender.NOT_APPLICABLE.forJsonPut();
+  public static final String JS_BRIDGE_GENDER_PREFER_NOT_TO_SAY = Gender.PREFER_NOT_TO_SAY.forJsonPut();
   public static final String JS_BRIDGE_ATTRIBUTE_VALUE = "value";
 
   private Context mContext;
@@ -52,7 +56,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setGender(String genderString) {
     Gender gender = parseGender(genderString);
     if (gender == null) {
-      AppboyLogger.e(TAG, "Failed to parse gender in Appboy HTML in-app message javascript interface with gender: " + genderString);
+      AppboyLogger.e(TAG, "Failed to parse gender in Braze HTML in-app message javascript interface with gender: " + genderString);
     } else {
       Appboy.getInstance(mContext).getCurrentUser().setGender(gender);
     }
@@ -65,10 +69,18 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
     }
 
     String genderStringLowerCase = genderString.toLowerCase(Locale.US);
-    if (genderStringLowerCase.equals(JS_BRIDGE_MALE)) {
+    if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_MALE)) {
       return Gender.MALE;
-    } else if (genderStringLowerCase.equals(JS_BRIDGE_FEMALE)) {
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_FEMALE)) {
       return Gender.FEMALE;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_OTHER)) {
+      return Gender.OTHER;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_UNKNOWN)) {
+      return Gender.UNKNOWN;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_NOT_APPLICABLE)) {
+      return Gender.NOT_APPLICABLE;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_PREFER_NOT_TO_SAY)) {
+      return Gender.PREFER_NOT_TO_SAY;
     }
 
     return null;
@@ -113,7 +125,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setEmailNotificationSubscriptionType(String subscriptionType) {
     NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
     if (subscriptionTypeEnum == null) {
-      AppboyLogger.e(TAG, "Failed to parse email subscription type in Appboy HTML in-app message javascript interface with subscription " + subscriptionType);
+      AppboyLogger.e(TAG, "Failed to parse email subscription type in Braze HTML in-app message javascript interface with subscription " + subscriptionType);
       return;
     }
 
@@ -124,7 +136,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setPushNotificationSubscriptionType(String subscriptionType) {
     NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
     if (subscriptionTypeEnum == null) {
-      AppboyLogger.e(TAG, "Failed to parse push subscription type in Appboy HTML in-app message javascript interface with subscription: " + subscriptionType);
+      AppboyLogger.e(TAG, "Failed to parse push subscription type in Braze HTML in-app message javascript interface with subscription: " + subscriptionType);
       return;
     }
 

@@ -89,6 +89,14 @@
             android:key="anonymous_revert"
             android:title="Revert to Anonymous User"
             android:summary="Will cause an app restart."/>
+        <Preference
+            android:key="enable_fresco_preference_key"
+            android:title="Enables Fresco (GIFs) on next app start"
+            android:summary="Will cause an app restart."/>
+        <Preference
+            android:key="disable_fresco_preference_key"
+            android:title="Disables Fresco (GIFs) on next app start"
+            android:summary="Will cause an app restart."/>
     </PreferenceCategory>
 
     <PreferenceCategory

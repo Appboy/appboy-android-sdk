@@ -29,6 +29,10 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   private static final int GENDER_UNSPECIFIED_INDEX = 0;
   private static final int GENDER_MALE_INDEX = 1;
   private static final int GENDER_FEMALE_INDEX = 2;
+  private static final int GENDER_OTHER_INDEX = 3;
+  private static final int GENDER_UNKNOWN_INDEX = 4;
+  private static final int GENDER_NOT_APPLICABLE_INDEX = 5;
+  private static final int GENDER_PREFER_NOT_TO_SAY_INDEX = 6;
 
   private static final Calendar mCalendar = Calendar.getInstance();
 
@@ -232,13 +236,29 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
           appboyUser.setGender(Gender.FEMALE);
           editor.putInt(GENDER_PREFERENCE_KEY, genderId);
           break;
+        case GENDER_OTHER_INDEX:
+          appboyUser.setGender(Gender.OTHER);
+          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+          break;
+        case GENDER_UNKNOWN_INDEX:
+          appboyUser.setGender(Gender.UNKNOWN);
+          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+          break;
+        case GENDER_NOT_APPLICABLE_INDEX:
+          appboyUser.setGender(Gender.NOT_APPLICABLE);
+          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+          break;
+        case GENDER_PREFER_NOT_TO_SAY_INDEX:
+          appboyUser.setGender(Gender.PREFER_NOT_TO_SAY);
+          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+          break;
         default:
           Log.w(TAG, "Error parsing gender from user preferences.");
       }
       editor.apply();
 
       // Flushing manually is not recommended in almost all production situations as
-      // Appboy automatically flushes data to its servers periodically. This call
+      // Braze automatically flushes data to its servers periodically. This call
       // is solely for testing purposes.
       if (mRequestFlush.isChecked()) {
         Appboy.getInstance(getContext()).requestImmediateDataFlush();
@@ -258,6 +278,14 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
         return R.id.male;
       case GENDER_FEMALE_INDEX:
         return R.id.female;
+      case GENDER_OTHER_INDEX:
+        return R.id.other;
+      case GENDER_UNKNOWN_INDEX:
+        return R.id.unknown;
+      case GENDER_NOT_APPLICABLE_INDEX:
+        return R.id.not_applicable;
+      case GENDER_PREFER_NOT_TO_SAY_INDEX:
+        return R.id.prefer_not_to_say;
       default:
         Log.w(TAG, "Error parsing gender from shared preferences.");
         return R.id.unspecified;

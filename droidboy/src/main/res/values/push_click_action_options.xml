@@ -12,7 +12,7 @@
 </string-array>
 <string-array name="push_click_action_values">
   <item></item>
-  <item>@string/appboy_homepage_url</item>
+  <item>@string/braze_homepage_url</item>
   <item>@string/telephone_uri</item>
   <item>@string/droidboy_deep_link</item>
   <item>@string/droidboy_deep_link_https</item>

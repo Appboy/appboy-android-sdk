@@ -29,7 +29,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
 
   /**
    * Returns a notification builder populated with all fields from the notification extras and
-   * Appboy extras.
+   * Braze extras.
    *
    * To create a notification object, call `build()` on the returned builder instance.
    */

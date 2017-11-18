@@ -325,14 +325,14 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageImmersive(IInAppMessageImmersive inAppMessage) {
     if (inAppMessage instanceof InAppMessageModal) {
-      inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps!");
+      inAppMessage.setMessage("Welcome to Braze! Braze is Marketing Automation for Apps!");
       if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
         inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_1000h));
       } else {
         inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1160w_400h));
       }
     } else if (inAppMessage instanceof InAppMessageFull) {
-      inAppMessage.setMessage("Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an example of a full in-app message.");
+      inAppMessage.setMessage("Welcome to Braze! Braze is Marketing Automation for Apps. This is an example of a full in-app message.");
       if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
         if (inAppMessage.getOrientation().equals(Orientation.LANDSCAPE)) {
           inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1600w_1000h));
@@ -347,7 +347,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         }
       }
     }
-    inAppMessage.setHeader("Hello from Appboy!");
+    inAppMessage.setHeader("Hello from Braze!");
     ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
     MessageButton buttonOne = new MessageButton();
     buttonOne.setText("NEWSFEED");
@@ -363,7 +363,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageSlideup(InAppMessageSlideup inAppMessage) {
-    inAppMessage.setMessage("Welcome to Appboy! This is a slideup in-app message.");
+    inAppMessage.setMessage("Welcome to Braze! This is a slideup in-app message.");
     inAppMessage.setIcon("\uf091");
     inAppMessage.setClickAction(ClickAction.NEWS_FEED);
     setSlideFrom(inAppMessage);
@@ -372,7 +372,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageCustom(IInAppMessage inAppMessage) {
-    inAppMessage.setMessage("Welcome to Appboy! This is a custom in-app message.");
+    inAppMessage.setMessage("Welcome to Braze! This is a custom in-app message.");
     inAppMessage.setIcon("\uf091");
   }
 
@@ -639,9 +639,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       MessageButton buttonTwo = new MessageButton();
       if ("two".equals(mButtons) || "long".equals(mButtons)) {
         buttonOne.setText("No Webview");
-        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.appboy_homepage_url)));
+        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
         buttonTwo.setText("Webview");
-        buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.appboy_homepage_url)));
+        buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
         buttonTwo.setOpenUriInWebview(true);
         if ("long".equals(mButtons)) {
           buttonOne.setText("No Webview WITH A VERY LONG TITLE");

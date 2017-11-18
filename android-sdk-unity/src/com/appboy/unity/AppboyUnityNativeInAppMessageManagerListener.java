@@ -190,7 +190,7 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
 
   /**
    * Allows the client to specify that they will handle the display of in-app messages
-   * themselves. If set, Appboy will not handle the display of incoming in-app messages.
+   * themselves. If set, Braze will not handle the display of incoming in-app messages.
    *
    * @param showInAppMessagesManually whether the client will handle in-app messages
    *                                  themselves.

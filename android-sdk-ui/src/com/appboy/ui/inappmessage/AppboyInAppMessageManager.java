@@ -173,7 +173,7 @@ public final class AppboyInAppMessageManager {
     if (mActivity != null && mApplicationContext == null) {
       // Note, because the IAMManager is a singleton and doesn't have any dependencies passed in,
       // we cache the application context here because it's not available (as it normally would be
-      // from Appboy initialization).
+      // from Braze initialization).
       mApplicationContext = mActivity.getApplicationContext();
     }
 

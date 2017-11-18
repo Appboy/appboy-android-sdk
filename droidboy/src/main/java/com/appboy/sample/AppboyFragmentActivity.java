@@ -8,9 +8,9 @@ import com.appboy.support.AppboyLogger;
 import io.branch.referral.Branch;
 
 /*
- * Appboy integration sample
+ * Braze integration sample
  *
- * To start tracking analytics using the Appboy Android SDK, in all activities, you must call Appboy.openSession()
+ * To start tracking analytics using the Braze Android SDK, in all activities, you must call Appboy.openSession()
  * and Appboy.closeSession() in the activity's onStart() and onStop() respectively. You can see that in this
  * activity (inherited by most other activities) and com.appboy.sample.PreferencesActivity.
  */

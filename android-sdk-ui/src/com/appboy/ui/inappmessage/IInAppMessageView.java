@@ -24,7 +24,7 @@ import com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView;
 public interface IInAppMessageView {
 
   /**
-   * Gets the clickable portion of the in-app message so that Appboy can add click listeners to it.
+   * Gets the clickable portion of the in-app message so that Braze can add click listeners to it.
    * @return the View that displays the clickable portion of the in-app message.
    * If the entire message is clickable, return this.
    */

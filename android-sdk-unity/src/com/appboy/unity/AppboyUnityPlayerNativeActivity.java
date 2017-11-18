@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.unity3d.player.UnityPlayerNativeActivity;
 
 /**
- * This is a wrapper subclass of the UnityPlayerNativeActivity class. It calls the necessary Appboy methods
+ * This is a wrapper subclass of the UnityPlayerNativeActivity class. It calls the necessary Braze methods
  * to ensure that analytics are collected and that push notifications are properly forwarded to
  * the Unity application.
  *

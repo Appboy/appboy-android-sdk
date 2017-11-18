@@ -42,7 +42,7 @@ public interface IInAppMessageWebViewClientListener {
   void onCustomEventAction(IInAppMessage inAppMessage, String url, Bundle queryBundle);
 
   /**
-   * Called when a non Appboy scheme url is encountered.
+   * Called when a non `appboy` scheme url is encountered.
    *
    * @param inAppMessage the inAppMessage
    * @param url          the url pressed

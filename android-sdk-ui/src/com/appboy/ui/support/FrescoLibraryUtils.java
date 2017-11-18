@@ -54,7 +54,7 @@ public class FrescoLibraryUtils {
    * for the provided xml setting.
    *
    * @return true if the fresco library is on the path AND if use of the fresco library is allowed
-   * in the Appboy configuration settings.
+   * in the Braze configuration settings.
    */
   public static boolean canUseFresco(Context context) {
     if (sCanUseFrescoSet) {
@@ -120,7 +120,7 @@ public class FrescoLibraryUtils {
       return;
     }
 
-    // Selectively cancel network loading based on the Appboy network state
+    // Selectively cancel network loading based on the Braze network state
     ImageRequest.RequestLevel requestLevel = Appboy.getOutboundNetworkRequestsOffline()
         ? ImageRequest.RequestLevel.DISK_CACHE : ImageRequest.RequestLevel.FULL_FETCH;
     AppboyLogger.d(TAG, "Setting Fresco image request level to: " + requestLevel);

@@ -116,7 +116,7 @@ public class LogLevelDialogPreference extends DialogPreference {
             break;
           case SUPPRESS:
             if (AppboyLogger.getLogLevel() != AppboyLogger.SUPPRESS) {
-              showToast("Disabled Appboy Logging.", null);
+              showToast("Disabled Braze Logging.", null);
             }
             AppboyLogger.setLogLevel(AppboyLogger.SUPPRESS);
             saveLogLevel(AppboyLogger.SUPPRESS);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--@+id/com_appboy_notification_title, @+id/com_appboy_notification_content, @+id/com_appboy_notification_time,
- and @+id/com_appboy_notification_icon must not be changed in order for Appboy to properly render
+ and @+id/com_appboy_notification_icon must not be changed in order for Braze to properly render
  long push notifications in Android [3.0-4.1). Without this view, devices before Android 4.1 (which
  cannot use BigTextStyle notifications) will truncate the display of push notifications in the notification
  center at only a single line. -->

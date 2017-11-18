@@ -33,7 +33,7 @@ public class InAppMessageWebViewClient extends WebViewClient {
    */
   public static final String QUERY_NAME_EXTERNAL_OPEN = "abExternalOpen";
   /**
-   * Query key for directing Appboy to open Url intents using the INTENT.ACTION_VIEW.
+   * Query key for directing Braze to open Url intents using the INTENT.ACTION_VIEW.
    */
   public static final String QUERY_NAME_DEEPLINK = "abDeepLink";
   public static final String JAVASCRIPT_PREFIX = "javascript:";
@@ -71,11 +71,11 @@ public class InAppMessageWebViewClient extends WebViewClient {
   }
 
   /**
-   * Handles Appboy schemed ("appboy://") urls in the HTML content WebViews. If the url isn't Appboy schemed, then the url is passed
-   * to the attached IInAppMessageWebViewClientListener.
+   * Handles `appboy` schemed ("appboy://") urls in the HTML content WebViews. If the url isn't
+   * `appboy` schemed, then the url is passed to the attached IInAppMessageWebViewClientListener.
    * <p/>
-   * We expect the URLs to be hierarchical and have "appboy" equal the scheme.
-   * For example, appboy://close is one such URL.
+   * We expect the URLs to be hierarchical and have `appboy` equal the scheme.
+   * For example, `appboy://close` is one such URL.
    *
    * @return true since all actions in Html In-App Messages are handled outside of the In-App Message itself.
    */

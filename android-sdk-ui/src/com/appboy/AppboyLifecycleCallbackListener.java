@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 /**
- * Can be used to automatically handle Appboy lifecycle methods.
+ * Can be used to automatically handle Braze lifecycle methods.
  * Optionally, openSession() and closeSession() are called on onActivityStarted and onActivityStopped respectively.
  * The InAppMessageManager methods of registerInAppMessageManager() and unregisterInAppMessageManager() can
  * be optionally called here as well.

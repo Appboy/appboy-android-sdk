@@ -28,6 +28,10 @@
 
   <string name="male">Male</string>
   <string name="female">Female</string>
+  <string name="other">Other</string>
+  <string name="unknown">Unknown</string>
+  <string name="not_applicable">Not Applicable</string>
+  <string name="prefer_not_to_say">Prefer not to Say</string>
   <string name="unspecified">Unspecified</string>
 
   <string name="subscribed">Subscribed</string>
@@ -75,9 +79,9 @@
   <string name="data_flush_title">Request Flush</string>
   <string name="data_flush_toast">Data flush requested</string>
 
-  <string name="close_session_toast">Closed existing Appboy session.</string>
-  <string name="enabled_outbound_network_requests_toast">Enabled Appboy outbound network requests</string>
-  <string name="disabled_outbound_network_requests_toast">Disabled Appboy outbound network requests</string>
+  <string name="close_session_toast">Closed existing Braze session.</string>
+  <string name="enabled_outbound_network_requests_toast">Enabled Braze outbound network requests</string>
+  <string name="disabled_outbound_network_requests_toast">Disabled Braze outbound network requests</string>
 
   <string name="spinner_content_description">Spinner</string>
   <string name="spin">Spin!</string>
@@ -116,16 +120,16 @@
 
   <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
   <string name="header_10">Hey there#</string>
-  <string name="header_20">Hey hey from Appboy#</string>
-  <string name="header_30">Good morning from us @ Appboy#</string>
-  <string name="header_80">Hello from Appboy! Have a fun day okay. Hello from Appboy! Have a fun day today#</string>
-  <string name="message_20">Hey hey from Appboy#</string>
+  <string name="header_20">Hey hey from Braze!#</string>
+  <string name="header_30">Good morning from us @ Braze!#</string>
+  <string name="header_80">Hello from Braze!! Have a fun day okay. Hello from Braze!! Have a fun day today#</string>
+  <string name="message_20">Hey hey from Braze!#</string>
   <string name="message_40">Hello there!  This is an in-app message#</string>
   <string name="message_70">Hello there! This is an in-app message. Yo, this is an in-app message#</string>
   <string name="message_90">Hello there! This is an in-app message.  Hello again!  Anyways, this is an in-app message#</string>
-  <string name="message_140">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly one hundred and forty chars#</string>
-  <string name="message_240">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly two hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens#</string>
-  <string name="message_640">Welcome to Appboy! Appboy is Marketing Automation for Apps. This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#</string>
+  <string name="message_140">Welcome to Braze!!! Braze is Marketing Automation for Apps. This is an in-app message - this message is exactly one hundred and forty chars#</string>
+  <string name="message_240">Welcome to Braze!!! Braze is Marketing Automation for Apps. This is an in-app message - this message is exactly two hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens#</string>
+  <string name="message_640">Welcome to Braze!!! Braze is Marketing Automation for Apps. This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#</string>
 
   <string name="test_push">Send Push</string>
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
@@ -137,12 +141,12 @@
   <string name="push_tester_test_triggers">Force request triggers on click</string>
   <string name="push_tester_constant_nid">Use constant notification Id</string>
 
-  <string name="disable_appboy_network_requests">Toggle Disable Appboy Network Requests</string>
-  <string name="disable_appboy_network_requests_summary">Disable Appboy network requests for selected emulators starting next app run</string>
+  <string name="disable_appboy_network_requests">Toggle Disable Braze Network Requests</string>
+  <string name="disable_appboy_network_requests_summary">Disable Braze network requests for selected emulators starting next app run</string>
   <string name="push_preference_category">Push</string>
   <string name="misc_preference_category">Misc</string>
-  <string name="disable_appboy_logging_title">Toggle Appboy Logging</string>
-  <string name="disable_appboy_logging_summary">Toggle Appboy Logging.  This does not persist through app runs.</string>
+  <string name="disable_appboy_logging_title">Toggle Braze Logging</string>
+  <string name="disable_appboy_logging_summary">Toggle Braze Logging.  This does not persist through app runs.</string>
   <string name="get_registration_id_title">Get Push Registration Id</string>
   <string name="set_email_subscription_state_title">Set Email Subscription State</string>
   <string name="set_push_subscription_state_title">Set Push Subscription State</string>
@@ -183,7 +187,7 @@
   <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>
   <string name="appboy_siege_gif_url">https://blog.appboy.com/wp-content/uploads/2015/03/BrowserPreview_tmp-1.gif</string>
   <string name="appboy_gif_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/564cfde56461737ff4080000/0283e284156a896114fc231e918551b959e87a4e/original.?1452806650</string>
-  <string name="appboy_homepage_url">http://www.appboy.com</string>
+  <string name="braze_homepage_url">http://www.braze.com</string>
   <string name="google_url">http://www.google.com</string>
   <string name="droidboy_deep_link">droidboy://preferences</string>
   <string name="droidboy_deep_link_https">https://www.droidboy.com/preferences</string>

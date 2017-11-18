@@ -17,7 +17,7 @@ public class HelloAppboyActivity extends Activity {
   private EditText mUserId;
   private Context mApplicationContext;
 
-  // These events will be shown in the Appboy dashboard.
+  // These events will be shown in the Braze dashboard.
   private static final String HELLO_APPBOY_CUSTOM_CLICK_EVENT = "clicked submit";
   private static final String HELLO_APPBOY_HIGH_SCORE_ATTRIBUTE_KEY = "user high score";
 
@@ -26,7 +26,7 @@ public class HelloAppboyActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.hello_appboy);
 
-    // It is good practice to always get an instance of the Appboy singleton using the application
+    // It is good practice to always get an instance of the Braze singleton using the application
     // context.
     mApplicationContext = this.getApplicationContext();
 

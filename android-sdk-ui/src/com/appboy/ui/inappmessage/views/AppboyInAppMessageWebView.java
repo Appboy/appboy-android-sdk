@@ -6,7 +6,7 @@ import android.view.KeyEvent;
 import android.webkit.WebView;
 
 /**
- * WebView embedded in Appboy html in-app messages.
+ * WebView embedded in Braze html in-app messages.
  */
 public class AppboyInAppMessageWebView extends WebView {
 

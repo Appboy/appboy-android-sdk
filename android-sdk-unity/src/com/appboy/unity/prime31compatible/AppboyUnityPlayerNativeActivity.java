@@ -11,7 +11,7 @@ import com.prime31.UnityPlayerNativeActivity;
  * are using any Prime31 plugins, you must use the classes in this package INSTEAD of the classes used
  * in the com.appboy.unity package.
  *
- * This is a wrapper subclass of the UnityPlayerNativeActivity class. It calls the necessary Appboy methods
+ * This is a wrapper subclass of the UnityPlayerNativeActivity class. It calls the necessary Braze methods
  * to ensure that analytics are collected and that push notifications are properly forwarded to
  * the Unity application.
  */

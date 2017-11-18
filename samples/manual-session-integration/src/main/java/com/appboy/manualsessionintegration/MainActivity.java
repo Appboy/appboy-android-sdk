@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   public void onStart() {
     super.onStart();
-    // Opens (or reopens) an Appboy session.
+    // Opens (or reopens) an Braze session.
     // Note: This must be called in the onStart lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
     Appboy.getInstance(this).openSession(this);
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
   public void onResume() {
     super.onResume();
     // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
-    // in-app messages from Appboy.
+    // in-app messages from Braze.
     AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
   }
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   public void onStop() {
     super.onStop();
-    // Closes the current Appboy session.
+    // Closes the current Braze session.
     // Note: This must be called in the onStop lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
     Appboy.getInstance(this).closeSession(this);

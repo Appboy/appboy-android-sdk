@@ -27,6 +27,7 @@ public class DroidboyApplication extends Application {
   private static final String TAG = AppboyLogger.getAppboyLogTag(DroidboyApplication.class);
   protected static final String OVERRIDE_API_KEY_PREF_KEY = "override_api_key";
   protected static final String OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url";
+  protected static final String OVERRIDE_FRESCO_PREF_KEY = "override_fresco_enabled_key";
   private static String sOverrideApiKeyInUse;
 
   @Override
@@ -48,6 +49,10 @@ public class DroidboyApplication extends Application {
     Appboy.configure(this, null);
     AppboyConfig.Builder appboyConfigBuilder = new AppboyConfig.Builder();
     setOverrideApiKeyIfConfigured(sharedPreferences, appboyConfigBuilder);
+    if (sharedPreferences.contains(OVERRIDE_FRESCO_PREF_KEY)) {
+      boolean frescoOverride = sharedPreferences.getBoolean(OVERRIDE_FRESCO_PREF_KEY, false);
+      appboyConfigBuilder.setFrescoLibraryEnabled(frescoOverride);
+    }
     Appboy.configure(this, appboyConfigBuilder.build());
 
     String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
@@ -132,20 +137,20 @@ public class DroidboyApplication extends Application {
     StrictMode.allowThreadDiskWrites();
   }
 
-  // Disable Appboy network requests if the preference has been set and the current device model matches a list of emulators
+  // Disable Braze network requests if the preference has been set and the current device model matches a list of emulators
   // we don't want to run Appboy on in certain scenarios.
   private void disableNetworkRequestsIfConfigured(SharedPreferences sharedPreferences) {
     boolean disableAppboyNetworkRequestsBooleanString = sharedPreferences.getBoolean(getString(R.string.mock_appboy_network_requests), false);
     if (disableAppboyNetworkRequestsBooleanString && Arrays.asList(EmulatorDetectionUtils.getEmulatorModelsForAppboyDeactivation()).contains(Build.MODEL)) {
       Appboy.enableMockAppboyNetworkRequestsAndDropEventsMode();
-      Log.i(TAG, String.format("Mocking Appboy network requests because preference was set and model was %s", Build.MODEL));
+      Log.i(TAG, String.format("Mocking Braze network requests because preference was set and model was %s", Build.MODEL));
     }
   }
 
   private void setOverrideApiKeyIfConfigured(SharedPreferences sharedPreferences, AppboyConfig.Builder appboyConfigBuilder) {
     String overrideApiKey = sharedPreferences.getString(OVERRIDE_API_KEY_PREF_KEY, null);
     if (!StringUtils.isNullOrBlank(overrideApiKey)) {
-      Log.i(TAG, String.format("Override API key found, configuring Appboy with override key %s.", overrideApiKey));
+      Log.i(TAG, String.format("Override API key found, configuring Braze with override key %s.", overrideApiKey));
       appboyConfigBuilder.setApiKey(overrideApiKey);
       sOverrideApiKeyInUse = overrideApiKey;
     }

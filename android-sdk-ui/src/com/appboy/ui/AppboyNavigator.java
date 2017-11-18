@@ -39,7 +39,7 @@ public class AppboyNavigator implements IAppboyNavigator {
   }
 
   /**
-   * Gets the current IAppboyNavigator class that defines the actions that should be taken when Appboy attempts to
+   * Gets the current IAppboyNavigator class that defines the actions that should be taken when Braze attempts to
    * display the news feed or open a URI from an in-app message. This will be null if none was set.
    *
    * @return The currently set IAppboyNavigator or null if none was set.
@@ -53,7 +53,7 @@ public class AppboyNavigator implements IAppboyNavigator {
   }
 
   /**
-   * Sets the class that defines the actions that should be taken when Appboy attempts to display the news
+   * Sets the class that defines the actions that should be taken when Braze attempts to display the news
    * feed or open a URI from an in-app message.
    *
    * @param appboyNavigator The IAppboyNavigator to use when attempting to display news feed or navigate to

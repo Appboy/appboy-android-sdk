@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -91,6 +92,8 @@ public class PreferencesActivity extends PreferenceActivity {
     SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     sortNewsFeed.setChecked(sharedPrefSort.getBoolean(getString(R.string.sort_feed), false));
     CheckBoxPreference setCustomNewsFeedClickActionListener = (CheckBoxPreference) findPreference("set_custom_news_feed_card_click_action_listener");
+    Preference enableFrescoPreference = findPreference("enable_fresco_preference_key");
+    Preference disableFrescoPreference = findPreference("disable_fresco_preference_key");
 
     sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
     apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
@@ -174,6 +177,7 @@ public class PreferencesActivity extends PreferenceActivity {
       @Override
       @SuppressLint("ApplySharedPref")
       public boolean onPreferenceClick(Preference preference) {
+        // Note that .commit() is used here since we're restarting the process and thus need to immediately flush all shared prefs changes to disk
         SharedPreferences userSharedPreferences = getSharedPreferences("com.appboy.offline.storagemap", Context.MODE_PRIVATE);
         userSharedPreferences
             .edit()
@@ -210,9 +214,9 @@ public class PreferencesActivity extends PreferenceActivity {
         sharedPreferencesEditor.putBoolean(getString(R.string.mock_appboy_network_requests), newDisableAppboyNetworkRequestsPreference);
         sharedPreferencesEditor.apply();
         if (newDisableAppboyNetworkRequestsPreference) {
-          Toast.makeText(PreferencesActivity.this, "Disabling Appboy network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
+          Toast.makeText(PreferencesActivity.this, "Disabling Braze network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
         } else {
-          Toast.makeText(PreferencesActivity.this, "Enabling Appboy network requests for the next app run for all devices", Toast.LENGTH_LONG).show();
+          Toast.makeText(PreferencesActivity.this, "Enabling Braze network requests for the next app run for all devices", Toast.LENGTH_LONG).show();
         }
         return true;
       }
@@ -244,6 +248,32 @@ public class PreferencesActivity extends PreferenceActivity {
       @Override
       public boolean onPreferenceChange(Preference preference, Object newValue) {
         AppboyFeedManager.getInstance().setFeedCardClickActionListener((boolean) newValue ? new CustomFeedClickActionListener() : null);
+        return true;
+      }
+    });
+    enableFrescoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @SuppressLint("ApplySharedPref")
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        // Note that .commit() is used here since we're restarting the process and thus need to immediately flush all shared prefs changes to disk
+        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
+        sharedPreferencesEditor.putBoolean(DroidboyApplication.OVERRIDE_FRESCO_PREF_KEY, true);
+        sharedPreferencesEditor.commit();
+        Toast.makeText(PreferencesActivity.this, "Enabling the Fresco library for the next app run.", Toast.LENGTH_LONG).show();
+        LifecycleUtils.restartApp(getApplicationContext());
+        return true;
+      }
+    });
+    disableFrescoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @SuppressLint("ApplySharedPref")
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        // Note that .commit() is used here since we're restarting the process and thus need to immediately flush all shared prefs changes to disk
+        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
+        sharedPreferencesEditor.putBoolean(DroidboyApplication.OVERRIDE_FRESCO_PREF_KEY, false);
+        sharedPreferencesEditor.commit();
+        Toast.makeText(PreferencesActivity.this, "Disabling the Fresco library for the next app run.", Toast.LENGTH_LONG).show();
+        LifecycleUtils.restartApp(getApplicationContext());
         return true;
       }
     });
@@ -319,7 +349,7 @@ public class PreferencesActivity extends PreferenceActivity {
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(PreferencesActivity.this, requestCode, grantResults);
   }
 }

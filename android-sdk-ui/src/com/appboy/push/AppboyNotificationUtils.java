@@ -53,8 +53,8 @@ public class AppboyNotificationUtils {
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
 
   /**
-   * Handles a push notification click. Called by GCM/ADM receiver when an
-   * Appboy push notification click intent is received.
+   * Handles a push notification click. Called by GCM/ADM receiver when a
+   * Braze push notification click intent is received.
    * <p/>
    * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
    *
@@ -115,10 +115,10 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Get the Appboy extras Bundle from the notification extras. Notification extras must be in GCM/ADM format.
+   * Get the Braze extras Bundle from the notification extras. Notification extras must be in GCM/ADM format.
    *
    * @param notificationExtras Notification extras as provided by GCM/ADM.
-   * @return Returns the Appboy extras Bundle from the notification extras. Amazon ADM recursively flattens all JSON messages,
+   * @return Returns the Braze extras Bundle from the notification extras. Amazon ADM recursively flattens all JSON messages,
    * so for Amazon devices we just return a copy of the original bundle.
    */
   public static Bundle getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) {
@@ -167,9 +167,9 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Checks the incoming GCM/ADM intent to determine whether this is an Appboy push message.
+   * Checks the incoming GCM/ADM intent to determine whether this is a Braze push message.
    * <p/>
-   * All Appboy push messages must contain an extras entry with key set to "_ab" and value set to "true".
+   * All Braze push messages must contain an extras entry with key set to "_ab" and value set to "true".
    */
   public static boolean isAppboyPushMessage(Intent intent) {
     Bundle extras = intent.getExtras();
@@ -180,11 +180,11 @@ public class AppboyNotificationUtils {
    * Checks the intent received from GCM to determine whether this is a notification message or a
    * data push.
    * <p/>
-   * A notification message is an Appboy push message that displays a notification in the
+   * A notification message is a Braze push message that displays a notification in the
    * notification center (and optionally contains extra information that can be used directly
    * by the app).
    * <p/>
-   * A data push is an Appboy push message that contains only extra information that can
+   * A data push is a Braze push message that contains only extra information that can
    * be used directly by the app.
    */
   public static boolean isNotificationMessage(Intent intent) {
@@ -194,7 +194,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Creates and sends a broadcast message that can be listened for by the host app. The broadcast
-   * message intent contains all of the data sent as part of the Appboy push message. The broadcast
+   * message intent contains all of the data sent as part of the Braze push message. The broadcast
    * message action is <host-app-package-name>.intent.APPBOY_PUSH_RECEIVED.
    */
   public static void sendPushMessageReceivedBroadcast(Context context, Bundle notificationExtras) {
@@ -208,7 +208,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Requests a geofence refresh from Appboy if appropriate based on the payload of the push notification.
+   * Requests a geofence refresh from Braze if appropriate based on the payload of the push notification.
    *
    * @param context
    * @param notificationExtras Notification extras as provided by GCM/ADM.
@@ -247,7 +247,7 @@ public class AppboyNotificationUtils {
   /**
    * Returns an id for the new notification we'll send to the notification center.
    * Notification id is used by the Android OS to override currently active notifications with identical ids.
-   * If a custom notification id is not defined in the payload, Appboy derives an id value from the message's contents
+   * If a custom notification id is not defined in the payload, Braze derives an id value from the message's contents
    * to prevent duplication in the notification center.
    */
   public static int getNotificationId(Bundle notificationExtras) {
@@ -367,7 +367,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Checks that the notification is a story that has only just been received. If so, each
-   * image within the story is put in the Appboy image loader's cache.
+   * image within the story is put in the Braze image loader's cache.
    *
    * @param context Application context.
    * @param notificationExtras Notification extras as provided by GCM/ADM.
@@ -693,10 +693,10 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Logs a notification click with Appboy if the extras passed down
-   * indicate that they are from Appboy and contain a campaign Id.
+   * Logs a notification click with Braze if the extras passed down
+   * indicate that they are from Braze and contain a campaign Id.
    * <p/>
-   * An Appboy session must be active to log a push notification.
+   * A Braze session must be active to log a push notification.
    *
    * @param customContentString extra key value pairs in JSON format.
    */
@@ -718,13 +718,13 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Handles a request to cancel a push notification in the notification center. Called by GCM/ADM receiver when an
-   * Appboy cancel notification intent is received.
+   * Handles a request to cancel a push notification in the notification center. Called by GCM/ADM
+   * receiver when a Braze cancel notification intent is received.
    * <p/>
    * Any existing notification in the notification center with the integer Id specified in the
    * "nid" field of the provided intent's extras is cancelled.
    * <p/>
-   * If no Id is found, the defaut Appboy notification Id is used.
+   * If no Id is found, the defaut Braze notification Id is used.
    *
    * @param context
    * @param intent the cancel notification intent
@@ -745,7 +745,7 @@ public class AppboyNotificationUtils {
   /**
    * Creates a request to cancel a push notification in the notification center.
    * <p/>
-   * Sends an intent to the GCM/ADM receiver requesting Appboy to cancel the notification with
+   * Sends an intent to the GCM/ADM receiver requesting Braze to cancel the notification with
    * the specified notification Id.
    * <p/>
    * See {@link #handleCancelNotificationAction}
@@ -776,15 +776,15 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Returns true if the bundle is from a push sent by Appboy for uninstall tracking.
+   * Returns true if the bundle is from a push sent by Braze for uninstall tracking.
    * <p/>
    * Uninstall tracking push messages are content-only (i.e. non-display) push messages. You can use this
-   * method to detect that a push is from an Appboy uninstall tracking push and ensure your broadcast receiver
-   * doesn't take any actions it shouldn't if a content push is from Appboy uninstall tracking (e.g. don't ping your server
-   * for content on Appboy uninstall push).
+   * method to detect that a push is from a Braze uninstall tracking push and ensure your broadcast receiver
+   * doesn't take any actions it shouldn't if a content push is from Braze uninstall tracking (e.g. don't ping your server
+   * for content on Braze uninstall push).
    *
    * @param notificationExtras A notificationExtras bundle that is passed with the push recieved intent when a GCM/ADM message is
-   *                           received, and that Appboy passes in the intent to registered receivers.
+   *                           received, and that Braze passes in the intent to registered receivers.
    */
   public static boolean isUninstallTrackingPush(Bundle notificationExtras) {
     if (notificationExtras != null) {
@@ -891,7 +891,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Handles a push story page click. Called by GCM/ADM receiver when an
-   * Appboy push story click intent is received.
+   * Braze push story click intent is received.
    *
    * @param context Application context.
    * @param intent The push story click intent.
@@ -925,7 +925,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Returns an existing notification channel. The notification extras are first checked for a notification channel that exists. If not, then the default
-   * Appboy notification channel is returned if it exists. If neither exist on the device, then null is returned.
+   * Braze notification channel is returned if it exists. If neither exist on the device, then null is returned.
    *
    * This method does not create a notification channel if a valid channel cannot be found.
    *

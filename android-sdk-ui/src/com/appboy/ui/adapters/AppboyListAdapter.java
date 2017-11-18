@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Default adapter used to display cards and log card impressions for the Appboy feed.
+ * Default adapter used to display cards and log card impressions for the Braze news feed.
  * <p/>
  * This allows the stream to reuse cards when they go out of view.
  * <p/>

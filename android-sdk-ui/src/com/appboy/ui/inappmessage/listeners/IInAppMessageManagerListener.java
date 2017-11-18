@@ -8,7 +8,7 @@ import com.appboy.ui.inappmessage.InAppMessageOperation;
 /**
  * The IInAppMessageManagerListener returns the in-app message at specific
  * events in its control flow and gives the host app the option of
- * overriding Appboy's default display handling and implementing its own custom behavior.
+ * overriding Braze's default display handling and implementing its own custom behavior.
  *
  * If you are implementing Unity, you must use IAppboyUnityInAppMessageListener instead.
  *
@@ -19,12 +19,12 @@ public interface IInAppMessageManagerListener {
   /**
    * @param inAppMessage the received in-app message.
    *
-   * @deprecated with triggered in-app messages (introduced in Appboy Android sdk 1.13.0), in-app
+   * @deprecated with triggered in-app messages (introduced in Braze Android sdk 1.13.0), in-app
    * messages are pre-fetched. Only 'legacy' in-app messages will call this method.
    *
-   * @return boolean flag to indicate to Appboy whether the display of this message
-   * has been manually handled. If true, Appboy will do nothing with the in-app message.
-   * If false, Appboy will add the message to its internal stack of in-app messages and request
+   * @return boolean flag to indicate to Braze whether the display of this message
+   * has been manually handled. If true, Braze will do nothing with the in-app message.
+   * If false, Braze will add the message to its internal stack of in-app messages and request
    * display.
    */
   @Deprecated
@@ -42,8 +42,8 @@ public interface IInAppMessageManagerListener {
    * @param inAppMessageCloser Closing should not be animated if transitioning to a new activity.
    * If remaining in the same activity, closing should be animated.
    *
-   * @return boolean flag to indicate to Appboy whether the click has been manually handled.
-   * If true, Appboy will log a click and do nothing. If false, Appboy will also close the in-app message.
+   * @return boolean flag to indicate to Braze whether the click has been manually handled.
+   * If true, Braze will log a click and do nothing. If false, Braze will also close the in-app message.
    */
   boolean onInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser);
 
@@ -52,8 +52,8 @@ public interface IInAppMessageManagerListener {
    * @param inAppMessageCloser Closing should not be animated if transitioning to a new activity.
    * If remaining in the same activity, closing should be animated.
    *
-   * @return boolean flag to indicate to Appboy whether the click has been manually handled.
-   * If true, Appboy will log a button click and do nothing. If false, Appboy will also close the in-app message.
+   * @return boolean flag to indicate to Braze whether the click has been manually handled.
+   * If true, Braze will log a button click and do nothing. If false, Braze will also close the in-app message.
    */
   boolean onInAppMessageButtonClicked(MessageButton button, InAppMessageCloser inAppMessageCloser);
 

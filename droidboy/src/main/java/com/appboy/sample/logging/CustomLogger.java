@@ -71,7 +71,7 @@ public abstract class CustomLogger extends DialogPreference {
       }
 
       // Flushing manually is not recommended in almost all production situations as
-      // Appboy automatically flushes data to its servers periodically. This call
+      // Braze automatically flushes data to its servers periodically. This call
       // is solely for testing purposes.
       if (mRequestFlush.isChecked()) {
         Appboy.getInstance(mContext).requestImmediateDataFlush();

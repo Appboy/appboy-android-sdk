@@ -1,16 +1,16 @@
 <!--
-Thank you for opening an issue with Appboy! 
+Thank you for opening an issue with Braze!
 
-If you are experiencing issues with our product, please consider directing your issue to support@appboy.com, as that is the best channel for solving integration issues. Please see the bottom for more explanation.
+If you are experiencing issues with our product, please consider directing your issue to support@braze.com, as that is the best channel for solving integration issues. Please see the bottom for more explanation.
 
 For other items, like requests for modifications to our SDK or bug reports, please use the following format:
 -->
 
-* [ ] I have checked [Appboy's documentation](https://www.appboy.com/documentation/Android/) and am still experiencing the issue.
+* [ ] I have checked [Braze's documentation](https://www.braze.com/documentation/Android/) and am still experiencing the issue.
 
 # Report
 
-## What version of the Appboy Android SDK are you using?
+## What version of the Braze Android SDK are you using?
 
 <!--
 Example: 1.17.0
@@ -19,22 +19,22 @@ Example: 1.17.0
 ## What did you do?
 
 <!--
-Please replace this with how you've integrated and customized the Appboy SDK.  
-Example: Integrated Appboy with the lifecycle listener and used automatic GCM push registration.
+Please replace this with how you've integrated and customized the Braze SDK.
+Example: Integrated Braze with the lifecycle listener and used automatic GCM push registration.
 -->
 
 ## What did you expect to happen?
 
 <!--
 Please replace this with the expected behavior.
-Example: The Appboy SDK is integrated properly and creating sessions.
+Example: The Braze SDK is integrated properly and creating sessions.
 -->
 
 ## What happened instead?
 
 <!--
 Please replace this with the actual behavior.  
-Example: The Appboy SDK doesn't create any sessions for the test user.
+Example: The Braze SDK doesn't create any sessions for the test user.
 -->
 
 ## Steps to reproduce
@@ -62,5 +62,5 @@ Please link to a project we can download that reproduces the issue.
 -->
 
 <!--
-Note: We recommend e-mailing support@appboy.com with any integration issues, as our team actively optimizes this support channel to provide efficient and robust resolutions. Integration issues also often require logs and other information that may contain private data, and our main support channel ensures no risk of leaking sensitive data.
+Note: We recommend e-mailing support@braze.com with any integration issues, as our team actively optimizes this support channel to provide efficient and robust resolutions. Integration issues also often require logs and other information that may contain private data, and our main support channel ensures no risk of leaking sensitive data.
 -->

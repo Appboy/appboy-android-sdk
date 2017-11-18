@@ -277,7 +277,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
               notificationExtras.putString(Constants.APPBOY_PUSH_STORY_KEY, Integer.toString(mPushStoryType));
             }
 
-            // Manually build the appboy extras bundle.
+            // Manually build the Braze extras bundle.
             Bundle appboyExtras = new Bundle();
             if (mUseImage) {
               if (Constants.IS_AMAZON) {
@@ -469,7 +469,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     } else if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI)) {
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy (webview)");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.appboy_homepage_url));
+      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.braze_homepage_url));
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
       notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Google");
@@ -504,7 +504,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   }
 
   /**
-   * Sets the Appboy instance's notification factory.
+   * Sets the Braze instance's notification factory.
    */
   private void setNotificationFactory() {
     if ("DroidboyNotificationFactory".equals(mNotificationFactoryType)) {

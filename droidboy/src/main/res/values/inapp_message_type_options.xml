@@ -11,7 +11,7 @@
     <item>Message Type: HTML Full External JS</item>
     <item>Message Type: HTML Full Star Wars</item>
     <item>Message Type: HTML Full Youtube</item>
-    <item>Message Type: HTML Full Appboy Bridge Tester</item>
+    <item>Message Type: HTML Full Braze Bridge Tester</item>
   </string-array>
   <string-array name="inapp_message_type_values">
     <item>slideup</item>

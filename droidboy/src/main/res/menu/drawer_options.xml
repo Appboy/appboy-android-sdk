@@ -6,4 +6,7 @@
     <item
         android:id="@+id/geofences_map"
         android:title="Geofences" />
+    <item
+        android:id="@+id/settings"
+        android:title="Settings" />
 </menu>

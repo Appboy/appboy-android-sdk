@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <dimen name="com_appboy_card_background_border_left">1.5dp</dimen>
-  <dimen name="com_appboy_card_background_border_right">1.5dp</dimen>
-  <dimen name="com_appboy_card_background_border_top">1.0dp</dimen>
-  <dimen name="com_appboy_card_background_border_bottom">1.5dp</dimen>
-  <dimen name="com_appboy_card_background_shadow_bottom">1.0dp</dimen>
-</resources>

@@ -71,7 +71,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
   }
 
   /**
-   * Handles both Appboy data push ADM messages and notification messages. Notification messages are
+   * Handles both Braze data push ADM messages and notification messages. Notification messages are
    * posted to the notification center if the ADM message contains a title and body and the payload
    * is sent to the application via an Intent. Data push messages do not post to the notification
    * center, although the payload is forwarded to the application via an Intent as well.
@@ -91,7 +91,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       Bundle admExtras = intent.getExtras();
       AppboyLogger.d(TAG, "Push message payload received: " + admExtras);
 
-      // Parsing the Appboy data extras (data push).
+      // Parsing the Braze data extras (data push).
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);
       admExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
