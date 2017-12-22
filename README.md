@@ -40,7 +40,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:2.2.+'
+   implementation 'com.appboy:android-sdk-ui:2.2.+'
    ...
 }
 ```
@@ -60,7 +60,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.2.+'
+  implementation 'com.appboy:android-sdk-ui:2.2.+'
 }
 ```
 
