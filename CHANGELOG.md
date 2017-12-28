@@ -1,7 +1,14 @@
-## 2.2.1
+## 2.2.2
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or 2.2.x.
+
+##### Added
+- The Braze SDK may now optionally record when the user has disabled notifications at the app level.
+  - Enabled via `appboy.xml` using the `com_appboy_notifications_enabled_tracking_on` boolean attribute or via `AppboyConfig.Builder.setNotificationsEnabledTrackingOn()`.
+  - Please contact support@braze.com before using this feature.
+
+## 2.2.1
 
 ##### Added
 - Added `Other`, `Unknown`, `Not Applicable`, and `Prefer not to Say` options for user gender.

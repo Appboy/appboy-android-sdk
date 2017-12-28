@@ -59,4 +59,7 @@
 
   <!--Handle Deep Links Automatically-->
   <bool name="com_appboy_handle_push_deep_links_automatically">true</bool>
+
+  <!--Notifications Enabled Tracking-->
+  <bool name="com_appboy_notifications_enabled_tracking_on">true</bool>
 </resources>
