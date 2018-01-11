@@ -6,6 +6,7 @@
 ##### Added
 - The Braze SDK may now optionally record when the user has disabled notifications at the app level.
   - Enabled via `appboy.xml` using the `com_appboy_notifications_enabled_tracking_on` boolean attribute or via `AppboyConfig.Builder.setNotificationsEnabledTrackingOn()`.
+  - If using proguard in your app, please add `-keepnames class android.support.v4.app.NotificationManagerCompat` to your proguard rules.
   - Please contact support@braze.com before using this feature.
 
 ## 2.2.1
