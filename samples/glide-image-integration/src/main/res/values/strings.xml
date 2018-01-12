@@ -1,0 +1,6 @@
+<resources>
+    <string translatable="false" name="app_name">Glide Image Integration</string>
+    <string translatable="false" name="gif_1_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/5a4e9faafbe76a3365b191ab/e12c1497cbfc5f17ae83f2ad82aa863739f0c1ff/original.gif?1515102126</string>
+    <string translatable="false" name="gif_2_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/5a4ea091bf5cea7ee0bbb717/e05236f1a0fdf18bad93988b9a0594f75adb2b8e/original.gif?1515102356</string>
+    <string translatable="false" name="gif_3_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/5a4e961ffbe76a059e5c66ad/d6beae66762f50d2f3f6b34909dff9341a400529/original.gif?1515099684</string>
+</resources>

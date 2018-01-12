@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 
+import com.appboy.Appboy;
+import com.appboy.IAppboyImageLoader;
 import com.appboy.enums.AppboyViewBounds;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageHtmlBase;
@@ -193,8 +195,6 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         AppboyLogger.i(TAG, "In-app message has remote image url. Downloading.");
 
         // Try to sample the image for slideup and modal in-app messages
-        Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
-
         // By default, the image won't be sampled
         AppboyViewBounds viewBounds = AppboyViewBounds.NO_BOUNDS;
 
@@ -204,7 +204,9 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
           viewBounds = AppboyViewBounds.IN_APP_MESSAGE_MODAL;
         }
 
-        inAppMessage.setBitmap(AppboyImageUtils.getBitmap(applicationContext, Uri.parse(remoteImageUrl), viewBounds));
+        Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
+        IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
+        inAppMessage.setBitmap(appboyImageLoader.getBitmapFromUrl(applicationContext, remoteImageUrl, viewBounds));
       } else {
         AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
         return true;

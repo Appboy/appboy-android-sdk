@@ -199,7 +199,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
       return;
     }
 
-    if (!imageUrl.equals(imageView.getTag())) {
+    if (!imageUrl.equals(imageView.getTag(R.string.com_appboy_image_resize_tag_key))) {
       if (aspectRatio != SQUARE_ASPECT_RATIO) {
         // We need to set layout params on the imageView once its layout state is visible. To do this,
         // we obtain the imageView's observer and attach a listener on it for when the view's layout
@@ -221,7 +221,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout implem
 
       imageView.setImageResource(android.R.color.transparent);
       Appboy.getInstance(getContext()).getAppboyImageLoader().renderUrlIntoView(getContext(), imageUrl, imageView, AppboyViewBounds.BASE_CARD_VIEW);
-      imageView.setTag(imageUrl);
+      imageView.setTag(R.string.com_appboy_image_resize_tag_key, imageUrl);
     }
   }
 

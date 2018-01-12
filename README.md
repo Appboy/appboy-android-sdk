@@ -68,9 +68,9 @@ dependencies {
 
 The Android SDK supports Android 4.0+ (Ice Cream Sandwich and up).
 
-Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons.  Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
+Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
 
-Braze requires Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images.  Fresco is not included nor enabled by default in the Braze library, and must be included and enabled explicitly by the parent app. Braze supports Fresco 0.6.0 through 1.3.0.
+Braze requires either a custom [IAppboyImageLoader](http://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) or Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images. Fresco is not included nor enabled by default in the Braze library, and must be included and enabled explicitly by the parent app. Braze supports Fresco 0.6.0 through 1.3.0.
 
 ## Questions?
 

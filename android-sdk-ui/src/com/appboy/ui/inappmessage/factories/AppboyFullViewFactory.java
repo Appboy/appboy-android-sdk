@@ -1,12 +1,17 @@
 package com.appboy.ui.inappmessage.factories;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.RelativeLayout;
 
+import com.appboy.Appboy;
+import com.appboy.IAppboyImageLoader;
+import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageFull;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
@@ -17,14 +22,21 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
 
   @Override
   public AppboyInAppMessageFullView createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
+    Context applicationContext = activity.getApplicationContext();
     InAppMessageFull inAppMessageFull = (InAppMessageFull) inAppMessage;
     boolean isGraphic = inAppMessageFull.getImageStyle().equals(ImageStyle.GRAPHIC);
     AppboyInAppMessageFullView view = getAppropriateFullView(activity, isGraphic);
     view.inflateStubViews(activity, inAppMessageFull);
-    if (FrescoLibraryUtils.canUseFresco(activity.getApplicationContext())) {
+
+    if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
       view.setMessageSimpleDrawee(inAppMessageFull);
     } else {
-      view.setMessageImageView(inAppMessageFull.getBitmap());
+      // Since this image is the width of the screen, the view bounds are uncapped
+      String imageUrl = view.getAppropriateImageUrl(inAppMessage);
+      if (!StringUtils.isNullOrEmpty(imageUrl)) {
+        IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
+        appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);
+      }
     }
 
     // modal frame should not be clickable.

@@ -1,12 +1,22 @@
-## 2.2.2
+## 2.2.3
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or 2.2.x.
 
 ##### Added
+- Added support for any custom image library to work with in-app messages and the news feed, including the [Glide Image Library](https://bumptech.github.io/glide/). 
+  - Please see `IAppboy#setAppboyImageLoader(IAppboyImageLoader)` for how to set a custom image library.
+- Added the `Glide Image Integration` sample app, showcasing how to use the Glide Library.
+
+#### Changed
+- Updated the proguard rules for Fresco and Notification Enabled Tracking.
+
+## 2.2.2
+
+##### Added
 - The Braze SDK may now optionally record when the user has disabled notifications at the app level.
   - Enabled via `appboy.xml` using the `com_appboy_notifications_enabled_tracking_on` boolean attribute or via `AppboyConfig.Builder.setNotificationsEnabledTrackingOn()`.
-  - If using proguard in your app, please add `-keep class android.support.v4.app.NotificationManagerCompat { *; }` to your proguard rules.
+  - If using proguard in your app and Braze SDK v2.2.2 or below, please add `-keep class android.support.v4.app.NotificationManagerCompat { *; }` to your proguard rules.
   - Please contact support@braze.com before using this feature.
 
 ## 2.2.1
