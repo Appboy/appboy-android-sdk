@@ -10,11 +10,10 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.InAppMessageUtils;
-import com.unity3d.player.UnityPlayerNativeActivity;
 
 /**
- * This class allows UnityPlayerNativeActivity and subclasses instances to gain AppboyUnityPlayerNativeActivity
- * functionality by calling appropriate methods during each phase of the Android Activity lifecycle.
+ * This class allows UnityPlayerNativeActivity and UnityPlayerActivity instances to
+ * integrate Braze by calling appropriate methods during each phase of the Android {@link Activity} lifecycle.
  */
 public class AppboyUnityPlayerNativeActivityWrapper {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityPlayerNativeActivityWrapper.class);
@@ -23,89 +22,89 @@ public class AppboyUnityPlayerNativeActivityWrapper {
 
   /**
    * Call from {@link Activity#onCreate(Bundle)}
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void onCreateCalled(UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    mUnityConfigurationProvider = new UnityConfigurationProvider(unityPlayerNativeActivity);
-    Appboy.getInstance(unityPlayerNativeActivity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(mUnityConfigurationProvider));
-    Appboy.getInstance(unityPlayerNativeActivity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(mUnityConfigurationProvider));
-    Log.d(TAG, AppboyUnityPlayerNativeActivityWrapper.class.getSimpleName() + " finished onCreateCalled setup.");
+  public void onCreateCalled(Activity activity) {
+    mUnityConfigurationProvider = new UnityConfigurationProvider(activity);
+    Appboy.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(mUnityConfigurationProvider));
+    Appboy.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(mUnityConfigurationProvider));
+    Log.d(TAG, TAG + " finished onCreateCalled setup.");
   }
 
   /**
    * Call from {@link Activity#onStart()}
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void onStartCalled(UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    Appboy.getInstance(unityPlayerNativeActivity).openSession(unityPlayerNativeActivity);
+  public void onStartCalled(Activity activity) {
+    Appboy.getInstance(activity).openSession(activity);
     if (!mUnityConfigurationProvider.getShowInAppMessagesAutomaticallyKey()) {
       AppboyUnityNativeInAppMessageManagerListener.getInstance().setShowInAppMessagesManually(true);
       Log.i(TAG, "In-app message display will be handled manually.");
     }
     AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(AppboyUnityNativeInAppMessageManagerListener.getInstance());
-    AppboyUnityNativeInAppMessageManagerListener.getInstance().registerContainerActivity(unityPlayerNativeActivity);
-    Log.d(TAG, "Starting " + AppboyUnityPlayerNativeActivityWrapper.class.getSimpleName() + ".");
+    AppboyUnityNativeInAppMessageManagerListener.getInstance().registerContainerActivity(activity);
+    Log.d(TAG, "Starting " + TAG + ".");
   }
 
   /**
    * Call from {@link Activity#onResume()}
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void onResumeCalled(UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(unityPlayerNativeActivity);
+  public void onResumeCalled(Activity activity) {
+    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
   }
 
   /**
    * Call from {@link Activity#onPause()}
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void onPauseCalled(UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(unityPlayerNativeActivity);
+  public void onPauseCalled(Activity activity) {
+    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
   }
 
   /**
    * Call from {@link Activity#onStop()}
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void onStopCalled(UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    Appboy.getInstance(unityPlayerNativeActivity).closeSession(unityPlayerNativeActivity);
+  public void onStopCalled(Activity activity) {
+    Appboy.getInstance(activity).closeSession(activity);
   }
 
   /**
    * Call from {@link Activity#onNewIntent(Intent)}
    * @param intent
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void onNewIntentCalled(Intent intent, UnityPlayerNativeActivity unityPlayerNativeActivity) {
+  public void onNewIntentCalled(Intent intent, Activity activity) {
     // If the Activity is already open and we receive an intent to open the Activity again, we set
     // the new intent as the current one (which has the new intent extras).
-    unityPlayerNativeActivity.setIntent(intent);
+    activity.setIntent(intent);
   }
 
   /**
    * See {@link AppboyUnityPlayerNativeActivity#logInAppMessageClick(String)}
    * @param messageJSONString
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void logInAppMessageClick(String messageJSONString, UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    InAppMessageUtils.logInAppMessageClick(InAppMessageUtils.inAppMessageFromString(unityPlayerNativeActivity, messageJSONString));
+  public void logInAppMessageClick(String messageJSONString, Activity activity) {
+    InAppMessageUtils.logInAppMessageClick(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString));
   }
 
   /**
    * See {@link AppboyUnityPlayerNativeActivity#logInAppMessageButtonClick(String, int)}
    * @param messageJSONString
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void logInAppMessageButtonClick(String messageJSONString, int buttonId, UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    InAppMessageUtils.logInAppMessageButtonClick(InAppMessageUtils.inAppMessageFromString(unityPlayerNativeActivity, messageJSONString), buttonId);
+  public void logInAppMessageButtonClick(String messageJSONString, int buttonId, Activity activity) {
+    InAppMessageUtils.logInAppMessageButtonClick(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString), buttonId);
   }
 
   /**
    * See {@link AppboyUnityPlayerNativeActivity#logInAppMessageImpression(String)}
    * @param messageJSONString
-   * @param unityPlayerNativeActivity
+   * @param activity
    */
-  public void logInAppMessageImpression(String messageJSONString, UnityPlayerNativeActivity unityPlayerNativeActivity) {
-    InAppMessageUtils.logInAppMessageImpression(InAppMessageUtils.inAppMessageFromString(unityPlayerNativeActivity, messageJSONString));
+  public void logInAppMessageImpression(String messageJSONString, Activity activity) {
+    InAppMessageUtils.logInAppMessageImpression(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString));
   }
 }

@@ -31,7 +31,7 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '2.2.3'
+  version = '2.2.4'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.

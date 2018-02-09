@@ -1,4 +1,4 @@
-![Appboy Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/Appboy_Logo_400x100.png)
+![Braze Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png)
 
 # Samples
 

@@ -1,7 +1,14 @@
-## 2.2.3
+## 2.2.4
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or 2.2.x.
+
+##### Added
+- Added `AppboyConfig.Builder.setIsSessionStartBasedTimeoutEnabled()` which optionally sets the session timeout behavior to be either session-start or session-end based. The default behavior is to be session-end based.
+  - The use of this flag is recommended for long (30 minutes or longer) session timeout values.
+  - This value can also be configured via `appboy.xml` with the boolean `com_appboy_session_start_based_timeout_enabled` set to true.
+
+## 2.2.3
 
 ##### Added
 - Added support for any custom image library to work with in-app messages and the news feed, including the [Glide Image Library](https://bumptech.github.io/glide/). 
@@ -71,7 +78,7 @@
 
 ##### Fixed
 - Fixed a bug where implicit intents for custom push broadcast receivers would be suppressed in devices running Android O.
-- Updates the Braze ProGuard configuration to ensure Google Play Services classes required by Geofencing aren't renamed.
+- Updated the Braze ProGuard configuration to ensure Google Play Services classes required by Geofencing aren't renamed.
 
 ## 2.1.2
 
@@ -188,7 +195,7 @@
 - Added support for registering geofences with Google Play Services and messaging on geofence events. Please reach out to success@braze.com for more information about this feature.
 
 ##### Removed
-- Support for share type notification action buttons and custom notification action buttons has been removed.
+- Support for share type notification action buttons and custom notification action buttons was removed.
 
 ##### Changed
 - Push deep links that can be handled by the current app are automatically opened using the current app. Previously, if another app could handle the deep link as well, a chooser dialog would open.
@@ -249,141 +256,141 @@
 ## 1.15.3
 
 ##### Fixed
-- Fixes a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be dropped.
+- Fixed a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be dropped.
 
 ## 1.15.2
 
 ##### Fixed
-- Fixes a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be displayed without assets.
+- Fixed a bug where in-app messages triggered while no activity was registered with `AppboyInAppMessageManager` would be displayed without assets.
 
 ## 1.15.1
 
 ##### Added
-- Adds Hebrew localization strings.
+- Added Hebrew localization strings.
 
 ##### Changed
-- Improves the initialization time of the Braze SDK.
+- Improved the initialization time of the Braze SDK.
 
 ##### Removed
-- Removes fetching of the device hardware serial number as part of device metadata collection.
+- Removed fetching of the device hardware serial number as part of device metadata collection.
 
 ## 1.15.0
 
 ##### Breaking
-- Deprecates `AppboyInAppMessageManager.hideCurrentInAppMessage()`. Please use `AppboyInAppMessageManager.hideCurrentlyDisplayingInAppMessage()` instead.
+- Deprecated `AppboyInAppMessageManager.hideCurrentInAppMessage()`. Please use `AppboyInAppMessageManager.hideCurrentlyDisplayingInAppMessage()` instead.
 
 ##### Added
-- Adds the option to handle session tracking and `InAppMessageManager` registration automatically on apps with a minimum supported SDK of API level 14 or above. This is done by registering an `AppboyLifecycleCallbackListener` instance using [`Application.registerActivityLifecycleCallbacks()`](https://developer.android.com/reference/android/app/Application.html#registerActivityLifecycleCallbacks(android.app.Application.ActivityLifecycleCallbacks)). See the Hello Appboy sample app's [application class](https://github.com/Appboy/appboy-android-sdk/blob/master/hello-appboy/src/main/java/com/appboy/helloworld/HelloAppboyApplication.java) for an example.
-- Adds support for upgraded in-app messages including image-only messages, improved image sizing/cropping, text scrolling, text alignment, configurable orientation, and configurable frame color.
-- Adds support for in-app messages triggered on custom event properties, purchase properties, and in-app message clicks.
-- Adds support for templating event properties within in-app messages.
-- Adds the ability to optionally open deep links and the main activity of the app automatically when a user clicks a push notification, eliminating the need to write a custom `BroadcastReceiver` for Braze push. To activate, set the boolean property `com_appboy_handle_push_deep_links_automatically` to `true` in your `appboy.xml`. Note that even when automatic deep link opening is enabled, Braze push opened and received intents will still be sent. To avoid double opening, remove your custom `BroadcastReceiver` or modify it to not open deep links.
+- Added the option to handle session tracking and `InAppMessageManager` registration automatically on apps with a minimum supported SDK of API level 14 or above. This is done by registering an `AppboyLifecycleCallbackListener` instance using [`Application.registerActivityLifecycleCallbacks()`](https://developer.android.com/reference/android/app/Application.html#registerActivityLifecycleCallbacks(android.app.Application.ActivityLifecycleCallbacks)). See the Hello Appboy sample app's [application class](https://github.com/Appboy/appboy-android-sdk/blob/master/hello-appboy/src/main/java/com/appboy/helloworld/HelloAppboyApplication.java) for an example.
+- Added support for upgraded in-app messages including image-only messages, improved image sizing/cropping, text scrolling, text alignment, configurable orientation, and configurable frame color.
+- Added support for in-app messages triggered on custom event properties, purchase properties, and in-app message clicks.
+- Added support for templating event properties within in-app messages.
+- Added the ability to optionally open deep links and the main activity of the app automatically when a user clicks a push notification, eliminating the need to write a custom `BroadcastReceiver` for Braze push. To activate, set the boolean property `com_appboy_handle_push_deep_links_automatically` to `true` in your `appboy.xml`. Note that even when automatic deep link opening is enabled, Braze push opened and received intents will still be sent. To avoid double opening, remove your custom `BroadcastReceiver` or modify it to not open deep links.
 
 ## 1.14.1
 
 ##### Fixed
-- Fixes a bug where images in short news and cross promotion News Feed cards would appear too small on high resolution devices. This bug did not affect Fresco users.
+- Fixed a bug where images in short news and cross promotion News Feed cards would appear too small on high resolution devices. This bug did not affect Fresco users.
 
 ##### Changed
-- Updates Baidu push service jar from v4.6.2.38 to v5.1.0.48.
+- Updated Baidu push service jar from v4.6.2.38 to v5.1.0.48.
 
 ## 1.14.0
 
 ##### Breaking
-- Renames `disableAllAppboyNetworkRequests()` to `enableMockAppboyNetworkRequestsAndDropEventsMode()` and fixes a bug where calling `Appboy.changeUser()` would cause a network request even in disabled/mocked mode. Note that `enableMockAppboyNetworkRequestsAndDropEventsMode` should only be used in testing environments.
+- Renamed `disableAllAppboyNetworkRequests()` to `enableMockAppboyNetworkRequestsAndDropEventsMode()` and fixes a bug where calling `Appboy.changeUser()` would cause a network request even in disabled/mocked mode. Note that `enableMockAppboyNetworkRequestsAndDropEventsMode` should only be used in testing environments.
 
 ##### Added
-- Adds the ability to log negatively-priced purchases.
-- Adds the option to sort News Feed cards based on read/unread status.
-- Adds a custom News Feed click delegate. To handle News Feed clicks manually, implement `IFeedClickActionListener` and register an instance using `AppboyFeedManager.getInstance().setFeedCardClickActionListener()`.  This enables use-cases such as selectively using the native browser to open web links.
+- Added the ability to log negatively-priced purchases.
+- Added the option to sort News Feed cards based on read/unread status.
+- Added a custom News Feed click delegate. To handle News Feed clicks manually, implement `IFeedClickActionListener` and register an instance using `AppboyFeedManager.getInstance().setFeedCardClickActionListener()`.  This enables use-cases such as selectively using the native browser to open web links.
 
 ##### Changed
-- Allows the inclusion of file separators in User Ids.
+- Added the ability to include file separators in User Ids.
 - Changes Braze's default Log Level from VERBOSE to INFO. Previously disabled debug log statements are enabled and available for debugging. To change Braze's Log Level, update the value of `AppboyLogger.LogLevel`, e.g. `AppboyLogger.LogLevel = Log.VERBOSE`.
 
 ##### Removed
-- Removes `keep` rules from `consumerProguardFiles` automatic Proguard configuration for potentially improved optimization for client apps. Note that client apps that Proguard Braze code must now store release mapping files for Braze to interpret stack traces. If you would like to continue to `keep` all Braze code, add `-keep class bo.app.** { *; }` and `-keep class com.appboy.** { *; }` to your Proguard configuration.
+- Removed `keep` rules from `consumerProguardFiles` automatic Proguard configuration for potentially improved optimization for client apps. Note that client apps that Proguard Braze code must now store release mapping files for Braze to interpret stack traces. If you would like to continue to `keep` all Braze code, add `-keep class bo.app.** { *; }` and `-keep class com.appboy.** { *; }` to your Proguard configuration.
   - See https://github.com/Appboy/appboy-android-sdk/issues/54
-- Removes `onRetainInstance()` from the Braze News Feed fragment. As a result, the News Feed may be used in nested fragments.
+- Removed `onRetainInstance()` from the Braze News Feed fragment. As a result, the News Feed may be used in nested fragments.
 
 ## 1.13.5
 
 ##### Added
-- Defines `com_appboy_card_background` to provide simpler control of news feed card background color.
-- Adds a convenience method to `Month` to allow direct instantiation from a month integer.
+- Defined `com_appboy_card_background` to provide simpler control of news feed card background color.
+- Added a convenience method to `Month` to allow direct instantiation from a month integer.
 
 ##### Fixed
-- Fixes a database access race condition in changeUser code.
+- Fixed a database access race condition in changeUser code.
   - See https://github.com/Appboy/appboy-android-sdk/issues/52 and https://github.com/Appboy/appboy-android-sdk/issues/39
 
 ##### Removed
-- Removes optimizations from the private library's Proguard configuration to allow dexing Braze with Jack and Android Gradle Plugin 2.2.0+.
+- Removed optimizations from the private library's Proguard configuration to allow dexing Braze with Jack and Android Gradle Plugin 2.2.0+.
 
 ## 1.13.4
 
 ##### Added
-- Adds ability to set push and email subscription state from Droidboy.
+- Added ability to set push and email subscription state from Droidboy.
 
 ##### Changed
-- Open sources Braze's Unity plugin library code.
+- Open sourced Braze's Unity plugin library code.
 
 ## 1.13.3
 
 ##### Added
-- Adds the ability to set the large notification icon from within the GCM payload.
-- Introduces `consumerProguardFiles` automatic Proguard configuration.
+- Added the ability to set the large notification icon from within the GCM payload.
+- Added `consumerProguardFiles` automatic Proguard configuration.
 
 ##### Fixed
-- Fixes a bug where triggered HTML in-app messages would not always send button analytics.
+- Fixed a bug where triggered HTML in-app messages would not always send button analytics.
 
 ##### Changed
-- Updates Baidu push service jar from v4.3.0.4 to v4.6.2.38.
-- Analytics are now logged for in-app messages and in-app message buttons with 'NONE' click actions.
-- Updates the Droidboy sample app to use material design.
-- Updates the Hello Appboy sample app to use Proguard.
+- Updated Baidu push service jar from v4.3.0.4 to v4.6.2.38.
+- Updated to log analytics for in-app messages and in-app message buttons with 'NONE' click actions.
+- Updated the Droidboy sample app to use material design.
+- Updated the Hello Appboy sample app to use Proguard.
 
 ## 1.13.2
 
 ##### Fixed
-- Fixes bug where passing a `JSONObject` with multiple invalid keys or values to the `AppboyProperties` constructor would cause a `ConcurrentModificationException`.
+- Fixed bug where passing a `JSONObject` with multiple invalid keys or values to the `AppboyProperties` constructor would cause a `ConcurrentModificationException`.
 
 ## 1.13.1
 
 ##### Fixed
-- Adds handling to a case where certain devices were returning null Resources for GCM BroadcastReceiver onReceive contexts.
+- Added handling to a case where certain devices were returning null Resources for GCM BroadcastReceiver onReceive contexts.
 
 ## 1.13.0
 
 ##### Added
-- Adds support for action-based, locally triggered in-app messages. In-app messages are now sent to the device at session start with associated trigger events. The SDK will display in-app messages in near real-time when the trigger event associated with a message occurs. Trigger events can be app opens, push opens, purchases, and custom events.
+- Added support for action-based, locally triggered in-app messages. In-app messages are now sent to the device at session start with associated trigger events. The SDK will display in-app messages in near real-time when the trigger event associated with a message occurs. Trigger events can be app opens, push opens, purchases, and custom events.
 
 ##### Changed
-- Deprecates the old system of requesting in-app message display, now collectively known as 'original' in-app messaging, where messages were limited to displaying at app start.
+- Deprecated the old system of requesting in-app message display, now collectively known as 'original' in-app messaging, where messages were limited to displaying at app start.
 
 ##### Removed
-- Removes Iab billing example code from Droidboy.
+- Removed Iab billing example code from Droidboy.
 
 ## 1.12.0
 
 ##### Breaking
-- Removes the deprecated method `Appboy.requestSlideupRefresh()`.  Please use `Appboy.requestInAppMessageRefresh()` instead.
-- Removes the deprecated class AppboySlideupManager.  Please use AppboyInAppMessageManager instead.
+- Removed the deprecated method `Appboy.requestSlideupRefresh()`.  Please use `Appboy.requestInAppMessageRefresh()` instead.
+- Removed the deprecated class AppboySlideupManager.  Please use AppboyInAppMessageManager instead.
 
 ##### Changed
 - HTML in-app message WebViews now use wide viewport mode and load pages in overview mode.
-- Moves `AppboyImageUtils` to the private library with an updated api.
-- Moves `WebContentUtils` to the private library.
-- Renames `IInAppMessageHtmlBase` to `InAppMessageHtmlBase`.
+- Moved `AppboyImageUtils` to the private library with an updated api.
+- Moved `WebContentUtils` to the private library.
+- Renamed `IInAppMessageHtmlBase` to `InAppMessageHtmlBase`.
 - Method count of the private Braze library has decreased by over 600 since version 1.11.0.
 
 ##### Removed
-- Removes the partial duplicate of the private library's StringUtils from the ui project.
+- Removed the partial duplicate of the private library's StringUtils from the ui project.
 
 ## 1.11.2
 
 ##### Fixed
-- Fixes bug where large and small icons both rendered at full size in notification remoteviews for Honeycomb/ICS.  Now, if a large icon is available, only the large icon is shown.  Otherwise, the small icon is used.
-- Fixes bug where push open logs were under-reported under certain device conditions.
+- Fixed bug where large and small icons both rendered at full size in notification remoteviews for Honeycomb/ICS.  Now, if a large icon is available, only the large icon is shown.  Otherwise, the small icon is used.
+- Fixed bug where push open logs were under-reported under certain device conditions.
 
 ## 1.11.1
 - Placeholder for Unity release.
@@ -392,44 +399,44 @@
 
 ##### Added
 - Creates Activity based Unity in-app messages (fixing an issue where touches on in-app messages were hitting the game behind the in-app message) and removes redundant Unity permissions.
-- Adds a method for setting modal frame color on in-app messages, no longer displays in-app messages on asset download failure and adds robustness.
-- Adds deep link support to `AppboyUnityGcmReceiver`.
+- Added a method for setting modal frame color on in-app messages, no longer displays in-app messages on asset download failure and adds robustness.
+- Added deep link support to `AppboyUnityGcmReceiver`.
 
 ##### Changed
 - Makes the WebView background for HTML in-app messages transparent.  Ensure your HTML in-app messages expect a transparent background.
-- Updates Google Play Services from to 7.5.0 to 8.3.0 and Play Services Support from 1.2.0 to 1.3.0.
+- Updated Google Play Services from to 7.5.0 to 8.3.0 and Play Services Support from 1.2.0 to 1.3.0.
   - See https://github.com/Appboy/appboy-android-sdk/issues/45
-- Updates Braze WebView to support redirects to deep links and enables DOM storage.
+- Updated Braze WebView to support redirects to deep links and enables DOM storage.
 
 ## 1.10.3
 
 ##### Added
-- Adds Android M Support.  Under the runtime permissions model introduced in Android M, location permission must be explicitly obtained from the end user by the integrating app.  Once location permission is granted, Braze will resume location data collection on the subsequent session.
+- Added Android M Support.  Under the runtime permissions model introduced in Android M, location permission must be explicitly obtained from the end user by the integrating app.  Once location permission is granted, Braze will resume location data collection on the subsequent session.
 
 ## 1.10.2
 
 ##### Added
-- Adds the ability to log a custom event from an HTML in-app message. To log a custom event from an HTML in-app message, navigate a user to a url of the form `appboy://customEvent?name=customEventName&p1=v2`, where the `name` URL parameter is the name of the event, and the remaining parameters are logged as String properties on the event.
+- Added the ability to log a custom event from an HTML in-app message. To log a custom event from an HTML in-app message, navigate a user to a url of the form `appboy://customEvent?name=customEventName&p1=v2`, where the `name` URL parameter is the name of the event, and the remaining parameters are logged as String properties on the event.
 
 ## 1.10.1
 
 ##### Changed
-- Enables javascript in HTML in-app messages.
-- Deprecates `logShare()` and `setBio()` in the public interface as support in the Braze dashboard has been removed.
+- Enabled javascript in HTML in-app messages.
+- Deprecated `logShare()` and `setBio()` in the public interface as support in the Braze dashboard has been removed.
 
 ## 1.10.0
 
 ##### Fixed
-- Fixes an issue where applications in extremely resource starved environments were seeing ANRs from the periodic dispatch `BroadcastReceiver`.  This was not a bug in the Braze code, but a symptom of a failing application.  This updates our periodic dispatch mechanism so it won't have this symptomatic behavior, which in some cases should help developers track down the source of the actual issue (depending on the bug).  Apps that only use the Braze jar file will now have to register `<service android:name="com.appboy.services.AppboyDataSyncService"/>` in their `AndroidManifest.xml` to enable Braze to periodically flush data.
-- Fixes a very rare issue where calling `Context.checkCallingOrSelfPermission()` would cause an exception to be thrown on certain custom Android builds.
+- Fixed an issue where applications in extremely resource starved environments were seeing ANRs from the periodic dispatch `BroadcastReceiver`.  This was not a bug in the Braze code, but a symptom of a failing application.  This updates our periodic dispatch mechanism so it won't have this symptomatic behavior, which in some cases should help developers track down the source of the actual issue (depending on the bug).  Apps that only use the Braze jar file will now have to register `<service android:name="com.appboy.services.AppboyDataSyncService"/>` in their `AndroidManifest.xml` to enable Braze to periodically flush data.
+- Fixed a very rare issue where calling `Context.checkCallingOrSelfPermission()` would cause an exception to be thrown on certain custom Android builds.
 
 ##### Changed
-- Updates the News Feed to not show cards in the local cache that have expired.
+- Updated the News Feed to not show cards in the local cache that have expired.
 
 ## 1.9.2
 
 ##### Fixed
-- Fixes bug triggered when `AppboyWearableListenerService` was not registered.
+- Fixed bug triggered when `AppboyWearableListenerService` was not registered.
 
 ## 1.9.0
 
@@ -438,27 +445,27 @@
   - See https://github.com/Appboy/appboy-android-sdk/issues/43
 
 ##### Added
-- Adds support for analytics from Android Wear devices.
-- Adds support for displaying notification action buttons sent from the Braze dashboard.  To allow image sharing on social networks, add the `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />` permission to your `AndroidManifest.xml`.
-- Adds delegate to `FeedbackFinishedListener` enabling modification of feedback messages before they are sent to Appboy.  Also adds a disposition parameter to `onFeedbackFinished()`.
-- Adds support for GIF images in the News Feed and in In-App Messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app), images and GIFs will be loaded using views from the Fresco library. In order to display GIFs, Fresco must be added as a dependency in the parent app. If not found in the parent app, News Feed cards and In-App Messages will not display GIFs. To disable use of the Fresco library in the UI project, set the value of `com_appboy_enable_fresco_library_use` to false (or omit it) in your `appboy.xml`; to enable Fresco use set `com_appboy_enable_fresco_library_use` to true in your `appboy.xml`. ImageView specific attributes for News Feed cards and In-App Messages, such as `scaleType`, must now be applied programmatically instead of being applied from `styles.xml`. If using Fresco and proguarding your app, please include http://frescolib.org/docs/proguard.html with your proguard config. If you are not using Fresco, add the `dontwarn com.appboy.ui.**` directive. Note: to use Fresco with Braze it must be initialized when your application launches.
-- Adds explicit top and bottom padding values for In-App Message buttons to improve button rendering on some phones.  See the `Appboy.InAppMessage.Button` style in `styles.xml`.
-- Adds HTML In-App Message types. HTML In-App Messages consist of html along with an included zipped assets file to locally reference images, css, etc. See `CustomHtmlInAppMessageActionListener` in our Droidboy sample app for an example listener for the callbacks on the actions inside the WebView hosting the HTML In-App Message.
-- Adds a `setAttributionData()` method to AppboyUser that sets an AttributionData object for the user. Use this method with attribution provider SDKs when attribution events are fired.
+- Added support for analytics from Android Wear devices.
+- Added support for displaying notification action buttons sent from the Braze dashboard.  To allow image sharing on social networks, add the `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />` permission to your `AndroidManifest.xml`.
+- Added delegate to `FeedbackFinishedListener` enabling modification of feedback messages before they are sent to Appboy.  Also adds a disposition parameter to `onFeedbackFinished()`.
+- Added support for GIF images in the News Feed and in In-App Messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app), images and GIFs will be loaded using views from the Fresco library. In order to display GIFs, Fresco must be added as a dependency in the parent app. If not found in the parent app, News Feed cards and In-App Messages will not display GIFs. To disable use of the Fresco library in the UI project, set the value of `com_appboy_enable_fresco_library_use` to false (or omit it) in your `appboy.xml`; to enable Fresco use set `com_appboy_enable_fresco_library_use` to true in your `appboy.xml`. ImageView specific attributes for News Feed cards and In-App Messages, such as `scaleType`, must now be applied programmatically instead of being applied from `styles.xml`. If using Fresco and proguarding your app, please include http://frescolib.org/docs/proguard.html with your proguard config. If you are not using Fresco, add the `dontwarn com.appboy.ui.**` directive. Note: to use Fresco with Braze it must be initialized when your application launches.
+- Added explicit top and bottom padding values for In-App Message buttons to improve button rendering on some phones.  See the `Appboy.InAppMessage.Button` style in `styles.xml`.
+- Added HTML In-App Message types. HTML In-App Messages consist of html along with an included zipped assets file to locally reference images, css, etc. See `CustomHtmlInAppMessageActionListener` in our Droidboy sample app for an example listener for the callbacks on the actions inside the WebView hosting the HTML In-App Message.
+- Added a `setAttributionData()` method to AppboyUser that sets an AttributionData object for the user. Use this method with attribution provider SDKs when attribution events are fired.
 
 ##### Changed
-- Removes the need for integrating client apps to log push notifications inside their activity code.  **Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Braze.  Otherwise, push opens will be incorrectly logged twice.**
+- Removed the need for integrating client apps to log push notifications inside their activity code.  **Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Braze.  Otherwise, push opens will be incorrectly logged twice.**
 - In-App Message views are now found in the `com.appboy.ui.inappmessage.views` package and In-App Message listeners are now found in the `com.appboy.ui.inappmessage.listeners` package.
 
 ## 1.8.2
 
 ##### Added
-- Adds the ability to specify custom fonts for in-app message ui elements via the `appboyInAppMessageCustomFontFile` custom xml attribute.
+- Added the ability to specify custom fonts for in-app message ui elements via the `appboyInAppMessageCustomFontFile` custom xml attribute.
 - Increases the number of supported currency codes from 22 to 171.  All common currency codes are now supported. The full list of supported codes is available at our <a href="https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboy.html#logPurchase(java.lang.String,%20java.lang.String,%20java.math.BigDecimal,%20int,%20com.appboy.models.outgoing.AppboyProperties)">Javadoc</a>.
-- Adds the method `isUninstallTrackingPush()` to AppboyNotificationUtils to be able to detect background push sent for Braze uninstall tracking.
+- Added the method `isUninstallTrackingPush()` to AppboyNotificationUtils to be able to detect background push sent for Braze uninstall tracking.
 
 ##### Changed
-- Updates `BigPictureStyle` to show message in expanded view if summary is not present (after 1.7.0 a summary was required in expanded view to have text appear).
+- Updated `BigPictureStyle` to show message in expanded view if summary is not present (after 1.7.0 a summary was required in expanded view to have text appear).
 
 ## 1.8.1
 - Internal release for Xamarin, adds `AppboyXamarinFormsFeedFragment`.
@@ -466,34 +473,34 @@
 ## 1.8.0
 
 ##### Breaking
-- Updates the minimum sdk version from 8 (froyo) to 9 (gingerbread).
+- Updated the minimum sdk version from 8 (froyo) to 9 (gingerbread).
 
 ##### Added
-- Adds an opt-in location service that logs background location events.
+- Added an opt-in location service that logs background location events.
 
 ##### Fixed
-- Fixes an in-app message lifecycle listener bug where certain lifecycle events could be fired twice.
+- Fixed an in-app message lifecycle listener bug where certain lifecycle events could be fired twice.
 
 ## 1.7.3
 
 ##### Added
-- Adds Braze logging configurability by setting the AppboyLogger.LogLevel.  This is intended to be used in development environments and should not be set in a released application as logging statements are essential for debugging.
+- Added Braze logging configurability by setting the AppboyLogger.LogLevel.  This is intended to be used in development environments and should not be set in a released application as logging statements are essential for debugging.
   - See https://github.com/Appboy/appboy-android-sdk/issues/38
-- Adds `getAppboyPushMessageRegistrationId()` to the Braze interface to enable retrieval of the GCM/ADM/Baidu registration ID Braze has set for the device.
+- Added `getAppboyPushMessageRegistrationId()` to the Braze interface to enable retrieval of the GCM/ADM/Baidu registration ID Braze has set for the device.
 
 ##### Changed
-- Updates our libraries to build against API level 22.
+- Updated our libraries to build against API level 22.
 - Blacklisted custom attributes may no longer be incremented.
 
 ## 1.7.2
 
 ##### Added
-- Introduces `AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing()` to parse Braze extras from GCM/ADM intent extras directly rather than requiring Braze extras to be parsed into a Bundle before being passed into `AppboyNotificationUtils.getAppboyExtras()`.
-- Adds the ability to send and retrieve extra key-value pairs via a News Feed card.
-- Adds the ability to define custom key-value properties on a custom event or purchase.  Property keys are strings and values may be strings, doubles, ints, booleans, or `java.util.Date` objects.
+- Introduced `AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing()` to parse Braze extras from GCM/ADM intent extras directly rather than requiring Braze extras to be parsed into a Bundle before being passed into `AppboyNotificationUtils.getAppboyExtras()`.
+- Added the ability to send and retrieve extra key-value pairs via a News Feed card.
+- Added the ability to define custom key-value properties on a custom event or purchase.  Property keys are strings and values may be strings, doubles, ints, booleans, or `java.util.Date` objects.
 
 ##### Removed
-- Removes `DownloadUtils.java` from `com.appboy.ui.support`.  The `downloadImageBitmap()` function has been moved to `com.appboy.support.AppboyImageUtils`.
+- Removed `DownloadUtils.java` from `com.appboy.ui.support`.  The `downloadImageBitmap()` function has been moved to `com.appboy.support.AppboyImageUtils`.
 
 ## 1.7.1
 
@@ -501,20 +508,20 @@
 - Upgrades Droidboy's custom user attributes and purchases capability and refactors the settings page.
 
 ##### Removed
-- Removes requirement to manually integrate Font Awesome into the client app's /assets folder for in-app messages with icons.
+- Removed requirement to manually integrate Font Awesome into the client app's /assets folder for in-app messages with icons.
 
 ## 1.7.0
 
 ##### Breaking
-- Adds summary subtext in `BigView` style notifications.  This is a breaking change in `BigView` style notification display.  Previously the summary text in `BigView` style notifications was set to the bundle/dashboard summary text if it was present, or the alert message otherwise.  Now the bundle/dashboard summary text is used to set the message subtext, which results in the bundle/dashboard summary text being shown in both the collapsed and expanded views.  See our updated push previews for a visualization of this change.
+- Added summary subtext in `BigView` style notifications.  This is a breaking change in `BigView` style notification display.  Previously the summary text in `BigView` style notifications was set to the bundle/dashboard summary text if it was present, or the alert message otherwise.  Now the bundle/dashboard summary text is used to set the message subtext, which results in the bundle/dashboard summary text being shown in both the collapsed and expanded views.  See our updated push previews for a visualization of this change.
 
 ##### Added
-- Adds the ability to set a custom `IAppboyNotificationFactory` to customize push using `Appboy.setCustomAppboyNotificationFactory()`.
-- Adds the ability to override title and summary in `BigView` push notifications.
-- Adds the ability to set a default large icon for push messages by adding the `com_appboy_push_large_notification_icon` drawable resource to your `appboy.xml`.
-- Adds support for modal and full screen style in-app messages.  Also adds support for including fontawesome icons and images with in-app messages, changing colors on in-app message UI elements, expanded customization options, and message resizing for tablets.  Please visit our documentation for more information.
-- Adds a sample application (China Sample App) which integrates Baidu Cloud Push and Braze for sending push messages through Braze to devices without Google Services installed.
-- Adds `AppboyNotificationUtils.logBaiduNotificationClick()`, a utility method for logging push notification opens from push messages sent via Baidu Cloud Push by Braze.
+- Added the ability to set a custom `IAppboyNotificationFactory` to customize push using `Appboy.setCustomAppboyNotificationFactory()`.
+- Added the ability to override title and summary in `BigView` push notifications.
+- Added the ability to set a default large icon for push messages by adding the `com_appboy_push_large_notification_icon` drawable resource to your `appboy.xml`.
+- Added support for modal and full screen style in-app messages.  Also adds support for including fontawesome icons and images with in-app messages, changing colors on in-app message UI elements, expanded customization options, and message resizing for tablets.  Please visit our documentation for more information.
+- Added a sample application (China Sample App) which integrates Baidu Cloud Push and Braze for sending push messages through Braze to devices without Google Services installed.
+- Added `AppboyNotificationUtils.logBaiduNotificationClick()`, a utility method for logging push notification opens from push messages sent via Baidu Cloud Push by Braze.
 
 ##### Changed
 - Refactors AppboyNotificationUtils into multiple classes in the com.appboy.push package and the AppboyImageUtils class in com.appboy.
@@ -522,89 +529,89 @@
 ## 1.6.2
 
 ##### Added
-- Adds a major performance upgrade that reduces CPU usage, memory footprint, and network traffic.
-- Adds 26 additional languages to localization support for Braze UI elements.
-- Adds local blocking for blacklisted custom attributes, events, and purchases.  However, blacklisted attributes may still be incremented (removed in release 1.7.3).
-- Adds the ability to set the accent color for notification in Android Lollipop and above.  This can be done by setting the `com_appboy_default_notification_accent_color` integer in your `appboy.xml`.
-- Updates the News Feed to render wider on tablet screens.
-- Adds swipe handling for in-app messages on APIs <= 11.
+- Added a major performance upgrade that reduces CPU usage, memory footprint, and network traffic.
+- Added 26 additional languages to localization support for Braze UI elements.
+- Added local blocking for blacklisted custom attributes, events, and purchases.  However, blacklisted attributes may still be incremented (removed in release 1.7.3).
+- Added the ability to set the accent color for notification in Android Lollipop and above.  This can be done by setting the `com_appboy_default_notification_accent_color` integer in your `appboy.xml`.
+- Updated the News Feed to render wider on tablet screens.
+- Added swipe handling for in-app messages on APIs <= 11.
 
 ##### Changed
-- Updates our UI library to build against API level 21.
+- Updated our UI library to build against API level 21.
 
 ## 1.6.1
 
 ##### Fixed
-- Fixes a timezone bug where short names were used for lookup, causing the default timezone (GMT) to be set in cases where the short name was not equal to the time zone Id.
-- Fixes a bug where multiple pending push intents could override each other in the notification center.
+- Fixed a timezone bug where short names were used for lookup, causing the default timezone (GMT) to be set in cases where the short name was not equal to the time zone Id.
+- Fixed a bug where multiple pending push intents could override each other in the notification center.
 
 ## 1.6.0
 
 ##### Fixed
-- Fixes News Feed swipe-refresh `CalledFromWrongThreadException`.
+- Fixed News Feed swipe-refresh `CalledFromWrongThreadException`.
 
 ##### Changed
-- Updates the android-L preview support from version 1.5.2 to support the public release of Android 5.0.  Updates the v4 support library dependency to version 21.0.0.
+- Updated the android-L preview support from version 1.5.2 to support the public release of Android 5.0.  Updates the v4 support library dependency to version 21.0.0.
 - `android.permission.GET_ACCOUNTS` is no longer required during initial GCM registration for devices running Jelly Bean and higher.  However, use of this permissions is recommended so that pre-Jelly Bean devices can register with GCM.
 - `android.permission.WAKE_LOCK` is no longer required during initial GCM registration.  However, use of this permissions is recommended to allow notifications to wake the screen and engage users when the notification arrives.
 - No longer overwrite messages in the notification center based on collapse key (GCM) or consolidation key (ADM).  Instead, overwrite based on message title and message alert, or, if specified, a custom notification id.
-- Updates Droidboy to use the most recent Google IAB helper classes.
+- Updated Droidboy to use the most recent Google IAB helper classes.
 
 ## 1.5.5
 
 ##### Added
-- Adds support for displaying Kindle notifications with images.
+- Added support for displaying Kindle notifications with images.
 
 ##### Changed
 - Notifications with a minimum priority specified no longer trigger the device wakelock because Android does not display them in the status bar (they appear silently in the drawer).
 
 ##### Removed
-- Removes styleable elements from the UI project. This should have no impact on consuming projects.
+- Removed styleable elements from the UI project. This should have no impact on consuming projects.
 
 ## 1.5.4
 
 ##### Added
 - Incubates a feature to allow for runtime changes to be made to the API key. Please contact android@braze.com if you want to test this feature.
-- Adds support for Big View text summaries, allowing summary text to be displayed under the main text in a notification.
-- Adds support for custom URIs to open when a notification is clicked.
-- Adds support for notification duration control.  When specified, sets an alarm to remove a notification from the notification center after the specified duration.
-- Adds support for notification sounds.  Users can specify a notification sound URI to play with the notification.
-- Adds support for changing In-App Message duration from the client app.  To do this, you can modify the slideup object passed to you in the `onReceive()` delegate using the new setter method `IInAppMessage.setDurationInMilliseconds()`.
+- Added support for Big View text summaries, allowing summary text to be displayed under the main text in a notification.
+- Added support for custom URIs to open when a notification is clicked.
+- Added support for notification duration control.  When specified, sets an alarm to remove a notification from the notification center after the specified duration.
+- Added support for notification sounds.  Users can specify a notification sound URI to play with the notification.
+- Added support for changing In-App Message duration from the client app.  To do this, you can modify the slideup object passed to you in the `onReceive()` delegate using the new setter method `IInAppMessage.setDurationInMilliseconds()`.
 
 ##### Changed
-- Updates `AppboyWebViewActivity` to always fill the parent view.  This forces some previously problematic websites to render at the correct size.
+- Updated `AppboyWebViewActivity` to always fill the parent view.  This forces some previously problematic websites to render at the correct size.
 
 ## 1.5.3
 
 ##### Added
-- Adds the ability to turn off Braze's automatic location collection using the `com_appboy_disable_location_collection` boolean in `appboy.xml`.
-- Adds the ability to send location tracking events to Braze manually using setLastKnownLocation on the AppboyUser.  This is intended to be used with `com_appboy_disable_location_collection` set to true so that locations are only being recorded from a single source.
+- Added the ability to turn off Braze's automatic location collection using the `com_appboy_disable_location_collection` boolean in `appboy.xml`.
+- Added the ability to send location tracking events to Braze manually using setLastKnownLocation on the AppboyUser.  This is intended to be used with `com_appboy_disable_location_collection` set to true so that locations are only being recorded from a single source.
 
 ## 1.5.2
 
 ##### Added
-- Adds support for GCM and ADM messages without collapse keys.
-- Adds support for GCM and ADM messages with notification priorities.
-- Enables setting a registration ID without a full push setup; `registerAppboyGcmMessages()` and `registerAppboyPushMessages()` no longer throw null pointer exceptions if Braze isn't correctly configured to display push messages.
-- Enables `AppboyWebViewActivity` to download items.
-- Adds support for apps built targeting android-L. Braze's process for registering push notifications had previously used an implicit service intent which caused a runtime error. Any apps built against android-L will need to upgrade to this version. However, apps with Braze that are/were built against any other versions of Android will run without issue on android-L. Thus, this is not an urgent upgrade unless you're working with android-L.
+- Added support for GCM and ADM messages without collapse keys.
+- Added support for GCM and ADM messages with notification priorities.
+- Enabled setting a registration ID without a full push setup; `registerAppboyGcmMessages()` and `registerAppboyPushMessages()` no longer throw null pointer exceptions if Braze isn't correctly configured to display push messages.
+- Enabled `AppboyWebViewActivity` to download items.
+- Added support for apps built targeting android-L. Braze's process for registering push notifications had previously used an implicit service intent which caused a runtime error. Any apps built against android-L will need to upgrade to this version. However, apps with Braze that are/were built against any other versions of Android will run without issue on android-L. Thus, this is not an urgent upgrade unless you're working with android-L.
 
 ##### Removed
-- Removes extraneous features from Droidboy so it's more easily digestible as a sample application.
+- Removed extraneous features from Droidboy so it's more easily digestible as a sample application.
 
 ## 1.5.1
 
 ##### Removed
-- Removes obfuscation from parameter names on public models.
+- Removed obfuscation from parameter names on public models.
 
 ## 1.5.0
 
 ##### Added
-- Adds Kindle Fire support and ADM support.
-- Adds read/unread visual indicators to newsfeed cards. Use the configuration boolean com_appboy_newsfeed_unread_visual_indicator_on in appboy.xml to enabled the indicators.  Additionally, moved the `logFeedCardImpression()` and `logFeedCardClick()` methods to the card objects themselves.
-- Adds support to image loading in CaptionedImage and Banner cards for dynamic resizing after loading the image url; supports any aspect ratio.
-- Adds Hello Appboy sample project that shows a minimal use case of the Braze SDK.
-- Adds wake lock to `AppboyGcmReceiver` in the UI project. When the `WAKE_LOCK` permission is set, the screen will be turned on when a notification is received.
+- Added Kindle Fire support and ADM support.
+- Added read/unread visual indicators to newsfeed cards. Use the configuration boolean com_appboy_newsfeed_unread_visual_indicator_on in appboy.xml to enabled the indicators.  Additionally, moved the `logFeedCardImpression()` and `logFeedCardClick()` methods to the card objects themselves.
+- Added support to image loading in CaptionedImage and Banner cards for dynamic resizing after loading the image url; supports any aspect ratio.
+- Added Hello Appboy sample project that shows a minimal use case of the Braze SDK.
+- Added wake lock to `AppboyGcmReceiver` in the UI project. When the `WAKE_LOCK` permission is set, the screen will be turned on when a notification is received.
 
 ##### Changed
 - Moved constants from `AppboyGcmReceiver` (ie: `APPBOY_GCM_NOTIFICATION_TITLE_ID`, etc.) into new `AppboyNotificationUtils` class.
@@ -613,18 +620,18 @@
 ## 1.4.3
 
 ##### Removed
-- Removes org.json classes from appboy.jar.
+- Removed org.json classes from appboy.jar.
 
 ## 1.4.2
 
 ##### Added
-- Adds summary text for push image notifications.
-- Adds a new constant, `APPBOY_LOG_TAG_PREFIX`, for logging which includes the sdk version number.
+- Added summary text for push image notifications.
+- Added a new constant, `APPBOY_LOG_TAG_PREFIX`, for logging which includes the sdk version number.
 
 ## 1.4.1
 
 ##### Added
-- Adds automatic tests to verify that the sdk has integrated correctly.
+- Added automatic tests to verify that the sdk has integrated correctly.
 - Added an optional quantity amount to in-app-purchases.
 
 ##### Changed
@@ -636,23 +643,23 @@
 ## 1.4.0
 
 ##### Added
-- Adds categories.
-- Adds swipe to refresh functionality to the newsfeed. The swipe to refresh colors are configurable in the colors xml file.
-- Adds configurable session timeout to the `appboy xml`.
-- Adds images to GCM push notifications.
-- Adds email and push notification subscription types for a user. Subscription types are explicitly opted in, subscribed, and unsubscribed. The old email boolean subscribe method has been deprecated.
+- Added categories.
+- Added swipe to refresh functionality to the newsfeed. The swipe to refresh colors are configurable in the colors xml file.
+- Added configurable session timeout to the `appboy xml`.
+- Added images to GCM push notifications.
+- Added email and push notification subscription types for a user. Subscription types are explicitly opted in, subscribed, and unsubscribed. The old email boolean subscribe method has been deprecated.
 
 ##### Changed
 - The feedback form now displays error popups to the user on invalid fields.
 
 ##### Removed
-- Removes click logging on slideups when action is `None`.
+- Removed click logging on slideups when action is `None`.
 
 ## 1.3.4
 
 ##### Changed
 - Minor changes to address some Lint issues in the UI project.
-- Updates the open source AppboyGcmReceiver to use references to R.java for resource identifiers. This became possible when we moved AppboyGcmReceiver.java into the android-sdk-ui project (from the base library JAR).
+- Updated the open source AppboyGcmReceiver to use references to R.java for resource identifiers. This became possible when we moved AppboyGcmReceiver.java into the android-sdk-ui project (from the base library JAR).
 
 ## 1.3.3
 
@@ -662,21 +669,21 @@
 ## 1.3.2
 
 ##### Fixed
-- Fixes a few minor style issues to be closer in line with Eclipse's preferences.
-- Fixes a potential synchronization issue with the AppboyListAdapter.
-- Adds the ability to set the avatar image URL for your users.
-- Fixes support for protocol URLs and adds an ActivityAction overload that streamlines the use of deep link and web link actions.
+- Fixed a few minor style issues to be closer in line with Eclipse's preferences.
+- Fixed a potential synchronization issue with the AppboyListAdapter.
+- Added the ability to set the avatar image URL for your users.
+- Fixed support for protocol URLs and adds an ActivityAction overload that streamlines the use of deep link and web link actions.
 
 ##### Changed
 - Minor update to Chinese language translation.
-- Moves com.appboy.AppboyGcmReceiver to the open source android-sdk-ui project. Also moves some of the constants previously available as AppboyGcmReceiver.* to com.appboy.constants.APPBOY_GCM_*. The CAMPAIGN_ID_KEY previously used in our sample app is still available in com.appboy.AppboyGcmReceiver, but if you were using other constants, you'll have to move the references.
-- Removes input validation on custom attribute key names so that you can use foreign characters and spaces to your heart's desire. Just don't go over the max character limit.
+- Moved com.appboy.AppboyGcmReceiver to the open source android-sdk-ui project. Also moves some of the constants previously available as AppboyGcmReceiver.* to com.appboy.constants.APPBOY_GCM_*. The CAMPAIGN_ID_KEY previously used in our sample app is still available in com.appboy.AppboyGcmReceiver, but if you were using other constants, you'll have to move the references.
+- Removed input validation on custom attribute key names so that you can use foreign characters and spaces to your heart's desire. Just don't go over the max character limit.
 
 ## 1.3.1
 
 ##### Changed
-- Updates to version 1.9.1 of Android-Universal-Image-Loader.
-- Adds Chinese language translations.
+- Updated to version 1.9.1 of Android-Universal-Image-Loader.
+- Added Chinese language translations.
 - Minor cleanup to imports.
 
 ## 1.3
@@ -714,13 +721,13 @@ Other
 ## 1.2.1
 
 ##### Fixed
-- Fixes a ProGuard issue.
+- Fixed a ProGuard issue.
 
 ## 1.2
 
 ##### Added
-- Introduces two new card types (Banner card and Captioned Image card).
-- Adds support for sending down key/value pairs as part of a GCM message.
+- Introduced two new card types (Banner card and Captioned Image card).
+- Added support for sending down key/value pairs as part of a GCM message.
 
 ##### Fixed
 - Minor bug fixes.
@@ -728,14 +735,14 @@ Other
 ## 1.1
 
 ##### Added
-- Adds support for reporting purchases in multiple currencies.
+- Added support for reporting purchases in multiple currencies.
 
 ##### Fixed
-- Fixes a bug in caching custom events to a SQLite database.
-- Fixes a validation bug when logging custom events.
+- Fixed a bug in caching custom events to a SQLite database.
+- Fixed a validation bug when logging custom events.
 
 ##### Changed
-- Deprecates `IAppboy.logPurchase(String, int)`.
+- Deprecated `IAppboy.logPurchase(String, int)`.
 
 ## 1.0
 - Initial release

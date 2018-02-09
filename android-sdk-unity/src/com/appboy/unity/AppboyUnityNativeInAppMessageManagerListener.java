@@ -10,12 +10,11 @@ import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
 import com.appboy.ui.inappmessage.InAppMessageOperation;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
-import com.unity3d.player.UnityPlayerNativeActivity;
 
 public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessageManagerListener {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityNativeInAppMessageManagerListener.class);
   private static volatile AppboyUnityNativeInAppMessageManagerListener sInstance;
-  private UnityPlayerNativeActivity mContainerActivity;
+  private Activity mContainerActivity;
   private AppboyOverlayActivity mOverlayActivity;
   private boolean mShowInAppMessagesManually = false;
   private IAppboyUnityInAppMessageListener mAppboyUnityInAppMessageListener;
@@ -49,9 +48,9 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
    * Call to register a container activity (the game activity) that will be returned to
    * after the in-app message displays.
    *
-   * @param containerActivity a UnityPlayerNativeActivity instance
+   * @param containerActivity an {@link Activity} instance
    */
-  public void registerContainerActivity(UnityPlayerNativeActivity containerActivity) {
+  public void registerContainerActivity(Activity containerActivity) {
     mContainerActivity = containerActivity;
   }
 
