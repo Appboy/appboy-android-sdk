@@ -44,7 +44,7 @@
     all location collection will be disabled and location will never be set for the user
     unless integrating apps manually call setUserLastKnownLocation on the AppboyUser.
     If not specified or set to false, location data will be collected once at the start of each session. -->
-  <bool name="com_appboy_disable_location_collection">false</bool>
+  <bool name="com_appboy_disable_automatic_location_collection">false</bool>
 
   <!-- Fresco Library Usage -->
   <!-- When set to false, the UI code will not use views from Fresco library. By default, this setting
