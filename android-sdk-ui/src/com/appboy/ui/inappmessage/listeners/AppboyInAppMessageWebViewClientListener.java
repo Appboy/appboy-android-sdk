@@ -30,8 +30,8 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
     logHtmlInAppMessageClick(inAppMessage, queryBundle);
 
-    getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-
+    // Dismiss the in-app message due to the close action
+    getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(true);
     getInAppMessageManager().getHtmlInAppMessageActionListener().onCloseClicked(inAppMessage, url, queryBundle);
   }
 
@@ -48,6 +48,7 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
     boolean handled = getInAppMessageManager().getHtmlInAppMessageActionListener().onNewsfeedClicked(inAppMessage, url, queryBundle);
     if (!handled) {
       inAppMessage.setAnimateOut(false);
+      // Dismiss the in-app message since we're navigating away to the news feed
       getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
       NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.mapToBundle(inAppMessage.getExtras()),
           Channel.INAPP_MESSAGE);
@@ -102,6 +103,7 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
       // Handle the action if it's not a local Uri
       inAppMessage.setAnimateOut(false);
+      // Dismiss the in-app message since we're handling the URI outside of the in-app message webView
       getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
       if (uriAction != null) {
         AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getApplicationContext(), uriAction);

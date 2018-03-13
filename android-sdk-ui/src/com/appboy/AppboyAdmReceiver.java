@@ -91,6 +91,9 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       Bundle admExtras = intent.getExtras();
       AppboyLogger.d(TAG, "Push message payload received: " + admExtras);
 
+      // Log the push delivery event
+      AppboyNotificationUtils.logPushDeliveryEvent(context, admExtras);
+
       // Parsing the Braze data extras (data push).
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);
       admExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);

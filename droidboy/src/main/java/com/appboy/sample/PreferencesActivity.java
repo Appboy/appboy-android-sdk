@@ -95,6 +95,10 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference enableFrescoPreference = findPreference("enable_fresco_preference_key");
     Preference disableFrescoPreference = findPreference("disable_fresco_preference_key");
 
+    Preference enableSdkPreference = findPreference("enable_sdk_key");
+    Preference disableSdkPreference = findPreference("disable_sdk_key");
+    Preference wipeSdkDataPreference = findPreference("wipe_data_preference_key");
+
     sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
     apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
     String pushToken = Appboy.getInstance(PreferencesActivity.this).getAppboyPushMessageRegistrationId();
@@ -274,6 +278,27 @@ public class PreferencesActivity extends PreferenceActivity {
         sharedPreferencesEditor.commit();
         Toast.makeText(PreferencesActivity.this, "Disabling the Fresco library for the next app run.", Toast.LENGTH_LONG).show();
         LifecycleUtils.restartApp(getApplicationContext());
+        return true;
+      }
+    });
+    wipeSdkDataPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.wipeData(PreferencesActivity.this);
+        return true;
+      }
+    });
+    enableSdkPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.enableSdk(PreferencesActivity.this);
+        return true;
+      }
+    });
+    disableSdkPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override
+      public boolean onPreferenceClick(Preference preference) {
+        Appboy.disableSdk(PreferencesActivity.this);
         return true;
       }
     });

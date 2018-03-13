@@ -129,8 +129,16 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
 
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
 
-        if (gcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY) && !gcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
-          gcmExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
+        if (gcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
+          if (!gcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
+            AppboyLogger.d(TAG, "Received the initial push story notification.");
+            gcmExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
+            // Log the push delivery event for the initial push story notification
+            AppboyNotificationUtils.logPushDeliveryEvent(context, gcmExtras);
+          }
+        } else {
+          // Log the push delivery event for regular foreground push
+          AppboyNotificationUtils.logPushDeliveryEvent(context, gcmExtras);
         }
 
         Notification notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, gcmExtras, appboyExtras);
@@ -155,6 +163,8 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         return true;
       } else {
         AppboyLogger.d(TAG, "Received data push");
+        // Log the push delivery event
+        AppboyNotificationUtils.logPushDeliveryEvent(context, gcmExtras);
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, gcmExtras);
         AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, gcmExtras);
         return false;

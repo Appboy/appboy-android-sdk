@@ -849,6 +849,54 @@ public class AppboyNotificationUtils {
     }
   }
 
+  public static void logPushDeliveryEvent(Context context, Bundle pushExtras) {
+    if (pushExtras != null) {
+      // Get the campaign ID
+      String campaignId = pushExtras.getString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
+      if (!StringUtils.isNullOrBlank(campaignId)) {
+        Appboy.getInstance(context).logPushDeliveryEvent(campaignId);
+      } else {
+        AppboyLogger.d(TAG, "Could not log push delivery event due to null or blank campaign id in push extras bundle: " + pushExtras);
+      }
+    } else {
+      AppboyLogger.d(TAG, "Could not log push delivery event due to null push extras bundle.");
+    }
+  }
+
+  /**
+   * Handles a push story page click. Called by GCM/ADM receiver when an
+   * Braze push story click intent is received.
+   *
+   * @param context Application context.
+   * @param intent The push story click intent.
+   */
+  public static void handlePushStoryPageClicked(Context context, Intent intent) {
+    try {
+      Appboy.getInstance(context).logPushStoryPageClicked(intent.getStringExtra(Constants.APPBOY_CAMPAIGN_ID), intent.getStringExtra(Constants.APPBOY_STORY_PAGE_ID));
+      String deepLink = intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY);
+      if (!StringUtils.isNullOrBlank(deepLink)) {
+        // Set the global deep link value to the correct action's deep link.
+        intent.putExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY, intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY));
+        String useWebviewString = intent.getStringExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY);
+        if (!StringUtils.isNullOrBlank(useWebviewString)) {
+          intent.putExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebviewString);
+        }
+      } else {
+        // Otherwise, remove any existing deep links.
+        intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
+      }
+      context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+      AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
+
+      AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+      if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+        AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+      }
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Caught exception while handling story click.", e);
+    }
+  }
+
   /**
    * Returns the specified String resource if it is found; otherwise it returns the defaultString.
    */
@@ -887,40 +935,6 @@ public class AppboyNotificationUtils {
    */
   private static void logNotificationOpened(Context context, Intent intent) {
     Appboy.getInstance(context).logPushNotificationOpened(intent);
-  }
-
-  /**
-   * Handles a push story page click. Called by GCM/ADM receiver when an
-   * Braze push story click intent is received.
-   *
-   * @param context Application context.
-   * @param intent The push story click intent.
-   */
-  public static void handlePushStoryPageClicked(Context context, Intent intent) {
-    try {
-      Appboy.getInstance(context).logPushStoryPageClicked(intent.getStringExtra(Constants.APPBOY_CAMPAIGN_ID), intent.getStringExtra(Constants.APPBOY_STORY_PAGE_ID));
-      String deepLink = intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY);
-      if (!StringUtils.isNullOrBlank(deepLink)) {
-        // Set the global deep link value to the correct action's deep link.
-        intent.putExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY, intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY));
-        String useWebviewString = intent.getStringExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY);
-        if (!StringUtils.isNullOrBlank(useWebviewString)) {
-          intent.putExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebviewString);
-        }
-      } else {
-        // Otherwise, remove any existing deep links.
-        intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
-      }
-      context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-      AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
-
-      AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
-      if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
-        AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
-      }
-    } catch (Exception e) {
-      AppboyLogger.e(TAG, "Caught exception while handling story click.", e);
-    }
   }
 
   /**

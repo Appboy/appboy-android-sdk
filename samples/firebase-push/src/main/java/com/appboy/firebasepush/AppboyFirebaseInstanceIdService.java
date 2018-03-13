@@ -17,7 +17,7 @@ public class AppboyFirebaseInstanceIdService extends FirebaseInstanceIdService {
       String token = FirebaseInstanceId.getInstance().getToken(firebaseSenderId, getString(R.string.firebase_scope));
       Log.i(TAG, "================");
       Log.i(TAG, "================");
-      Log.i(TAG, "Registering firebase token with Appboy: " + token);
+      Log.i(TAG, "Registering firebase token: " + token);
       Log.i(TAG, "================");
       Log.i(TAG, "================");
       Appboy.getInstance(getApplicationContext()).registerAppboyPushMessages(token);

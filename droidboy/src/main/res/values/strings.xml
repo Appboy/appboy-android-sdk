@@ -9,6 +9,7 @@
   <string name="session_title">Sessions</string>
   <string name="location_title">Location</string>
   <string name="about_title">About</string>
+  <string name="sdk_state_change_settings_title">Braze SDK State Change</string>
 
   <string name="user_dialog_title">Default Attributes</string>
   <string name="user_dialog_okay">OK</string>

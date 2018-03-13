@@ -1,7 +1,20 @@
-## 2.2.4
+## 2.2.5
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or 2.2.x.
+
+##### Added
+- Added support for wiping all customer data created by the Braze SDK via `Appboy.wipeData()`.
+- Added `Appboy.disableSdk()` to disable the Braze SDK. 
+- Added `Appboy.enableSdk()` to re-enable the SDK after a call to `Appboy.disableSdk()`.
+
+##### Changed
+- Changed `AppboyInAppMessageWebViewClientListener` to call `onDismissed()` when `onCloseAction()` gets called for HTML in-app messages.
+
+##### Fixed
+- Fixed an issue where internal thread pool executors could get blocked on a long running task and throw `RejectedExecutionException`.
+
+## 2.2.4
 
 ##### Added
 - Added `AppboyConfig.Builder.setIsSessionStartBasedTimeoutEnabled()` which optionally sets the session timeout behavior to be either session-start or session-end based. The default behavior is to be session-end based.
