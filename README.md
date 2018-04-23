@@ -32,7 +32,7 @@ The version should match the git version tag, or the most recent version noted i
 
 ```
 repositories {
-   maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+   maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
    ...
 }
 ```
