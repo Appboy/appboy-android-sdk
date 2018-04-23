@@ -1,21 +1,19 @@
-package com.appboy.unity.prime31compatible;
+package com.appboy.unity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.appboy.unity.AppboyUnityActivityWrapper;
-import com.prime31.UnityPlayerNativeActivity;
+import com.unity3d.player.UnityPlayerActivity;
 
 /**
- * Classes in the com.appboy.unity.prime31compatible package provide support for Prime31 plugins. If you
- * are using any Prime31 plugins, you must use the classes in this package INSTEAD of the classes used
- * in the com.appboy.unity package.
- *
- * This is a wrapper subclass of the UnityPlayerNativeActivity class. It calls the necessary Braze methods
+ * This is a wrapper subclass of the {@link com.unity3d.player.UnityPlayerActivity} class. It calls the necessary Braze methods
  * to ensure that analytics are collected and that push notifications are properly forwarded to
  * the Unity application.
+ *
+ * NOTE: This Activity is not compatible with Prime31 plugins. If you are using any Prime31 plugins, you
+ * must use the AppboyUnityPlayerNativeActivity in the com.appboy.unity.prime31compatible package instead.
  */
-public class AppboyUnityPlayerNativeActivity extends UnityPlayerNativeActivity {
+public class AppboyUnityPlayerActivity extends UnityPlayerActivity {
   private AppboyUnityActivityWrapper mAppboyUnityActivityWrapper;
 
   @Override

@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.2.+'
-  compile files("libs/pushservice-${BAIDU_CLOUD_PUSH_VERSION}.jar")
+  implementation 'com.appboy:android-sdk-ui:2.3.+'
+  implementation files("libs/pushservice-${BAIDU_CLOUD_PUSH_VERSION}.jar")
 }
 
 android {
@@ -21,6 +21,8 @@ android {
     // class declared in AndroidManifest.xml.
     abortOnError false
   }
+
+  flavorDimensions "main_flavor"
 
   productFlavors {
     BaiduX86 {

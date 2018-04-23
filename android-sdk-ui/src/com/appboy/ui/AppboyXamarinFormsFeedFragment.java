@@ -1,5 +1,6 @@
 package com.appboy.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
@@ -103,6 +104,7 @@ public class AppboyXamarinFormsFeedFragment extends ListFragment implements Swip
     return view;
   }
 
+  @SuppressLint("InflateParams")
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);

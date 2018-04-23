@@ -1,5 +1,6 @@
 package com.appboy.sample;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,6 +42,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private static SecureRandom sSecureRandom = new SecureRandom();
   private AppboyConfigurationProvider mAppConfigurationProvider;
   private NotificationManagerCompat mNotificationManager;
+  @SuppressLint("InlinedApi")
   private String mPriority = String.valueOf(Notification.PRIORITY_DEFAULT);
   private String mImage;
   private String mClickActionUrl;

@@ -25,10 +25,10 @@
             <LinearLayout
                 android:id="@+id/com_appboy_inappmessage_full_button_layout"
                 style="@style/Appboy.InAppMessage.Layout.Button.Full.Graphic">
-                <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
+                <Button
                     android:id="@+id/com_appboy_inappmessage_full_button_one"
                     style="@style/Appboy.InAppMessage.Button.Full.One.Graphic"/>
-                <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
+                <Button
                     android:id="@+id/com_appboy_inappmessage_full_button_two"
                     style="@style/Appboy.InAppMessage.Button.Full.Two.Graphic"/>
             </LinearLayout>

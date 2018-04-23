@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -81,6 +82,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * must be called in the {@link android.app.Activity#onResume()} and {@link android.app.Activity#onPause()}
  * methods of every Activity.
  */
+// Static field leak doesn't apply to this singleton since the activity is nullified after the manager is unregistered.
+@SuppressLint("StaticFieldLeak")
 public final class AppboyInAppMessageManager {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageManager.class);
   private static volatile AppboyInAppMessageManager sInstance = null;
@@ -501,6 +504,7 @@ public final class AppboyInAppMessageManager {
    * @param inAppMessage
    * @return
    */
+  @SuppressLint("InlinedApi")
   boolean verifyOrientationStatus(IInAppMessage inAppMessage) {
     if (ViewUtils.isRunningOnTablet(mActivity)) {
       AppboyLogger.d(TAG, "Running on tablet. In-app message can be displayed in any orientation.");
@@ -520,6 +524,7 @@ public final class AppboyInAppMessageManager {
       if (mOriginalOrientation == null) {
         AppboyLogger.d(TAG, "Requesting orientation lock.");
         mOriginalOrientation = mActivity.getRequestedOrientation();
+        // This constant was introduced in API 18, so for devices pre 18 this will be a no-op
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
       }
       return true;

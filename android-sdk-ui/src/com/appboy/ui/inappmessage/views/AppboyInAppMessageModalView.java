@@ -206,7 +206,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     double maxWidthDp = AppboyInAppMessageParams.getGraphicModalMaxWidthDp();
     double maxHeightDp = AppboyInAppMessageParams.getGraphicModalMaxHeightDp();
     double maxSizeAspectRatio = maxWidthDp / maxHeightDp;
-    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) findViewById(R.id.com_appboy_inappmessage_modal_graphic_bound).getLayoutParams();
+    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) (findViewById(R.id.com_appboy_inappmessage_modal_graphic_bound)).getLayoutParams();
     if (imageAspectRatio >= maxSizeAspectRatio) {
       params.width = (int) ViewUtils.convertDpToPixels(activity, maxWidthDp);
       params.height = (int) (ViewUtils.convertDpToPixels(activity, maxWidthDp) / imageAspectRatio);

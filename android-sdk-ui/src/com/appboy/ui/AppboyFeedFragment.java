@@ -1,10 +1,12 @@
 package com.appboy.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -38,10 +40,13 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;
   private static final int MAX_FEED_TTL_SECONDS = 60;
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;
-  // Default visibility for testing
+  @VisibleForTesting
   static final String SAVED_INSTANCE_STATE_KEY_PREVIOUS_VISIBLE_HEAD_CARD_INDEX = "PREVIOUS_VISIBLE_HEAD_CARD_INDEX";
+  @VisibleForTesting
   static final String SAVED_INSTANCE_STATE_KEY_CURRENT_CARD_INDEX_AT_BOTTOM_OF_SCREEN = "CURRENT_CARD_INDEX_AT_BOTTOM_OF_SCREEN";
+  @VisibleForTesting
   static final String SAVED_INSTANCE_STATE_KEY_SKIP_CARD_IMPRESSIONS_RESET = "SKIP_CARD_IMPRESSIONS_RESET";
+  @VisibleForTesting
   static final String SAVED_INSTANCE_STATE_KEY_CARD_CATEGORY = "CARD_CATEGORY";
 
   private final Handler mMainThreadLooper = new Handler(Looper.getMainLooper());
@@ -70,9 +75,11 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   private GestureDetectorCompat mGestureDetector;
   private boolean mSortEnabled = false;
 
-  // Default visibility for testing
+  @VisibleForTesting
   boolean mSkipCardImpressionsReset = false;
+  @VisibleForTesting
   int mPreviousVisibleHeadCardIndex = 0;
+  @VisibleForTesting
   int mCurrentCardIndexAtBottomOfScreen = 0;
 
   // This view should only be in the View.VISIBLE state when the listview is not visible. This view's
@@ -111,6 +118,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     return view;
   }
 
+  @SuppressLint("InflateParams")
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
@@ -126,6 +134,8 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     // away, as opposed to being a permanent frame around the feed.
     LayoutInflater inflater = LayoutInflater.from(getActivity());
     final ListView listView = getListView();
+    // Inflating these views without a view root is valid since they have no parent layout information
+    // that needs to be respected.
     listView.addHeaderView(inflater.inflate(R.layout.com_appboy_feed_header, null));
     listView.addFooterView(inflater.inflate(R.layout.com_appboy_feed_footer, null));
 
@@ -340,7 +350,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   /**
    * Unpacks the data from a bundle marshalled in onSaveInstanceState due to a configuration change.
    */
-  // Default visibility for testing
+  @VisibleForTesting
   void loadFragmentStateFromSavedInstanceState(Bundle savedInstanceState) {
     if (savedInstanceState == null) {
       // There's no previous state to load from, so just return.

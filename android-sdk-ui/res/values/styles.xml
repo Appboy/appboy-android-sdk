@@ -13,15 +13,15 @@
   Ice Cream Sandwich, so we mark it with targetApi 14 for Lint purposes. -->
   <style name="Appboy.EventContent" tools:targetApi="14">
     <item name="android:textColor">@color/com_appboy_custom_notification_content</item>
-    <item name="android:textSize">12dp</item>
+    <item name="android:textSize">12sp</item>
   </style>
   <style name="Appboy.EventContent.Title">
     <item name="android:textColor">@color/com_appboy_custom_notification_title</item>
-    <item name="android:textSize">16dp</item>
+    <item name="android:textSize">16sp</item>
     <item name="android:textStyle">bold</item>
   </style>
   <style name="Appboy.EventContent.Time">
-    <item name="android:textSize">10dp</item>
+    <item name="android:textSize">10sp</item>
     <item name="android:textColor">@color/com_appboy_custom_notification_time</item>
   </style>
 

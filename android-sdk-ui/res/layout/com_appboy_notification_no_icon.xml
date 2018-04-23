@@ -8,6 +8,7 @@
              android:id="@+id/status_bar_latest_event_content"
              android:layout_width="match_parent"
              android:layout_height="65dp"
-             tools:targetApi="11">
+             tools:targetApi="11"
+             tools:ignore="UnusedResources">
     <include layout="@layout/com_appboy_notification_base"/>
 </FrameLayout>

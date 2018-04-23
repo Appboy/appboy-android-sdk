@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
     <TextView
         android:id="@+id/com_appboy_cross_promotion_small_card_recommendation_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20.0dp"
-        style="@style/Appboy.Cards.CrossPromotionSmall.RecommendationTab"/>
+        style="@style/Appboy.Cards.CrossPromotionSmall.RecommendationTab"
+        tools:ignore="RtlHardcoded"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,7 +46,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10.0dp"
             android:layout_marginRight="10.0dp"
-            style="@style/Appboy.Cards.CrossPromotionSmall.Price"/>
+            style="@style/Appboy.Cards.CrossPromotionSmall.Price"
+            tools:ignore="RtlHardcoded"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -52,7 +55,8 @@
             android:layout_toRightOf="@id/com_appboy_cross_promotion_small_card_image"
             android:layout_toLeftOf="@id/com_appboy_cross_promotion_small_card_price"
             android:orientation="vertical"
-            android:layout_marginTop="10.0dp">
+            android:layout_marginTop="10.0dp"
+            tools:ignore="RtlHardcoded">
 
             <TextView
                 android:id="@+id/com_appboy_cross_promotion_small_card_title"

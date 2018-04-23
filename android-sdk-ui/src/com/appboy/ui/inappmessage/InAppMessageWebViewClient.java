@@ -3,6 +3,7 @@ package com.appboy.ui.inappmessage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -118,7 +119,7 @@ public class InAppMessageWebViewClient extends WebViewClient {
    * @param url the url
    * @return a bundle containing the key/value mapping of the query string. Will not be null.
    */
-  // Default visibility for testing
+  @VisibleForTesting
   static Bundle getBundleFromUrl(String url) {
     Bundle queryBundle = new Bundle();
     if (StringUtils.isNullOrBlank(url)) {

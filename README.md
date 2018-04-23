@@ -18,15 +18,14 @@ Successful marketing automation is essential to the future of your mobile app. B
 - `android-sdk-unity` - a library that enables Braze SDK integrations on Unity.
 - `samples` - a folder containing several sample apps for various integration options.
 
-## Building and Running the Sample Applications
+## Version Support
 
-1. Make sure the ANDROID_HOME environment variable is set to the location of your installed SDK or you have a
-   local.properties file which defines the sdk.dir property. You can check this by running `echo $ANDROID_HOME`, or
-   `echo %ANDROID_HOME%` in Windows.
-2. To assemble the UI library and the Droidboy APK, run `./gradlew assemble` (use gradlew.bat on Windows). You can find
-   assembled files in the `build/` subdirectories of the `android-sdk-ui` and `droidboy` projects. You can also
-   use the `installDebug` task if you have a device or emulator connected to adb and want to run Droidboy or Hello-Appboy.
-   You can see other available tasks by running `./gradlew tasks`.
+- The Braze Android SDK supports Android 4.0+ / API 14+ (Ice Cream Sandwich and up).
+- Last Target SDK Version: 26
+- Last Compiled Support Library Version: 27.1.0
+- Last Compiled Google Play Services Version (Optional): 12.0.1
+- Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
+- Braze requires either a custom [IAppboyImageLoader](http://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) or Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images. Fresco is not included nor enabled by default in the Braze library, and must be included and enabled explicitly by the parent app. Braze supports Fresco 0.6.0 through 1.3.0.
 
 ## Remote repository for gradle
 The version should match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
@@ -40,7 +39,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:2.2.+'
+   compile 'com.appboy:android-sdk-ui:2.3.+'
    ...
 }
 ```
@@ -49,7 +48,6 @@ dependencies {
 To install the UI library as an AAR file to your local maven repository, run the `install` task with
 `./gradlew install`. You can reference it with groupId `com.appboy` and artifactId `android-sdk-ui`. The version should
 match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
-
 
 ```
 repositories {
@@ -60,17 +58,19 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.2.+'
+  compile 'com.appboy:android-sdk-ui:2.3.+'
 }
 ```
 
-## Version Support
+## Building and Running the Sample Applications
 
-The Android SDK supports Android 4.0+ (Ice Cream Sandwich and up).
-
-Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
-
-Braze requires either a custom [IAppboyImageLoader](http://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) or Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images. Fresco is not included nor enabled by default in the Braze library, and must be included and enabled explicitly by the parent app. Braze supports Fresco 0.6.0 through 1.3.0.
+1. Make sure the ANDROID_HOME environment variable is set to the location of your installed SDK or you have a
+   local.properties file which defines the sdk.dir property. You can check this by running `echo $ANDROID_HOME`, or
+   `echo %ANDROID_HOME%` in Windows.
+2. To assemble the UI library and the Droidboy APK, run `./gradlew assemble` (use gradlew.bat on Windows). You can find
+   assembled files in the `build/` subdirectories of the `android-sdk-ui` and `droidboy` projects. You can also
+   use the `installDebug` task if you have a device or emulator connected to adb and want to run Droidboy or Hello-Appboy.
+   You can see other available tasks by running `./gradlew tasks`.
 
 ## Questions?
 

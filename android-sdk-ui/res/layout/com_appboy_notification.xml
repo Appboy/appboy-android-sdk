@@ -8,7 +8,8 @@
              android:id="@+id/status_bar_latest_event_content"
              android:layout_width="match_parent"
              android:layout_height="65dp"
-             tools:targetApi="11">
+             tools:targetApi="11"
+             tools:ignore="UnusedResources">
     <ImageView android:id="@+id/com_appboy_notification_icon"
              android:layout_width="@android:dimen/notification_large_icon_width"
              android:layout_height="@android:dimen/notification_large_icon_height"
@@ -16,5 +17,6 @@
     <include layout="@layout/com_appboy_notification_base"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="@android:dimen/notification_large_icon_width"/>
+             android:layout_marginLeft="@android:dimen/notification_large_icon_width"
+             tools:ignore="RtlHardcoded"/>
 </FrameLayout>

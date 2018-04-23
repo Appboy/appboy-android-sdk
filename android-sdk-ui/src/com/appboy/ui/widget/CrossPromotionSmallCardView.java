@@ -1,5 +1,6 @@
 package com.appboy.ui.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
@@ -62,6 +63,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
     return R.layout.com_appboy_cross_promotion_small_card;
   }
 
+  @SuppressLint("SetTextI18n")
   @Override
   public void onSetCard(final CrossPromotionSmallCard card) {
     mTitle.setText(card.getTitle());
@@ -76,6 +78,7 @@ public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmal
       mReviewCount.setVisibility(View.GONE);
       mStarRating.setVisibility(View.GONE);
     } else {
+      // This NumberFormat call does its own localization
       mReviewCount.setText("(" + NumberFormat.getInstance().format(card.getReviewCount()) + ")");
       mStarRating.setRating((float) card.getRating());
     }

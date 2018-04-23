@@ -15,14 +15,13 @@ import com.appboy.unity.utils.InAppMessageUtils;
  * This class allows UnityPlayerNativeActivity and UnityPlayerActivity instances to
  * integrate Braze by calling appropriate methods during each phase of the Android {@link Activity} lifecycle.
  */
-public class AppboyUnityPlayerNativeActivityWrapper {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityPlayerNativeActivityWrapper.class);
+public class AppboyUnityActivityWrapper {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityActivityWrapper.class);
 
   private UnityConfigurationProvider mUnityConfigurationProvider;
 
   /**
    * Call from {@link Activity#onCreate(Bundle)}
-   * @param activity
    */
   public void onCreateCalled(Activity activity) {
     mUnityConfigurationProvider = new UnityConfigurationProvider(activity);
@@ -33,7 +32,6 @@ public class AppboyUnityPlayerNativeActivityWrapper {
 
   /**
    * Call from {@link Activity#onStart()}
-   * @param activity
    */
   public void onStartCalled(Activity activity) {
     Appboy.getInstance(activity).openSession(activity);
@@ -48,7 +46,6 @@ public class AppboyUnityPlayerNativeActivityWrapper {
 
   /**
    * Call from {@link Activity#onResume()}
-   * @param activity
    */
   public void onResumeCalled(Activity activity) {
     AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
@@ -56,7 +53,6 @@ public class AppboyUnityPlayerNativeActivityWrapper {
 
   /**
    * Call from {@link Activity#onPause()}
-   * @param activity
    */
   public void onPauseCalled(Activity activity) {
     AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
@@ -64,7 +60,6 @@ public class AppboyUnityPlayerNativeActivityWrapper {
 
   /**
    * Call from {@link Activity#onStop()}
-   * @param activity
    */
   public void onStopCalled(Activity activity) {
     Appboy.getInstance(activity).closeSession(activity);
@@ -72,8 +67,6 @@ public class AppboyUnityPlayerNativeActivityWrapper {
 
   /**
    * Call from {@link Activity#onNewIntent(Intent)}
-   * @param intent
-   * @param activity
    */
   public void onNewIntentCalled(Intent intent, Activity activity) {
     // If the Activity is already open and we receive an intent to open the Activity again, we set
@@ -82,27 +75,21 @@ public class AppboyUnityPlayerNativeActivityWrapper {
   }
 
   /**
-   * See {@link AppboyUnityPlayerNativeActivity#logInAppMessageClick(String)}
-   * @param messageJSONString
-   * @param activity
+   * See {@link AppboyUnityPlayerActivity#logInAppMessageClick(String)} or {@link AppboyUnityPlayerNativeActivity#logInAppMessageClick(String)}
    */
   public void logInAppMessageClick(String messageJSONString, Activity activity) {
     InAppMessageUtils.logInAppMessageClick(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString));
   }
 
   /**
-   * See {@link AppboyUnityPlayerNativeActivity#logInAppMessageButtonClick(String, int)}
-   * @param messageJSONString
-   * @param activity
+   * See {@link AppboyUnityPlayerActivity#logInAppMessageButtonClick(String, int)} or {@link AppboyUnityPlayerNativeActivity#logInAppMessageButtonClick(String, int)}
    */
   public void logInAppMessageButtonClick(String messageJSONString, int buttonId, Activity activity) {
     InAppMessageUtils.logInAppMessageButtonClick(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString), buttonId);
   }
 
   /**
-   * See {@link AppboyUnityPlayerNativeActivity#logInAppMessageImpression(String)}
-   * @param messageJSONString
-   * @param activity
+   * See {@link AppboyUnityPlayerActivity#logInAppMessageImpression(String)} or {@link AppboyUnityPlayerNativeActivity#logInAppMessageImpression(String)}
    */
   public void logInAppMessageImpression(String messageJSONString, Activity activity) {
     InAppMessageUtils.logInAppMessageImpression(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString));

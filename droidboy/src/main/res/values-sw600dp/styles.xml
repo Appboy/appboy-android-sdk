@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- In-App Message Overrides for tablets -->
   <style name="Appboy.InAppMessage.Message">
     <item name="android:background">@android:color/transparent</item>
-    <item name="appboyInAppMessageCustomFontFile">@string/custom_font</item>
+    <item name="android:fontFamily" tools:targetApi="16">@font/bungee_font_family</item>
+    <item name="fontFamily">@font/bungee_font_family</item>
   </style>
   <style name="Appboy.InAppMessage.Header">
     <item name="android:layout_height">wrap_content</item>
@@ -33,7 +34,8 @@
     <item name="android:paddingRight">10.0dp</item>
     <item name="android:paddingTop">15.0dp</item>
     <item name="android:paddingBottom">15.0dp</item>
-    <item name="appboyInAppMessageCustomFontFile">@string/custom_font</item>
+    <item name="android:fontFamily" tools:targetApi="16">@font/bungee_font_family</item>
+    <item name="fontFamily">@font/bungee_font_family</item>
   </style>
   <style name="Appboy.Cards.ImageSwitcher">
     <item name="appboyFeedCustomReadIcon">@drawable/icon_unread</item>

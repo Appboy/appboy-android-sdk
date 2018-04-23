@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
   <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
   <TextView
       android:id="@+id/com_appboy_text_announcement_card_title"
@@ -10,7 +11,8 @@
       android:layout_marginLeft="10.0dp"
       android:layout_marginRight="10.0dp"
       android:layout_marginTop="10.0dp"
-      style="@style/Appboy.Cards.TextAnnouncement.Title"/>
+      style="@style/Appboy.Cards.TextAnnouncement.Title"
+      tools:ignore="RtlHardcoded"/>
 
   <TextView
       android:id="@+id/com_appboy_text_announcement_card_description"
@@ -20,7 +22,8 @@
       android:layout_below="@id/com_appboy_text_announcement_card_title"
       android:layout_marginLeft="10.0dp"
       android:layout_marginRight="10.0dp"
-      style="@style/Appboy.Cards.TextAnnouncement.Description"/>
+      style="@style/Appboy.Cards.TextAnnouncement.Description"
+      tools:ignore="RtlHardcoded"/>
 
   <!-- Optional -->
   <TextView
@@ -31,5 +34,6 @@
       android:layout_below="@id/com_appboy_text_announcement_card_description"
       android:layout_marginLeft="10.0dp"
       android:layout_marginRight="10.0dp"
-      style="@style/Appboy.Cards.TextAnnouncement.Domain"/>
+      style="@style/Appboy.Cards.TextAnnouncement.Domain"
+      tools:ignore="RtlHardcoded"/>
 </merge>

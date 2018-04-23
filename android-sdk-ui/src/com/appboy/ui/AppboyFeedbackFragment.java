@@ -17,10 +17,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.appboy.Appboy;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.support.ValidationUtils;
 
 public class AppboyFeedbackFragment extends Fragment {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFeedbackFragment.class);
 
   /**
    * Listener called in response to feedback lifecycle events.
@@ -179,7 +181,7 @@ public class AppboyFeedbackFragment extends Fragment {
       mMessageEditText.setError(null);
     } else {
       // Display error message in the message box
-      mMessageEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_invalid_message));
+      displayMessageTextError(R.string.com_appboy_feedback_form_invalid_message);
     }
     return validMessage;
   }
@@ -193,12 +195,28 @@ public class AppboyFeedbackFragment extends Fragment {
       mEmailEditText.setError(null);
     } else if (blankEmail) {
       // Display blank email error message in the email box
-      mEmailEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_empty_email));
+      displayEmailTextError(R.string.com_appboy_feedback_form_empty_email);
     } else {
       // Display general invalid email error message in the email box
-      mEmailEditText.setError(getResources().getString(R.string.com_appboy_feedback_form_invalid_email));
+      displayEmailTextError(R.string.com_appboy_feedback_form_invalid_email);
     }
     return validEmail;
+  }
+
+  private void displayEmailTextError(int resourceId) {
+    if (getActivity() != null) {
+      mEmailEditText.setError(getResources().getString(resourceId));
+    } else {
+      AppboyLogger.w(TAG, "Activity is null. Cannot set feedback form email error message");
+    }
+  }
+
+  private void displayMessageTextError(int resourceId) {
+    if (getActivity() != null) {
+      mMessageEditText.setError(getResources().getString(resourceId));
+    } else {
+      AppboyLogger.w(TAG, "Activity is null. Cannot set feedback form message error.");
+    }
   }
 
   private boolean ensureSendButton() {

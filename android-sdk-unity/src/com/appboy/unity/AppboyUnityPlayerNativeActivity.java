@@ -14,54 +14,54 @@ import com.unity3d.player.UnityPlayerNativeActivity;
  * must use the AppboyUnityPlayerNativeActivity in the com.appboy.unity.prime31compatible package instead.
  */
 public class AppboyUnityPlayerNativeActivity extends UnityPlayerNativeActivity {
-  private AppboyUnityPlayerNativeActivityWrapper mAppboyUnityPlayerNativeActivityWrapper;
+  private AppboyUnityActivityWrapper mAppboyUnityActivityWrapper;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAppboyUnityPlayerNativeActivityWrapper = new AppboyUnityPlayerNativeActivityWrapper();
-    mAppboyUnityPlayerNativeActivityWrapper.onCreateCalled(this);
+    mAppboyUnityActivityWrapper = new AppboyUnityActivityWrapper();
+    mAppboyUnityActivityWrapper.onCreateCalled(this);
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    mAppboyUnityPlayerNativeActivityWrapper.onStartCalled(this);
+    mAppboyUnityActivityWrapper.onStartCalled(this);
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    mAppboyUnityPlayerNativeActivityWrapper.onResumeCalled(this);
+    mAppboyUnityActivityWrapper.onResumeCalled(this);
   }
 
   @Override
   protected void onPause() {
-    mAppboyUnityPlayerNativeActivityWrapper.onPauseCalled(this);
+    mAppboyUnityActivityWrapper.onPauseCalled(this);
     super.onPause();
   }
 
   @Override
   protected void onStop() {
-    mAppboyUnityPlayerNativeActivityWrapper.onStopCalled(this);
+    mAppboyUnityActivityWrapper.onStopCalled(this);
     super.onStop();
   }
 
   @Override
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-    mAppboyUnityPlayerNativeActivityWrapper.onNewIntentCalled(intent, this);
+    mAppboyUnityActivityWrapper.onNewIntentCalled(intent, this);
   }
 
   public void logInAppMessageClick(String messageJSONString) {
-    mAppboyUnityPlayerNativeActivityWrapper.logInAppMessageClick(messageJSONString, this);
+    mAppboyUnityActivityWrapper.logInAppMessageClick(messageJSONString, this);
   }
 
   public void logInAppMessageButtonClick(String messageJSONString, int buttonId) {
-    mAppboyUnityPlayerNativeActivityWrapper.logInAppMessageButtonClick(messageJSONString, buttonId, this);
+    mAppboyUnityActivityWrapper.logInAppMessageButtonClick(messageJSONString, buttonId, this);
   }
 
   public void logInAppMessageImpression(String messageJSONString) {
-    mAppboyUnityPlayerNativeActivityWrapper.logInAppMessageImpression(messageJSONString, this);
+    mAppboyUnityActivityWrapper.logInAppMessageImpression(messageJSONString, this);
   }
 }

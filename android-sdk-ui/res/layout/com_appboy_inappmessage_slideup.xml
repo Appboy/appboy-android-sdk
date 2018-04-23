@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_appboy_inappmessage_slideup"
@@ -20,7 +19,7 @@
             android:id="@+id/com_appboy_inappmessage_slideup_icon"
             style="@style/Appboy.InAppMessage.Icon.Slideup"/>
     </RelativeLayout>
-    <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
+    <TextView
         android:id="@+id/com_appboy_inappmessage_slideup_message"
         style="@style/Appboy.InAppMessage.Message.Slideup"/>
     <ImageView

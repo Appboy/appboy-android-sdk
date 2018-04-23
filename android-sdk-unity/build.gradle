@@ -4,14 +4,14 @@ configurations {
 }
 
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.2.+'
-  provided files("libs/Prime31UnityActivity-1.0.jar")
-  provided files("libs/unity-2017.3.jar")
+  implementation 'com.appboy:android-sdk-ui:2.3.+'
+  compileOnly files("libs/Prime31UnityActivity-1.0.jar")
+  compileOnly files("libs/unity-2017.3.jar")
 }
 
 android {
   compileSdkVersion 26
-  buildToolsVersion '26.0.0'
+  buildToolsVersion '26.0.2'
 
   dexOptions {
     preDexLibraries = true
@@ -34,21 +34,6 @@ android {
       renderscript.srcDirs = ['src']
       res.srcDirs = ['res']
       assets.srcDirs = ['assets']
-    }
-  }
-}
-
-// rename release variant output aar file to appboy-unity.aar
-android.libraryVariants.all { variant ->
-  def name = variant.buildType.name
-  if (name.equals("debug")) {
-    return; // Skip debug builds.
-  }
-  variant.outputs.each { output ->
-    def file = output.outputFile
-    if (file != null && file.name.endsWith('.aar')) {
-      output.outputFile =
-          new File(file.parent, "appboy-unity.aar")
     }
   }
 }

@@ -32,10 +32,10 @@
                 <LinearLayout
                     android:id="@+id/com_appboy_inappmessage_modal_button_layout"
                     style="@style/Appboy.InAppMessage.Layout.Button.Modal.Graphic">
-                    <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
+                    <Button
                         android:id="@+id/com_appboy_inappmessage_modal_button_one"
                         style="@style/Appboy.InAppMessage.Button.Modal.One.Graphic"/>
-                    <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
+                    <Button
                         android:id="@+id/com_appboy_inappmessage_modal_button_two"
                         style="@style/Appboy.InAppMessage.Button.Modal.Two.Graphic"/>
                 </LinearLayout>

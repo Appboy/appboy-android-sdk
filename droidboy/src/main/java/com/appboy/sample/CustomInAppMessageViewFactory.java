@@ -1,5 +1,6 @@
 package com.appboy.sample;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 
@@ -7,6 +8,7 @@ import com.appboy.models.IInAppMessage;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 
 public class CustomInAppMessageViewFactory implements IInAppMessageViewFactory {
+  @SuppressLint("InflateParams")
   @Override
   public View createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
     CustomInAppMessageView inAppMessageView = (CustomInAppMessageView) activity.getLayoutInflater().inflate(R.layout.custom_inappmessage, null);

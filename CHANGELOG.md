@@ -1,7 +1,33 @@
-## 2.2.5
+## 2.3.0
 
 ##### Important
-- If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or 2.2.x.
+- If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or above.
+- The Braze SDK requires the support v4 library version 26 or above.
+
+##### Breaking
+- Removed the `appboyInAppMessageCustomFontFile` custom xml attribute. Custom font typefaces must now be located in the `res/font` directory.
+  - To override a Braze style, both `android:fontFamily` and `fontFamily` style attributes must be set to maintain compatibility across all SDK versions. Example below:
+  ```
+  <item name="android:fontFamily">@font/YOUR_CUSTOM_FONT_FAMILY</item>
+  <item name="fontFamily">@font/YOUR_CUSTOM_FONT_FAMILY</item>
+  ```
+  - See https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml.html for more information.
+- Removed `AppboyInAppMessageButtonView.java` and `AppboyInAppMessageTextView.java`.
+- Removed the `AppboyGeofenceService`. Geofence integration no longer requires a manifest registration. Any reference to `AppboyGeofenceService` can safely be removed from your manifest.
+- Renamed `AppboyUnityPlayerNativeActivityWrapper` to `AppboyUnityActivityWrapper`.
+
+##### Fixed
+- Fixed a bug where sessions could be opened and closed with a null activity.
+
+##### Added
+- Added the ability to have the Braze SDK automatically register for Firebase Cloud Messaging.
+  - Enabled via `com_appboy_firebase_cloud_messaging_registration_enabled` boolean attribute in XML or via `AppboyConfig.Builder.setIsFirebaseCloudMessagingRegistrationEnabled()`.
+  - The Firebase Cloud Messaging Sender ID is set via `com_appboy_firebase_cloud_messaging_sender_id` string attribute in XML or via `AppboyConfig.Builder.setFirebaseCloudMessagingSenderIdKey()`.
+  - The Firebase Cloud Messaging dependencies must still be compiled into your project. The Braze SDK does not compile any Firebase Cloud Messaging dependencies as part of this release.
+- Added UnityPlayerActivity support to AppboyUnityActivityWrapper. Previously only UnityPlayerNativeActivity was supported.
+- Added a AppboyUnityPlayerActivity class for the UnityPlayerActivity for both prime31 and non-prime31 integrations.
+
+## 2.2.5
 
 ##### Added
 - Added support for wiping all customer data created by the Braze SDK via `Appboy.wipeData()`.

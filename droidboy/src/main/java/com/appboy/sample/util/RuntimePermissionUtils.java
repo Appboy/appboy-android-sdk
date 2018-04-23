@@ -17,12 +17,12 @@ public class RuntimePermissionUtils {
     switch (requestCode) {
       case DROIDBOY_PERMISSION_LOCATION:
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          Log.i(TAG, "Location permission granted.");
-          Toast.makeText(context, "Location permission granted.", Toast.LENGTH_SHORT).show();
+          Log.i(TAG, "AppboyLocation permission granted.");
+          Toast.makeText(context, "AppboyLocation permission granted.", Toast.LENGTH_SHORT).show();
           AppboyLocationService.requestInitialization(context);
         } else {
-          Log.i(TAG, "Location permission NOT granted.");
-          Toast.makeText(context, "Location permission NOT granted.", Toast.LENGTH_SHORT).show();
+          Log.i(TAG, "AppboyLocation permission NOT granted.");
+          Toast.makeText(context, "AppboyLocation permission NOT granted.", Toast.LENGTH_SHORT).show();
         }
         break;
       case DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE:

@@ -4,17 +4,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'findbugs'
 
 dependencies {
-  compile project(':android-sdk-ui')
+  implementation project(':android-sdk-ui')
   // Note: This requires the Android Support Repository to be installed, please see the README.md
-  compile "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
-  compile "com.android.support:appcompat-v7:${SUPPORT_LIBS_VERSION}"
-  compile "com.android.support:design:${SUPPORT_LIBS_VERSION}"
-  compile "com.google.android.gms:play-services-ads:${PLAY_SERVICES_VERSION}"
-  compile "com.google.android.gms:play-services-location:${PLAY_SERVICES_VERSION}"
-  compile "com.google.android.gms:play-services-maps:${PLAY_SERVICES_VERSION}"
-  compile "com.facebook.fresco:fresco:${FACEBOOK_FRESCO_VERSION}"
-  compile "com.facebook.fresco:animated-gif:${FACEBOOK_FRESCO_VERSION}"
-  compile "io.branch.sdk.android:library:${BRANCH_VERSION}"
+  implementation "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
+  implementation "com.android.support:appcompat-v7:${SUPPORT_LIBS_VERSION}"
+  implementation "com.android.support:design:${SUPPORT_LIBS_VERSION}"
+  implementation "com.google.android.gms:play-services-ads:${PLAY_SERVICES_VERSION}"
+  implementation "com.google.android.gms:play-services-location:${PLAY_SERVICES_VERSION}"
+  implementation "com.google.android.gms:play-services-maps:${PLAY_SERVICES_VERSION}"
+  implementation "com.facebook.fresco:fresco:${FACEBOOK_FRESCO_VERSION}"
+  implementation "com.facebook.fresco:animated-gif:${FACEBOOK_FRESCO_VERSION}"
+  implementation "io.branch.sdk.android:library:${BRANCH_VERSION}"
 }
 
 android {
@@ -26,7 +26,7 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     applicationId "com.appboy.sample"
     versionName rootProject.ext.appVersionName
-    versionCode 101
+    versionCode 109
     resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
 
     buildConfigField "String", "CURRENT_BRANCH", "\"" + getCurrentBranch() + "\""

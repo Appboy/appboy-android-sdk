@@ -18,7 +18,8 @@
     android:gravity="top"
     android:orientation="vertical"
     android:layout_gravity="fill_vertical"
-    tools:targetApi="14">
+    tools:targetApi="14"
+    tools:ignore="UnusedResources">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +36,8 @@
                   android:singleLine="true"
                   android:ellipsize="end"
                   android:fadingEdge="horizontal"
-                  android:layout_weight="1"/>
+                  android:layout_weight="1"
+                  tools:ignore="NestedWeights"/>
         <TextView android:id="@+id/com_appboy_notification_time"
                   android:textAppearance="@style/Appboy.EventContent.Time"
                   android:layout_width="wrap_content"
@@ -44,7 +46,8 @@
                   android:layout_weight="0"
                   android:singleLine="true"
                   android:gravity="center"
-                  android:paddingLeft="8dp"/>
+                  android:paddingLeft="8dp"
+                  tools:ignore="RtlHardcoded,RtlSymmetry"/>
     </LinearLayout>
     <TextView android:id="@+id/com_appboy_notification_content"
               android:textAppearance="@style/Appboy.EventContent"

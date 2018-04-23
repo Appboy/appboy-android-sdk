@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <attr name="appboyInAppMessageCustomFontFile" format="string"/>
-  <declare-styleable name="com.appboy.ui.inappmessage.AppboyInAppMessageTextView">
-    <attr name="appboyInAppMessageCustomFontFile"/>
-  </declare-styleable>
-  <declare-styleable name="com.appboy.ui.inappmessage.AppboyInAppMessageButtonView">
-    <attr name="appboyInAppMessageCustomFontFile"/>
-  </declare-styleable>
   <declare-styleable name="com.appboy.ui.feed.AppboyImageSwitcher">
     <attr name="appboyFeedCustomReadIcon" format="integer"/>
     <attr name="appboyFeedCustomUnReadIcon" format="integer"/>

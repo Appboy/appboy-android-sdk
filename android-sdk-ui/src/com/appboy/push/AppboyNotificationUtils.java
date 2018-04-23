@@ -494,11 +494,9 @@ public class AppboyNotificationUtils {
         return true;
       }
       AppboyLogger.d(TAG, "Large icon bitmap url not present in extras. Attempting to use resource id instead.");
-      int largeNotificationIconResourceId = appConfigurationProvider
-          .getLargeNotificationIconResourceId();
+      int largeNotificationIconResourceId = appConfigurationProvider.getLargeNotificationIconResourceId();
       if (largeNotificationIconResourceId != 0) {
-        Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(),
-            largeNotificationIconResourceId);
+        Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(), largeNotificationIconResourceId);
         notificationBuilder.setLargeIcon(largeNotificationBitmap);
         return true;
       } else {

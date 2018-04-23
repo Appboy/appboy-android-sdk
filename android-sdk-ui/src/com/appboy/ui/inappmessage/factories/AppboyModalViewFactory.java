@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage.factories;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
@@ -53,6 +54,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     return view;
   }
 
+  @SuppressLint("InflateParams")
   AppboyInAppMessageModalView getAppropriateModalView(Activity activity, boolean isGraphic) {
     if (isGraphic) {
       return (AppboyInAppMessageModalView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_modal_graphic, null);

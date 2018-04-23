@@ -29,6 +29,7 @@ public class FirebaseApplication extends Application {
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
     AppboyLogger.setLogLevel(Log.VERBOSE);
 
+    // Example of how to register for Firebase Cloud Messaging manually.
     final Context applicationContext = this;
     new Thread(new Runnable() {
       @Override

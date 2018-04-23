@@ -137,7 +137,8 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
    * modalized in-app messages appropriately on tablets.
    */
   public int getLongEdge() {
-    return findViewById(R.id.com_appboy_inappmessage_full).getLayoutParams().height;
+    View inAppMessageFullView = findViewById(R.id.com_appboy_inappmessage_full);
+    return inAppMessageFullView.getLayoutParams().height;
   }
 
   /**
@@ -145,7 +146,8 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
    * modalized in-app messages appropriately on tablets.
    */
   public int getShortEdge() {
-    return findViewById(R.id.com_appboy_inappmessage_full).getLayoutParams().width;
+    View inAppMessageFullView = findViewById(R.id.com_appboy_inappmessage_full);
+    return inAppMessageFullView.getLayoutParams().width;
   }
 
   /**

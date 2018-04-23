@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage.factories;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.widget.RelativeLayout;
@@ -92,6 +93,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     return false;
   }
 
+  @SuppressLint("InflateParams")
   AppboyInAppMessageFullView getAppropriateFullView(Activity activity, boolean isGraphic) {
     if (isGraphic) {
       return (AppboyInAppMessageFullView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_full_graphic, null);

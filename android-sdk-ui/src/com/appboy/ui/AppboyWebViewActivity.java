@@ -1,5 +1,6 @@
 package com.appboy.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.activities.AppboyBaseActivity;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class AppboyWebViewActivity extends AppboyBaseActivity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyWebViewActivity.class);
   // The Intent extra string containing the URL to open.

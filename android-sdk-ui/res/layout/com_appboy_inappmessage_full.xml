@@ -33,10 +33,10 @@
                     <LinearLayout
                         android:id="@+id/com_appboy_inappmessage_full_text_layout"
                         style="@style/Appboy.InAppMessage.Layout.Text.Full">
-                        <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
+                        <TextView
                             android:id="@+id/com_appboy_inappmessage_full_header_text"
                             style="@style/Appboy.InAppMessage.Header.Full"/>
-                        <com.appboy.ui.inappmessage.AppboyInAppMessageTextView
+                        <TextView
                             android:id="@+id/com_appboy_inappmessage_full_message"
                             style="@style/Appboy.InAppMessage.Message.Full"/>
                     </LinearLayout>
@@ -44,10 +44,10 @@
                 <LinearLayout
                     android:id="@+id/com_appboy_inappmessage_full_button_layout"
                     style="@style/Appboy.InAppMessage.Layout.Button.Full">
-                    <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
+                    <Button
                         android:id="@+id/com_appboy_inappmessage_full_button_one"
                         style="@style/Appboy.InAppMessage.Button.Full.One"/>
-                    <com.appboy.ui.inappmessage.AppboyInAppMessageButtonView
+                    <Button
                         android:id="@+id/com_appboy_inappmessage_full_button_two"
                         style="@style/Appboy.InAppMessage.Button.Full.Two"/>
                 </LinearLayout>

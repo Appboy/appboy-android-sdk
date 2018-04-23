@@ -50,7 +50,6 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name="com.appboy.services.AppboyGeofenceService"/>
     <service android:name="com.appboy.services.AppboyLocationService"/>
 
     <activity android:name=".GeofencesMapActivity" />
