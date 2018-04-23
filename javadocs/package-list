@@ -8,6 +8,7 @@ com.appboy.models
 com.appboy.models.cards
 com.appboy.models.outgoing
 com.appboy.push
+com.appboy.receivers
 com.appboy.services
 com.appboy.support
 com.appboy.ui
