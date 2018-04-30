@@ -11,18 +11,12 @@ import com.appboy.support.AppboyLogger;
 
 public class InAppMessageUtils {
     private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageUtils.class);
-    private static Context _context;
 
-    public static void setContext(Context context) {
-        _context = context;
+    public static IInAppMessage inAppMessageFromString(Context context, String messageJSONString) {
+        return Appboy.getInstance(context).deserializeInAppMessageString(messageJSONString);
     }
 
-    public static IInAppMessage inAppMessageFromString(String messageJSONString) {
-        return Appboy.getInstance(_context).deserializeInAppMessageString(messageJSONString);
-    }
-
-    public static void logInAppMessageClick(String messageJSONString) {
-        IInAppMessage inAppMessage = inAppMessageFromString(messageJSONString);
+    public static void logInAppMessageClick(IInAppMessage inAppMessage) {
         if (inAppMessage != null) {
             inAppMessage.logClick();
         } else {
@@ -30,14 +24,13 @@ public class InAppMessageUtils {
         }
     }
 
-    public static void logInAppMessageButtonClick(String messageJSONString, int buttonId) {
-        IInAppMessage inAppMessage = inAppMessageFromString(messageJSONString);
+    public static void logInAppMessageButtonClick(IInAppMessage inAppMessage, int buttonId) {
         if (inAppMessage == null) {
             Log.e(TAG, "The in-app message is null. Not logging in-app message button click.");
             return;
         }
         if (inAppMessage instanceof IInAppMessageImmersive) {
-            IInAppMessageImmersive inAppMessageImmersive = (IInAppMessageImmersive) inAppMessage;
+            IInAppMessageImmersive inAppMessageImmersive = (IInAppMessageImmersive)inAppMessage;
             for (MessageButton button : inAppMessageImmersive.getMessageButtons()) {
                 if (button.getId() == buttonId) {
                     inAppMessageImmersive.logButtonClick(button);
@@ -50,8 +43,7 @@ public class InAppMessageUtils {
         }
     }
 
-    public static void logInAppMessageImpression(String messageJSONString) {
-        IInAppMessage inAppMessage = inAppMessageFromString(messageJSONString);
+    public static void logInAppMessageImpression(IInAppMessage inAppMessage) {
         if (inAppMessage != null) {
             inAppMessage.logImpression();
         } else {
