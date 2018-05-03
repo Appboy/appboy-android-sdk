@@ -73,25 +73,4 @@ public class AppboyUnityActivityWrapper {
     // the new intent as the current one (which has the new intent extras).
     activity.setIntent(intent);
   }
-
-  /**
-   * See {@link AppboyUnityPlayerActivity#logInAppMessageClick(String)} or {@link AppboyUnityPlayerNativeActivity#logInAppMessageClick(String)}
-   */
-  public void logInAppMessageClick(String messageJSONString, Activity activity) {
-    InAppMessageUtils.logInAppMessageClick(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString));
-  }
-
-  /**
-   * See {@link AppboyUnityPlayerActivity#logInAppMessageButtonClick(String, int)} or {@link AppboyUnityPlayerNativeActivity#logInAppMessageButtonClick(String, int)}
-   */
-  public void logInAppMessageButtonClick(String messageJSONString, int buttonId, Activity activity) {
-    InAppMessageUtils.logInAppMessageButtonClick(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString), buttonId);
-  }
-
-  /**
-   * See {@link AppboyUnityPlayerActivity#logInAppMessageImpression(String)} or {@link AppboyUnityPlayerNativeActivity#logInAppMessageImpression(String)}
-   */
-  public void logInAppMessageImpression(String messageJSONString, Activity activity) {
-    InAppMessageUtils.logInAppMessageImpression(InAppMessageUtils.inAppMessageFromString(activity, messageJSONString));
-  }
 }

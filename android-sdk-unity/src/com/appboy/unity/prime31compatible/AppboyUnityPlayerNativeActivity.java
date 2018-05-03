@@ -54,16 +54,4 @@ public class AppboyUnityPlayerNativeActivity extends UnityPlayerNativeActivity {
     super.onNewIntent(intent);
     mAppboyUnityActivityWrapper.onNewIntentCalled(intent, this);
   }
-
-  public void logInAppMessageClick(String messageJSONString) {
-    mAppboyUnityActivityWrapper.logInAppMessageClick(messageJSONString, this);
-  }
-
-  public void logInAppMessageButtonClick(String messageJSONString, int buttonId) {
-    mAppboyUnityActivityWrapper.logInAppMessageButtonClick(messageJSONString, buttonId, this);
-  }
-
-  public void logInAppMessageImpression(String messageJSONString) {
-    mAppboyUnityActivityWrapper.logInAppMessageImpression(messageJSONString, this);
-  }
 }
