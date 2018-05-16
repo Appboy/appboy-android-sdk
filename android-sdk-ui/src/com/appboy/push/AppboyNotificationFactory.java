@@ -52,8 +52,9 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setTickerIfPresent(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setSetShowWhen(notificationBuilder, notificationExtras);
 
-    // Add intent to fire when the notification is opened.
+    // Add intent to fire when the notification is opened or deleted.
     AppboyNotificationUtils.setContentIntentIfPresent(context, notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setDeleteIntent(context, notificationBuilder, notificationExtras);
     int smallNotificationIconResourceId = AppboyNotificationUtils.setSmallIcon(appConfigurationProvider, notificationBuilder);
 
     boolean usingLargeIcon = AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);

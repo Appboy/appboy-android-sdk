@@ -49,6 +49,8 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       AppboyNotificationUtils.handlePushStoryPageClicked(context, intent);
     } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
       AppboyNotificationUtils.handleNotificationOpened(context, intent);
+    } else if (Constants.APPBOY_PUSH_DELETED_ACTION.equals(action)) {
+      AppboyNotificationUtils.handleNotificationDeleted(context, intent);
     } else {
       AppboyLogger.w(TAG, "The GCM receiver received a message not sent from Appboy. Ignoring the message.");
     }
@@ -120,6 +122,10 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
       // We convert the JSON in the extras key into a Bundle.
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(gcmExtras);
       gcmExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
+      
+      if (!gcmExtras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
+        gcmExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
+      }
 
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
         AppboyLogger.d(TAG, "Received notification push");

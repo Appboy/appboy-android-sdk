@@ -9,7 +9,6 @@ import com.appboy.Appboy;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
-import com.appboy.unity.utils.InAppMessageUtils;
 
 /**
  * This class allows UnityPlayerNativeActivity and UnityPlayerActivity instances to

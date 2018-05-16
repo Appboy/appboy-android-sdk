@@ -39,6 +39,8 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       AppboyNotificationActionUtils.handleNotificationActionClicked(context, intent);
     } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
       AppboyNotificationUtils.handleNotificationOpened(context, intent);
+    } else if (Constants.APPBOY_PUSH_DELETED_ACTION.equals(action)) {
+      AppboyNotificationUtils.handleNotificationDeleted(context, intent);
     } else {
       AppboyLogger.w(TAG, "The ADM receiver received a message not sent from Appboy. Ignoring the message.");
     }
@@ -90,6 +92,10 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     } else {
       Bundle admExtras = intent.getExtras();
       AppboyLogger.d(TAG, "Push message payload received: " + admExtras);
+
+      if (!admExtras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
+        admExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
+      }
 
       // Log the push delivery event
       AppboyNotificationUtils.logPushDeliveryEvent(context, admExtras);

@@ -27,6 +27,7 @@
             <intent-filter>
                 <action android:name="${applicationId}.intent.APPBOY_PUSH_RECEIVED" />
                 <action android:name="${applicationId}.intent.APPBOY_NOTIFICATION_OPENED" />
+                <action android:name="${applicationId}.intent.APPBOY_PUSH_DELETED" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.appboy.AppboyGcmReceiver" android:permission="com.google.android.c2dm.permission.SEND">

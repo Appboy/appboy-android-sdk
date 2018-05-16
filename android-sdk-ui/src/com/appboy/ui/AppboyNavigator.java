@@ -60,6 +60,7 @@ public class AppboyNavigator implements IAppboyNavigator {
    *                        a URI.
    */
   public static void setAppboyNavigator(IAppboyNavigator appboyNavigator) {
+    AppboyLogger.d(TAG, "Custom IAppboyNavigator set");
     sCustomAppboyNavigator = appboyNavigator;
   }
 }

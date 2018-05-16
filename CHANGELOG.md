@@ -1,8 +1,26 @@
-## 2.3.0
+## 2.4.0
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or above.
 - The Braze SDK requires the support v4 library version 26 or above.
+
+##### Fixed
+- Fixed a bug where calling `Appboy.wipeData()` would throw an uncaught exception when the Google Play location services library was not present.
+
+##### Breaking
+- Removed `logInAppMessageClick`, `logInAppMessageButtonClick`, and `logInAppMessageImpression` from Appboy Unity player subclasses and `AppboyUnityActivityWrapper`.
+
+##### Added
+- Added the ability to listen for notification deleted intents from the `AppboyGcmReceiver` via the action suffix `AppboyNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX`.
+- Added a notification creation timestamp to notifications built from the `AppboyGcmReceiver`. This allows for calculating the duration of a notification. Intents will contain `Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS` in the intent extras bundle.
+
+##### Changed
+- Deprecated `AppboyNotificationUtils.isUninstallTrackingPush()` to always return false. Uninstall tracking no longer requires sending a silent push notification to devices.
+
+## 2.3.0
+
+##### Known Issues with version 2.3.0
+- If the Google Play location services library is not present, calls to `Appboy.wipeData()` will throw an uncaught exception.
 
 ##### Breaking
 - Removed the `appboyInAppMessageCustomFontFile` custom xml attribute. Custom font typefaces must now be located in the `res/font` directory.

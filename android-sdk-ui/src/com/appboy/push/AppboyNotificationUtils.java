@@ -49,8 +49,10 @@ import java.util.Iterator;
 public class AppboyNotificationUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationUtils.class);
   private static final String SOURCE_KEY = "source";
+
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
+  public static final String APPBOY_NOTIFICATION_DELETED_SUFFIX = ".intent.APPBOY_PUSH_DELETED";
 
   /**
    * Handles a push notification click. Called by GCM/ADM receiver when a
@@ -58,7 +60,7 @@ public class AppboyNotificationUtils {
    * <p/>
    * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
    *
-   * @param context
+   * @param context Application context
    * @param intent the internal notification clicked intent constructed in
    *               {@link #setContentIntentIfPresent}
    */
@@ -71,7 +73,28 @@ public class AppboyNotificationUtils {
         routeUserWithNotificationOpenedIntent(context, intent);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Exception occurred attempting to handle notification.", e);
+      AppboyLogger.e(TAG, "Exception occurred attempting to handle notification opened intent.", e);
+    }
+  }
+
+  /**
+   * Handles a push notification deletion by the user. Called by GCM/ADM receiver when a
+   * Braze push notification delete intent is received.
+   * <p/>
+   * See {@link android.support.v4.app.NotificationCompat.Builder#setDeleteIntent(PendingIntent)}
+   * <p/>
+   * The broadcast message action is <host-app-package-name> + {@link #APPBOY_NOTIFICATION_DELETED_SUFFIX}.
+   *
+   * @param context Application context
+   * @param intent the internal notification delete intent constructed in
+   *               {@link #setDeleteIntent(Context, NotificationCompat.Builder, Bundle)}
+   */
+  public static void handleNotificationDeleted(Context context, Intent intent) {
+    try {
+      AppboyLogger.d(TAG, "Sending notification deleted broadcast");
+      sendPushActionIntent(context, AppboyNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX, intent.getExtras());
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Exception occurred attempting to handle notification delete intent.", e);
     }
   }
 
@@ -198,13 +221,8 @@ public class AppboyNotificationUtils {
    * message action is <host-app-package-name>.intent.APPBOY_PUSH_RECEIVED.
    */
   public static void sendPushMessageReceivedBroadcast(Context context, Bundle notificationExtras) {
-    String pushReceivedAction = context.getPackageName() + APPBOY_NOTIFICATION_RECEIVED_SUFFIX;
-    Intent pushReceivedIntent = new Intent(pushReceivedAction);
-    if (notificationExtras != null) {
-      pushReceivedIntent.putExtras(notificationExtras);
-    }
     AppboyLogger.d(TAG, "Sending push message received broadcast");
-    IntentUtils.addComponentAndSendBroadcast(context, pushReceivedIntent);
+    sendPushActionIntent(context, context.getPackageName() + APPBOY_NOTIFICATION_RECEIVED_SUFFIX, notificationExtras);
   }
 
   /**
@@ -430,14 +448,20 @@ public class AppboyNotificationUtils {
    */
   public static void setContentIntentIfPresent(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     try {
-      Intent pushOpenedIntent = new Intent(Constants.APPBOY_PUSH_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
-      if (notificationExtras != null) {
-        pushOpenedIntent.putExtras(notificationExtras);
-      }
-      PendingIntent pushOpenedPendingIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushOpenedIntent, PendingIntent.FLAG_ONE_SHOT);
+      PendingIntent pushOpenedPendingIntent = getPushActionPendingIntent(context, Constants.APPBOY_PUSH_CLICKED_ACTION, notificationExtras);
       notificationBuilder.setContentIntent(pushOpenedPendingIntent);
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error setting content.", e);
+      AppboyLogger.e(TAG, "Error setting content intent.", e);
+    }
+  }
+
+  public static void setDeleteIntent(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    AppboyLogger.d(TAG, "Setting delete intent.");
+    try {
+      PendingIntent pushDeletedPendingIntent = getPushActionPendingIntent(context, Constants.APPBOY_PUSH_DELETED_ACTION, notificationExtras);
+      notificationBuilder.setDeleteIntent(pushDeletedPendingIntent);
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Error setting delete intent.", e);
     }
   }
 
@@ -774,28 +798,11 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Returns true if the bundle is from a push sent by Braze for uninstall tracking.
-   * <p/>
-   * Uninstall tracking push messages are content-only (i.e. non-display) push messages. You can use this
-   * method to detect that a push is from a Braze uninstall tracking push and ensure your broadcast receiver
-   * doesn't take any actions it shouldn't if a content push is from Braze uninstall tracking (e.g. don't ping your server
-   * for content on Braze uninstall push).
-   *
-   * @param notificationExtras A notificationExtras bundle that is passed with the push recieved intent when a GCM/ADM message is
-   *                           received, and that Braze passes in the intent to registered receivers.
+   * Returns false. Uninstall tracking no longer sends a silent push notification to devices and thus this method is no longer needed.
    */
+  @Deprecated
   public static boolean isUninstallTrackingPush(Bundle notificationExtras) {
-    if (notificationExtras != null) {
-      // The ADM case where extras are flattened
-      if (notificationExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY)) {
-        return true;
-      }
-      // The GCM case where extras are in a separate bundle
-      Bundle appboyExtras = notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
-      if (appboyExtras != null) {
-        return appboyExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY);
-      }
-    }
+    AppboyLogger.w(TAG, "Uninstall tracking no longer sends a silent push notification to devices. This method should not be used. Returning false.");
     return false;
   }
 
@@ -908,20 +915,15 @@ public class AppboyNotificationUtils {
 
   /**
    * Sends a push notification opened broadcast to the client broadcast receiver.
-   * The broadcast message action is <host-app-package-name>.intent.APPBOY_NOTIFICATION_OPENED.
+   * The broadcast message action is <host-app-package-name> + {@link #APPBOY_NOTIFICATION_OPENED_SUFFIX}.
    *
-   * @param context
+   * @param context Application context
    * @param intent the internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
     AppboyLogger.d(TAG, "Sending notification opened broadcast");
-    String pushOpenedAction = context.getPackageName() + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
-    Intent pushOpenedIntent = new Intent(pushOpenedAction);
-    if (intent.getExtras() != null) {
-      pushOpenedIntent.putExtras(intent.getExtras());
-    }
-    IntentUtils.addComponentAndSendBroadcast(context, pushOpenedIntent);
+    sendPushActionIntent(context, AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX, intent.getExtras());
   }
 
   /**
@@ -973,5 +975,36 @@ public class AppboyNotificationUtils {
   @TargetApi(Build.VERSION_CODES.O)
   private static int getNotificationChannelImportance(NotificationChannel notificationChannel) {
     return notificationChannel.getImportance();
+  }
+
+  /**
+   * Creates a {@link PendingIntent} using the given action and extras specified.
+   *
+   * @param context Application context
+   * @param action The action to set for the {@link PendingIntent}
+   * @param notificationExtras The extras to set for the {@link PendingIntent}, if not null
+   */
+  private static PendingIntent getPushActionPendingIntent(Context context, String action, Bundle notificationExtras) {
+    Intent pushActionIntent = new Intent(action).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+    if (notificationExtras != null) {
+      pushActionIntent.putExtras(notificationExtras);
+    }
+    return PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushActionIntent, PendingIntent.FLAG_ONE_SHOT);
+  }
+
+  /**
+   * Broadcasts an intent with the given action suffix. Will copy the extras from the input intent.
+   *
+   * @param context Application context.
+   * @param notificationExtras The extras to attach to the intent.
+   * @param actionSuffix The action suffix. Will be appended to the host package name to create the full intent action.
+   */
+  private static void sendPushActionIntent(Context context, String actionSuffix, Bundle notificationExtras) {
+    String pushAction = context.getPackageName() + actionSuffix;
+    Intent pushIntent = new Intent(pushAction);
+    if (notificationExtras != null) {
+      pushIntent.putExtras(notificationExtras);
+    }
+    IntentUtils.addComponentAndSendBroadcast(context, pushIntent);
   }
 }
