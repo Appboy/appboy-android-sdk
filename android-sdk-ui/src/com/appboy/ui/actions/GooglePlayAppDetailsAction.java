@@ -64,7 +64,7 @@ public final class GooglePlayAppDetailsAction implements IAction {
         uriString = PLAY_STORE_WEB_BASE + mPackageName;
       }
       Uri uri = Uri.parse(uriString);
-      UriAction.openUriWithWebView(context, uri, null);
+      UriAction.openUriWithWebViewActivity(context, uri, null);
     } else {
       if (mAppStore == AppStore.KINDLE_STORE) {
         uriString = AMAZON_STORE_APP_BASE + mKindleId;

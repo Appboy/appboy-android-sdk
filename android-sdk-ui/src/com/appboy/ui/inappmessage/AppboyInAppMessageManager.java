@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 
 import com.appboy.Appboy;
+import com.appboy.enums.inappmessage.InAppMessageFailureType;
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
@@ -107,6 +108,12 @@ public final class AppboyInAppMessageManager {
   // manager listeners
   private IInAppMessageManagerListener mDefaultInAppMessageManagerListener = new AppboyDefaultInAppMessageManagerListener();
   private IInAppMessageManagerListener mCustomInAppMessageManagerListener;
+  /**
+   * A custom listener to be fired for control in-app messages.
+   * <p/>
+   * see {@link IInAppMessage#isControl()}
+   */
+  private IInAppMessageManagerListener mCustomControlInAppMessageManagerListener;
 
   // html action listeners
   private IHtmlInAppMessageActionListener mDefaultHtmlInAppMessageActionListener = new AppboyDefaultHtmlInAppMessageActionListener();
@@ -227,16 +234,31 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
-   * Assigns a custom IInAppMessageManagerListener that will be used when displaying in-app messages. To revert
-   * back to the default IInAppMessageManagerListener, call the setCustomInAppMessageManagerListener method with
-   * null.
+   * Assigns a custom {@link IInAppMessageManagerListener} that will be used when displaying in-app messages. To revert
+   * back to the default {@link IInAppMessageManagerListener}, call the
+   * {@link AppboyInAppMessageManager#setCustomInAppMessageManagerListener(IInAppMessageManagerListener)}  method with null.
+   * <p/>
+   * see {@link IInAppMessage#isControl()}
    *
-   * @param inAppMessageManagerListener A custom IInAppMessageManagerListener or null (to revert back to the
-   *                                    default IInAppMessageManagerListener).
+   * @param inAppMessageManagerListener A custom {@link IInAppMessageManagerListener} or null (to revert back to the
+   *                                    default {@link IInAppMessageManagerListener}).
    */
   public void setCustomInAppMessageManagerListener(IInAppMessageManagerListener inAppMessageManagerListener) {
     AppboyLogger.d(TAG, "Custom InAppMessageManagerListener set");
     mCustomInAppMessageManagerListener = inAppMessageManagerListener;
+  }
+
+  /**
+   * Assigns a custom {@link IInAppMessageManagerListener} that will be used when displaying control in-app messages. To revert
+   * back to the default {@link IInAppMessageManagerListener}, call the
+   * {@link AppboyInAppMessageManager#setCustomControlInAppMessageManagerListener(IInAppMessageManagerListener)} method with null.
+   *
+   * @param inAppMessageManagerListener A custom {@link IInAppMessageManagerListener} for control in-app messages or null (to revert back to the
+   *                                    default {@link IInAppMessageManagerListener}).
+   */
+  public void setCustomControlInAppMessageManagerListener(IInAppMessageManagerListener inAppMessageManagerListener) {
+    AppboyLogger.d(TAG, "Custom ControlInAppMessageManagerListener set. This listener will only be used for control in-app messages.");
+    mCustomControlInAppMessageManagerListener = inAppMessageManagerListener;
   }
 
   /**
@@ -313,7 +335,14 @@ public final class AppboyInAppMessageManager {
       }
 
       final IInAppMessage inAppMessage = mInAppMessageStack.pop();
-      InAppMessageOperation inAppMessageOperation = getInAppMessageManagerListener().beforeInAppMessageDisplayed(inAppMessage);
+      InAppMessageOperation inAppMessageOperation;
+
+      if (!inAppMessage.isControl()) {
+        inAppMessageOperation = getInAppMessageManagerListener().beforeInAppMessageDisplayed(inAppMessage);
+      } else {
+        AppboyLogger.d(TAG, "Using the control in-app message manager listener.");
+        inAppMessageOperation = getControlInAppMessageManagerListener().beforeInAppMessageDisplayed(inAppMessage);
+      }
 
       switch (inAppMessageOperation) {
         case DISPLAY_NOW:
@@ -373,6 +402,15 @@ public final class AppboyInAppMessageManager {
     return mCustomInAppMessageManagerListener != null ? mCustomInAppMessageManagerListener : mDefaultInAppMessageManagerListener;
   }
 
+  /**
+   * A {@link IInAppMessageManagerListener} to be used only for control in-app messages.
+   * <p/>
+   * see {@link IInAppMessage#isControl()}
+   */
+  public IInAppMessageManagerListener getControlInAppMessageManagerListener() {
+    return mCustomControlInAppMessageManagerListener != null ? mCustomControlInAppMessageManagerListener : mDefaultInAppMessageManagerListener;
+  }
+
   public IHtmlInAppMessageActionListener getHtmlInAppMessageActionListener() {
     return mCustomHtmlInAppMessageActionListener != null ? mCustomHtmlInAppMessageActionListener : mDefaultHtmlInAppMessageActionListener;
   }
@@ -386,6 +424,7 @@ public final class AppboyInAppMessageManager {
   }
 
   public void resetAfterInAppMessageClose() {
+    AppboyLogger.v(TAG, "Resetting after in-app message close.");
     mInAppMessageViewWrapper = null;
     mDisplayingInAppMessage.set(false);
     if (mActivity != null && mOriginalOrientation != null) {
@@ -444,20 +483,34 @@ public final class AppboyInAppMessageManager {
         AppboyLogger.d(TAG, "Not checking expiration status for carry-over in-app message.");
       }
       if (!verifyOrientationStatus(inAppMessage)) {
+        // No display failure gets logged here since control in-app messages would also be affected.
         throw new Exception("Current orientation did not match specified orientation for in-app message. Doing nothing.");
       }
+
+      // At this point, the only factors that would inhibit in-app message display are view creation issues.
+      // Since control in-app messages have no view, this is the end of execution for control in-app messages
+      if (inAppMessage.isControl()) {
+        AppboyLogger.d(TAG, "Not displaying control in-app message. Logging impression and ending display execution.");
+        inAppMessage.logImpression();
+        resetAfterInAppMessageClose();
+        return true;
+      }
+
       IInAppMessageViewFactory inAppMessageViewFactory = getInAppMessageViewFactory(inAppMessage);
       if (inAppMessageViewFactory == null) {
+        inAppMessage.logDisplayFailure(InAppMessageFailureType.DISPLAY_VIEW_GENERATION);
         throw new Exception("ViewFactory from getInAppMessageViewFactory was null.");
       }
       final View inAppMessageView = inAppMessageViewFactory.createInAppMessageView(mActivity, inAppMessage);
 
       if (inAppMessageView == null) {
+        inAppMessage.logDisplayFailure(InAppMessageFailureType.DISPLAY_VIEW_GENERATION);
         throw new Exception("The in-app message view returned from the IInAppMessageViewFactory was null. The in-app message will "
             + "not be displayed and will not be put back on the stack.");
       }
 
       if (inAppMessageView.getParent() != null) {
+        inAppMessage.logDisplayFailure(InAppMessageFailureType.DISPLAY_VIEW_GENERATION);
         throw new Exception("The in-app message view returned from the IInAppMessageViewFactory already has a parent. This "
             + "is a sign that the view is being reused. The IInAppMessageViewFactory method createInAppMessageView"
             + "must return a new view without a parent. The in-app message will not be displayed and will not "

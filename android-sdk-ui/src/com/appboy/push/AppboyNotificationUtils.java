@@ -222,7 +222,7 @@ public class AppboyNotificationUtils {
    */
   public static void sendPushMessageReceivedBroadcast(Context context, Bundle notificationExtras) {
     AppboyLogger.d(TAG, "Sending push message received broadcast");
-    sendPushActionIntent(context, context.getPackageName() + APPBOY_NOTIFICATION_RECEIVED_SUFFIX, notificationExtras);
+    sendPushActionIntent(context, APPBOY_NOTIFICATION_RECEIVED_SUFFIX, notificationExtras);
   }
 
   /**

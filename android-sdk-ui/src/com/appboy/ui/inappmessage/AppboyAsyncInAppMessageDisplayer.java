@@ -8,6 +8,7 @@ import android.os.Handler;
 import com.appboy.Appboy;
 import com.appboy.IAppboyImageLoader;
 import com.appboy.enums.AppboyViewBounds;
+import com.appboy.enums.inappmessage.InAppMessageFailureType;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageHtmlBase;
 import com.appboy.models.InAppMessageHtmlFull;
@@ -31,25 +32,33 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
   @Override
   protected IInAppMessage doInBackground(IInAppMessage... inAppMessages) {
     try {
-      AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
-      boolean assetDownloadSucceeded;
       IInAppMessage inAppMessage = inAppMessages[0];
+      if (inAppMessage.isControl()) {
+        AppboyLogger.d(TAG, "Skipping in-app message preparation for control in-app message.");
+        return inAppMessage;
+      }
+      AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
       Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
       if (inAppMessage instanceof InAppMessageHtmlFull) {
         // Note, this will clear the IAM cache, which is OK because no other IAM is currently displaying
         // and AsyncTasks are are executed on a single thread, which guarantees no other IAM is
         // relying on the cache dir right now.
         // See http://developer.android.com/reference/android/os/AsyncTask.html#execute(Params...)
-        assetDownloadSucceeded = prepareInAppMessageWithHtml(inAppMessage);
-      } else {
-        if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
-          assetDownloadSucceeded = prepareInAppMessageWithFresco(inAppMessage);
-        } else {
-          assetDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
+        if (!prepareInAppMessageWithHtml(inAppMessage)) {
+          inAppMessage.logDisplayFailure(InAppMessageFailureType.ZIP_ASSET_DOWNLOAD);
+          return null;
         }
-      }
-      if (!assetDownloadSucceeded) {
-        return null;
+      } else {
+        boolean imageDownloadSucceeded;
+        if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
+          imageDownloadSucceeded = prepareInAppMessageWithFresco(inAppMessage);
+        } else {
+          imageDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
+        }
+        if (!imageDownloadSucceeded) {
+          inAppMessage.logDisplayFailure(InAppMessageFailureType.IMAGE_DOWNLOAD);
+          return null;
+        }
       }
       return inAppMessage;
     } catch (Exception e) {

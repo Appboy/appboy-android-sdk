@@ -56,9 +56,14 @@ public class UriAction implements IAction {
       AppboyLogger.d(TAG, "Not executing local Uri: " + mUri);
       return;
     }
-    AppboyLogger.d(TAG, "Executing Uri action from channel " + mChannel + ": " + mUri + ". UseWebView: " + mUseWebView);
-    if (mUseWebView) {
-      openUriWithWebView(context, mUri, mExtras);
+    AppboyLogger.d(TAG, "Executing Uri action from channel " + mChannel + ": " + mUri + ". UseWebView: " + mUseWebView + ". Extras: " + mExtras);
+    if (mUseWebView && AppboyFileUtils.REMOTE_SCHEMES.contains(mUri.getScheme())) {
+      // If the scheme is not a remote scheme, we open it using an ACTION_VIEW intent.
+      if (mChannel.equals(Channel.PUSH)) {
+        openUriWithWebViewActivityFromPush(context, mUri, mExtras);
+      } else {
+        openUriWithWebViewActivity(context, mUri, mExtras);
+      }
     } else {
       if (mChannel.equals(Channel.PUSH)) {
         openUriWithActionViewFromPush(context, mUri, mExtras);
@@ -89,21 +94,30 @@ public class UriAction implements IAction {
     return mExtras;
   }
 
-  static void openUriWithWebView(Context context, Uri uri, Bundle extras) {
-    // If the scheme is not a remote scheme, we open it using an ACTION_VIEW intent.
-    if (!AppboyFileUtils.REMOTE_SCHEMES.contains(uri.getScheme())) {
-      Log.d(TAG, "Opening non-remote scheme uri with action_view intent.");
-      openUriWithActionView(context, uri, extras);
-      return;
-    }
+  /**
+   * Opens the remote scheme Uri in {@link AppboyWebViewActivity}.
+   */
+  static void openUriWithWebViewActivity(Context context, Uri uri, Bundle extras) {
+    Intent intent = getWebViewActivityIntent(context, uri, extras);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     try {
-      Intent intent = new Intent(context, AppboyWebViewActivity.class);
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-      if (extras != null) {
-        intent.putExtras(extras);
-      }
-      intent.putExtra(Constants.APPBOY_WEBVIEW_URL_EXTRA, uri.toString());
       context.startActivity(intent);
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Appboy AppboyWebViewActivity not opened successfully.", e);
+    }
+  }
+
+  /**
+   * Opens the remote scheme Uri in {@link AppboyWebViewActivity} while also populating the back stack.
+   *
+   * @see UriAction#getConfiguredTaskBackStackBuilder(Context, Bundle)
+   */
+  private static void openUriWithWebViewActivityFromPush(Context context, Uri uri, Bundle extras) {
+    TaskStackBuilder stackBuilder = getConfiguredTaskBackStackBuilder(context, extras);
+    Intent webViewIntent = getWebViewActivityIntent(context, uri, extras);
+    stackBuilder.addNextIntent(webViewIntent);
+    try {
+      stackBuilder.startActivities(extras);
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Appboy AppboyWebViewActivity not opened successfully.", e);
     }
@@ -127,34 +141,26 @@ public class UriAction implements IAction {
    * activity on the back stack. Primarily used to open Uris from push.
    */
   private static void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
-    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
+    TaskStackBuilder stackBuilder = getConfiguredTaskBackStackBuilder(context, extras);
     Intent uriIntent = getActionViewIntent(context, uri, extras);
-    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-    if (configurationProvider.getIsPushDeepLinkBackStackActivityEnabled()) {
-      // If a custom back stack class is defined, then set it
-      final String pushDeepLinkBackStackActivityClassName = configurationProvider.getPushDeepLinkBackStackActivityClassName();
-      if (StringUtils.isNullOrBlank(pushDeepLinkBackStackActivityClassName)) {
-        AppboyLogger.i(TAG, "Adding main activity intent to back stack while opening uri from push");
-        stackBuilder.addNextIntent(UriUtils.getMainActivityIntent(context, extras));
-      } else {
-        // Check if the activity is registered in the manifest. If not, then add nothing to the back stack
-        if (UriUtils.isActivityRegisteredInManifest(context, pushDeepLinkBackStackActivityClassName)) {
-          AppboyLogger.i(TAG, "Adding custom back stack activity while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
-          Intent customBackStackActivityIntent = new Intent().setClassName(context, pushDeepLinkBackStackActivityClassName);
-          stackBuilder.addNextIntent(customBackStackActivityIntent);
-        } else {
-          AppboyLogger.i(TAG, "Not adding unregistered activity to the back stack while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
-        }
-      }
-    } else {
-      AppboyLogger.i(TAG, "Not adding back stack activity while opening uri from push due to disabled configuration setting.");
-    }
     stackBuilder.addNextIntent(uriIntent);
     try {
       stackBuilder.startActivities(extras);
     } catch (ActivityNotFoundException e) {
       Log.w(TAG, "Could not find appropriate activity to open for deep link " + uri, e);
     }
+  }
+
+  /**
+   * Returns an intent that opens the uri inside of a {@link AppboyWebViewActivity}.
+   */
+  private static Intent getWebViewActivityIntent(Context context, Uri uri, Bundle extras) {
+    Intent intent = new Intent(context, AppboyWebViewActivity.class);
+    if (extras != null) {
+      intent.putExtras(extras);
+    }
+    intent.putExtra(Constants.APPBOY_WEBVIEW_URL_EXTRA, uri.toString());
+    return intent;
   }
 
   private static Intent getActionViewIntent(Context context, Uri uri, Bundle extras) {
@@ -178,5 +184,36 @@ public class UriAction implements IAction {
     }
 
     return intent;
+  }
+
+  /**
+   * Gets a {@link TaskStackBuilder} that has the configured back stack functionality.
+   *
+   * @see AppboyConfigurationProvider#getIsPushDeepLinkBackStackActivityEnabled()
+   * @see AppboyConfigurationProvider#getPushDeepLinkBackStackActivityClassName()
+   */
+  private static TaskStackBuilder getConfiguredTaskBackStackBuilder(Context context, Bundle extras) {
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
+    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+    if (configurationProvider.getIsPushDeepLinkBackStackActivityEnabled()) {
+      // If a custom back stack class is defined, then set it
+      final String pushDeepLinkBackStackActivityClassName = configurationProvider.getPushDeepLinkBackStackActivityClassName();
+      if (StringUtils.isNullOrBlank(pushDeepLinkBackStackActivityClassName)) {
+        AppboyLogger.i(TAG, "Adding main activity intent to back stack while opening uri from push");
+        stackBuilder.addNextIntent(UriUtils.getMainActivityIntent(context, extras));
+      } else {
+        // Check if the activity is registered in the manifest. If not, then add nothing to the back stack
+        if (UriUtils.isActivityRegisteredInManifest(context, pushDeepLinkBackStackActivityClassName)) {
+          AppboyLogger.i(TAG, "Adding custom back stack activity while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
+          Intent customBackStackActivityIntent = new Intent().setClassName(context, pushDeepLinkBackStackActivityClassName);
+          stackBuilder.addNextIntent(customBackStackActivityIntent);
+        } else {
+          AppboyLogger.i(TAG, "Not adding unregistered activity to the back stack while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
+        }
+      }
+    } else {
+      AppboyLogger.i(TAG, "Not adding back stack activity while opening uri from push due to disabled configuration setting.");
+    }
+    return stackBuilder;
   }
 }

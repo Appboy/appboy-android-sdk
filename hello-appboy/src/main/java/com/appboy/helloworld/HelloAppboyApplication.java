@@ -32,7 +32,6 @@ public class HelloAppboyApplication extends Application {
         .setApiKey("dd162bff-b14e-4d87-9bf0-fec609a77ca4")
         .setGcmMessagingRegistrationEnabled(false)
         .setAdmMessagingRegistrationEnabled(false)
-        .setDisableUilImageCache(true)
         .setFrescoLibraryEnabled(false)
         .setSessionTimeout(11)
         .setHandlePushDeepLinksAutomatically(true)
