@@ -428,8 +428,8 @@ public final class AppboyInAppMessageManager {
     mInAppMessageViewWrapper = null;
     mDisplayingInAppMessage.set(false);
     if (mActivity != null && mOriginalOrientation != null) {
-      mActivity.setRequestedOrientation(mOriginalOrientation);
       AppboyLogger.d(TAG, "Setting requested orientation to original orientation " + mOriginalOrientation);
+      ViewUtils.setActivityRequestedOrientation(mActivity, mOriginalOrientation);
       mOriginalOrientation = null;
     }
   }
@@ -578,7 +578,7 @@ public final class AppboyInAppMessageManager {
         AppboyLogger.d(TAG, "Requesting orientation lock.");
         mOriginalOrientation = mActivity.getRequestedOrientation();
         // This constant was introduced in API 18, so for devices pre 18 this will be a no-op
-        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        ViewUtils.setActivityRequestedOrientation(mActivity, ActivityInfo.SCREEN_ORIENTATION_LOCKED);
       }
       return true;
     }

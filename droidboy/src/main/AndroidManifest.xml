@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:amazon="http://schemas.amazon.com/apk/res/android"
+          
           package="com.appboy.sample">
 
   <!-- Permissions -->
@@ -95,5 +96,10 @@
         <action android:name="com.android.vending.INSTALL_REFERRER" />
       </intent-filter>
     </receiver>
+
+    <!-- Not required for standard integrations. On some devices, this receiver causes the EnhancedListenerService to block processing of Braze push for several seconds. -->
+    <receiver
+      android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+      tools:node="remove"/>
   </application>
 </manifest>

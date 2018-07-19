@@ -144,16 +144,19 @@ public class AppboyNotificationStyleFactory {
     PendingIntent nextButtonPendingIntent = createStoryTraversedPendingIntent(context, notificationExtras, (pageIndex + 1) % storyPages);
     storyView.setOnClickPendingIntent(R.id.com_appboy_story_button_next, nextButtonPendingIntent);
     notificationBuilder.setCustomBigContentView(storyView);
+
+    // Ensure clicks on the story don't vibrate or make noise after the story first appears
+    notificationBuilder.setOnlyAlertOnce(true);
     return style;
   }
 
   private static PendingIntent createStoryPageClickedPendingIntent(Context context, String uriString, String useWebView, String storyPageId, String campaignId) {
-    Intent storyClickedIntent = new Intent(Constants.APPBOY_STORY_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+    Intent storyClickedIntent = new Intent(Constants.APPBOY_STORY_CLICKED_ACTION).setClass(context, AppboyNotificationRoutingActivity.class);
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_URI_KEY, uriString);
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY, useWebView);
     storyClickedIntent.putExtra(Constants.APPBOY_STORY_PAGE_ID, storyPageId);
     storyClickedIntent.putExtra(Constants.APPBOY_CAMPAIGN_ID, campaignId);
-    return PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), storyClickedIntent, PendingIntent.FLAG_ONE_SHOT);
+    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), storyClickedIntent, PendingIntent.FLAG_ONE_SHOT);
   }
 
   private static PendingIntent createStoryTraversedPendingIntent(Context context, Bundle notificationExtras, int pageIndex) {

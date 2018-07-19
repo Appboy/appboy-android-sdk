@@ -1,13 +1,27 @@
-## 2.5.0
+## 2.5.1
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or above.
 - The Braze SDK requires the support v4 library version 26 or above.
 
+##### Changed
+- Changed the behavior of push stories to ensure that after the story initially appears in the notification tray, subsequent page traversal clicks don't alert the user again.
+
+##### Added
+- The Braze SDK now automatically records when the user has disabled notifications at the app level.
+  - The `appboy.xml` `com_appboy_notifications_enabled_tracking_on` boolean attribute and `AppboyConfig.Builder.setNotificationsEnabledTrackingOn()` have been deprecated and are no longer used.
+  - This allows users to more effectively opt-out of push and leads to a more accurate push notification reachable audience.
+
+##### Fixed
+- Fixed an issue where, when the lock screen was present, notification action button and push story body clicks would not open the application immediately. Added `AppboyNotificationRoutingActivity` for handling notification action button and push story body clicks. 
+- Fixed an issue where, for non fullscreen activities targeting API 27, requesting an orientation on activities would throw an exception.
+
+## 2.5.0
+
 ##### Breaking
 - Added `isControl()` to the `IInAppMessage` interface.
 - Added `logDisplayFailure()` to the `IInAppMessage` interface. In-app message display failures may affect campaign statistics so care should be taken when logging display failures.
-- Added `InAppMessageControl` class to represent control in-app messages. Control in-app messages should not be displayed to users and should only call `logImpression()` at render time.
+- Added the `InAppMessageControl` class to represent control in-app messages. Control in-app messages should not be displayed to users and should only call `logImpression()` at render time.
   - Requesting in-app message display, even if the stack is non-empty, may potentially lead to no in-app message displaying if the in-app message is a control in-app message.
 - Added `AppboyInAppMessageManager.setCustomControlInAppMessageManagerListener()` to modify the lifecycle behavior for control in-app messages.
 - Removed `logInAppMessageClick`, `logInAppMessageButtonClick`, and `logInAppMessageImpression` from Appboy Unity player subclasses and `AppboyUnityActivityWrapper`.

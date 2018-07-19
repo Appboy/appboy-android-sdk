@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.appboy.push.AppboyNotificationRoutingActivity;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 /**
@@ -36,35 +37,35 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
 
   @Override
   public void onActivityStarted(Activity activity) {
-    if (mSessionHandlingEnabled) {
+    if (mSessionHandlingEnabled && !shouldIgnoreActivity(activity)) {
       Appboy.getInstance(activity.getApplicationContext()).openSession(activity);
     }
   }
 
   @Override
   public void onActivityStopped(Activity activity) {
-    if (mSessionHandlingEnabled) {
+    if (mSessionHandlingEnabled && !shouldIgnoreActivity(activity)) {
       Appboy.getInstance(activity.getApplicationContext()).closeSession(activity);
     }
   }
 
   @Override
   public void onActivityResumed(Activity activity) {
-    if (mRegisterInAppMessageManager) {
+    if (mRegisterInAppMessageManager && !shouldIgnoreActivity(activity)) {
       AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
     }
   }
 
   @Override
   public void onActivityPaused(Activity activity) {
-    if (mRegisterInAppMessageManager) {
+    if (mRegisterInAppMessageManager && !shouldIgnoreActivity(activity)) {
       AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
     }
   }
 
   @Override
   public void onActivityCreated(Activity activity, Bundle bundle) {
-    if (mRegisterInAppMessageManager) {
+    if (mRegisterInAppMessageManager && !shouldIgnoreActivity(activity)) {
       AppboyInAppMessageManager.getInstance().ensureSubscribedToInAppMessageEvents(activity.getApplicationContext());
     }
   }
@@ -74,4 +75,11 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
 
   @Override
   public void onActivityDestroyed(Activity activity) {}
+
+  /**
+   * Determines if this {@link Activity} should be ignored for the purposes of session tracking or in-app message registration.
+   */
+  private static boolean shouldIgnoreActivity(Activity activity) {
+    return activity.getClass().equals(AppboyNotificationRoutingActivity.class);
+  }
 }

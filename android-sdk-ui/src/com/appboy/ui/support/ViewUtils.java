@@ -5,12 +5,16 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.appboy.support.AppboyLogger;
+
 public class ViewUtils {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(ViewUtils.class);
   private static final int TABLET_SMALLEST_WIDTH_DP = 600;
   private static int sDisplayHeight;
 
@@ -18,10 +22,18 @@ public class ViewUtils {
     if (view != null) {
       if (view.getParent() instanceof ViewGroup) {
         final ViewGroup parent = (ViewGroup) view.getParent();
-        parent.setFocusableInTouchMode(true);
-        parent.requestFocus();
+        setFocusableInTouchModeAndRequestFocus(parent);
         parent.removeView(view);
       }
+    }
+  }
+
+  public static void setFocusableInTouchModeAndRequestFocus(View view) {
+    try {
+      view.setFocusableInTouchMode(true);
+      view.requestFocus();
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Caught exception while setting view to focusable in touch mode and requesting focus.", e);
     }
   }
 
@@ -80,6 +92,17 @@ public class ViewUtils {
       viewTreeObserver.removeGlobalOnLayoutListener(onGlobalLayoutListener);
     } else {
       viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
+  }
+
+  /**
+   * Safely calls {@link Activity#setRequestedOrientation(int)}
+   */
+  public static void setActivityRequestedOrientation(@NonNull Activity activity, int requestedOrientation) {
+    try {
+      activity.setRequestedOrientation(requestedOrientation);
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Failed to set requested orientation " + requestedOrientation + " for activity class: " + activity.getLocalClassName(), e);
     }
   }
 }

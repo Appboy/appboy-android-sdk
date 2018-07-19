@@ -131,12 +131,11 @@ public class AppboyNotificationActionUtils {
     notificationActionExtras.putString(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY,
         getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE));
 
-    Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+    Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationRoutingActivity.class);
     sendIntent.putExtras(notificationActionExtras);
+    PendingIntent pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     String actionText = getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE);
-    PendingIntent pendingSendIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
     NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(0, actionText, pendingSendIntent);
     notificationActionBuilder.addExtras(new Bundle(notificationActionExtras));
     notificationBuilder.addAction(notificationActionBuilder.build());

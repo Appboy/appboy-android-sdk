@@ -155,8 +155,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       if (mInAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
         addDismissRunnable();
       }
-      mInAppMessageView.setFocusableInTouchMode(true);
-      mInAppMessageView.requestFocus();
+      ViewUtils.setFocusableInTouchModeAndRequestFocus(mInAppMessageView);
       announceForAccessibilityIfNecessary();
       mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
     }
@@ -339,8 +338,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
             addDismissRunnable();
           }
           AppboyLogger.d(TAG, "In-app message animated into view.");
-          mInAppMessageView.setFocusableInTouchMode(true);
-          mInAppMessageView.requestFocus();
+          ViewUtils.setFocusableInTouchModeAndRequestFocus(mInAppMessageView);
           announceForAccessibilityIfNecessary();
           mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
         }
