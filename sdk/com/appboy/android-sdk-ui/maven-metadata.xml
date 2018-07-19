@@ -2,10 +2,10 @@
 <metadata>
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-ui</artifactId>
-  <version>2.5.0</version>
+  <version>2.5.1</version>
   <versioning>
-    <latest>2.5.0</latest>
-    <release>2.5.0</release>
+    <latest>2.5.1</latest>
+    <release>2.5.1</release>
     <versions>
       <version>1.5.1</version>
       <version>1.5.2</version>
@@ -69,7 +69,8 @@
       <version>2.3.1</version>
       <version>2.4.0</version>
       <version>2.5.0</version>
+      <version>2.5.1</version>
     </versions>
-    <lastUpdated>20180702222542</lastUpdated>
+    <lastUpdated>20180719182656</lastUpdated>
   </versioning>
 </metadata>
