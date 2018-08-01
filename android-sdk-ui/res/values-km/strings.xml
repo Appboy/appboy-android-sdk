@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">យើងមិនមានការធ្វើបច្ចុប្បន្នភាពទេ។ សូមពិនិត្យមើលម្តងទៀតនៅពេលក្រោយ.</string>
   <string name="com_appboy_feed_connection_error_title">កំហុសឆ្គងក្នុងការតភ្ជាប់</string>
   <string name="com_appboy_feed_connection_error_body">មិនអាចបង្កើតបណ្តាញតភ្ជាប់បានទេ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

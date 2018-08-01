@@ -1,10 +1,8 @@
 package com.appboy.push;
 
-import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
@@ -37,15 +35,10 @@ public class AppboyNotificationActionUtils {
    * @param notificationBuilder
    * @param notificationExtras GCM/ADM extras
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static void addNotificationActions(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     try {
       if (notificationExtras == null) {
         AppboyLogger.w(TAG, "Notification extras were null. Doing nothing.");
-        return;
-      }
-      // Notification actions were added in Jelly Bean
-      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
         return;
       }
 
@@ -67,7 +60,6 @@ public class AppboyNotificationActionUtils {
    * @param context
    * @param intent the action button click intent
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static void handleNotificationActionClicked(Context context, Intent intent) {
     try {
       String actionType = intent.getStringExtra(Constants.APPBOY_ACTION_TYPE_KEY);
@@ -119,7 +111,6 @@ public class AppboyNotificationActionUtils {
    * @param notificationExtras
    * @param actionIndex
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   private static void addNotificationAction(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras, int actionIndex) {
     Bundle notificationActionExtras = new Bundle(notificationExtras);
 

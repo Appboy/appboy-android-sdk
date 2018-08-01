@@ -127,6 +127,9 @@ public final class AppboyGcmReceiver extends BroadcastReceiver {
         gcmExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
       }
 
+      // Parse the notification for any associated ContentCard
+      AppboyNotificationUtils.handleContentCardsSerializedCardIfPresent(context, gcmExtras);
+
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
         AppboyLogger.d(TAG, "Received notification push");
         int notificationId = AppboyNotificationUtils.getNotificationId(gcmExtras);

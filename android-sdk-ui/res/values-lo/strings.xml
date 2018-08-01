@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">ພວກ​ເຮົາ​ບໍ່​ມີ​ການ​ອັບ​ເດດ. ກະ​ລຸ​ນາ​ລອງ​ໃໝ່​ພາຍ​ຫຼັງ.</string>
   <string name="com_appboy_feed_connection_error_title">ການ​ເຊື່ອມ​ຕໍ່​ຜິດ​ພາດ</string>
   <string name="com_appboy_feed_connection_error_body">ບໍ່​ສາ​ມາດ​ຕັ້ງ​ການ​ເຊື່ອມ​ຕໍ່​ເຄືອ​ຂ່າຍ​ໄດ້. ກະ​ລຸ​ນາ​ລອງ​ໃໝ່​ພາຍ​ຫຼັງ.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

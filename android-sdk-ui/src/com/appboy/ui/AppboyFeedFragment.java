@@ -230,7 +230,8 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
               // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
               // Eventually displaying an error message if it doesn't.
               if (event.getCardCount(mCategories) == 0) {
-                AppboyLogger.d(TAG, "Old feed was empty, putting up a network spinner and registering the network error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + "ms.");
+                AppboyLogger.d(TAG, "Old feed was empty, putting up a network spinner and registering the network "
+                    + "error message with a delay of " + NETWORK_PROBLEM_WARNING_MS + "ms.");
                 mEmptyFeedLayout.setVisibility(View.GONE);
                 mLoadingSpinner.setVisibility(View.VISIBLE);
                 mTransparentFullBoundsContainerView.setVisibility(View.VISIBLE);
@@ -285,7 +286,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   @Override
   public void onResume() {
     super.onResume();
-    Appboy.getInstance(getActivity()).logFeedDisplayed();
+    Appboy.getInstance(getContext()).logFeedDisplayed();
   }
 
   @Override

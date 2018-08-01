@@ -20,8 +20,8 @@ Successful marketing automation is essential to the future of your mobile app. B
 
 ## Version Support
 
-- The Braze Android SDK supports Android 4.0+ / API 14+ (Ice Cream Sandwich and up).
-- Last Target SDK Version: 26
+- The Braze Android SDK supports Android 4.1+ / API 16+ (Jelly Bean and up).
+- Last Target SDK Version: 28
 - Last Compiled Support Library Version: 27.1.0
 - Last Compiled Google Play Services Version (Optional): 12.0.1
 - Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
@@ -39,7 +39,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:2.5.+'
+   compile 'com.appboy:android-sdk-ui:2.6.+'
    ...
 }
 ```
@@ -58,7 +58,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.5.+'
+  compile 'com.appboy:android-sdk-ui:2.6.+'
 }
 ```
 

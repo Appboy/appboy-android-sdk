@@ -1,15 +1,12 @@
 package com.appboy.ui.support;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.appboy.support.AppboyLogger;
 
@@ -77,22 +74,6 @@ public class ViewUtils {
   public static boolean isRunningOnTablet(Activity activity) {
     return activity.getResources().getConfiguration().smallestScreenWidthDp
         >= TABLET_SMALLEST_WIDTH_DP;
-  }
-
-  /**
-   * Remove a previously installed global layout callback in an API gated fashion.
-   *
-   * @param viewTreeObserver
-   * @param onGlobalLayoutListener
-   */
-  @TargetApi(16)
-  public static void removeOnGlobalLayoutListenerSafe(ViewTreeObserver viewTreeObserver,
-                                                      ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener) {
-    if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-      viewTreeObserver.removeGlobalOnLayoutListener(onGlobalLayoutListener);
-    } else {
-      viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener);
-    }
   }
 
   /**

@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">Uuendusi pole praegu saadaval. Proovige hiljem uuesti.</string>
   <string name="com_appboy_feed_connection_error_title">Üheduse viga</string>
   <string name="com_appboy_feed_connection_error_body">Võrguühenduse loomine ebaõnnestus. Proovige hiljem uuesti.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

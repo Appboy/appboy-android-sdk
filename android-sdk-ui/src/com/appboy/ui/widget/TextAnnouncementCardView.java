@@ -8,8 +8,9 @@ import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.feed.view.BaseFeedCardView;
 
-public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard> {
+public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(TextAnnouncementCardView.class);
   private final TextView mTitle;
   private final TextView mDescription;
@@ -30,7 +31,7 @@ public class TextAnnouncementCardView extends BaseCardView<TextAnnouncementCard>
       setCard(card);
     }
 
-    safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
+    setBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
   }
 
   @Override

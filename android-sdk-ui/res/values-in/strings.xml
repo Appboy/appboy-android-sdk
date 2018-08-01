@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">Kami tidak memiliki pembaruan. Coba lagi nanti.</string>
   <string name="com_appboy_feed_connection_error_title">Kesalahan Koneksi</string>
   <string name="com_appboy_feed_connection_error_body">Tidak bisa melakukan koneksi jaringan. Coba lagi nanti.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

@@ -14,10 +14,10 @@ buildscript {
 }
 
 ext {
-  compileSdkVersion = 26
-  buildToolsVersion = '26.0.2'
-  minSdkVersion = 14
-  targetSdkVersion = 26
+  compileSdkVersion = 28
+  buildToolsVersion = '28.0.1'
+  minSdkVersion = 16
+  targetSdkVersion = 28
   appVersionName = project.version
 }
 
@@ -30,7 +30,7 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '2.5.1'
+  version = '2.6.0'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.

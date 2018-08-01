@@ -17,8 +17,4 @@
     <string name="com_appboy_feed_empty">אין לנו עדכונים. בבקשה בדוק שוב בקרוב.</string>
     <string name="com_appboy_feed_connection_error_title">שגיאת חיבור רשת</string>
     <string name="com_appboy_feed_connection_error_body">לא ניתן לקבוע חיבור רשת. בבקשה נסה שוב בקרוב.</string>
-
-    <!-- Notification time formats -->
-    <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-    <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

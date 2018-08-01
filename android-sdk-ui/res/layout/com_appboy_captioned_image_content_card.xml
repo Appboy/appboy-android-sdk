@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/Appboy.ContentCards.CaptionedImage"
+                tools:ignore="UnknownId">
+    <RelativeLayout
+      android:id="@+id/com_appboy_content_cards_captioned_image_card_image_container"
+      style="@style/Appboy.ContentCards.CaptionedImage.ImageContainer">
+
+        <!--The card image will be dynamically created and added as a child element here-->
+    </RelativeLayout>
+
+    <ImageView
+      android:id="@+id/com_appboy_content_cards_pinned_icon"
+      style="@style/Appboy.ContentCards.PinnedIcon.CaptionedImage"/>
+
+    <RelativeLayout
+        android:id="@+id/com_appboy_content_cards_captioned_image_card_title_container"
+        style="@style/Appboy.ContentCards.CaptionedImage.Title">
+        <TextView
+            android:id="@+id/com_appboy_content_cards_captioned_image_title"
+            style="@style/Appboy.ContentCards.CaptionedImage.Title.Text"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/com_appboy_content_cards_captioned_image_description"
+        style="@style/Appboy.ContentCards.CaptionedImage.Description"/>
+
+    <TextView
+        android:id="@+id/com_appboy_content_cards_captioned_image_card_domain"
+        style="@style/Appboy.ContentCards.CaptionedImage.Domain"/>
+
+    <View
+      android:id="@+id/com_appboy_content_cards_unread_bar"
+      style="@style/Appboy.ContentCards.UnreadBar.CaptionedImage"/>
+</RelativeLayout>

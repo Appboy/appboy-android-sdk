@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">업데이트가 없습니다. 다음에 다시 확인해 주십시오.</string>
   <string name="com_appboy_feed_connection_error_title">연결 오류</string>
   <string name="com_appboy_feed_connection_error_body">네트워크 연결을 할 수 없습니다. 나중에 다시 시도해 주십시오.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

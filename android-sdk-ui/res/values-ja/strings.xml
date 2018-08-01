@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">アップデートはありません。後でもう一度確認してください。</string>
   <string name="com_appboy_feed_connection_error_title">接続エラー</string>
   <string name="com_appboy_feed_connection_error_body">ネットワークに接続できません。後でもう一度試してください。</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

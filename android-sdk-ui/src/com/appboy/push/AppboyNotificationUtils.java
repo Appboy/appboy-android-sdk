@@ -301,7 +301,6 @@ public class AppboyNotificationUtils {
    *
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static int getNotificationPriority(Bundle notificationExtras) {
     if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_PRIORITY_KEY)) {
       try {
@@ -323,7 +322,6 @@ public class AppboyNotificationUtils {
    *
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static boolean isValidNotificationPriority(int priority) {
     return (priority >= Notification.PRIORITY_MIN && priority <= Notification.PRIORITY_MAX);
   }
@@ -355,7 +353,7 @@ public class AppboyNotificationUtils {
         AppboyLogger.d(TAG, "Not acquiring wake-lock for Android O+ notification with importance: " + importance);
         return false;
       }
-    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+    } else {
       if (getNotificationPriority(notificationExtras) == Notification.PRIORITY_MIN) {
         return false;
       }
@@ -563,17 +561,15 @@ public class AppboyNotificationUtils {
    * Supported on JellyBean+.
    */
   public static void setSummaryTextIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-      if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY)) {
-        // Retrieve summary text if included in notificationExtras bundle.
-        String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
-        if (summaryText != null) {
-          AppboyLogger.d(TAG, "Setting summary text for notification");
-          notificationBuilder.setSubText(summaryText);
-        }
-      } else {
-        AppboyLogger.d(TAG, "Summary text not present in notification extras. Not setting summary text for notification.");
+    if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY)) {
+      // Retrieve summary text if included in notificationExtras bundle.
+      String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
+      if (summaryText != null) {
+        AppboyLogger.d(TAG, "Setting summary text for notification");
+        notificationBuilder.setSubText(summaryText);
       }
+    } else {
+      AppboyLogger.d(TAG, "Summary text not present in notification extras. Not setting summary text for notification.");
     }
   }
 
@@ -585,11 +581,9 @@ public class AppboyNotificationUtils {
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
   public static void setPriorityIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-      if (notificationExtras != null) {
-        AppboyLogger.d(TAG, "Setting priority for notification");
-        notificationBuilder.setPriority(AppboyNotificationUtils.getNotificationPriority(notificationExtras));
-      }
+    if (notificationExtras != null) {
+      AppboyLogger.d(TAG, "Setting priority for notification");
+      notificationBuilder.setPriority(AppboyNotificationUtils.getNotificationPriority(notificationExtras));
     }
   }
 
@@ -602,12 +596,10 @@ public class AppboyNotificationUtils {
    * Supported JellyBean+.
    */
   public static void setStyleIfSupported(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras, Bundle appboyExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-      if (notificationExtras != null) {
-        AppboyLogger.d(TAG, "Setting style for notification");
-        NotificationCompat.Style style = AppboyNotificationStyleFactory.getBigNotificationStyle(context, notificationExtras, appboyExtras, notificationBuilder);
-        notificationBuilder.setStyle(style);
-      }
+    if (notificationExtras != null) {
+      AppboyLogger.d(TAG, "Setting style for notification");
+      NotificationCompat.Style style = AppboyNotificationStyleFactory.getBigNotificationStyle(context, notificationExtras, appboyExtras, notificationBuilder);
+      notificationBuilder.setStyle(style);
     }
   }
 
@@ -899,6 +891,24 @@ public class AppboyNotificationUtils {
       }
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Caught exception while handling story click.", e);
+    }
+  }
+
+  /**
+   * Parses the notification bundle for any associated ContentCards, if present. If found, the card object is added to
+   * card storage.
+   *
+   * Note that this method is only supported for GCM payloads. For ADM, this method does nothing.
+   */
+  public static void handleContentCardsSerializedCardIfPresent(Context context, Bundle gcmExtras) {
+    if (!Constants.IS_AMAZON && gcmExtras.containsKey(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY)) {
+      String contentCardData = gcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY, null);
+
+      // The user id can be absent for anonymous users so we'll default to null for it.
+      String contentCardDataUserId = gcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_USER_ID_KEY, null);
+
+      AppboyLogger.d(TAG, "Push contains associated Content Cards card. User id: " + contentCardDataUserId + " Card data: " + contentCardData);
+      AppboyInternal.addSerializedContentCardToStorage(context, contentCardData, contentCardDataUserId);
     }
   }
 

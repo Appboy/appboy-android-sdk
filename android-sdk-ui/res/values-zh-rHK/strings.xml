@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">暫時沒有更新。\n請稍候再試。</string>
   <string name="com_appboy_feed_connection_error_title">連線錯誤</string>
   <string name="com_appboy_feed_connection_error_body">無法建立網路連線。\n請稍候再試。</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

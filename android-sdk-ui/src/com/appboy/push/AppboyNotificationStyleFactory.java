@@ -1,12 +1,10 @@
 package com.appboy.push;
 
-import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
@@ -65,7 +63,6 @@ public class AppboyNotificationStyleFactory {
    * Returns a big style NotificationCompat.Style. If an image is present, this will be a BigPictureStyle,
    * otherwise it will be a BigTextStyle.
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static NotificationCompat.Style getBigNotificationStyle(Context context, Bundle notificationExtras, Bundle appboyExtras, NotificationCompat.Builder notificationBuilder) {
     NotificationCompat.Style style = null;
 
@@ -128,7 +125,6 @@ public class AppboyNotificationStyleFactory {
    * @param notificationBuilder Must be an instance of the v7 builder.
    * @return a DecoratedCustomViewStyle that describes the appearance of the push story.
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context, Bundle notificationExtras,
                                                                                                     NotificationCompat.Builder notificationBuilder) {
     NotificationCompat.DecoratedCustomViewStyle style = new NotificationCompat.DecoratedCustomViewStyle();
@@ -277,7 +273,6 @@ public class AppboyNotificationStyleFactory {
    * If summary text exists, it will be shown in the expanded notification view.
    * If a title exists, it will override the default in expanded notification view.
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   public static NotificationCompat.BigPictureStyle getBigPictureNotificationStyle(Context context, Bundle notificationExtras, Bundle appboyExtras) {
     if (appboyExtras == null || !appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
       return null;

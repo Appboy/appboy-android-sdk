@@ -9,9 +9,10 @@ import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
+public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(ShortNewsCardView.class);
   private ImageView mImage;
   private SimpleDraweeView mDrawee;
@@ -44,7 +45,7 @@ public class ShortNewsCardView extends BaseCardView<ShortNewsCard> {
       setCard(card);
     }
 
-    safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
+    setBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
   }
 
   @Override

@@ -14,12 +14,13 @@ import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.GooglePlayAppDetailsAction;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class CrossPromotionSmallCardView extends BaseCardView<CrossPromotionSmallCard> {
+public class CrossPromotionSmallCardView extends BaseFeedCardView<CrossPromotionSmallCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(CrossPromotionSmallCardView.class);
   private final TextView mTitle;
   private final TextView mSubtitle;

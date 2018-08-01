@@ -2,10 +2,8 @@ package com.appboy.push;
 
 import android.app.Notification;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.widget.RemoteViews;
 
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -55,21 +53,10 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     // Add intent to fire when the notification is opened or deleted.
     AppboyNotificationUtils.setContentIntentIfPresent(context, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setDeleteIntent(context, notificationBuilder, notificationExtras);
-    int smallNotificationIconResourceId = AppboyNotificationUtils.setSmallIcon(appConfigurationProvider, notificationBuilder);
+    AppboyNotificationUtils.setSmallIcon(appConfigurationProvider, notificationBuilder);
 
-    boolean usingLargeIcon = AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setSoundIfPresentAndSupported(notificationBuilder, notificationExtras);
-
-    // For ICS, we can use a custom view for our notifications which will allow them to be taller than
-    // the standard one line of text.
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-      // Pass in !usingLargeIcon because if no large icon is present, we want to display the small icon in its place.
-      RemoteViews remoteViews = AppboyNotificationRemoteViewsUtils.createMultiLineContentNotificationView(context, notificationExtras, smallNotificationIconResourceId, !usingLargeIcon);
-      if (remoteViews != null) {
-        notificationBuilder.setContent(remoteViews);
-        return notificationBuilder;
-      }
-    }
 
     // Subtext, priority, notification actions, and styles were added in JellyBean.
     AppboyNotificationUtils.setSummaryTextIfPresentAndSupported(notificationBuilder, notificationExtras);

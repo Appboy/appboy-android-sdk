@@ -8,9 +8,10 @@ import com.appboy.models.cards.BannerImageCard;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-public class BannerImageCardView extends BaseCardView<BannerImageCard> {
+public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(BannerImageCardView.class);
   private ImageView mImage;
   private IAction mCardAction;
@@ -38,7 +39,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
       setCard(card);
     }
 
-    safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
+    setBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
   }
 
   @Override
@@ -65,10 +66,7 @@ public class BannerImageCardView extends BaseCardView<BannerImageCard> {
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        // We don't set isRead here (like we do in other card views)
-        // because Banner Cards don't have read/unread indicators. They are all images, so there's
-        // no free space to put the indicator.
-        handleCardClick(mContext,card, mCardAction, TAG, false);
+        handleCardClick(mContext, card, mCardAction, TAG);
       }
     });
   }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/Appboy.ContentCards.TextAnnouncement">
+  <TextView
+      android:id="@+id/com_appboy_content_cards_text_announcement_card_title"
+      style="@style/Appboy.ContentCards.TextAnnouncement.Title"/>
+
+  <TextView
+      android:id="@+id/com_appboy_content_cards_text_announcement_card_description"
+      style="@style/Appboy.ContentCards.TextAnnouncement.Description"/>
+
+  <TextView
+      android:id="@+id/com_appboy_content_cards_text_announcement_card_domain"
+      style="@style/Appboy.ContentCards.TextAnnouncement.Domain"/>
+
+  <ImageView
+    android:id="@+id/com_appboy_content_cards_pinned_icon"
+    style="@style/Appboy.ContentCards.PinnedIcon.TextAnnouncement"/>
+
+  <View
+    android:id="@+id/com_appboy_content_cards_unread_bar"
+    style="@style/Appboy.ContentCards.UnreadBar.TextAnnouncement"/>
+</RelativeLayout>

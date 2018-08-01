@@ -118,9 +118,7 @@ public class DroidboyApplication extends Application {
         .penaltyLog();
 
     // Note that some detections require a specific sdk version or higher to enable.
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-      vmPolicyBuilder.detectLeakedRegistrationObjects();
-    }
+    vmPolicyBuilder.detectLeakedRegistrationObjects();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
       vmPolicyBuilder.detectFileUriExposure();
     }

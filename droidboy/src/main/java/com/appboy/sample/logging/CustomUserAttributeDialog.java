@@ -16,7 +16,7 @@ import com.appboy.sample.util.ButtonUtils;
 import com.appboy.support.StringUtils;
 
 public class CustomUserAttributeDialog extends DialogPreference {
-  private static final String DEFAULT_STRING_VALUE = "default";
+  private static final String EMPTY_STRING = "";
   private static final String DEFAULT_NUMBER_VALUE = "5";
   private EditText mCustomAttributeKey;
   private EditText mCustomAttributeValue;
@@ -87,7 +87,7 @@ public class CustomUserAttributeDialog extends DialogPreference {
 
     if (!StringUtils.isNullOrBlank(customAttributeKeyName)) {
       if (StringUtils.isNullOrBlank(customAttributeValueName)) {
-        customAttributeValueName = DEFAULT_STRING_VALUE;
+        customAttributeValueName = EMPTY_STRING;
       }
       AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
       notifyResult(appboyUser.setCustomUserAttribute(customAttributeKeyName, customAttributeValueName),
@@ -121,7 +121,7 @@ public class CustomUserAttributeDialog extends DialogPreference {
     }
     if (!StringUtils.isNullOrBlank(customAttributeArrayKey)) {
       if (StringUtils.isNullOrBlank(customAttributeArrayValue)) {
-        customAttributeArrayValue = DEFAULT_STRING_VALUE;
+        customAttributeArrayValue = EMPTY_STRING;
       }
       AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
       switch (attributeArrayResourceId) {

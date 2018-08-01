@@ -31,6 +31,7 @@ import com.appboy.enums.CardCategory;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PermissionUtils;
+import com.appboy.ui.AppboyContentCardsFragment;
 import com.appboy.ui.AppboyFeedFragment;
 import com.appboy.ui.AppboyFeedbackFragment;
 
@@ -111,6 +112,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     final String inAppMessageTesterPageTitle = getString(R.string.inappmessage_tester_tab_title);
 
     mAdapter = new Adapter(getSupportFragmentManager());
+    mAdapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
     mAdapter.addFragment(new MainFragment(), "Events");
     mAdapter.addFragment(new PushTesterFragment(), "Push");
     mAdapter.addFragment(new InAppMessageTesterFragment(), inAppMessageTesterPageTitle);

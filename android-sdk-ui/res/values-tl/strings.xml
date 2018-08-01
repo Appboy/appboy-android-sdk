@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">Wala kaming mga update. Mangyaring suriin muli sa ibang pagkakataon.</string>
   <string name="com_appboy_feed_connection_error_title">May Error sa Koneksyon</string>
   <string name="com_appboy_feed_connection_error_body">Hindi makapagtatag ng koneksyon sa network. Mangyaring subukan muli mamaya.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

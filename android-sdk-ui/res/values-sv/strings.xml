@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">Det finns inga uppdateringar. Försök igen senare.</string>
   <string name="com_appboy_feed_connection_error_title">Anslutningsfel</string>
   <string name="com_appboy_feed_connection_error_body">Det gick inte att skapa en nätverksanslutning. Försök igen senare.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

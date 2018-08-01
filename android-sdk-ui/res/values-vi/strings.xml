@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">Chúng tôi không có cập nhật nào. Vui lòng kiểm tra lại sau.</string>
   <string name="com_appboy_feed_connection_error_title">Lỗi Kết Nối</string>
   <string name="com_appboy_feed_connection_error_body">Không thể thiết lập kết nối mạng. Vui lòng thử lại sau.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:2.5.+'
+  implementation 'com.appboy:android-sdk-ui:2.6.+'
   implementation files("libs/pushservice-${BAIDU_CLOUD_PUSH_VERSION}.jar")
 }
 

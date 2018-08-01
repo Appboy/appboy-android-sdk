@@ -9,9 +9,10 @@ import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
+import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
+public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(CaptionedImageCardView.class);
   private ImageView mImage;
   private final TextView mTitle;
@@ -46,7 +47,7 @@ public class CaptionedImageCardView extends BaseCardView<CaptionedImageCard> {
       setCard(card);
     }
 
-    safeSetBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
+    setBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
   }
 
   @Override

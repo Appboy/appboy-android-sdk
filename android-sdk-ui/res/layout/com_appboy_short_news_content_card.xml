@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/Appboy.ContentCards.ShortNews">
+    <RelativeLayout
+      android:id="@+id/com_appboy_content_cards_short_news_card_image_container"
+      style="@style/Appboy.ContentCards.ShortNews.ImageContainer">
+        <!--The image will be dynamically created added as a child element here-->
+    </RelativeLayout>
+
+    <ImageView
+      android:id="@+id/com_appboy_content_cards_pinned_icon"
+      style="@style/Appboy.ContentCards.PinnedIcon.ShortNews"/>
+
+    <TextView
+        android:id="@+id/com_appboy_content_cards_short_news_card_title"
+        style="@style/Appboy.ContentCards.ShortNews.Title"/>
+
+    <TextView
+        android:id="@+id/com_appboy_content_cards_short_news_card_description"
+        style="@style/Appboy.ContentCards.ShortNews.Description"/>
+
+    <TextView
+        android:id="@+id/com_appboy_content_cards_short_news_card_domain"
+        style="@style/Appboy.ContentCards.ShortNews.Domain"/>
+
+    <View
+      android:id="@+id/com_appboy_content_cards_unread_bar"
+      style="@style/Appboy.ContentCards.UnreadBar.ShortNews"/>
+</RelativeLayout>

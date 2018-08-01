@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/Appboy.ContentCards.EmptyContainer">
+  <TextView
+    android:id="@+id/com_appboy_content_cards_network_unavailable"
+    style="@style/Appboy.ContentCardsDisplay.Empty"/>
+</LinearLayout>

@@ -1,8 +1,19 @@
-## 2.5.1
+## 2.6.0
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or above.
 - The Braze SDK requires the support v4 library version 26 or above.
+
+##### Added
+- Introduced support for the upcoming Content Cards feature, which will eventually replace the existing News Feed feature and adds significant capability. This feature is currently in closed beta testing; if you're interested in joining the beta, please reach out to your Customer Success Manager or Account Manager.
+
+##### Breaking
+- Updated the minimum SDK version from 14 (Ice Cream Sandwich) to 16 (Jelly Bean).
+
+##### Added
+- Added `AppboyUser.setLocationCustomAttribute()` and `AppboyUser.unsetLocationCustomAttribute()`.
+
+## 2.5.1
 
 ##### Changed
 - Changed the behavior of push stories to ensure that after the story initially appears in the notification tray, subsequent page traversal clicks don't alert the user again.
@@ -109,7 +120,7 @@
 - The Braze SDK may now optionally record when the user has disabled notifications at the app level.
   - Enabled via `appboy.xml` using the `com_appboy_notifications_enabled_tracking_on` boolean attribute or via `AppboyConfig.Builder.setNotificationsEnabledTrackingOn()`.
   - If using proguard in your app and Braze SDK v2.2.2 or below, please add `-keep class android.support.v4.app.NotificationManagerCompat { *; }` to your proguard rules.
-  - Please contact support@braze.com before using this feature.
+  - (Update) Note that starting with Braze Android SDK Version [`2.5.1`](https://github.com/Appboy/appboy-android-sdk/blob/master/CHANGELOG.md#251), this feature is now automatically enabled.
 
 ## 2.2.1
 

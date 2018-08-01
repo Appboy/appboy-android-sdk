@@ -12,8 +12,8 @@ import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.support.AppboyLogger;
+import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.appboy.ui.widget.BannerImageCardView;
-import com.appboy.ui.widget.BaseCardView;
 import com.appboy.ui.widget.CaptionedImageCardView;
 import com.appboy.ui.widget.CrossPromotionSmallCardView;
 import com.appboy.ui.widget.DefaultCardView;
@@ -89,7 +89,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    */
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    BaseCardView view;
+    BaseFeedCardView view;
     Card card = getItem(position);
 
     if (convertView == null) {
@@ -108,7 +108,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       }
     } else {
       AppboyLogger.v(TAG, "Reusing convertView for rendering of item " + position);
-      view = (BaseCardView) convertView;
+      view = (BaseFeedCardView) convertView;
     }
 
     AppboyLogger.v(TAG, "Using view of type: " + view.getClass().getName() + " for card at position " + position + ": " + card.toString());

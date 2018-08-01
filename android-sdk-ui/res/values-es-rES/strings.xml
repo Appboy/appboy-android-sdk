@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">No tenemos actualizaciones. Por favor compruébelo más tarde.</string>
   <string name="com_appboy_feed_connection_error_title">Error de conexión</string>
   <string name="com_appboy_feed_connection_error_body">No se puede establecer conexión de red. Por favor inténtelo más tarde.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>

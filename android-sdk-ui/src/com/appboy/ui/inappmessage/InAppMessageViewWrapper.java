@@ -1,7 +1,6 @@
 package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -131,7 +130,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
                 AppboyLogger.d(TAG, "Detected root view height of " + frameLayout.getHeight() + ", display height of " + displayHeight + " in onGlobalLayout");
                 frameLayout.removeView(mInAppMessageView);
                 open(frameLayout, displayHeight);
-                ViewUtils.removeOnGlobalLayoutListenerSafe(frameLayout.getViewTreeObserver(), this);
+                frameLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
               }
             });
       }
@@ -162,12 +161,10 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
   }
 
   private void announceForAccessibilityIfNecessary() {
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-      if (mInAppMessageView instanceof IInAppMessageImmersiveView) {
-        mInAppMessageView.announceForAccessibility(mInAppMessage.getMessage());
-      } else if (mInAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
-        mInAppMessageView.announceForAccessibility("In-app message displayed.");
-      }
+    if (mInAppMessageView instanceof IInAppMessageImmersiveView) {
+      mInAppMessageView.announceForAccessibility(mInAppMessage.getMessage());
+    } else if (mInAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
+      mInAppMessageView.announceForAccessibility("In-app message displayed.");
     }
   }
 

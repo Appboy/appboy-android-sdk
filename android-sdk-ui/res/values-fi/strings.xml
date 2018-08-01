@@ -17,8 +17,4 @@
   <string name="com_appboy_feed_empty">Päivityksiä ei ole saatavilla. Tarkista myöhemmin uudelleen.</string>
   <string name="com_appboy_feed_connection_error_title">Yhteysvirhe</string>
   <string name="com_appboy_feed_connection_error_body">Verkkoyhteyttä ei voida luoda. Yritä myöhemmin uudelleen.</string>
-
-  <!-- Notification time formats -->
-  <string name="com_appboy_notification_time_twenty_four_hour_format">HH:mm</string>
-  <string name="com_appboy_notification_time_twelve_hour_format">h:mm a</string>
 </resources>
