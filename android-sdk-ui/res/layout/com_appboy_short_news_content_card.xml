@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 style="@style/Appboy.ContentCards.ShortNews">
     <RelativeLayout
       android:id="@+id/com_appboy_content_cards_short_news_card_image_container"
@@ -11,17 +12,24 @@
       android:id="@+id/com_appboy_content_cards_pinned_icon"
       style="@style/Appboy.ContentCards.PinnedIcon.ShortNews"/>
 
-    <TextView
-        android:id="@+id/com_appboy_content_cards_short_news_card_title"
-        style="@style/Appboy.ContentCards.ShortNews.Title"/>
+    <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@style/Appboy.ContentCards.ShortNews.Container">
+        <TextView
+          android:id="@+id/com_appboy_content_cards_short_news_card_title"
+          tools:text="Content Card Title"
+          style="@style/Appboy.ContentCards.ShortNews.Title"/>
 
-    <TextView
-        android:id="@+id/com_appboy_content_cards_short_news_card_description"
-        style="@style/Appboy.ContentCards.ShortNews.Description"/>
+        <TextView
+          android:id="@+id/com_appboy_content_cards_short_news_card_description"
+          tools:text="Content Card Description"
+          style="@style/Appboy.ContentCards.ShortNews.Description"/>
 
-    <TextView
-        android:id="@+id/com_appboy_content_cards_short_news_card_domain"
-        style="@style/Appboy.ContentCards.ShortNews.Domain"/>
+        <TextView
+          android:id="@+id/com_appboy_content_cards_action_hint"
+          style="@style/Appboy.ContentCards.ActionHint.ShortNews"/>
+    </RelativeLayout>
 
     <View
       android:id="@+id/com_appboy_content_cards_unread_bar"

@@ -1,6 +1,7 @@
 package com.appboy.ui.contentcards.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appboy.models.cards.ShortNewsCard;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -22,7 +24,6 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
   private class ViewHolder extends ContentCardViewHolder {
     private final TextView mTitle;
     private final TextView mDescription;
-    private final TextView mDomain;
     /**
      * This will hold either a {@link SimpleDraweeView} image or an {@link ImageView}
      */
@@ -36,7 +37,6 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
 
       mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_short_news_card_title);
       mDescription = (TextView) view.findViewById(R.id.com_appboy_content_cards_short_news_card_description);
-      mDomain = (TextView) view.findViewById(R.id.com_appboy_content_cards_short_news_card_domain);
     }
 
     TextView getTitle() {
@@ -45,10 +45,6 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
 
     TextView getDescription() {
       return mDescription;
-    }
-
-    TextView getDomain() {
-      return mDomain;
     }
 
     ImageView getImageView() {
@@ -76,10 +72,14 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
 
     shortNewsCardViewHolder.getTitle().setText(card.getTitle());
     shortNewsCardViewHolder.getDescription().setText(card.getDescription());
-    setOptionalTextView(shortNewsCardViewHolder.getDomain(), card.getDomain());
+    shortNewsCardViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
     // Using the default aspect ratio here since the card doesn't specify an aspect ratio
     setOptionalCardImage(shortNewsCardViewHolder.getImageView(), shortNewsCardViewHolder.getSimpleDraweeView(),
         DEFAULT_ASPECT_RATIO, card.getImageUrl(), DEFAULT_ASPECT_RATIO);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      safeSetClipToOutline(shortNewsCardViewHolder.getImageView());
+    }
   }
 }

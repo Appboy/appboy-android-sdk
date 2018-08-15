@@ -11,7 +11,8 @@
   <dimen name="com_appboy_card_background_shadow_radius">2.0dp</dimen>
 
   <dimen name="com_appboy_content_cards_max_width">380.0dp</dimen>
-  <dimen name="com_appboy_content_cards_divider_height">16.0dp</dimen>
+  <dimen name="com_appboy_content_cards_divider_height">32dp</dimen>
 
   <dimen name="com_appboy_content_cards_unread_bar_height">4dp</dimen>
+  <dimen name="com_appboy_content_cards_image_border_radius">3dp</dimen>
 </resources>

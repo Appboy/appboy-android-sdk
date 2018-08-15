@@ -20,7 +20,6 @@
   <integer name="com_appboy_session_timeout">10</integer>
 
   <!-- Push Notification configuration -->
-  <bool name="com_appboy_push_gcm_messaging_registration_enabled">true</bool>
   <bool name="com_appboy_push_adm_messaging_registration_enabled">true</bool>
 
   <!-- This integer sets the default accent color for push notifications on Android Lollipop and higher. If not specified,
@@ -28,9 +27,6 @@
     be overridden at runtime by a push notification that sets a custom accent color. -->
   <integer name="com_appboy_default_notification_accent_color">0xFF000000</integer>
 
-  <!-- This is a string because parsing it out of a resource file as a numeric value isn't properly handled by Android.
-    Also, it's not shown to the user and thus we don't require it to be translated. -->
-  <string translatable="false" name="com_appboy_push_gcm_sender_id">901477453852</string>
   <drawable name="com_appboy_push_small_notification_icon">@drawable/ic_stat_notify_droidboy</drawable>
   <drawable name="com_appboy_push_large_notification_icon">@drawable/ic_stat_notify_droidboy_large</drawable>
 

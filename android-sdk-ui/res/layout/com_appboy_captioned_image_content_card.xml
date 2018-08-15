@@ -15,20 +15,23 @@
       style="@style/Appboy.ContentCards.PinnedIcon.CaptionedImage"/>
 
     <RelativeLayout
-        android:id="@+id/com_appboy_content_cards_captioned_image_card_title_container"
-        style="@style/Appboy.ContentCards.CaptionedImage.Title">
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@style/Appboy.ContentCards.CaptionedImage.Container">
         <TextView
-            android:id="@+id/com_appboy_content_cards_captioned_image_title"
-            style="@style/Appboy.ContentCards.CaptionedImage.Title.Text"/>
+          android:id="@+id/com_appboy_content_cards_captioned_image_title"
+          tools:text="Content Card Title"
+          style="@style/Appboy.ContentCards.CaptionedImage.Title"/>
+
+        <TextView
+          android:id="@+id/com_appboy_content_cards_captioned_image_description"
+          tools:text="Content Card Description"
+          style="@style/Appboy.ContentCards.CaptionedImage.Description"/>
+
+        <TextView
+          android:id="@+id/com_appboy_content_cards_action_hint"
+          style="@style/Appboy.ContentCards.ActionHint.CaptionedImage"/>
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/com_appboy_content_cards_captioned_image_description"
-        style="@style/Appboy.ContentCards.CaptionedImage.Description"/>
-
-    <TextView
-        android:id="@+id/com_appboy_content_cards_captioned_image_card_domain"
-        style="@style/Appboy.ContentCards.CaptionedImage.Domain"/>
 
     <View
       android:id="@+id/com_appboy_content_cards_unread_bar"

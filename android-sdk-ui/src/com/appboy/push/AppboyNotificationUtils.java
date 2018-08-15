@@ -23,7 +23,7 @@ import android.util.Log;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
-import com.appboy.AppboyGcmReceiver;
+import com.appboy.AppboyFcmReceiver;
 import com.appboy.AppboyInternal;
 import com.appboy.Constants;
 import com.appboy.IAppboyImageLoader;
@@ -55,7 +55,7 @@ public class AppboyNotificationUtils {
   public static final String APPBOY_NOTIFICATION_DELETED_SUFFIX = ".intent.APPBOY_PUSH_DELETED";
 
   /**
-   * Handles a push notification click. Called by GCM/ADM receiver when a
+   * Handles a push notification click. Called by FCM/ADM receiver when a
    * Braze push notification click intent is received.
    * <p/>
    * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
@@ -78,7 +78,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Handles a push notification deletion by the user. Called by GCM/ADM receiver when a
+   * Handles a push notification deletion by the user. Called by FCM/ADM receiver when a
    * Braze push notification delete intent is received.
    * <p/>
    * See {@link android.support.v4.app.NotificationCompat.Builder#setDeleteIntent(PendingIntent)}
@@ -138,9 +138,9 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Get the Braze extras Bundle from the notification extras. Notification extras must be in GCM/ADM format.
+   * Get the Braze extras Bundle from the notification extras. Notification extras must be in FCM/ADM format.
    *
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @return Returns the Braze extras Bundle from the notification extras. Amazon ADM recursively flattens all JSON messages,
    * so for Amazon devices we just return a copy of the original bundle.
    */
@@ -190,7 +190,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Checks the incoming GCM/ADM intent to determine whether this is a Braze push message.
+   * Checks the incoming FCM/ADM intent to determine whether this is a Braze push message.
    * <p/>
    * All Braze push messages must contain an extras entry with key set to "_ab" and value set to "true".
    */
@@ -200,7 +200,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Checks the intent received from GCM to determine whether this is a notification message or a
+   * Checks the intent received from FCM to determine whether this is a notification message or a
    * data push.
    * <p/>
    * A notification message is a Braze push message that displays a notification in the
@@ -229,7 +229,7 @@ public class AppboyNotificationUtils {
    * Requests a geofence refresh from Braze if appropriate based on the payload of the push notification.
    *
    * @param context
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @return True iff a geofence refresh was requested from Appboy.
    */
   public static boolean requestGeofenceRefreshIfAppropriate(Context context, Bundle notificationExtras) {
@@ -386,7 +386,7 @@ public class AppboyNotificationUtils {
    * image within the story is put in the Braze image loader's cache.
    *
    * @param context Application context.
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    */
   public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras) {
     if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
@@ -437,7 +437,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Create broadcast intent that will fire when the notification has been opened. The GCM or ADM receiver will be notified,
+   * Create broadcast intent that will fire when the notification has been opened. The FCM or ADM receiver will be notified,
    * log a click, then send a broadcast to the client receiver.
    *
    * @param context
@@ -732,7 +732,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Handles a request to cancel a push notification in the notification center. Called by GCM/ADM
+   * Handles a request to cancel a push notification in the notification center. Called by FCM/ADM
    * receiver when a Braze cancel notification intent is received.
    * <p/>
    * Any existing notification in the notification center with the integer Id specified in the
@@ -759,7 +759,7 @@ public class AppboyNotificationUtils {
   /**
    * Creates a request to cancel a push notification in the notification center.
    * <p/>
-   * Sends an intent to the GCM/ADM receiver requesting Braze to cancel the notification with
+   * Sends an intent to the FCM/ADM receiver requesting Braze to cancel the notification with
    * the specified notification Id.
    * <p/>
    * See {@link #handleCancelNotificationAction}
@@ -785,7 +785,7 @@ public class AppboyNotificationUtils {
     if (Constants.IS_AMAZON) {
       return AppboyAdmReceiver.class;
     } else {
-      return AppboyGcmReceiver.class;
+      return AppboyFcmReceiver.class;
     }
   }
 
@@ -861,7 +861,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Handles a push story page click. Called by GCM/ADM receiver when an
+   * Handles a push story page click. Called by FCM/ADM receiver when an
    * Braze push story click intent is received.
    *
    * @param context Application context.
@@ -898,14 +898,14 @@ public class AppboyNotificationUtils {
    * Parses the notification bundle for any associated ContentCards, if present. If found, the card object is added to
    * card storage.
    *
-   * Note that this method is only supported for GCM payloads. For ADM, this method does nothing.
+   * Note that this method is only supported for FCM payloads. For ADM, this method does nothing.
    */
-  public static void handleContentCardsSerializedCardIfPresent(Context context, Bundle gcmExtras) {
-    if (!Constants.IS_AMAZON && gcmExtras.containsKey(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY)) {
-      String contentCardData = gcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY, null);
+  public static void handleContentCardsSerializedCardIfPresent(Context context, Bundle fcmExtras) {
+    if (!Constants.IS_AMAZON && fcmExtras.containsKey(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY)) {
+      String contentCardData = fcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY, null);
 
       // The user id can be absent for anonymous users so we'll default to null for it.
-      String contentCardDataUserId = gcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_USER_ID_KEY, null);
+      String contentCardDataUserId = fcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_USER_ID_KEY, null);
 
       AppboyLogger.d(TAG, "Push contains associated Content Cards card. User id: " + contentCardDataUserId + " Card data: " + contentCardData);
       AppboyInternal.addSerializedContentCardToStorage(context, contentCardData, contentCardDataUserId);

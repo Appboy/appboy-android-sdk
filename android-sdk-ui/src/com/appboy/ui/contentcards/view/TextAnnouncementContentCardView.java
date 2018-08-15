@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.appboy.models.cards.TextAnnouncementCard;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 
 public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnnouncementCard> {
@@ -17,14 +18,12 @@ public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnn
   private class ViewHolder extends ContentCardViewHolder {
     private final TextView mTitle;
     private final TextView mDescription;
-    private final TextView mDomain;
 
     ViewHolder(View view) {
       super(view, isUnreadIndicatorEnabled());
 
       mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_text_announcement_card_title);
       mDescription = (TextView) view.findViewById(R.id.com_appboy_content_cards_text_announcement_card_description);
-      mDomain = (TextView) view.findViewById(R.id.com_appboy_content_cards_text_announcement_card_domain);
     }
 
     TextView getTitle() {
@@ -33,10 +32,6 @@ public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnn
 
     TextView getDescription() {
       return mDescription;
-    }
-
-    TextView getDomain() {
-      return mDomain;
     }
   }
 
@@ -56,6 +51,6 @@ public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnn
 
     textAnnouncementViewHolder.getTitle().setText(card.getTitle());
     textAnnouncementViewHolder.getDescription().setText(card.getDescription());
-    setOptionalTextView(textAnnouncementViewHolder.getDomain(), card.getDomain());
+    textAnnouncementViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
   }
 }

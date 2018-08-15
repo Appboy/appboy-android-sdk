@@ -33,7 +33,7 @@ public class AppboyNotificationActionUtils {
    *
    * @param context
    * @param notificationBuilder
-   * @param notificationExtras GCM/ADM extras
+   * @param notificationExtras FCM/ADM extras
    */
   public static void addNotificationActions(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     try {
@@ -53,8 +53,8 @@ public class AppboyNotificationActionUtils {
   }
 
   /**
-   * Handles clicks on notification action buttons in the notification center. Called by GCM/ADM
-   * receiver when an Braze notification action button is clicked. The GCM/ADM receiver passes on
+   * Handles clicks on notification action buttons in the notification center. Called by FCM/ADM
+   * receiver when an Braze notification action button is clicked. The FCM/ADM receiver passes on
    * the intent from the notification action button click intent.
    *
    * @param context
@@ -148,7 +148,7 @@ public class AppboyNotificationActionUtils {
    * Returns the value for the given action field key template at the specified index.
    *
    * @param actionIndex the index of the desired action
-   * @param notificationExtras GCM/ADM notification extras
+   * @param notificationExtras FCM/ADM notification extras
    * @param actionFieldKeyTemplate the template of the action field
    * @return the desired notification action field value or the empty string if not present
    */
@@ -160,7 +160,7 @@ public class AppboyNotificationActionUtils {
    * Returns the value for the given action field key template at the specified index.
    *
    * @param actionIndex the index of the desired action
-   * @param notificationExtras GCM/ADM notification extras
+   * @param notificationExtras FCM/ADM notification extras
    * @param actionFieldKeyTemplate the template of the action field
    * @param defaultValue the default value to return if the value for the key in notificationExtras
    *                     is null.

@@ -430,7 +430,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   /**
    * Add the push story fields to the notificationExtras bundle.
    *
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @return the modified notificationExtras, now including the image/text information for the push story.
    */
   private Bundle addPushStoryPages(Bundle notificationExtras) {

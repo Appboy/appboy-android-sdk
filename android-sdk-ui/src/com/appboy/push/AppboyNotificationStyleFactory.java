@@ -121,7 +121,7 @@ public class AppboyNotificationStyleFactory {
    * Returns a DecoratedCustomViewStyle for push story.
    *
    * @param context Current context.
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @param notificationBuilder Must be an instance of the v7 builder.
    * @return a DecoratedCustomViewStyle that describes the appearance of the push story.
    */
@@ -168,7 +168,7 @@ public class AppboyNotificationStyleFactory {
    * Given a notificationExtras with properly formatted image keys (consecutively numbered beginning
    * at 0), returns the number of images in the push story.
    *
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @return The number of images keyed in the given notificationExtras
    */
   @VisibleForTesting
@@ -189,7 +189,7 @@ public class AppboyNotificationStyleFactory {
   /**
    * Returns the current page index of the push story.
    *
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @return The current page index.
    */
   @VisibleForTesting
@@ -205,7 +205,7 @@ public class AppboyNotificationStyleFactory {
    *
    * @param view The push story remoteView, as instantiated in the getStoryStyle method.
    * @param context Current context.
-   * @param notificationExtras Notification extras as provided by GCM/ADM.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @param index The index of the story page.
    * @return True if the push story page was populated correctly.
    */

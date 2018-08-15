@@ -1,5 +1,6 @@
 package com.appboy.ui.contentcards.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -33,6 +34,9 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
         handleCardClick(mContext, card, mCardAction, getClassLogTag());
       }
     });
+
+    // Only set the action hint to visible if there's a card action
+    viewHolder.setActionHintVisible(mCardAction != null);
   }
 
   /**
@@ -68,5 +72,12 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
   @Override
   protected boolean isClickHandled(Context context, Card card, IAction cardAction) {
     return AppboyContentCardsManager.getInstance().getContentCardsActionListener().onContentCardClicked(context, card, cardAction);
+  }
+
+  @TargetApi(21)
+  protected void safeSetClipToOutline(ImageView imageView) {
+    if (imageView != null) {
+      imageView.setClipToOutline(true);
+    }
   }
 }

@@ -1,8 +1,17 @@
-## 2.6.0
+## 2.7.0
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or above.
 - The Braze SDK requires the support v4 library version 26 or above.
+
+##### Breaking
+- Renamed `AppboyGcmReceiver` to `AppboyFcmReceiver`. This receiver is intended to be used for Firebase integrations and thus the `com.google.android.c2dm.intent.REGISTRATION` intent-filter action in your `AndroidManifest` should be removed.
+- Removed `AppboyConfigurationProvider.isGcmMessagingRegistrationEnabled()`, `AppboyConfigurationProvider.getGcmSenderId()`, `AppboyConfig.Builder.setGcmSenderId()`, and `AppboyConfig.Builder.setGcmMessagingRegistrationEnabled()`.
+
+##### Changed
+- Changed custom event property values validation to allow for empty strings.
+
+## 2.6.0
 
 ##### Added
 - Introduced support for the upcoming Content Cards feature, which will eventually replace the existing News Feed feature and adds significant capability. This feature is currently in closed beta testing; if you're interested in joining the beta, please reach out to your Customer Success Manager or Account Manager.

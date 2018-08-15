@@ -32,10 +32,11 @@ public class ContentCardsDividerItemDecoration extends RecyclerView.ItemDecorati
   public void getItemOffsets(Rect itemViewOutputRect, View view, RecyclerView parent, RecyclerView.State state) {
     super.getItemOffsets(itemViewOutputRect, view, parent, state);
 
+    int childAdapterPosition = parent.getChildAdapterPosition(view);
+
     boolean isControlCard = false;
     if (parent.getAdapter() instanceof AppboyCardAdapter) {
       AppboyCardAdapter cardAdapter = (AppboyCardAdapter) parent.getAdapter();
-      int childAdapterPosition = parent.getChildAdapterPosition(view);
       if (childAdapterPosition > 0) {
         isControlCard = cardAdapter.isControlCardAtPosition(childAdapterPosition);
       }
@@ -43,11 +44,16 @@ public class ContentCardsDividerItemDecoration extends RecyclerView.ItemDecorati
 
     // Set the top of the divider item to the proper height in pixels, if not a control
     // If the card is a control, then don't set any extra divider on the card
-    itemViewOutputRect.top = isControlCard ? 0 : mItemDividerHeight;
+    itemViewOutputRect.bottom = isControlCard ? 0 : mItemDividerHeight;
+
+    // If this is the first card, then set the top value to the divider as well
+    if (childAdapterPosition == 0) {
+      itemViewOutputRect.top = isControlCard ? 0 : mItemDividerHeight;
+    }
 
     // Now we have to center the view horizontally in the RecyclerView
-    // by adding in a margin on to the left of the view
-    itemViewOutputRect.left = getLeftPaddingValue(parent.getWidth());
+    // by adding in a margin on to the left & right of the view
+    itemViewOutputRect.left = getSidePaddingValue(parent.getWidth());
   }
 
   /**
@@ -65,11 +71,11 @@ public class ContentCardsDividerItemDecoration extends RecyclerView.ItemDecorati
   }
 
   /**
-   * Calculates the left padding value in screen pixels using the width of the parent view and the predefined item
+   * Calculates the padding value in screen pixels using the width of the parent view and the predefined item
    * view max width.
    */
-  private int getLeftPaddingValue(int parentWidth) {
-    int leftPadding = (parentWidth - mItemDividerMaxWidth) / 2;
-    return Math.max(leftPadding, 0);
+  private int getSidePaddingValue(int parentWidth) {
+    int padding = (parentWidth - mItemDividerMaxWidth) / 2;
+    return Math.max(padding, 0);
   }
 }

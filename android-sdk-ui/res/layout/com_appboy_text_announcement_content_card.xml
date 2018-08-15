@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 style="@style/Appboy.ContentCards.TextAnnouncement">
-  <TextView
+
+  <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    style="@style/Appboy.ContentCards.TextAnnouncement.Container">
+    <TextView
       android:id="@+id/com_appboy_content_cards_text_announcement_card_title"
+      tools:text="Content Card Title"
       style="@style/Appboy.ContentCards.TextAnnouncement.Title"/>
 
-  <TextView
+    <TextView
       android:id="@+id/com_appboy_content_cards_text_announcement_card_description"
+      tools:text="Content Card Description"
       style="@style/Appboy.ContentCards.TextAnnouncement.Description"/>
 
-  <TextView
-      android:id="@+id/com_appboy_content_cards_text_announcement_card_domain"
-      style="@style/Appboy.ContentCards.TextAnnouncement.Domain"/>
+    <TextView
+      android:id="@+id/com_appboy_content_cards_action_hint"
+      style="@style/Appboy.ContentCards.ActionHint.TextAnnouncement"/>
+  </RelativeLayout>
 
   <ImageView
     android:id="@+id/com_appboy_content_cards_pinned_icon"

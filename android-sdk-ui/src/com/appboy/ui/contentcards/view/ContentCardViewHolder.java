@@ -7,6 +7,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.appboy.ui.R;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -16,6 +17,8 @@ public class ContentCardViewHolder extends RecyclerView.ViewHolder {
   private final View mUnreadBar;
   @Nullable
   private final ImageView mPinnedIcon;
+  @Nullable
+  private final TextView mActionHint;
 
   public ContentCardViewHolder(final View view, boolean showUnreadIndicator) {
     super(view);
@@ -32,6 +35,7 @@ public class ContentCardViewHolder extends RecyclerView.ViewHolder {
     }
 
     mPinnedIcon = view.findViewById(R.id.com_appboy_content_cards_pinned_icon);
+    mActionHint = view.findViewById(R.id.com_appboy_content_cards_action_hint);
   }
 
   /**
@@ -53,6 +57,26 @@ public class ContentCardViewHolder extends RecyclerView.ViewHolder {
   public void setUnreadBarVisible(boolean isVisible) {
     if (mUnreadBar != null) {
       mUnreadBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+  }
+
+  /**
+   * Sets the action hint to {@link View#VISIBLE} when true, or {@link View#GONE} otherwise.
+   *
+   * @param isVisible Should the action hint be visible on the card.
+   */
+  public void setActionHintVisible(boolean isVisible) {
+    if (mActionHint != null) {
+      mActionHint.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+  }
+
+  /**
+   * Sets the action hint text.
+   */
+  public void setActionHintText(String text) {
+    if (mActionHint != null) {
+      mActionHint.setText(text);
     }
   }
 

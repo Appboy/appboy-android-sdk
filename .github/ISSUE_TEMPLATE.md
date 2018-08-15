@@ -20,7 +20,7 @@ Example: 1.17.0
 
 <!--
 Please replace this with how you've integrated and customized the Braze SDK.
-Example: Integrated Braze with the lifecycle listener and used automatic GCM push registration.
+Example: Integrated Braze with the lifecycle listener and used automatic push registration.
 -->
 
 ## What did you expect to happen?

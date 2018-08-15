@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appboy.models.cards.CaptionedImageCard;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -23,7 +24,6 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
   private class ViewHolder extends ContentCardViewHolder {
     private final TextView mTitle;
     private final TextView mDescription;
-    private final TextView mDomain;
     /**
      * This will hold either a {@link SimpleDraweeView} image or an {@link ImageView}
      */
@@ -37,7 +37,6 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
 
       mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_captioned_image_title);
       mDescription = (TextView) view.findViewById(R.id.com_appboy_content_cards_captioned_image_description);
-      mDomain = (TextView) view.findViewById(R.id.com_appboy_content_cards_captioned_image_card_domain);
     }
 
     TextView getTitle() {
@@ -46,10 +45,6 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
 
     TextView getDescription() {
       return mDescription;
-    }
-
-    TextView getDomain() {
-      return mDomain;
     }
 
     ImageView getImageView() {
@@ -77,7 +72,7 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
 
     captionedImageViewHolder.getTitle().setText(card.getTitle());
     captionedImageViewHolder.getDescription().setText(card.getDescription());
-    setOptionalTextView(captionedImageViewHolder.getDomain(), card.getDomain());
+    captionedImageViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
     setOptionalCardImage(captionedImageViewHolder.getImageView(), captionedImageViewHolder.getSimpleDraweeView(),
         card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO);

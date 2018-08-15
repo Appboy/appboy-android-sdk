@@ -56,4 +56,12 @@
 
   <!-- The color used to highlight unread Content Cards at their bottom edge -->
   <color name="com_appboy_content_cards_unread_bar_color">#1676d0</color>
+
+  <!-- The color of the "Read More >" text when card actions are present -->
+  <color name="com_appboy_content_cards_action_hint_text_color">#1676D0</color>
+
+  <color name="com_appboy_content_cards_title">#3F3F3F</color>
+  <color name="com_appboy_content_cards_description">#666565</color>
+
+  <color name="com_appboy_content_cards_display_background_color">#EEE</color>
 </resources>

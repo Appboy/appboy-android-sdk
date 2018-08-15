@@ -112,8 +112,8 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     final String inAppMessageTesterPageTitle = getString(R.string.inappmessage_tester_tab_title);
 
     mAdapter = new Adapter(getSupportFragmentManager());
-    mAdapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
     mAdapter.addFragment(new MainFragment(), "Events");
+    mAdapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
     mAdapter.addFragment(new PushTesterFragment(), "Push");
     mAdapter.addFragment(new InAppMessageTesterFragment(), inAppMessageTesterPageTitle);
     mAdapter.addFragment(new AppboyFeedFragment(), "Feed");

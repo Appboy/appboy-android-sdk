@@ -30,7 +30,7 @@ public class HelloAppboyApplication extends Application {
     Resources resources = getResources();
     AppboyConfig appboyConfig = new AppboyConfig.Builder()
         .setApiKey("dd162bff-b14e-4d87-9bf0-fec609a77ca4")
-        .setGcmMessagingRegistrationEnabled(false)
+        .setIsFirebaseCloudMessagingRegistrationEnabled(false)
         .setAdmMessagingRegistrationEnabled(false)
         .setFrescoLibraryEnabled(false)
         .setSessionTimeout(11)
