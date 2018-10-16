@@ -12,7 +12,6 @@ import com.appboy.ui.actions.IAction;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.contentcards.AppboyContentCardsManager;
 import com.appboy.ui.widget.BaseCardView;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
  * Base class for Appboy ContentCard views
@@ -40,15 +39,14 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
   }
 
   /**
-   * Sets the card's image to a given url based on whether Fresco is enabled. One or both of the views may be null.
+   * Sets the card's image to a given url. The view may be null.
    *
    * @param imageView The ImageView
-   * @param simpleDraweeView The Fresco Drawee view
    * @param cardAspectRatio The aspect ratio as set by the card itself
    * @param cardImageUrl The image url
    * @param defaultAspectRatio The default aspect ratio if the cardAspectRatio is 0
    */
-  public void setOptionalCardImage(@Nullable ImageView imageView, @Nullable SimpleDraweeView simpleDraweeView, float cardAspectRatio,
+  public void setOptionalCardImage(@Nullable ImageView imageView, float cardAspectRatio,
                                    String cardImageUrl, float defaultAspectRatio) {
     boolean respectAspectRatio = false;
     float aspectRatio = defaultAspectRatio;
@@ -58,14 +56,8 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
       respectAspectRatio = true;
     }
 
-    if (canUseFresco()) {
-      if (simpleDraweeView != null) {
-        setSimpleDraweeToUrl(simpleDraweeView, cardImageUrl, aspectRatio, respectAspectRatio);
-      }
-    } else {
-      if (imageView != null) {
-        setImageViewToUrl(imageView, cardImageUrl, aspectRatio, respectAspectRatio);
-      }
+    if (imageView != null) {
+      setImageViewToUrl(imageView, cardImageUrl, aspectRatio, respectAspectRatio);
     }
   }
 

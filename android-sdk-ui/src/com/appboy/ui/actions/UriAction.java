@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -132,7 +131,7 @@ public class UriAction implements IAction {
     if (intent.resolveActivity(context.getPackageManager()) != null) {
       context.startActivity(intent);
     } else {
-      Log.w(TAG, "Could not find appropriate activity to open for deep link " + uri + ".");
+      AppboyLogger.w(TAG, "Could not find appropriate activity to open for deep link " + uri + ".");
     }
   }
 
@@ -147,7 +146,7 @@ public class UriAction implements IAction {
     try {
       stackBuilder.startActivities(extras);
     } catch (ActivityNotFoundException e) {
-      Log.w(TAG, "Could not find appropriate activity to open for deep link " + uri, e);
+      AppboyLogger.w(TAG, "Could not find appropriate activity to open for deep link " + uri, e);
     }
   }
 
@@ -176,7 +175,7 @@ public class UriAction implements IAction {
     if (resolveInfos.size() > 1) {
       for (ResolveInfo resolveInfo : resolveInfos) {
         if (resolveInfo.activityInfo.packageName.equals(context.getPackageName())) {
-          Log.d(TAG, "Setting deep link activity to " + resolveInfo.activityInfo.packageName + ".");
+          AppboyLogger.d(TAG, "Setting deep link activity to " + resolveInfo.activityInfo.packageName + ".");
           intent.setPackage(resolveInfo.activityInfo.packageName);
           break;
         }

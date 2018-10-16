@@ -1,7 +1,6 @@
 package com.appboy.unity.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.appboy.Appboy;
 import com.appboy.models.IInAppMessage;
@@ -20,13 +19,13 @@ public class InAppMessageUtils {
     if (inAppMessage != null) {
       inAppMessage.logClick();
     } else {
-      Log.e(TAG, "The in-app message is null, Not logging in-app message click.");
+      AppboyLogger.e(TAG, "The in-app message is null, Not logging in-app message click.");
     }
   }
 
   public static void logInAppMessageButtonClick(IInAppMessage inAppMessage, int buttonId) {
     if (inAppMessage == null) {
-      Log.e(TAG, "The in-app message is null. Not logging in-app message button click.");
+      AppboyLogger.e(TAG, "The in-app message is null. Not logging in-app message button click.");
       return;
     }
     if (inAppMessage instanceof IInAppMessageImmersive) {
@@ -38,7 +37,7 @@ public class InAppMessageUtils {
         }
       }
     } else {
-      Log.e(TAG, "The in-app message %s isn't an instance of "
+      AppboyLogger.e(TAG, "The in-app message %s isn't an instance of "
           + "InAppMessageImmersive. Not logging in-app message button click.");
     }
   }
@@ -47,7 +46,7 @@ public class InAppMessageUtils {
     if (inAppMessage != null) {
       inAppMessage.logImpression();
     } else {
-      Log.e(TAG, "The in-app message is null, Not logging in-app message impression.");
+      AppboyLogger.e(TAG, "The in-app message is null, Not logging in-app message impression.");
     }
   }
 }

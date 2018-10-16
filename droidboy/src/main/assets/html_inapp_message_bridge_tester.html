@@ -13,6 +13,7 @@
         appboyBridge.getUser().setCustomUserAttribute('abDoubleAttribute', 7.8);
         appboyBridge.getUser().setCustomUserAttribute('abBoolAttribute', true);
         appboyBridge.getUser().setCustomUserAttribute('abArrayAttribute', ['a', 'b']);
+        appboyBridge.getUser().setLocationCustomUserAttribute('Dutch Restaurant', 52.369838, 4.875981);
       };
       function logCustomEvents() {
         appboyBridge.logCustomEvent('abEvent');
@@ -85,6 +86,7 @@
     <button onClick="appboyBridge.getUser().setGender('u')" />ab: setGender Unknown</button>
     <button onClick="appboyBridge.getUser().setGender('n')" />ab: setGender Not Applicable</button>
     <button onClick="appboyBridge.getUser().setGender('p')" />ab: setGender Prefer not to Say</button>
+    <button onClick="appboyBridge.getUser().setLocationCustomUserAttribute('Foodhallen', 52.367070, 4.868143)" />ab: setLocationCustomUserAttribute</button>
 
     <img src="HTML_ZIP_STOPWATCH/jpg_3.jpg" width="100%">
     <div class="relativeLeft">

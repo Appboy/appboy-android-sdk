@@ -8,7 +8,6 @@ import android.widget.ImageView;
 
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.ui.R;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class BannerImageContentCardView extends BaseContentCardView<BannerImageCard> {
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
@@ -20,24 +19,17 @@ public class BannerImageContentCardView extends BaseContentCardView<BannerImageC
   }
 
   private class ViewHolder extends ContentCardViewHolder {
-    /**
-     * This will hold either a {@link SimpleDraweeView} image or an {@link ImageView}
-     */
     private View mCardImage;
 
     ViewHolder(View view) {
       super(view, isUnreadIndicatorEnabled());
 
-      mCardImage = createCardImageWithStyle(getContext(), view, canUseFresco(),
+      mCardImage = createCardImageWithStyle(getContext(), view,
           R.style.Appboy_ContentCards_BannerImage_ImageContainer_Image, R.id.com_appboy_content_cards_banner_image_card_image_container);
     }
 
     ImageView getImageView() {
       return mCardImage instanceof ImageView ? (ImageView) mCardImage : null;
-    }
-
-    SimpleDraweeView getSimpleDraweeView() {
-      return mCardImage instanceof SimpleDraweeView ? (SimpleDraweeView) mCardImage : null;
     }
   }
 
@@ -54,7 +46,7 @@ public class BannerImageContentCardView extends BaseContentCardView<BannerImageC
   public void bindViewHolder(ContentCardViewHolder viewHolder, BannerImageCard card) {
     super.bindViewHolder(viewHolder, card);
     ViewHolder bannerImageViewHolder = (ViewHolder) viewHolder;
-    setOptionalCardImage(bannerImageViewHolder.getImageView(), bannerImageViewHolder.getSimpleDraweeView(),
+    setOptionalCardImage(bannerImageViewHolder.getImageView(),
         card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO);
   }
 }

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class CaptionedImageContentCardView extends BaseContentCardView<CaptionedImageCard> {
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
@@ -24,15 +23,12 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
   private class ViewHolder extends ContentCardViewHolder {
     private final TextView mTitle;
     private final TextView mDescription;
-    /**
-     * This will hold either a {@link SimpleDraweeView} image or an {@link ImageView}
-     */
     private View mCardImage;
 
     ViewHolder(View view) {
       super(view, isUnreadIndicatorEnabled());
 
-      mCardImage = createCardImageWithStyle(getContext(), view, canUseFresco(),
+      mCardImage = createCardImageWithStyle(getContext(), view,
           R.style.Appboy_ContentCards_CaptionedImage_ImageContainer_Image, R.id.com_appboy_content_cards_captioned_image_card_image_container);
 
       mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_captioned_image_title);
@@ -49,10 +45,6 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
 
     ImageView getImageView() {
       return mCardImage instanceof ImageView ? (ImageView) mCardImage : null;
-    }
-
-    SimpleDraweeView getSimpleDraweeView() {
-      return mCardImage instanceof SimpleDraweeView ? (SimpleDraweeView) mCardImage : null;
     }
   }
 
@@ -74,7 +66,7 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
     captionedImageViewHolder.getDescription().setText(card.getDescription());
     captionedImageViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
-    setOptionalCardImage(captionedImageViewHolder.getImageView(), captionedImageViewHolder.getSimpleDraweeView(),
+    setOptionalCardImage(captionedImageViewHolder.getImageView(),
         card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO);
   }
 }

@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
@@ -61,8 +60,8 @@ public class AppboyNotificationUtils {
    * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
    *
    * @param context Application context
-   * @param intent the internal notification clicked intent constructed in
-   *               {@link #setContentIntentIfPresent}
+   * @param intent  the internal notification clicked intent constructed in
+   *                {@link #setContentIntentIfPresent}
    */
   public static void handleNotificationOpened(Context context, Intent intent) {
     try {
@@ -81,13 +80,13 @@ public class AppboyNotificationUtils {
    * Handles a push notification deletion by the user. Called by FCM/ADM receiver when a
    * Braze push notification delete intent is received.
    * <p/>
-   * See {@link android.support.v4.app.NotificationCompat.Builder#setDeleteIntent(PendingIntent)}
+   * See {@link NotificationCompat.Builder#setDeleteIntent(PendingIntent)}
    * <p/>
    * The broadcast message action is <host-app-package-name> + {@link #APPBOY_NOTIFICATION_DELETED_SUFFIX}.
    *
    * @param context Application context
-   * @param intent the internal notification delete intent constructed in
-   *               {@link #setDeleteIntent(Context, NotificationCompat.Builder, Bundle)}
+   * @param intent  the internal notification delete intent constructed in
+   *                {@link #setDeleteIntent(Context, NotificationCompat.Builder, Bundle)}
    */
   public static void handleNotificationDeleted(Context context, Intent intent) {
     try {
@@ -103,7 +102,7 @@ public class AppboyNotificationUtils {
    * on the back stack. If no deep link is available, opens the main activity.
    *
    * @param context
-   * @param intent the internal notification clicked intent constructed in
+   * @param intent  the internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   public static void routeUserWithNotificationOpenedIntent(Context context, Intent intent) {
@@ -121,9 +120,9 @@ public class AppboyNotificationUtils {
     // Otherwise, start the intent defined in getStartActivityIntent().
     String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
     if (!StringUtils.isNullOrBlank(deepLink)) {
-      Log.d(TAG, "Found a deep link " + deepLink);
+      AppboyLogger.d(TAG, "Found a deep link " + deepLink);
       boolean useWebView = "true".equalsIgnoreCase(intent.getStringExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY));
-      Log.d(TAG, "Use webview set to: " + useWebView);
+      AppboyLogger.d(TAG, "Use webview set to: " + useWebView);
 
       // pass deep link and use webview values to target activity.
       extras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, deepLink);
@@ -132,7 +131,7 @@ public class AppboyNotificationUtils {
       UriAction uriAction = ActionFactory.createUriActionFromUrlString(deepLink, extras, useWebView, Channel.PUSH);
       AppboyNavigator.getAppboyNavigator().gotoUri(context, uriAction);
     } else {
-      Log.d(TAG, "Push notification had no deep link. Opening main activity.");
+      AppboyLogger.d(TAG, "Push notification had no deep link. Opening main activity.");
       context.startActivity(UriUtils.getMainActivityIntent(context, extras));
     }
   }
@@ -298,7 +297,7 @@ public class AppboyNotificationUtils {
   /**
    * This method will retrieve notification priority from notificationExtras bundle if it has been set.
    * Otherwise returns the default priority.
-   *
+   * <p>
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
   public static int getNotificationPriority(Bundle notificationExtras) {
@@ -319,7 +318,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Checks whether the given integer value is a valid Android notification priority constant.
-   *
+   * <p>
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
   public static boolean isValidNotificationPriority(int priority) {
@@ -385,7 +384,7 @@ public class AppboyNotificationUtils {
    * Checks that the notification is a story that has only just been received. If so, each
    * image within the story is put in the Braze image loader's cache.
    *
-   * @param context Application context.
+   * @param context            Application context.
    * @param notificationExtras Notification extras as provided by FCM/ADM.
    */
   public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras) {
@@ -501,7 +500,7 @@ public class AppboyNotificationUtils {
    * @return whether a large icon was successfully set.
    */
   public static boolean setLargeIconIfPresentAndSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
-      NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+                                                          NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
       AppboyLogger.d(TAG, "Large icon not supported in story push.");
       return false;
@@ -741,7 +740,7 @@ public class AppboyNotificationUtils {
    * If no Id is found, the defaut Braze notification Id is used.
    *
    * @param context
-   * @param intent the cancel notification intent
+   * @param intent  the cancel notification intent
    */
   public static void handleCancelNotificationAction(Context context, Intent intent) {
     try {
@@ -800,10 +799,10 @@ public class AppboyNotificationUtils {
 
   /**
    * Sets a notification channel on all Android O and above notifications. If not present in the extras, then a default notification channel is used.
-   *
+   * <p>
    * To change the default notification channel name and description, please use {@link com.appboy.configuration.AppboyConfig.Builder#setDefaultNotificationChannelName(String)} and
    * {@link com.appboy.configuration.AppboyConfig.Builder#setDefaultNotificationChannelDescription(String)}.
-   *
+   * <p>
    * The default notification channel uses the id {@link Constants#APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID}.
    */
   @SuppressLint({"InlinedApi", "NewApi"})
@@ -830,7 +829,7 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Sets the notification number, set via {@link android.support.v4.app.NotificationCompat.Builder#setNumber(int)}. On Android O, this number is used with notification badges.
+   * Sets the notification number, set via {@link NotificationCompat.Builder#setNumber(int)}. On Android O, this number is used with notification badges.
    */
   public static void setNotificationBadgeNumberIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -865,7 +864,7 @@ public class AppboyNotificationUtils {
    * Braze push story click intent is received.
    *
    * @param context Application context.
-   * @param intent The push story click intent.
+   * @param intent  The push story click intent.
    */
   public static void handlePushStoryPageClicked(Context context, Intent intent) {
     try {
@@ -897,7 +896,7 @@ public class AppboyNotificationUtils {
   /**
    * Parses the notification bundle for any associated ContentCards, if present. If found, the card object is added to
    * card storage.
-   *
+   * <p>
    * Note that this method is only supported for FCM payloads. For ADM, this method does nothing.
    */
   public static void handleContentCardsSerializedCardIfPresent(Context context, Bundle fcmExtras) {
@@ -928,7 +927,7 @@ public class AppboyNotificationUtils {
    * The broadcast message action is <host-app-package-name> + {@link #APPBOY_NOTIFICATION_OPENED_SUFFIX}.
    *
    * @param context Application context
-   * @param intent the internal notification clicked intent constructed in
+   * @param intent  the internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
@@ -940,7 +939,7 @@ public class AppboyNotificationUtils {
    * Logs a push notification open.
    *
    * @param context
-   * @param intent the internal notification clicked intent constructed in
+   * @param intent  the internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   private static void logNotificationOpened(Context context, Intent intent) {
@@ -950,7 +949,7 @@ public class AppboyNotificationUtils {
   /**
    * Returns an existing notification channel. The notification extras are first checked for a notification channel that exists. If not, then the default
    * Braze notification channel is returned if it exists. If neither exist on the device, then null is returned.
-   *
+   * <p>
    * This method does not create a notification channel if a valid channel cannot be found.
    *
    * @param notificationExtras The extras that will be checked for a valid notification channel id.
@@ -990,8 +989,8 @@ public class AppboyNotificationUtils {
   /**
    * Creates a {@link PendingIntent} using the given action and extras specified.
    *
-   * @param context Application context
-   * @param action The action to set for the {@link PendingIntent}
+   * @param context            Application context
+   * @param action             The action to set for the {@link PendingIntent}
    * @param notificationExtras The extras to set for the {@link PendingIntent}, if not null
    */
   private static PendingIntent getPushActionPendingIntent(Context context, String action, Bundle notificationExtras) {
@@ -1005,9 +1004,9 @@ public class AppboyNotificationUtils {
   /**
    * Broadcasts an intent with the given action suffix. Will copy the extras from the input intent.
    *
-   * @param context Application context.
+   * @param context            Application context.
    * @param notificationExtras The extras to attach to the intent.
-   * @param actionSuffix The action suffix. Will be appended to the host package name to create the full intent action.
+   * @param actionSuffix       The action suffix. Will be appended to the host package name to create the full intent action.
    */
   private static void sendPushActionIntent(Context context, String actionSuffix, Bundle notificationExtras) {
     String pushAction = context.getPackageName() + actionSuffix;

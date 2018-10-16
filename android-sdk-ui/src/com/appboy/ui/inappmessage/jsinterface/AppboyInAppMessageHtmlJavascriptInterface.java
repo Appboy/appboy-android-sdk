@@ -1,18 +1,20 @@
 package com.appboy.ui.inappmessage.jsinterface;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 import android.webkit.JavascriptInterface;
 
 import com.appboy.Appboy;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.support.AppboyLogger;
-import com.facebook.common.internal.VisibleForTesting;
 
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
 
-// Used to generate the javascript API in html in-app messages.  See https://documentation.appboy.com for more information.
+/**
+ * Used to generate the javascript API in html in-app messages.
+ */
 public class AppboyInAppMessageHtmlJavascriptInterface {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlJavascriptInterface.class);
 

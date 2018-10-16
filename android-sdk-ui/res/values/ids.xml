@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Application specific identifier for View tagging, required for Glide image library compatibility. -->
+  <!-- Application specific identifiers for View tagging, required for Glide image library compatibility. -->
   <string translatable="false" name="com_appboy_image_resize_tag_key">com_appboy_image_resize_tag_key</string>
+  <string translatable="false" name="com_appboy_image_is_read_tag_key">com_appboy_image_is_read_tag_key</string>
 </resources>

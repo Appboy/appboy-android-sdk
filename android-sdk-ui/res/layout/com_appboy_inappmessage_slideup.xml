@@ -11,10 +11,6 @@
             android:id="@+id/com_appboy_inappmessage_slideup_imageview_stub"
             android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
             style="@style/Appboy.InAppMessage.Image.Slideup"/>
-        <ViewStub
-            android:id="@+id/com_appboy_inappmessage_slideup_drawee_stub"
-            android:layout="@layout/com_appboy_stubbed_inappmessage_drawee_view"
-            style="@style/Appboy.InAppMessage.Image.Slideup"/>
         <TextView
             android:id="@+id/com_appboy_inappmessage_slideup_icon"
             style="@style/Appboy.InAppMessage.Icon.Slideup"/>

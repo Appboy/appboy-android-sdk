@@ -20,10 +20,6 @@
                 android:id="@+id/com_appboy_inappmessage_full_imageview_stub"
                 android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
                 style="@style/Appboy.InAppMessage.Image.Full"/>
-            <ViewStub
-                android:id="@+id/com_appboy_inappmessage_full_drawee_stub"
-                android:layout="@layout/com_appboy_stubbed_inappmessage_drawee_view"
-                style="@style/Appboy.InAppMessage.Image.Full"/>
             <RelativeLayout
                 android:id="@+id/com_appboy_inappmessage_full_textarea"
                 style="@style/Appboy.InAppMessage.Full.TextArea">

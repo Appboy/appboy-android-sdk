@@ -14,7 +14,6 @@ import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
-import com.appboy.ui.support.FrescoLibraryUtils;
 
 public class AppboyModalViewFactory implements IInAppMessageViewFactory {
   @Override
@@ -25,14 +24,10 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageModalView view = getAppropriateModalView(activity, isGraphic);
     view.inflateStubViews(activity, inAppMessageModal);
 
-    if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
-      view.setMessageSimpleDrawee(inAppMessageModal, activity);
-    } else {
-      String imageUrl = view.getAppropriateImageUrl(inAppMessage);
-      if (!StringUtils.isNullOrEmpty(imageUrl)) {
-        IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-        appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_MODAL);
-      }
+    String imageUrl = view.getAppropriateImageUrl(inAppMessage);
+    if (!StringUtils.isNullOrEmpty(imageUrl)) {
+      IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
+      appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_MODAL);
     }
 
     // modal frame should not be clickable.

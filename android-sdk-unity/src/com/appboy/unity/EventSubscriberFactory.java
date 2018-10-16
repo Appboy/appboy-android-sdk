@@ -1,7 +1,5 @@
 package com.appboy.unity;
 
-import android.util.Log;
-
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
@@ -38,13 +36,13 @@ public class EventSubscriberFactory {
       public void trigger(FeedUpdatedEvent feedUpdatedEvent) {
         String unityGameObjectName = unityConfigurationProvider.getFeedListenerGameObjectName();
         if (StringUtils.isNullOrBlank(unityGameObjectName)) {
-          Log.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration file to receive "
+          AppboyLogger.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration file to receive "
               + "feed updates. Not sending the message to the Unity Player.");
           return;
         }
         String unityCallbackFunctionName = unityConfigurationProvider.getFeedListenerCallbackMethodName();
         if (StringUtils.isNullOrBlank(unityCallbackFunctionName)) {
-          Log.d(TAG, "There is no Unity callback method name registered to receive feed updates in "
+          AppboyLogger.d(TAG, "There is no Unity callback method name registered to receive feed updates in "
               + "the appboy.xml configuration file. Not sending the message to the Unity Player.");
           return;
         }

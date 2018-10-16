@@ -53,7 +53,7 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
   }
 
   /**
-   * Gets the view to display the correct card image after checking if it can use Fresco. Note that since the Content Cards does not
+   * Gets the view to display the correct card image. Note that since the Content Cards does not
    * use image view stubs any longer, this method is only used for Feed cards.
    *
    * @param stubLayoutId The resource Id of the stub for inflation as returned by findViewById.
@@ -62,12 +62,7 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
   public View getProperViewFromInflatedStub(int stubLayoutId) {
     ViewStub imageStub = (ViewStub) findViewById(stubLayoutId);
     imageStub.inflate();
-
-    if (canUseFresco()) {
-      return findViewById(R.id.com_appboy_stubbed_feed_drawee_view);
-    } else {
-      return findViewById(R.id.com_appboy_stubbed_feed_image_view);
-    }
+    return findViewById(R.id.com_appboy_stubbed_feed_image_view);
   }
 
   /**

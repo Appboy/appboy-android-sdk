@@ -16,7 +16,6 @@ import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
-import com.appboy.ui.support.FrescoLibraryUtils;
 import com.appboy.ui.support.ViewUtils;
 
 public class AppboyFullViewFactory implements IInAppMessageViewFactory {
@@ -29,15 +28,11 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageFullView view = getAppropriateFullView(activity, isGraphic);
     view.inflateStubViews(activity, inAppMessageFull);
 
-    if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
-      view.setMessageSimpleDrawee(inAppMessageFull);
-    } else {
-      // Since this image is the width of the screen, the view bounds are uncapped
-      String imageUrl = view.getAppropriateImageUrl(inAppMessage);
-      if (!StringUtils.isNullOrEmpty(imageUrl)) {
-        IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-        appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);
-      }
+    // Since this image is the width of the screen, the view bounds are uncapped
+    String imageUrl = view.getAppropriateImageUrl(inAppMessage);
+    if (!StringUtils.isNullOrEmpty(imageUrl)) {
+      IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
+      appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);
     }
 
     // modal frame should not be clickable.

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.push.AppboyNotificationActionUtils;
@@ -56,7 +55,7 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
     if (FCM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(FCM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
-        Log.e(TAG, "Unable to parse FCM message. Intent: " + intent.toString());
+        AppboyLogger.e(TAG, "Unable to parse FCM message. Intent: " + intent.toString());
       } else {
         AppboyLogger.i(TAG, "FCM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
       }

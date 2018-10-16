@@ -470,6 +470,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       inAppMessage.setDurationInMilliseconds(1000);
     } else if ("manual".equals(mDismissType)) {
       inAppMessage.setDismissType(DismissType.MANUAL);
+    } else {
+      inAppMessage.setDismissType(DismissType.MANUAL);
     }
   }
 

@@ -6,12 +6,6 @@
       android:inflatedId="@+id/com_appboy_captioned_image_card_image"
       style="@style/Appboy.Cards.CaptionedImage.Image"/>
 
-    <ViewStub
-      android:id="@+id/com_appboy_captioned_image_card_drawee_stub"
-      android:layout="@layout/com_appboy_stubbed_feed_drawee_view"
-      android:inflatedId="@+id/com_appboy_captioned_image_card_image"
-      style="@style/Appboy.Cards.CaptionedImage.Image"/>
-
     <RelativeLayout
         android:id="@+id/com_appboy_captioned_image_card_title_container"
         android:layout_width="match_parent"

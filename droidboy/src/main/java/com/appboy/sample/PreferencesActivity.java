@@ -18,7 +18,10 @@ import android.widget.Toast;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.IAppboyImageLoader;
+import com.appboy.lrucache.AppboyLruImageLoader;
 import com.appboy.models.outgoing.AttributionData;
+import com.appboy.sample.imageloading.GlideAppboyImageLoader;
 import com.appboy.sample.util.LifecycleUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.support.AppboyLogger;
@@ -46,10 +49,15 @@ public class PreferencesActivity extends PreferenceActivity {
   }
 
   private int mAttributionUniqueInt = 0;
+  private IAppboyImageLoader mGlideAppboyImageLoader;
+  private IAppboyImageLoader mAppboyLruImageLoader;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    mGlideAppboyImageLoader = new GlideAppboyImageLoader();
+    mAppboyLruImageLoader = new AppboyLruImageLoader(getApplicationContext());
+
     addPreferencesFromResource(R.xml.preferences);
     setContentView(R.layout.preference_wrapper_view);
 
@@ -92,12 +100,13 @@ public class PreferencesActivity extends PreferenceActivity {
     SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     sortNewsFeed.setChecked(sharedPrefSort.getBoolean(getString(R.string.sort_feed), false));
     CheckBoxPreference setCustomNewsFeedClickActionListener = (CheckBoxPreference) findPreference("set_custom_news_feed_card_click_action_listener");
-    Preference enableFrescoPreference = findPreference("enable_fresco_preference_key");
-    Preference disableFrescoPreference = findPreference("disable_fresco_preference_key");
 
     Preference enableSdkPreference = findPreference("enable_sdk_key");
     Preference disableSdkPreference = findPreference("disable_sdk_key");
     Preference wipeSdkDataPreference = findPreference("wipe_data_preference_key");
+
+    Preference enableGlideLibraryPreference = findPreference("glide_image_loader_enable_setting_key");
+    Preference disableGlideLibraryPreference = findPreference("glide_image_loader_disable_setting_key");
 
     sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
     apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
@@ -255,32 +264,6 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
-    enableFrescoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @SuppressLint("ApplySharedPref")
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        // Note that .commit() is used here since we're restarting the process and thus need to immediately flush all shared prefs changes to disk
-        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
-        sharedPreferencesEditor.putBoolean(DroidboyApplication.OVERRIDE_FRESCO_PREF_KEY, true);
-        sharedPreferencesEditor.commit();
-        Toast.makeText(PreferencesActivity.this, "Enabling the Fresco library for the next app run.", Toast.LENGTH_LONG).show();
-        LifecycleUtils.restartApp(getApplicationContext());
-        return true;
-      }
-    });
-    disableFrescoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @SuppressLint("ApplySharedPref")
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        // Note that .commit() is used here since we're restarting the process and thus need to immediately flush all shared prefs changes to disk
-        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
-        sharedPreferencesEditor.putBoolean(DroidboyApplication.OVERRIDE_FRESCO_PREF_KEY, false);
-        sharedPreferencesEditor.commit();
-        Toast.makeText(PreferencesActivity.this, "Disabling the Fresco library for the next app run.", Toast.LENGTH_LONG).show();
-        LifecycleUtils.restartApp(getApplicationContext());
-        return true;
-      }
-    });
     wipeSdkDataPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
@@ -301,6 +284,17 @@ public class PreferencesActivity extends PreferenceActivity {
         Appboy.disableSdk(PreferencesActivity.this);
         return true;
       }
+    });
+
+    enableGlideLibraryPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.getInstance(getApplicationContext()).setAppboyImageLoader(mGlideAppboyImageLoader);
+      showToast("Glide enabled");
+      return true;
+    });
+    disableGlideLibraryPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.getInstance(getApplicationContext()).setAppboyImageLoader(mAppboyLruImageLoader);
+      showToast("Glide disabled. Default Image loader in use.");
+      return true;
     });
   }
 

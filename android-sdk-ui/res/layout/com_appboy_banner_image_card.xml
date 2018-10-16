@@ -6,11 +6,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Appboy.Cards.BannerImage.Image"/>
-
-    <ViewStub
-        android:id="@+id/com_appboy_banner_image_card_drawee_stub"
-        android:layout="@layout/com_appboy_stubbed_feed_drawee_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Appboy.Cards.BannerImage.Image"/>
 </merge>

@@ -1,8 +1,42 @@
-## 2.7.0
+## 3.0.0
 
 ##### Important
 - If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or above.
 - The Braze SDK requires the support v4 library version 26 or above.
+
+##### Breaking
+- From `AppboyConfig`, removed `getEnableBackgroundLocationCollection()`, `getLocationUpdateTimeIntervalSeconds()`, and `getLocationUpdateDistance()` and their respective setters in `AppboyConfig.Builder`.
+- Removed the Fresco image library from the SDK. To displaying GIFs, you must use a custom image library. Please see `IAppboy#setAppboyImageLoader(IAppboyImageLoader)`.
+  - We recommend the [Glide Image Library](https://bumptech.github.io/glide/) as a Fresco replacement.
+  - `AppboyConfig.Builder.setFrescoLibraryEnabled()` has been removed.
+  - `AppboyConfigurationProvider.getIsFrescoLibraryUseEnabled()` has been removed.
+
+##### Fixed
+- Fixed a NPE issue with the RecyclerView while saving the instance state in the `AppboyContentCardsFragment`.
+
+##### Added
+- Added the ability to set location custom attributes on the html in-app message javascript interface.
+- Added compatibility with androidX dependencies.
+    - This initial release adds direct compatibility for classes found under the `com.appboy.push` package. These classes are commonly used in conjunction with an `IAppboyNotificationFactory`. To use these compatible classes, add the following gradle import: `implementation 'com.appboy:android-sdk-ui-x:VERSION'` and replace your imports to fall under the `com.appboy.uix.push` package.
+    - The gradle properties `android.enableJetifier=true` and `android.useAndroidX=true` are required when using androidX libraries with the Braze SDK.
+- Added nullability annotation to `Appboy` and `AppboyUser` for better Kotlin interoperability.
+- Added the ability to optionally whitelist keys in the device object. See `AppboyConfig.Builder.setDeviceObjectWhitelistEnabled()` and `AppboyConfig.Builder.setDeviceObjectWhitelist()` for more information.
+  - The following example showcases whitelisting the device object to only include the Android OS version and device locale in the device object.
+    ```
+      new AppboyConfig.Builder()
+          .setDeviceObjectWhitelistEnabled(true)
+          .setDeviceObjectWhitelist(EnumSet.of(DeviceKey.ANDROID_VERSION, DeviceKey.LOCALE));
+    ```
+
+##### Removed
+- Removed the ability to optionally track locations in the background.
+- Removed Cross Promotion cards from the News Feed.
+  - Cross Promotion cards have also been removed as a card model and will thus no longer be returned.
+
+##### Changed
+- Updated the Baidu China Push sample to use the version 2.9 Baidu JNI libraries and version 6.1.1.21 of the Baidu jar.
+
+## 2.7.0
 
 ##### Breaking
 - Renamed `AppboyGcmReceiver` to `AppboyFcmReceiver`. This receiver is intended to be used for Firebase integrations and thus the `com.google.android.c2dm.intent.REGISTRATION` intent-filter action in your `AndroidManifest` should be removed.

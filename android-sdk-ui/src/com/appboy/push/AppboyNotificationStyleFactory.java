@@ -146,6 +146,64 @@ public class AppboyNotificationStyleFactory {
     return style;
   }
 
+  /**
+   * Returns a BigPictureStyle notification style initialized with the bitmap, big title, and big summary
+   * specified in the notificationExtras and appboyExtras bundles.
+   * <p/>
+   * If summary text exists, it will be shown in the expanded notification view.
+   * If a title exists, it will override the default in expanded notification view.
+   */
+  public static NotificationCompat.BigPictureStyle getBigPictureNotificationStyle(Context context, Bundle notificationExtras, Bundle appboyExtras) {
+    if (appboyExtras == null || !appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
+      return null;
+    }
+
+    String imageUrl = appboyExtras.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
+    if (StringUtils.isNullOrBlank(imageUrl)) {
+      return null;
+    }
+
+    Bitmap imageBitmap = AppboyImageUtils.getBitmap(context, Uri.parse(imageUrl), AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
+    if (imageBitmap == null) {
+      return null;
+    }
+
+    try {
+      // Images get cropped differently across different screen sizes
+      // Here we grab the current screen size and scale the image to fit correctly
+      // Note: if the height is greater than the width it's going to look poor, so we might
+      // as well let the system modify it and not complicate things by trying to smoosh it here.
+      if (imageBitmap.getWidth() > imageBitmap.getHeight()) {
+        DisplayMetrics displayMetrics = AppboyImageUtils.getDefaultScreenDisplayMetrics(context);
+        int bigPictureHeightPixels = AppboyImageUtils.getPixelsFromDensityAndDp(displayMetrics.densityDpi, BIG_PICTURE_STYLE_IMAGE_HEIGHT);
+        // 2:1 aspect ratio
+        int bigPictureWidthPixels = 2 * bigPictureHeightPixels;
+        if (bigPictureWidthPixels > displayMetrics.widthPixels) {
+          bigPictureWidthPixels = displayMetrics.widthPixels;
+        }
+
+        try {
+          imageBitmap = Bitmap.createScaledBitmap(imageBitmap, bigPictureWidthPixels, bigPictureHeightPixels, true);
+        } catch (Exception e) {
+          AppboyLogger.e(TAG, "Failed to scale image bitmap, using original.", e);
+        }
+      }
+      if (imageBitmap == null) {
+        AppboyLogger.i(TAG, "Bitmap download failed for push notification. No image will be included with the notification.");
+        return null;
+      }
+
+      NotificationCompat.BigPictureStyle bigPictureNotificationStyle = new NotificationCompat.BigPictureStyle();
+      bigPictureNotificationStyle.bigPicture(imageBitmap);
+      setBigPictureSummaryAndTitle(bigPictureNotificationStyle, notificationExtras);
+
+      return bigPictureNotificationStyle;
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Failed to create Big Picture Style.", e);
+      return null;
+    }
+  }
+
   private static PendingIntent createStoryPageClickedPendingIntent(Context context, String uriString, String useWebView, String storyPageId, String campaignId) {
     Intent storyClickedIntent = new Intent(Constants.APPBOY_STORY_CLICKED_ACTION).setClass(context, AppboyNotificationRoutingActivity.class);
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_URI_KEY, uriString);
@@ -264,64 +322,6 @@ public class AppboyNotificationStyleFactory {
         deepLink, useWebView, storyPageId, campaignId);
     view.setOnClickPendingIntent(STORY_FULL_VIEW_XML_IDS[5], storyClickedPendingIntent);
     return true;
-  }
-
-  /**
-   * Returns a BigPictureStyle notification style initialized with the bitmap, big title, and big summary
-   * specified in the notificationExtras and appboyExtras bundles.
-   * <p/>
-   * If summary text exists, it will be shown in the expanded notification view.
-   * If a title exists, it will override the default in expanded notification view.
-   */
-  public static NotificationCompat.BigPictureStyle getBigPictureNotificationStyle(Context context, Bundle notificationExtras, Bundle appboyExtras) {
-    if (appboyExtras == null || !appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
-      return null;
-    }
-
-    String imageUrl = appboyExtras.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
-    if (StringUtils.isNullOrBlank(imageUrl)) {
-      return null;
-    }
-
-    Bitmap imageBitmap = AppboyImageUtils.getBitmap(context, Uri.parse(imageUrl), AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
-    if (imageBitmap == null) {
-      return null;
-    }
-
-    try {
-      // Images get cropped differently across different screen sizes
-      // Here we grab the current screen size and scale the image to fit correctly
-      // Note: if the height is greater than the width it's going to look poor, so we might
-      // as well let the system modify it and not complicate things by trying to smoosh it here.
-      if (imageBitmap.getWidth() > imageBitmap.getHeight()) {
-        DisplayMetrics displayMetrics = AppboyImageUtils.getDefaultScreenDisplayMetrics(context);
-        int bigPictureHeightPixels = AppboyImageUtils.getPixelsFromDensityAndDp(displayMetrics.densityDpi, BIG_PICTURE_STYLE_IMAGE_HEIGHT);
-        // 2:1 aspect ratio
-        int bigPictureWidthPixels = 2 * bigPictureHeightPixels;
-        if (bigPictureWidthPixels > displayMetrics.widthPixels) {
-          bigPictureWidthPixels = displayMetrics.widthPixels;
-        }
-
-        try {
-          imageBitmap = Bitmap.createScaledBitmap(imageBitmap, bigPictureWidthPixels, bigPictureHeightPixels, true);
-        } catch (Exception e) {
-          AppboyLogger.e(TAG, "Failed to scale image bitmap, using original.", e);
-        }
-      }
-      if (imageBitmap == null) {
-        AppboyLogger.i(TAG, "Bitmap download failed for push notification. No image will be included with the notification.");
-        return null;
-      }
-
-      NotificationCompat.BigPictureStyle bigPictureNotificationStyle = new NotificationCompat.BigPictureStyle();
-      bigPictureNotificationStyle.bigPicture(imageBitmap);
-      setBigPictureSummaryAndTitle(bigPictureNotificationStyle, notificationExtras);
-
-      return bigPictureNotificationStyle;
-    } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to create Big Picture Style.", e);
-      return null;
-    }
   }
 
   static void setBigPictureSummaryAndTitle(NotificationCompat.BigPictureStyle bigPictureNotificationStyle, Bundle notificationExtras) {

@@ -10,7 +10,6 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(CaptionedImageCardView.class);
@@ -18,7 +17,6 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;
-  private SimpleDraweeView mDrawee;
   private IAction mCardAction;
 
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
@@ -31,13 +29,9 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
 
   public CaptionedImageCardView(final Context context, CaptionedImageCard card) {
     super(context);
-    if (canUseFresco()) {
-      mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_drawee_stub);
-    } else {
-      mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_imageview_stub);
-      mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-      mImage.setAdjustViewBounds(true);
-    }
+    mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_imageview_stub);
+    mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+    mImage.setAdjustViewBounds(true);
 
     mTitle = (TextView) findViewById(R.id.com_appboy_captioned_image_title);
     mDescription = (TextView) findViewById(R.id.com_appboy_captioned_image_description);
@@ -74,10 +68,6 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
       }
     });
 
-    if (canUseFresco()) {
-      setSimpleDraweeToUrl(mDrawee, card.getImageUrl(), mAspectRatio, respectAspectRatio);
-    } else {
-      setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
-    }
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
   }
 }

@@ -1,6 +1,7 @@
 package com.appboy.ui.inappmessage.jsinterface;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 import android.webkit.JavascriptInterface;
 
 import com.appboy.Appboy;
@@ -9,7 +10,6 @@ import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
 import com.appboy.support.AppboyLogger;
-import com.facebook.common.internal.VisibleForTesting;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -227,5 +227,10 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   @JavascriptInterface
   public void incrementCustomUserAttribute(String attribute) {
     Appboy.getInstance(mContext).getCurrentUser().incrementCustomUserAttribute(attribute);
+  }
+
+  @JavascriptInterface
+  public void setLocationCustomUserAttribute(String attribute, double latitude, double longitude) {
+    Appboy.getInstance(mContext).getCurrentUser().setLocationCustomAttribute(attribute, latitude, longitude);
   }
 }

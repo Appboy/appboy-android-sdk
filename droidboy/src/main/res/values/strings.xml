@@ -146,6 +146,7 @@
   <string name="disable_appboy_network_requests_summary">Disable Braze network requests for selected emulators starting next app run</string>
   <string name="push_preference_category">Push</string>
   <string name="misc_preference_category">Misc</string>
+  <string name="image_loading_preference_category">Image Display</string>
   <string name="disable_appboy_logging_title">Toggle Braze Logging</string>
   <string name="disable_appboy_logging_summary">Toggle Braze Logging.  This does not persist through app runs.</string>
   <string name="get_registration_id_title">Get Push Registration Id</string>

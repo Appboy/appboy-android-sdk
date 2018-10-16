@@ -36,7 +36,8 @@ var appboyBridge = {
       } else {
         appboyInternalBridge.getUser().setCustomUserAttributeJSON(key, JSON.stringify({"value":value}));
       }
-    }
+    },
+    setLocationCustomUserAttribute: function(key, latitude, longitude) { appboyInternalBridge.getUser().setLocationCustomUserAttribute(key, latitude, longitude); }
   },
   getUser : function() {
     return this.appboyBridgeUserObject;

@@ -98,5 +98,10 @@
     <receiver
       android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
       tools:node="remove"/>
+
+    <!-- See https://issuetracker.google.com/issues/79478779 -->
+    <uses-library
+        android:name="org.apache.http.legacy"
+        android:required="false" />
   </application>
 </manifest>

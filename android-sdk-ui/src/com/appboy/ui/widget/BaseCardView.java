@@ -2,7 +2,6 @@ package com.appboy.ui.widget;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,8 +19,6 @@ import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.feed.AppboyImageSwitcher;
-import com.appboy.ui.support.FrescoLibraryUtils;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
  * Base class for Braze feed card views
@@ -36,7 +33,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   private final String mClassLogTag;
 
   private static Boolean sUnreadCardVisualIndicatorEnabled;
-  private static Boolean sCanUseFresco;
   protected T mCard;
   protected AppboyImageSwitcher mImageSwitcher;
   protected AppboyConfigurationProvider mAppboyConfigurationProvider;
@@ -44,11 +40,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   public BaseCardView(Context context) {
     super(context);
     mContext = context.getApplicationContext();
-
-    if (sCanUseFresco == null) {
-      // Note: this must be called before we inflate any views.
-      sCanUseFresco = FrescoLibraryUtils.canUseFresco(context);
-    }
 
     // Read the setting from the appboy.xml if we don't already have a value.
     if (mAppboyConfigurationProvider == null) {
@@ -137,21 +128,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   }
 
   /**
-   * Loads an image via url for display in a SimpleDraweeView using the Facebook Fresco library.
-   * By default, gif urls are set to autoplay and tap to retry is on for all images.
-   * @param simpleDraweeView the fresco SimpleDraweeView in which to display the image
-   * @param imageUrl the URL of the image resource
-   */
-  public void setSimpleDraweeToUrl(final SimpleDraweeView simpleDraweeView, final String imageUrl, final float aspectRatio, final boolean respectAspectRatio) {
-    if (imageUrl == null) {
-      AppboyLogger.w(getClassLogTag(), "The image url to render is null. Not setting the card image.");
-      return;
-    }
-
-    FrescoLibraryUtils.setDraweeControllerHelper(simpleDraweeView, imageUrl, aspectRatio, respectAspectRatio);
-  }
-
-  /**
    * Checks to see if the card object is viewed and if so, sets the read/unread status
    * indicator image. If the card is null, does nothing.
    */
@@ -166,7 +142,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     }
 
     // Check the tag for the image switcher so we don't have to re-draw the same indicator unnecessarily
-    String imageSwitcherTag = (String) imageSwitcher.getTag();
+    String imageSwitcherTag = (String) imageSwitcher.getTag(R.string.com_appboy_image_is_read_tag_key);
     // If the tag is null, default to the empty string
     imageSwitcherTag = imageSwitcherTag != null ? imageSwitcherTag : "";
 
@@ -177,7 +153,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
         } else {
           imageSwitcher.setImageResource(R.drawable.icon_read);
         }
-        imageSwitcher.setTag(ICON_READ_TAG);
+        imageSwitcher.setTag(R.string.com_appboy_image_is_read_tag_key, ICON_READ_TAG);
       }
     } else {
       if (!imageSwitcherTag.equals(ICON_UNREAD_TAG)) {
@@ -186,20 +162,13 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
         } else {
           imageSwitcher.setImageResource(R.drawable.icon_unread);
         }
-        imageSwitcher.setTag(ICON_UNREAD_TAG);
+        imageSwitcher.setTag(R.string.com_appboy_image_is_read_tag_key, ICON_UNREAD_TAG);
       }
     }
   }
 
   public String getClassLogTag() {
     return mClassLogTag;
-  }
-
-  /**
-   * Returns whether we can use the Fresco Library for newsfeed cards.
-   */
-  public boolean canUseFresco() {
-    return sCanUseFresco;
   }
 
   public boolean isUnreadIndicatorEnabled() {
@@ -231,7 +200,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
         if (cardAction instanceof UriAction) {
           AppboyNavigator.getAppboyNavigator().gotoUri(context, (UriAction) cardAction);
         } else {
-          Log.d(TAG, "Executing non uri action for click on card: " + card.getId());
+          AppboyLogger.d(TAG, "Executing non uri action for click on card: " + card.getId());
           cardAction.execute(context);
         }
       } else {

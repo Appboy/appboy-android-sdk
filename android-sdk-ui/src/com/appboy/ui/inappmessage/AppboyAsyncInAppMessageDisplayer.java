@@ -18,11 +18,6 @@ import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.support.WebContentUtils;
-import com.appboy.ui.support.FrescoLibraryUtils;
-import com.facebook.datasource.DataSource;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipeline;
-import com.facebook.imagepipeline.request.ImageRequest;
 
 import java.io.File;
 
@@ -38,7 +33,6 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         return inAppMessage;
       }
       AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
-      Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
       if (inAppMessage instanceof InAppMessageHtmlFull) {
         // Note, this will clear the IAM cache, which is OK because no other IAM is currently displaying
         // and AsyncTasks are are executed on a single thread, which guarantees no other IAM is
@@ -49,12 +43,7 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
           return null;
         }
       } else {
-        boolean imageDownloadSucceeded;
-        if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
-          imageDownloadSucceeded = prepareInAppMessageWithFresco(inAppMessage);
-        } else {
-          imageDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
-        }
+        boolean imageDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
         if (!imageDownloadSucceeded) {
           inAppMessage.logDisplayFailure(InAppMessageFailureType.IMAGE_DOWNLOAD);
           return null;
@@ -122,59 +111,6 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
           + inAppMessageHtml.getAssetsZipRemoteUrl() + " . Returned local url is: " + localWebContentUrl);
       return false;
     }
-  }
-
-  /**
-   * Prepares the In-App Message for displaying images using the Fresco library. The in-app
-   * message must have a valid image url.
-   *
-   * @param inAppMessage the In-App Message to be prepared
-   * @return whether or not asset download succeeded
-   */
-  boolean prepareInAppMessageWithFresco(IInAppMessage inAppMessage) {
-    // If the image already has a local Uri, it will be loaded into the SimpleDrawee view when the in-app
-    // message view is instantiated.
-    String localImageUrl = inAppMessage.getLocalImageUrl();
-    if (!StringUtils.isNullOrBlank(localImageUrl) && new File(localImageUrl).exists()) {
-      AppboyLogger.i(TAG, "In-app message has local image url for Fresco display. Not downloading image.");
-      inAppMessage.setImageDownloadSuccessful(true);
-      return true;
-    } else {
-      // If we don't use the local image url, clear it out to ensure we use the correct image url
-      // in the view factory.
-      inAppMessage.setLocalImageUrl(null);
-    }
-    // Otherwise, return if no remote uri is specified.
-    String remoteImageUrl = inAppMessage.getRemoteImageUrl();
-    if (StringUtils.isNullOrBlank(remoteImageUrl)) {
-      AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
-      return true;
-    }
-    // Otherwise, prefetch the image content via http://frescolib.org/docs/using-image-pipeline.html#prefetching
-    ImagePipeline imagePipeline = Fresco.getImagePipeline();
-    // Create a request for the image
-    ImageRequest imageRequest = ImageRequest.fromUri(remoteImageUrl);
-    DataSource dataSource = imagePipeline.prefetchToDiskCache(imageRequest, new Object());
-
-    // Since we're in an asyncTask, we can wait for the also asynchronous prefetch by Fresco
-    // to finish.
-    while (!dataSource.isFinished()) {
-      // Wait for the prefetch to finish
-    }
-
-    boolean downloadSucceeded = !dataSource.hasFailed();
-    if (downloadSucceeded) {
-      inAppMessage.setImageDownloadSuccessful(true);
-    } else {
-      if (dataSource.getFailureCause() == null) {
-        AppboyLogger.w(TAG, "Fresco disk prefetch failed with null cause for remote image url:" + remoteImageUrl);
-      } else {
-        AppboyLogger.w(TAG, "Fresco disk prefetch failed with cause: " + dataSource.getFailureCause().getMessage() + " with remote image url: " + remoteImageUrl);
-      }
-    }
-    // Release the resource reference
-    dataSource.close();
-    return downloadSucceeded;
   }
 
   /**

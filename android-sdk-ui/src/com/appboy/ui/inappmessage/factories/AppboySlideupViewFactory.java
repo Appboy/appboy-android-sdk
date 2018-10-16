@@ -12,7 +12,6 @@ import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView;
-import com.appboy.ui.support.FrescoLibraryUtils;
 
 public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
   @Override
@@ -22,14 +21,10 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageSlideupView view = (AppboyInAppMessageSlideupView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_slideup, null);
     view.inflateStubViews(inAppMessage);
 
-    if (FrescoLibraryUtils.canUseFresco(applicationContext)) {
-      view.setMessageSimpleDrawee(inAppMessage);
-    } else {
-      String imageUrl = view.getAppropriateImageUrl(inAppMessage);
-      if (!StringUtils.isNullOrEmpty(imageUrl)) {
-        IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-        appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_SLIDEUP);
-      }
+    String imageUrl = view.getAppropriateImageUrl(inAppMessage);
+    if (!StringUtils.isNullOrEmpty(imageUrl)) {
+      IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
+      appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_SLIDEUP);
     }
 
     view.setMessageBackgroundColor(inAppMessageSlideup.getBackgroundColor());

@@ -1,7 +1,5 @@
 package com.appboy.unity.utils;
 
-import android.util.Log;
-
 import com.appboy.models.IInAppMessage;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
@@ -12,16 +10,16 @@ public class MessagingUtils {
 
   public static boolean sendInAppMessageReceivedMessage(String unityGameObjectName, String unityCallbackFunctionName, IInAppMessage inAppMessage) {
     if (StringUtils.isNullOrBlank(unityGameObjectName)) {
-      Log.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration file to receive "
+      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration file to receive "
           + "in app messages. Not sending the message to the Unity Player.");
       return false;
     }
     if (StringUtils.isNullOrBlank(unityCallbackFunctionName)) {
-      Log.d(TAG, "There is no Unity callback method name registered to receive in app messages in "
+      AppboyLogger.d(TAG, "There is no Unity callback method name registered to receive in app messages in "
           + "the appboy.xml configuration file. Not sending the message to the Unity Player.");
       return false;
     }
-    Log.d(TAG, "Sending a message to " + unityGameObjectName + ":" + unityCallbackFunctionName + ".");
+    AppboyLogger.d(TAG, "Sending a message to " + unityGameObjectName + ":" + unityCallbackFunctionName + ".");
     UnityPlayer.UnitySendMessage(unityGameObjectName, unityCallbackFunctionName, inAppMessage.forJsonPut().toString());
     return true;
   }

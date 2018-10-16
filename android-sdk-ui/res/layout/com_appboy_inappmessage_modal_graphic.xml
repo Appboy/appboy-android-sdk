@@ -21,10 +21,6 @@
                 android:id="@+id/com_appboy_inappmessage_modal_imageview_stub"
                 android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
                 style="@style/Appboy.InAppMessage.Image.Modal.Graphic"/>
-            <ViewStub
-                android:id="@+id/com_appboy_inappmessage_modal_drawee_stub"
-                android:layout="@layout/com_appboy_stubbed_inappmessage_drawee_view"
-                style="@style/Appboy.InAppMessage.Image.Modal.Graphic"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

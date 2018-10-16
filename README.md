@@ -25,7 +25,7 @@ Successful marketing automation is essential to the future of your mobile app. B
 - Last Compiled Support Library Version: 27.1.0
 - Last Compiled Google Play Services Version (Optional): 12.0.1
 - Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
-- Braze requires either a custom [IAppboyImageLoader](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) or Facebook's [Fresco image library](https://github.com/facebook/fresco) to display animated `gif` images. Fresco is not included nor enabled by default in the Braze library, and must be included and enabled explicitly by the parent app. Braze supports Fresco 0.6.0 through 1.3.0.
+- Braze requires either a custom [IAppboyImageLoader](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) to display animated `gif` images.
 
 ## Remote repository for gradle
 The version should match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
@@ -39,7 +39,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:2.7.+'
+   compile 'com.appboy:android-sdk-ui:3.0.+'
    ...
 }
 ```
@@ -58,7 +58,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:2.7.+'
+  compile 'com.appboy:android-sdk-ui:3.0.+'
 }
 ```
 

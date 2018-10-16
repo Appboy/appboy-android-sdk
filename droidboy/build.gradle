@@ -11,9 +11,8 @@ dependencies {
   implementation "com.android.support:design:${SUPPORT_LIBS_VERSION}"
   implementation "com.google.android.gms:play-services-location:${PLAY_SERVICES_VERSION}"
   implementation "com.google.android.gms:play-services-maps:${PLAY_SERVICES_VERSION}"
-  implementation "com.facebook.fresco:fresco:${FACEBOOK_FRESCO_VERSION}"
-  implementation "com.facebook.fresco:animated-gif:${FACEBOOK_FRESCO_VERSION}"
   implementation "io.branch.sdk.android:library:${BRANCH_VERSION}"
+  implementation "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
 }
 
 android {
@@ -25,7 +24,7 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     applicationId "com.appboy.sample"
     versionName rootProject.ext.appVersionName
-    versionCode 116
+    versionCode 118
     resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
 
     buildConfigField "String", "CURRENT_BRANCH", "\"" + getCurrentBranch() + "\""
@@ -35,6 +34,11 @@ android {
 
   lintOptions {
     disable 'MissingTranslation'
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 }
 

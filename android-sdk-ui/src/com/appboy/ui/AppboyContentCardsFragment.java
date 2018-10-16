@@ -259,11 +259,12 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   @Override
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
-    if (layoutManager != null) {
-      outState.putParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY, layoutManager.onSaveInstanceState());
+    if (mRecyclerView != null && mRecyclerView.getLayoutManager() != null) {
+      outState.putParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY, mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
-    outState.putStringArrayList(KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY, (ArrayList<String>) mCardAdapter.getImpressedCardIds());
+    if (mCardAdapter != null) {
+      outState.putStringArrayList(KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY, (ArrayList<String>) mCardAdapter.getImpressedCardIds());
+    }
   }
 
   @Override

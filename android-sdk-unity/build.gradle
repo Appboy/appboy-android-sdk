@@ -4,7 +4,7 @@ configurations {
 }
 
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:2.7.+'
+  implementation 'com.appboy:android-sdk-ui:3.0.+'
   compileOnly files("libs/Prime31UnityActivity-1.0.jar")
   compileOnly files("libs/unity-2017.3.jar")
 }

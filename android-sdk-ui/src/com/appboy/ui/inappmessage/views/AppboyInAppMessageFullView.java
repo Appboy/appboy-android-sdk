@@ -13,7 +13,6 @@ import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
-import com.appboy.ui.inappmessage.AppboyInAppMessageSimpleDraweeView;
 import com.appboy.ui.inappmessage.IInAppMessageImageView;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 import com.appboy.ui.support.ViewUtils;
@@ -24,24 +23,14 @@ import java.util.List;
 public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseView {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageFullView.class);
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
-  /**
-   * @see AppboyInAppMessageBaseView#getMessageSimpleDraweeView()
-   */
-  private View mSimpleDraweeView;
 
   public AppboyInAppMessageFullView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
   public void inflateStubViews(Activity activity, IInAppMessageImmersive inAppMessage) {
-    if (mCanUseFresco) {
-      mSimpleDraweeView = getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_full_drawee_stub);
-      AppboyInAppMessageSimpleDraweeView castedSimpleDraweeView = (AppboyInAppMessageSimpleDraweeView) mSimpleDraweeView;
-      setInAppMessageImageViewAttributes(activity, inAppMessage, castedSimpleDraweeView);
-    } else {
-      mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_full_imageview_stub);
-      setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
-    }
+    mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_full_imageview_stub);
+    setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
   }
 
   @Override
@@ -102,11 +91,6 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
   }
 
   @Override
-  public View getMessageSimpleDraweeView() {
-    return mSimpleDraweeView;
-  }
-
-  @Override
   public TextView getMessageIconView() {
     return null;
   }
@@ -151,8 +135,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
   }
 
   /**
-   * Programmatically set attributes on the image view classes inside the image ViewStubs in a
-   * fresco/native-agnostic manner.
+   * Programmatically set attributes on the image view classes inside the image ViewStubs.
    *
    * @param activity
    * @param inAppMessage

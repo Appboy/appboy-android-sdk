@@ -10,11 +10,6 @@
             android:id="@+id/com_appboy_short_news_card_imageview_stub"
             android:layout="@layout/com_appboy_stubbed_feed_image_view"
             style="@style/Appboy.Cards.ShortNews.Image"/>
-
-        <ViewStub
-            android:id="@+id/com_appboy_short_news_card_drawee_stub"
-            android:layout="@layout/com_appboy_stubbed_feed_drawee_view"
-            style="@style/Appboy.Cards.ShortNews.Image"/>
     </LinearLayout>
 
     <View

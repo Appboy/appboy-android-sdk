@@ -24,11 +24,6 @@
                 android:id="@+id/com_appboy_cross_promotion_small_card_imageview_stub"
                 android:layout="@layout/com_appboy_stubbed_feed_image_view"
                 style="@style/Appboy.Cards.CrossPromotionSmall.Image"/>
-
-            <ViewStub
-                android:id="@+id/com_appboy_cross_promotion_small_card_drawee_stub"
-                android:layout="@layout/com_appboy_stubbed_feed_drawee_view"
-                style="@style/Appboy.Cards.CrossPromotionSmall.Image"/>
         </LinearLayout>
 
         <include layout="@layout/com_appboy_feed_read_indicator_holder"/>

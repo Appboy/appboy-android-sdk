@@ -8,14 +8,12 @@ import android.widget.ArrayAdapter;
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.models.cards.Card;
-import com.appboy.models.cards.CrossPromotionSmallCard;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.appboy.ui.widget.BannerImageCardView;
 import com.appboy.ui.widget.CaptionedImageCardView;
-import com.appboy.ui.widget.CrossPromotionSmallCardView;
 import com.appboy.ui.widget.DefaultCardView;
 import com.appboy.ui.widget.ShortNewsCardView;
 import com.appboy.ui.widget.TextAnnouncementCardView;
@@ -62,7 +60,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    */
   @Override
   public int getViewTypeCount() {
-    return 8;
+    return 5;
   }
 
   @Override
@@ -72,12 +70,10 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       return 1;
     } else if (card instanceof CaptionedImageCard) {
       return 2;
-    } else if (card instanceof CrossPromotionSmallCard) {
-      return 3;
     } else if (card instanceof ShortNewsCard) {
-      return 4;
+      return 3;
     } else if (card instanceof TextAnnouncementCard) {
-      return 5;
+      return 4;
     } else {
       return 0;
     }
@@ -97,8 +93,6 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
         view = new BannerImageCardView(mContext);
       } else if (card instanceof CaptionedImageCard) {
         view = new CaptionedImageCardView(mContext);
-      } else if (card instanceof CrossPromotionSmallCard) {
-        view = new CrossPromotionSmallCardView(mContext);
       } else if (card instanceof ShortNewsCard) {
         view = new ShortNewsCardView(mContext);
       } else if (card instanceof TextAnnouncementCard) {

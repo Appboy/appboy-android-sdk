@@ -18,8 +18,6 @@ import com.appboy.configuration.AppboyConfig;
 import com.appboy.sample.util.EmulatorDetectionUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
-import com.appboy.ui.support.FrescoLibraryUtils;
-import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.Arrays;
 
@@ -27,7 +25,6 @@ public class DroidboyApplication extends Application {
   private static final String TAG = AppboyLogger.getAppboyLogTag(DroidboyApplication.class);
   protected static final String OVERRIDE_API_KEY_PREF_KEY = "override_api_key";
   protected static final String OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url";
-  protected static final String OVERRIDE_FRESCO_PREF_KEY = "override_fresco_enabled_key";
   private static String sOverrideApiKeyInUse;
 
   @Override
@@ -49,18 +46,10 @@ public class DroidboyApplication extends Application {
     Appboy.configure(this, null);
     AppboyConfig.Builder appboyConfigBuilder = new AppboyConfig.Builder();
     setOverrideApiKeyIfConfigured(sharedPreferences, appboyConfigBuilder);
-    if (sharedPreferences.contains(OVERRIDE_FRESCO_PREF_KEY)) {
-      boolean frescoOverride = sharedPreferences.getBoolean(OVERRIDE_FRESCO_PREF_KEY, false);
-      appboyConfigBuilder.setFrescoLibraryEnabled(frescoOverride);
-    }
     Appboy.configure(this, appboyConfigBuilder.build());
 
     String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
     Appboy.setAppboyEndpointProvider(new DroidboyEndpointProvider(overrideEndpointUrl));
-
-    if (FrescoLibraryUtils.canUseFresco(getApplicationContext())) {
-      Fresco.initialize(getApplicationContext());
-    }
 
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
 

@@ -20,6 +20,8 @@
   <integer name="com_appboy_session_timeout">10</integer>
 
   <!-- Push Notification configuration -->
+  <bool name="com_appboy_firebase_cloud_messaging_registration_enabled">true</bool>
+  <string translatable="false" name="com_appboy_firebase_cloud_messaging_sender_id">901477453852</string>
   <bool name="com_appboy_push_adm_messaging_registration_enabled">true</bool>
 
   <!-- This integer sets the default accent color for push notifications on Android Lollipop and higher. If not specified,
@@ -41,11 +43,6 @@
     unless integrating apps manually call setUserLastKnownLocation on the AppboyUser.
     If not specified or set to false, location data will be collected once at the start of each session. -->
   <bool name="com_appboy_disable_location_collection">false</bool>
-
-  <!-- Fresco Library Usage -->
-  <!-- When set to false, the UI code will not use views from Fresco library. By default, this setting
-    is false. -->
-  <bool name="com_appboy_enable_fresco_library_use">false</bool>
 
   <!-- Triggered Action configuration -->
   <!-- The minimum interval in seconds between actions, such as an in-app message, that can be triggered

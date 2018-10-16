@@ -3,7 +3,6 @@ package com.appboy.unity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.appboy.Appboy;
 import com.appboy.support.AppboyLogger;
@@ -26,7 +25,7 @@ public class AppboyUnityActivityWrapper {
     mUnityConfigurationProvider = new UnityConfigurationProvider(activity);
     Appboy.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(mUnityConfigurationProvider));
     Appboy.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(mUnityConfigurationProvider));
-    Log.d(TAG, TAG + " finished onCreateCalled setup.");
+    AppboyLogger.d(TAG, TAG + " finished onCreateCalled setup.");
   }
 
   /**
@@ -36,11 +35,11 @@ public class AppboyUnityActivityWrapper {
     Appboy.getInstance(activity).openSession(activity);
     if (!mUnityConfigurationProvider.getShowInAppMessagesAutomaticallyKey()) {
       AppboyUnityNativeInAppMessageManagerListener.getInstance().setShowInAppMessagesManually(true);
-      Log.i(TAG, "In-app message display will be handled manually.");
+      AppboyLogger.i(TAG, "In-app message display will be handled manually.");
     }
     AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(AppboyUnityNativeInAppMessageManagerListener.getInstance());
     AppboyUnityNativeInAppMessageManagerListener.getInstance().registerContainerActivity(activity);
-    Log.d(TAG, "Starting " + TAG + ".");
+    AppboyLogger.d(TAG, "Starting " + TAG + ".");
   }
 
   /**

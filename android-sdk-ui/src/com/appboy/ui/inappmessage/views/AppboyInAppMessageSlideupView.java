@@ -10,28 +10,17 @@ import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.models.IInAppMessage;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
-import com.appboy.ui.inappmessage.AppboyInAppMessageSimpleDraweeView;
 
 public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
-  /**
-   * @see AppboyInAppMessageBaseView#getMessageSimpleDraweeView()
-   */
-  private View mSimpleDraweeView;
 
   public AppboyInAppMessageSlideupView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
   public void inflateStubViews(IInAppMessage inAppMessage) {
-    if (mCanUseFresco) {
-      mSimpleDraweeView = getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_slideup_drawee_stub);
-      AppboyInAppMessageSimpleDraweeView castedSimpleDraweeView = (AppboyInAppMessageSimpleDraweeView) mSimpleDraweeView;
-      castedSimpleDraweeView.setInAppMessageImageCropType(inAppMessage.getCropType());
-    } else {
-      mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_slideup_imageview_stub);
-      mAppboyInAppMessageImageView.setInAppMessageImageCropType(inAppMessage.getCropType());
-    }
+    mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_slideup_imageview_stub);
+    mAppboyInAppMessageImageView.setInAppMessageImageCropType(inAppMessage.getCropType());
   }
 
   public void setMessageChevron(int color, ClickAction clickAction) {
@@ -58,11 +47,6 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
   @Override
   public ImageView getMessageImageView() {
     return mAppboyInAppMessageImageView;
-  }
-
-  @Override
-  public View getMessageSimpleDraweeView() {
-    return mSimpleDraweeView;
   }
 
   @Override

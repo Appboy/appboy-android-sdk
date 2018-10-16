@@ -2,7 +2,6 @@ package com.appboy.ui.inappmessage.views;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,14 +14,9 @@ import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
-import com.appboy.ui.inappmessage.AppboyInAppMessageSimpleDraweeView;
 import com.appboy.ui.inappmessage.IInAppMessageImageView;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
-import com.appboy.ui.support.FrescoLibraryUtils;
 import com.appboy.ui.support.ViewUtils;
-import com.facebook.drawee.controller.BaseControllerListener;
-import com.facebook.drawee.controller.ControllerListener;
-import com.facebook.imagepipeline.image.ImageInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,27 +24,17 @@ import java.util.List;
 public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBaseView {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageModalView.class);
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
-  /**
-   * @see AppboyInAppMessageBaseView#getMessageSimpleDraweeView()
-   */
-  private View mSimpleDraweeView;
 
   public AppboyInAppMessageModalView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
   public void inflateStubViews(Activity activity, IInAppMessageImmersive inAppMessage) {
-    if (mCanUseFresco) {
-      mSimpleDraweeView = getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_modal_drawee_stub);
-      AppboyInAppMessageSimpleDraweeView castedSimpleDraweeView = (AppboyInAppMessageSimpleDraweeView) mSimpleDraweeView;
-      setInAppMessageImageViewAttributes(activity, inAppMessage, castedSimpleDraweeView);
-    } else {
-      mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_modal_imageview_stub);
-      setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
-      if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC) && inAppMessage.getBitmap() != null) {
-        double aspectRatio = (double) inAppMessage.getBitmap().getWidth() / inAppMessage.getBitmap().getHeight();
-        resizeGraphicFrameIfAppropriate(activity, inAppMessage, aspectRatio);
-      }
+    mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_modal_imageview_stub);
+    setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
+    if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC) && inAppMessage.getBitmap() != null) {
+      double aspectRatio = (double) inAppMessage.getBitmap().getWidth() / inAppMessage.getBitmap().getHeight();
+      resizeGraphicFrameIfAppropriate(activity, inAppMessage, aspectRatio);
     }
   }
 
@@ -143,39 +127,8 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     return mAppboyInAppMessageImageView;
   }
 
-  @Override
-  public View getMessageSimpleDraweeView() {
-    return mSimpleDraweeView;
-  }
-
-  public void setMessageSimpleDrawee(final IInAppMessageImmersive inAppMessage, final Activity activity) {
-    if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
-      ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
-        @Override
-        public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
-          if (imageInfo == null) {
-            return;
-          }
-          final double imageAspectRatio = (double) imageInfo.getWidth() / imageInfo.getHeight();
-
-          // If necessary, resize the graphic modal frame once the image aspect ratio is known.
-          mSimpleDraweeView.post(new Runnable() {
-            @Override
-            public void run() {
-              resizeGraphicFrameIfAppropriate(activity, inAppMessage, imageAspectRatio);
-            }
-          });
-        }
-      };
-      FrescoLibraryUtils.setDraweeControllerHelper((AppboyInAppMessageSimpleDraweeView) getMessageSimpleDraweeView(), getAppropriateImageUrl(inAppMessage), 0f, false, controllerListener);
-    } else {
-      setMessageSimpleDrawee(inAppMessage);
-    }
-  }
-
   /**
-   * Programmatically set attributes on the image view classes inside the image ViewStubs in a
-   * fresco/native-agnostic manner.
+   * Programmatically set attributes on the image view classes inside the image ViewStubs.
    *
    * @param activity
    * @param inAppMessage

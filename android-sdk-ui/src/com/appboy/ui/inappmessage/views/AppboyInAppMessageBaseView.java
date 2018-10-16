@@ -13,18 +13,13 @@ import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.IInAppMessage;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
-import com.appboy.ui.inappmessage.AppboyInAppMessageSimpleDraweeView;
 import com.appboy.ui.inappmessage.IInAppMessageView;
-import com.appboy.ui.support.FrescoLibraryUtils;
 import com.appboy.ui.support.ViewUtils;
 
 public abstract class AppboyInAppMessageBaseView extends RelativeLayout implements IInAppMessageView {
 
-  final boolean mCanUseFresco;
-
   public AppboyInAppMessageBaseView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    mCanUseFresco = FrescoLibraryUtils.canUseFresco(context);
     /**
      * {@link android.graphics.Canvas#clipPath}, used in {@link AppboyInAppMessageSimpleDraweeView}
      * and {@link AppboyInAppMessageImageView}, is not compatible with hardware acceleration.
@@ -54,10 +49,6 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
     InAppMessageViewUtils.setImage(bitmap, getMessageImageView());
   }
 
-  public void setMessageSimpleDrawee(IInAppMessage inAppMessage) {
-    FrescoLibraryUtils.setDraweeControllerHelper((AppboyInAppMessageSimpleDraweeView) getMessageSimpleDraweeView(), getAppropriateImageUrl(inAppMessage), 0f, false);
-  }
-
   /**
    * @param inAppMessage
    * @return return the local image Url, if present. Otherwise, return the remote image Url. Local
@@ -82,19 +73,8 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
    * to check if the view should be removed.
    */
   public void resetMessageMargins(boolean imageRetrievalSuccessful) {
-    // This view is either the SimpleDraweeView or an ImageView
-    View viewContainingImage;
-    // Since the ViewStubs containing the image layouts (i.e. for the SimpleDraweeView or ImageView)
-    // are wrapped in a RelativeLayout, we must remove that layout as well. Simply setting the layout
-    // bounds to wrap_content doesn't suffice.
-    RelativeLayout layoutContainingImage;
-    if (mCanUseFresco) {
-      viewContainingImage = getMessageSimpleDraweeView();
-      layoutContainingImage = (RelativeLayout) findViewById(R.id.com_appboy_stubbed_inappmessage_drawee_view_parent);
-    } else {
-      viewContainingImage = getMessageImageView();
-      layoutContainingImage = (RelativeLayout) findViewById(R.id.com_appboy_stubbed_inappmessage_image_view_parent);
-    }
+    RelativeLayout layoutContainingImage = (RelativeLayout) findViewById(R.id.com_appboy_stubbed_inappmessage_image_view_parent);
+    View viewContainingImage = getMessageImageView();
 
     if (viewContainingImage != null) {
       if (!imageRetrievalSuccessful) {
@@ -126,13 +106,8 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
   public abstract Object getMessageBackgroundObject();
 
   /**
-   * In cases where the Fresco library isn't provided, we can't have the SimpleDraweeView class as
-   * actual signature of this method. Thus, we return View for this method and cast it when needed.
-   */
-  public abstract View getMessageSimpleDraweeView();
-
-  /**
-   * Gets the view to display the correct card image after checking if it can use Fresco.
+   * Gets the view to display the correct card image.
+   *
    * @param stubLayoutId The resource Id of the stub for inflation as returned by findViewById.
    * @return the view to display the image. This will either be an ImageView or DraweeView
    */
@@ -140,10 +115,6 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
     ViewStub imageStub = (ViewStub) findViewById(stubLayoutId);
     imageStub.inflate();
 
-    if (mCanUseFresco) {
-      return findViewById(R.id.com_appboy_stubbed_inappmessage_drawee_view);
-    } else {
-      return findViewById(R.id.com_appboy_stubbed_inappmessage_image_view);
-    }
+    return findViewById(R.id.com_appboy_stubbed_inappmessage_image_view);
   }
 }

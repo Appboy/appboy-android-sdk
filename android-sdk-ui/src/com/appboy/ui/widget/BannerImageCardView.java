@@ -9,13 +9,11 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(BannerImageCardView.class);
   private ImageView mImage;
   private IAction mCardAction;
-  private SimpleDraweeView mDrawee;
 
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
   // aspect ratio, then this value will be the aspect ratio of the card on render.
@@ -27,13 +25,9 @@ public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
 
   public BannerImageCardView(final Context context, BannerImageCard card) {
     super(context);
-    if (canUseFresco()) {
-      mDrawee = (SimpleDraweeView) getProperViewFromInflatedStub(R.id.com_appboy_banner_image_card_drawee_stub);
-    } else {
-      mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_banner_image_card_imageview_stub);
-      mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-      mImage.setAdjustViewBounds(true);
-    }
+    mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_banner_image_card_imageview_stub);
+    mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+    mImage.setAdjustViewBounds(true);
 
     if (card != null) {
       setCard(card);
@@ -55,11 +49,7 @@ public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
       respectAspectRatio = true;
     }
 
-    if (canUseFresco()) {
-      setSimpleDraweeToUrl(mDrawee, card.getImageUrl(), mAspectRatio, respectAspectRatio);
-    } else {
-      setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
-    }
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
 
     mCardAction = getUriActionForCard(card);
 

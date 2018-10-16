@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appboy.ui.R;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ContentCardViewHolder extends RecyclerView.ViewHolder {
   @Nullable
@@ -81,25 +80,20 @@ public class ContentCardViewHolder extends RecyclerView.ViewHolder {
   }
 
   /**
-   * Creates an image, either an {@link ImageView} or {@link SimpleDraweeView}, and adds it to a container layout found on the view of this card. This view
+   * Creates an image and adds it to a container layout found on the view of this card. This view
    * is later returned after creation and being added to the container layout. A style is also applied to the image as specified
    * by the imageStyleResourceId.
    *
    * @param context The current context.
    * @param rootView The view that contains the image container layout.
-   * @param canUseFresco Whether the Fresco library is enabled.
-   * @param imageStyleResourceId The resource id for the style used for either the {@link ImageView} or {@link SimpleDraweeView}.
-   * @param imageContainerLayoutId The layout id for the {@link RelativeLayout} containing the {@link ImageView} or {@link SimpleDraweeView}.
-   * @return A {@link View} for the card image. This {@link View} will either be an {@link ImageView} or {@link SimpleDraweeView}.
+   * @param imageStyleResourceId The resource id for the style used for the {@link ImageView}.
+   * @param imageContainerLayoutId The layout id for the {@link RelativeLayout} containing the {@link ImageView}.
+   * @return A {@link View} for the card image. This {@link View} will be an {@link ImageView}.
    */
-  public View createCardImageWithStyle(Context context, View rootView, boolean canUseFresco, int imageStyleResourceId, int imageContainerLayoutId) {
+  public View createCardImageWithStyle(Context context, View rootView, int imageStyleResourceId, int imageContainerLayoutId) {
     View cardImage;
     final ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, imageStyleResourceId);
-    if (canUseFresco) {
-      cardImage = new SimpleDraweeView(contextThemeWrapper, null, imageStyleResourceId);
-    } else {
-      cardImage = new ImageView(contextThemeWrapper, null, imageStyleResourceId);
-    }
+    cardImage = new ImageView(contextThemeWrapper, null, imageStyleResourceId);
 
     RelativeLayout.LayoutParams newParams = new RelativeLayout.LayoutParams(
         RelativeLayout.LayoutParams.MATCH_PARENT,

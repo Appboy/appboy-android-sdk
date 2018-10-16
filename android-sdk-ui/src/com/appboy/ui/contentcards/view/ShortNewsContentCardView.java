@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard> {
   // This value will be the aspect ratio of the card on render.
@@ -24,15 +23,12 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
   private class ViewHolder extends ContentCardViewHolder {
     private final TextView mTitle;
     private final TextView mDescription;
-    /**
-     * This will hold either a {@link SimpleDraweeView} image or an {@link ImageView}
-     */
     private View mCardImage;
 
     ViewHolder(View view) {
       super(view, isUnreadIndicatorEnabled());
 
-      mCardImage = createCardImageWithStyle(getContext(), view, canUseFresco(),
+      mCardImage = createCardImageWithStyle(getContext(), view,
           R.style.Appboy_ContentCards_ShortNews_ImageContainer_Image, R.id.com_appboy_content_cards_short_news_card_image_container);
 
       mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_short_news_card_title);
@@ -49,10 +45,6 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
 
     ImageView getImageView() {
       return mCardImage instanceof ImageView ? (ImageView) mCardImage : null;
-    }
-
-    SimpleDraweeView getSimpleDraweeView() {
-      return mCardImage instanceof SimpleDraweeView ? (SimpleDraweeView) mCardImage : null;
     }
   }
 
@@ -75,7 +67,7 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
     shortNewsCardViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
     // Using the default aspect ratio here since the card doesn't specify an aspect ratio
-    setOptionalCardImage(shortNewsCardViewHolder.getImageView(), shortNewsCardViewHolder.getSimpleDraweeView(),
+    setOptionalCardImage(shortNewsCardViewHolder.getImageView(),
         DEFAULT_ASPECT_RATIO, card.getImageUrl(), DEFAULT_ASPECT_RATIO);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
