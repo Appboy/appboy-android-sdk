@@ -24,7 +24,7 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     applicationId "com.appboy.sample"
     versionName rootProject.ext.appVersionName
-    versionCode 118
+    versionCode 120
     resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
 
     buildConfigField "String", "CURRENT_BRANCH", "\"" + getCurrentBranch() + "\""

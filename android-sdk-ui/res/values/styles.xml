@@ -551,65 +551,6 @@
     <item name="android:paddingBottom">10.0dp</item>
   </style>
 
-  <!-- Cross Promotion Small Card -->
-  <style name="Appboy.Cards.CrossPromotionSmall"/>
-  <style name="Appboy.Cards.CrossPromotionSmall.Layout">
-    <item name="android:background">@drawable/com_appboy_card_background</item>
-  </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.Title">
-    <item name="android:textColor">@color/com_appboy_title</item>
-    <item name="android:textSize">16.0sp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:singleLine">false</item>
-    <item name="android:includeFontPadding">false</item>
-  </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.Subtitle">
-    <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_cross_promotion_card_subtitle</item>
-    <item name="android:textSize">9.0sp</item>
-    <item name="android:paddingTop">2.0dp</item>
-  </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.Image">
-    <item name="android:layout_width">57.5dp</item>
-    <item name="android:layout_height">57.5dp</item>
-    <item name="android:layout_alignParentTop">true</item>
-    <item name="android:layout_alignParentLeft">true</item>
-    <item name="android:layout_marginLeft">10.0dp</item>
-    <item name="android:layout_marginRight">10.0dp</item>
-    <item name="android:layout_marginTop">10.0dp</item>
-  </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.RatingBar">
-    <item name="android:paddingTop">2.0dp</item>
-    <item name="android:paddingBottom">10.0dp</item>
-  </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.ReviewCount">
-    <item name="android:textColor">@color/com_appboy_cross_promotion_card_review_count</item>
-    <item name="android:textSize">11.0sp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:maxLines">1</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:paddingLeft">2.0dp</item>
-  </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.Price" parent="Appboy.Button">
-    <item name="android:padding">0.0dp</item>
-    <item name="android:textColor">@color/com_appboy_cross_promotion_card_price</item>
-    <item name="android:textSize">13.0sp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:background">@drawable/com_appboy_button</item>
-  </style>
-  <style name="Appboy.Cards.CrossPromotionSmall.RecommendationTab">
-    <item name="android:paddingTop">7.0dp</item>
-    <item name="android:paddingBottom">4.0dp</item>
-    <item name="android:paddingLeft">12.0dp</item>
-    <item name="android:paddingRight">12.0dp</item>
-    <item name="android:background">@drawable/com_appboy_cross_promotion_small_card_recommended_tab_background</item>
-    <item name="android:gravity">center</item>
-    <item name="android:textColor">@color/com_appboy_cross_promotion_small_card_recommendation_tab_text</item>
-    <item name="android:textSize">12.0sp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:includeFontPadding">false</item>
-  </style>
-
   <!-- Content -->
   <style name="Appboy.ContentCardsDisplay"/>
   <style name="Appboy.ContentCardsDisplay.Recycler">

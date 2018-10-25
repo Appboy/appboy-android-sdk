@@ -1,8 +1,14 @@
-## 3.0.0
+## 3.0.1
 
-##### Important
-- If your app does not target Android O, please use 2.0.x and wait until your app is compatible with Android O and notification channels before upgrading to 2.1.x or above.
-- The Braze SDK requires the support v4 library version 26 or above.
+##### Changed
+- Deprecated `Card.isRead()` and `Card.setIsRead()`. Please use `Card.isIndicatorHighlighted()` and `Card.setIndicatorHighlighted()` instead.
+
+##### Added
+- Added `Card.isClicked()`. Clicks made through `Card.logClick()` are now saved locally on the device for Content Cards.
+- Added `AppboyConfig.setIsInAppMessageAccessibilityExclusiveModeEnabled()` which forces accessibility readers to only be able to read currently displaying in-app messages and no other screen contents.
+  - This can also be set via `com_appboy_device_in_app_message_accessibility_exclusive_mode_enabled` in your `appboy.xml`.
+
+## 3.0.0
 
 ##### Breaking
 - From `AppboyConfig`, removed `getEnableBackgroundLocationCollection()`, `getLocationUpdateTimeIntervalSeconds()`, and `getLocationUpdateDistance()` and their respective setters in `AppboyConfig.Builder`.

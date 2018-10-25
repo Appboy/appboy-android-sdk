@@ -207,8 +207,8 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
         break;
       }
 
-      if (!card.isRead()) {
-        card.setIsRead(true);
+      if (!card.isIndicatorHighlighted()) {
+        card.setIndicatorHighlighted(true);
       }
     }
   }

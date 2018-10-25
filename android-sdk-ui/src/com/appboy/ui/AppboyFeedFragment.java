@@ -277,7 +277,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   public List<Card> sortFeedCards(List<Card> cards) {
     Collections.sort(cards, new Comparator<Card>() {
       public int compare(Card cardOne, Card cardTwo) {
-        return (cardOne.isRead() == cardTwo.isRead() ? 0 : (cardOne.isRead() ? 1 : -1));
+        return (cardOne.isIndicatorHighlighted() == cardTwo.isIndicatorHighlighted() ? 0 : (cardOne.isIndicatorHighlighted() ? 1 : -1));
       }
     });
     return cards;

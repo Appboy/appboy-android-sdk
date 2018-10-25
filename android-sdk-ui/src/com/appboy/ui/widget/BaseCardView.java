@@ -146,7 +146,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     // If the tag is null, default to the empty string
     imageSwitcherTag = imageSwitcherTag != null ? imageSwitcherTag : "";
 
-    if (card.isRead()) {
+    if (card.isIndicatorHighlighted()) {
       if (!imageSwitcherTag.equals(ICON_READ_TAG)) {
         if (imageSwitcher.getReadIcon() != null) {
           imageSwitcher.setImageDrawable(imageSwitcher.getReadIcon());
@@ -189,7 +189,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   }
 
   protected void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
-    card.setIsRead(true);
+    card.setIndicatorHighlighted(true);
     if (cardAction != null) {
       if (card.logClick()) {
         AppboyLogger.d(tag, "Logged click for card: " + card.getId());

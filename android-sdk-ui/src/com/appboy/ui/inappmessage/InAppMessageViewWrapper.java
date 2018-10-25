@@ -1,6 +1,7 @@
 package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
+import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -8,6 +9,7 @@ import android.view.animation.Animation;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
@@ -27,15 +29,20 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
   private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageViewWrapper.class);
 
   private final View mInAppMessageView;
-  private View mClickableInAppMessageView;
-  private View mCloseButton;
-  private List<View> mButtons;
   private final IInAppMessage mInAppMessage;
   private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener;
   private final Animation mOpeningAnimation;
   private final Animation mClosingAnimation;
-  private Runnable mDismissRunnable;
+  private final AppboyConfigurationProvider mAppboyConfigurationProvider;
   private boolean mIsAnimatingClose;
+  private Runnable mDismissRunnable;
+  private View mClickableInAppMessageView;
+  private View mCloseButton;
+  private List<View> mButtons;
+  /**
+   * The {@link FrameLayout} parent of the in-app message.
+   */
+  private FrameLayout mContentFrameLayout;
 
   /**
    * Constructor for base and slideup view wrappers. Adds click listeners to the in-app message view and
@@ -44,15 +51,15 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
    * @param inAppMessageView In-app message top level view.
    * @param inAppMessage In-app message model.
    * @param inAppMessageViewLifecycleListener In-app message lifecycle listener.
+   * @param appboyConfigurationProvider Configuration provider.
    * @param clickableInAppMessageView View for which click actions apply. Clicking any part of the top level view
-   *                                  outside this view will close the in-app message. In many cases, the clickable
-   *                                  view is the top level view itself.
    */
   public InAppMessageViewWrapper(View inAppMessageView, IInAppMessage inAppMessage, IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                 Animation openingAnimation, Animation closingAnimation, View clickableInAppMessageView) {
+                                 AppboyConfigurationProvider appboyConfigurationProvider, Animation openingAnimation, Animation closingAnimation, View clickableInAppMessageView) {
     mInAppMessageView = inAppMessageView;
     mInAppMessage = inAppMessage;
     mInAppMessageViewLifecycleListener = inAppMessageViewLifecycleListener;
+    mAppboyConfigurationProvider = appboyConfigurationProvider;
     mIsAnimatingClose = false;
     if (clickableInAppMessageView != null) {
       mClickableInAppMessageView = clickableInAppMessageView;
@@ -83,17 +90,18 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
    * Constructor for immersive in-app message view wrappers. Adds listeners to an optional close button and
    * message button views.
    *
-   * @param inAppMessageView
-   * @param inAppMessage
-   * @param inAppMessageViewLifecycleListener
-   * @param clickableInAppMessageView
+   * @param inAppMessageView In-app message top level view.
+   * @param inAppMessage In-app message model.
+   * @param inAppMessageViewLifecycleListener In-app message lifecycle listener.
+   * @param appboyConfigurationProvider Configuration provider.
    * @param buttons List of views corresponding to MessageButton objects stored in the in-app message model object.
    *                These views should map one to one with the MessageButton objects.
    * @param closeButton
    */
   public InAppMessageViewWrapper(View inAppMessageView, IInAppMessage inAppMessage, IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                 Animation openingAnimation, Animation closingAnimation, View clickableInAppMessageView, List<View> buttons, View closeButton) {
-    this(inAppMessageView, inAppMessage, inAppMessageViewLifecycleListener, openingAnimation, closingAnimation, clickableInAppMessageView);
+                                 AppboyConfigurationProvider appboyConfigurationProvider, Animation openingAnimation, Animation closingAnimation,
+                                 View clickableInAppMessageView, List<View> buttons, View closeButton) {
+    this(inAppMessageView, inAppMessage, inAppMessageViewLifecycleListener, appboyConfigurationProvider, openingAnimation, closingAnimation, clickableInAppMessageView);
 
     // Set close button click listener
     if (closeButton != null) {
@@ -114,9 +122,13 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
   public void open(Activity activity) {
     // Retrieve the FrameLayout view which will display the in-app message and its height. The
     // content FrameLayout contains the activity's top-level layout as its first child.
-    final FrameLayout frameLayout = (FrameLayout) activity.getWindow().getDecorView().findViewById(android.R.id.content);
+    final FrameLayout frameLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
     int frameLayoutHeight = frameLayout.getHeight();
     final int displayHeight = ViewUtils.getDisplayHeight(activity);
+    if (mAppboyConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
+      mContentFrameLayout = frameLayout;
+      setAllFrameLayoutChildrenAsNonAccessibilityImportant(mContentFrameLayout);
+    }
 
     // If the FrameLayout height is 0, that implies it hasn't been drawn yet. We add a
     // ViewTreeObserver to wait until its drawn so we can get a proper measurement.
@@ -186,6 +198,9 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
 
   @Override
   public void close() {
+    if (mAppboyConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
+      setAllFrameLayoutChildrenAsAccessibilityAuto(mContentFrameLayout);
+    }
     mInAppMessageView.removeCallbacks(mDismissRunnable);
     mInAppMessageViewLifecycleListener.beforeClosed(mInAppMessageView, mInAppMessage);
     if (mInAppMessage.getAnimateOut()) {
@@ -382,5 +397,37 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
       }
     }
     mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
+  }
+
+  /**
+   * Sets all {@link View} children of the {@link FrameLayout} as {@link ViewCompat#IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS}.
+   */
+  private static void setAllFrameLayoutChildrenAsNonAccessibilityImportant(FrameLayout frameLayout) {
+    if (frameLayout == null) {
+      AppboyLogger.w(TAG, "In-app message FrameLayout was null. Not preparing in-app message accessibility for exclusive mode.");
+      return;
+    }
+    for (int i = 0; i < frameLayout.getChildCount(); i++) {
+      View child = frameLayout.getChildAt(i);
+      if (child != null) {
+        ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
+    }
+  }
+
+  /**
+   * Sets all {@link View} children of the {@link FrameLayout} as {@link ViewCompat#IMPORTANT_FOR_ACCESSIBILITY_AUTO}.
+   */
+  private static void setAllFrameLayoutChildrenAsAccessibilityAuto(FrameLayout frameLayout) {
+    if (frameLayout == null) {
+      AppboyLogger.w(TAG, "In-app message FrameLayout was null. Not preparing in-app message accessibility for exclusive mode.");
+      return;
+    }
+    for (int i = 0; i < frameLayout.getChildCount(); i++) {
+      View child = frameLayout.getChildAt(i);
+      if (child != null) {
+        ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+      }
+    }
   }
 }

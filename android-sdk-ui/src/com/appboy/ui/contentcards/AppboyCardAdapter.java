@@ -125,7 +125,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
 
     // Get the card at this adapter position
     Card cardAtPosition = mCardData.get(adapterPosition);
-    cardAtPosition.setIsRead(true);
+    cardAtPosition.setIndicatorHighlighted(true);
 
     // Mark as changed
     mHandler.post(new Runnable() {
@@ -172,7 +172,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
 
     // We want to mark all cards in the inclusive range of [first, last] as read
     for (int i = firstVisibleIndex; i <= lastVisibleIndex; i++) {
-      mCardData.get(i).setIsRead(true);
+      mCardData.get(i).setIndicatorHighlighted(true);
     }
 
     mHandler.post(new Runnable() {

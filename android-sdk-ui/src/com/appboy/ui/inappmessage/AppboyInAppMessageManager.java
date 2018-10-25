@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 
 import com.appboy.Appboy;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.inappmessage.InAppMessageFailureType;
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
@@ -100,6 +101,7 @@ public final class AppboyInAppMessageManager {
   private AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
   private Context mApplicationContext;
   private Integer mOriginalOrientation;
+  private AppboyConfigurationProvider mAppboyConfigurationProvider;
 
   // view listeners
   private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new AppboyInAppMessageWebViewClientListener();
@@ -185,6 +187,9 @@ public final class AppboyInAppMessageManager {
       // we cache the application context here because it's not available (as it normally would be
       // from Braze initialization).
       mApplicationContext = mActivity.getApplicationContext();
+    }
+    if (mAppboyConfigurationProvider == null) {
+      mAppboyConfigurationProvider = new AppboyConfigurationProvider(mApplicationContext);
     }
 
     // We have a special check to see if the host app switched to a different Activity (or recreated
@@ -524,16 +529,17 @@ public final class AppboyInAppMessageManager {
         AppboyLogger.d(TAG, "Creating view wrapper for immersive in-app message.");
         IInAppMessageImmersiveView inAppMessageViewImmersive = (IInAppMessageImmersiveView) inAppMessageView;
         mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
-            openingAnimation, closingAnimation, inAppMessageViewImmersive.getMessageClickableView(), inAppMessageViewImmersive.getMessageButtonViews(),
-            inAppMessageViewImmersive.getMessageCloseButtonView());
+            mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageViewImmersive.getMessageClickableView(),
+            inAppMessageViewImmersive.getMessageButtonViews(), inAppMessageViewImmersive.getMessageCloseButtonView());
       } else if (inAppMessageView instanceof IInAppMessageView) {
         AppboyLogger.d(TAG, "Creating view wrapper for base in-app message.");
         IInAppMessageView inAppMessageViewBase = (IInAppMessageView) inAppMessageView;
-        mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView,
-            inAppMessage, mInAppMessageViewLifecycleListener, openingAnimation, closingAnimation, inAppMessageViewBase.getMessageClickableView());
+        mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
+            mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageViewBase.getMessageClickableView());
       } else {
         AppboyLogger.d(TAG, "Creating view wrapper for in-app message.");
-        mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener, openingAnimation, closingAnimation, inAppMessageView);
+        mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
+            mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageView);
       }
       mInAppMessageViewWrapper.open(mActivity);
       return true;
