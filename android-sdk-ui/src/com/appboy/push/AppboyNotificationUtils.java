@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.text.Html;
+import android.text.Spanned;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
@@ -411,7 +413,7 @@ public class AppboyNotificationUtils {
   public static void setTitleIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras != null) {
       AppboyLogger.d(TAG, "Setting title for notification");
-      notificationBuilder.setContentTitle(notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY));
+      notificationBuilder.setContentTitle(fromHtml(notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY)));
     }
   }
 
@@ -421,7 +423,7 @@ public class AppboyNotificationUtils {
   public static void setContentIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras != null) {
       AppboyLogger.d(TAG, "Setting content for notification");
-      notificationBuilder.setContentText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));
+      notificationBuilder.setContentText(fromHtml(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY)));
     }
   }
 
@@ -1015,5 +1017,17 @@ public class AppboyNotificationUtils {
       pushIntent.putExtras(notificationExtras);
     }
     IntentUtils.addComponentAndSendBroadcast(context, pushIntent);
+  }
+  /**
+   *  convert the text to spanned for support the HTML tags.
+   * @param text  // text for  convert spanned
+   * @return  spanned text
+   */
+  public static Spanned fromHtml(String text){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      return Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
+    } else {
+      return Html.fromHtml(text);
+    }
   }
 }

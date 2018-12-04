@@ -93,7 +93,7 @@ public class AppboyNotificationStyleFactory {
   public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(Bundle notificationExtras) {
     if (notificationExtras != null) {
       NotificationCompat.BigTextStyle bigTextNotificationStyle = new NotificationCompat.BigTextStyle();
-      bigTextNotificationStyle.bigText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));
+      bigTextNotificationStyle.bigText(AppboyNotificationUtils.fromHtml(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY)));
 
       String bigSummary = null;
       String bigTitle = null;
@@ -105,10 +105,10 @@ public class AppboyNotificationStyleFactory {
         bigTitle = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY);
       }
       if (bigSummary != null) {
-        bigTextNotificationStyle.setSummaryText(bigSummary);
+        bigTextNotificationStyle.setSummaryText(AppboyNotificationUtils.fromHtml(bigSummary));
       }
       if (bigTitle != null) {
-        bigTextNotificationStyle.setBigContentTitle(bigTitle);
+        bigTextNotificationStyle.setBigContentTitle(AppboyNotificationUtils.fromHtml(bigTitle));
       }
 
       return bigTextNotificationStyle;
@@ -346,7 +346,7 @@ public class AppboyNotificationStyleFactory {
     // and bigSummary is null, set the summary to the message. Without this, the message would be blank in expanded mode.
     String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
     if (summaryText == null && bigSummary == null) {
-      bigPictureNotificationStyle.setSummaryText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));
+      bigPictureNotificationStyle.setSummaryText(AppboyNotificationUtils.fromHtml(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY)));
     }
   }
 }
