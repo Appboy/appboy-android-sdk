@@ -7,7 +7,6 @@ com.appboy.lrucache
 com.appboy.models
 com.appboy.models.cards
 com.appboy.models.outgoing
-com.appboy.models.response
 com.appboy.push
 com.appboy.receivers
 com.appboy.services
