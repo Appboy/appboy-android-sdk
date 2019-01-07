@@ -64,6 +64,12 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
       Bundle fcmExtras = intent.getExtras();
       AppboyLogger.i(TAG, "Push message payload received: " + fcmExtras);
 
+      if (AppboyNotificationUtils.isUninstallTrackingPush(fcmExtras)) {
+        // Note that this re-implementation of this method does not forward the notification to receivers.
+        AppboyLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
+        return false;
+      }
+
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(fcmExtras);
@@ -105,9 +111,7 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
 
         notificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, fcmExtras);
-
-        // Since we have received a notification, we want to wake the device screen.
-        AppboyNotificationUtils.wakeScreenIfHasPermission(context, fcmExtras);
+        AppboyNotificationUtils.wakeScreenIfAppropriate(context, appConfigurationProvider, fcmExtras);
 
         // Set a custom duration for this notification.
         if (fcmExtras != null && fcmExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {

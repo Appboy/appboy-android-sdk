@@ -460,7 +460,7 @@ public final class AppboyInAppMessageManager {
   }
 
   boolean displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
-    // Note:  for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
+    // Note: for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
     // of this try/catch when we know whether we are successfully displaying the IAM or not.
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
       AppboyLogger.d(TAG, "A in-app message is currently being displayed. Adding in-app message back on the stack.");

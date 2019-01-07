@@ -9,6 +9,10 @@ import android.widget.CheckBox;
 
 import com.appboy.ui.AppboyFeedbackFragment;
 
+/**
+ * @deprecated The feedback feature is disabled for new accounts, and will be removed in a future SDK release.
+ */
+@Deprecated()
 public class FeedbackFragmentActivity extends AppboyFragmentActivity {
 
   private CheckBox mUseListenerCheckbox;

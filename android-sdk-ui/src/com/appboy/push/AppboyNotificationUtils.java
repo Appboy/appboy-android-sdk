@@ -331,11 +331,15 @@ public class AppboyNotificationUtils {
    * and the permission is present, this does nothing. If the priority of the incoming notification
    * is min, this does nothing.
    */
-  public static boolean wakeScreenIfHasPermission(Context context, Bundle notificationExtras) {
+  public static boolean wakeScreenIfAppropriate(Context context, AppboyConfigurationProvider configurationProvider, Bundle notificationExtras) {
     // Check for the wake lock permission.
     if (!PermissionUtils.hasPermission(context, Manifest.permission.WAKE_LOCK)) {
       return false;
     }
+    if (!configurationProvider.getIsPushWakeScreenForNotificationEnabled()) {
+      return false;
+    }
+
     // Don't wake lock if this is a minimum priority/importance notification.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       // Get the channel for this notification
@@ -789,11 +793,28 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Returns false. Uninstall tracking no longer sends a silent push notification to devices and thus this method is no longer needed.
+   * Returns true if the bundle is from a push sent by Braze for uninstall tracking. Uninstall tracking push can be
+   * ignored.
+   *
+   * @param notificationExtras A notificationExtras bundle that is passed with the push received intent when a GCM/ADM message is
+   *                           received, and that Braze passes in the intent to registered receivers.
    */
-  @Deprecated
   public static boolean isUninstallTrackingPush(Bundle notificationExtras) {
-    AppboyLogger.w(TAG, "Uninstall tracking no longer sends a silent push notification to devices. This method should not be used. Returning false.");
+    try {
+      if (notificationExtras != null) {
+        // The ADM case where extras are flattened
+        if (notificationExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY)) {
+          return true;
+        }
+        // The FCM case where extras are in a separate bundle
+        Bundle appboyExtras = notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
+        if (appboyExtras != null) {
+          return appboyExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY);
+        }
+      }
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Failed to determine if push is uninstall tracking. Returning false.", e);
+    }
     return false;
   }
 

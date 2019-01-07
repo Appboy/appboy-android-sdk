@@ -93,6 +93,12 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       Bundle admExtras = intent.getExtras();
       AppboyLogger.d(TAG, "Push message payload received: " + admExtras);
 
+      if (AppboyNotificationUtils.isUninstallTrackingPush(admExtras)) {
+        // Note that this re-implementation of this method does not forward the notification to receivers.
+        AppboyLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
+        return false;
+      }
+
       if (!admExtras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
         admExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
       }
@@ -121,7 +127,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, admExtras);
 
         // Since we have received a notification, we want to wake the device screen.
-        AppboyNotificationUtils.wakeScreenIfHasPermission(context, admExtras);
+        AppboyNotificationUtils.wakeScreenIfAppropriate(context, appConfigurationProvider, admExtras);
 
         // Set a custom duration for this notification.
         if (admExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {

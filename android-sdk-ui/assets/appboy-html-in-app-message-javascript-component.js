@@ -43,3 +43,4 @@ var appboyBridge = {
     return this.appboyBridgeUserObject;
   }
 };
+window.dispatchEvent(new Event("ab.BridgeReady"));

@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'android-maven'
 
 dependencies {
-  api 'com.appboy:android-sdk-base:3.0.+'
+  api 'com.appboy:android-sdk-base:3.1.+'
   implementation 'com.android.support:support-v4:27.1.0'
   implementation 'com.android.support:recyclerview-v7:27.1.0'
 }
 
 android {
   compileSdkVersion 28
-  buildToolsVersion '28.0.1'
+  buildToolsVersion '28.0.3'
 
   defaultConfig {
     minSdkVersion 16

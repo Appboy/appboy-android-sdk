@@ -1,21 +1,22 @@
 buildscript {
   repositories {
+    mavenLocal()
+    jcenter()
     google()
     mavenCentral()
-    jcenter()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.0.1'
+    classpath 'com.android.tools.build:gradle:3.2.1'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
-    classpath 'com.google.gms:google-services:3.0.0'
+    classpath 'com.google.gms:google-services:4.1.0'
     classpath "org.ajoberstar:grgit:${AJOBERSTAR_GIT_GRADLE_PLUGIN_VERSION}"
   }
 }
 
 ext {
   compileSdkVersion = 28
-  buildToolsVersion = '28.0.1'
+  buildToolsVersion = '28.0.3'
   minSdkVersion = 16
   targetSdkVersion = 28
   appVersionName = project.version
@@ -23,17 +24,18 @@ ext {
 
 subprojects {
   repositories {
-    google()
-    mavenLocal()
-    mavenCentral()
     maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+    mavenLocal()
+    jcenter()
+    google()
+    mavenCentral()
   }
 
   group = 'com.appboy'
-  version = '3.0.1'
+  version = '3.1.0'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.
 task wrapper(type: Wrapper) {
-  gradleVersion = '4.1'
+  gradleVersion = '4.6'
 }

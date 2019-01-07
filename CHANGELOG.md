@@ -1,3 +1,28 @@
+## 3.1.0
+
+##### Breaking
+- Renamed `AppboyNotificationUtils.wakeScreenIfHasPermission()` to `AppboyNotificationUtils.wakeScreenIfAppropriate()`. Wakelocks can now be configured to not wake the device screen for push notifications.
+  - This can be set via `AppboyConfig.setIsPushWakeScreenForNotificationEnabled()` and also `com_appboy_push_wake_screen_for_notification_enabled` in your `appboy.xml`.
+
+##### Added
+- A drop-in `AppboyContentCardsActivity` class has been added which can be used to display Braze Content Cards.
+- Added HTML IAM `appboyBridge` ready event to know precisely when the `appboyBridge` has finished loading.
+  - Example below:
+    ```javascript
+     <script type="text/javascript">
+       function logMyCustomEvent() {
+         appboyBridge.logCustomEvent('My Custom Event');
+       }
+       window.addEventListener('ab.BridgeReady', logMyCustomEvent, false);
+     </script>
+    ```
+- Added `Constants.TRAFFIC_STATS_THREAD_TAG` to identify the Braze network traffic with the `TrafficStats` API.
+- Added the ability to configure a blacklist of Activity classes to disable automatic session handling and in-app message registration in the AppboyLifecycleCallbackListener. See `AppboyLifecycleCallbackListener.setActivityClassInAppMessagingRegistrationBlacklist()`, `AppboyLifecycleCallbackListener.setActivityClassSessionHandlingBlacklist()`, and constructor `AppboyLifecycleCallbackListener(boolean, boolean, Set<Class>, Set<Class>)`.
+
+##### Changed
+- Deprecated the Feedback feature. This feature is disabled for new accounts, and will be removed in a future SDK release.
+- Changed the deprecated status of the `AppboyNotificationUtils.isUninstallTrackingPush()` method. Note that uninstall tracking notifications will not be forwarded to registered receivers.
+
 ## 3.0.1
 
 ##### Changed
@@ -861,7 +886,7 @@ IAppboyNavigator
 
 Other
 - A new base class, `AppboyBaseActivity`, has been added that extends `android.app.Activity` and integrates Braze session and slideup management.
-- A drop in `AppboyFeedActivity` class has been added which can be used to display the Braze news feed.
+- A drop-in `AppboyFeedActivity` class has been added which can be used to display the Braze News Feed.
 
 ## 1.2.1
 

@@ -21,12 +21,17 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.support.ValidationUtils;
 
+/**
+ * @deprecated The feedback feature is disabled for new accounts, and will be removed in a future SDK release.
+ */
+@Deprecated
 public class AppboyFeedbackFragment extends Fragment {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFeedbackFragment.class);
 
   /**
    * Listener called in response to feedback lifecycle events.
    */
+  @Deprecated
   public interface IFeedbackFinishedListener {
 
     /**
@@ -50,6 +55,7 @@ public class AppboyFeedbackFragment extends Fragment {
     String beforeFeedbackSubmitted(String message);
   }
 
+  @Deprecated
   public enum FeedbackResult {
     SUBMITTED, CANCELLED
   }
@@ -72,6 +78,7 @@ public class AppboyFeedbackFragment extends Fragment {
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
+
     mSendButtonWatcher = new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {

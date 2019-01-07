@@ -1,7 +1,6 @@
 import org.ajoberstar.grgit.Grgit
 
 apply plugin: 'com.android.application'
-apply plugin: 'findbugs'
 
 dependencies {
   implementation project(':android-sdk-ui')
@@ -9,8 +8,8 @@ dependencies {
   implementation "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
   implementation "com.android.support:appcompat-v7:${SUPPORT_LIBS_VERSION}"
   implementation "com.android.support:design:${SUPPORT_LIBS_VERSION}"
-  implementation "com.google.android.gms:play-services-location:${PLAY_SERVICES_VERSION}"
-  implementation "com.google.android.gms:play-services-maps:${PLAY_SERVICES_VERSION}"
+  implementation "com.google.android.gms:play-services-location:${PLAY_SERVICES_LOCATION_VERSION}"
+  implementation "com.google.android.gms:play-services-maps:${PLAY_SERVICES_MAPS_VERSION}"
   implementation "io.branch.sdk.android:library:${BRANCH_VERSION}"
   implementation "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
 }
