@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -29,6 +30,7 @@ import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
 import com.appboy.sample.util.RuntimePermissionUtils;
+import com.appboy.sample.util.ViewUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PermissionUtils;
 import com.appboy.ui.AppboyContentCardsFragment;
@@ -52,6 +54,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    boolean shouldDisplayInCutout = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("display_in_full_cutout_setting_key", false);
+    if (shouldDisplayInCutout) {
+      setTheme(R.style.DisplayInNotchTheme);
+      ViewUtils.enableImmersiveMode(getWindow().getDecorView());
+    }
     setContentView(R.layout.droid_boy);
     mApplicationContext = getApplicationContext();
 
@@ -129,14 +136,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       @Override
       public void onPageSelected(int position) {
         final boolean hideFlushButton = viewPager.getAdapter().getPageTitle(position).equals(inAppMessageTesterPageTitle);
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            if (hideFlushButton) {
-              mFloatingActionButton.setVisibility(View.GONE);
-            } else {
-              mFloatingActionButton.setVisibility(View.VISIBLE);
-            }
+        runOnUiThread(() -> {
+          if (hideFlushButton) {
+            mFloatingActionButton.hide();
+          } else {
+            mFloatingActionButton.show();
           }
         });
       }
@@ -144,13 +148,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   }
 
   private void setupDrawerContent(NavigationView navigationView) {
-    navigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(MenuItem item) {
-            return getNavigationItem(item);
-          }
-        });
+    navigationView.setNavigationItemSelectedListener(this::getNavigationItem);
   }
 
   public boolean getNavigationItem(MenuItem item) {

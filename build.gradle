@@ -19,7 +19,7 @@ ext {
   buildToolsVersion = '28.0.3'
   minSdkVersion = 16
   targetSdkVersion = 28
-  appVersionName = project.version
+  appVersionName = 'publicVersion_PLACEHOLDER'
 }
 
 subprojects {
@@ -32,7 +32,7 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '3.1.0'
+  version = '3.1.1'
 }
 
 // Run 'gradle wrapper' to generate all of the wrapper files if you change this.

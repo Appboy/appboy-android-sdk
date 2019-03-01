@@ -10,7 +10,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -30,6 +29,7 @@ import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
+import com.appboy.push.support.HtmlUtils;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
@@ -412,20 +412,22 @@ public class AppboyNotificationUtils {
   /**
    * Sets notification title if it exists in the notificationExtras.
    */
-  public static void setTitleIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+  public static void setTitleIfPresent(AppboyConfigurationProvider appboyConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras != null) {
       AppboyLogger.d(TAG, "Setting title for notification");
-      notificationBuilder.setContentTitle(notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY));
+      String title = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY);
+      notificationBuilder.setContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, title));
     }
   }
 
   /**
    * Sets notification content if it exists in the notificationExtras.
    */
-  public static void setContentIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+  public static void setContentIfPresent(AppboyConfigurationProvider appboyConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras != null) {
       AppboyLogger.d(TAG, "Setting content for notification");
-      notificationBuilder.setContentText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));
+      String content = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
+      notificationBuilder.setContentText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, content));
     }
   }
 
@@ -691,8 +693,8 @@ public class AppboyNotificationUtils {
         String publicNotificationExtrasString = notificationExtras.getString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY);
         Bundle publicNotificationExtras = parseJSONStringDictionaryIntoBundle(publicNotificationExtrasString);
         NotificationCompat.Builder publicNotificationBuilder = new NotificationCompat.Builder(context);
-        setContentIfPresent(publicNotificationBuilder, publicNotificationExtras);
-        setTitleIfPresent(publicNotificationBuilder, publicNotificationExtras);
+        setContentIfPresent(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
+        setTitleIfPresent(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
         setSummaryTextIfPresentAndSupported(publicNotificationBuilder, publicNotificationExtras);
         setSmallIcon(appboyConfigurationProvider, publicNotificationBuilder);
         setAccentColorIfPresentAndSupported(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
@@ -929,17 +931,6 @@ public class AppboyNotificationUtils {
 
       AppboyLogger.d(TAG, "Push contains associated Content Cards card. User id: " + contentCardDataUserId + " Card data: " + contentCardData);
       AppboyInternal.addSerializedContentCardToStorage(context, contentCardData, contentCardDataUserId);
-    }
-  }
-
-  /**
-   * Returns the specified String resource if it is found; otherwise it returns the defaultString.
-   */
-  static String getOptionalStringResource(Resources resources, int stringResourceId, String defaultString) {
-    try {
-      return resources.getString(stringResourceId);
-    } catch (Resources.NotFoundException e) {
-      return defaultString;
     }
   }
 

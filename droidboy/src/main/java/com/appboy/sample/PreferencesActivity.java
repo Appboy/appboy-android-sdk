@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -52,6 +53,9 @@ public class PreferencesActivity extends PreferenceActivity {
   private IAppboyImageLoader mGlideAppboyImageLoader;
   private IAppboyImageLoader mAppboyLruImageLoader;
 
+  // This lint suppression is for the shared prefs commits done for app restarts. You can't apply
+  // annotations on lambdas so this has to go here
+  @SuppressLint("ApplySharedPref")
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -107,6 +111,8 @@ public class PreferencesActivity extends PreferenceActivity {
 
     Preference enableGlideLibraryPreference = findPreference("glide_image_loader_enable_setting_key");
     Preference disableGlideLibraryPreference = findPreference("glide_image_loader_disable_setting_key");
+
+    CheckBoxPreference displayInCutoutPreference = (CheckBoxPreference) findPreference("display_in_full_cutout_setting_key");
 
     sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
     apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
@@ -296,6 +302,16 @@ public class PreferencesActivity extends PreferenceActivity {
       showToast("Glide disabled. Default Image loader in use.");
       return true;
     });
+
+    displayInCutoutPreference.setOnPreferenceClickListener(preference -> {
+      // Restart the app to force onCreate() to re-run
+      // Note that an app restart won't commit prefs changes so we have to do it manually
+      PreferenceManager.getDefaultSharedPreferences(this).edit()
+          .putBoolean("display_in_full_cutout_setting_key", ((CheckBoxPreference) preference).isChecked())
+          .commit();
+      LifecycleUtils.restartApp(getApplicationContext());
+      return true;
+    });
   }
 
   // Displays a toast to the user
@@ -323,26 +339,29 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onStart() {
     super.onStart();
-
-    Branch branch = Branch.getInstance();
-    branch.initSession(new Branch.BranchReferralInitListener() {
-      @Override
-      public void onInitFinished(JSONObject referringParams, BranchError error) {
-        if (error == null) {
-          String param1 = referringParams.optString("$param_1", "");
-          String param2 = referringParams.optString("$param_2", "");
-          if (param1.equals("hello")) {
-            showToast("This activity was opened by a Branch deep link with custom param 1.");
-          } else if (param2.equals("goodbye")) {
-            showToast("This activity was opened by a Branch deep link with custom param 2.");
+    try {
+      Branch branch = Branch.getInstance();
+      branch.initSession(new Branch.BranchReferralInitListener() {
+        @Override
+        public void onInitFinished(JSONObject referringParams, BranchError error) {
+          if (error == null) {
+            String param1 = referringParams.optString("$param_1", "");
+            String param2 = referringParams.optString("$param_2", "");
+            if (param1.equals("hello")) {
+              showToast("This activity was opened by a Branch deep link with custom param 1.");
+            } else if (param2.equals("goodbye")) {
+              showToast("This activity was opened by a Branch deep link with custom param 2.");
+            } else {
+              showToast("This activity was opened by a Branch deep link with no custom params!");
+            }
           } else {
-            showToast("This activity was opened by a Branch deep link with no custom params!");
+            Log.i(TAG, error.getMessage());
           }
-        } else {
-          Log.i(TAG, error.getMessage());
         }
-      }
-    }, this.getIntent().getData(), this);
+      }, this.getIntent().getData(), this);
+    } catch (Exception e) {
+      Log.e(TAG, "Exception occured while initializing Branch", e);
+    }
   }
 
   @Override

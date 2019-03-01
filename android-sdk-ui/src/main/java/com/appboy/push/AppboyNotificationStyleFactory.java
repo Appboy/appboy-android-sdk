@@ -15,7 +15,9 @@ import android.widget.RemoteViews;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.AppboyViewBounds;
+import com.appboy.push.support.HtmlUtils;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
@@ -28,7 +30,8 @@ import java.util.Map;
 public class AppboyNotificationStyleFactory {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationStyleFactory.class);
   /**
-   * BigPictureHeight is set in https://android.googlesource.com/platform/frameworks/base/+/6387d2f6dae27ba6e8481883325adad96d3010f4/core/res/res/layout/notification_template_big_picture.xml.
+   * BigPictureHeight is set in
+   * https://android.googlesource.com/platform/frameworks/base/+/6387d2f6dae27ba6e8481883325adad96d3010f4/core/res/res/layout/notification_template_big_picture.xml.
    */
   public static final int BIG_PICTURE_STYLE_IMAGE_HEIGHT = 192;
   private static final String STORY_SET_GRAVITY = "setGravity";
@@ -77,7 +80,7 @@ public class AppboyNotificationStyleFactory {
     // Default style is BigTextStyle.
     if (style == null) {
       AppboyLogger.d(TAG, "Rendering push notification with BigTextStyle");
-      style = getBigTextNotificationStyle(notificationExtras);
+      style = getBigTextNotificationStyle(new AppboyConfigurationProvider(context), notificationExtras);
     }
 
     return style;
@@ -90,10 +93,11 @@ public class AppboyNotificationStyleFactory {
    * If summary text exists, it will be shown in the expanded notification view.
    * If a title exists, it will override the default in expanded notification view.
    */
-  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(Bundle notificationExtras) {
+  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(AppboyConfigurationProvider appboyConfigurationProvider, Bundle notificationExtras) {
     if (notificationExtras != null) {
       NotificationCompat.BigTextStyle bigTextNotificationStyle = new NotificationCompat.BigTextStyle();
-      bigTextNotificationStyle.bigText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));
+      String pushContent = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
+      bigTextNotificationStyle.bigText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, pushContent));
 
       String bigSummary = null;
       String bigTitle = null;
@@ -105,10 +109,10 @@ public class AppboyNotificationStyleFactory {
         bigTitle = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY);
       }
       if (bigSummary != null) {
-        bigTextNotificationStyle.setSummaryText(bigSummary);
+        bigTextNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigSummary));
       }
       if (bigTitle != null) {
-        bigTextNotificationStyle.setBigContentTitle(bigTitle);
+        bigTextNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigTitle));
       }
 
       return bigTextNotificationStyle;
@@ -195,7 +199,7 @@ public class AppboyNotificationStyleFactory {
 
       NotificationCompat.BigPictureStyle bigPictureNotificationStyle = new NotificationCompat.BigPictureStyle();
       bigPictureNotificationStyle.bigPicture(imageBitmap);
-      setBigPictureSummaryAndTitle(bigPictureNotificationStyle, notificationExtras);
+      setBigPictureSummaryAndTitle(new AppboyConfigurationProvider(context), bigPictureNotificationStyle, notificationExtras);
 
       return bigPictureNotificationStyle;
     } catch (Exception e) {
@@ -268,6 +272,7 @@ public class AppboyNotificationStyleFactory {
    * @return True if the push story page was populated correctly.
    */
   private static boolean populatePushStoryPage(RemoteViews view, Context context, Bundle notificationExtras, int index) {
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
     String campaignId = notificationExtras.getString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
 
     // Set up title
@@ -276,7 +281,7 @@ public class AppboyNotificationStyleFactory {
 
     // If the title is null or blank, the visibility of the container becomes GONE.
     if (!StringUtils.isNullOrBlank(pageTitle)) {
-      view.setTextViewText(STORY_FULL_VIEW_XML_IDS[0], pageTitle);
+      view.setTextViewText(STORY_FULL_VIEW_XML_IDS[0], HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, pageTitle));
       String titleGravityKey = AppboyNotificationActionUtils.getActionFieldAtIndex(index,
           notificationExtras, Constants.APPBOY_PUSH_STORY_TITLE_JUSTIFICATION_KEY_TEMPLATE, CENTER);
       int titleGravity = GRAVITY_MAP.get(titleGravityKey);
@@ -291,7 +296,7 @@ public class AppboyNotificationStyleFactory {
 
     //If the subtitle is null or blank, the visibility of the container becomes GONE.
     if (!StringUtils.isNullOrBlank(pageSubtitle)) {
-      view.setTextViewText(STORY_FULL_VIEW_XML_IDS[2], pageSubtitle);
+      view.setTextViewText(STORY_FULL_VIEW_XML_IDS[2], HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, pageSubtitle));
       String subtitleGravityKey = AppboyNotificationActionUtils.getActionFieldAtIndex(index,
           notificationExtras, Constants.APPBOY_PUSH_STORY_SUBTITLE_JUSTIFICATION_KEY_TEMPLATE,
           CENTER);
@@ -324,7 +329,9 @@ public class AppboyNotificationStyleFactory {
     return true;
   }
 
-  static void setBigPictureSummaryAndTitle(NotificationCompat.BigPictureStyle bigPictureNotificationStyle, Bundle notificationExtras) {
+  @VisibleForTesting
+  static void setBigPictureSummaryAndTitle(AppboyConfigurationProvider appboyConfigurationProvider,
+                                           NotificationCompat.BigPictureStyle bigPictureNotificationStyle, Bundle notificationExtras) {
     String bigSummary = null;
     String bigTitle = null;
 
@@ -336,17 +343,18 @@ public class AppboyNotificationStyleFactory {
     }
 
     if (bigSummary != null) {
-      bigPictureNotificationStyle.setSummaryText(bigSummary);
+      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigSummary));
     }
     if (bigTitle != null) {
-      bigPictureNotificationStyle.setBigContentTitle(bigTitle);
+      bigPictureNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigTitle));
     }
 
     // If summary is null (which we set to the subtext in setSummaryTextIfPresentAndSupported in AppboyNotificationUtils)
     // and bigSummary is null, set the summary to the message. Without this, the message would be blank in expanded mode.
     String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
     if (summaryText == null && bigSummary == null) {
-      bigPictureNotificationStyle.setSummaryText(notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY));
+      String contentText = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
+      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, contentText));
     }
   }
 }

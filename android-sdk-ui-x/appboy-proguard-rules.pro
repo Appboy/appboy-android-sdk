@@ -11,4 +11,12 @@
 -keepnames class com.appboy.ui.** { *; }
 
 -dontwarn com.appboy.ui.**
--dontwarn com.google.firebase.messaging.**
+
+# Keep Fresco class names we use for reflection
+-keepnames class com.facebook.drawee.backends.pipeline.Fresco
+-keepnames class com.facebook.drawee.interfaces.DraweeController
+-keepnames class com.facebook.drawee.view.SimpleDraweeView
+-keepnames class com.facebook.drawee.backends.pipeline.Fresco
+-keepnames class com.facebook.drawee.controller.BaseControllerListener
+-keepnames class com.facebook.drawee.controller.ControllerListener
+-keepnames class com.facebook.imagepipeline.image.ImageInfo

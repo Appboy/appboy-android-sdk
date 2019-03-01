@@ -1,7 +1,10 @@
 package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
+import android.support.v4.view.DisplayCutoutCompat;
+import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -156,6 +159,21 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
     mInAppMessageViewLifecycleListener.beforeOpened(mInAppMessageView, mInAppMessage);
     AppboyLogger.d(TAG, "Adding In-app message view to root FrameLayout.");
     frameLayout.addView(mInAppMessageView, getLayoutParams(frameLayout, displayHeight));
+
+    ViewCompat.requestApplyInsets(frameLayout);
+    ViewCompat.setOnApplyWindowInsetsListener(frameLayout, new OnApplyWindowInsetsListener() {
+      @Override
+      public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        final DisplayCutoutCompat displayCutout = insets.getDisplayCutout();
+        if (displayCutout != null) {
+          // The screen has a notch. Add some margin to compensate for where the notch bounds are on screen
+          final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mInAppMessageView.getLayoutParams();
+          layoutParams.setMargins(displayCutout.getSafeInsetLeft(), displayCutout.getSafeInsetTop(), displayCutout.getSafeInsetRight(), displayCutout.getSafeInsetBottom());
+        }
+        return insets;
+      }
+    });
+
     if (mInAppMessage.getAnimateIn()) {
       AppboyLogger.d(TAG, "In-app message view will animate into the visible area.");
       setAndStartAnimation(true);

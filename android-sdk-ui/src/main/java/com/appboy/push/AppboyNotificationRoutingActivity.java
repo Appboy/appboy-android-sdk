@@ -8,6 +8,16 @@ import android.support.annotation.Nullable;
 
 import com.appboy.support.AppboyLogger;
 
+/**
+ * This class merely acts as a liaison between notification action buttons and opening Activities directly
+ * from the lock screen. Having the notification action button deeplink intent go directly to the
+ * {@link AppboyNotificationUtils#getNotificationReceiverClass()} does not prompt the user to open
+ * the phone from behind a lockscreen. Deeplinking to this liaison solves that.
+ * <br>
+ * However note that any deeplink to this {@link Activity} will also open the host app. For example,
+ * if the origin deeplink is intended to close a notification, deeplinking to this {@link Activity} will
+ * also open the app, which is likely not intended.
+ */
 public class AppboyNotificationRoutingActivity extends Activity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationRoutingActivity.class);
 

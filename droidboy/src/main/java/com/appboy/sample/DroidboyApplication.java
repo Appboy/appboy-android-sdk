@@ -45,6 +45,7 @@ public class DroidboyApplication extends Application {
     // Clear the configuration cache with null
     Appboy.configure(this, null);
     AppboyConfig.Builder appboyConfigBuilder = new AppboyConfig.Builder();
+    appboyConfigBuilder.setPushHtmlRenderingEnabled(true);
     setOverrideApiKeyIfConfigured(sharedPreferences, appboyConfigBuilder);
     Appboy.configure(this, appboyConfigBuilder.build());
 

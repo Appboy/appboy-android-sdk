@@ -84,6 +84,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/notch_settings_category">
+        <CheckBoxPreference
+          android:key="display_in_full_cutout_setting_key"
+          android:title="Enable Display in Cutout Mode"
+          android:summary="Enables Droidboy to display in the cutout"
+          android:summaryOn="Displaying content in the cutout"
+          android:summaryOff="Not displaying content in the cutout"
+          android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/misc_preference_category">
         <com.appboy.sample.SetEnvironmentPreference
           android:title="@string/set_environment_title"

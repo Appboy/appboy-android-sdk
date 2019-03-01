@@ -15,16 +15,23 @@ import com.appboy.support.AppboyLogger;
 
 public final class AppboyFcmReceiver extends BroadcastReceiver {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFcmReceiver.class);
+  /**
+   * @deprecated This intent was used in legacy integrations only.
+   * Incoming intents should only be received via {@link AppboyFcmReceiver#FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION}
+   */
+  @Deprecated()
   private static final String FCM_RECEIVE_INTENT_ACTION = "com.google.android.c2dm.intent.RECEIVE";
   private static final String FCM_MESSAGE_TYPE_KEY = "message_type";
   private static final String FCM_DELETED_MESSAGES_KEY = "deleted_messages";
   private static final String FCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
 
+  protected static final String FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION = "firebase_messaging_service_routing_action";
+
   @Override
   public void onReceive(Context context, Intent intent) {
     AppboyLogger.i(TAG, "Received broadcast message. Message: " + intent.toString());
     String action = intent.getAction();
-    if (FCM_RECEIVE_INTENT_ACTION.equals(action)) {
+    if (FCM_RECEIVE_INTENT_ACTION.equals(action) || FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION.equals(action)) {
       handleAppboyFcmReceiveIntent(context, intent);
     } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action)) {
       AppboyNotificationUtils.handleCancelNotificationAction(context, intent);
@@ -64,19 +71,21 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
       Bundle fcmExtras = intent.getExtras();
       AppboyLogger.i(TAG, "Push message payload received: " + fcmExtras);
 
-      if (AppboyNotificationUtils.isUninstallTrackingPush(fcmExtras)) {
-        // Note that this re-implementation of this method does not forward the notification to receivers.
-        AppboyLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
-        return false;
-      }
-
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(fcmExtras);
       fcmExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
-      
+
       if (!fcmExtras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
         fcmExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
+      }
+
+      // This call must occur after the "extras" parsing above since we're expecting
+      // a bundle instead of a raw JSON string for the APPBOY_PUSH_EXTRAS_KEY key
+      if (AppboyNotificationUtils.isUninstallTrackingPush(fcmExtras)) {
+        // Note that this re-implementation of this method does not forward the notification to receivers.
+        AppboyLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
+        return false;
       }
 
       // Parse the notification for any associated ContentCard

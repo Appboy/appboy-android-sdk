@@ -55,12 +55,6 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = getUriActionForCard(card);
-    boolean respectAspectRatio = false;
-    if (card.getAspectRatio() != 0f) {
-      mAspectRatio = card.getAspectRatio();
-      respectAspectRatio = true;
-    }
-
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -68,6 +62,9 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
       }
     });
 
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
+    if (card.getAspectRatio() != 0f) {
+      mAspectRatio = card.getAspectRatio();
+    }
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
   }
 }

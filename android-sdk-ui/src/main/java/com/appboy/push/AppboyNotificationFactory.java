@@ -31,7 +31,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    *
    * To create a notification object, call `build()` on the returned builder instance.
    */
-  public NotificationCompat.Builder populateNotificationBuilder(AppboyConfigurationProvider appConfigurationProvider,
+  public NotificationCompat.Builder populateNotificationBuilder(AppboyConfigurationProvider appboyConfigurationProvider,
                                                                 Context context, Bundle notificationExtras, Bundle appboyExtras) {
     // We build up the notification by setting values if they are present in the extras and supported
     // on the device. The notification building is currently order/combination independent, but
@@ -45,17 +45,17 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     NotificationCompat.Builder notificationBuilder =
         new NotificationCompat.Builder(context).setAutoCancel(true);
 
-    AppboyNotificationUtils.setTitleIfPresent(notificationBuilder, notificationExtras);
-    AppboyNotificationUtils.setContentIfPresent(notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setTitleIfPresent(appboyConfigurationProvider, notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setContentIfPresent(appboyConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setTickerIfPresent(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setSetShowWhen(notificationBuilder, notificationExtras);
 
     // Add intent to fire when the notification is opened or deleted.
     AppboyNotificationUtils.setContentIntentIfPresent(context, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setDeleteIntent(context, notificationBuilder, notificationExtras);
-    AppboyNotificationUtils.setSmallIcon(appConfigurationProvider, notificationBuilder);
+    AppboyNotificationUtils.setSmallIcon(appboyConfigurationProvider, notificationBuilder);
 
-    AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setLargeIconIfPresentAndSupported(context, appboyConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setSoundIfPresentAndSupported(notificationBuilder, notificationExtras);
 
     // Subtext, priority, notification actions, and styles were added in JellyBean.
@@ -65,13 +65,13 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationActionUtils.addNotificationActions(context, notificationBuilder, notificationExtras);
 
     // Accent color, category, visibility, and public notification were added in Lollipop.
-    AppboyNotificationUtils.setAccentColorIfPresentAndSupported(appConfigurationProvider, notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setAccentColorIfPresentAndSupported(appboyConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setCategoryIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setVisibilityIfPresentAndSupported(notificationBuilder, notificationExtras);
-    AppboyNotificationUtils.setPublicVersionIfPresentAndSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setPublicVersionIfPresentAndSupported(context, appboyConfigurationProvider, notificationBuilder, notificationExtras);
 
     // Notification priority and sound were deprecated in Android O
-    AppboyNotificationUtils.setNotificationChannelIfSupported(context, appConfigurationProvider, notificationBuilder, notificationExtras);
+    AppboyNotificationUtils.setNotificationChannelIfSupported(context, appboyConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setNotificationBadgeNumberIfPresent(notificationBuilder, notificationExtras);
 
     return notificationBuilder;

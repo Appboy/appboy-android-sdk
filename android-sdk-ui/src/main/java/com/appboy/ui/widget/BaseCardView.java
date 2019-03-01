@@ -63,46 +63,27 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   }
 
   /**
-   * Calls setImageViewToUrl with aspect ratio set to 1f and respectAspectRatio set to false.
-   * @see com.appboy.ui.widget.BaseCardView#setImageViewToUrl(android.widget.ImageView, String, float, boolean)
-   */
-  public void setImageViewToUrl(final ImageView imageView, final String imageUrl) {
-    setImageViewToUrl(imageView, imageUrl, 1f, false);
-  }
-
-  /**
-   * Calls setImageViewToUrl with respectAspectRatio set to true.
-   * @see com.appboy.ui.widget.BaseCardView#setImageViewToUrl(android.widget.ImageView, String, float, boolean)
-   */
-  public void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio) {
-    setImageViewToUrl(imageView, imageUrl, aspectRatio, true);
-  }
-
-  /**
    * Asynchronously fetches the image at the given imageUrl and displays the image in the ImageView. No image will be
    * displayed if the image cannot be downloaded or fetched from the cache.
    *
    * @param imageView the ImageView in which to display the image
    * @param imageUrl the URL of the image resource
-   * @param aspectRatio the desired aspect ratio of the image. This should match what's being sent down from the dashboard.
-   * @param respectAspectRatio whether to use aspectRatio as the final aspect ratio of the imageView. When set to false,
-   *                           the aspect ratio of the imageView will match that of the downloaded image. When set to true,
-   *                           the provided aspect ratio will match aspectRatio, regardless of the actual dimensions of the
-   *                           downloaded image.
+   * @param placeholderAspectRatio a placeholder aspect ratio that will be used for sizing purposes.
+   *                               The actual dimensions of the final image will dictate the final image aspect ratio.
    */
-  public void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float aspectRatio, final boolean respectAspectRatio) {
+  public void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float placeholderAspectRatio) {
     if (imageUrl == null) {
       AppboyLogger.w(TAG, "The image url to render is null. Not setting the card image.");
       return;
     }
 
-    if (aspectRatio == 0) {
+    if (placeholderAspectRatio == 0) {
       AppboyLogger.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
       return;
     }
 
     if (!imageUrl.equals(imageView.getTag(R.string.com_appboy_image_resize_tag_key))) {
-      if (aspectRatio != SQUARE_ASPECT_RATIO) {
+      if (placeholderAspectRatio != SQUARE_ASPECT_RATIO) {
         // We need to set layout params on the imageView once its layout state is visible. To do this,
         // we obtain the imageView's observer and attach a listener on it for when the view's layout
         // occurs. At layout time, we set the imageView's size params based on the aspect ratio
@@ -114,7 +95,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
             @Override
             public void onGlobalLayout() {
               int width = imageView.getWidth();
-              imageView.setLayoutParams(new LayoutParams(width, (int) (width / aspectRatio)));
+              imageView.setLayoutParams(new LayoutParams(width, (int) (width / placeholderAspectRatio)));
               imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
           });

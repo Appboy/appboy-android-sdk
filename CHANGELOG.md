@@ -1,3 +1,32 @@
+## 3.1.1
+
+##### Breaking
+- Changed signature of `Appboy.logPushNotificationActionClicked()`.
+
+##### Added
+- Added ability to render HTML elements in push notifications via `AppboyConfig.setPushHtmlRenderingEnabled()` and also `com_appboy_push_notification_html_rendering_enabled` in your `appboy.xml`.
+  - This allows the ability to use "multicolor" text in your push notifications.
+  - Note that html rendering be used on all push notification text fields when this feature is enabled.
+- Added `AppboyFirebaseMessagingService` to directly use the Firebase messaging event `com.google.firebase.MESSAGING_EVENT`. This is now the recommended way to integrate Firebase push with Braze. The `AppboyFcmReceiver` can be removed from your `AndroidManifest` and replaced with the following:
+  - ```
+    <service android:name="com.appboy.AppboyFirebaseMessagingService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+    ```
+  - Also note that any `c2dm` related permissions should be removed from your manifest as Braze does not require any extra permissions for `AppboyFirebaseMessagingService` to work correctly.
+
+##### Fixed
+- Fixed behavior where the app would be reopened after clicking notification action buttons with a "close" button.
+- Fixed behavior where in-app messages would not apply proper margins on devices with notched displays and would appear obscured by the notch.
+- Fixed an issue that caused the enum `DeviceKey` to be unavailable in our public API.
+- Fixed an issue in the `AppboyFcmReceiver` where the "is uninstall tracking push" method was looking for the extras bundle before its preprocessing into a bundle. This would result in uninstall tracking push being forwarded to your broadcast receiver as a silent push when it should not.
+- Fixed an issue in the `AppboyLruImageLoader` where very large bitmaps stored in the cache could throw `OutOfMemoryError` when retrieving them from the cache.
+
+##### Changed
+- Changed behavior of the Feed and Content Cards image loader to always resize images to their true source aspect ratio after download.
+
 ## 3.1.0
 
 ##### Breaking

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
           package="com.appboy.sample">
 
   <!-- Permissions -->
@@ -11,11 +10,6 @@
   <uses-permission android:name="android.permission.WAKE_LOCK" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
-  <!-- Permissions for FCM -->
-  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-  <permission android:name="${applicationId}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-  <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
   <!-- Permissions for ADM -->
   <permission android:name="${applicationId}.permission.RECEIVE_ADM_MESSAGE" android:protectionLevel="signature" />
@@ -49,7 +43,6 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name="com.appboy.services.AppboyLocationService"/>
 
     <activity android:name=".GeofencesMapActivity" />
     <!-- Deep link example -->
@@ -81,23 +74,17 @@
       </intent-filter>
     </receiver>
 
-    <receiver android:name="com.appboy.AppboyFcmReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+    <service android:name="com.appboy.AppboyFirebaseMessagingService">
       <intent-filter>
-        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-        <category android:name="${applicationId}" />
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
-    </receiver>
+    </service>
 
     <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
       <intent-filter>
         <action android:name="com.android.vending.INSTALL_REFERRER" />
       </intent-filter>
     </receiver>
-
-    <!-- Not required for standard integrations. On some devices, this receiver causes the EnhancedListenerService to block processing of Braze push for several seconds. -->
-    <receiver
-      android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
-      tools:node="remove"/>
 
     <!-- See https://issuetracker.google.com/issues/79478779 -->
     <uses-library

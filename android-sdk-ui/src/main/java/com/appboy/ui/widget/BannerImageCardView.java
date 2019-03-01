@@ -43,16 +43,12 @@ public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
 
   @Override
   public void onSetCard(final BannerImageCard card) {
-    boolean respectAspectRatio = false;
     if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();
-      respectAspectRatio = true;
     }
-
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, respectAspectRatio);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
 
     mCardAction = getUriActionForCard(card);
-
     setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {

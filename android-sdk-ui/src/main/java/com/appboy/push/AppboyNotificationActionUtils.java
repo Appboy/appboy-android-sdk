@@ -71,7 +71,7 @@ public class AppboyNotificationActionUtils {
 
       // Logs that the notification action was clicked.
       // Click analytics for all action types are logged.
-      logNotificationActionClicked(context, intent);
+      logNotificationActionClicked(context, intent, actionType);
 
       if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI) || actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_OPEN)) {
         AppboyNotificationUtils.cancelNotification(context, notificationId);
@@ -122,9 +122,23 @@ public class AppboyNotificationActionUtils {
     notificationActionExtras.putString(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY,
         getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE));
 
-    Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationRoutingActivity.class);
-    sendIntent.putExtras(notificationActionExtras);
-    PendingIntent pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent pendingSendIntent;
+    if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_NONE)) {
+      // If no action is present, then we don't need the AppboyNotificationRoutingActivity.class to route us back to an Activity.
+
+      AppboyLogger.v(TAG, "Adding notification action with type: " + actionType + " . Setting intent class to notification receiver.");
+      Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+      sendIntent.putExtras(notificationActionExtras);
+      pendingSendIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    } else {
+      // However, if an action is present, then we need to route to the AppboyNotificationRoutingActivity to ensure
+      // the user is prompted to open the app on the lockscreen.
+
+      AppboyLogger.v(TAG, "Adding notification action with type: " + actionType + " Setting intent class to AppboyNotificationRoutingActivity");
+      Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationRoutingActivity.class);
+      sendIntent.putExtras(notificationActionExtras);
+      pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     String actionText = getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE);
     NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(0, actionText, pendingSendIntent);
@@ -138,10 +152,10 @@ public class AppboyNotificationActionUtils {
    * @param context
    * @param intent the action button click intent
    */
-  private static void logNotificationActionClicked(Context context, Intent intent) {
+  private static void logNotificationActionClicked(Context context, Intent intent, String actionType) {
     String campaignId = intent.getStringExtra(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
     String actionButtonId = intent.getStringExtra(Constants.APPBOY_ACTION_ID_KEY);
-    Appboy.getInstance(context).logPushNotificationActionClicked(campaignId, actionButtonId);
+    Appboy.getInstance(context).logPushNotificationActionClicked(campaignId, actionButtonId, actionType);
   }
 
   /**

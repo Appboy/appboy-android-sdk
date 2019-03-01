@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:3.1.+'
+  implementation "com.appboy:android-sdk-ui:${BRAZE_SDK_VERSION}"
   implementation files("libs/pushservice-${BAIDU_CLOUD_PUSH_VERSION}.jar")
 }
 

@@ -1,7 +1,9 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+apply plugin: 'android-maven'
 
 dependencies {
-  implementation project(':android-sdk-ui')
+  api project(':android-sdk-ui')
+  implementation "androidx.appcompat:appcompat:${APP_COMPAT_ANDROIDX_VERSION}"
 }
 
 android {
@@ -11,14 +13,6 @@ android {
   defaultConfig {
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
-    versionName rootProject.ext.appVersionName
-  }
-
-  buildTypes {
-    debug {
-    }
-    release {
-      minifyEnabled true
-    }
+    consumerProguardFiles 'appboy-proguard-rules.pro'
   }
 }

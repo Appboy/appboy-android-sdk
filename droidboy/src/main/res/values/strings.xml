@@ -162,6 +162,8 @@
   <string name="sort_feed_summary">Sort the News Feed Cards to Prefer to Display Unread Cards</string>
   <string name="custom_news_feed_card_click_action_listener_summary">toggles the use of CustomNewsFeedClickActionListener</string>
 
+  <string name="notch_settings_category">Notch Settings</string>
+
   <string name="droidboy_notification_group_01_id">my_group_01</string>
   <string name="droidboy_notification_group_01_name">Group 1</string>
   <string name="droidboy_notification_channel_01_id">db_channel_01</string>

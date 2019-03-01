@@ -5,5 +5,9 @@
         <activity android:name="com.appboy.ui.activities.AppboyFeedActivity" />
         <activity android:name="com.appboy.ui.activities.AppboyContentCardsActivity" />
         <activity android:name="com.appboy.push.AppboyNotificationRoutingActivity" />
+
+        <!-- Although the AppboyFcmReceiver doesn't explicitly handle FCM messages
+             directly any more, push is still redirected to it and thus needs to be registered. -->
+        <receiver android:name="com.appboy.AppboyFcmReceiver" android:exported="false"/>
     </application>
 </manifest>

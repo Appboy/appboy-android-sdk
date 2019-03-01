@@ -14,7 +14,7 @@ import com.appboy.ui.contentcards.AppboyContentCardsManager;
 import com.appboy.ui.widget.BaseCardView;
 
 /**
- * Base class for Appboy ContentCard views
+ * Base class for ContentCard views
  */
 public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T> {
   public BaseContentCardView(Context context) {
@@ -48,16 +48,14 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
    */
   public void setOptionalCardImage(@Nullable ImageView imageView, float cardAspectRatio,
                                    String cardImageUrl, float defaultAspectRatio) {
-    boolean respectAspectRatio = false;
     float aspectRatio = defaultAspectRatio;
 
     if (cardAspectRatio != 0f) {
       aspectRatio = cardAspectRatio;
-      respectAspectRatio = true;
     }
 
     if (imageView != null) {
-      setImageViewToUrl(imageView, cardImageUrl, aspectRatio, respectAspectRatio);
+      setImageViewToUrl(imageView, cardImageUrl, aspectRatio);
     }
   }
 

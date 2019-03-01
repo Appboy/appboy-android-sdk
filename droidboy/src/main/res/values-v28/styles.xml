@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="DisplayInNotchTheme">
+    <item name="android:windowLayoutInDisplayCutoutMode">
+      shortEdges
+    </item>
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+</resources>
