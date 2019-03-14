@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="0.0dp">
@@ -15,44 +16,68 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="0.0dp"
-            android:weightSum="1.0">
-            <ViewStub
-                android:id="@+id/com_appboy_inappmessage_full_imageview_stub"
-                android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
+            android:weightSum="2">
+            <com.appboy.ui.inappmessage.AppboyInAppMessageImageView
+                android:id="@+id/com_appboy_inappmessage_full_imageview"
                 style="@style/Appboy.InAppMessage.Image.Full"/>
-            <RelativeLayout
-                android:id="@+id/com_appboy_inappmessage_full_textarea"
-                style="@style/Appboy.InAppMessage.Full.TextArea">
-                <ScrollView
-                    android:id="@+id/com_appboy_inappmessage_full_scrollview"
-                    style="@style/Appboy.InAppMessage.ScrollView.Full">
-                    <LinearLayout
-                        android:id="@+id/com_appboy_inappmessage_full_text_layout"
-                        style="@style/Appboy.InAppMessage.Layout.Text.Full">
-                        <TextView
-                            android:id="@+id/com_appboy_inappmessage_full_header_text"
-                            style="@style/Appboy.InAppMessage.Header.Full"/>
-                        <TextView
-                            android:id="@+id/com_appboy_inappmessage_full_message"
-                            style="@style/Appboy.InAppMessage.Message.Full"/>
-                    </LinearLayout>
-                </ScrollView>
+            <ScrollView
+                android:id="@+id/com_appboy_inappmessage_full_scrollview"
+                style="@style/Appboy.InAppMessage.ScrollView.Full">
                 <LinearLayout
-                    android:id="@+id/com_appboy_inappmessage_full_button_layout"
-                    style="@style/Appboy.InAppMessage.Layout.Button.Full">
-                    <Button
-                        android:id="@+id/com_appboy_inappmessage_full_button_one"
-                        style="@style/Appboy.InAppMessage.Button.Full.One"/>
-                    <Button
-                        android:id="@+id/com_appboy_inappmessage_full_button_two"
-                        style="@style/Appboy.InAppMessage.Button.Full.Two"/>
+                    android:id="@+id/com_appboy_inappmessage_full_text_layout"
+                    style="@style/Appboy.InAppMessage.Full.TextArea"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/com_appboy_inappmessage_full_header_text"
+                        style="@style/Appboy.InAppMessage.Header.Full"
+                        tools:text="In App Message Header Text"/>
+                    <TextView
+                        android:id="@+id/com_appboy_inappmessage_full_message"
+                        style="@style/Appboy.InAppMessage.Message.Full"
+                        tools:text="In App Message Message Text"/>
                 </LinearLayout>
-            </RelativeLayout>
+            </ScrollView>
+            <!-- This layout is solely for a single button being present-->
+            <LinearLayout
+                android:id="@+id/com_appboy_inappmessage_full_button_layout_single"
+                style="@style/Appboy.InAppMessage.Layout.Button.Full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone">
+                <Button
+                    android:id="@+id/com_appboy_inappmessage_full_button_single_one"
+                    style="@style/Appboy.InAppMessage.Button.Full.Single"/>
+            </LinearLayout>
+            <!-- This layout is solely for two buttons being present -->
+            <LinearLayout
+                android:id="@+id/com_appboy_inappmessage_full_button_layout_dual"
+                style="@style/Appboy.InAppMessage.Layout.Button.Full"
+                android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <Button
+                        android:id="@+id/com_appboy_inappmessage_full_button_dual_one"
+                        style="@style/Appboy.InAppMessage.Button.Full.Dual.One"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <Button
+                        android:id="@+id/com_appboy_inappmessage_full_button_dual_two"
+                        style="@style/Appboy.InAppMessage.Button.Full.Dual.Two"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10.0dp">
+            android:layout_height="match_parent">
             <ImageButton
                 android:id="@+id/com_appboy_inappmessage_full_close_button"
                 style="@style/Appboy.InAppMessage.CloseButton.Full"/>

@@ -1,5 +1,6 @@
 package com.appboy.sample;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -87,6 +88,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     spinnerOptionMap.put(R.id.inapp_text_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_header_text_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_button_color_spinner, R.array.inapp_color_options);
+    spinnerOptionMap.put(R.id.inapp_button_border_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_button_text_color_spinner, R.array.inapp_color_options);
     spinnerOptionMap.put(R.id.inapp_frame_spinner, R.array.inapp_frame_options);
     spinnerOptionMap.put(R.id.inapp_uri_spinner, R.array.inapp_uri_options);
@@ -113,6 +115,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private String mIconColor;
   private String mIconBackgroundColor;
   private String mCloseButtonColor;
+  private String mButtonBorderColor;
   private String mTextColor;
   private String mHeaderTextColor;
   private String mButtonColor;
@@ -350,7 +353,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     inAppMessage.setHeader("Hello from Braze!");
     ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
     MessageButton buttonOne = new MessageButton();
-    buttonOne.setText("NEWSFEED");
+    buttonOne.setText("NewsFeed");
     buttonOne.setClickAction(ClickAction.NEWS_FEED);
     messageButtons.add(buttonOne);
     inAppMessage.setMessageButtons(messageButtons);
@@ -622,6 +625,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     return null;
   }
 
+  @SuppressWarnings("checkstyle:MissingSwitchDefault")
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
     // add message buttons.
     if (!SpinnerUtils.spinnerItemNotSet(mButtons)) {
@@ -629,34 +633,51 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         inAppMessage.setMessageButtons(null);
         return;
       }
-      ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
+      ArrayList<MessageButton> messageButtons = new ArrayList<>();
       MessageButton buttonOne = new MessageButton();
-      if ("one".equals(mButtons)) {
-        buttonOne.setClickAction(ClickAction.NEWS_FEED);
-        buttonOne.setText("NEWSFEED");
-        messageButtons.add(buttonOne);
-        inAppMessage.setMessageButtons(messageButtons);
-        return;
-      }
       MessageButton buttonTwo = new MessageButton();
-      if ("two".equals(mButtons) || "long".equals(mButtons)) {
-        buttonOne.setText("No Webview");
-        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
-        buttonTwo.setText("Webview");
-        buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
-        buttonTwo.setOpenUriInWebview(true);
-        if ("long".equals(mButtons)) {
-          buttonOne.setText("No Webview WITH A VERY LONG TITLE");
-          buttonTwo.setText("Webview WITH A VERY LONG TITLE");
-        }
-      } else if ("deeplink".equals(mButtons)) {
-        buttonOne.setText("TELEPHONE");
-        buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.telephone_uri)));
-        buttonTwo.setText("PLAY STORE");
-        buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.play_store_uri)));
+
+      // Add the first button
+      switch (mButtons) {
+        case "one":
+          buttonOne.setClickAction(ClickAction.NEWS_FEED);
+          buttonOne.setText("News Feed");
+          messageButtons.add(buttonOne);
+          break;
+        case "one_long":
+          buttonOne.setClickAction(ClickAction.NEWS_FEED);
+          buttonOne.setText("Content Cards Are Really Cool. Seriously, I love them. RecyclerViews are the wave of the future.");
+          messageButtons.add(buttonOne);
+          break;
       }
-      messageButtons.add(buttonOne);
-      messageButtons.add(buttonTwo);
+
+      // Add the second button
+      switch (mButtons) {
+        case "two":
+        case "long":
+          buttonOne.setText("No Webview");
+          buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
+          buttonOne.setIsSecondaryButton(true);
+          buttonTwo.setText("Webview");
+          buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
+          buttonTwo.setOpenUriInWebview(true);
+          if ("long".equals(mButtons)) {
+            buttonOne.setText("No Webview WITH A VERY LONG TITLE");
+            buttonTwo.setText("Webview WITH A VERY LONG TITLE");
+          }
+          messageButtons.add(buttonOne);
+          messageButtons.add(buttonTwo);
+          break;
+        case "deeplink":
+          buttonOne.setText("TELEPHONE");
+          buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.telephone_uri)));
+          buttonOne.setIsSecondaryButton(true);
+          buttonTwo.setText("PLAY STORE");
+          buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.play_store_uri)));
+          messageButtons.add(buttonOne);
+          messageButtons.add(buttonTwo);
+          break;
+      }
       inAppMessage.setMessageButtons(messageButtons);
     }
     if (!SpinnerUtils.spinnerItemNotSet(mButtonColor) && inAppMessage.getMessageButtons() != null) {
@@ -667,6 +688,11 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     if (!SpinnerUtils.spinnerItemNotSet(mButtonTextColor) && inAppMessage.getMessageButtons() != null) {
       for (MessageButton button : inAppMessage.getMessageButtons()) {
         button.setTextColor(parseColorFromString(mButtonTextColor));
+      }
+    }
+    if (!SpinnerUtils.spinnerItemNotSet(mButtonBorderColor) && inAppMessage.getMessageButtons() != null) {
+      for (MessageButton button : inAppMessage.getMessageButtons()) {
+        button.setBorderColor(parseColorFromString(mButtonBorderColor));
       }
     }
   }
@@ -714,6 +740,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         break;
       case R.id.inapp_button_color_spinner:
         mButtonColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
+        break;
+      case R.id.inapp_button_border_color_spinner:
+        mButtonBorderColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
         break;
       case R.id.inapp_button_text_color_spinner:
         mButtonTextColor = SpinnerUtils.handleSpinnerItemSelected(parent, R.array.inapp_color_values);
@@ -779,7 +808,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     } else if (colorString.equals("white")) {
       return WHITE;
     } else if (colorString.equals("transparent")) {
-      return 0;
+      return Color.argb(0, 0, 0, 0);
     } else if (colorString.equals("almost_transparent_blue")) {
       return TRANSPARENT_APPBOY_BLUE;
     } else {

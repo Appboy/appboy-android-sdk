@@ -1,7 +1,7 @@
 package com.appboy.ui.inappmessage.views;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -29,12 +29,12 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     super(context, attrs);
   }
 
-  public void inflateStubViews(Activity activity, IInAppMessageImmersive inAppMessage) {
-    mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_modal_imageview_stub);
-    setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
+  public void inflateStubViews(Context context, IInAppMessageImmersive inAppMessage) {
+    mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_modal_imageview);
+    setInAppMessageImageViewAttributes(context, inAppMessage, mAppboyInAppMessageImageView);
     if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC) && inAppMessage.getBitmap() != null) {
       double aspectRatio = (double) inAppMessage.getBitmap().getWidth() / inAppMessage.getBitmap().getHeight();
-      resizeGraphicFrameIfAppropriate(activity, inAppMessage, aspectRatio);
+      resizeGraphicFrameIfAppropriate(context, inAppMessage, aspectRatio);
     }
   }
 
@@ -71,25 +71,40 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
 
   @Override
   public void setMessageBackgroundColor(int color) {
-    InAppMessageViewUtils.setViewBackgroundColorFilter(findViewById(R.id.com_appboy_inappmessage_modal),
-        color, getContext().getResources().getColor(R.color.com_appboy_inappmessage_background_light));
+    InAppMessageViewUtils.setViewBackgroundColorFilter(findViewById(R.id.com_appboy_inappmessage_modal), color);
   }
 
   @Override
-  public List<View> getMessageButtonViews() {
+  public List<View> getMessageButtonViews(int numButtons) {
     List<View> buttonViews = new ArrayList<View>();
-    if (findViewById(R.id.com_appboy_inappmessage_modal_button_one) != null) {
-      buttonViews.add(findViewById(R.id.com_appboy_inappmessage_modal_button_one));
-    }
-    if (findViewById(R.id.com_appboy_inappmessage_modal_button_two) != null) {
-      buttonViews.add(findViewById(R.id.com_appboy_inappmessage_modal_button_two));
+
+    // Based on the number of buttons, make one of the button parent layouts visible
+    if (numButtons == 1) {
+      View singleButtonParent = findViewById(R.id.com_appboy_inappmessage_modal_button_layout_single);
+      if (singleButtonParent != null) {
+        singleButtonParent.setVisibility(VISIBLE);
+      }
+
+      View singleButton = findViewById(R.id.com_appboy_inappmessage_modal_button_single_one);
+      if (singleButton != null) {
+        buttonViews.add(singleButton);
+      }
+    } else if (numButtons == 2) {
+      View dualButtonParent = findViewById(R.id.com_appboy_inappmessage_modal_button_layout_dual);
+      if (dualButtonParent != null) {
+        dualButtonParent.setVisibility(VISIBLE);
+      }
+
+      View dualButton1 = findViewById(R.id.com_appboy_inappmessage_modal_button_dual_one);
+      View dualButton2 = findViewById(R.id.com_appboy_inappmessage_modal_button_dual_two);
+      if (dualButton1 != null) {
+        buttonViews.add(dualButton1);
+      }
+      if (dualButton2 != null) {
+        buttonViews.add(dualButton2);
+      }
     }
     return buttonViews;
-  }
-
-  @Override
-  public View getMessageButtonsView() {
-    return findViewById(R.id.com_appboy_inappmessage_modal_button_layout);
   }
 
   @Override
@@ -130,12 +145,12 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
   /**
    * Programmatically set attributes on the image view classes inside the image ViewStubs.
    *
-   * @param activity
+   * @param context
    * @param inAppMessage
    * @param inAppMessageImageView
    */
-  private void setInAppMessageImageViewAttributes(Activity activity, IInAppMessageImmersive inAppMessage, IInAppMessageImageView inAppMessageImageView) {
-    float pixelRadius = (float) ViewUtils.convertDpToPixels(activity, AppboyInAppMessageParams.getModalizedImageRadiusDp());
+  private void setInAppMessageImageViewAttributes(Context context, IInAppMessageImmersive inAppMessage, IInAppMessageImageView inAppMessageImageView) {
+    float pixelRadius = (float) ViewUtils.convertDpToPixels(context, AppboyInAppMessageParams.getModalizedImageRadiusDp());
     if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
       inAppMessageImageView.setCornersRadiusPx(pixelRadius);
     } else {
@@ -148,25 +163,39 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
    * If displaying a graphic modal, resize its bounds based on the aspect ratio of the input image
    * and its maximum size.
    *
-   * @param activity
+   * @param context
    * @param inAppMessage
    * @param imageAspectRatio the aspect ratio of the image to be displayed in the graphic modal.
    */
-  private void resizeGraphicFrameIfAppropriate(Activity activity, IInAppMessageImmersive inAppMessage, double imageAspectRatio) {
+  private void resizeGraphicFrameIfAppropriate(final Context context, final IInAppMessageImmersive inAppMessage, final double imageAspectRatio) {
     if (!inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
       return;
     }
-    double maxWidthDp = AppboyInAppMessageParams.getGraphicModalMaxWidthDp();
-    double maxHeightDp = AppboyInAppMessageParams.getGraphicModalMaxHeightDp();
-    double maxSizeAspectRatio = maxWidthDp / maxHeightDp;
-    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) (findViewById(R.id.com_appboy_inappmessage_modal_graphic_bound)).getLayoutParams();
-    if (imageAspectRatio >= maxSizeAspectRatio) {
-      params.width = (int) ViewUtils.convertDpToPixels(activity, maxWidthDp);
-      params.height = (int) (ViewUtils.convertDpToPixels(activity, maxWidthDp) / imageAspectRatio);
-    } else {
-      params.width = (int) (ViewUtils.convertDpToPixels(activity, maxHeightDp) * imageAspectRatio);
-      params.height = (int) ViewUtils.convertDpToPixels(activity, maxHeightDp);
-    }
-    findViewById(R.id.com_appboy_inappmessage_modal_graphic_bound).setLayoutParams(params);
+    Resources resources = context.getResources();
+    final int marginPixels = resources.getDimensionPixelSize(R.dimen.com_appboy_in_app_message_modal_margin);
+    final int maxModalWidth = resources.getDimensionPixelSize(R.dimen.com_appboy_in_app_message_modal_max_width);
+    final int maxModalHeight = resources.getDimensionPixelSize(R.dimen.com_appboy_in_app_message_modal_max_height);
+
+    // The measured width is only available after the draw phase, which
+    // this runnable will draw after.
+    this.post(new Runnable() {
+      @Override
+      public void run() {
+        double maxWidthPixelSize = Math.min(getMeasuredWidth() - marginPixels, maxModalWidth);
+        double maxHeightPixelSize = Math.min(getMeasuredHeight() - marginPixels, maxModalHeight);
+        double maxSizeAspectRatio = maxWidthPixelSize / maxHeightPixelSize;
+
+        final View modalBoundView = findViewById(R.id.com_appboy_inappmessage_modal_graphic_bound);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) modalBoundView.getLayoutParams();
+        if (imageAspectRatio >= maxSizeAspectRatio) {
+          params.width = (int) maxWidthPixelSize;
+          params.height = (int) (maxWidthPixelSize / imageAspectRatio);
+        } else {
+          params.width = (int) (maxHeightPixelSize * imageAspectRatio);
+          params.height = (int) maxHeightPixelSize;
+        }
+        modalBoundView.setLayoutParams(params);
+      }
+    });
   }
 }

@@ -10,6 +10,7 @@ import com.appboy.IAppboyImageLoader;
 import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.inappmessage.InAppMessageFailureType;
 import com.appboy.models.IInAppMessage;
+import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageHtmlBase;
 import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageModal;
@@ -154,6 +155,10 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         inAppMessage.setBitmap(appboyImageLoader.getBitmapFromUrl(applicationContext, remoteImageUrl, viewBounds));
       } else {
         AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
+        if (inAppMessage instanceof InAppMessageFull) {
+          AppboyLogger.w(TAG, "In-App Message full has no remote image url yet is required to have an image. Failing download.");
+          return false;
+        }
         return true;
       }
     }

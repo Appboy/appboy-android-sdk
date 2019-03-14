@@ -57,7 +57,7 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
    * use image view stubs any longer, this method is only used for Feed cards.
    *
    * @param stubLayoutId The resource Id of the stub for inflation as returned by findViewById.
-   * @return the view to display the image. This will either be an ImageView or DraweeView
+   * @return the view to display the image.
    */
   public View getProperViewFromInflatedStub(int stubLayoutId) {
     ViewStub imageStub = (ViewStub) findViewById(stubLayoutId);

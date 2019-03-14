@@ -28,36 +28,51 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
     super(context, attrs);
   }
 
-  public void inflateStubViews(Activity activity, IInAppMessageImmersive inAppMessage) {
-    mAppboyInAppMessageImageView = (AppboyInAppMessageImageView) getProperViewFromInflatedStub(R.id.com_appboy_inappmessage_full_imageview_stub);
+  public void createAppropriateViews(Activity activity, IInAppMessageImmersive inAppMessage) {
+    mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_full_imageview);
     setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
   }
 
   @Override
   public void setMessageBackgroundColor(int color) {
     if (getMessageBackgroundObject().getBackground() instanceof GradientDrawable) {
-      InAppMessageViewUtils.setViewBackgroundColorFilter(findViewById(R.id.com_appboy_inappmessage_full),
-          color, getContext().getResources().getColor(R.color.com_appboy_inappmessage_background_light));
+      InAppMessageViewUtils.setViewBackgroundColorFilter(findViewById(R.id.com_appboy_inappmessage_full), color);
     } else {
       super.setMessageBackgroundColor(color);
     }
   }
 
   @Override
-  public List<View> getMessageButtonViews() {
+  public List<View> getMessageButtonViews(int numButtons) {
     List<View> buttonViews = new ArrayList<View>();
-    if (findViewById(R.id.com_appboy_inappmessage_full_button_one) != null) {
-      buttonViews.add(findViewById(R.id.com_appboy_inappmessage_full_button_one));
-    }
-    if (findViewById(R.id.com_appboy_inappmessage_full_button_two) != null) {
-      buttonViews.add(findViewById(R.id.com_appboy_inappmessage_full_button_two));
+
+    // Based on the number of buttons, make one of the button parent layouts visible
+    if (numButtons == 1) {
+      View singleButtonParent = findViewById(R.id.com_appboy_inappmessage_full_button_layout_single);
+      if (singleButtonParent != null) {
+        singleButtonParent.setVisibility(VISIBLE);
+      }
+
+      View singleButton = findViewById(R.id.com_appboy_inappmessage_full_button_single_one);
+      if (singleButton != null) {
+        buttonViews.add(singleButton);
+      }
+    } else if (numButtons == 2) {
+      View dualButtonParent = findViewById(R.id.com_appboy_inappmessage_full_button_layout_dual);
+      if (dualButtonParent != null) {
+        dualButtonParent.setVisibility(VISIBLE);
+      }
+
+      View dualButton1 = findViewById(R.id.com_appboy_inappmessage_full_button_dual_one);
+      View dualButton2 = findViewById(R.id.com_appboy_inappmessage_full_button_dual_two);
+      if (dualButton1 != null) {
+        buttonViews.add(dualButton1);
+      }
+      if (dualButton2 != null) {
+        buttonViews.add(dualButton2);
+      }
     }
     return buttonViews;
-  }
-
-  @Override
-  public View getMessageButtonsView() {
-    return findViewById(R.id.com_appboy_inappmessage_full_button_layout);
   }
 
   @Override

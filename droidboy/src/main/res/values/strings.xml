@@ -89,7 +89,7 @@
 
   <string name="red">Red</string>
   <string name="blue">Blue</string>
-  <string name="inappmessage_tester_tab_title">IAMS</string>
+  <string name="inappmessage_tester_tab_title">IAMs</string>
   <string name="create_and_add_inappmessage">Create and Add In-App Message</string>
   <string name="display_next_inappmessage">Display Next In-App Message</string>
   <string name="hide_current_inappmessage">Hide Current In-App Message</string>
@@ -111,6 +111,7 @@
   <string name="set_text_color">Set text color</string>
   <string name="set_header_text_color">Set header text color</string>
   <string name="set_button_color">Set button color</string>
+  <string name="set_button_border_color">Set button border color</string>
   <string name="set_button_text_color">Set button text color</string>
   <string name="set_animate_in">Set animate in</string>
   <string name="set_animate_out">Set animate out</string>
@@ -191,7 +192,7 @@
   <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>
   <string name="appboy_siege_gif_url">https://blog.appboy.com/wp-content/uploads/2015/03/BrowserPreview_tmp-1.gif</string>
   <string name="appboy_gif_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/564cfde56461737ff4080000/0283e284156a896114fc231e918551b959e87a4e/original.?1452806650</string>
-  <string name="braze_homepage_url">http://www.braze.com</string>
+  <string name="braze_homepage_url">https://www.braze.com</string>
   <string name="google_url">http://www.google.com</string>
   <string name="droidboy_deep_link">droidboy://preferences</string>
   <string name="droidboy_deep_link_https">https://www.droidboy.com/preferences</string>

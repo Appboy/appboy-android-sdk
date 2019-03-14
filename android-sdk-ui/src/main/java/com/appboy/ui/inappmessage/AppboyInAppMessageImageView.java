@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.appboy.enums.inappmessage.CropType;
@@ -33,11 +34,15 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
    * bottom-right, bottom-left
    */
   private float[] mInAppRadii;
+  private float mAspectRatio = -1f;
+  private boolean mSetToHalfParentHeight = false;
 
   public AppboyInAppMessageImageView(Context context, AttributeSet attrs) {
     super(context, attrs);
     mClipPath = new Path();
     mRect = new RectF();
+    // The view bounds need to be adjusted in order to scale to the full width available
+    setAdjustViewBounds(true);
   }
 
   /**
@@ -45,13 +50,12 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
    */
   @Override
   public void setCornersRadiiPx(float topLeft, float topRight, float bottomLeft, float bottomRight) {
-    float[] inappRadii = new float[]{
+    mInAppRadii = new float[]{
         topLeft, topLeft,
         topRight, topRight,
         bottomLeft, bottomLeft,
         bottomRight, bottomRight
     };
-    mInAppRadii = inappRadii;
   }
 
   /**
@@ -75,9 +79,40 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
   }
 
   @Override
+  public void setAspectRatio(float aspectRatio) {
+    mAspectRatio = aspectRatio;
+    requestLayout();
+  }
+
+  @Override
+  public void setToHalfParentHeight(boolean setToHalfHeight) {
+    mSetToHalfParentHeight = setToHalfHeight;
+    requestLayout();
+  }
+
+  @Override
   protected void onDraw(Canvas canvas) {
     clipCanvasToPath(canvas, getWidth(), getHeight());
     super.onDraw(canvas);
+  }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    if (mAspectRatio != -1) {
+      int newWidth = getMeasuredWidth();
+      int maxHeight = (int) (newWidth / mAspectRatio);
+      // The +1 is necessary to ensure that the image hits the full width of the modal container.
+      // Otherwise, images will have some "margin" on the left and right.
+      int newHeight = Math.min(getMeasuredHeight(), maxHeight) + 1;
+      setMeasuredDimension(newWidth, newHeight);
+    }
+
+    if (mSetToHalfParentHeight) {
+      int parentHeight = ((View) getParent()).getHeight();
+      setMeasuredDimension(getMeasuredWidth(), (int) (parentHeight * 0.5));
+    }
   }
 
   /**

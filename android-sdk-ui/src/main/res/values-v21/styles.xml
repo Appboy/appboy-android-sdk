@@ -12,4 +12,30 @@
     <item name="android:ellipsize">end</item>
     <item name="android:maxLines">2</item>
   </style>
+  <style name="Appboy.InAppMessage.Slideup.Container">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_marginLeft">10dp</item>
+    <item name="android:layout_marginRight">10dp</item>
+    <item name="android:layout_marginBottom">10dp</item>
+    <item name="android:background">@drawable/com_appboy_inappmessage_slideup_background</item>
+    <!-- The value for the elevation is 1dp fewer than the margin -->
+    <item name="android:elevation">9dp</item>
+  </style>
+  <style name="Appboy.InAppMessage.Modal">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:paddingTop">0.0dp</item>
+    <item name="android:paddingRight">0.0dp</item>
+    <item name="android:paddingLeft">0.0dp</item>
+    <item name="android:paddingBottom">20.0dp</item>
+    <item name="android:layout_centerInParent">true</item>
+    <item name="android:background">@drawable/com_appboy_inappmessage_modal_background</item>
+    <item name="android:layout_margin">15dp</item>
+    <item name="android:minWidth">@dimen/com_appboy_in_app_message_modal_min_width</item>
+    <item name="android:maxWidth">@dimen/com_appboy_in_app_message_modal_max_width</item>
+    <item name="android:maxHeight">@dimen/com_appboy_in_app_message_modal_max_height</item>
+    <!-- The value for the elevation is 1dp fewer than the margin -->
+    <item name="android:elevation">14dp</item>
+  </style>
 </resources>

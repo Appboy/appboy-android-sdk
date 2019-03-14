@@ -4,8 +4,8 @@
 
 Successful marketing automation is essential to the future of your mobile app. Braze helps you engage your users beyond the download. Visit the following links for details and we'll have you up and running in no time!
 
-- [Braze Academy](http://www.braze.com/academy "Braze Academy")
-- [Technical Documentation](http://documentation.braze.com "Braze Technical Documentation")
+- [Braze User Guide](https://www.braze.com/docs/user_guide/introduction/ "Braze User Guide")
+- [Braze Developer Guide](https://www.braze.com/docs/developer_guide/platform_integration_guides/android/initial_sdk_setup/android_sdk_integration/ "Braze Developer Guide")
 - [JavaDocs](http://appboy.github.io/appboy-android-sdk/javadocs/ "Braze Android SDK Class Documentation")
 
 ## Components
@@ -38,7 +38,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:3.1.+'
+   compile 'com.appboy:android-sdk-ui:3.2.+'
    ...
 }
 ```
@@ -57,7 +57,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:3.1.+'
+  compile 'com.appboy:android-sdk-ui:3.2.+'
 }
 ```
 

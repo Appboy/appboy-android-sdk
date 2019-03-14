@@ -15,4 +15,10 @@
 
   <dimen name="com_appboy_content_cards_unread_bar_height">4dp</dimen>
   <dimen name="com_appboy_content_cards_image_border_radius">3dp</dimen>
+
+  <dimen name="com_appboy_in_app_message_modal_min_width">320dp</dimen>
+  <dimen name="com_appboy_in_app_message_modal_max_width">450dp</dimen>
+  <dimen name="com_appboy_in_app_message_modal_max_height">750dp</dimen>
+  <dimen name="com_appboy_in_app_message_modal_margin">15dp</dimen>
+  <dimen name="com_appboy_in_app_message_slideup_left_message_margin_no_image">20dp</dimen>
 </resources>

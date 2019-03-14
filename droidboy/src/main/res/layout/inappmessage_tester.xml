@@ -90,28 +90,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="@string/set_header_align"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <Spinner
-                        android:id="@+id/inapp_header_align_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="@string/set_message_align"
-                        style="@style/InAppMessageTesterTextView"/>
-                    <Spinner
-                        android:id="@+id/inapp_message_align_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
                         android:text="@string/set_background_color"
                         style="@style/InAppMessageTesterTextView"/>
                     <Spinner
@@ -182,6 +160,39 @@
                         style="@style/InAppMessageTesterTextView"/>
                     <Spinner
                         android:id="@+id/inapp_button_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/set_button_border_color"
+                        style="@style/InAppMessageTesterTextView"/>
+                    <Spinner
+                        android:id="@+id/inapp_button_border_color_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/set_header_align"
+                        style="@style/InAppMessageTesterTextView"/>
+                    <Spinner
+                        android:id="@+id/inapp_header_align_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/set_message_align"
+                        style="@style/InAppMessageTesterTextView"/>
+                    <Spinner
+                        android:id="@+id/inapp_message_align_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </TableRow>

@@ -12,17 +12,20 @@ import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
+import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
 
 public class AppboyModalViewFactory implements IInAppMessageViewFactory {
+  private static final float NON_GRAPHIC_ASPECT_RATIO = 290f / 100f;
+
   @Override
   public AppboyInAppMessageModalView createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
     Context applicationContext = activity.getApplicationContext();
     InAppMessageModal inAppMessageModal = (InAppMessageModal) inAppMessage;
     boolean isGraphic = inAppMessageModal.getImageStyle().equals(ImageStyle.GRAPHIC);
     AppboyInAppMessageModalView view = getAppropriateModalView(activity, isGraphic);
-    view.inflateStubViews(activity, inAppMessageModal);
+    view.inflateStubViews(applicationContext, inAppMessageModal);
 
     String imageUrl = view.getAppropriateImageUrl(inAppMessage);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
@@ -45,12 +48,13 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
       view.setMessageHeaderTextAlignment(inAppMessageModal.getHeaderTextAlign());
       view.setMessageTextAlign(inAppMessageModal.getMessageTextAlign());
       view.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
+      ((AppboyInAppMessageImageView) view.getMessageImageView()).setAspectRatio(NON_GRAPHIC_ASPECT_RATIO);
     }
     return view;
   }
 
   @SuppressLint("InflateParams")
-  AppboyInAppMessageModalView getAppropriateModalView(Activity activity, boolean isGraphic) {
+  private AppboyInAppMessageModalView getAppropriateModalView(Activity activity, boolean isGraphic) {
     if (isGraphic) {
       return (AppboyInAppMessageModalView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_modal_graphic, null);
     } else {

@@ -9,7 +9,6 @@ import com.appboy.enums.inappmessage.CropType;
  *
  * All Known Implementing Classes:
  * {@link AppboyInAppMessageImageView}
- * {@link AppboyInAppMessageSimpleDraweeView}
  */
 public interface IInAppMessageImageView {
 
@@ -34,4 +33,8 @@ public interface IInAppMessageImageView {
    * Instruct the view to use {@link android.widget.ImageView.ScaleType#CENTER_CROP} or equivalent.
    */
   void setInAppMessageImageCropType(CropType cropType);
+
+  void setAspectRatio(float aspectRatio);
+
+  void setToHalfParentHeight(boolean setToHalfHeight);
 }

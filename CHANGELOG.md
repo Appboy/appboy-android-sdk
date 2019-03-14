@@ -1,3 +1,15 @@
+## 3.2.0
+
+##### Fixed
+- Fixed an issue where a filename's canonical path was not validated during zip file extraction.
+- Fixed an issue where the SDK setup verification would erroneously always log a warning that the `AppboyFcmReceiver` was registered using the old `com.google.android.c2dm.intent.RECEIVE` intent-filter.
+
+##### Changed
+- Improved the look and feel of in-app messages to adhere to the latest UX and UI best practices. Changes affect font sizes, padding, and responsiveness across all message types. Now supports button border styling.
+
+##### Added
+- Added collection of `ActivityManager.isBackgroundRestricted()` to device collection information.
+
 ## 3.1.1
 
 ##### Breaking
@@ -66,6 +78,7 @@
 
 ##### Breaking
 - From `AppboyConfig`, removed `getEnableBackgroundLocationCollection()`, `getLocationUpdateTimeIntervalSeconds()`, and `getLocationUpdateDistance()` and their respective setters in `AppboyConfig.Builder`.
+- Removed `AppboyInAppMessageImmersiveBaseView.getMessageButtonsView()`.
 - Removed the Fresco image library from the SDK. To displaying GIFs, you must use a custom image library. Please see `IAppboy#setAppboyImageLoader(IAppboyImageLoader)`.
   - We recommend the [Glide Image Library](https://bumptech.github.io/glide/) as a Fresco replacement.
   - `AppboyConfig.Builder.setFrescoLibraryEnabled()` has been removed.

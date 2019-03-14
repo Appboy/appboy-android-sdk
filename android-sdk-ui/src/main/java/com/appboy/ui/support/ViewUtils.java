@@ -1,6 +1,7 @@
 package com.appboy.ui.support;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
@@ -66,8 +67,8 @@ public class ViewUtils {
     return sDisplayHeight;
   }
 
-  public static double convertDpToPixels(Activity activity, double valueInDp) {
-    double density = activity.getResources().getDisplayMetrics().density;
+  public static double convertDpToPixels(Context context, double valueInDp) {
+    double density = context.getResources().getDisplayMetrics().density;
     return valueInDp * density;
   }
 
@@ -85,5 +86,15 @@ public class ViewUtils {
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Failed to set requested orientation " + requestedOrientation + " for activity class: " + activity.getLocalClassName(), e);
     }
+  }
+
+  public static void setHeightOnViewLayoutParams(View view, int height) {
+    if (view == null) {
+      AppboyLogger.w(TAG, "Cannot set height on null view.");
+      return;
+    }
+    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+    layoutParams.height = height;
+    view.setLayoutParams(layoutParams);
   }
 }

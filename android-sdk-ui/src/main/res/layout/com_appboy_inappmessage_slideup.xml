@@ -4,21 +4,23 @@
     android:id="@+id/com_appboy_inappmessage_slideup"
     style="@style/Appboy.InAppMessage.Slideup">
     <RelativeLayout
-        android:id="@+id/com_appboy_inappmessage_slideup_image_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
-        <ViewStub
-            android:id="@+id/com_appboy_inappmessage_slideup_imageview_stub"
-            android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
-            style="@style/Appboy.InAppMessage.Image.Slideup"/>
+      android:id="@+id/com_appboy_inappmessage_slideup_container"
+      style="@style/Appboy.InAppMessage.Slideup.Container">
+        <RelativeLayout
+            android:id="@+id/com_appboy_inappmessage_slideup_image_layout"
+            style="@style/Appboy.InAppMessage.Slideup.ImageContainer">
+            <com.appboy.ui.inappmessage.AppboyInAppMessageImageView
+                android:id="@+id/com_appboy_inappmessage_slideup_imageview"
+                style="@style/Appboy.InAppMessage.Image.Slideup"/>
+            <TextView
+                android:id="@+id/com_appboy_inappmessage_slideup_icon"
+                style="@style/Appboy.InAppMessage.Icon.Slideup"/>
+        </RelativeLayout>
         <TextView
-            android:id="@+id/com_appboy_inappmessage_slideup_icon"
-            style="@style/Appboy.InAppMessage.Icon.Slideup"/>
+            android:id="@+id/com_appboy_inappmessage_slideup_message"
+            style="@style/Appboy.InAppMessage.Message.Slideup"/>
+        <ImageView
+            android:id="@+id/com_appboy_inappmessage_slideup_chevron"
+            style="@style/Appboy.InAppMessage.Chevron.Slideup"/>
     </RelativeLayout>
-    <TextView
-        android:id="@+id/com_appboy_inappmessage_slideup_message"
-        style="@style/Appboy.InAppMessage.Message.Slideup"/>
-    <ImageView
-        android:id="@+id/com_appboy_inappmessage_slideup_chevron"
-        style="@style/Appboy.InAppMessage.Chevron"/>
 </com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView>

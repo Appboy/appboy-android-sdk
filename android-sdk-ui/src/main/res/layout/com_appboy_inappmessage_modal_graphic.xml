@@ -17,23 +17,52 @@
         <RelativeLayout
             android:id="@+id/com_appboy_inappmessage_modal"
             style="@style/Appboy.InAppMessage.Modal.Graphic">
-            <ViewStub
-                android:id="@+id/com_appboy_inappmessage_modal_imageview_stub"
-                android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
+            <com.appboy.ui.inappmessage.AppboyInAppMessageImageView
+                android:id="@+id/com_appboy_inappmessage_modal_imageview"
                 style="@style/Appboy.InAppMessage.Image.Modal.Graphic"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10.0dp">
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:paddingBottom="30dp">
+                <!-- This layout is solely for a single button being present-->
                 <LinearLayout
-                    android:id="@+id/com_appboy_inappmessage_modal_button_layout"
-                    style="@style/Appboy.InAppMessage.Layout.Button.Modal.Graphic">
+                    android:id="@+id/com_appboy_inappmessage_modal_button_layout_single"
+                    style="@style/Appboy.InAppMessage.Layout.Button.Modal.Graphic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone">
                     <Button
-                        android:id="@+id/com_appboy_inappmessage_modal_button_one"
-                        style="@style/Appboy.InAppMessage.Button.Modal.One.Graphic"/>
-                    <Button
-                        android:id="@+id/com_appboy_inappmessage_modal_button_two"
-                        style="@style/Appboy.InAppMessage.Button.Modal.Two.Graphic"/>
+                        android:id="@+id/com_appboy_inappmessage_modal_button_single_one"
+                        style="@style/Appboy.InAppMessage.Button.Modal.Single.Graphic"/>
+                </LinearLayout>
+                <!-- This layout is solely for two buttons being present -->
+                <LinearLayout
+                    android:id="@+id/com_appboy_inappmessage_modal_button_layout_dual"
+                    style="@style/Appboy.InAppMessage.Layout.Button.Modal.Graphic"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <Button
+                            android:id="@+id/com_appboy_inappmessage_modal_button_dual_one"
+                            style="@style/Appboy.InAppMessage.Button.Modal.Dual.One.Graphic"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <Button
+                            android:id="@+id/com_appboy_inappmessage_modal_button_dual_two"
+                            style="@style/Appboy.InAppMessage.Button.Modal.Dual.Two.Graphic"/>
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
             <ImageButton

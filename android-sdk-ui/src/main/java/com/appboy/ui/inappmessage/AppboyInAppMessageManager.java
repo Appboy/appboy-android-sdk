@@ -19,6 +19,7 @@ import com.appboy.events.InAppMessageEvent;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageHtmlFull;
+import com.appboy.models.InAppMessageImmersiveBase;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.support.AppboyLogger;
@@ -528,9 +529,12 @@ public final class AppboyInAppMessageManager {
       if (inAppMessageView instanceof IInAppMessageImmersiveView) {
         AppboyLogger.d(TAG, "Creating view wrapper for immersive in-app message.");
         IInAppMessageImmersiveView inAppMessageViewImmersive = (IInAppMessageImmersiveView) inAppMessageView;
+        InAppMessageImmersiveBase inAppMessageImmersiveBase = (InAppMessageImmersiveBase) inAppMessage;
+
+        int numButtons = inAppMessageImmersiveBase.getMessageButtons() != null ? inAppMessageImmersiveBase.getMessageButtons().size() : 0;
         mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
             mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageViewImmersive.getMessageClickableView(),
-            inAppMessageViewImmersive.getMessageButtonViews(), inAppMessageViewImmersive.getMessageCloseButtonView());
+            inAppMessageViewImmersive.getMessageButtonViews(numButtons), inAppMessageViewImmersive.getMessageCloseButtonView());
       } else if (inAppMessageView instanceof IInAppMessageView) {
         AppboyLogger.d(TAG, "Creating view wrapper for base in-app message.");
         IInAppMessageView inAppMessageViewBase = (IInAppMessageView) inAppMessageView;

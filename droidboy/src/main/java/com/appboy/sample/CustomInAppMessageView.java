@@ -21,7 +21,7 @@ public class CustomInAppMessageView extends RelativeLayout implements IInAppMess
 
   public void setMessageBackgroundColor(int color) {
     LayerDrawable layerDrawable = (LayerDrawable) findViewById(R.id.inappmessage).getBackground();
-    InAppMessageViewUtils.setDrawableColor(layerDrawable.findDrawableByLayerId(R.id.inappmessage_background), color, getContext().getResources().getColor(R.color.custom_inappmessage_green));
+    InAppMessageViewUtils.setDrawableColor(layerDrawable.findDrawableByLayerId(R.id.inappmessage_background), color);
   }
 
   public void setMessageTextColor(int color) {

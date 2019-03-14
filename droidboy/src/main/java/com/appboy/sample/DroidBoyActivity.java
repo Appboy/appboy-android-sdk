@@ -116,13 +116,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   }
 
   private void setupViewPager(final ViewPager viewPager) {
-    final String inAppMessageTesterPageTitle = getString(R.string.inappmessage_tester_tab_title);
-
     mAdapter = new Adapter(getSupportFragmentManager());
     mAdapter.addFragment(new MainFragment(), "Events");
+    mAdapter.addFragment(new InAppMessageTesterFragment(), getString(R.string.inappmessage_tester_tab_title));
     mAdapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
     mAdapter.addFragment(new PushTesterFragment(), "Push");
-    mAdapter.addFragment(new InAppMessageTesterFragment(), inAppMessageTesterPageTitle);
     mAdapter.addFragment(new AppboyFeedFragment(), "Feed");
     viewPager.setAdapter(mAdapter);
 
@@ -135,7 +133,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
       @Override
       public void onPageSelected(int position) {
-        final boolean hideFlushButton = viewPager.getAdapter().getPageTitle(position).equals(inAppMessageTesterPageTitle);
+        final boolean hideFlushButton = viewPager.getAdapter().getPageTitle(position).equals(getString(R.string.inappmessage_tester_tab_title));
         runOnUiThread(() -> {
           if (hideFlushButton) {
             mFloatingActionButton.hide();

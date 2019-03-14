@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="custom_inappmessage_green">#FF89E4DF</color>
-  <color name="window_background">#f0f0f0</color>
+  <color name="window_background">@android:color/white</color>
 </resources>

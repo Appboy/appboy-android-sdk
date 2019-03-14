@@ -34,7 +34,6 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     view.setMessageIcon(inAppMessageSlideup.getIcon(), inAppMessageSlideup.getIconColor(), inAppMessageSlideup.getIconBackgroundColor());
     view.setMessageChevron(inAppMessageSlideup.getChevronColor(), inAppMessageSlideup.getClickAction());
     view.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
-
     return view;
   }
 }

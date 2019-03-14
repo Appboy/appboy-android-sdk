@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/com_appboy_inappmessage_modal_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,15 +9,14 @@
     <RelativeLayout
         android:id="@+id/com_appboy_inappmessage_modal_frame"
         style="@style/Appboy.InAppMessage.Frame.Modal"/>
-    <RelativeLayout
+    <com.appboy.ui.inappmessage.views.AppboyInAppMessageBoundedLayout
         android:id="@+id/com_appboy_inappmessage_modal"
         style="@style/Appboy.InAppMessage.Modal">
         <RelativeLayout
             android:id="@+id/com_appboy_inappmessage_modal_image_layout"
             style="@style/Appboy.InAppMessage.Layout.Image.Modal">
-            <ViewStub
-                android:id="@+id/com_appboy_inappmessage_modal_imageview_stub"
-                android:layout="@layout/com_appboy_stubbed_inappmessage_image_view"
+            <com.appboy.ui.inappmessage.AppboyInAppMessageImageView
+                android:id="@+id/com_appboy_inappmessage_modal_imageview"
                 style="@style/Appboy.InAppMessage.Image.Modal"/>
             <TextView
                 android:id="@+id/com_appboy_inappmessage_modal_icon"
@@ -33,25 +33,54 @@
                     style="@style/Appboy.InAppMessage.Layout.Text.Modal">
                     <TextView
                         android:id="@+id/com_appboy_inappmessage_modal_header_text"
-                        style="@style/Appboy.InAppMessage.Header.Modal"/>
+                        style="@style/Appboy.InAppMessage.Header.Modal"
+                        tools:text="In App Message Header Text"/>
                     <TextView
                         android:id="@+id/com_appboy_inappmessage_modal_message"
-                        style="@style/Appboy.InAppMessage.Message.Modal"/>
+                        style="@style/Appboy.InAppMessage.Message.Modal"
+                        tools:text="In App Message Message Text"/>
                 </LinearLayout>
             </ScrollView>
+            <!-- This layout is solely for a single button being present-->
             <LinearLayout
-                android:id="@+id/com_appboy_inappmessage_modal_button_layout"
+                android:id="@+id/com_appboy_inappmessage_modal_button_layout_single"
+                style="@style/Appboy.InAppMessage.Layout.Button.Modal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/com_appboy_inappmessage_modal_button_single_one"
+                    style="@style/Appboy.InAppMessage.Button.Modal.Single"/>
+            </LinearLayout>
+            <!-- This layout is solely for two buttons being present -->
+            <LinearLayout
+                android:id="@+id/com_appboy_inappmessage_modal_button_layout_dual"
+                android:visibility="gone"
                 style="@style/Appboy.InAppMessage.Layout.Button.Modal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
                     <Button
-                        android:id="@+id/com_appboy_inappmessage_modal_button_one"
-                        style="@style/Appboy.InAppMessage.Button.Modal.One"/>
+                        android:id="@+id/com_appboy_inappmessage_modal_button_dual_one"
+                        style="@style/Appboy.InAppMessage.Button.Modal.Dual.One"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
                     <Button
-                        android:id="@+id/com_appboy_inappmessage_modal_button_two"
-                        style="@style/Appboy.InAppMessage.Button.Modal.Two"/>
+                        android:id="@+id/com_appboy_inappmessage_modal_button_dual_two"
+                        style="@style/Appboy.InAppMessage.Button.Modal.Dual.Two"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         <ImageButton
             android:id="@+id/com_appboy_inappmessage_modal_close_button"
             style="@style/Appboy.InAppMessage.CloseButton.Modal"/>
-    </RelativeLayout>
+    </com.appboy.ui.inappmessage.views.AppboyInAppMessageBoundedLayout>
 </com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView>

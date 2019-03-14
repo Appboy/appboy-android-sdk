@@ -12,6 +12,7 @@
     <item>Grey</item>
     <item>Black</item>
     <item>White</item>
+    <item>Transparent</item>
   </string-array>
   <string-array name="inapp_color_values">
     <item>@string/not_set</item>
@@ -25,5 +26,6 @@
     <item>grey</item>
     <item>black</item>
     <item>white</item>
+    <item>transparent</item>
   </string-array>
 </resources>
