@@ -42,8 +42,9 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     // make a best effort to preload bitmap images into the cache.
     AppboyNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras);
 
-    NotificationCompat.Builder notificationBuilder =
-        new NotificationCompat.Builder(context).setAutoCancel(true);
+    String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(context, appboyConfigurationProvider, notificationExtras);
+    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, notificationChannelId)
+        .setAutoCancel(true);
 
     AppboyNotificationUtils.setTitleIfPresent(appboyConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setContentIfPresent(appboyConfigurationProvider, notificationBuilder, notificationExtras);
@@ -71,7 +72,6 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setPublicVersionIfPresentAndSupported(context, appboyConfigurationProvider, notificationBuilder, notificationExtras);
 
     // Notification priority and sound were deprecated in Android O
-    AppboyNotificationUtils.setNotificationChannelIfSupported(context, appboyConfigurationProvider, notificationBuilder, notificationExtras);
     AppboyNotificationUtils.setNotificationBadgeNumberIfPresent(notificationBuilder, notificationExtras);
 
     return notificationBuilder;

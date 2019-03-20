@@ -278,11 +278,23 @@ public class AppboyNotificationUtils {
     return com.appboy.push.AppboyNotificationUtils.getNotificationReceiverClass();
   }
 
+  /**
+   * @deprecated The channel id should be set in {@link NotificationCompat.Builder#Builder(Context, String)}
+   */
+  @Deprecated
   public static void setNotificationChannelIfSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
                                                        NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     String thisMethodName = "setNotificationChannelIfSupported";
     Object[] args = new Object[]{context, appConfigurationProvider, notificationBuilder, notificationExtras};
     invokeOriginalMethod(thisMethodName, args);
+  }
+
+  public static String getOrCreateNotificationChannelId(Context context,
+                                                        AppboyConfigurationProvider appConfigurationProvider,
+                                                        Bundle notificationExtras) {
+    final String methodName = "getOrCreateNotificationChannelId";
+    Object[] args = {context, appConfigurationProvider, notificationExtras};
+    return (String) invokeOriginalMethod(methodName, null, args);
   }
 
   public static void setNotificationBadgeNumberIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {

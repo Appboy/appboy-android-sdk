@@ -17,6 +17,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
 
 import com.appboy.Appboy;
@@ -141,7 +143,7 @@ public class AppboyNotificationUtils {
    *
    * @param notificationExtras Notification extras as provided by FCM/ADM.
    * @return Returns the Braze extras Bundle from the notification extras. Amazon ADM recursively flattens all JSON messages,
-   * so for Amazon devices we just return a copy of the original bundle.
+   *     so for Amazon devices we just return a copy of the original bundle.
    */
   public static Bundle getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) {
     if (notificationExtras == null) {
@@ -690,9 +692,10 @@ public class AppboyNotificationUtils {
                                                            NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY)) {
+        String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(context, appboyConfigurationProvider, notificationExtras);
         String publicNotificationExtrasString = notificationExtras.getString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY);
         Bundle publicNotificationExtras = parseJSONStringDictionaryIntoBundle(publicNotificationExtrasString);
-        NotificationCompat.Builder publicNotificationBuilder = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder publicNotificationBuilder = new NotificationCompat.Builder(context, notificationChannelId);
         setContentIfPresent(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
         setTitleIfPresent(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
         setSummaryTextIfPresentAndSupported(publicNotificationBuilder, publicNotificationExtras);
@@ -827,28 +830,76 @@ public class AppboyNotificationUtils {
    * {@link com.appboy.configuration.AppboyConfig.Builder#setDefaultNotificationChannelDescription(String)}.
    * <p>
    * The default notification channel uses the id {@link Constants#APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID}.
+   *
+   * @deprecated The channel id should be set in {@link NotificationCompat.Builder#Builder(Context, String)}
    */
+  @Deprecated
   @SuppressLint({"InlinedApi", "NewApi"})
   public static void setNotificationChannelIfSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
                                                        NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-      NotificationChannel notificationChannel = getValidNotificationChannel(notificationManager, notificationExtras);
-      if (notificationChannel != null) {
-        AppboyLogger.d(TAG, "Using notification channel with id: " + notificationChannel.getId());
-        notificationBuilder.setChannelId(notificationChannel.getId());
-      } else if (notificationChannel == null || notificationChannel.getId().equals(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID)) {
-        // Create the default NotificationChannel or update the name/description if their values have changed.
-        notificationChannel = new NotificationChannel(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID,
-            appConfigurationProvider.getDefaultNotificationChannelName(), NotificationManager.IMPORTANCE_DEFAULT);
-        notificationChannel.setDescription(appConfigurationProvider.getDefaultNotificationChannelDescription());
-        notificationManager.createNotificationChannel(notificationChannel);
+      String channelId = getOrCreateNotificationChannelId(context, appConfigurationProvider, notificationExtras);
+      notificationBuilder.setChannelId(channelId);
+    }
+  }
 
-        // Use the default notification channel
-        notificationBuilder.setChannelId(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
-        AppboyLogger.d(TAG, "Using default notification channel with id: " + Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID);
+  /**
+   * Returns the channel id for a valid {@link NotificationChannel}, creating one if necessary.
+   * <p>
+   * <ol>
+   * <li>First, if {@link Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY} key is present in
+   * {@literal notificationExtras}'s and is the id of a valid NotificationChannel, this id will
+   * be returned.</li>
+   * <li>Next, if the channel with id {@link Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID} exists,
+   * then {@link Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID} will be returned.</li>
+   * <li>Finally, if neither of the cases above is true, a channel with id {@link Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID}
+   * will be created and {@link Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID} will be
+   * returned.</li>
+   * </ol>
+   *
+   * @param context            Application context.
+   * @param notificationExtras Notification extras as provided by FCM/ADM.
+   * @return a channel id.
+   */
+  @Nullable
+  public static String getOrCreateNotificationChannelId(Context context,
+                                                        AppboyConfigurationProvider appConfigurationProvider,
+                                                        Bundle notificationExtras) {
+    String channelIdFromExtras = getNonBlankStringFromBundle(notificationExtras,
+        Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY);
+    String defaultChannelId = Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID;
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+      // If on Android < O, the channel does not really need to exist
+      return channelIdFromExtras != null ? channelIdFromExtras : defaultChannelId;
+    }
+
+    NotificationManager notificationManager =
+        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    // First try to get the channel from the extras
+    if (channelIdFromExtras != null) {
+      if (notificationManager.getNotificationChannel(channelIdFromExtras) != null) {
+        AppboyLogger.d(TAG, "Found notification channel in extras with id: " + channelIdFromExtras);
+        return channelIdFromExtras;
+      } else {
+        AppboyLogger.d(TAG, "Notification channel from extras is invalid. No channel found with id: " + channelIdFromExtras);
       }
     }
+
+    // If we get here, we need to use the default channel
+    if (notificationManager.getNotificationChannel(defaultChannelId) == null) {
+      // If the default doesn't exist, create it now
+      AppboyLogger.d(TAG, "Appboy default notification channel does not exist on device; creating");
+      NotificationChannel channel =
+          new NotificationChannel(defaultChannelId,
+              appConfigurationProvider.getDefaultNotificationChannelName(),
+              NotificationManager.IMPORTANCE_DEFAULT);
+      channel.setDescription(appConfigurationProvider.getDefaultNotificationChannelDescription());
+      notificationManager.createNotificationChannel(channel);
+    }
+
+    return defaultChannelId;
   }
 
   /**
@@ -939,7 +990,7 @@ public class AppboyNotificationUtils {
    * The broadcast message action is <host-app-package-name> + {@link #APPBOY_NOTIFICATION_OPENED_SUFFIX}.
    *
    * @param context Application context
-   * @param intent  the internal notification clicked intent constructed in
+   * @param intent  The internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
@@ -950,12 +1001,33 @@ public class AppboyNotificationUtils {
   /**
    * Logs a push notification open.
    *
-   * @param context
-   * @param intent  the internal notification clicked intent constructed in
+   * @param context Application context
+   * @param intent  The internal notification clicked intent constructed in
    *                {@link #setContentIntentIfPresent}
    */
   private static void logNotificationOpened(Context context, Intent intent) {
     Appboy.getInstance(context).logPushNotificationOpened(intent);
+  }
+
+  /**
+   * If {@literal bundle} contains a non-blank {@link String} associated with {@literal key}, this
+   * value is returned, otherwise {@literal null} is returned.
+   *
+   * @param bundle The bundle to be queried.
+   * @param key    The key to search for.
+   * @return A non-blank String value {@literal bundle} with key {@literal key}, or {@literal null}
+   *     if none exists.
+   */
+  @Nullable
+  @VisibleForTesting
+  private static String getNonBlankStringFromBundle(Bundle bundle, String key) {
+    if (bundle != null) {
+      String stringValue = bundle.getString(key, null);
+      if (!StringUtils.isNullOrBlank(stringValue)) {
+        return stringValue;
+      }
+    }
+    return null;
   }
 
   /**
