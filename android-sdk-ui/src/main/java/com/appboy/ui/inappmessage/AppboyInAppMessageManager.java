@@ -268,7 +268,7 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
-   * Assigns a custom IHtmlInAppMessageActionListener that will be used during the display of Html in-app messages.
+   * Assigns a custom IHtmlInAppMessageActionListener that will be used during the display of Html In-App Messages.
    *
    * @param htmlInAppMessageActionListener A custom IHtmlInAppMessageActionListener or null (to revert back to the
    *                                       default IHtmlInAppMessageActionListener).

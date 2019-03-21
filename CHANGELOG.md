@@ -1,7 +1,11 @@
 ## 3.2.0
 
+##### Fixed
+- Fixed an issue where a filename's canonical path was not validated during zip file extraction.
+- Fixed an issue where the SDK setup verification would erroneously always log a warning that the `AppboyFcmReceiver` was registered using the old `com.google.android.c2dm.intent.RECEIVE` intent-filter.
+
 ##### Changed
-- Improved the look and feel of n-app messages to adhere to the latest UX and UI best practices. Changes affect font sizes, padding, and responsiveness across all message types. Now supports button border styling.
+- Improved the look and feel of in-app messages to adhere to the latest UX and UI best practices. Changes affect font sizes, padding, and responsiveness across all message types. Now supports button border styling.
 
 ##### Added
 - Added collection of `ActivityManager.isBackgroundRestricted()` to device collection information.

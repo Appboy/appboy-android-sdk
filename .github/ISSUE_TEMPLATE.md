@@ -7,13 +7,14 @@ For other items, like requests for modifications to our SDK or bug reports, plea
 -->
 
 * [ ] I have checked [Braze's documentation](https://www.braze.com/documentation/Android/) and am still experiencing the issue.
+* [ ] I have an ANR related issue and have filled out the "ANR Reporting" section below.
 
-# Report
+# Standard Reporting
 
 ## What version of the Braze Android SDK are you using?
 
 <!--
-Example: 1.17.0
+Example: 3.0.1
 -->
 
 ## What did you do?
@@ -44,7 +45,7 @@ Please give us detailed steps so we can reproduce the issue on our end. This is 
 Example:
 - Start the app
 - Change to new user
-- Set a custom In-app message listener
+- Set a custom in-app message listener
 - Log a custom event
 - In-app message doesn't appear
 -->
@@ -63,4 +64,21 @@ Please link to a project we can download that reproduces the issue.
 
 <!--
 Note: We recommend e-mailing support@braze.com with any integration issues, as our team actively optimizes this support channel to provide efficient and robust resolutions. Integration issues also often require logs and other information that may contain private data, and our main support channel ensures no risk of leaking sensitive data.
+-->
+
+# ANR Reporting
+<!--
+Please go over https://developer.android.com/topic/performance/vitals/anr for more information on ANR reports.
+-->
+
+## Entire ANR Report
+<!--
+Please provide your entire, unmodified ANR report here
+-->
+
+## Braze Related Threads In ANR
+<!--
+Please list all Thread IDs (or just Thread traces) in the above ANR report that contain Braze SDK code.
+
+Code from the Braze SDK usually is in the `com.appboy` or `bo.app` package, depending on your Proguard configuration.
 -->
