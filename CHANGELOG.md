@@ -1,3 +1,13 @@
+## 3.2.1
+
+##### Added
+- Added `AppboyFirebaseMessagingService.handleBrazeRemoteMessage()` to facilitate forwarding a Firebase `RemoteMessage` from your `FirebaseMessagingService` to the `AppboyFirebaseMessagingService`.
+  - `AppboyFirebaseMessagingService.handleBrazeRemoteMessage()` will return false if the argument `RemoteMessage` did not originate from Braze. In that case, the `AppboyFirebaseMessagingService` will do nothing.
+  - A helper method `AppboyFirebaseMessagingService.isBrazePushNotification()` will also return true if the `RemoteMessage` originated from Braze.
+
+#### Fixed
+- Fixed an issue with `AppboyInAppMessageBoundedLayout` having a custom styleable attribute that collided with a preset Android attribute.
+
 ## 3.2.0
 
 ##### Fixed
@@ -47,7 +57,7 @@
 
 ##### Added
 - A drop-in `AppboyContentCardsActivity` class has been added which can be used to display Braze Content Cards.
-- Added HTML IAM `appboyBridge` ready event to know precisely when the `appboyBridge` has finished loading.
+- Added an appboyBridge ready event to know precisely when the appboyBridge has finished loading in the context of an HTML in-app message.
   - Example below:
     ```javascript
      <script type="text/javascript">
@@ -309,7 +319,7 @@
 
 ##### Breaking
 - Updated the minimum SDK version from 9 (Gingerbread) to 14 (Ice Cream Sandwich). 
-  - We recommend that session tracking and In-App Messages registration be done via an `AppboyLifecycleCallbackListener` instance using [`Application.registerActivityLifecycleCallbacks()`](https://developer.android.com/reference/android/app/Application.html#registerActivityLifecycleCallbacks(android.app.Application.ActivityLifecycleCallbacks)).
+  - We recommend that session tracking and in-app messages registration be done via an `AppboyLifecycleCallbackListener` instance using [`Application.registerActivityLifecycleCallbacks()`](https://developer.android.com/reference/android/app/Application.html#registerActivityLifecycleCallbacks(android.app.Application.ActivityLifecycleCallbacks)).
 - Removed the deprecated field: `AppboyLogger.LogLevel`. Please use `AppboyLogger.setLogLevel()` and `AppboyLogger.getLogLevel()` instead.
 - Updated the v4 support library dependency to version 26.0.0. To download Android Support Libraries versions 26.0.0 and above, you must add the following line to your top-level `build.gradle` repositories block:
   ```
@@ -330,7 +340,7 @@
 ## 2.0.5
 
 ##### Fixed
-- Fixed a bug where relative links in `href` tags in HTML In-App Messages would get passed as file Uris to the `AppboyNavigator`.
+- Fixed a bug where relative links in `href` tags in HTML in-app messages would get passed as file Uris to the `AppboyNavigator`.
 
 ##### Added
 - Added `Double` as a valid value type on `AppboyUser.setCustomUserAttribute()`.
@@ -660,14 +670,14 @@
 - Added support for analytics from Android Wear devices.
 - Added support for displaying notification action buttons sent from the Braze dashboard.  To allow image sharing on social networks, add the `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />` permission to your `AndroidManifest.xml`.
 - Added delegate to `FeedbackFinishedListener` enabling modification of feedback messages before they are sent to Appboy.  Also adds a disposition parameter to `onFeedbackFinished()`.
-- Added support for GIF images in the News Feed and in In-App Messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app), images and GIFs will be loaded using views from the Fresco library. In order to display GIFs, Fresco must be added as a dependency in the parent app. If not found in the parent app, News Feed cards and In-App Messages will not display GIFs. To disable use of the Fresco library in the UI project, set the value of `com_appboy_enable_fresco_library_use` to false (or omit it) in your `appboy.xml`; to enable Fresco use set `com_appboy_enable_fresco_library_use` to true in your `appboy.xml`. ImageView specific attributes for News Feed cards and In-App Messages, such as `scaleType`, must now be applied programmatically instead of being applied from `styles.xml`. If using Fresco and proguarding your app, please include http://frescolib.org/docs/proguard.html with your proguard config. If you are not using Fresco, add the `dontwarn com.appboy.ui.**` directive. Note: to use Fresco with Braze it must be initialized when your application launches.
-- Added explicit top and bottom padding values for In-App Message buttons to improve button rendering on some phones.  See the `Appboy.InAppMessage.Button` style in `styles.xml`.
-- Added HTML In-App Message types. HTML In-App Messages consist of html along with an included zipped assets file to locally reference images, css, etc. See `CustomHtmlInAppMessageActionListener` in our Droidboy sample app for an example listener for the callbacks on the actions inside the WebView hosting the HTML In-App Message.
+- Added support for GIF images in the News Feed and in in-app messages via the Facebook Fresco image library (version 0.6.1) as a provided library. If found in the parent app (your app), images and GIFs will be loaded using views from the Fresco library. In order to display GIFs, Fresco must be added as a dependency in the parent app. If not found in the parent app, News Feed cards and in-app messages will not display GIFs. To disable use of the Fresco library in the UI project, set the value of `com_appboy_enable_fresco_library_use` to false (or omit it) in your `appboy.xml`; to enable Fresco use set `com_appboy_enable_fresco_library_use` to true in your `appboy.xml`. ImageView specific attributes for News Feed cards and in-app messages, such as `scaleType`, must now be applied programmatically instead of being applied from `styles.xml`. If using Fresco and proguarding your app, please include http://frescolib.org/docs/proguard.html with your proguard config. If you are not using Fresco, add the `dontwarn com.appboy.ui.**` directive. Note: to use Fresco with Braze it must be initialized when your application launches.
+- Added explicit top and bottom padding values for in-app message buttons to improve button rendering on some phones.  See the `Appboy.InAppMessage.Button` style in `styles.xml`.
+- Added HTML in-app message types. HTML in-app messages consist of html along with an included zipped assets file to locally reference images, css, etc. See `CustomHtmlInAppMessageActionListener` in our Droidboy sample app for an example listener for the callbacks on the actions inside the WebView hosting the HTML in-app message.
 - Added a `setAttributionData()` method to AppboyUser that sets an AttributionData object for the user. Use this method with attribution provider SDKs when attribution events are fired.
 
 ##### Changed
 - Removed the need for integrating client apps to log push notifications inside their activity code.  **Please remove all calls to `Appboy.logPushNotificationOpened()` from your app as they are now all handled automatically by Braze.  Otherwise, push opens will be incorrectly logged twice.**
-- In-App Message views are now found in the `com.appboy.ui.inappmessage.views` package and In-App Message listeners are now found in the `com.appboy.ui.inappmessage.listeners` package.
+- In-app message views are now found in the `com.appboy.ui.inappmessage.views` package and in-app message listeners are now found in the `com.appboy.ui.inappmessage.listeners` package.
 
 ## 1.8.2
 
@@ -788,7 +798,7 @@
 - Added support for custom URIs to open when a notification is clicked.
 - Added support for notification duration control.  When specified, sets an alarm to remove a notification from the notification center after the specified duration.
 - Added support for notification sounds.  Users can specify a notification sound URI to play with the notification.
-- Added support for changing In-App Message duration from the client app.  To do this, you can modify the slideup object passed to you in the `onReceive()` delegate using the new setter method `IInAppMessage.setDurationInMilliseconds()`.
+- Added support for changing in-app message duration from the client app.  To do this, you can modify the slideup object passed to you in the `onReceive()` delegate using the new setter method `IInAppMessage.setDurationInMilliseconds()`.
 
 ##### Changed
 - Updated `AppboyWebViewActivity` to always fill the parent view.  This forces some previously problematic websites to render at the correct size.

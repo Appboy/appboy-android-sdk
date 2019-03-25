@@ -22,11 +22,11 @@ public class AppboyInAppMessageBoundedLayout extends RelativeLayout {
 
   public AppboyInAppMessageBoundedLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
-    TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.com_appboy_ui_inappmessage_views_AppboyInAppMessageBoundedLayout);
-    mMaxDefinedWidthPixels = attributes.getDimensionPixelSize(R.styleable.com_appboy_ui_inappmessage_views_AppboyInAppMessageBoundedLayout_android_maxWidth, 0);
-    mMinDefinedWidthPixels = attributes.getDimensionPixelSize(R.styleable.com_appboy_ui_inappmessage_views_AppboyInAppMessageBoundedLayout_android_minWidth, 0);
-    mMaxDefinedHeightPixels = attributes.getDimensionPixelSize(R.styleable.com_appboy_ui_inappmessage_views_AppboyInAppMessageBoundedLayout_android_maxHeight, 0);
-    mMinDefinedHeightPixels = attributes.getDimensionPixelSize(R.styleable.com_appboy_ui_inappmessage_views_AppboyInAppMessageBoundedLayout_android_minHeight, 0);
+    TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AppboyInAppMessageBoundedLayout);
+    mMaxDefinedWidthPixels = attributes.getDimensionPixelSize(R.styleable.AppboyInAppMessageBoundedLayout_appboyBoundedLayoutMaxWidth, 0);
+    mMinDefinedWidthPixels = attributes.getDimensionPixelSize(R.styleable.AppboyInAppMessageBoundedLayout_appboyBoundedLayoutMinWidth, 0);
+    mMaxDefinedHeightPixels = attributes.getDimensionPixelSize(R.styleable.AppboyInAppMessageBoundedLayout_appboyBoundedLayoutMaxHeight, 0);
+    mMinDefinedHeightPixels = attributes.getDimensionPixelSize(R.styleable.AppboyInAppMessageBoundedLayout_appboyBoundedLayoutMinHeight, 0);
     attributes.recycle();
   }
 

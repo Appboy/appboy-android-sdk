@@ -184,7 +184,7 @@ public final class AppboyInAppMessageManager {
     // View for each Activity. We cannot share the View because doing so would create a memory leak.
     mActivity = activity;
     if (mActivity != null && mApplicationContext == null) {
-      // Note, because the IAMManager is a singleton and doesn't have any dependencies passed in,
+      // Note, because this class is a singleton and doesn't have any dependencies passed in,
       // we cache the application context here because it's not available (as it normally would be
       // from Braze initialization).
       mApplicationContext = mActivity.getApplicationContext();
@@ -268,7 +268,7 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
-   * Assigns a custom IHtmlInAppMessageActionListener that will be used during the display of Html In-App Messages.
+   * Assigns a custom IHtmlInAppMessageActionListener that will be used during the display of Html in-app messages.
    *
    * @param htmlInAppMessageActionListener A custom IHtmlInAppMessageActionListener or null (to revert back to the
    *                                       default IHtmlInAppMessageActionListener).
@@ -462,7 +462,7 @@ public final class AppboyInAppMessageManager {
 
   boolean displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
     // Note: for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
-    // of this try/catch when we know whether we are successfully displaying the IAM or not.
+    // of this try/catch when we know whether we are successfully displaying the in-app message or not.
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
       AppboyLogger.d(TAG, "A in-app message is currently being displayed. Adding in-app message back on the stack.");
       mInAppMessageStack.push(inAppMessage);

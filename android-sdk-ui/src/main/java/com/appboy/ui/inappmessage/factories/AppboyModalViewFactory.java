@@ -25,7 +25,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     InAppMessageModal inAppMessageModal = (InAppMessageModal) inAppMessage;
     boolean isGraphic = inAppMessageModal.getImageStyle().equals(ImageStyle.GRAPHIC);
     AppboyInAppMessageModalView view = getAppropriateModalView(activity, isGraphic);
-    view.inflateStubViews(applicationContext, inAppMessageModal);
+    view.applyInAppMessageParameters(applicationContext, inAppMessageModal);
 
     String imageUrl = view.getAppropriateImageUrl(inAppMessage);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {

@@ -29,7 +29,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     super(context, attrs);
   }
 
-  public void inflateStubViews(Context context, IInAppMessageImmersive inAppMessage) {
+  public void applyInAppMessageParameters(Context context, IInAppMessageImmersive inAppMessage) {
     mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_modal_imageview);
     setInAppMessageImageViewAttributes(context, inAppMessage, mAppboyInAppMessageImageView);
     if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC) && inAppMessage.getBitmap() != null) {

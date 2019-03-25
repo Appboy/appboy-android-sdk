@@ -21,7 +21,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
     super(context, attrs);
   }
 
-  public void inflateStubViews(IInAppMessage inAppMessage) {
+  public void applyInAppMessageParameters(IInAppMessage inAppMessage) {
     mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_slideup_imageview);
     mAppboyInAppMessageImageView.setInAppMessageImageCropType(inAppMessage.getCropType());
   }

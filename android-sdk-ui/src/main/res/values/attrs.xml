@@ -4,10 +4,10 @@
     <attr name="appboyFeedCustomReadIcon" format="integer"/>
     <attr name="appboyFeedCustomUnReadIcon" format="integer"/>
   </declare-styleable>
-  <declare-styleable name="com.appboy.ui.inappmessage.views.AppboyInAppMessageBoundedLayout">
-    <attr name="android:maxWidth" format="dimension"/>
-    <attr name="android:minWidth" format="dimension"/>
-    <attr name="android:maxHeight" format="dimension"/>
-    <attr name="android:minHeight" format="dimension"/>
+  <declare-styleable name="AppboyInAppMessageBoundedLayout">
+    <attr name="appboyBoundedLayoutMaxWidth" format="dimension"/>
+    <attr name="appboyBoundedLayoutMinWidth" format="dimension"/>
+    <attr name="appboyBoundedLayoutMaxHeight" format="dimension"/>
+    <attr name="appboyBoundedLayoutMinHeight" format="dimension"/>
   </declare-styleable>
 </resources>

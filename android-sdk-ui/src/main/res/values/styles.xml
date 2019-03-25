@@ -261,9 +261,9 @@
     <item name="android:layout_centerInParent">true</item>
     <item name="android:background">@drawable/com_appboy_inappmessage_modal_background</item>
     <item name="android:layout_margin">15dp</item>
-    <item name="android:minWidth">@dimen/com_appboy_in_app_message_modal_min_width</item>
-    <item name="android:maxWidth">@dimen/com_appboy_in_app_message_modal_max_width</item>
-    <item name="android:maxHeight">@dimen/com_appboy_in_app_message_modal_max_height</item>
+    <item name="appboyBoundedLayoutMinWidth">@dimen/com_appboy_in_app_message_modal_min_width</item>
+    <item name="appboyBoundedLayoutMaxWidth">@dimen/com_appboy_in_app_message_modal_max_width</item>
+    <item name="appboyBoundedLayoutMaxHeight">@dimen/com_appboy_in_app_message_modal_max_height</item>
   </style>
   <style name="Appboy.InAppMessage.Header.Modal">
     <item name="android:layout_width">match_parent</item>

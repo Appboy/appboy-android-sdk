@@ -15,7 +15,8 @@ public class FullyCustomNotificationFactory implements IAppboyNotificationFactor
   @Override
   public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
                                          Context context, Bundle notificationExtras, Bundle appboyExtras) {
-    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+    String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(context, appConfigurationProvider, notificationExtras);
+    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, notificationChannelId);
     notificationBuilder.setContentTitle(notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY));
     notificationBuilder.setSmallIcon(R.drawable.com_appboy_push_small_notification_icon);
     AppboyNotificationUtils.setAccentColorIfPresentAndSupported(appConfigurationProvider, notificationBuilder, notificationExtras);

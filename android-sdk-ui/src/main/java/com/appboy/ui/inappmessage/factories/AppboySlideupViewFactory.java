@@ -19,7 +19,7 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     Context applicationContext = activity.getApplicationContext();
     InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) inAppMessage;
     AppboyInAppMessageSlideupView view = (AppboyInAppMessageSlideupView) activity.getLayoutInflater().inflate(R.layout.com_appboy_inappmessage_slideup, null);
-    view.inflateStubViews(inAppMessage);
+    view.applyInAppMessageParameters(inAppMessage);
 
     String imageUrl = view.getAppropriateImageUrl(inAppMessage);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {

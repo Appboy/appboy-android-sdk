@@ -1,7 +1,9 @@
 package com.appboy;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.appboy.support.AppboyLogger;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -16,13 +18,30 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
   @Override
   public void onMessageReceived(RemoteMessage remoteMessage) {
     super.onMessageReceived(remoteMessage);
+    handleBrazeRemoteMessage(this, remoteMessage);
+  }
+
+  /**
+   * Consumes an incoming {@link RemoteMessage} if it originated from Braze. If the {@link RemoteMessage} did
+   * not originate from Braze, then this method does nothing and returns false.
+   *
+   * @param remoteMessage The {@link RemoteMessage} from Firebase.
+   * @return true iff the {@link RemoteMessage} originated from Braze and was consumed. Returns false
+   *         if the {@link RemoteMessage} did not originate from Braze or otherwise could not be forwarded.
+   */
+  public static boolean handleBrazeRemoteMessage(Context context, RemoteMessage remoteMessage) {
+    if (remoteMessage == null) {
+      AppboyLogger.w(TAG, "Remote message from FCM was null. Remote message did not originate from Braze.");
+      return false;
+    }
+
+    if (!isBrazePushNotification(remoteMessage)) {
+      AppboyLogger.i(TAG, "Remote message did not originate from Braze. Not consuming remote message: " + remoteMessage);
+      return false;
+    }
+
     Map<String, String> remoteMessageData = remoteMessage.getData();
     AppboyLogger.i(TAG, "Got remote message from FCM: " + remoteMessageData);
-
-    if (remoteMessageData == null) {
-      AppboyLogger.w(TAG, "Remote message from FCM was null. Not passing along intent to Braze");
-      return;
-    }
 
     Intent pushIntent = new Intent(AppboyFcmReceiver.FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION);
     Bundle bundle = new Bundle();
@@ -34,6 +53,25 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
       bundle.putString(key, value);
     }
     pushIntent.putExtras(bundle);
-    mAppboyFcmReceiver.onReceive(this, pushIntent);
+    mAppboyFcmReceiver.onReceive(context, pushIntent);
+    return true;
+  }
+
+  /**
+   * Determines if the Firebase {@link RemoteMessage} originated from Braze and should be
+   * forwarded to {@link AppboyFirebaseMessagingService#handleBrazeRemoteMessage(Context, RemoteMessage)}.
+   *
+   * @param remoteMessage The {@link RemoteMessage} from {@link FirebaseMessagingService#onMessageReceived(RemoteMessage)}
+   * @return true iff this {@link RemoteMessage} originated from Braze or otherwise
+   *         should be passed to {@link AppboyFirebaseMessagingService#handleBrazeRemoteMessage(Context, RemoteMessage)}.
+   */
+  public static boolean isBrazePushNotification(@NonNull RemoteMessage remoteMessage) {
+    Map<String, String> remoteMessageData = remoteMessage.getData();
+    if (remoteMessageData == null) {
+      AppboyLogger.w(TAG, "Remote message data from FCM was null. Returning false for Braze push check. Remote message: " + remoteMessage);
+      return false;
+    }
+
+    return "true".equals(remoteMessageData.get(Constants.APPBOY_PUSH_APPBOY_KEY));
   }
 }

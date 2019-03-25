@@ -22,7 +22,7 @@ import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
 
 public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWebViewClientListener {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageWebViewClientListener.class);
-  private static final String HTML_IAM_CUSTOM_EVENT_NAME_KEY = "name";
+  private static final String HTML_IN_APP_MESSAGE_CUSTOM_EVENT_NAME_KEY = "name";
 
   @Override
   public void onCloseAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
@@ -94,7 +94,7 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
       inAppMessageBundle.putAll(queryBundle);
       uriAction = ActionFactory.createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
 
-      // If a local Uri is being handled here, then we want to keep the user in the Html IAM and not hide the current IAM.
+      // If a local Uri is being handled here, then we want to keep the user in the Html in-app message and not hide the current in-app message.
       Uri uri = uriAction.getUri();
       if (uri != null && AppboyFileUtils.isLocalUri(uri)) {
         AppboyLogger.w(TAG, "Not passing local URI to AppboyNavigator. Got local uri: " + uri);
@@ -145,13 +145,13 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
   }
 
   static String parseCustomEventNameFromQueryBundle(Bundle queryBundle) {
-    return queryBundle.getString(HTML_IAM_CUSTOM_EVENT_NAME_KEY);
+    return queryBundle.getString(HTML_IN_APP_MESSAGE_CUSTOM_EVENT_NAME_KEY);
   }
 
   static AppboyProperties parsePropertiesFromQueryBundle(Bundle queryBundle) {
     AppboyProperties customEventProperties = new AppboyProperties();
     for (String key: queryBundle.keySet()) {
-      if (!key.equals(HTML_IAM_CUSTOM_EVENT_NAME_KEY)) {
+      if (!key.equals(HTML_IN_APP_MESSAGE_CUSTOM_EVENT_NAME_KEY)) {
         String propertyValue = queryBundle.getString(key, null);
         if (!StringUtils.isNullOrBlank(propertyValue)) {
           customEventProperties.addProperty(key, propertyValue);

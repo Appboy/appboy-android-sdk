@@ -67,7 +67,7 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
   public void onInAppMessageDismissed(IInAppMessage inAppMessage) {
     if (inAppMessage.getExtras() != null && !inAppMessage.getExtras().isEmpty()) {
       Map<String, String> extras = inAppMessage.getExtras();
-      String keyValuePairs = "Dismissed IAM with extras payload containing [";
+      String keyValuePairs = "Dismissed in-app message with extras payload containing [";
       for (String key : extras.keySet()) {
         keyValuePairs += " '" + key + " = " + extras.get(key) + "'";
       }

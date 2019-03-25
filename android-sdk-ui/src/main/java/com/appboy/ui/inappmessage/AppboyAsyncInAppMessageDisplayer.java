@@ -35,8 +35,8 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
       }
       AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
       if (inAppMessage instanceof InAppMessageHtmlFull) {
-        // Note, this will clear the IAM cache, which is OK because no other IAM is currently displaying
-        // and AsyncTasks are are executed on a single thread, which guarantees no other IAM is
+        // Note, this will clear the in-app message cache, which is OK because no other in-app message is currently displaying
+        // and AsyncTasks are are executed on a single thread, which guarantees no other in-app message is
         // relying on the cache dir right now.
         // See http://developer.android.com/reference/android/os/AsyncTask.html#execute(Params...)
         if (!prepareInAppMessageWithHtml(inAppMessage)) {
@@ -80,9 +80,9 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
   }
 
   /**
-   * Prepares the In-App Message for displaying Html content.
+   * Prepares the in-app message for displaying Html content.
    *
-   * @param inAppMessage the In-App Message to be prepared
+   * @param inAppMessage the in-app message to be prepared
    *
    * @return whether or not asset download succeeded
    */
@@ -115,10 +115,10 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
   }
 
   /**
-   * Prepares the In-App Message for displaying images using a bitmap downloader. The in-app
+   * Prepares the in-app message for displaying images using a bitmap downloader. The in-app
    * message must have a valid image url.
    *
-   * @param inAppMessage the In-App Message to be prepared
+   * @param inAppMessage the in-app message to be prepared
    * @return whether or not the asset download succeeded
    */
   boolean prepareInAppMessageWithBitmapDownload(IInAppMessage inAppMessage) {
@@ -156,7 +156,7 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
       } else {
         AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
         if (inAppMessage instanceof InAppMessageFull) {
-          AppboyLogger.w(TAG, "In-App Message full has no remote image url yet is required to have an image. Failing download.");
+          AppboyLogger.w(TAG, "In-app message full has no remote image url yet is required to have an image. Failing download.");
           return false;
         }
         return true;

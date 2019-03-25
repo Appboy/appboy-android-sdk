@@ -504,7 +504,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     if (!SpinnerUtils.spinnerItemNotSet(mTextColor)) {
       inAppMessage.setMessageTextColor(parseColorFromString(mTextColor));
     }
-    // don't replace message on html IAMs
+    // don't replace message on html in-app messages
     if (inAppMessage instanceof IInAppMessageHtml) {
       return;
     }
@@ -840,7 +840,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         filename = "html_inapp_message_body_youtube_iframe.html";
         break;
       case BRIDGE_TESTER:
-        filename = "html_inapp_message_bridge_tester.html";
+        filename = "html_in_app_message_bridge_tester.html";
         break;
       default:
         break;
