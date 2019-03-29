@@ -1,5 +1,8 @@
 ## 3.2.1
 
+##### Important
+- Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+
 ##### Added
 - Added `AppboyFirebaseMessagingService.handleBrazeRemoteMessage()` to facilitate forwarding a Firebase `RemoteMessage` from your `FirebaseMessagingService` to the `AppboyFirebaseMessagingService`.
   - `AppboyFirebaseMessagingService.handleBrazeRemoteMessage()` will return false if the argument `RemoteMessage` did not originate from Braze. In that case, the `AppboyFirebaseMessagingService` will do nothing.
@@ -9,6 +12,9 @@
 - Fixed an issue with `AppboyInAppMessageBoundedLayout` having a custom styleable attribute that collided with a preset Android attribute.
 
 ## 3.2.0
+
+##### Important
+- Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
 
 ##### Fixed
 - Fixed an issue where a filename's canonical path was not validated during zip file extraction.
@@ -23,13 +29,7 @@
 ## 3.1.1
 
 ##### Breaking
-- Changed signature of `Appboy.logPushNotificationActionClicked()`.
-
-##### Added
-- Added ability to render HTML elements in push notifications via `AppboyConfig.setPushHtmlRenderingEnabled()` and also `com_appboy_push_notification_html_rendering_enabled` in your `appboy.xml`.
-  - This allows the ability to use "multicolor" text in your push notifications.
-  - Note that html rendering be used on all push notification text fields when this feature is enabled.
-- Added `AppboyFirebaseMessagingService` to directly use the Firebase messaging event `com.google.firebase.MESSAGING_EVENT`. This is now the recommended way to integrate Firebase push with Braze. The `AppboyFcmReceiver` can be removed from your `AndroidManifest` and replaced with the following:
+- Added `AppboyFirebaseMessagingService` to directly use the Firebase messaging event `com.google.firebase.MESSAGING_EVENT`. This is now the required way to integrate Firebase push with Braze. The `AppboyFcmReceiver` should be removed from your `AndroidManifest` and replaced with the following:
   - ```
     <service android:name="com.appboy.AppboyFirebaseMessagingService">
       <intent-filter>
@@ -38,6 +38,12 @@
     </service>
     ```
   - Also note that any `c2dm` related permissions should be removed from your manifest as Braze does not require any extra permissions for `AppboyFirebaseMessagingService` to work correctly.
+- Changed signature of `Appboy.logPushNotificationActionClicked()`.
+
+##### Added
+- Added ability to render HTML elements in push notifications via `AppboyConfig.setPushHtmlRenderingEnabled()` and also `com_appboy_push_notification_html_rendering_enabled` in your `appboy.xml`.
+  - This allows the ability to use "multicolor" text in your push notifications.
+  - Note that html rendering be used on all push notification text fields when this feature is enabled.
 
 ##### Fixed
 - Fixed behavior where the app would be reopened after clicking notification action buttons with a "close" button.
