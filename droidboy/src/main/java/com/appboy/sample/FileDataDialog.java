@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.appboy.sample.util.SpinnerUtils;
@@ -36,7 +35,7 @@ public class FileDataDialog extends DialogPreference implements AdapterView.OnIt
   public View onCreateDialogView() {
     mMainView = super.onCreateDialogView();
     mOptionList = Arrays.asList(FILES_DIR, CACHE_FILES_DIR);
-    SpinnerUtils.setUpSpinnerWithList((Spinner) mMainView.findViewById(R.id.file_chooser_spinner), this, mOptionList);
+    SpinnerUtils.setUpSpinnerWithList(mMainView.findViewById(R.id.file_chooser_spinner), this, mOptionList);
     return mMainView;
   }
 

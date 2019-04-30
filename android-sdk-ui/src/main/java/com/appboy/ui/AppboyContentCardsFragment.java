@@ -70,10 +70,10 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
                            Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.com_appboy_content_cards, container, false);
 
-    mRecyclerView = (RecyclerView) rootView.findViewById(R.id.com_appboy_content_cards_recycler);
+    mRecyclerView = rootView.findViewById(R.id.com_appboy_content_cards_recycler);
     initializeRecyclerView();
 
-    mContentCardsSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.appboy_content_cards_swipe_container);
+    mContentCardsSwipeLayout = rootView.findViewById(R.id.appboy_content_cards_swipe_container);
     mContentCardsSwipeLayout.setOnRefreshListener(this);
     mContentCardsSwipeLayout.setColorSchemeResources(R.color.com_appboy_content_cards_swipe_refresh_color_1,
         R.color.com_appboy_content_cards_swipe_refresh_color_2,

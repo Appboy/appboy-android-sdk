@@ -77,12 +77,12 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
 
   @Override
   public TextView getMessageTextView() {
-    return (TextView) findViewById(R.id.com_appboy_inappmessage_full_message);
+    return findViewById(R.id.com_appboy_inappmessage_full_message);
   }
 
   @Override
   public TextView getMessageHeaderTextView() {
-    return (TextView) findViewById(R.id.com_appboy_inappmessage_full_header_text);
+    return findViewById(R.id.com_appboy_inappmessage_full_header_text);
   }
 
   @Override

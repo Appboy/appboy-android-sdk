@@ -103,11 +103,11 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
     View view = layoutInflater.inflate(R.layout.com_appboy_feed, container, false);
-    mNetworkErrorLayout = (LinearLayout) view.findViewById(R.id.com_appboy_feed_network_error);
-    mLoadingSpinner = (ProgressBar) view.findViewById(R.id.com_appboy_feed_loading_spinner);
-    mEmptyFeedLayout = (LinearLayout) view.findViewById(R.id.com_appboy_feed_empty_feed);
-    mFeedRootLayout = (RelativeLayout) view.findViewById(R.id.com_appboy_feed_root);
-    mFeedSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.appboy_feed_swipe_container);
+    mNetworkErrorLayout = view.findViewById(R.id.com_appboy_feed_network_error);
+    mLoadingSpinner = view.findViewById(R.id.com_appboy_feed_loading_spinner);
+    mEmptyFeedLayout = view.findViewById(R.id.com_appboy_feed_empty_feed);
+    mFeedRootLayout = view.findViewById(R.id.com_appboy_feed_root);
+    mFeedSwipeLayout = view.findViewById(R.id.appboy_feed_swipe_container);
     mFeedSwipeLayout.setOnRefreshListener(this);
     mFeedSwipeLayout.setEnabled(false);
     mFeedSwipeLayout.setColorSchemeResources(R.color.com_appboy_newsfeed_swipe_refresh_color_1,

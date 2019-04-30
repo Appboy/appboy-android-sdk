@@ -33,9 +33,9 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
     mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
     mImage.setAdjustViewBounds(true);
 
-    mTitle = (TextView) findViewById(R.id.com_appboy_captioned_image_title);
-    mDescription = (TextView) findViewById(R.id.com_appboy_captioned_image_description);
-    mDomain = (TextView) findViewById(R.id.com_appboy_captioned_image_card_domain);
+    mTitle = findViewById(R.id.com_appboy_captioned_image_title);
+    mDescription = findViewById(R.id.com_appboy_captioned_image_description);
+    mDomain = findViewById(R.id.com_appboy_captioned_image_card_domain);
 
     if (card != null) {
       setCard(card);

@@ -23,9 +23,9 @@ public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementC
 
   public TextAnnouncementCardView(final Context context, TextAnnouncementCard card) {
     super(context);
-    mTitle = (TextView) findViewById(R.id.com_appboy_text_announcement_card_title);
-    mDescription = (TextView) findViewById(R.id.com_appboy_text_announcement_card_description);
-    mDomain = (TextView) findViewById(R.id.com_appboy_text_announcement_card_domain);
+    mTitle = findViewById(R.id.com_appboy_text_announcement_card_title);
+    mDescription = findViewById(R.id.com_appboy_text_announcement_card_description);
+    mDomain = findViewById(R.id.com_appboy_text_announcement_card_domain);
 
     if (card != null) {
       setCard(card);

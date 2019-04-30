@@ -30,10 +30,10 @@ public class HelloAppboyActivity extends Activity {
     // context.
     mApplicationContext = this.getApplicationContext();
 
-    mNickname = (EditText) findViewById(R.id.com_appboy_hello_high_score_nickname);
-    mHighScore = (EditText) findViewById(R.id.com_appboy_hello_high_score);
-    mUserId = (EditText) findViewById(R.id.com_appboy_hello_user_id);
-    Button submit = (Button) findViewById(R.id.com_appboy_hello_submit);
+    mNickname = findViewById(R.id.com_appboy_hello_high_score_nickname);
+    mHighScore = findViewById(R.id.com_appboy_hello_high_score);
+    mUserId = findViewById(R.id.com_appboy_hello_user_id);
+    Button submit = findViewById(R.id.com_appboy_hello_submit);
 
     submit.setOnClickListener(new View.OnClickListener() {
       @Override

@@ -100,7 +100,7 @@ public class ContentCardViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout.LayoutParams.WRAP_CONTENT);
     cardImage.setLayoutParams(newParams);
 
-    RelativeLayout imageContainerLayout = (RelativeLayout) rootView.findViewById(imageContainerLayoutId);
+    RelativeLayout imageContainerLayout = rootView.findViewById(imageContainerLayoutId);
     imageContainerLayout.addView(cardImage);
     return cardImage;
   }

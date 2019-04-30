@@ -22,7 +22,7 @@ public class FeedbackFragmentActivity extends AppboyFragmentActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.com_appboy_feedback_activity);
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.com_appboy_feedback_toolbar);
+    Toolbar toolbar = findViewById(R.id.com_appboy_feedback_toolbar);
 
     toolbar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back_button_droidboy, null));
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -32,7 +32,7 @@ public class FeedbackFragmentActivity extends AppboyFragmentActivity {
       }
     });
 
-    mUseListenerCheckbox = (CheckBox) findViewById(R.id.com_appboy_feedback_use_listener);
+    mUseListenerCheckbox = findViewById(R.id.com_appboy_feedback_use_listener);
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final AppboyFeedbackFragment appboyFeedbackFragment = (AppboyFeedbackFragment) fragmentManager.findFragmentById(R.id.com_appboy_feedback);
 

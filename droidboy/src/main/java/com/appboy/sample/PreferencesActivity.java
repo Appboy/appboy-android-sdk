@@ -65,7 +65,7 @@ public class PreferencesActivity extends PreferenceActivity {
     addPreferencesFromResource(R.xml.preferences);
     setContentView(R.layout.preference_wrapper_view);
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = findViewById(R.id.toolbar);
     toolbar.setTitle(getString(R.string.settings));
 
     toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button_droidboy));

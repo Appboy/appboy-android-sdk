@@ -36,7 +36,7 @@ public class LogLevelDialogPreference extends DialogPreference {
   @Override
   protected View onCreateDialogView() {
     mView = super.onCreateDialogView();
-    mLogLevelSpinner = (Spinner) mView.findViewById(R.id.log_level_spinner);
+    mLogLevelSpinner = mView.findViewById(R.id.log_level_spinner);
 
     ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, OPTIONS);
     mLogLevelSpinner.setAdapter(adapter);

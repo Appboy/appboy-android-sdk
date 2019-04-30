@@ -44,11 +44,11 @@ public class ChinaPushActivity extends Activity {
       mStartedBaidu = true;
     }
 
-    TextView messageLog = (TextView) findViewById(R.id.com_appboy_china_push_message_log);
+    TextView messageLog = findViewById(R.id.com_appboy_china_push_message_log);
     messageLog.setMovementMethod(new ScrollingMovementMethod());
 
-    final EditText userIdInput = (EditText) findViewById(R.id.com_appboy_china_push_edit_text_user_id);
-    Button submitUserId = (Button) findViewById(R.id.com_appboy_china_push_button_change_user);
+    final EditText userIdInput = findViewById(R.id.com_appboy_china_push_edit_text_user_id);
+    Button submitUserId = findViewById(R.id.com_appboy_china_push_button_change_user);
 
     submitUserId.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -112,7 +112,7 @@ public class ChinaPushActivity extends Activity {
    * @param logMessage the new message.
    */
   private void updateMessageLog(String logMessage) {
-    TextView messageLog = (TextView) findViewById(R.id.com_appboy_china_push_message_log);
+    TextView messageLog = findViewById(R.id.com_appboy_china_push_message_log);
     messageLog.setText(logMessage);
   }
 

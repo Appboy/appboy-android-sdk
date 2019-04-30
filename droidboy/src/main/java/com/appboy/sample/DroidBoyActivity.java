@@ -65,16 +65,16 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.viewpager);
     Log.i(TAG, String.format("Creating DroidBoyActivity with current fragment: %s", currentFragment));
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setTitle(null);
 
-    final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+    final ViewPager viewPager = findViewById(R.id.viewpager);
     if (viewPager != null) {
       setupViewPager(viewPager);
     }
 
-    mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_bar);
+    mFloatingActionButton = findViewById(R.id.floating_action_bar);
     mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -83,11 +83,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       }
     });
 
-    TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+    TabLayout tabLayout = findViewById(R.id.tabs);
     tabLayout.setupWithViewPager(viewPager);
 
-    mDrawerLayout = (DrawerLayout) findViewById(R.id.root);
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    mDrawerLayout = findViewById(R.id.root);
+    NavigationView navigationView = findViewById(R.id.nav_view);
     if (navigationView != null) {
       setupDrawerContent(navigationView);
     }

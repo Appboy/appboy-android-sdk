@@ -46,7 +46,7 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     setContentView(R.layout.com_appboy_webview_activity);
     setProgressBarVisibility(true);
 
-    WebView webView = (WebView) findViewById(R.id.com_appboy_webview_activity_webview);
+    WebView webView = findViewById(R.id.com_appboy_webview_activity_webview);
 
     WebSettings webSettings = webView.getSettings();
     // JavaScript is enabled by default to support a larger number of web pages. If JavaScript support is not

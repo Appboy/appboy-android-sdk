@@ -22,8 +22,8 @@ public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnn
     ViewHolder(View view) {
       super(view, isUnreadIndicatorEnabled());
 
-      mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_text_announcement_card_title);
-      mDescription = (TextView) view.findViewById(R.id.com_appboy_content_cards_text_announcement_card_description);
+      mTitle = view.findViewById(R.id.com_appboy_content_cards_text_announcement_card_title);
+      mDescription = view.findViewById(R.id.com_appboy_content_cards_text_announcement_card_description);
     }
 
     TextView getTitle() {

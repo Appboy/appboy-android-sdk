@@ -69,7 +69,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
 
   @Override
   public TextView getMessageTextView() {
-    return (TextView) findViewById(R.id.com_appboy_inappmessage_slideup_message);
+    return findViewById(R.id.com_appboy_inappmessage_slideup_message);
   }
 
   @Override
@@ -84,7 +84,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
 
   @Override
   public TextView getMessageIconView() {
-    return (TextView) findViewById(R.id.com_appboy_inappmessage_slideup_icon);
+    return findViewById(R.id.com_appboy_inappmessage_slideup_icon);
   }
 
   public View getMessageChevronView() {

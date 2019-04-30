@@ -27,9 +27,9 @@ public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
 
   public ShortNewsCardView(final Context context, ShortNewsCard card) {
     super(context);
-    mDescription = (TextView) findViewById(R.id.com_appboy_short_news_card_description);
-    mTitle = (TextView) findViewById(R.id.com_appboy_short_news_card_title);
-    mDomain = (TextView) findViewById(R.id.com_appboy_short_news_card_domain);
+    mDescription = findViewById(R.id.com_appboy_short_news_card_description);
+    mTitle = findViewById(R.id.com_appboy_short_news_card_title);
+    mDomain = findViewById(R.id.com_appboy_short_news_card_domain);
 
     mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_short_news_card_imageview_stub);
     mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);

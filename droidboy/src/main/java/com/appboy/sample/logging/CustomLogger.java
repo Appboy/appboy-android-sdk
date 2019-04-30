@@ -39,13 +39,13 @@ public abstract class CustomLogger extends DialogPreference {
   @Override
   protected View onCreateDialogView() {
     mView = super.onCreateDialogView();
-    mName = (EditText) mView.findViewById(R.id.custom_name);
-    mPropertyKey = (EditText) mView.findViewById(R.id.property_key);
-    mPropertyValue = (EditText) mView.findViewById(R.id.property_value);
-    mRequestFlush = (CheckBox) mView.findViewById(R.id.custom_logging_flush_checkbox);
-    mTypeSpinner = (Spinner) mView.findViewById(R.id.property_type_spinner);
-    mAddProperty = (Button) mView.findViewById(R.id.add_property_button);
-    mPropertyLayout = (LinearLayout) mView.findViewById(R.id.property_linear_layout);
+    mName = mView.findViewById(R.id.custom_name);
+    mPropertyKey = mView.findViewById(R.id.property_key);
+    mPropertyValue = mView.findViewById(R.id.property_value);
+    mRequestFlush = mView.findViewById(R.id.custom_logging_flush_checkbox);
+    mTypeSpinner = mView.findViewById(R.id.property_type_spinner);
+    mAddProperty = mView.findViewById(R.id.add_property_button);
+    mPropertyLayout = mView.findViewById(R.id.property_linear_layout);
 
     ButtonUtils.setUpPopulateButton(mView, R.id.custom_name_button, mName, "football");
 

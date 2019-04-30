@@ -28,7 +28,7 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
   @Override
   public WebView getMessageWebView() {
     if (mMessageWebView == null) {
-      mMessageWebView = (AppboyInAppMessageWebView) findViewById(R.id.com_appboy_inappmessage_html_full_webview);
+      mMessageWebView = findViewById(R.id.com_appboy_inappmessage_html_full_webview);
       if (mMessageWebView != null) {
         WebSettings webSettings = mMessageWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);

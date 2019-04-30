@@ -40,17 +40,17 @@ public class CustomUserAttributeDialog extends DialogPreference {
   @Override
   protected View onCreateDialogView() {
     mView = super.onCreateDialogView();
-    mCustomAttributeKey = (EditText) mView.findViewById(R.id.custom_attribute_key);
-    mCustomAttributeValue = (EditText) mView.findViewById(R.id.custom_attribute_value);
-    mCustomAttributeNumberKey = (EditText) mView.findViewById(R.id.custom_number_attribute_key);
-    mCustomAttributeNumberValue = (EditText) mView.findViewById(R.id.custom_number_attribute_value);
-    mCustomAttributeIncrementKey = (EditText) mView.findViewById(R.id.custom_attribute_increment_key);
-    mCustomAttributeIncrementValue = (EditText) mView.findViewById(R.id.custom_attribute_increment_value);
-    mCustomAttributeUnsetKey = (EditText) mView.findViewById(R.id.custom_attribute_unset_key);
-    mCustomAttributeArrayKey = (EditText) mView.findViewById(R.id.custom_attribute_array_key);
-    mCustomAttributeArrayValue = (EditText) mView.findViewById(R.id.custom_attribute_array_value);
-    mCustomAttributeArrayChoices = (RadioGroup) mView.findViewById(R.id.custom_attribute_array_radio);
-    mRequestFlush = (CheckBox) mView.findViewById(R.id.custom_logging_flush_checkbox);
+    mCustomAttributeKey = mView.findViewById(R.id.custom_attribute_key);
+    mCustomAttributeValue = mView.findViewById(R.id.custom_attribute_value);
+    mCustomAttributeNumberKey = mView.findViewById(R.id.custom_number_attribute_key);
+    mCustomAttributeNumberValue = mView.findViewById(R.id.custom_number_attribute_value);
+    mCustomAttributeIncrementKey = mView.findViewById(R.id.custom_attribute_increment_key);
+    mCustomAttributeIncrementValue = mView.findViewById(R.id.custom_attribute_increment_value);
+    mCustomAttributeUnsetKey = mView.findViewById(R.id.custom_attribute_unset_key);
+    mCustomAttributeArrayKey = mView.findViewById(R.id.custom_attribute_array_key);
+    mCustomAttributeArrayValue = mView.findViewById(R.id.custom_attribute_array_value);
+    mCustomAttributeArrayChoices = mView.findViewById(R.id.custom_attribute_array_radio);
+    mRequestFlush = mView.findViewById(R.id.custom_logging_flush_checkbox);
 
     mCustomAttributeArrayChoices.check(R.id.custom_attribute_array_set);
 

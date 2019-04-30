@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.appboy.enums.inappmessage.ClickAction;
@@ -142,10 +141,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     View view = layoutInflater.inflate(R.layout.inappmessage_tester, container, false);
 
     for (Integer key : sSpinnerOptionMap.keySet()) {
-      SpinnerUtils.setUpSpinner((Spinner) view.findViewById(key), this, sSpinnerOptionMap.get(key));
+      SpinnerUtils.setUpSpinner(view.findViewById(key), this, sSpinnerOptionMap.get(key));
     }
 
-    CheckBox customInAppMessageViewCheckBox = (CheckBox) view.findViewById(R.id.custom_inappmessage_view_factory_checkbox);
+    CheckBox customInAppMessageViewCheckBox = view.findViewById(R.id.custom_inappmessage_view_factory_checkbox);
     customInAppMessageViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -160,7 +159,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     boolean usingCustomInAppMessageView = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
     customInAppMessageViewCheckBox.setChecked(usingCustomInAppMessageView);
 
-    CheckBox customInAppMessageManagerListenerCheckBox = (CheckBox) view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox);
+    CheckBox customInAppMessageManagerListenerCheckBox = view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox);
     customInAppMessageManagerListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -175,7 +174,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     boolean usingCustomInAppMessageManagerListener = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
     customInAppMessageManagerListenerCheckBox.setChecked(usingCustomInAppMessageManagerListener);
 
-    CheckBox customAppboyNavigatorCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_navigator_checkbox);
+    CheckBox customAppboyNavigatorCheckBox = view.findViewById(R.id.custom_appboy_navigator_checkbox);
     customAppboyNavigatorCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -190,7 +189,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     boolean usingCustomAppboyNavigator = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
     customAppboyNavigatorCheckBox.setChecked(usingCustomAppboyNavigator);
 
-    CheckBox maxSizeCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox);
+    CheckBox maxSizeCheckBox = view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox);
     maxSizeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -207,7 +206,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     boolean maxSizedChecked = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, false);
     maxSizeCheckBox.setChecked(maxSizedChecked);
 
-    CheckBox imageRadiusCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_image_radius_checkbox);
+    CheckBox imageRadiusCheckBox = view.findViewById(R.id.custom_appboy_image_radius_checkbox);
     imageRadiusCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -222,7 +221,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     boolean customRadiusChecked = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, false);
     imageRadiusCheckBox.setChecked(customRadiusChecked);
 
-    Button createAndAddInAppMessageButton = (Button) view.findViewById(R.id.create_and_add_inappmessage_button);
+    Button createAndAddInAppMessageButton = view.findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -265,7 +264,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         }
       }
     });
-    CheckBox customInAppMessageAnimationCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_animation_checkbox);
+    CheckBox customInAppMessageAnimationCheckBox = view.findViewById(R.id.custom_appboy_animation_checkbox);
     customInAppMessageAnimationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -280,7 +279,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     boolean usingCustomInAppAnimation = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
     customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
 
-    CheckBox customHtmlInAppMessageActionListenerCheckBox = (CheckBox) view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
+    CheckBox customHtmlInAppMessageActionListenerCheckBox = view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
     customHtmlInAppMessageActionListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -295,7 +294,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     boolean usingCustomHtmlInAppActionListener = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
     customHtmlInAppMessageActionListenerCheckBox.setChecked(usingCustomHtmlInAppActionListener);
 
-    Button displayNextInAppMessageButton = (Button) view.findViewById(R.id.display_next_inappmessage_button);
+    Button displayNextInAppMessageButton = view.findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -303,7 +302,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       }
     });
 
-    Button hideCurrentInAppMessageButton = (Button) view.findViewById(R.id.hide_current_inappmessage_button);
+    Button hideCurrentInAppMessageButton = view.findViewById(R.id.hide_current_inappmessage_button);
     hideCurrentInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {

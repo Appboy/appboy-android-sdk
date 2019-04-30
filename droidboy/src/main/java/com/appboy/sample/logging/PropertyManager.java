@@ -111,8 +111,8 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
     mKeys.add(key);
     mProperties.put(key, value);
     View view = View.inflate(mContext, R.layout.property_list_item, null);
-    TextView keyTextView = (TextView) view.findViewById(R.id.key_text_view);
-    TextView valTextView = (TextView) view.findViewById(R.id.value_text_view);
+    TextView keyTextView = view.findViewById(R.id.key_text_view);
+    TextView valTextView = view.findViewById(R.id.value_text_view);
     keyTextView.setText(key);
     if (value instanceof Date) {
       Calendar calendar = Calendar.getInstance();

@@ -12,7 +12,6 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.AppboyFeedManager;
-import com.appboy.ui.feed.AppboyImageSwitcher;
 import com.appboy.ui.widget.BaseCardView;
 
 import java.util.Observable;
@@ -32,7 +31,7 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
     // All implementing views of BaseCardView must include this switcher view in order to have the
     // read/unread functionality. Views that don't have the indicator (like banner views) won't have the image switcher
     // in them and thus we do the null-check below.
-    mImageSwitcher = (AppboyImageSwitcher) findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
+    mImageSwitcher = findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
     if (mImageSwitcher != null) {
       mImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
         @Override
@@ -60,7 +59,7 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
    * @return the view to display the image.
    */
   public View getProperViewFromInflatedStub(int stubLayoutId) {
-    ViewStub imageStub = (ViewStub) findViewById(stubLayoutId);
+    ViewStub imageStub = findViewById(stubLayoutId);
     imageStub.inflate();
     return findViewById(R.id.com_appboy_stubbed_feed_image_view);
   }

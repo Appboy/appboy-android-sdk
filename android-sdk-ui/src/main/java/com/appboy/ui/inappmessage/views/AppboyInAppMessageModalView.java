@@ -48,7 +48,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     // If the in-app message contains an image or icon, reset the image layout's margins to 0.
     // When there is no image or icon present, the layout has a top margin of 20 to create 20dp
     // of padding between the text content and the top of the message.
-    RelativeLayout imageLayout = (RelativeLayout) findViewById(R.id.com_appboy_inappmessage_modal_image_layout);
+    RelativeLayout imageLayout = findViewById(R.id.com_appboy_inappmessage_modal_image_layout);
     if (imageRetrievalSuccessful || getMessageIconView() != null) {
       if (imageLayout != null) {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -109,12 +109,12 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
 
   @Override
   public TextView getMessageTextView() {
-    return (TextView) findViewById(R.id.com_appboy_inappmessage_modal_message);
+    return findViewById(R.id.com_appboy_inappmessage_modal_message);
   }
 
   @Override
   public TextView getMessageHeaderTextView() {
-    return (TextView) findViewById(R.id.com_appboy_inappmessage_modal_header_text);
+    return findViewById(R.id.com_appboy_inappmessage_modal_header_text);
   }
 
   @Override
@@ -129,7 +129,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
 
   @Override
   public TextView getMessageIconView() {
-    return (TextView) findViewById(R.id.com_appboy_inappmessage_modal_icon);
+    return findViewById(R.id.com_appboy_inappmessage_modal_icon);
   }
 
   @Override

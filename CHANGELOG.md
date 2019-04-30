@@ -1,7 +1,16 @@
-## 3.2.1
+## 3.2.2
 
 ##### Important
 - Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+
+##### Changed
+- Improved the reliability of the session start location logic when location collection is enabled.
+- Changed the in-app message trigger behavior to not perform custom event triggering until any pending server trigger requests have finished.
+
+##### Fixed
+- Fixed a bug in `AppboyInAppMessageImageView` that made images loaded with Glide appear blurry or not appear when setting an aspect ratio.
+
+## 3.2.1
 
 ##### Added
 - Added `AppboyFirebaseMessagingService.handleBrazeRemoteMessage()` to facilitate forwarding a Firebase `RemoteMessage` from your `FirebaseMessagingService` to the `AppboyFirebaseMessagingService`.
@@ -79,6 +88,7 @@
 ##### Changed
 - Deprecated the Feedback feature. This feature is disabled for new accounts, and will be removed in a future SDK release.
 - Changed the deprecated status of the `AppboyNotificationUtils.isUninstallTrackingPush()` method. Note that uninstall tracking notifications will not be forwarded to registered receivers.
+- Improved in-app message triggering logic to fall back to lower priority messages when the Braze server aborts templating (e.g. from a Connected Content abort in the message body, or because the user is no longer in the correct segment for the message)
 
 ## 3.0.1
 

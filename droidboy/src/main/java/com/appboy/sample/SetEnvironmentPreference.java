@@ -41,9 +41,9 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
     String overrideApiKey = mSharedPreferences.getString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, null);
     String overrideEndpointUrl = mSharedPreferences.getString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, null);
 
-    mApiKeyAliasTextView = (TextView) view.findViewById(R.id.set_environment_override_api_key_alias);
-    mApiKeyTextView = (TextView) view.findViewById(R.id.set_environment_override_api_key);
-    mEndpointTextView = (TextView) view.findViewById(R.id.set_environment_override_endpoint_url);
+    mApiKeyAliasTextView = view.findViewById(R.id.set_environment_override_api_key_alias);
+    mApiKeyTextView = view.findViewById(R.id.set_environment_override_api_key);
+    mEndpointTextView = view.findViewById(R.id.set_environment_override_endpoint_url);
     if (overrideApiKeyAlias != null) {
       mApiKeyAliasTextView.setText(overrideApiKeyAlias);
     }
@@ -54,7 +54,7 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
       mEndpointTextView.setText(overrideEndpointUrl);
     }
 
-    LinearLayout storedApiKeyLinearLayout = (LinearLayout) view.findViewById(R.id.stored_api_key_layout);
+    LinearLayout storedApiKeyLinearLayout = view.findViewById(R.id.stored_api_key_layout);
 
     mApiKeySharedPreferences = mApplicationContext.getSharedPreferences(mApplicationContext.getString(R.string.api_key_shared_prefs_location), Context.MODE_PRIVATE);
     Map<String, ?> apiKeys = mApiKeySharedPreferences.getAll();

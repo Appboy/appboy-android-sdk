@@ -27,9 +27,9 @@ public class CustomPurchaseDialog extends CustomLogger {
   @Override
   protected View onCreateDialogView() {
     View view = super.onCreateDialogView();
-    mCustomPurchaseQuantity = (EditText) view.findViewById(R.id.purchase_qty);
-    mCustomPurchaseCurrencyCodeName = (EditText) view.findViewById(R.id.custom_purchase_currency_code);
-    mCustomPurchasePrice = (EditText) view.findViewById(R.id.custom_purchase_price_code);
+    mCustomPurchaseQuantity = view.findViewById(R.id.purchase_qty);
+    mCustomPurchaseCurrencyCodeName = view.findViewById(R.id.custom_purchase_currency_code);
+    mCustomPurchasePrice = view.findViewById(R.id.custom_purchase_price_code);
 
     ButtonUtils.setUpPopulateButton(view, R.id.purchase_qty_button, mCustomPurchaseQuantity, "5");
     ButtonUtils.setUpPopulateButton(view, R.id.custom_purchase_currency_code_button, mCustomPurchaseCurrencyCodeName, "JPY");

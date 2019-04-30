@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
@@ -169,49 +168,49 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     });
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the push image number spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_number_spinner), this, R.array.push_image_number_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_image_number_spinner), this, R.array.push_image_number_options);
 
     // Creates the push priority spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
 
     // Creates the push click action spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
 
     // Creates the notification category spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
 
     // Creates the visibility spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the story title align spinner
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_story_title_align_spinner), this, R.array.push_story_title_align_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_story_title_align_spinner), this, R.array.push_story_title_align_options);
 
     // Creates the story subtitle align spinner
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_story_subtitle_align_spinner), this, R.array.push_story_subtitle_align_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_story_subtitle_align_spinner), this, R.array.push_story_subtitle_align_options);
 
     // Creates the push action spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
 
     // Creates the push accent color spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_accent_color_spinner), this, R.array.push_accent_color_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_accent_color_spinner), this, R.array.push_accent_color_options);
 
     // Creates the large icon spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
 
     // Creates the notification factory spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_notification_factory_spinner), this, R.array.push_notification_factory_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_notification_factory_spinner), this, R.array.push_notification_factory_options);
 
     // Creates the notification channel spinner.
-    SpinnerUtils.setUpSpinner((Spinner) mView.findViewById(R.id.push_channel_spinner), this, R.array.push_channel_options);
+    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_channel_spinner), this, R.array.push_channel_options);
 
     mAppConfigurationProvider = new AppboyConfigurationProvider(getContext());
-    Button pushTestButton = (Button) mView.findViewById(R.id.test_push_button);
+    Button pushTestButton = mView.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View clickedView) {

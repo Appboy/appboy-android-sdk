@@ -31,8 +31,8 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
       mCardImage = createCardImageWithStyle(getContext(), view,
           R.style.Appboy_ContentCards_ShortNews_ImageContainer_Image, R.id.com_appboy_content_cards_short_news_card_image_container);
 
-      mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_short_news_card_title);
-      mDescription = (TextView) view.findViewById(R.id.com_appboy_content_cards_short_news_card_description);
+      mTitle = view.findViewById(R.id.com_appboy_content_cards_short_news_card_title);
+      mDescription = view.findViewById(R.id.com_appboy_content_cards_short_news_card_description);
     }
 
     TextView getTitle() {

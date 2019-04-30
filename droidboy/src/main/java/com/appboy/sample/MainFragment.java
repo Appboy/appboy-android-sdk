@@ -60,23 +60,23 @@ public class MainFragment extends Fragment {
     View contentView = layoutInflater.inflate(R.layout.main_fragment, container, false);
     mContext = getContext();
     mSharedPreferences = getActivity().getSharedPreferences("droidboy", Context.MODE_PRIVATE);
-    mUserIdEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_set_user_id_edit_text);
+    mUserIdEditText = contentView.findViewById(R.id.com_appboy_sample_set_user_id_edit_text);
     mUserIdEditText.setText(mSharedPreferences.getString(USER_ID_KEY, null));
-    mUserIdButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_id_button);
+    mUserIdButton = contentView.findViewById(R.id.com_appboy_sample_set_user_id_button);
 
-    mAliasEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_set_alias_edit_text);
-    mAliasLabelEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_set_alias_label_edit_text);
-    mUserAliasButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_alias_button);
+    mAliasEditText = contentView.findViewById(R.id.com_appboy_sample_set_alias_edit_text);
+    mAliasLabelEditText = contentView.findViewById(R.id.com_appboy_sample_set_alias_label_edit_text);
+    mUserAliasButton = contentView.findViewById(R.id.com_appboy_sample_set_user_alias_button);
 
     // Braze methods
-    mCustomEventOrPurchaseEditText = (EditText) contentView.findViewById(R.id.com_appboy_sample_custom_event_or_purchase_edit_text);
-    mCustomEventButton = (Button) contentView.findViewById(R.id.com_appboy_sample_log_custom_event_button);
-    mLogPurchaseButton = (Button) contentView.findViewById(R.id.com_appboy_sample_log_purchase_button);
-    mSubmitFeedbackButton = (Button) contentView.findViewById(R.id.com_appboy_sample_submit_feedback_button);
+    mCustomEventOrPurchaseEditText = contentView.findViewById(R.id.com_appboy_sample_custom_event_or_purchase_edit_text);
+    mCustomEventButton = contentView.findViewById(R.id.com_appboy_sample_log_custom_event_button);
+    mLogPurchaseButton = contentView.findViewById(R.id.com_appboy_sample_log_purchase_button);
+    mSubmitFeedbackButton = contentView.findViewById(R.id.com_appboy_sample_submit_feedback_button);
     // Braze User methods
-    mSetUserAttributesButton = (Button) contentView.findViewById(R.id.com_appboy_sample_set_user_attributes_button);
-    mUnsetCustomUserAttributesButton = (Button) contentView.findViewById(R.id.com_appboy_sample_unset_custom_attributes_button);
-    mRequestFlushButton = (Button) contentView.findViewById(R.id.com_appboy_sample_request_flush_button);
+    mSetUserAttributesButton = contentView.findViewById(R.id.com_appboy_sample_set_user_attributes_button);
+    mUnsetCustomUserAttributesButton = contentView.findViewById(R.id.com_appboy_sample_unset_custom_attributes_button);
+    mRequestFlushButton = contentView.findViewById(R.id.com_appboy_sample_request_flush_button);
     return contentView;
   }
 

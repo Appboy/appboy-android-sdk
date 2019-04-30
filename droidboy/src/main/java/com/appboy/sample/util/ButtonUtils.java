@@ -11,7 +11,7 @@ public class ButtonUtils {
   }
 
   public static Button setUpPopulateButton(View view, int buttonId, final EditText keyOutput, final String keyStoredString, final EditText valueOutput, final String valueStoredString) {
-    final Button populateButton = (Button) view.findViewById(buttonId);
+    final Button populateButton = view.findViewById(buttonId);
     populateButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
         handlePopulateButtonClick(keyOutput, keyStoredString);

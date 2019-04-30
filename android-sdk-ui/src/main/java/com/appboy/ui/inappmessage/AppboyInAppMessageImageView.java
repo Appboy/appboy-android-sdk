@@ -100,13 +100,17 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-    if (mAspectRatio != -1) {
+    // If the View isn't large enough, don't set the aspect ratio. This will prevent Glide from
+    // applying any images to a View with 1 pixel dimensions.
+    if (mAspectRatio != -1 && getMeasuredHeight() > 0 && getMeasuredWidth() > 0) {
       int newWidth = getMeasuredWidth();
       int maxHeight = (int) (newWidth / mAspectRatio);
       // The +1 is necessary to ensure that the image hits the full width of the modal container.
       // Otherwise, images will have some "margin" on the left and right.
       int newHeight = Math.min(getMeasuredHeight(), maxHeight) + 1;
       setMeasuredDimension(newWidth, newHeight);
+    } else {
+      setMeasuredDimension(getMeasuredWidth(), getMeasuredHeight());
     }
 
     if (mSetToHalfParentHeight) {

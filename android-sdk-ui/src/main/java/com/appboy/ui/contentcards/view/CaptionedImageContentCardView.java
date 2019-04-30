@@ -31,8 +31,8 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
       mCardImage = createCardImageWithStyle(getContext(), view,
           R.style.Appboy_ContentCards_CaptionedImage_ImageContainer_Image, R.id.com_appboy_content_cards_captioned_image_card_image_container);
 
-      mTitle = (TextView) view.findViewById(R.id.com_appboy_content_cards_captioned_image_title);
-      mDescription = (TextView) view.findViewById(R.id.com_appboy_content_cards_captioned_image_description);
+      mTitle = view.findViewById(R.id.com_appboy_content_cards_captioned_image_title);
+      mDescription = view.findViewById(R.id.com_appboy_content_cards_captioned_image_description);
     }
 
     TextView getTitle() {

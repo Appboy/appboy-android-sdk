@@ -133,11 +133,11 @@ public class AppboyFeedbackFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
     View view = layoutInflater.inflate(R.layout.com_appboy_feedback, container, false);
-    mCancelButton = (Button) view.findViewById(R.id.com_appboy_feedback_cancel);
-    mSendButton = (Button) view.findViewById(R.id.com_appboy_feedback_send);
-    mIsBugCheckBox = (CheckBox) view.findViewById(R.id.com_appboy_feedback_is_bug);
-    mMessageEditText = (EditText) view.findViewById(R.id.com_appboy_feedback_message);
-    mEmailEditText = (EditText) view.findViewById(R.id.com_appboy_feedback_email);
+    mCancelButton = view.findViewById(R.id.com_appboy_feedback_cancel);
+    mSendButton = view.findViewById(R.id.com_appboy_feedback_send);
+    mIsBugCheckBox = view.findViewById(R.id.com_appboy_feedback_is_bug);
+    mMessageEditText = view.findViewById(R.id.com_appboy_feedback_message);
+    mEmailEditText = view.findViewById(R.id.com_appboy_feedback_email);
 
     mMessageEditText.addTextChangedListener(mSendButtonWatcher);
     mEmailEditText.addTextChangedListener(mSendButtonWatcher);

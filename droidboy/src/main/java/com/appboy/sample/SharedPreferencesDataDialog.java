@@ -6,7 +6,6 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.appboy.sample.util.SpinnerUtils;
@@ -34,7 +33,7 @@ public class SharedPreferencesDataDialog extends DialogPreference implements Ada
   @Override
   public View onCreateDialogView() {
     mMainView = super.onCreateDialogView();
-    SpinnerUtils.setUpSpinnerWithList((Spinner) mMainView.findViewById(R.id.file_chooser_spinner), this, mOptionList);
+    SpinnerUtils.setUpSpinnerWithList(mMainView.findViewById(R.id.file_chooser_spinner), this, mOptionList);
     return mMainView;
   }
 

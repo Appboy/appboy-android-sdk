@@ -82,14 +82,14 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   @Override
   public View onCreateDialogView() {
     View view = super.onCreateDialogView();
-    mFirstName = (EditText) view.findViewById(R.id.first_name);
-    mLastName = (EditText) view.findViewById(R.id.last_name);
-    mEmail = (EditText) view.findViewById(R.id.email);
-    mGender = (RadioGroup) view.findViewById(R.id.gender);
-    mLanguage = (EditText) view.findViewById(R.id.language);
-    mAvatarImageUrl = (EditText) view.findViewById(R.id.avatar_image_url);
-    mRequestFlush = (CheckBox) view.findViewById(R.id.user_dialog_flush_checkbox);
-    mBirthday = (TextView) view.findViewById(R.id.birthday);
+    mFirstName = view.findViewById(R.id.first_name);
+    mLastName = view.findViewById(R.id.last_name);
+    mEmail = view.findViewById(R.id.email);
+    mGender = view.findViewById(R.id.gender);
+    mLanguage = view.findViewById(R.id.language);
+    mAvatarImageUrl = view.findViewById(R.id.avatar_image_url);
+    mRequestFlush = view.findViewById(R.id.user_dialog_flush_checkbox);
+    mBirthday = view.findViewById(R.id.birthday);
     return view;
   }
 
@@ -113,9 +113,9 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     ButtonUtils.setUpPopulateButton(view, R.id.language_button, mLanguage, getSharedPreferences().getString(LANGUAGE_PREFERENCE_KEY, SAMPLE_LANGUAGE));
     ButtonUtils.setUpPopulateButton(view, R.id.avatar_image_url_button, mAvatarImageUrl, getSharedPreferences().getString(AVATAR_PREFERENCE_KEY, SAMPLE_AVATAR_URL));
 
-    final Button populateButton = (Button) view.findViewById(R.id.user_dialog_button_populate);
-    final Button clearButton = (Button) view.findViewById(R.id.user_dialog_button_clear);
-    final Button birthdayButton = (Button) view.findViewById(R.id.birthday_button);
+    final Button populateButton = view.findViewById(R.id.user_dialog_button_populate);
+    final Button clearButton = view.findViewById(R.id.user_dialog_button_clear);
+    final Button birthdayButton = view.findViewById(R.id.birthday_button);
 
     populateButton.setOnClickListener(this);
     clearButton.setOnClickListener(this);

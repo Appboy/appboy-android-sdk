@@ -54,15 +54,15 @@ public class CustomInAppMessageView extends RelativeLayout implements IInAppMess
   }
 
   public TextView getMessageTextView() {
-    return (TextView) findViewById(R.id.inappmessage_message);
+    return findViewById(R.id.inappmessage_message);
   }
 
   public ImageView getMessageImageView() {
-    return (ImageView) findViewById(R.id.inappmessage_image);
+    return findViewById(R.id.inappmessage_image);
   }
 
   public TextView getMessageIconView() {
-    return (TextView) findViewById(R.id.inappmessage_icon);
+    return findViewById(R.id.inappmessage_icon);
   }
 
 }

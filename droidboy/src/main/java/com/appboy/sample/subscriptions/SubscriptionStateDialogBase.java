@@ -32,7 +32,7 @@ public abstract class SubscriptionStateDialogBase extends DialogPreference {
   @Override
   public View onCreateDialogView() {
     View view = super.onCreateDialogView();
-    mSubscriptionState = (RadioGroup) view.findViewById(R.id.subscription_state);
+    mSubscriptionState = view.findViewById(R.id.subscription_state);
     return view;
   }
 
