@@ -3,7 +3,6 @@ package com.appboy.ui.support;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.View;
@@ -33,20 +32,6 @@ public class ViewUtils {
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Caught exception while setting view to focusable in touch mode and requesting focus.", e);
     }
-  }
-
-  /**
-   * Retrieve the coordinate of the top of the "available area where content can be placed and
-   * remain visible to users" within the FrameLayout view. In most cases, this will be equivalent
-   * to the height of the status bar.
-   *
-   * @param view
-   * @return
-   */
-  public static int getTopVisibleCoordinate(View view) {
-    Rect rectangle = new Rect();
-    view.getWindowVisibleDisplayFrame(rectangle);
-    return rectangle.top;
   }
 
   /**

@@ -90,5 +90,10 @@
     <uses-library
         android:name="org.apache.http.legacy"
         android:required="false" />
+
+    <!-- For the environment barcode reader -->
+    <meta-data
+      android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+      android:value="barcode" />
   </application>
 </manifest>

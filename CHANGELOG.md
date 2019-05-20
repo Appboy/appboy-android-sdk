@@ -1,7 +1,22 @@
-## 3.2.2
+## 3.3.0
 
 ##### Important
 - Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+
+##### Changed
+- Changed the behavior of push deep links to not restart the launcher activity of the app when clicked.
+- Changed the broadcast receiver responsible for sealing sessions after the session timeout to use `goAsync` to lower the occurrence of ANRs on certain devices.
+  - This ANR would contain the constant `APPBOY_SESSION_SHOULD_SEAL` in the Google Play Console.
+- Changed the default video poster (the large black & white play icon) used by default in HTML in-app messages to be transparent.
+
+##### Added
+- Added support for `long` type event properties.
+
+##### Fixed
+- Fixed fullscreen in-app messages on notched devices rendering with a gap at the top of the in-app message.
+- Fixed behavior of in-app messages where modal display would take up the entire screen after successive rotations on older devices.
+
+## 3.2.2
 
 ##### Changed
 - Improved the reliability of the session start location logic when location collection is enabled.

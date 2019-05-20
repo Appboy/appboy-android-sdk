@@ -22,7 +22,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -75,12 +74,9 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     }
 
     mFloatingActionButton = findViewById(R.id.floating_action_bar);
-    mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Appboy.getInstance(view.getContext()).requestImmediateDataFlush();
-        Toast.makeText(view.getContext(), "Requested data flush.", Toast.LENGTH_SHORT).show();
-      }
+    mFloatingActionButton.setOnClickListener(view -> {
+      Appboy.getInstance(view.getContext()).requestImmediateDataFlush();
+      Toast.makeText(view.getContext(), "Requested data flush.", Toast.LENGTH_SHORT).show();
     });
 
     TabLayout tabLayout = findViewById(R.id.tabs);
@@ -100,14 +96,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
     SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     // We implement the listener this way so that it doesn't get garbage collected when we navigate to and from this activity
-    mNewsfeedSortListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-      @Override
-      public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
-        AppboyFeedFragment feedFragment = getFeedFragment();
-        if (feedFragment != null) {
-          feedFragment.setSortEnabled(sharedPref.getBoolean(getString(R.string.sort_feed), false));
-        }
+    mNewsfeedSortListener = (prefs, key) -> {
+      SharedPreferences sharedPref1 = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
+      AppboyFeedFragment feedFragment = getFeedFragment();
+      if (feedFragment != null) {
+        feedFragment.setSortEnabled(sharedPref1.getBoolean(getString(R.string.sort_feed), false));
       }
     };
     sharedPref.registerOnSharedPreferenceChangeListener(mNewsfeedSortListener);

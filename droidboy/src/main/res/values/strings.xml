@@ -247,4 +247,5 @@
   <string name = "home">home</string>
   <string name = "feed_key">feed</string>
   <string name = "feedback">feedback</string>
+  <string name="environment_preference_category">Environment</string>
 </resources>

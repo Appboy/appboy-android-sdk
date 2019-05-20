@@ -65,6 +65,7 @@ public abstract class CustomLogger extends DialogPreference {
     if (positiveResult) {
       String customName = mName.getText().toString();
       if (!StringUtils.isNullOrBlank(customName)) {
+        customLog(customName, mPropertyManager.getAppboyProperties());
         notifyResult(customName);
       } else {
         Toast.makeText(mContext, "Must input a name", Toast.LENGTH_LONG).show();

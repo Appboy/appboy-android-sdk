@@ -7,7 +7,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.TaskStackBuilder;
 
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -107,22 +106,6 @@ public class UriAction implements IAction {
   }
 
   /**
-   * Opens the remote scheme Uri in {@link AppboyWebViewActivity} while also populating the back stack.
-   *
-   * @see UriAction#getConfiguredTaskBackStackBuilder(Context, Bundle)
-   */
-  private static void openUriWithWebViewActivityFromPush(Context context, Uri uri, Bundle extras) {
-    TaskStackBuilder stackBuilder = getConfiguredTaskBackStackBuilder(context, extras);
-    Intent webViewIntent = getWebViewActivityIntent(context, uri, extras);
-    stackBuilder.addNextIntent(webViewIntent);
-    try {
-      stackBuilder.startActivities(extras);
-    } catch (Exception e) {
-      AppboyLogger.e(TAG, "Appboy AppboyWebViewActivity not opened successfully.", e);
-    }
-  }
-
-  /**
    * Uses an Intent.ACTION_VIEW intent to open the Uri.
    */
   private static void openUriWithActionView(Context context, Uri uri, Bundle extras) {
@@ -136,15 +119,35 @@ public class UriAction implements IAction {
   }
 
   /**
-   * Uses an Intent.ACTION_VIEW intent to open the Uri and places the main activity of the
-   * activity on the back stack. Primarily used to open Uris from push.
+   * Opens the remote scheme Uri in {@link AppboyWebViewActivity} while also populating the back stack.
+   *
+   * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
+   */
+  private static void openUriWithWebViewActivityFromPush(Context context, Uri uri, Bundle extras) {
+    try {
+      Intent webViewIntent = getWebViewActivityIntent(context, uri, extras);
+      // Calling startActivities() from outside of an Activity
+      // context requires the FLAG_ACTIVITY_NEW_TASK flag on the first Intent
+      webViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      context.startActivities(getIntentArrayWithConfiguredBackStack(context, extras, webViewIntent));
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Braze WebView Activity not opened successfully.", e);
+    }
+  }
+
+  /**
+   * Uses an {@link Intent#ACTION_VIEW} intent to open the {@link Uri} and places the main activity of the
+   * activity on the back stack.
+   *
+   * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
    */
   private static void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
-    TaskStackBuilder stackBuilder = getConfiguredTaskBackStackBuilder(context, extras);
-    Intent uriIntent = getActionViewIntent(context, uri, extras);
-    stackBuilder.addNextIntent(uriIntent);
     try {
-      stackBuilder.startActivities(extras);
+      Intent uriIntent = getActionViewIntent(context, uri, extras);
+      // Calling startActivities() from outside of an Activity
+      // context requires the FLAG_ACTIVITY_NEW_TASK flag on the first Intent
+      uriIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      context.startActivities(getIntentArrayWithConfiguredBackStack(context, extras, uriIntent));
     } catch (ActivityNotFoundException e) {
       AppboyLogger.w(TAG, "Could not find appropriate activity to open for deep link " + uri, e);
     }
@@ -186,26 +189,32 @@ public class UriAction implements IAction {
   }
 
   /**
-   * Gets a {@link TaskStackBuilder} that has the configured back stack functionality.
+   * Gets an {@link Intent} array that has the configured back stack functionality.
+   *
+   * @param targetIntent The ultimate intent to be followed. For example, the main/launcher intent would be the penultimate {@link Intent}.
    *
    * @see AppboyConfigurationProvider#getIsPushDeepLinkBackStackActivityEnabled()
    * @see AppboyConfigurationProvider#getPushDeepLinkBackStackActivityClassName()
    */
-  private static TaskStackBuilder getConfiguredTaskBackStackBuilder(Context context, Bundle extras) {
+  private static Intent[] getIntentArrayWithConfiguredBackStack(Context context, Bundle extras, Intent targetIntent) {
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
-    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+    // The root intent will either point to the launcher activity,
+    // some custom activity, or nothing if the back-stack is disabled.
+    Intent rootIntent = null;
+
     if (configurationProvider.getIsPushDeepLinkBackStackActivityEnabled()) {
       // If a custom back stack class is defined, then set it
       final String pushDeepLinkBackStackActivityClassName = configurationProvider.getPushDeepLinkBackStackActivityClassName();
       if (StringUtils.isNullOrBlank(pushDeepLinkBackStackActivityClassName)) {
         AppboyLogger.i(TAG, "Adding main activity intent to back stack while opening uri from push");
-        stackBuilder.addNextIntent(UriUtils.getMainActivityIntent(context, extras));
+        rootIntent = UriUtils.getMainActivityIntent(context, extras);
       } else {
         // Check if the activity is registered in the manifest. If not, then add nothing to the back stack
         if (UriUtils.isActivityRegisteredInManifest(context, pushDeepLinkBackStackActivityClassName)) {
           AppboyLogger.i(TAG, "Adding custom back stack activity while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
-          Intent customBackStackActivityIntent = new Intent().setClassName(context, pushDeepLinkBackStackActivityClassName);
-          stackBuilder.addNextIntent(customBackStackActivityIntent);
+          rootIntent = new Intent()
+              .setClassName(context, pushDeepLinkBackStackActivityClassName)
+              .putExtras(extras);
         } else {
           AppboyLogger.i(TAG, "Not adding unregistered activity to the back stack while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
         }
@@ -213,6 +222,13 @@ public class UriAction implements IAction {
     } else {
       AppboyLogger.i(TAG, "Not adding back stack activity while opening uri from push due to disabled configuration setting.");
     }
-    return stackBuilder;
+
+    if (rootIntent == null) {
+      // Just return the target intent by itself
+      return new Intent[]{targetIntent};
+    } else {
+      // Return the intents in their stack order
+      return new Intent[]{rootIntent, targetIntent};
+    }
   }
 }

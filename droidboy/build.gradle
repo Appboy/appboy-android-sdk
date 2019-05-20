@@ -12,6 +12,10 @@ dependencies {
   implementation "com.google.android.gms:play-services-maps:${PLAY_SERVICES_MAPS_VERSION}"
   implementation "io.branch.sdk.android:library:${BRANCH_VERSION}"
   implementation "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
+
+  implementation "com.google.firebase:firebase-core:${FIREBASE_CORE_VERSION}"
+  implementation "com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}"
+  implementation "com.google.firebase:firebase-ml-vision:${FIREBASE_ML_VISION}"
 }
 
 android {
@@ -23,7 +27,7 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     applicationId "com.appboy.sample"
     versionName rootProject.ext.appVersionName
-    versionCode 127
+    versionCode 131
     resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
 
     buildConfigField "String", "CURRENT_BRANCH", "\"" + getCurrentBranch() + "\""

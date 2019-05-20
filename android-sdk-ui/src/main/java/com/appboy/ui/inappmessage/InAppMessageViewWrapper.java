@@ -144,21 +144,21 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
               public void onGlobalLayout() {
                 AppboyLogger.d(TAG, "Detected root view height of " + frameLayout.getHeight() + ", display height of " + displayHeight + " in onGlobalLayout");
                 frameLayout.removeView(mInAppMessageView);
-                open(frameLayout, displayHeight);
+                open(frameLayout);
                 frameLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
               }
             });
       }
     } else {
       AppboyLogger.d(TAG, "Detected root view height of " + frameLayoutHeight + ", display height of " + displayHeight);
-      open(frameLayout, displayHeight);
+      open(frameLayout);
     }
   }
 
-  private void open(FrameLayout frameLayout, int displayHeight) {
+  private void open(FrameLayout frameLayout) {
     mInAppMessageViewLifecycleListener.beforeOpened(mInAppMessageView, mInAppMessage);
     AppboyLogger.d(TAG, "Adding In-app message view to root FrameLayout.");
-    frameLayout.addView(mInAppMessageView, getLayoutParams(frameLayout, displayHeight));
+    frameLayout.addView(mInAppMessageView, getLayoutParams());
 
     ViewCompat.requestApplyInsets(frameLayout);
     ViewCompat.setOnApplyWindowInsetsListener(frameLayout, new OnApplyWindowInsetsListener() {
@@ -198,18 +198,11 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
     }
   }
 
-  private FrameLayout.LayoutParams getLayoutParams(FrameLayout frameLayout, int displayHeight) {
+  private FrameLayout.LayoutParams getLayoutParams() {
     FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
     if (mInAppMessage instanceof InAppMessageSlideup) {
       InAppMessageSlideup inAppMessageSlideup = (InAppMessageSlideup) mInAppMessage;
       layoutParams.gravity = inAppMessageSlideup.getSlideFrom() == SlideFrom.TOP ? Gravity.TOP : Gravity.BOTTOM;
-    }
-    // If the display height is a valid value and equivalent to the FrameLayout height, add a margin
-    // equal to the top visible coordinate to compensate for the status bar.
-    if (displayHeight > 0 && displayHeight == frameLayout.getHeight()) {
-      int topVisibleCoordinate = ViewUtils.getTopVisibleCoordinate(frameLayout);
-      AppboyLogger.d(TAG, "Detected status bar height of " + topVisibleCoordinate + ".");
-      layoutParams.setMargins(0, topVisibleCoordinate, 0, 0);
     }
     return layoutParams;
   }

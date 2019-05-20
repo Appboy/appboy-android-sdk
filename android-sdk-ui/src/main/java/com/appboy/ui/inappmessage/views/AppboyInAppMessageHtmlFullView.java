@@ -2,7 +2,9 @@ package com.appboy.ui.inappmessage.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -46,6 +48,14 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
           public boolean onConsoleMessage(ConsoleMessage cm) {
             AppboyLogger.d(TAG, "Html In-app log. Line: " + cm.lineNumber() + ". SourceId: " + cm.sourceId() + ". Log Level: " + cm.messageLevel() + ". Message: " + cm.message());
             return true;
+          }
+
+          @Nullable
+          @Override
+          public Bitmap getDefaultVideoPoster() {
+            // This bitmap is used to eliminate the default black & white
+            // play icon used as the default poster.
+            return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
           }
         });
 

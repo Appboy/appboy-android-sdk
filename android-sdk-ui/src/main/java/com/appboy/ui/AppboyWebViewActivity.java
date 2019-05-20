@@ -2,8 +2,10 @@ package com.appboy.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -67,12 +69,21 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     webView.setLayoutParams(layoutParams);
 
     webView.setWebChromeClient(new WebChromeClient() {
+      @Override
       public void onProgressChanged(WebView view, int progress) {
         if (progress < 100) {
           setProgressBarVisibility(true);
         } else {
           setProgressBarVisibility(false);
         }
+      }
+
+      @Nullable
+      @Override
+      public Bitmap getDefaultVideoPoster() {
+        // This bitmap is used to eliminate the default black & white
+        // play icon used as the default poster.
+        return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
       }
     });
 

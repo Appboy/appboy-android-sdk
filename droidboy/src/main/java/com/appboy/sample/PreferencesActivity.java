@@ -5,16 +5,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
@@ -28,6 +30,11 @@ import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.feed.AppboyFeedManager;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import org.json.JSONObject;
 
@@ -41,6 +48,10 @@ import io.branch.referral.BranchError;
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(PreferencesActivity.class);
   private static final Map<String, String> API_KEY_TO_APP_MAP;
+  private static final int REQUEST_IMAGE_CAPTURE = 271;
+  private static final String BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment";
+  private static final String BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT = "endpoint";
+  private static final String BRAZE_ENVIRONMENT_DEEPLINK_API_KEY = "api_key";
 
   static {
     Map<String, String> keyToAppMap = new HashMap<>();
@@ -49,6 +60,7 @@ public class PreferencesActivity extends PreferenceActivity {
     API_KEY_TO_APP_MAP = Collections.unmodifiableMap(keyToAppMap);
   }
 
+  private SharedPreferences mSharedPreferences;
   private int mAttributionUniqueInt = 0;
   private IAppboyImageLoader mGlideAppboyImageLoader;
   private IAppboyImageLoader mAppboyLruImageLoader;
@@ -61,6 +73,7 @@ public class PreferencesActivity extends PreferenceActivity {
     super.onCreate(savedInstanceState);
     mGlideAppboyImageLoader = new GlideAppboyImageLoader();
     mAppboyLruImageLoader = new AppboyLruImageLoader(getApplicationContext());
+    mSharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE);
 
     addPreferencesFromResource(R.xml.preferences);
     setContentView(R.layout.preference_wrapper_view);
@@ -69,12 +82,7 @@ public class PreferencesActivity extends PreferenceActivity {
     toolbar.setTitle(getString(R.string.settings));
 
     toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button_droidboy));
-    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        onBackPressed();
-      }
-    });
+    toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
     Preference dataFlushPreference = findPreference("data_flush");
     Preference setManualLocationPreference = findPreference("set_manual_location");
@@ -100,6 +108,8 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference logAttributionPreference = findPreference("log_attribution");
     Preference enableAutomaticNetworkRequestsPreference = findPreference("enable_outbound_network_requests");
     Preference disableAutomaticNetworkRequestsPreference = findPreference("disable_outbound_network_requests");
+    Preference brazeEnvironmentBarcodePreference = findPreference("environment_barcode_picture_intent_key");
+    Preference brazeEnvironmentResetPreference = findPreference("environment_reset_key");
     CheckBoxPreference sortNewsFeed = (CheckBoxPreference) findPreference("sort_feed");
     SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     sortNewsFeed.setChecked(sharedPrefSort.getBoolean(getString(R.string.sort_feed), false));
@@ -312,6 +322,24 @@ public class PreferencesActivity extends PreferenceActivity {
       LifecycleUtils.restartApp(getApplicationContext());
       return true;
     });
+
+    brazeEnvironmentBarcodePreference.setOnPreferenceClickListener((Preference preference) -> {
+      // Take a picture via intent
+      Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+      if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+      }
+      return true;
+    });
+    brazeEnvironmentResetPreference.setOnPreferenceClickListener((Preference preference) -> {
+      SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+      sharedPreferencesEditor.remove(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY);
+      sharedPreferencesEditor.remove(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY);
+
+      sharedPreferencesEditor.commit();
+      LifecycleUtils.restartApp(this);
+      return true;
+    });
   }
 
   // Displays a toast to the user
@@ -389,5 +417,51 @@ public class PreferencesActivity extends PreferenceActivity {
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(PreferencesActivity.this, requestCode, grantResults);
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+      Bundle extras = data.getExtras();
+      Bitmap imageBitmap = (Bitmap) extras.get("data");
+      analyzeBitmapForEnvironmentBarcode(imageBitmap);
+    }
+  }
+
+  private void analyzeBitmapForEnvironmentBarcode(final Bitmap bitmap) {
+    // Build the barcode detector
+    FirebaseVisionBarcodeDetectorOptions options =
+        new FirebaseVisionBarcodeDetectorOptions.Builder()
+            .setBarcodeFormats(
+                FirebaseVisionBarcode.FORMAT_QR_CODE)
+            .build();
+
+    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+    FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
+        .getVisionBarcodeDetector(options);
+
+    detector.detectInImage(image)
+        .addOnSuccessListener(barcodes -> {
+          for (FirebaseVisionBarcode barcode : barcodes) {
+            final String rawValue = barcode.getRawValue();
+            if (rawValue.startsWith(BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH)) {
+              setEnvironmentViaBarcode(rawValue);
+            }
+          }
+        })
+        .addOnCompleteListener(e -> bitmap.recycle());
+  }
+
+  private void setEnvironmentViaBarcode(String environmentText) {
+    Uri uri = Uri.parse(environmentText);
+    String endpoint = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT);
+    String apiKey = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_API_KEY);
+
+    SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, apiKey);
+    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, endpoint);
+
+    sharedPreferencesEditor.commit();
+    LifecycleUtils.restartApp(this);
   }
 }

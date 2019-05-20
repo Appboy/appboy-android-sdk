@@ -95,12 +95,23 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/misc_preference_category">
+        android:title="@string/environment_preference_category">
         <com.appboy.sample.SetEnvironmentPreference
           android:title="@string/set_environment_title"
           android:summary="@string/set_environment_summary"
           android:positiveButtonText="@string/user_dialog_done"
           android:negativeButtonText="@string/user_dialog_cancel"/>
+        <Preference
+          android:key="environment_barcode_picture_intent_key"
+          android:title="Set Environment via barcode"
+          android:summary="Takes a picture of a braze environment barcode"/>
+        <Preference
+          android:key="environment_reset_key"
+          android:title="Reset environment override"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/misc_preference_category">
         <Preference
             android:key="external_storage_runtime_permission_dialog"
             android:title="External Storage Permission Dialog"

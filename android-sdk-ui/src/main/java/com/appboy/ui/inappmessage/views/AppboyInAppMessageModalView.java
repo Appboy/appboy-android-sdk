@@ -24,18 +24,17 @@ import java.util.List;
 public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBaseView {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageModalView.class);
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
+  private IInAppMessageImmersive mInAppMessage;
 
   public AppboyInAppMessageModalView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
   public void applyInAppMessageParameters(Context context, IInAppMessageImmersive inAppMessage) {
+    mInAppMessage = inAppMessage;
     mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_modal_imageview);
     setInAppMessageImageViewAttributes(context, inAppMessage, mAppboyInAppMessageImageView);
-    if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC) && inAppMessage.getBitmap() != null) {
-      double aspectRatio = (double) inAppMessage.getBitmap().getWidth() / inAppMessage.getBitmap().getHeight();
-      resizeGraphicFrameIfAppropriate(context, inAppMessage, aspectRatio);
-    }
+    resizeGraphicFrameIfAppropriate(context, inAppMessage);
   }
 
   public View getFrameView() {
@@ -142,6 +141,12 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     return mAppboyInAppMessageImageView;
   }
 
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+    resizeGraphicFrameIfAppropriate(this.getContext(), mInAppMessage);
+  }
+
   /**
    * Programmatically set attributes on the image view classes inside the image ViewStubs.
    *
@@ -162,15 +167,15 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
   /**
    * If displaying a graphic modal, resize its bounds based on the aspect ratio of the input image
    * and its maximum size.
-   *
-   * @param context
-   * @param inAppMessage
-   * @param imageAspectRatio the aspect ratio of the image to be displayed in the graphic modal.
    */
-  private void resizeGraphicFrameIfAppropriate(final Context context, final IInAppMessageImmersive inAppMessage, final double imageAspectRatio) {
+  private void resizeGraphicFrameIfAppropriate(final Context context, final IInAppMessageImmersive inAppMessage) {
+    if (inAppMessage == null || inAppMessage.getBitmap() == null) {
+      return;
+    }
     if (!inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
       return;
     }
+    final double imageAspectRatio = (double) inAppMessage.getBitmap().getWidth() / inAppMessage.getBitmap().getHeight();
     Resources resources = context.getResources();
     final int marginPixels = resources.getDimensionPixelSize(R.dimen.com_appboy_in_app_message_modal_margin);
     final int maxModalWidth = resources.getDimensionPixelSize(R.dimen.com_appboy_in_app_message_modal_max_width);

@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PropertyManager implements AdapterView.OnItemSelectedListener {
-  private static final String[] propertyTypes = new String[]{"integer", "double", "string", "boolean", "date"};
+  private static final String[] propertyTypes = new String[]{"integer", "double", "string", "boolean", "date", "long"};
   private Map<String, Object> mProperties = new HashMap<>();
   private List<String> mKeys = new ArrayList<>();
   private int selectedPropertyType;
@@ -73,6 +73,9 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
           case 4:
             value = lastDatePicked;
             break;
+          case 5:
+            value = getLongProperty();
+            break;
           default:
             value = null;
             break;
@@ -100,6 +103,8 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
         appboyProperties.addProperty(key, (String) value);
       } else if (value instanceof Date) {
         appboyProperties.addProperty(key, (Date) value);
+      } else if (value instanceof Long) {
+        appboyProperties.addProperty(key, (long) value);
       } else {
         AppboyLogger.e(PropertyManager.this.getClass().toString(), "invalid property type");
       }
@@ -132,6 +137,15 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
       return Integer.parseInt(mPropertyValue.getText().toString());
     } catch (NumberFormatException nfe) {
       Toast.makeText(mContext, "Make sure the value is an integer", Toast.LENGTH_LONG).show();
+      return null;
+    }
+  }
+
+  private Object getLongProperty() {
+    try {
+      return Long.parseLong(mPropertyValue.getText().toString());
+    } catch (NumberFormatException nfe) {
+      Toast.makeText(mContext, "Make sure the value is a long", Toast.LENGTH_LONG).show();
       return null;
     }
   }
