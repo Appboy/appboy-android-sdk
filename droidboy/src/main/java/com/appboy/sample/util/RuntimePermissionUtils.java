@@ -11,31 +11,32 @@ import com.appboy.support.AppboyLogger;
 public class RuntimePermissionUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(RuntimePermissionUtils.class);
   public static final int DROIDBOY_PERMISSION_LOCATION = 40;
-  public static final int DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE = 100;
 
   public static void handleOnRequestPermissionsResult(Context context, int requestCode, int[] grantResults) {
     switch (requestCode) {
       case DROIDBOY_PERMISSION_LOCATION:
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          Log.i(TAG, "AppboyLocation permission granted.");
-          Toast.makeText(context, "AppboyLocation permission granted.", Toast.LENGTH_SHORT).show();
+        // In Android Q, we require both FINE and BACKGROUND location permissions. Both
+        // are requested simultaneously.
+        if (areAllPermissionsGranted(grantResults)) {
+          Log.i(TAG, "Required location permissions granted.");
+          Toast.makeText(context, "Required location permissions granted.", Toast.LENGTH_SHORT).show();
           AppboyLocationService.requestInitialization(context);
         } else {
-          Log.i(TAG, "AppboyLocation permission NOT granted.");
-          Toast.makeText(context, "AppboyLocation permission NOT granted.", Toast.LENGTH_SHORT).show();
-        }
-        break;
-      case DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE:
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          Log.i(TAG, "Write external storage permission granted.");
-          Toast.makeText(context, "Write external storage permission granted.", Toast.LENGTH_SHORT).show();
-        } else {
-          Log.i(TAG, "Write external storage permission NOT granted.");
-          Toast.makeText(context, "Write external storage permission NOT granted.", Toast.LENGTH_SHORT).show();
+          Log.i(TAG, "Required location permissions NOT granted.");
+          Toast.makeText(context, "Required location permissions NOT granted.", Toast.LENGTH_SHORT).show();
         }
         break;
       default:
         break;
     }
+  }
+
+  private static boolean areAllPermissionsGranted(int[] grantResults) {
+    for (int grantResult : grantResults) {
+      if (grantResult != PackageManager.PERMISSION_GRANTED) {
+        return false;
+      }
+    }
+    return true;
   }
 }

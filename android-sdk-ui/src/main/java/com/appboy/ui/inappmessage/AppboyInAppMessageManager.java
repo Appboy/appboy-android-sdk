@@ -23,6 +23,7 @@ import com.appboy.models.InAppMessageImmersiveBase;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.JsonUtils;
 import com.appboy.ui.inappmessage.factories.AppboyFullViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyHtmlFullViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyInAppMessageAnimationFactory;
@@ -547,8 +548,8 @@ public final class AppboyInAppMessageManager {
       }
       mInAppMessageViewWrapper.open(mActivity);
       return true;
-    } catch (Exception e) {
-      AppboyLogger.e(TAG, "Could not display in-app message", e);
+    } catch (Throwable e) {
+      AppboyLogger.e(TAG, "Could not display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()), e);
       resetAfterInAppMessageClose();
       return false;
     }

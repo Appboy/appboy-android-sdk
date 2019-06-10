@@ -209,7 +209,10 @@ public class AppboyNotificationStyleFactory {
   }
 
   private static PendingIntent createStoryPageClickedPendingIntent(Context context, String uriString, String useWebView, String storyPageId, String campaignId) {
-    Intent storyClickedIntent = new Intent(Constants.APPBOY_STORY_CLICKED_ACTION).setClass(context, AppboyNotificationRoutingActivity.class);
+    Intent storyClickedIntent = new Intent(Constants.APPBOY_STORY_CLICKED_ACTION)
+        .setClass(context, AppboyNotificationRoutingActivity.class);
+    storyClickedIntent
+        .setFlags(storyClickedIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_URI_KEY, uriString);
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY, useWebView);
     storyClickedIntent.putExtra(Constants.APPBOY_STORY_PAGE_ID, storyPageId);

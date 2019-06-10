@@ -2,6 +2,24 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+      android:title="@string/notch_settings_category">
+        <CheckBoxPreference
+          android:key="display_in_full_cutout_setting_key"
+          android:title="Enable Display in Cutout Mode"
+          android:summary="Enables Droidboy to display in the cutout"
+          android:summaryOn="Displaying content in the cutout"
+          android:summaryOff="Not displaying content in the cutout"
+          android:defaultValue="false"/>
+        <CheckBoxPreference
+          android:key="display_no_limits_setting_key"
+          android:title="Enable Display No Limits Mode"
+          android:summary="Enables Droidboy to display with transparent navigation/status bar"
+          android:summaryOn="Displaying content with no limits"
+          android:summaryOff="Not displaying content with no limits"
+          android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/custom_logging_category_title">
         <com.appboy.sample.UserProfileDialog
             android:title="@string/user_dialog_title"
@@ -84,17 +102,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/notch_settings_category">
-        <CheckBoxPreference
-          android:key="display_in_full_cutout_setting_key"
-          android:title="Enable Display in Cutout Mode"
-          android:summary="Enables Droidboy to display in the cutout"
-          android:summaryOn="Displaying content in the cutout"
-          android:summaryOff="Not displaying content in the cutout"
-          android:defaultValue="false"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/environment_preference_category">
         <com.appboy.sample.SetEnvironmentPreference
           android:title="@string/set_environment_title"
@@ -112,10 +119,6 @@
 
     <PreferenceCategory
         android:title="@string/misc_preference_category">
-        <Preference
-            android:key="external_storage_runtime_permission_dialog"
-            android:title="External Storage Permission Dialog"
-            android:summary="Request Runtime Permission"/>
         <Preference
             android:key="toggle_disable_appboy_network_requests_for_filtered_emulators"
             android:title="@string/disable_appboy_network_requests"

@@ -2,6 +2,7 @@ package com.appboy.sample;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,13 +18,15 @@ import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
 import com.appboy.models.outgoing.AttributionData;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class MainFragment extends Fragment {
-  static final String USER_ID_KEY = "user.id";
+  private static final String TAG = AppboyLogger.getAppboyLogTag(MainFragment.class);
   private static final String STRING_ARRAY_ATTRIBUTE_KEY = "stringArrayAttribute";
   private static final String ARRAY_ATTRIBUTE_KEY = "arrayAttribute";
   private static final String DATE_ATTRIBUTE_KEY = "dateAttribute";
@@ -35,6 +38,7 @@ public class MainFragment extends Fragment {
   private static final String STRING_ATTRIBUTE_KEY = "stringAttribute";
   private static final String DOUBLE_ATTRIBUTE_KEY = "doubleAttribute";
   private static final String INCREMENT_ATTRIBUTE_KEY = "incrementAttribute";
+  static final String USER_ID_KEY = "user.id";
 
   private EditText mUserIdEditText;
   private EditText mCustomEventOrPurchaseEditText;
@@ -50,6 +54,7 @@ public class MainFragment extends Fragment {
   private Button mSetUserAttributesButton;
   private Button mUnsetCustomUserAttributesButton;
   private Button mRequestFlushButton;
+  private Button mGoogleAdvertisingIdFlushButton;
   private Context mContext;
   private SharedPreferences mSharedPreferences;
 
@@ -77,6 +82,7 @@ public class MainFragment extends Fragment {
     mSetUserAttributesButton = contentView.findViewById(R.id.com_appboy_sample_set_user_attributes_button);
     mUnsetCustomUserAttributesButton = contentView.findViewById(R.id.com_appboy_sample_unset_custom_attributes_button);
     mRequestFlushButton = contentView.findViewById(R.id.com_appboy_sample_request_flush_button);
+    mGoogleAdvertisingIdFlushButton = contentView.findViewById(R.id.com_appboy_sample_collect_and_flush_google_advertising_id_button);
     return contentView;
   }
 
@@ -190,6 +196,7 @@ public class MainFragment extends Fragment {
         handleAliasClick();
       }
     });
+    mGoogleAdvertisingIdFlushButton.setOnClickListener((view) -> new CollectGoogleAdvertisingIdTask().execute());
   }
 
   private void handleAliasClick() {
@@ -200,6 +207,19 @@ public class MainFragment extends Fragment {
           + label, Toast.LENGTH_SHORT).show();
     } else {
       Toast.makeText(getContext(), "Failed to add alias", Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  private class CollectGoogleAdvertisingIdTask extends AsyncTask<Void, Void, Void> {
+    @Override
+    protected Void doInBackground(Void... voids) {
+      try {
+        AdvertisingIdClient.Info advertisingIdInfo = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
+        Appboy.getInstance(mContext).setGoogleAdvertisingId(advertisingIdInfo.getId(), advertisingIdInfo.isLimitAdTrackingEnabled());
+      } catch (Exception e) {
+        AppboyLogger.e(TAG, "Failed to collect Google Advertising ID information.", e);
+      }
+      return null;
     }
   }
 }

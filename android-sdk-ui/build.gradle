@@ -5,6 +5,7 @@ dependencies {
   api "com.appboy:android-sdk-base:${BRAZE_SDK_VERSION}"
   implementation "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
   implementation "com.android.support:recyclerview-v7:${SUPPORT_LIBS_VERSION}"
+  compileOnly "com.android.support:design:${SUPPORT_LIBS_VERSION}"
 
   // Required for the FirebaseMessagingService
   compileOnly "com.google.firebase:firebase-core:${FIREBASE_CORE_VERSION}"

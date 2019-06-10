@@ -119,9 +119,6 @@ public class DroidboyApplication extends Application {
       vmPolicyBuilder.detectContentUriWithoutPermission();
       vmPolicyBuilder.detectUntaggedSockets();
     }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-      vmPolicyBuilder.detectNonSdkApiUsage();
-    }
     StrictMode.setThreadPolicy(threadPolicyBuilder.build());
     StrictMode.setVmPolicy(vmPolicyBuilder.build());
 

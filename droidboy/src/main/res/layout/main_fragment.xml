@@ -68,5 +68,9 @@
           android:id="@+id/com_appboy_sample_set_user_alias_button"
           style="@style/DroidboyButton"
           android:text="Add User Alias"/>
+        <Button
+          android:id="@+id/com_appboy_sample_collect_and_flush_google_advertising_id_button"
+          style="@style/DroidboyButton"
+          android:text="Get/Flush Google Advertising ID"/>
     </LinearLayout>
 </ScrollView>

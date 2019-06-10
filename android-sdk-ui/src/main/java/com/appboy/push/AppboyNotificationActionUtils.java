@@ -135,7 +135,10 @@ public class AppboyNotificationActionUtils {
       // the user is prompted to open the app on the lockscreen.
 
       AppboyLogger.v(TAG, "Adding notification action with type: " + actionType + " Setting intent class to AppboyNotificationRoutingActivity");
-      Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationRoutingActivity.class);
+      Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION)
+          .setClass(context, AppboyNotificationRoutingActivity.class);
+      sendIntent
+        .setFlags(sendIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
       sendIntent.putExtras(notificationActionExtras);
       pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

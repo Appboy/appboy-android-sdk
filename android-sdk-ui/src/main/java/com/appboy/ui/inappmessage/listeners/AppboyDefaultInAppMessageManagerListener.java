@@ -23,7 +23,7 @@ public class AppboyDefaultInAppMessageManagerListener implements IInAppMessageMa
   }
 
   @Override
-  public boolean onInAppMessageButtonClicked(MessageButton button, InAppMessageCloser inAppMessageCloser) {
+  public boolean onInAppMessageButtonClicked(IInAppMessage inAppMessage, MessageButton button, InAppMessageCloser inAppMessageCloser) {
     return false;
   }
 

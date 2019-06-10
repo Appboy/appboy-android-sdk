@@ -1,6 +1,5 @@
 package com.appboy.sample;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
@@ -36,14 +36,11 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
-import org.json.JSONObject;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.branch.referral.Branch;
-import io.branch.referral.BranchError;
 
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(PreferencesActivity.class);
@@ -60,6 +57,7 @@ public class PreferencesActivity extends PreferenceActivity {
     API_KEY_TO_APP_MAP = Collections.unmodifiableMap(keyToAppMap);
   }
 
+  private String mEnvironmentBarcodePhotoPath;
   private SharedPreferences mSharedPreferences;
   private int mAttributionUniqueInt = 0;
   private IAppboyImageLoader mGlideAppboyImageLoader;
@@ -103,7 +101,6 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference commitHashPreference = findPreference("commit_hash");
     Preference installTimePreference = findPreference("install_time");
     Preference deviceIdPreference = findPreference("device_id");
-    Preference externalStorageRuntimePermissionDialogPreference = findPreference("external_storage_runtime_permission_dialog");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference logAttributionPreference = findPreference("log_attribution");
     Preference enableAutomaticNetworkRequestsPreference = findPreference("enable_outbound_network_requests");
@@ -123,6 +120,7 @@ public class PreferencesActivity extends PreferenceActivity {
     Preference disableGlideLibraryPreference = findPreference("glide_image_loader_disable_setting_key");
 
     CheckBoxPreference displayInCutoutPreference = (CheckBoxPreference) findPreference("display_in_full_cutout_setting_key");
+    CheckBoxPreference displayNoLimitsPreference = (CheckBoxPreference) findPreference("display_no_limits_setting_key");
 
     sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
     apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
@@ -221,17 +219,6 @@ public class PreferencesActivity extends PreferenceActivity {
         return true;
       }
     });
-    externalStorageRuntimePermissionDialogPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-          requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, RuntimePermissionUtils.DROIDBOY_PERMISSION_WRITE_EXTERNAL_STORAGE);
-        } else {
-          Toast.makeText(PreferencesActivity.this, "Below Android M there is no need to check for runtime permissions.", Toast.LENGTH_SHORT).show();
-        }
-        return true;
-      }
-    });
     toggleDisableAppboyNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
       public boolean onPreferenceClick(Preference preference) {
@@ -322,6 +309,15 @@ public class PreferencesActivity extends PreferenceActivity {
       LifecycleUtils.restartApp(getApplicationContext());
       return true;
     });
+    displayNoLimitsPreference.setOnPreferenceClickListener(preference -> {
+      // Restart the app to force onCreate() to re-run
+      // Note that an app restart won't commit prefs changes so we have to do it manually
+      PreferenceManager.getDefaultSharedPreferences(this).edit()
+          .putBoolean("display_no_limits_setting_key", ((CheckBoxPreference) preference).isChecked())
+          .commit();
+      LifecycleUtils.restartApp(getApplicationContext());
+      return true;
+    });
 
     brazeEnvironmentBarcodePreference.setOnPreferenceClickListener((Preference preference) -> {
       // Take a picture via intent
@@ -369,26 +365,23 @@ public class PreferencesActivity extends PreferenceActivity {
     super.onStart();
     try {
       Branch branch = Branch.getInstance();
-      branch.initSession(new Branch.BranchReferralInitListener() {
-        @Override
-        public void onInitFinished(JSONObject referringParams, BranchError error) {
-          if (error == null) {
-            String param1 = referringParams.optString("$param_1", "");
-            String param2 = referringParams.optString("$param_2", "");
-            if (param1.equals("hello")) {
-              showToast("This activity was opened by a Branch deep link with custom param 1.");
-            } else if (param2.equals("goodbye")) {
-              showToast("This activity was opened by a Branch deep link with custom param 2.");
-            } else {
-              showToast("This activity was opened by a Branch deep link with no custom params!");
-            }
+      branch.initSession((referringParams, error) -> {
+        if (error == null) {
+          String param1 = referringParams.optString("$param_1", "");
+          String param2 = referringParams.optString("$param_2", "");
+          if (param1.equals("hello")) {
+            AppboyLogger.i(TAG, "This activity was opened by a Branch deep link with custom param 1.");
+          } else if (param2.equals("goodbye")) {
+            AppboyLogger.i(TAG, "This activity was opened by a Branch deep link with custom param 2.");
           } else {
-            Log.i(TAG, error.getMessage());
+            AppboyLogger.i(TAG, "This activity was opened by a Branch deep link with no custom params!");
           }
+        } else {
+          Log.i(TAG, error.getMessage());
         }
       }, this.getIntent().getData(), this);
     } catch (Exception e) {
-      Log.e(TAG, "Exception occured while initializing Branch", e);
+      Log.e(TAG, "Exception occurred while initializing Branch", e);
     }
   }
 
@@ -423,8 +416,8 @@ public class PreferencesActivity extends PreferenceActivity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
       Bundle extras = data.getExtras();
-      Bitmap imageBitmap = (Bitmap) extras.get("data");
-      analyzeBitmapForEnvironmentBarcode(imageBitmap);
+      Bitmap bitmap = (Bitmap) extras.get("data");
+      analyzeBitmapForEnvironmentBarcode(bitmap);
     }
   }
 
@@ -442,26 +435,62 @@ public class PreferencesActivity extends PreferenceActivity {
 
     detector.detectInImage(image)
         .addOnSuccessListener(barcodes -> {
-          for (FirebaseVisionBarcode barcode : barcodes) {
-            final String rawValue = barcode.getRawValue();
-            if (rawValue.startsWith(BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH)) {
-              setEnvironmentViaBarcode(rawValue);
+          if (barcodes.isEmpty()) {
+            showToast("Couldn't find barcode. Please try again!");
+          } else {
+            for (FirebaseVisionBarcode barcode : barcodes) {
+              final String rawValue = barcode.getRawValue();
+              if (rawValue.startsWith(BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH)) {
+                showToast("Found barcode: " + rawValue);
+                setEnvironmentViaDeepLink(rawValue);
+              }
             }
           }
         })
+        .addOnFailureListener(e -> AppboyLogger.e(TAG, "Failed to parse barcode bitmap", e))
         .addOnCompleteListener(e -> bitmap.recycle());
   }
 
-  private void setEnvironmentViaBarcode(String environmentText) {
+  /**
+   * Braze deep link in the form
+   * braze://environment?endpoint=ENDPOINT_HERE&api_key=API_KEY_HERE
+   */
+  @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
+  private void setEnvironmentViaDeepLink(String environmentText) {
     Uri uri = Uri.parse(environmentText);
     String endpoint = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT);
     String apiKey = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_API_KEY);
 
-    SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, apiKey);
-    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, endpoint);
+    AppboyLogger.i(TAG, "Using environment endpoint: " + endpoint);
+    AppboyLogger.i(TAG, "Using environment api key: " + apiKey);
 
-    sharedPreferencesEditor.commit();
-    LifecycleUtils.restartApp(this);
+    StringBuilder message = new StringBuilder()
+        .append("Looks correct? 👌")
+        .append("\n\n")
+        .append("New environment endpoint: ")
+        .append("\n")
+        .append(endpoint)
+        .append("\n\n")
+        .append("New environment api key: ")
+        .append("\n")
+        .append(apiKey);
+
+    new AlertDialog.Builder(this)
+        .setTitle("Changing Droidboy environment")
+        .setMessage(message.toString())
+
+        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+          SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+          sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, apiKey);
+          sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, endpoint);
+
+          sharedPreferencesEditor.commit();
+          LifecycleUtils.restartApp(getApplicationContext());
+        })
+
+        // A null listener allows the button to dismiss the dialog and take no further action.
+        .setNegativeButton(android.R.string.no, null)
+        .setIcon(android.R.drawable.ic_dialog_info)
+        .show();
   }
 }

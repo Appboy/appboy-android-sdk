@@ -2,6 +2,8 @@ package com.appboy.sample.util;
 
 import android.os.Build;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class ViewUtils {
 
@@ -15,6 +17,10 @@ public class ViewUtils {
         decorView.setSystemUiVisibility(setSystemUiVisibility());
       }
     });
+  }
+
+  public static void enableNoLimitsMode(Window window) {
+    window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
   }
 
   private static int setSystemUiVisibility() {

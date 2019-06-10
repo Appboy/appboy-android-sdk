@@ -164,10 +164,10 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
   }
 
   /**
-   * See {@link IInAppMessageManagerListener#onInAppMessageButtonClicked(MessageButton, InAppMessageCloser)}
+   * See {@link IInAppMessageManagerListener#onInAppMessageButtonClicked(IInAppMessage, MessageButton, InAppMessageCloser)}
    */
   @Override
-  public boolean onInAppMessageButtonClicked(MessageButton button, InAppMessageCloser inAppMessageCloser) {
+  public boolean onInAppMessageButtonClicked(IInAppMessage inAppMessage, MessageButton button, InAppMessageCloser inAppMessageCloser) {
     inAppMessageCloser.close(true);
     finishOverlayActivity();
     if (mAppboyUnityInAppMessageListener != null) {

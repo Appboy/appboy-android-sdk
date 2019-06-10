@@ -13,6 +13,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.design.button.MaterialButton;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,13 @@ import java.util.List;
 
 public class InAppMessageViewUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageViewUtils.class);
+  private static final String[] REQUIRED_MATERIAL_DESIGN_BUTTON_CLASSES = {
+      "android.support.design.button.MaterialButton"
+  };
+  /**
+   * Handling only 1 state is ok here since the other button states default to enabled.
+   */
+  private static final int[][] COLOR_STATE_LIST_STATES = new int[][]{new int[]{android.R.attr.state_enabled}};
 
   public static void setImage(Bitmap bitmap, ImageView imageView) {
     if (bitmap != null) {
@@ -59,25 +67,47 @@ public class InAppMessageViewUtils {
 
   /**
    * Sets the appropriate colors for the button text, background, and border.
-   * @param buttonViews The destination views for the attributes found in the {@link MessageButton} objects.
+   *
+   * @param buttonViews    The destination views for the attributes found in the {@link MessageButton} objects.
    * @param messageButtons The {@link MessageButton} source objects.
    */
   public static void setButtons(List<View> buttonViews, List<MessageButton> messageButtons) {
     for (int i = 0; i < buttonViews.size(); i++) {
+      View buttonView = buttonViews.get(i);
+      MessageButton messageButton = messageButtons.get(i);
+
+      final int strokeWidth = AppboyImageUtils.getPixelsFromDp(buttonView.getContext(), 1);
       if (messageButtons.size() <= i) {
-        buttonViews.get(i).setVisibility(View.GONE);
+        buttonView.setVisibility(View.GONE);
       } else {
-        if (buttonViews.get(i) instanceof Button) {
+        if (isMaterialDesignInClasspath() && buttonView instanceof MaterialButton) {
+          AppboyLogger.v(TAG, "Using material design button methods on in-app message");
+          // Material buttons come with ripple and stroke support out of the box
+          // See https://github.com/material-components/material-components-android/blob/master/docs/components/MaterialButton.md#theme-attribute-mapping
+          // for what fields should be used
+          MaterialButton button = (MaterialButton) buttonView;
+          button.setText(messageButton.getText());
+
+          int[] borderColorArray = new int[]{messageButton.getBorderColor()};
+          int[] backgroundColorArray = new int[]{messageButton.getBackgroundColor()};
+
+          ColorStateList colorStateListBorder = new ColorStateList(COLOR_STATE_LIST_STATES, borderColorArray);
+          ColorStateList colorStateListBackground = new ColorStateList(COLOR_STATE_LIST_STATES, backgroundColorArray);
+          button.setStrokeWidth(strokeWidth);
+          button.setStrokeColor(colorStateListBorder);
+          button.setBackgroundTintList(colorStateListBackground);
+          button.setBackgroundColor(messageButton.getBackgroundColor());
+          button.setTextColor(messageButton.getTextColor());
+        } else if (buttonView instanceof Button) {
+          AppboyLogger.v(TAG, "Using default Android button methods on in-app message");
           // On supported API versions (21+), the button is a RippleDrawable with a GradientDrawable child
           // Below API 21, the button is just the GradientDrawable child
-          Button button = (Button) buttonViews.get(i);
-          MessageButton messageButton = messageButtons.get(i);
+          Button button = (Button) buttonView;
           button.setText(messageButton.getText());
 
           Drawable drawable = button.getBackground();
           if (drawable instanceof GradientDrawable) {
             GradientDrawable gradientDrawable = (GradientDrawable) drawable;
-            int strokeWidth = AppboyImageUtils.getPixelsFromDp(button.getContext(), 1);
             gradientDrawable.setStroke(strokeWidth, messageButton.getBorderColor());
             gradientDrawable.setColor(messageButton.getBackgroundColor());
           }
@@ -182,5 +212,24 @@ public class InAppMessageViewUtils {
     // Make that the "child" of the ripple
     LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{button.getBackground(), rippleDrawable});
     button.setBackground(layerDrawable);
+  }
+
+  /**
+   * Checks if the views from Material Design (including {@link MaterialButton}) are on the classpath.
+   */
+  private static boolean isMaterialDesignInClasspath() {
+    try {
+      ClassLoader staticClassLoader = InAppMessageViewUtils.class.getClassLoader();
+      for (String classPath : REQUIRED_MATERIAL_DESIGN_BUTTON_CLASSES) {
+        if (Class.forName(classPath, false, staticClassLoader) == null) {
+          // The class doesn't exist on the path
+          return false;
+        }
+      }
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Caught error while checking for Material Design on the classpath", e);
+      return false;
+    }
+    return true;
   }
 }

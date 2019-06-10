@@ -44,8 +44,13 @@ public class AppboyNotificationRoutingActivity extends Activity {
 
     // Route the intent back to the receiver
     Intent sendIntent = new Intent(action).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
-    sendIntent.putExtras(receivedIntent.getExtras());
+    if (receivedIntent.getExtras() != null) {
+      sendIntent.putExtras(receivedIntent.getExtras());
+    }
     context.sendBroadcast(sendIntent);
-    finish();
+
+    // Note that finish() is no longer called here due to "Background Activity" limitations in Android Q
+    // See https://developer.android.com/preview/privacy/background-activity-starts
+    // TODO: juliancontreras 3/26/19 Test this on each Developer Preview of Android-Q 
   }
 }

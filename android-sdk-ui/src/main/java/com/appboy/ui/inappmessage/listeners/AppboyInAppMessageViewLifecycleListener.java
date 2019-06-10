@@ -77,7 +77,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
     AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onButtonClicked called.");
     inAppMessageImmersive.logButtonClick(messageButton);
 
-    boolean handled = getInAppMessageManager().getInAppMessageManagerListener().onInAppMessageButtonClicked(messageButton, inAppMessageCloser);
+    boolean handled = getInAppMessageManager().getInAppMessageManagerListener().onInAppMessageButtonClicked(inAppMessageImmersive, messageButton, inAppMessageCloser);
 
     if (!handled) {
       // Perform the default (or modified) in-app message button clicked behavior.

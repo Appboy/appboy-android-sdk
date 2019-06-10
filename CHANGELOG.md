@@ -1,7 +1,25 @@
-## 3.3.0
+## 3.4.0
 
 ##### Important
 - Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+
+##### Added
+- Added support for Android 10 Q (API 29).
+  - With the addition of the `android.permission.ACCESS_BACKGROUND_LOCATION` permission in Android Q, this permission is now required for Braze Geofences to work on Android Q+ devices. Please see the documentation for more information.
+  - The `AppboyNotificationRoutingActivity` class is now sent with the `Intent.FLAG_ACTIVITY_NO_HISTORY` Intent flag. This is not expected to be a user visible change nor will require any integration changes.
+- Added the ability to enable Braze Geofences without enabling Braze location collection. Set `AppboyConfig.setGeofencesEnabled()` or `com_appboy_geofences_enabled` in your `appboy.xml` to enable Braze Geofences.
+  - Note that Braze Geofences will continue to work on existing integrations if location collection is enabled and this new configuration is not present. This new configuration is intended for integrations that want Braze Geofences, but not location collection enabled as well.
+- Added `Appboy.setGoogleAdvertisingId()` to pass a Google Advertising ID and Ad Tracking Limiting enabled flag back to Braze. Note that the SDK will not automatically collect either field.
+
+##### Fixed
+- Fixed in-app message buttons not properly respecting colors when using a Material Design style theme.
+
+##### Breaking
+- Geofences on Android Q+ devices will not work without the `android.permission.ACCESS_BACKGROUND_LOCATION` permission.
+- Changed the signature of `IInAppMessageManagerListener.onInAppMessageButtonClicked()` to include the in-app message of the clicked button.
+- Removed the deprecated `AppboyWebViewActivity.URL_EXTRA`. Please use `Constants.APPBOY_WEBVIEW_URL_EXTRA` instead.
+
+## 3.3.0
 
 ##### Changed
 - Changed the behavior of push deep links to not restart the launcher activity of the app when clicked.

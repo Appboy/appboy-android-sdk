@@ -48,10 +48,10 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
   }
 
   /**
-   * see {@link IInAppMessageManagerListener#onInAppMessageButtonClicked(MessageButton, InAppMessageCloser)}
+   * see {@link IInAppMessageManagerListener#onInAppMessageButtonClicked(IInAppMessage, MessageButton, InAppMessageCloser)}
    */
   @Override
-  public boolean onInAppMessageButtonClicked(MessageButton button, InAppMessageCloser inAppMessageCloser) {
+  public boolean onInAppMessageButtonClicked(IInAppMessage inAppMessage, MessageButton button, InAppMessageCloser inAppMessageCloser) {
     Toast.makeText(mActivity, "The button click was ignored.", Toast.LENGTH_LONG).show();
 
     // Closing should not be animated if transitioning to a new activity.

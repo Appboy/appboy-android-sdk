@@ -27,12 +27,6 @@ import com.appboy.ui.activities.AppboyBaseActivity;
 @SuppressLint("SetJavaScriptEnabled")
 public class AppboyWebViewActivity extends AppboyBaseActivity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyWebViewActivity.class);
-  // The Intent extra string containing the URL to open.
-  /**
-   * @Deprecated use {@link Constants#APPBOY_WEBVIEW_URL_EXTRA} instead.
-   */
-  @Deprecated
-  public static final String URL_EXTRA = Constants.APPBOY_WEBVIEW_URL_EXTRA;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -125,8 +119,8 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
 
     Bundle extras = getIntent().getExtras();
     // Opens the URL passed as an intent extra (if one exists).
-    if (extras != null && extras.containsKey(URL_EXTRA)) {
-      String url = extras.getString(URL_EXTRA);
+    if (extras != null && extras.containsKey(Constants.APPBOY_WEBVIEW_URL_EXTRA)) {
+      String url = extras.getString(Constants.APPBOY_WEBVIEW_URL_EXTRA);
       webView.loadUrl(url);
     }
   }

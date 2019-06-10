@@ -53,10 +53,15 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    boolean shouldDisplayInCutout = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("display_in_full_cutout_setting_key", false);
+    SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    boolean shouldDisplayInCutout = defaultSharedPreferences.getBoolean("display_in_full_cutout_setting_key", false);
     if (shouldDisplayInCutout) {
       setTheme(R.style.DisplayInNotchTheme);
       ViewUtils.enableImmersiveMode(getWindow().getDecorView());
+    }
+    boolean shouldDisplayNoLimitsMode = defaultSharedPreferences.getBoolean("display_no_limits_setting_key", false);
+    if (shouldDisplayNoLimitsMode) {
+      ViewUtils.enableNoLimitsMode(getWindow());
     }
     setContentView(R.layout.droid_boy);
     mApplicationContext = getApplicationContext();
@@ -87,10 +92,22 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     if (navigationView != null) {
       setupDrawerContent(navigationView);
     }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-        && !mRequestedLocationPermissions
-        && !PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-      requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !mRequestedLocationPermissions) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        boolean hasAllPermissions = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            && PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        if (!hasAllPermissions) {
+          // Request both BACKGROUND and FINE location permissions
+          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+              RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+        }
+      } else {
+        if (!PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+          // Request only FINE location permission
+          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+              RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+        }
+      }
       mRequestedLocationPermissions = true;
     }
 

@@ -31,14 +31,14 @@ public interface IInAppMessageManagerListener {
   boolean onInAppMessageReceived(IInAppMessage inAppMessage);
 
   /**
-   * @param inAppMessage the in-app message that is currently requested for display.
+   * @param inAppMessage The in-app message that is currently requested for display.
    *
    * @return InAppMessageOperation indicating how to handle the candidate in-app message.
    */
   InAppMessageOperation beforeInAppMessageDisplayed(IInAppMessage inAppMessage);
 
   /**
-   * @param inAppMessage the clicked in-app message.
+   * @param inAppMessage The clicked in-app message.
    * @param inAppMessageCloser Closing should not be animated if transitioning to a new activity.
    * If remaining in the same activity, closing should be animated.
    *
@@ -48,14 +48,15 @@ public interface IInAppMessageManagerListener {
   boolean onInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser);
 
   /**
-   * @param button the clicked message button.
+   * @param inAppMessage The clicked in-app message.
+   * @param button The clicked message button.
    * @param inAppMessageCloser Closing should not be animated if transitioning to a new activity.
    * If remaining in the same activity, closing should be animated.
    *
    * @return boolean flag to indicate to Braze whether the click has been manually handled.
    * If true, Braze will log a button click and do nothing. If false, Braze will also close the in-app message.
    */
-  boolean onInAppMessageButtonClicked(MessageButton button, InAppMessageCloser inAppMessageCloser);
+  boolean onInAppMessageButtonClicked(IInAppMessage inAppMessage, MessageButton button, InAppMessageCloser inAppMessageCloser);
 
   /**
    * @param inAppMessage the in-app message that was closed.
