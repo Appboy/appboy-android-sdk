@@ -171,13 +171,10 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
 
   protected void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
     card.setIndicatorHighlighted(true);
-    if (cardAction != null) {
-      if (card.logClick()) {
-        AppboyLogger.d(tag, "Logged click for card: " + card.getId());
-      } else {
-        AppboyLogger.d(tag, "Logging click failed for card: " + card.getId());
-      }
-      if (!isClickHandled(context, card, cardAction)) {
+    if (!isClickHandled(context, card, cardAction)) {
+      if (cardAction != null) {
+        card.logClick();
+        AppboyLogger.v(TAG, "Card action is non-null. Attempting to perform action on card: " + card.getId());
         if (cardAction instanceof UriAction) {
           AppboyNavigator.getAppboyNavigator().gotoUri(context, (UriAction) cardAction);
         } else {
@@ -185,10 +182,11 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
           cardAction.execute(context);
         }
       } else {
-        AppboyLogger.d(TAG, "Card click was handled by custom listener for card: " + card.getId());
+        AppboyLogger.v(TAG, "Card action is null. Not performing any click action on card: " + card.getId());
       }
     } else {
-      AppboyLogger.v(TAG, "Card action is null. Not performing any click action for card: " + card.getId());
+      AppboyLogger.d(TAG, "Card click was handled by custom listener on card: " + card.getId());
+      card.logClick();
     }
   }
 }

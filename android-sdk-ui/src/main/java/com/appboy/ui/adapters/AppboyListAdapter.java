@@ -140,7 +140,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       }
 
       // If there is still a card to add and it is the same as the next existing card in the feed, continue.
-      if (newCard != null && newCard.isEqualToCard(existingCard)) {
+      if (newCard != null && newCard.equals(existingCard)) {
         i++;
         j++;
       } else { // Otherwise, we need to get rid of the next card in the adapter, and continue checking.

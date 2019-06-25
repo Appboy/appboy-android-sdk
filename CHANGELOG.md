@@ -1,7 +1,31 @@
-## 3.4.0
+## 3.5.0
 
 ##### Important
 - Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+
+##### Added
+- Added `Appboy.getCachedContentCards()` to provide an easier way to obtain the cached/offline list of Content Cards on the device.
+- Added `Appboy.deserializeContentCard()` to allow for the deserialization of a Content Card. Useful for custom integrations that store the Content Cards data models in their own storage and recreate the Content Card afterwards.
+
+##### Changed
+- Deprecated `Card.isEqualTo()` in favor of using `Card.equals()`.
+
+##### Fixed
+- Fixed behavior in Content Cards and News Feed where cards without a click action wouldn't have their client click listeners called.
+
+##### Breaking
+- Removed `IAppboyUnitySupport` interface from Appboy singleton object. Its methods have been added to the `IAppboy` interface.
+- The `IAction` in `IContentCardsActionListener.onContentCardClicked()` is now annotated as `@Nullable`. Previously, this field was always non-null.
+- Fixed an issue where `FLAG_ACTIVITY_NEW_TASK` was not added to configured back stack Activities when opening push. This resulted in push notifications failing to open deep links in that situation.
+  - Custom push back stack Activities are set via `AppboyConfig.setPushDeepLinkBackStackActivityClass()`.
+
+##### Changed
+- Deprecated `Card.isEqualTo()` in favor of using `Card.equals()`.
+
+##### Fixed
+- Fixed behavior in Content Cards and News Feed where cards without a click action wouldn't have their client click listeners called nor have clicks logged.
+
+## 3.4.0
 
 ##### Added
 - Added support for Android 10 Q (API 29).
@@ -20,6 +44,9 @@
 - Removed the deprecated `AppboyWebViewActivity.URL_EXTRA`. Please use `Constants.APPBOY_WEBVIEW_URL_EXTRA` instead.
 
 ## 3.3.0
+
+##### Known Issues
+- If using a defined back stack Activity (set via `AppboyConfig.setPushDeepLinkBackStackActivityClass()`), then push notifications containing deep links won't be opened. This behavior is fixed in 3.4.1.
 
 ##### Changed
 - Changed the behavior of push deep links to not restart the launcher activity of the app when clicked.

@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -124,12 +125,10 @@ public class UriAction implements IAction {
    * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
    */
   private static void openUriWithWebViewActivityFromPush(Context context, Uri uri, Bundle extras) {
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
     try {
       Intent webViewIntent = getWebViewActivityIntent(context, uri, extras);
-      // Calling startActivities() from outside of an Activity
-      // context requires the FLAG_ACTIVITY_NEW_TASK flag on the first Intent
-      webViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      context.startActivities(getIntentArrayWithConfiguredBackStack(context, extras, webViewIntent));
+      context.startActivities(getIntentArrayWithConfiguredBackStack(context, extras, webViewIntent, configurationProvider));
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Braze WebView Activity not opened successfully.", e);
     }
@@ -142,12 +141,10 @@ public class UriAction implements IAction {
    * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
    */
   private static void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
     try {
       Intent uriIntent = getActionViewIntent(context, uri, extras);
-      // Calling startActivities() from outside of an Activity
-      // context requires the FLAG_ACTIVITY_NEW_TASK flag on the first Intent
-      uriIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      context.startActivities(getIntentArrayWithConfiguredBackStack(context, extras, uriIntent));
+      context.startActivities(getIntentArrayWithConfiguredBackStack(context, extras, uriIntent, configurationProvider));
     } catch (ActivityNotFoundException e) {
       AppboyLogger.w(TAG, "Could not find appropriate activity to open for deep link " + uri, e);
     }
@@ -196,8 +193,9 @@ public class UriAction implements IAction {
    * @see AppboyConfigurationProvider#getIsPushDeepLinkBackStackActivityEnabled()
    * @see AppboyConfigurationProvider#getPushDeepLinkBackStackActivityClassName()
    */
-  private static Intent[] getIntentArrayWithConfiguredBackStack(Context context, Bundle extras, Intent targetIntent) {
-    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
+  @VisibleForTesting
+  static Intent[] getIntentArrayWithConfiguredBackStack(Context context, Bundle extras, Intent targetIntent,
+                                                        AppboyConfigurationProvider configurationProvider) {
     // The root intent will either point to the launcher activity,
     // some custom activity, or nothing if the back-stack is disabled.
     Intent rootIntent = null;
@@ -214,6 +212,7 @@ public class UriAction implements IAction {
           AppboyLogger.i(TAG, "Adding custom back stack activity while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
           rootIntent = new Intent()
               .setClassName(context, pushDeepLinkBackStackActivityClassName)
+              .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
               .putExtras(extras);
         } else {
           AppboyLogger.i(TAG, "Not adding unregistered activity to the back stack while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
@@ -224,6 +223,10 @@ public class UriAction implements IAction {
     }
 
     if (rootIntent == null) {
+      // Calling startActivities() from outside of an Activity
+      // context requires the FLAG_ACTIVITY_NEW_TASK flag on the first Intent
+      targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
       // Just return the target intent by itself
       return new Intent[]{targetIntent};
     } else {
