@@ -34,6 +34,7 @@
 - Added the ability to enable Braze Geofences without enabling Braze location collection. Set `AppboyConfig.setGeofencesEnabled()` or `com_appboy_geofences_enabled` in your `appboy.xml` to enable Braze Geofences.
   - Note that Braze Geofences will continue to work on existing integrations if location collection is enabled and this new configuration is not present. This new configuration is intended for integrations that want Braze Geofences, but not location collection enabled as well.
 - Added `Appboy.setGoogleAdvertisingId()` to pass a Google Advertising ID and Ad Tracking Limiting enabled flag back to Braze. Note that the SDK will not automatically collect either field.
+  - Access to this feature is currently limited. If you're interested in using this feature, please reach out to your Customer Success Manager or Account Manager.
 
 ##### Fixed
 - Fixed in-app message buttons not properly respecting colors when using a Material Design style theme.
