@@ -19,12 +19,6 @@
 - Fixed an issue where `FLAG_ACTIVITY_NEW_TASK` was not added to configured back stack Activities when opening push. This resulted in push notifications failing to open deep links in that situation.
   - Custom push back stack Activities are set via `AppboyConfig.setPushDeepLinkBackStackActivityClass()`.
 
-##### Changed
-- Deprecated `Card.isEqualTo()` in favor of using `Card.equals()`.
-
-##### Fixed
-- Fixed behavior in Content Cards and News Feed where cards without a click action wouldn't have their client click listeners called nor have clicks logged.
-
 ## 3.4.0
 
 ##### Added
