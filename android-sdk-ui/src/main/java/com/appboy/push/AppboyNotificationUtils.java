@@ -731,7 +731,7 @@ public class AppboyNotificationUtils {
       JSONObject jsonExtras = new JSONObject(customContentString);
       String source = jsonExtras.optString(SOURCE_KEY, null);
       String campaignId = jsonExtras.optString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY, null);
-      if (source != null && Constants.APPBOY.equals(source) && campaignId != null) {
+      if (source != null && source.equals(Constants.APPBOY) && campaignId != null) {
         Appboy.getInstance(context).logPushNotificationOpened(campaignId);
       }
     } catch (Exception e) {

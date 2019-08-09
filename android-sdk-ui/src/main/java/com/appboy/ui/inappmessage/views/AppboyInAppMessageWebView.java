@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+
 /**
  * WebView embedded in Braze html in-app messages.
  */
@@ -26,7 +28,7 @@ public class AppboyInAppMessageWebView extends WebView {
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (keyCode == KeyEvent.KEYCODE_BACK) {
+    if (keyCode == KeyEvent.KEYCODE_BACK && AppboyInAppMessageManager.getInstance().getDoesBackButtonDismissInAppMessageView()) {
       InAppMessageViewUtils.closeInAppMessageOnKeycodeBack();
       return true;
     }

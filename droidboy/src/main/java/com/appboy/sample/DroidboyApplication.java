@@ -50,7 +50,9 @@ public class DroidboyApplication extends Application {
     Appboy.configure(this, appboyConfigBuilder.build());
 
     String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
-    Appboy.setAppboyEndpointProvider(new DroidboyEndpointProvider(overrideEndpointUrl));
+    if (!StringUtils.isNullOrBlank(overrideEndpointUrl)) {
+      Appboy.setAppboyEndpointProvider(new DroidboyEndpointProvider(overrideEndpointUrl));
+    }
 
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
 

@@ -273,6 +273,10 @@
                     android:id="@+id/custom_appboy_image_radius_checkbox"
                     android:text="@string/custom_inappmessage_image_radius"
                     style="@style/InAppMessageTesterCheckBox"/>
+                <CheckBox
+                    android:id="@+id/disable_back_button_dismiss_behavior"
+                    android:text="@string/disable_back_button_dismiss_behavior"
+                    style="@style/InAppMessageTesterCheckBox"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -131,14 +131,15 @@ public class AppboyNotificationStyleFactory {
    */
   public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context, Bundle notificationExtras,
                                                                                                     NotificationCompat.Builder notificationBuilder) {
-    NotificationCompat.DecoratedCustomViewStyle style = new NotificationCompat.DecoratedCustomViewStyle();
-    int storyPages = getPushStoryPageCount(notificationExtras);
     int pageIndex = getPushStoryPageIndex(notificationExtras);
     RemoteViews storyView = new RemoteViews(context.getPackageName(), R.layout.com_appboy_notification_story_one_image);
     if (!populatePushStoryPage(storyView, context, notificationExtras, pageIndex)) {
       AppboyLogger.w(TAG, "Push story page was not populated correctly. Not using DecoratedCustomViewStyle.");
       return null;
     }
+
+    NotificationCompat.DecoratedCustomViewStyle style = new NotificationCompat.DecoratedCustomViewStyle();
+    int storyPages = getPushStoryPageCount(notificationExtras);
     PendingIntent previousButtonPendingIntent = createStoryTraversedPendingIntent(context, notificationExtras, (pageIndex - 1 + storyPages) % storyPages);
     storyView.setOnClickPendingIntent(R.id.com_appboy_story_button_previous, previousButtonPendingIntent);
     PendingIntent nextButtonPendingIntent = createStoryTraversedPendingIntent(context, notificationExtras, (pageIndex + 1) % storyPages);
@@ -276,7 +277,6 @@ public class AppboyNotificationStyleFactory {
    */
   private static boolean populatePushStoryPage(RemoteViews view, Context context, Bundle notificationExtras, int index) {
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
-    String campaignId = notificationExtras.getString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
 
     // Set up title
     String pageTitle = AppboyNotificationActionUtils.getActionFieldAtIndex(index,
@@ -320,6 +320,7 @@ public class AppboyNotificationStyleFactory {
     view.setImageViewBitmap(STORY_FULL_VIEW_XML_IDS[4], largeNotificationBitmap);
 
     // Set up story clicked intent
+    String campaignId = notificationExtras.getString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
     String storyPageId = AppboyNotificationActionUtils.getActionFieldAtIndex(index,
         notificationExtras, Constants.APPBOY_PUSH_STORY_ID_KEY_TEMPLATE, "");
     String deepLink = AppboyNotificationActionUtils.getActionFieldAtIndex(index,

@@ -1,7 +1,29 @@
-## 3.5.0
+## 3.6.0
 
 ##### Important
 - Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+
+##### Breaking
+- External user ids (provided via `Appboy.changeUser()`), are now limited to 997 bytes in UTF-8 encoding.
+  - Existing user IDs will be truncated to 997 bytes in UTF-8 encoding.
+  - New user IDs (via `Appboy.changeUser()`) will be rejected if too long.
+  - This byte limit can be read in code via `Constants#USER_ID_MAX_LENGTH_BYTES`.
+- Added `IInAppMessage.getMessageType()` to return the `MessageType` enum for easier in-app message type checking.
+- Braze location collection is disabled by default. If you choose to use our location services, you must explicitly enable location services.
+  - You can do this by configuring the boolean value for `com_appboy_enable_location_collection` in your `appboy.xml`. The default value is false.
+  - You can also enable location collection at runtime by setting `AppboyConfig.setIsLocationCollectionEnabled()` to true.
+  - The old configuration value `com_appboy_disable_location_collection` in appboy.xml is deprecated. It should be replaced with new configuration value of `com_appboy_enable_location_collection`.
+
+##### Changed
+- Changed the click target area of in-app message close buttons to 48dp. The close button drawable was increased to `20dp` from `14dp`.
+  - The width/height in dp of this click target can be configured with a `dimens` override for `com_appboy_in_app_message_close_button_click_area_width` and `com_appboy_in_app_message_close_button_click_area_height` respectively.
+- Changed `UriUtils.getQueryParameters()` to handle the parsing of an opaque/non-hierarchical Uri such as `mailto:` or `tel:`.
+
+##### Added
+- Added `AppboyContentCardsFragment.getContentCardsRecyclerView()` to obtain the RecyclerView associated with the Content Cards fragment.
+- Added `AppboyInAppMessageManager.getDefaultInAppMessageViewFactory()` to simplify most custom implementations of `IInAppMessageViewFactory`.
+
+## 3.5.0
 
 ##### Added
 - Added `Appboy.getCachedContentCards()` to provide an easier way to obtain the cached/offline list of Content Cards on the device.
@@ -202,7 +224,7 @@
 ## 2.6.0
 
 ##### Added
-- Introduced support for the upcoming Content Cards feature, which will eventually replace the existing News Feed feature and adds significant capability. This feature is currently in closed beta testing; if you're interested in joining the beta, please reach out to your Customer Success Manager or Account Manager.
+- Introduced support for the Content Cards feature, which will eventually replace the existing News Feed feature and adds significant capability.
 
 ##### Breaking
 - Updated the minimum SDK version from 14 (Ice Cream Sandwich) to 16 (Jelly Bean).

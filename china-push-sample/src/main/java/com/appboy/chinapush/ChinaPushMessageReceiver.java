@@ -10,6 +10,7 @@ import com.baidu.android.pushservice.PushMessageReceiver;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class receives event updates from the Baidu push service. We forward a subset of these
@@ -156,7 +157,7 @@ public class ChinaPushMessageReceiver extends PushMessageReceiver {
    * @param startActivity whether to start the main activity
    */
   private void updateApplicationMessageLog(Context context, String logMessage, boolean startActivity) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
     String currentTimeStamp = dateFormat.format(new Date());
     mApplicationMessageLog = mApplicationMessageLog + "\n" + currentTimeStamp + " " + logMessage;
     if (startActivity) {

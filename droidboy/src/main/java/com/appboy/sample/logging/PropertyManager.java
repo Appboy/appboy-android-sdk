@@ -106,7 +106,7 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
       } else if (value instanceof Long) {
         appboyProperties.addProperty(key, (long) value);
       } else {
-        AppboyLogger.e(PropertyManager.this.getClass().toString(), "invalid property type");
+        AppboyLogger.e(this.getClass().toString(), "invalid property type");
       }
     }
     return appboyProperties;

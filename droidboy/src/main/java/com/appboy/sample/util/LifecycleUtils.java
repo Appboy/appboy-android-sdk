@@ -8,6 +8,7 @@ import android.content.Intent;
 import com.appboy.sample.DroidBoyActivity;
 import com.appboy.support.AppboyLogger;
 
+@SuppressWarnings("PMD.DoNotCallSystemExit")
 public class LifecycleUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(LifecycleUtils.class);
 

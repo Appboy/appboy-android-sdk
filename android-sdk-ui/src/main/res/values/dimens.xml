@@ -21,4 +21,7 @@
   <dimen name="com_appboy_in_app_message_modal_max_height">750dp</dimen>
   <dimen name="com_appboy_in_app_message_modal_margin">15dp</dimen>
   <dimen name="com_appboy_in_app_message_slideup_left_message_margin_no_image">20dp</dimen>
+  <!-- The click area target size in dp for modals and fullscreen in-app messages to ensure the click area extends beyond the drawable. -->
+  <dimen name="com_appboy_in_app_message_close_button_click_area_width">48dp</dimen>
+  <dimen name="com_appboy_in_app_message_close_button_click_area_height">48dp</dimen>
 </resources>

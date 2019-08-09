@@ -38,6 +38,7 @@ public class MainFragment extends Fragment {
   private static final String STRING_ATTRIBUTE_KEY = "stringAttribute";
   private static final String DOUBLE_ATTRIBUTE_KEY = "doubleAttribute";
   private static final String INCREMENT_ATTRIBUTE_KEY = "incrementAttribute";
+  private static final String ATTRIBUTION_DATA_KEY = "ab_install_attribution";
   static final String USER_ID_KEY = "user.id";
 
   private EditText mUserIdEditText;
@@ -52,13 +53,11 @@ public class MainFragment extends Fragment {
   private Button mLogPurchaseButton;
   private Button mSubmitFeedbackButton;
   private Button mSetUserAttributesButton;
-  private Button mUnsetCustomUserAttributesButton;
+  private Button mUnsetUserAttributesButton;
   private Button mRequestFlushButton;
   private Button mGoogleAdvertisingIdFlushButton;
   private Context mContext;
   private SharedPreferences mSharedPreferences;
-
-  public MainFragment() {}
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +79,7 @@ public class MainFragment extends Fragment {
     mSubmitFeedbackButton = contentView.findViewById(R.id.com_appboy_sample_submit_feedback_button);
     // Braze User methods
     mSetUserAttributesButton = contentView.findViewById(R.id.com_appboy_sample_set_user_attributes_button);
-    mUnsetCustomUserAttributesButton = contentView.findViewById(R.id.com_appboy_sample_unset_custom_attributes_button);
+    mUnsetUserAttributesButton = contentView.findViewById(R.id.com_appboy_sample_unset_user_attributes_button);
     mRequestFlushButton = contentView.findViewById(R.id.com_appboy_sample_request_flush_button);
     mGoogleAdvertisingIdFlushButton = contentView.findViewById(R.id.com_appboy_sample_collect_and_flush_google_advertising_id_button);
     return contentView;
@@ -168,9 +167,23 @@ public class MainFragment extends Fragment {
         Toast.makeText(getContext(), "Set user attributes.", Toast.LENGTH_SHORT).show();
       }
     });
-    mUnsetCustomUserAttributesButton.setOnClickListener(new View.OnClickListener() {
+    mUnsetUserAttributesButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
         AppboyUser currentUser = Appboy.getInstance(mContext).getCurrentUser();
+        // Unset current user default attributes
+        currentUser.setFirstName(null);
+        currentUser.setLastName(null);
+        currentUser.setEmail(null);
+        currentUser.setGender(Gender.UNKNOWN);
+        currentUser.setCountry(null);
+        currentUser.setLanguage(null);
+        currentUser.setHomeCity(null);
+        currentUser.setPhoneNumber(null);
+        currentUser.setDateOfBirth(1970, Month.JANUARY, 1);
+        currentUser.setAvatarImageUrl(null);
+        currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED);
+        currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED);
+        // Unset current user custom attributes
         currentUser.unsetCustomUserAttribute(STRING_ATTRIBUTE_KEY);
         currentUser.unsetCustomUserAttribute(FLOAT_ATTRIBUTE_KEY);
         currentUser.unsetCustomUserAttribute(INT_ATTRIBUTE_KEY);
@@ -181,8 +194,10 @@ public class MainFragment extends Fragment {
         currentUser.unsetCustomUserAttribute(STRING_ARRAY_ATTRIBUTE_KEY);
         currentUser.unsetCustomUserAttribute(PETS_ARRAY_ATTRIBUTE_KEY);
         currentUser.unsetCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY);
+        currentUser.unsetCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY);
+        currentUser.unsetCustomUserAttribute(ATTRIBUTION_DATA_KEY);
         currentUser.unsetLocationCustomAttribute("Mediocre Location");
-        Toast.makeText(getContext(), "Unset custom user attributes.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Unset user attributes.", Toast.LENGTH_SHORT).show();
       }
     });
     mRequestFlushButton.setOnClickListener(new View.OnClickListener() {

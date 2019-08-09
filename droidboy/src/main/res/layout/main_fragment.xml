@@ -39,9 +39,9 @@
             style="@style/DroidboyButton"
             android:text="Set User Attributes"/>
         <Button
-            android:id="@+id/com_appboy_sample_unset_custom_attributes_button"
+            android:id="@+id/com_appboy_sample_unset_user_attributes_button"
             style="@style/DroidboyButton"
-            android:text="Unset Custom User Attributes"/>
+            android:text="Unset User Attributes"/>
         <Button
             android:id="@+id/com_appboy_sample_submit_feedback_button"
             style="@style/DroidboyButton"

@@ -37,7 +37,7 @@ public class HelloAppboyApplication extends Application {
         .setSmallNotificationIcon(resources.getResourceEntryName(R.drawable.ic_launcher_hello_appboy))
         .setLargeNotificationIcon(resources.getResourceEntryName(R.drawable.ic_launcher_hello_appboy))
         .setTriggerActionMinimumTimeIntervalSeconds(5)
-        .setDisableLocationCollection(true)
+        .setIsLocationCollectionEnabled(false)
         .setNewsfeedVisualIndicatorOn(true)
         .setDefaultNotificationAccentColor(0xFFf33e3e)
         .setLocaleToApiMapping(localeToApiKeyMapping)

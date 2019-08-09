@@ -17,18 +17,19 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("PMD.FieldDeclarationsShouldBeAtStartOfClass")
 public class FeedCategoriesFragment extends DialogFragment {
   private static final String TAG = AppboyLogger.getAppboyLogTag(FeedCategoriesFragment.class);
   public static final String CATEGORIES_STRING = "categories";
 
-  /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
+  /**
+   * The activity that creates an instance of this dialog fragment must
+   * implement this interface in order to receive event callbacks.
+   * Each method passes the DialogFragment in case the host needs to query it.
+   */
   public interface NoticeDialogListener {
     void onDialogPositiveClick(FeedCategoriesFragment dialog);
   }
-
-  public FeedCategoriesFragment() {}
 
   public EnumSet<CardCategory> selectedCategories;
 

@@ -12,6 +12,8 @@ import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.MessageButton;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.appboy.ui.R;
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.IInAppMessageImmersiveView;
 import com.appboy.ui.support.ViewUtils;
 
@@ -69,8 +71,6 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
       ViewUtils.removeViewFromParent(getMessageHeaderTextView());
     }
     InAppMessageViewUtils.resetMessageMarginsIfNecessary(getMessageTextView(), getMessageHeaderTextView());
-
-    setLargerCloseButtonClickArea(getMessageCloseButtonView());
   }
 
   public abstract View getFrameView();
@@ -86,45 +86,54 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (keyCode == KeyEvent.KEYCODE_BACK) {
+    if (keyCode == KeyEvent.KEYCODE_BACK && AppboyInAppMessageManager.getInstance().getDoesBackButtonDismissInAppMessageView()) {
       InAppMessageViewUtils.closeInAppMessageOnKeycodeBack();
       return true;
     }
     return super.onKeyDown(keyCode, event);
   }
 
-  private void setLargerCloseButtonClickArea(final View target) {
-    if (target == null || target.getParent() == null) {
+  /**
+   * Sets a rectangular click area for the close button. This is necessary to provide a larger click
+   * area than the close button drawable and to ensure that the click area is not a mask of the drawable
+   * and is instead an easy to tap rectangle.
+   *
+   * @param closeButtonView The close button view.
+   */
+  public void setLargerCloseButtonClickArea(final View closeButtonView) {
+    if (closeButtonView == null || closeButtonView.getParent() == null) {
       AppboyLogger.w(TAG, "Cannot increase click area for view if view and/or parent are null.");
       return;
     }
 
-    if (target.getParent() instanceof View) {
-      ((View) target.getParent()).post(new Runnable() {
+    if (closeButtonView.getParent() instanceof View) {
+      ((View) closeButtonView.getParent()).post(new Runnable() {
         @Override
         public void run() {
           Rect delegateArea = new Rect();
 
           // The hit rectangle for the ImageButton
-          target.getHitRect(delegateArea);
+          closeButtonView.getHitRect(delegateArea);
 
           // Extend the touch area of the ImageButton beyond its bounds
-          int rightAndTopPadding = (int) ViewUtils.convertDpToPixels(getContext(), 15);
-          int leftAndBottomPadding = (int) ViewUtils.convertDpToPixels(getContext(), 10);
+          final int desiredCloseButtonClickAreaWidth = getContext().getResources().getDimensionPixelSize(R.dimen.com_appboy_in_app_message_close_button_click_area_width);
+          final int desiredCloseButtonClickAreaHeight = getContext().getResources().getDimensionPixelSize(R.dimen.com_appboy_in_app_message_close_button_click_area_height);
+          int extraHorizontalPadding = (desiredCloseButtonClickAreaWidth - delegateArea.width()) / 2;
+          int extraVerticalPadding = (desiredCloseButtonClickAreaHeight - delegateArea.height()) / 2;
 
-          delegateArea.right += rightAndTopPadding;
-          delegateArea.bottom += leftAndBottomPadding;
-          delegateArea.left -= leftAndBottomPadding;
-          delegateArea.top -= rightAndTopPadding;
+          delegateArea.top -= extraVerticalPadding;
+          delegateArea.bottom += extraVerticalPadding;
+          delegateArea.left -= extraHorizontalPadding;
+          delegateArea.right += extraHorizontalPadding;
 
           // Instantiate a TouchDelegate.
           // "delegateArea" is the bounds in local coordinates of
           // the containing view to be mapped to the delegate view.
-          TouchDelegate touchDelegate = new TouchDelegate(delegateArea, target);
+          TouchDelegate touchDelegate = new TouchDelegate(delegateArea, closeButtonView);
 
           // Sets the TouchDelegate on the parent view, such that touches
           // within the touch delegate bounds are routed to the child.
-          ((View) target.getParent()).setTouchDelegate(touchDelegate);
+          ((View) closeButtonView.getParent()).setTouchDelegate(touchDelegate);
         }
       });
     }

@@ -57,6 +57,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
       // Only non-graphic full in-app messages should be capped to half the parent height
       ((AppboyInAppMessageImageView) view.getMessageImageView()).setToHalfParentHeight(true);
     }
+    view.setLargerCloseButtonClickArea(view.getMessageCloseButtonView());
     resetLayoutParamsIfAppropriate(activity, inAppMessageFull, view);
 
     // Get the scrollView, if it exists. For graphic full, it will not

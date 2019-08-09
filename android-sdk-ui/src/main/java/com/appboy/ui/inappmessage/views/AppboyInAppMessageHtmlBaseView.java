@@ -7,6 +7,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
 
@@ -51,7 +52,7 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (keyCode == KeyEvent.KEYCODE_BACK) {
+    if (keyCode == KeyEvent.KEYCODE_BACK && AppboyInAppMessageManager.getInstance().getDoesBackButtonDismissInAppMessageView()) {
       InAppMessageViewUtils.closeInAppMessageOnKeycodeBack();
       return true;
     }

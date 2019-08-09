@@ -9,53 +9,51 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class UriUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(UriUtils.class);
 
   /**
-   * Backport of the Uri.getQueryParameters method.
-   *
-   * Note: A Uri such as tel:+1-555-555-5555 is not hierarchical and does not accept a query
-   * string, so an empty Map will be returned.
+   * Parses the query part of the uri and returns a mapping of the query keys to the
+   * values. Empty keys or empty values will not be included in the mapping.
    */
-  @SuppressWarnings("checkstyle:rightcurly")
   public static Map<String, String> getQueryParameters(Uri uri) {
-    if (uri.isOpaque()) {
-      AppboyLogger.d(TAG, "URI is not hierarchical. There are no query parameters to parse.");
+    String encodedQuery = uri.getEncodedQuery();
+    if (encodedQuery == null) {
+      AppboyLogger.v(TAG, "Encoded query is null for Uri: " + uri + " Returning empty map for query parameters");
       return Collections.emptyMap();
     }
 
-    String query = uri.getEncodedQuery();
-    if (query == null) {
-      return Collections.emptyMap();
+    Map<String, String> parameterValueMap = new HashMap<String, String>();
+    try {
+      if (uri.isOpaque()) {
+        // Convert the opaque uri into a parseable hierarchical one
+        // This is basically copying the query from the original uri onto a new one
+        uri = Uri.parse("://")
+            .buildUpon()
+            .encodedQuery(encodedQuery)
+            .build();
+      }
+
+      final Set<String> queryParameterNames = uri.getQueryParameterNames();
+      for (String queryParameterKey : queryParameterNames) {
+        final String queryParameterValue = uri.getQueryParameter(queryParameterKey);
+
+        if (!StringUtils.isNullOrEmpty(queryParameterKey) && !StringUtils.isNullOrEmpty(queryParameterValue)) {
+          parameterValueMap.put(queryParameterKey, queryParameterValue);
+        }
+      }
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Failed to map the query parameters of Uri: " + uri, e);
     }
 
-    Map<String, String> parameters = new HashMap<String, String>();
-    int start = 0;
-    do {
-      int next = query.indexOf('&', start);
-      int end = (next == -1) ? query.length() : next;
-
-      int separator = query.indexOf('=', start);
-      if (separator > end || separator == -1) {
-        separator = end;
-      }
-
-      if (end > start) {
-        String name = query.substring(start, separator);
-        String value = query.substring(separator + 1, end);
-        parameters.put(Uri.decode(name), Uri.decode(value));
-      }
-
-      // Move start to end of name.
-      start = end + 1;
-    } while (start < query.length());
-    return Collections.unmodifiableMap(parameters);
+    return parameterValueMap;
   }
 
   public static Intent getMainActivityIntent(Context context, Bundle extras) {

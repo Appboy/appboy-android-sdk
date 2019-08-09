@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!-- Cards -->
   <string name="com_appboy_recommendation_free">Free</string>
 
@@ -17,4 +17,10 @@
   <string name="com_appboy_feed_empty">We have no updates.\nPlease check again later.</string>
   <string name="com_appboy_feed_connection_error_title">Connection Error</string>
   <string name="com_appboy_feed_connection_error_body">Cannot establish network connection.\nPlease try again later.</string>
+
+  <!-- Content descriptions -->
+  <string name="com_appboy_inappmessage_close_content_description" tools:ignore="MissingTranslation">in-app message close</string>
+  <string name="com_appboy_inappmessage_image_content_description" tools:ignore="MissingTranslation">in-app message image</string>
+  <string name="com_appboy_inappmessage_icon_content_description" tools:ignore="MissingTranslation">in-app message icon</string>
+
 </resources>

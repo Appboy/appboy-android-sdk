@@ -87,9 +87,6 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   // when their respective views are visible.
   private View mTransparentFullBoundsContainerView;
 
-  public AppboyFeedFragment() {
-  }
-
   @Override
   public void onAttach(final Context context) {
     super.onAttach(context);

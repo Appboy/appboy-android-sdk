@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 
@@ -17,11 +18,7 @@ import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
 import com.appboy.models.IInAppMessage;
-import com.appboy.models.InAppMessageFull;
-import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageImmersiveBase;
-import com.appboy.models.InAppMessageModal;
-import com.appboy.models.InAppMessageSlideup;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.JsonUtils;
 import com.appboy.ui.inappmessage.factories.AppboyFullViewFactory;
@@ -104,6 +101,7 @@ public final class AppboyInAppMessageManager {
   private Context mApplicationContext;
   private Integer mOriginalOrientation;
   private AppboyConfigurationProvider mAppboyConfigurationProvider;
+  private boolean mBackButtonDismissesInAppMessageView = true;
 
   // view listeners
   private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new AppboyInAppMessageWebViewClientListener();
@@ -430,6 +428,33 @@ public final class AppboyInAppMessageManager {
     return mApplicationContext;
   }
 
+  /**
+   * Gets the default {@link IInAppMessageViewFactory} as returned by the {@link AppboyInAppMessageManager}
+   * for the given {@link IInAppMessage}.
+   *
+   * @return The {@link IInAppMessageViewFactory} or null if the message type does not have a {@link IInAppMessageViewFactory}.
+   */
+  public IInAppMessageViewFactory getDefaultInAppMessageViewFactory(IInAppMessage inAppMessage) {
+    switch (inAppMessage.getMessageType()) {
+      case SLIDEUP:
+        return mInAppMessageSlideupViewFactory;
+      case MODAL:
+        return mInAppMessageModalViewFactory;
+      case FULL:
+        return mInAppMessageFullViewFactory;
+      case HTML_FULL:
+        return mInAppMessageHtmlFullViewFactory;
+      default:
+        return null;
+    }
+  }
+
+  /**
+   * Resets the {@link AppboyInAppMessageManager} to its original state before the last in-app message
+   * was displayed. This allows for a new in-app message to be displayed after calling this method.
+   * {@link ViewUtils#setActivityRequestedOrientation(Activity, int)} is called with the original
+   * orientation before the last in-app message was displayed.
+   */
   public void resetAfterInAppMessageClose() {
     AppboyLogger.v(TAG, "Resetting after in-app message close.");
     mInAppMessageViewWrapper = null;
@@ -441,6 +466,19 @@ public final class AppboyInAppMessageManager {
     }
   }
 
+  /**
+   * Sets whether the hardware back button dismisses in-app messages. Defaults to true.
+   * Note that the hardware back button default behavior will be used instead (i.e. the host {@link Activity}'s
+   * {@link Activity#onKeyDown(int, KeyEvent)} method will be called).
+   */
+  public void setBackButtonDismissesInAppMessageView(boolean backButtonDismissesInAppMessageView) {
+    mBackButtonDismissesInAppMessageView = backButtonDismissesInAppMessageView;
+  }
+
+  public boolean getDoesBackButtonDismissInAppMessageView() {
+    return mBackButtonDismissesInAppMessageView;
+  }
+
   private IInAppMessageAnimationFactory getInAppMessageAnimationFactory() {
     return mCustomInAppMessageAnimationFactory != null ? mCustomInAppMessageAnimationFactory : mInAppMessageAnimationFactory;
   }
@@ -448,16 +486,8 @@ public final class AppboyInAppMessageManager {
   private IInAppMessageViewFactory getInAppMessageViewFactory(IInAppMessage inAppMessage) {
     if (mCustomInAppMessageViewFactory != null) {
       return mCustomInAppMessageViewFactory;
-    } else if (inAppMessage instanceof InAppMessageSlideup) {
-      return mInAppMessageSlideupViewFactory;
-    } else if (inAppMessage instanceof InAppMessageModal) {
-      return mInAppMessageModalViewFactory;
-    } else if (inAppMessage instanceof InAppMessageFull) {
-      return mInAppMessageFullViewFactory;
-    } else if (inAppMessage instanceof InAppMessageHtmlFull) {
-      return mInAppMessageHtmlFullViewFactory;
     } else {
-      return null;
+      return getDefaultInAppMessageViewFactory(inAppMessage);
     }
   }
 

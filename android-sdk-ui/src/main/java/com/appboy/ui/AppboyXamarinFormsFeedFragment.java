@@ -31,6 +31,7 @@ import com.appboy.ui.adapters.AppboyListAdapter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+@SuppressWarnings("PMD.UnnecessaryConstructor")
 public class AppboyXamarinFormsFeedFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyXamarinFormsFeedFragment.class);
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;

@@ -38,11 +38,12 @@
   <bool name="com_appboy_newsfeed_unread_visual_indicator_on">true</bool>
 
   <!-- Location configuration -->
-  <!-- This boolean sets whether Braze should automatically collect location (if the user permits). If set to true,
-    all location collection will be disabled and location will never be set for the user
-    unless integrating apps manually call setUserLastKnownLocation on the AppboyUser.
-    If not specified or set to false, location data will be collected once at the start of each session. -->
-  <bool name="com_appboy_disable_location_collection">false</bool>
+  <!-- This boolean sets whether Braze should automatically collect location (if the user permits).
+    If set to true, location data will be collected once at the start of each session.
+    If not specified or set to false, all location collection will be disabled and location will
+    never be set for the user unless integrating apps manually call setLastKnownLocation on the
+    AppboyUser. -->
+  <bool name="com_appboy_enable_location_collection">true</bool>
 
   <!-- Triggered Action configuration -->
   <!-- The minimum interval in seconds between actions, such as an in-app message, that can be triggered

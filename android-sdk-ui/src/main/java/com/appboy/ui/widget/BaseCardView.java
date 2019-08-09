@@ -23,6 +23,7 @@ import com.appboy.ui.feed.AppboyImageSwitcher;
 /**
  * Base class for Braze feed card views
  */
+@SuppressWarnings("PMD.AssignmentToNonFinalStatic")
 public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   private static final String TAG = AppboyLogger.getAppboyLogTag(BaseCardView.class);
   private static final float SQUARE_ASPECT_RATIO = 1f;

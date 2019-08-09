@@ -25,6 +25,7 @@ import com.appboy.support.ValidationUtils;
  * @deprecated The feedback feature is disabled for new accounts, and will be removed in a future SDK release.
  */
 @Deprecated
+@SuppressWarnings("PMD.FieldDeclarationsShouldBeAtStartOfClass")
 public class AppboyFeedbackFragment extends Fragment {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFeedbackFragment.class);
 
@@ -71,9 +72,6 @@ public class AppboyFeedbackFragment extends Fragment {
   private IFeedbackFinishedListener mFeedbackFinishedListener;
   private int mOriginalSoftInputMode;
   private boolean mErrorMessageShown;
-
-  public AppboyFeedbackFragment() {
-  }
 
   @Override
   public void onAttach(Context context) {

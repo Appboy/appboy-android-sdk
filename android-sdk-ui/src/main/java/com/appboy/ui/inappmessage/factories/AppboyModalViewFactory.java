@@ -50,6 +50,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
       view.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
       ((AppboyInAppMessageImageView) view.getMessageImageView()).setAspectRatio(NON_GRAPHIC_ASPECT_RATIO);
     }
+    view.setLargerCloseButtonClickArea(view.getMessageCloseButtonView());
     return view;
   }
 

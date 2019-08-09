@@ -1,5 +1,6 @@
 package com.appboy.sample;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private static final String CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY = "inappmessages_custom_appboy_html_inappmessage_action_listener";
   private static final String CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE = "inappmessages_custom_appboy_graphic_modal_max_size";
   private static final String CUSTOM_INAPPMESSAGE_IMAGE_RADIUS = "inappmessages_custom_appboy_image_radius";
+  private static final String DISABLE_BACK_BUTTON_DISMISSAL = "inappmessages_disable_back_button_dismiss_behavior";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -153,10 +155,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
         }
-        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomInAppMessageView = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
+    boolean usingCustomInAppMessageView = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
     customInAppMessageViewCheckBox.setChecked(usingCustomInAppMessageView);
 
     CheckBox customInAppMessageManagerListenerCheckBox = view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox);
@@ -168,10 +170,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
         }
-        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomInAppMessageManagerListener = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
+    boolean usingCustomInAppMessageManagerListener = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
     customInAppMessageManagerListenerCheckBox.setChecked(usingCustomInAppMessageManagerListener);
 
     CheckBox customAppboyNavigatorCheckBox = view.findViewById(R.id.custom_appboy_navigator_checkbox);
@@ -183,10 +185,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         } else {
           AppboyNavigator.setAppboyNavigator(null);
         }
-        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomAppboyNavigator = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
+    boolean usingCustomAppboyNavigator = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
     customAppboyNavigatorCheckBox.setChecked(usingCustomAppboyNavigator);
 
     CheckBox maxSizeCheckBox = view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox);
@@ -200,10 +202,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
           AppboyInAppMessageParams.setGraphicModalMaxHeightDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
           AppboyInAppMessageParams.setGraphicModalMaxWidthDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
         }
-        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, isChecked).apply();
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, isChecked).apply();
       }
     });
-    boolean maxSizedChecked = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, false);
+    boolean maxSizedChecked = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, false);
     maxSizeCheckBox.setChecked(maxSizedChecked);
 
     CheckBox imageRadiusCheckBox = view.findViewById(R.id.custom_appboy_image_radius_checkbox);
@@ -215,18 +217,29 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         } else {
           AppboyInAppMessageParams.setModalizedImageRadiusDp(AppboyInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
         }
-        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, isChecked).apply();
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, isChecked).apply();
       }
     });
-    boolean customRadiusChecked = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, false);
+    boolean customRadiusChecked = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, false);
     imageRadiusCheckBox.setChecked(customRadiusChecked);
+
+    CheckBox backButtonDismissalCheckBox = view.findViewById(R.id.disable_back_button_dismiss_behavior);
+    backButtonDismissalCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(false);
+      } else {
+        AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(true);
+      }
+      getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(DISABLE_BACK_BUTTON_DISMISSAL, isChecked).apply();
+    });
+    boolean customDisableBackButtonChecked = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(DISABLE_BACK_BUTTON_DISMISSAL, false);
+    backButtonDismissalCheckBox.setChecked(customDisableBackButtonChecked);
 
     Button createAndAddInAppMessageButton = view.findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
-          // current custom in-app message view is an implementation of a base in-app message.
+        if (getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
           addInAppMessage(new CustomInAppMessage());
         } else {
           if ("slideup".equals(mMessageType)) {
@@ -273,10 +286,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         } else {
           AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
         }
-        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomInAppAnimation = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
+    boolean usingCustomInAppAnimation = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
     customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
 
     CheckBox customHtmlInAppMessageActionListenerCheckBox = view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
@@ -288,10 +301,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         } else {
           AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
         }
-        getActivity().getPreferences(getActivity().MODE_PRIVATE).edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
       }
     });
-    boolean usingCustomHtmlInAppActionListener = getActivity().getPreferences(getActivity().MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
+    boolean usingCustomHtmlInAppActionListener = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
     customHtmlInAppMessageActionListenerCheckBox.setChecked(usingCustomHtmlInAppActionListener);
 
     Button displayNextInAppMessageButton = view.findViewById(R.id.display_next_inappmessage_button);

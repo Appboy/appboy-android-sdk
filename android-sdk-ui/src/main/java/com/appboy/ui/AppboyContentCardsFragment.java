@@ -110,6 +110,17 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   }
 
   /**
+   * The {@link RecyclerView} used in this fragment. Note that this will be
+   * null until {@link Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)} is called.
+   *
+   * @return A {@link android.support.v7.widget.RecyclerView} associated with {@link com.appboy.ui.AppboyContentCardsFragment}.
+   */
+  @Nullable
+  public RecyclerView getContentCardsRecyclerView() {
+    return mRecyclerView;
+  }
+
+  /**
    * Called when the user swipes down and requests a feed refresh.
    */
   @Override

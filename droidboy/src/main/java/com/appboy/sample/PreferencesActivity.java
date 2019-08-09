@@ -124,7 +124,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
     sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
     apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
-    String pushToken = Appboy.getInstance(PreferencesActivity.this).getAppboyPushMessageRegistrationId();
+    String pushToken = Appboy.getInstance(this).getAppboyPushMessageRegistrationId();
     if (StringUtils.isNullOrBlank(pushToken)) {
       pushToken = "None";
     }
@@ -344,7 +344,7 @@ public class PreferencesActivity extends PreferenceActivity {
   }
 
   private String getApiKeyBackendString() {
-    String apiKey = PreferencesActivity.this.getResources().getString(R.string.com_appboy_api_key);
+    String apiKey = this.getResources().getString(R.string.com_appboy_api_key);
     String apiKeyTarget = API_KEY_TO_APP_MAP.get(apiKey);
     if (StringUtils.isNullOrBlank(apiKeyTarget)) {
       return "Unknown";
@@ -353,7 +353,7 @@ public class PreferencesActivity extends PreferenceActivity {
   }
 
   private String getUserId() {
-    String userId = Appboy.getInstance(PreferencesActivity.this).getCurrentUser().getUserId();
+    String userId = Appboy.getInstance(this).getCurrentUser().getUserId();
     if (StringUtils.isNullOrBlank(userId)) {
       userId = "Anonymous User";
     }
@@ -409,7 +409,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    RuntimePermissionUtils.handleOnRequestPermissionsResult(PreferencesActivity.this, requestCode, grantResults);
+    RuntimePermissionUtils.handleOnRequestPermissionsResult(this, requestCode, grantResults);
   }
 
   @Override

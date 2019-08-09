@@ -7,7 +7,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.3.2'
+    classpath 'com.android.tools.build:gradle:3.4.1'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     classpath 'com.google.gms:google-services:4.2.0'
     classpath "org.ajoberstar:grgit:${AJOBERSTAR_GIT_GRADLE_PLUGIN_VERSION}"
@@ -19,7 +19,7 @@ ext {
   buildToolsVersion = '29.0.0'
   minSdkVersion = 16
   targetSdkVersion = 29
-  appVersionName = '3.5.0'
+  appVersionName = '3.6.0'
 }
 
 subprojects {
@@ -32,10 +32,5 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '3.5.0'
-}
-
-// Run 'gradle wrapper' to generate all of the wrapper files if you change this.
-task wrapper(type: Wrapper) {
-  gradleVersion = '4.6'
+  version = '3.6.0'
 }

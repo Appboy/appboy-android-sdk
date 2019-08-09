@@ -219,7 +219,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
             newFragment.show(getSupportFragmentManager(), "categories");
           }
         } else {
-          Toast.makeText(DroidBoyActivity.this, "Feed fragment hasn't been instantiated yet.",
+          Toast.makeText(this, "Feed fragment hasn't been instantiated yet.",
               Toast.LENGTH_SHORT).show();
         }
         break;
@@ -231,7 +231,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
   @Override
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    RuntimePermissionUtils.handleOnRequestPermissionsResult(DroidBoyActivity.this, requestCode, grantResults);
+    RuntimePermissionUtils.handleOnRequestPermissionsResult(this, requestCode, grantResults);
   }
 
   private void replaceCurrentFragment(Fragment newFragment) {
@@ -264,7 +264,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     if (extras != null && Constants.APPBOY.equals(extras.getString(getResources().getString(R.string.source_key)))) {
       navigateToDestination(extras);
       String bundleLogString = convertBundleToAppboyLogString(extras);
-      Toast.makeText(DroidBoyActivity.this, bundleLogString, Toast.LENGTH_LONG).show();
+      Toast.makeText(this, bundleLogString, Toast.LENGTH_LONG).show();
       Log.d(TAG, bundleLogString);
     }
 
