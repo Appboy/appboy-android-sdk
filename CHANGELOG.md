@@ -1,7 +1,21 @@
-## 3.6.0
+## 3.7.0
 
 ##### Important
 - Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+
+##### Changed
+- Improves support for in-app messages on “notched” devices (for example, iPhone X, Pixel 3XL). Full-screen messages now expand to fill the entire screen of any phone, while covering the status bar.
+- Changed the behavior of HTML In-App Messages to not display until the content has finished loading as determined via `WebViewClient#onPageFinished()` on the in-app message's `WebView`.
+
+##### Breaking
+- Added the `applyWindowInsets()` method to `IInAppMessageView` interface. This allows for granular customization at the in-app message view level with respect to device notches.
+- The old configuration key used in `appboy.xml` for disabling location collection `com_appboy_disable_location_collection` is now deleted. This key is replaced by `com_appboy_enable_location_collection`. The default value of `com_appboy_disable_location_collection` is false. Braze location collection is disabled by default starting with Braze SDK version 3.6.0.
+- Removes the Feedback feature from the SDK. All Feedback methods on the SDK, including `Appboy.submitFeedback()` and `Appboy.logFeedbackDisplayed()`, are removed.
+
+##### Fixed
+- Changed the behavior of In-App Messages to allow analytics to be logged again when the same In-App Message is displaying a new time.
+
+## 3.6.0
 
 ##### Breaking
 - External user ids (provided via `Appboy.changeUser()`), are now limited to 997 bytes in UTF-8 encoding.

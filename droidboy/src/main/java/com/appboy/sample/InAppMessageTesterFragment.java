@@ -48,7 +48,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   protected static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageTesterFragment.class);
 
   private enum HtmlMessageType {
-    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS, YOUTUBE, BRIDGE_TESTER
+    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS, YOUTUBE, BRIDGE_TESTER, SLOW_LOADING
   }
 
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
@@ -137,6 +137,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private String mHtmlBodyFromAssetsStarWars;
   private String mHtmlBodyFromAssetsYoutube;
   private String mHtmlBodyFromBridgeTester;
+  private String mHtmlBodyFromSlowLoading;
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -271,6 +272,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.YOUTUBE);
           } else if ("html_full_bridge_tester".equals(mMessageType)) {
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.BRIDGE_TESTER);
+          } else if ("html_full_slow_loading".equals(mMessageType)) {
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.SLOW_LOADING);
           } else {
             addInAppMessage(new InAppMessageSlideup());
           }
@@ -335,6 +338,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     mHtmlBodyFromAssetsStarWars = readHtmlBodyFromAssets(HtmlMessageType.STAR_WARS);
     mHtmlBodyFromBridgeTester = readHtmlBodyFromAssets(HtmlMessageType.BRIDGE_TESTER);
     mHtmlBodyFromAssetsYoutube = readHtmlBodyFromAssets(HtmlMessageType.YOUTUBE);
+    mHtmlBodyFromSlowLoading = readHtmlBodyFromAssets(HtmlMessageType.SLOW_LOADING);
   }
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
@@ -413,6 +417,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       case BRIDGE_TESTER:
         inAppMessage.setMessage(mHtmlBodyFromBridgeTester);
         inAppMessage.setAssetsZipRemoteUrl("https://appboy-images.com/HTML_ZIP_STOPWATCH.zip");
+        break;
+      case SLOW_LOADING:
+        inAppMessage.setMessage(mHtmlBodyFromSlowLoading);
         break;
       default:
         break;
@@ -658,7 +665,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
           break;
         case "one_long":
           buttonOne.setClickAction(ClickAction.NEWS_FEED);
-          buttonOne.setText("Content Cards Are Really Cool. Seriously, I love them. RecyclerViews are the wave of the future.");
+          buttonOne.setText(getString(R.string.message_2400));
           messageButtons.add(buttonOne);
           break;
       }
@@ -853,6 +860,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         break;
       case BRIDGE_TESTER:
         filename = "html_in_app_message_bridge_tester.html";
+        break;
+      case SLOW_LOADING:
+        filename = "html_inapp_message_delayed_open.html";
         break;
       default:
         break;

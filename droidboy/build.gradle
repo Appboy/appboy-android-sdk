@@ -46,14 +46,14 @@ android {
 }
 
 def getCurrentBranch() {
-  def grgit = Grgit.open('.')
+  def grgit = Grgit.open(dir: '.')
   def curBranch = grgit.branch.getCurrent().name
   grgit.close()
   return curBranch
 }
 
 def getCommitHash() {
-  def grgit = Grgit.open('.')
+  def grgit = Grgit.open(dir: '.')
   def commitHash = grgit.head().id
   grgit.close()
   return commitHash

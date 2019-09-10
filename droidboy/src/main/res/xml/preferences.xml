@@ -23,20 +23,20 @@
         android:title="@string/custom_logging_category_title">
         <com.appboy.sample.UserProfileDialog
             android:title="@string/user_dialog_title"
-            android:positiveButtonText="@string/user_dialog_okay"
-            android:negativeButtonText="@string/user_dialog_cancel"/>
+            android:positiveButtonText="@string/user_dialog_close"
+            android:negativeButtonText="@string/user_dialog_flush"/>
         <com.appboy.sample.logging.CustomUserAttributeDialog
             android:title="@string/log_user_attributes_title"
-            android:positiveButtonText="@string/user_dialog_okay"
-            android:negativeButtonText="@string/user_dialog_cancel"/>
+            android:positiveButtonText="@string/user_dialog_close"
+            android:negativeButtonText="@string/user_dialog_flush"/>
         <com.appboy.sample.logging.CustomPurchaseDialog
             android:title="@string/log_purchase_title"
-            android:positiveButtonText="@string/user_dialog_okay"
-            android:negativeButtonText="@string/user_dialog_cancel"/>
+            android:positiveButtonText="@string/user_dialog_close"
+            android:negativeButtonText="@string/user_dialog_flush"/>
         <com.appboy.sample.logging.CustomEventDialog
             android:title="@string/log_events_title"
-            android:positiveButtonText="@string/user_dialog_okay"
-            android:negativeButtonText="@string/user_dialog_cancel"/>
+            android:positiveButtonText="@string/user_dialog_close"
+            android:negativeButtonText="@string/user_dialog_flush"/>
     </PreferenceCategory>
 
     <PreferenceCategory

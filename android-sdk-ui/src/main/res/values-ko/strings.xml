@@ -3,16 +3,6 @@
   <!-- Cards -->
   <string name="com_appboy_recommendation_free">무료</string>
 
-  <!-- Feedback form -->
-  <string name="com_appboy_feedback_form_is_bug">문제를 보고하시겠습니까?</string>
-  <string name="com_appboy_feedback_form_message">메시지</string>
-  <string name="com_appboy_feedback_form_email">이메일</string>
-  <string name="com_appboy_feedback_form_cancel">취소</string>
-  <string name="com_appboy_feedback_form_send">전송</string>
-  <string name="com_appboy_feedback_form_invalid_message">피드백을 입력해 주십시오.</string>
-  <string name="com_appboy_feedback_form_invalid_email">잘못된 이메일 주소</string>
-  <string name="com_appboy_feedback_form_empty_email">이메일 주소가 필요합니다.</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">업데이트가 없습니다. 다음에 다시 확인해 주십시오.</string>
   <string name="com_appboy_feed_connection_error_title">연결 오류</string>

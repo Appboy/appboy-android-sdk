@@ -34,7 +34,6 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.support.PermissionUtils;
 import com.appboy.ui.AppboyContentCardsFragment;
 import com.appboy.ui.AppboyFeedFragment;
-import com.appboy.ui.AppboyFeedbackFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -161,10 +160,6 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
   public boolean getNavigationItem(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.feedback:
-        mDrawerLayout.closeDrawers();
-        startActivity(new Intent(mApplicationContext, FeedbackFragmentActivity.class));
-        break;
       case R.id.geofences_map:
         mDrawerLayout.closeDrawers();
         startActivity(new Intent(mApplicationContext, GeofencesMapActivity.class));
@@ -279,9 +274,6 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       AppboyFeedFragment appboyFeedFragment = new AppboyFeedFragment();
       appboyFeedFragment.setCategories(mAppboyFeedCategories);
       replaceCurrentFragment(appboyFeedFragment);
-    } else if (getResources().getString(R.string.feedback).equals(destination)) {
-      AppboyFeedbackFragment appboyFeedbackFragment = new AppboyFeedbackFragment();
-      replaceCurrentFragment(appboyFeedbackFragment);
     } else if (getResources().getString(R.string.home).equals(destination)) {
       replaceCurrentFragment(new MainFragment());
     }

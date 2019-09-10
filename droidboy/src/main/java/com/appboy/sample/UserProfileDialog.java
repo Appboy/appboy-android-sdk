@@ -1,14 +1,15 @@
 package com.appboy.sample;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -58,7 +59,6 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   private RadioGroup mGender;
   private EditText mLanguage;
   private EditText mAvatarImageUrl;
-  private CheckBox mRequestFlush;
   private TextView mBirthday;
 
   private DatePickerDialog mDatePickerDialog;
@@ -80,6 +80,13 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   }
 
   @Override
+  protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+    super.onPrepareDialogBuilder(builder);
+
+    builder.setNeutralButton(R.string.user_dialog_cancel, this);
+  }
+
+  @Override
   public View onCreateDialogView() {
     View view = super.onCreateDialogView();
     mFirstName = view.findViewById(R.id.first_name);
@@ -88,7 +95,6 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     mGender = view.findViewById(R.id.gender);
     mLanguage = view.findViewById(R.id.language);
     mAvatarImageUrl = view.findViewById(R.id.avatar_image_url);
-    mRequestFlush = view.findViewById(R.id.user_dialog_flush_checkbox);
     mBirthday = view.findViewById(R.id.birthday);
     return view;
   }
@@ -105,7 +111,6 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     mLanguage.setText(sharedPreferences.getString(LANGUAGE_PREFERENCE_KEY, null));
     mAvatarImageUrl.setText(sharedPreferences.getString(AVATAR_PREFERENCE_KEY, null));
     mBirthday.setText(sharedPreferences.getString(BIRTHDAY_PREFERENCE_KEY, null));
-    mRequestFlush.setChecked(false);
 
     ButtonUtils.setUpPopulateButton(view, R.id.first_name_button, mFirstName, getSharedPreferences().getString(FIRST_NAME_PREFERENCE_KEY, SAMPLE_FIRST_NAME));
     ButtonUtils.setUpPopulateButton(view, R.id.last_name_button, mLastName, getSharedPreferences().getString(LAST_NAME_PREFERENCE_KEY, SAMPLE_LAST_NAME));
@@ -150,6 +155,24 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     }
   }
 
+  @Override
+  public void onClick(DialogInterface dialog, int which) {
+    super.onClick(dialog, which);
+
+    switch (which) {
+      case DialogInterface.BUTTON_NEGATIVE:
+        onDialogCloseButtonClicked(true);
+        break;
+      case DialogInterface.BUTTON_POSITIVE:
+        onDialogCloseButtonClicked(false);
+        break;
+      case DialogInterface.BUTTON_NEUTRAL:
+      default:
+        dialog.dismiss();
+        break;
+    }
+  }
+
   private void clear() {
     mFirstName.getText().clear();
     mLastName.getText().clear();
@@ -185,84 +208,81 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     }
   }
 
-  @Override
-  public void onDialogClosed(boolean positiveResult) {
-    if (positiveResult) {
-      String firstName = mFirstName.getText().toString();
-      String lastName = mLastName.getText().toString();
-      String email = mEmail.getText().toString();
-      int genderResourceId = mGender.getCheckedRadioButtonId();
-      View genderRadioButton = mGender.findViewById(genderResourceId);
-      int genderId = mGender.indexOfChild(genderRadioButton);
-      String language = mLanguage.getText().toString();
-      String avatarImageUrl = mAvatarImageUrl.getText().toString();
+  private void onDialogCloseButtonClicked(boolean isImmediateFlushRequired) {
+    String firstName = mFirstName.getText().toString();
+    String lastName = mLastName.getText().toString();
+    String email = mEmail.getText().toString();
+    int genderResourceId = mGender.getCheckedRadioButtonId();
+    View genderRadioButton = mGender.findViewById(genderResourceId);
+    int genderId = mGender.indexOfChild(genderRadioButton);
+    String language = mLanguage.getText().toString();
+    String avatarImageUrl = mAvatarImageUrl.getText().toString();
 
-      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
-      SharedPreferences.Editor editor = getEditor();
-      if (!StringUtils.isNullOrBlank(firstName)) {
-        appboyUser.setFirstName(firstName);
-        editor.putString(FIRST_NAME_PREFERENCE_KEY, firstName);
-      }
-      if (!StringUtils.isNullOrBlank(lastName)) {
-        appboyUser.setLastName(lastName);
-        editor.putString(LAST_NAME_PREFERENCE_KEY, lastName);
-      }
-      if (!StringUtils.isNullOrBlank(language)) {
-        appboyUser.setLanguage(language);
-        editor.putString(LANGUAGE_PREFERENCE_KEY, language);
-      }
-      if (!StringUtils.isNullOrBlank(email)) {
-        editor.putString(EMAIL_PREFERENCE_KEY, email);
-        appboyUser.setEmail(email);
-      }
-      if (!StringUtils.isNullOrBlank(avatarImageUrl)) {
-        editor.putString(AVATAR_PREFERENCE_KEY, avatarImageUrl);
-        appboyUser.setAvatarImageUrl(avatarImageUrl);
-      }
-      if (isBirthdaySet) {
-        editor.putString(BIRTHDAY_PREFERENCE_KEY, getBirthday());
-        appboyUser.setDateOfBirth(mBirthYear, Month.getMonth(mBirthMonth), mBirthDay);
-      }
+    AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
+    SharedPreferences.Editor editor = getEditor();
+    if (!StringUtils.isNullOrBlank(firstName)) {
+      appboyUser.setFirstName(firstName);
+      editor.putString(FIRST_NAME_PREFERENCE_KEY, firstName);
+    }
+    if (!StringUtils.isNullOrBlank(lastName)) {
+      appboyUser.setLastName(lastName);
+      editor.putString(LAST_NAME_PREFERENCE_KEY, lastName);
+    }
+    if (!StringUtils.isNullOrBlank(language)) {
+      appboyUser.setLanguage(language);
+      editor.putString(LANGUAGE_PREFERENCE_KEY, language);
+    }
+    if (!StringUtils.isNullOrBlank(email)) {
+      editor.putString(EMAIL_PREFERENCE_KEY, email);
+      appboyUser.setEmail(email);
+    }
+    if (!StringUtils.isNullOrBlank(avatarImageUrl)) {
+      editor.putString(AVATAR_PREFERENCE_KEY, avatarImageUrl);
+      appboyUser.setAvatarImageUrl(avatarImageUrl);
+    }
+    if (isBirthdaySet) {
+      editor.putString(BIRTHDAY_PREFERENCE_KEY, getBirthday());
+      appboyUser.setDateOfBirth(mBirthYear, Month.getMonth(mBirthMonth), mBirthDay);
+    }
 
-      switch (genderId) {
-        case GENDER_UNSPECIFIED_INDEX:
-          appboyUser.setGender(null);
-          break;
-        case GENDER_MALE_INDEX:
-          appboyUser.setGender(Gender.MALE);
-          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
-          break;
-        case GENDER_FEMALE_INDEX:
-          appboyUser.setGender(Gender.FEMALE);
-          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
-          break;
-        case GENDER_OTHER_INDEX:
-          appboyUser.setGender(Gender.OTHER);
-          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
-          break;
-        case GENDER_UNKNOWN_INDEX:
-          appboyUser.setGender(Gender.UNKNOWN);
-          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
-          break;
-        case GENDER_NOT_APPLICABLE_INDEX:
-          appboyUser.setGender(Gender.NOT_APPLICABLE);
-          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
-          break;
-        case GENDER_PREFER_NOT_TO_SAY_INDEX:
-          appboyUser.setGender(Gender.PREFER_NOT_TO_SAY);
-          editor.putInt(GENDER_PREFERENCE_KEY, genderId);
-          break;
-        default:
-          Log.w(TAG, "Error parsing gender from user preferences.");
-      }
-      editor.apply();
+    switch (genderId) {
+      case GENDER_UNSPECIFIED_INDEX:
+        appboyUser.setGender(null);
+        break;
+      case GENDER_MALE_INDEX:
+        appboyUser.setGender(Gender.MALE);
+        editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+        break;
+      case GENDER_FEMALE_INDEX:
+        appboyUser.setGender(Gender.FEMALE);
+        editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+        break;
+      case GENDER_OTHER_INDEX:
+        appboyUser.setGender(Gender.OTHER);
+        editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+        break;
+      case GENDER_UNKNOWN_INDEX:
+        appboyUser.setGender(Gender.UNKNOWN);
+        editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+        break;
+      case GENDER_NOT_APPLICABLE_INDEX:
+        appboyUser.setGender(Gender.NOT_APPLICABLE);
+        editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+        break;
+      case GENDER_PREFER_NOT_TO_SAY_INDEX:
+        appboyUser.setGender(Gender.PREFER_NOT_TO_SAY);
+        editor.putInt(GENDER_PREFERENCE_KEY, genderId);
+        break;
+      default:
+        Log.w(TAG, "Error parsing gender from user preferences.");
+    }
+    editor.apply();
 
-      // Flushing manually is not recommended in almost all production situations as
-      // Braze automatically flushes data to its servers periodically. This call
-      // is solely for testing purposes.
-      if (mRequestFlush.isChecked()) {
-        Appboy.getInstance(getContext()).requestImmediateDataFlush();
-      }
+    // Flushing manually is not recommended in almost all production situations as
+    // Braze automatically flushes data to its servers periodically. This call
+    // is solely for testing purposes.
+    if (isImmediateFlushRequired) {
+      Appboy.getInstance(getContext()).requestImmediateDataFlush();
     }
   }
 

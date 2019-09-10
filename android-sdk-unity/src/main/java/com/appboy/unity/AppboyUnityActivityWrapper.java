@@ -25,6 +25,7 @@ public class AppboyUnityActivityWrapper {
     mUnityConfigurationProvider = new UnityConfigurationProvider(activity);
     Appboy.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(mUnityConfigurationProvider));
     Appboy.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(mUnityConfigurationProvider));
+    Appboy.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(mUnityConfigurationProvider));
     AppboyLogger.d(TAG, TAG + " finished onCreateCalled setup.");
   }
 

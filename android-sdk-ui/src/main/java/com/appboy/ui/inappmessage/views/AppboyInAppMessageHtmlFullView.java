@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -63,5 +64,10 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
       }
     }
     return mMessageWebView;
+  }
+
+  @Override
+  public void applyWindowInsets(WindowInsetsCompat insets) {
+    // HTML in-app messages don't have special behavior with respect to notched devices at the View level.
   }
 }

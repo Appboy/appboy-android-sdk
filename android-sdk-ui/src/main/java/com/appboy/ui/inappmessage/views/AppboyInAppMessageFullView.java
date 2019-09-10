@@ -3,8 +3,12 @@ package com.appboy.ui.inappmessage.views;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.NonNull;
+import android.support.v4.view.DisplayCutoutCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,14 +27,16 @@ import java.util.List;
 public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseView {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageFullView.class);
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
+  private boolean mIsGraphic;
 
   public AppboyInAppMessageFullView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
-  public void createAppropriateViews(Activity activity, IInAppMessageImmersive inAppMessage) {
+  public void createAppropriateViews(Activity activity, IInAppMessageImmersive inAppMessage, boolean isGraphic) {
     mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_full_imageview);
     setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
+    mIsGraphic = isGraphic;
   }
 
   @Override
@@ -132,6 +138,48 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
   }
 
   /**
+   * Applies the {@link WindowInsetsCompat} by ensuring the close button and message text on the in-app message does not render
+   * in the display cutout area.
+   *
+   * @param insets The {@link WindowInsetsCompat} object directly from {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
+   */
+  @Override
+  public void applyWindowInsets(WindowInsetsCompat insets) {
+    // The screen has a notch if the cutout has a value.
+    // Add some margin to compensate for where the notch bounds are on screen.
+    final DisplayCutoutCompat displayCutout = insets.getDisplayCutout();
+    if (displayCutout == null) {
+      AppboyLogger.d(TAG, "No margin fixing can be done without a display cutout. Not applying window insets.");
+      return;
+    }
+
+    // Attempt to fix the close button
+    View closeButtonView = getMessageCloseButtonView();
+    if (closeButtonView != null) {
+      applyDisplayCutoutMarginsToCloseButton(insets, closeButtonView);
+    }
+
+    if (mIsGraphic) {
+      // Fix the button layouts individually
+      View singleButtonParent = findViewById(R.id.com_appboy_inappmessage_full_button_layout_single);
+      if (singleButtonParent != null && singleButtonParent.getVisibility() == VISIBLE) {
+        applyDisplayCutoutMarginsToContentArea(insets, singleButtonParent);
+        return;
+      }
+      View dualButtonParent = findViewById(R.id.com_appboy_inappmessage_full_button_layout_dual);
+      if (dualButtonParent != null && dualButtonParent.getVisibility() == VISIBLE) {
+        applyDisplayCutoutMarginsToContentArea(insets, dualButtonParent);
+      }
+    } else {
+      // Fix the content area as well. The content area is the header, message, and buttons.
+      View contentArea = findViewById(R.id.com_appboy_inappmessage_full_text_and_button_content_parent);
+      if (contentArea != null) {
+        applyDisplayCutoutMarginsToContentArea(insets, contentArea);
+      }
+    }
+  }
+
+  /**
    * @return the size in pixels of the long edge of a modalized full in-app messages, used to size
    * modalized in-app messages appropriately on tablets.
    */
@@ -171,5 +219,43 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
     } else {
       inAppMessageImageView.setCornersRadiusPx(0.0f);
     }
+  }
+
+  /**
+   * Shifts/margins the close button out of the display cutout area
+   */
+  private void applyDisplayCutoutMarginsToCloseButton(@NonNull WindowInsetsCompat windowInsets, @NonNull View closeButtonView) {
+    if (closeButtonView.getLayoutParams() == null || !(closeButtonView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
+      AppboyLogger.d(TAG, "Close button layout params are null or not of the expected class. Not applying window insets.");
+      return;
+    }
+    final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
+
+    // Offset the existing margin with whatever the inset margins safe area values are
+    final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) closeButtonView.getLayoutParams();
+    layoutParams.setMargins(
+        Math.max(displayCutout.getSafeInsetLeft(), windowInsets.getSystemWindowInsetLeft()) + layoutParams.leftMargin,
+        Math.max(displayCutout.getSafeInsetTop(), windowInsets.getSystemWindowInsetTop()) + layoutParams.topMargin,
+        Math.max(displayCutout.getSafeInsetRight(), windowInsets.getSystemWindowInsetRight()) + layoutParams.rightMargin,
+        Math.max(displayCutout.getSafeInsetBottom(), windowInsets.getSystemWindowInsetBottom()) + layoutParams.bottomMargin);
+  }
+
+  /**
+   * Shifts/margins the close button out of the display cutout area
+   */
+  private void applyDisplayCutoutMarginsToContentArea(@NonNull WindowInsetsCompat windowInsets, @NonNull View contentAreaView) {
+    if (contentAreaView.getLayoutParams() == null || !(contentAreaView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
+      AppboyLogger.d(TAG, "Content area layout params are null or not of the expected class. Not applying window insets.");
+      return;
+    }
+    final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
+
+    // Offset the existing margin with whatever the inset margins safe area values are
+    final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentAreaView.getLayoutParams();
+    layoutParams.setMargins(
+        Math.max(displayCutout.getSafeInsetLeft(), windowInsets.getSystemWindowInsetLeft()) + layoutParams.leftMargin,
+        layoutParams.topMargin,
+        Math.max(displayCutout.getSafeInsetRight(), windowInsets.getSystemWindowInsetRight()) + layoutParams.rightMargin,
+        Math.max(displayCutout.getSafeInsetBottom(), windowInsets.getSystemWindowInsetBottom()) + layoutParams.bottomMargin);
   }
 }

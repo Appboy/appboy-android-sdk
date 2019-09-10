@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.appboy.Appboy;
@@ -21,8 +22,11 @@ import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
 import com.appboy.ui.support.ViewUtils;
 
 public class AppboyFullViewFactory implements IInAppMessageViewFactory {
-  private static final int EMPTY_BUTTONS_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP = 60;
-  private static final int BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP = 124;
+  /**
+   * 20dp margin between button / bottom of scrollview
+   * 44dp height for buttons
+   */
+  private static final int BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP = 64;
 
   @Override
   public AppboyInAppMessageFullView createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
@@ -30,7 +34,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     final InAppMessageFull inAppMessageFull = (InAppMessageFull) inAppMessage;
     boolean isGraphic = inAppMessageFull.getImageStyle().equals(ImageStyle.GRAPHIC);
     final AppboyInAppMessageFullView view = getAppropriateFullView(activity, isGraphic);
-    view.createAppropriateViews(activity, inAppMessageFull);
+    view.createAppropriateViews(activity, inAppMessageFull, isGraphic);
 
     // Since this image is the width of the screen, the view bounds are uncapped
     String imageUrl = view.getAppropriateImageUrl(inAppMessage);
@@ -63,33 +67,29 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     // Get the scrollView, if it exists. For graphic full, it will not
     final View scrollView = view.findViewById(R.id.com_appboy_inappmessage_full_scrollview);
     if (scrollView != null) {
-      final View scrollViewParent = (View) scrollView.getParent();
+      final View allContentParent = view.findViewById(R.id.com_appboy_inappmessage_full_all_content_parent);
       scrollView.post(new Runnable() {
         @Override
         public void run() {
           // Get the parent height
-          int parentHeight = scrollViewParent.getHeight();
+          int parentHeight = allContentParent.getHeight();
 
           // Half of that is the Image
           // So we have another half allotted for us + some margins + the buttons
           int halfHeight = parentHeight / 2;
 
           // Compute the rest of the height for the ScrollView + buttons + margins
-          // 30dp top margin
-          // 20dp margin between button / bottom of scrollview
-          // 44dp height for buttons
-          // 30dp bottom margin for buttons
-          int excessHeight;
-          if (inAppMessageFull.getMessageButtons() == null || inAppMessageFull.getMessageButtons().isEmpty()) {
-            // No need to account for the button height / margin
-            excessHeight = (int) ViewUtils.convertDpToPixels(applicationContext, EMPTY_BUTTONS_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP);
-          } else {
+          View contentView = view.findViewById(R.id.com_appboy_inappmessage_full_text_and_button_content_parent);
+          final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
+          int nonScrollViewHeight = layoutParams.bottomMargin + layoutParams.topMargin;
+
+          if (inAppMessageFull.getMessageButtons() != null && !inAppMessageFull.getMessageButtons().isEmpty()) {
             // Account for all appropriate height / margins
-            excessHeight = (int) ViewUtils.convertDpToPixels(applicationContext, BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP);
+            nonScrollViewHeight += (int) ViewUtils.convertDpToPixels(applicationContext, BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP);
           }
 
           // The remaining height is the MOST that the scrollView can take up
-          int scrollViewAppropriateHeight = Math.min(scrollView.getHeight(), halfHeight - excessHeight);
+          int scrollViewAppropriateHeight = Math.min(scrollView.getHeight(), halfHeight - nonScrollViewHeight);
 
           // Now set that height for the ScrollView
           ViewUtils.setHeightOnViewLayoutParams(scrollView, scrollViewAppropriateHeight);

@@ -67,7 +67,6 @@
               android:pathPrefix="/preferences" />
       </intent-filter>
     </activity>
-    <activity android:name=".FeedbackFragmentActivity" />
     <activity android:name=".FeedFragmentActivity" />
 
     <receiver android:name="com.appboy.AppboyBootReceiver">

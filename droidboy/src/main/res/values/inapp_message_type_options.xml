@@ -12,6 +12,7 @@
     <item>Message Type: HTML Full Star Wars</item>
     <item>Message Type: HTML Full Youtube</item>
     <item>Message Type: HTML Full Braze Bridge Tester</item>
+    <item>Message Type: HTML Slow Loading</item>
   </string-array>
   <string-array name="inapp_message_type_values">
     <item>slideup</item>
@@ -25,5 +26,6 @@
     <item>html_full_star_wars</item>
     <item>html_full_youtube</item>
     <item>html_full_bridge_tester</item>
+    <item>html_full_slow_loading</item>
   </string-array>
 </resources>

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="com_appboy_feedback_form_background">#F9F9F9</color>
-  <color name="com_appboy_feedback_form_navigation_bar_background">#808080</color>
-  <color name="com_appboy_feedback_form_is_bug">@android:color/black</color>
-
   <color name="com_appboy_inappmessage_icon">@android:color/white</color>
   <color name="com_appboy_inappmessage_icon_background">#ff0073d5</color>
   <color name="com_appboy_inappmessage_chevron">#9B9B9B</color>

@@ -34,6 +34,8 @@ import com.appboy.ui.inappmessage.listeners.IHtmlInAppMessageActionListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
+import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlBaseView;
 import com.appboy.ui.support.ViewUtils;
 
 import java.util.Stack;
@@ -576,7 +578,21 @@ public final class AppboyInAppMessageManager {
         mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
             mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageView);
       }
-      mInAppMessageViewWrapper.open(mActivity);
+
+      // If this message includes HTML, delay display until the content has finished loading
+      if (inAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
+        AppboyLogger.d(TAG, "In-app message view includes HTML. Delaying display until the content has finished loading.");
+        final AppboyInAppMessageHtmlBaseView appboyInAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) inAppMessageView;
+        appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(new IWebViewClientStateListener() {
+          @Override
+          public void onPageFinished() {
+            AppboyLogger.d(TAG, "Page has finished loading. Opening in-app message view wrapper.");
+            mInAppMessageViewWrapper.open(mActivity);
+          }
+        });
+      } else {
+        mInAppMessageViewWrapper.open(mActivity);
+      }
       return true;
     } catch (Throwable e) {
       AppboyLogger.e(TAG, "Could not display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()), e);

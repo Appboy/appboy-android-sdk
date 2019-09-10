@@ -3,6 +3,7 @@ package com.appboy.sample;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.LayerDrawable;
+import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,6 +52,11 @@ public class CustomInAppMessageView extends RelativeLayout implements IInAppMess
 
   public View getMessageClickableView() {
     return this;
+  }
+
+  @Override
+  public void applyWindowInsets(WindowInsetsCompat insets) {
+    // Does nothing
   }
 
   public TextView getMessageTextView() {

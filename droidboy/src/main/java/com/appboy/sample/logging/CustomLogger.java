@@ -1,11 +1,12 @@
 package com.appboy.sample.logging;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -18,7 +19,6 @@ import com.appboy.sample.util.ButtonUtils;
 import com.appboy.support.StringUtils;
 
 public abstract class CustomLogger extends DialogPreference {
-  private CheckBox mRequestFlush;
   private Context mContext;
   private EditText mName;
   private EditText mPropertyKey;
@@ -37,46 +37,64 @@ public abstract class CustomLogger extends DialogPreference {
   }
 
   @Override
+  protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+    super.onPrepareDialogBuilder(builder);
+
+    builder.setNeutralButton(R.string.user_dialog_cancel, this);
+  }
+
+  @Override
   protected View onCreateDialogView() {
     mView = super.onCreateDialogView();
     mName = mView.findViewById(R.id.custom_name);
     mPropertyKey = mView.findViewById(R.id.property_key);
     mPropertyValue = mView.findViewById(R.id.property_value);
-    mRequestFlush = mView.findViewById(R.id.custom_logging_flush_checkbox);
     mTypeSpinner = mView.findViewById(R.id.property_type_spinner);
     mAddProperty = mView.findViewById(R.id.add_property_button);
     mPropertyLayout = mView.findViewById(R.id.property_linear_layout);
 
     ButtonUtils.setUpPopulateButton(mView, R.id.custom_name_button, mName, "football");
 
-    mRequestFlush.setChecked(false);
-
     mPropertyManager = new PropertyManager(mContext, mPropertyLayout, mPropertyKey, mPropertyValue, mTypeSpinner, mAddProperty);
     return mView;
+  }
+
+  @Override
+  public void onClick(DialogInterface dialog, int which) {
+    super.onClick(dialog, which);
+
+    switch (which) {
+      case DialogInterface.BUTTON_NEGATIVE:
+        onDialogCloseButtonClicked(true);
+        break;
+      case DialogInterface.BUTTON_POSITIVE:
+        onDialogCloseButtonClicked(false);
+        break;
+      case DialogInterface.BUTTON_NEUTRAL:
+      default:
+        dialog.dismiss();
+        break;
+    }
   }
 
   private void notifyResult(String input) {
     Toast.makeText(mContext, "Successfully submitted " + input + ".", Toast.LENGTH_LONG).show();
   }
 
-  @Override
-  protected void onDialogClosed(boolean positiveResult) {
-    super.onDialogClosed(positiveResult);
-    if (positiveResult) {
-      String customName = mName.getText().toString();
-      if (!StringUtils.isNullOrBlank(customName)) {
-        customLog(customName, mPropertyManager.getAppboyProperties());
-        notifyResult(customName);
-      } else {
-        Toast.makeText(mContext, "Must input a name", Toast.LENGTH_LONG).show();
-      }
+  private void onDialogCloseButtonClicked(boolean isImmediateFlushRequired) {
+    String customName = mName.getText().toString();
+    if (!StringUtils.isNullOrBlank(customName)) {
+      customLog(customName, mPropertyManager.getAppboyProperties());
+      notifyResult(customName);
+    } else {
+      Toast.makeText(mContext, "Must input a name", Toast.LENGTH_LONG).show();
+    }
 
-      // Flushing manually is not recommended in almost all production situations as
-      // Braze automatically flushes data to its servers periodically. This call
-      // is solely for testing purposes.
-      if (mRequestFlush.isChecked()) {
-        Appboy.getInstance(mContext).requestImmediateDataFlush();
-      }
+    // Flushing manually is not recommended in almost all production situations as
+    // Braze automatically flushes data to its servers periodically. This call
+    // is solely for testing purposes.
+    if (isImmediateFlushRequired) {
+      Appboy.getInstance(mContext).requestImmediateDataFlush();
     }
   }
 

@@ -1,10 +1,11 @@
 package com.appboy.sample.logging;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -28,13 +29,19 @@ public class CustomUserAttributeDialog extends DialogPreference {
   private EditText mCustomAttributeArrayKey;
   private EditText mCustomAttributeArrayValue;
   private RadioGroup mCustomAttributeArrayChoices;
-  private CheckBox mRequestFlush;
   private View mView;
 
   public CustomUserAttributeDialog(Context context, AttributeSet attributeSet) {
     super(context, attributeSet);
     setDialogLayoutResource(R.layout.custom_attribute);
     setPersistent(false);
+  }
+
+  @Override
+  protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+    super.onPrepareDialogBuilder(builder);
+
+    builder.setNeutralButton(R.string.user_dialog_cancel, this);
   }
 
   @Override
@@ -50,7 +57,6 @@ public class CustomUserAttributeDialog extends DialogPreference {
     mCustomAttributeArrayKey = mView.findViewById(R.id.custom_attribute_array_key);
     mCustomAttributeArrayValue = mView.findViewById(R.id.custom_attribute_array_value);
     mCustomAttributeArrayChoices = mView.findViewById(R.id.custom_attribute_array_radio);
-    mRequestFlush = mView.findViewById(R.id.custom_logging_flush_checkbox);
 
     mCustomAttributeArrayChoices.check(R.id.custom_attribute_array_set);
 
@@ -60,19 +66,28 @@ public class CustomUserAttributeDialog extends DialogPreference {
     ButtonUtils.setUpPopulateButton(mView, R.id.custom_attribute_unset_button, mCustomAttributeUnsetKey, "color");
     ButtonUtils.setUpPopulateButton(mView, R.id.custom_attribute_array_button, mCustomAttributeArrayKey, "toys", mCustomAttributeArrayValue, "doll");
 
-    mRequestFlush.setChecked(false);
     return mView;
   }
 
   @Override
-  protected void onDialogClosed(boolean positiveResult) {
-    super.onDialogClosed(positiveResult);
-    if (positiveResult) {
-      logEvent();
+  public void onClick(DialogInterface dialog, int which) {
+    super.onClick(dialog, which);
+
+    switch (which) {
+      case DialogInterface.BUTTON_NEGATIVE:
+        onDialogCloseButtonClicked(true);
+        break;
+      case DialogInterface.BUTTON_POSITIVE:
+        onDialogCloseButtonClicked(false);
+        break;
+      case DialogInterface.BUTTON_NEUTRAL:
+      default:
+        dialog.dismiss();
+        break;
     }
   }
 
-  private void logEvent() {
+  private void onDialogCloseButtonClicked(boolean isImmediateFlushRequired) {
     String customAttributeKeyName = mCustomAttributeKey.getText().toString();
     String customAttributeValueName = mCustomAttributeValue.getText().toString();
     String customNumberAttributeKeyName = mCustomAttributeNumberKey.getText().toString();
@@ -146,7 +161,7 @@ public class CustomUserAttributeDialog extends DialogPreference {
     // Flushing manually is not recommended in almost all production situations as
     // Braze automatically flushes data to its servers periodically. This call
     // is solely for testing purposes.
-    if (mRequestFlush.isChecked()) {
+    if (isImmediateFlushRequired) {
       Appboy.getInstance(getContext()).requestImmediateDataFlush();
     }
   }

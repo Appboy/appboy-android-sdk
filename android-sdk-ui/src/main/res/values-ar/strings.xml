@@ -3,16 +3,6 @@
   <!-- Cards -->
   <string name="com_appboy_recommendation_free">مجاني </string>
 
-  <!-- Feedback form -->
-  <string name="com_appboy_feedback_form_is_bug">الإبلاغ عن مشكلة؟</string>
-  <string name="com_appboy_feedback_form_message">رسالة</string>
-  <string name="com_appboy_feedback_form_email">بريد إلكتروني</string>
-  <string name="com_appboy_feedback_form_cancel">إلغاء</string>
-  <string name="com_appboy_feedback_form_send">أرسل</string>
-  <string name="com_appboy_feedback_form_invalid_message">يرجى إدخال رسالة ملاحظات. </string>
-  <string name="com_appboy_feedback_form_invalid_email">بريد إلكتروني غير صحيح</string>
-  <string name="com_appboy_feedback_form_empty_email">مطلوب بريد الإلكتروني. </string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">ليس لدينا أي تحديث. يرجى التحقق مرة أخرى لاحقاً.</string>
   <string name="com_appboy_feed_connection_error_title">خلل في الاتصال</string>

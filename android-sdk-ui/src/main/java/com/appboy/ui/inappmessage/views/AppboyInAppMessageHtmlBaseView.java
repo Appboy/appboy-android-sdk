@@ -10,11 +10,14 @@ import android.widget.RelativeLayout;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
+import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
 
 public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout implements IInAppMessageView {
   private static final String HTML_MIME_TYPE = "text/html";
   private static final String HTML_ENCODING = "utf-8";
   private static final String FILE_URI_SCHEME_PREFIX = "file://";
+
+  private InAppMessageWebViewClient mInAppMessageWebViewClient;
 
   public AppboyInAppMessageHtmlBaseView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -23,8 +26,6 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
   public View getMessageClickableView() {
     return this;
   }
-
-  public abstract WebView getMessageWebView();
 
   /**
    * Loads the WebView using an html string and local file resource url. This url should be a path
@@ -39,7 +40,19 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
 
   public void setInAppMessageWebViewClient(InAppMessageWebViewClient inAppMessageWebViewClient) {
     getMessageWebView().setWebViewClient(inAppMessageWebViewClient);
+    mInAppMessageWebViewClient = inAppMessageWebViewClient;
   }
+
+  public void setHtmlPageFinishedListener(IWebViewClientStateListener listener) {
+    if (mInAppMessageWebViewClient != null) {
+      mInAppMessageWebViewClient.setWebViewClientStateListener(listener);
+    }
+  }
+
+  /**
+   * @return The {@link WebView} displaying the HTML content of this in-app message.
+   */
+  public abstract WebView getMessageWebView();
 
   /**
    * Html in-app messages can alternatively be closed by the back button.

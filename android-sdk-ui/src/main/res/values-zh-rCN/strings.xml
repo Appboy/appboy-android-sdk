@@ -3,16 +3,6 @@
     <!-- Cards -->
     <string name="com_appboy_recommendation_free">免费</string>
 
-    <!-- Feedback form -->
-    <string name="com_appboy_feedback_form_is_bug">出错了？</string>
-    <string name="com_appboy_feedback_form_message">反馈消息</string>
-    <string name="com_appboy_feedback_form_email">电子邮件</string>
-    <string name="com_appboy_feedback_form_cancel">取消</string>
-    <string name="com_appboy_feedback_form_send">发送</string>
-    <string name="com_appboy_feedback_form_invalid_message">请输入您的反馈</string>
-    <string name="com_appboy_feedback_form_invalid_email">无效的电子邮箱</string>
-    <string name="com_appboy_feedback_form_empty_email">必须输入一个有效的电子邮箱</string>
-
     <!-- News feed -->
     <string name="com_appboy_feed_empty">暂时没有更新。\n请稍候再试。</string>
     <string name="com_appboy_feed_connection_error_title">连接错误</string>

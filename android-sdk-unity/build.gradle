@@ -4,9 +4,10 @@ configurations {
 }
 
 dependencies {
-  implementation project(':android-sdk-ui')
   compileOnly files("libs/Prime31UnityActivity-1.0.jar")
   compileOnly files("libs/unity-2017.3.jar")
+  compileOnly "com.android.support:support-annotations:${SUPPORT_LIBS_VERSION}"
+  implementation project(':android-sdk-ui')
 }
 
 android {

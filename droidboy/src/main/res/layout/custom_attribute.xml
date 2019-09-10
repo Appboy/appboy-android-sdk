@@ -163,6 +163,5 @@
             </RadioGroup>
         </TableRow>
 
-        <include layout="@layout/request_flush"/>
     </TableLayout>
 </LinearLayout>

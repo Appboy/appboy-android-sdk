@@ -43,10 +43,6 @@
             style="@style/DroidboyButton"
             android:text="Unset User Attributes"/>
         <Button
-            android:id="@+id/com_appboy_sample_submit_feedback_button"
-            style="@style/DroidboyButton"
-            android:text="Submit Feedback"/>
-        <Button
             android:id="@+id/com_appboy_sample_request_flush_button"
             style="@style/DroidboyButton"
             android:text="Request Flush"/>

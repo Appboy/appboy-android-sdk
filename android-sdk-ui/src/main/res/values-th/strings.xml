@@ -3,16 +3,6 @@
   <!-- Cards -->
   <string name="com_appboy_recommendation_free">ฟรี</string>
 
-  <!-- Feedback form -->
-  <string name="com_appboy_feedback_form_is_bug">รายงานปัญหา?</string>
-  <string name="com_appboy_feedback_form_message">ข้อความ</string>
-  <string name="com_appboy_feedback_form_email">อีเมล</string>
-  <string name="com_appboy_feedback_form_cancel">ยกเลิก</string>
-  <string name="com_appboy_feedback_form_send">ส่ง</string>
-  <string name="com_appboy_feedback_form_invalid_message">กรุณาใส่ข้อความข้อคิดเห็น.</string>
-  <string name="com_appboy_feedback_form_invalid_email">ที่อยู่อีเมลใช้ไม่ได้</string>
-  <string name="com_appboy_feedback_form_empty_email">ต้องใส่ที่อยู่อีเมล.</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">เราไม่มีการอัพเดต กรุณาตรวจสอบภายหลัง.</string>
   <string name="com_appboy_feed_connection_error_title">ผิดพลาดการเชื่อมต่อ</string>

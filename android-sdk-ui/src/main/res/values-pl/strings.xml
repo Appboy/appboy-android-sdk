@@ -3,16 +3,6 @@
   <!-- Cards -->
   <string name="com_appboy_recommendation_free">Bezpłatne</string>
 
-  <!-- Feedback form -->
-  <string name="com_appboy_feedback_form_is_bug">Zgłaszanie Problemu?</string>
-  <string name="com_appboy_feedback_form_message">Wiadomość</string>
-  <string name="com_appboy_feedback_form_email">E-mail</string>
-  <string name="com_appboy_feedback_form_cancel">Anuluj</string>
-  <string name="com_appboy_feedback_form_send">Wyślij</string>
-  <string name="com_appboy_feedback_form_invalid_message">Proszę wpisać komentarz.</string>
-  <string name="com_appboy_feedback_form_invalid_email">Nieprawidłowy adres e-mail</string>
-  <string name="com_appboy_feedback_form_empty_email">Wymagany jest adres e-mail.</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">Brak aktualizacji. Proszę sprawdzić ponownie później.</string>
   <string name="com_appboy_feed_connection_error_title">Błąd połączenia</string>

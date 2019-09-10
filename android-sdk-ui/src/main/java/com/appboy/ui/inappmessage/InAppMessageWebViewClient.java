@@ -12,9 +12,11 @@ import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
+import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
 import com.appboy.ui.support.UriUtils;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InAppMessageWebViewClient extends WebViewClient {
   private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageWebViewClient.class);
@@ -42,6 +44,9 @@ public class InAppMessageWebViewClient extends WebViewClient {
   private IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
   private final IInAppMessage mInAppMessage;
   private Context mContext;
+  private IWebViewClientStateListener mWebViewClientStateListener;
+  private boolean mHasPageFinishedLoading = false;
+  private AtomicBoolean mHasCalledPageFinishedOnListener = new AtomicBoolean(false);
 
   /**
    * @param inAppMessage                      the In-App Message being displayed in this WebView
@@ -56,6 +61,11 @@ public class InAppMessageWebViewClient extends WebViewClient {
   @Override
   public void onPageFinished(WebView view, String url) {
     appendBridgeJavascript(view);
+    if (mWebViewClientStateListener != null && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
+      AppboyLogger.v(TAG, "Page has finished loading. Calling onPageFinished on listener");
+      mWebViewClientStateListener.onPageFinished();
+    }
+    mHasPageFinishedLoading = true;
   }
 
   private void appendBridgeJavascript(WebView view) {
@@ -110,6 +120,14 @@ public class InAppMessageWebViewClient extends WebViewClient {
     }
     mInAppMessageWebViewClientListener.onOtherUrlAction(mInAppMessage, url, queryBundle);
     return true;
+  }
+
+  public void setWebViewClientStateListener(IWebViewClientStateListener listener) {
+    // If the page is already done loading, inform the new listener
+    if (mHasPageFinishedLoading && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
+      listener.onPageFinished();
+    }
+    mWebViewClientStateListener = listener;
   }
 
   /**

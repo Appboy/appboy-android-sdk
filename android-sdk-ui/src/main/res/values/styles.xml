@@ -25,74 +25,6 @@
     <item name="android:textColor">@color/com_appboy_custom_notification_time</item>
   </style>
 
-  <!-- Feedback -->
-  <style name="Appboy.Feedback"/>
-  <style name="Appboy.Feedback.Layout">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">match_parent</item>
-    <item name="android:background">@color/com_appboy_feedback_form_background</item>
-  </style>
-  <style name="Appboy.Feedback.NavigationBar">
-    <item name="android:padding">4dp</item>
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_alignParentBottom">true</item>
-    <item name="android:background">@color/com_appboy_feedback_form_navigation_bar_background</item>
-  </style>
-  <style name="Appboy.Feedback.NavigationBarCancelButton">
-    <item name="android:layout_width">0.0dp</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:layout_marginRight">2dp</item>
-    <item name="android:text">@string/com_appboy_feedback_form_cancel</item>
-    <item name="android:textStyle">bold</item>
-  </style>
-  <style name="Appboy.Feedback.NavigationBarSendButton">
-    <item name="android:layout_width">0.0dp</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:layout_marginLeft">2dp</item>
-    <item name="android:text">@string/com_appboy_feedback_form_send</item>
-    <item name="android:textStyle">bold</item>
-  </style>
-  <style name="Appboy.Feedback.Scroll">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">match_parent</item>
-    <item name="android:layout_alignParentTop">true</item>
-    <item name="android:fillViewport">true</item>
-    <item name="android:layout_above">@id/com_appboy_feedback_navigation_bar</item>
-  </style>
-  <style name="Appboy.Feedback.Body">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:orientation">vertical</item>
-    <item name="android:paddingTop">4.0dp</item>
-    <item name="android:paddingLeft">4.0dp</item>
-    <item name="android:paddingRight">4.0dp</item>
-  </style>
-  <style name="Appboy.Feedback.MessageEditText">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">0.0dp</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:inputType">text|textMultiLine|textCapSentences</item>
-    <item name="android:gravity">top</item>
-    <item name="android:minLines">5</item>
-    <item name="android:maxLines">100</item>
-    <item name="android:hint">@string/com_appboy_feedback_form_message</item>
-  </style>
-  <style name="Appboy.Feedback.EmailEditText">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:inputType">textEmailAddress</item>
-    <item name="android:hint">@string/com_appboy_feedback_form_email</item>
-  </style>
-  <style name="Appboy.Feedback.IsBugCheckBox">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:text">@string/com_appboy_feedback_form_is_bug</item>
-    <item name="android:textColor">@color/com_appboy_feedback_form_is_bug</item>
-  </style>
-
   <!-- In-app Message -->
   <style name="Appboy.InAppMessage">
   </style>
@@ -380,6 +312,13 @@
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
+  <style name="Appboy.InAppMessage.Full.TextAndButtonContent">
+    <item name="android:layout_marginBottom">30dp</item>
+    <item name="android:layout_marginTop">30dp</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
   <style name="Appboy.InAppMessage.Header.Full">
   </style>
   <style name="Appboy.InAppMessage.Message.Full">
@@ -394,7 +333,6 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginLeft">25dp</item>
     <item name="android:layout_marginRight">25dp</item>
-    <item name="android:layout_marginTop">30dp</item>
   </style>
   <style name="Appboy.InAppMessage.Image.Full">
     <item name="android:contentDescription">@string/com_appboy_inappmessage_image_content_description</item>
@@ -406,7 +344,6 @@
   <style name="Appboy.InAppMessage.Layout.Button.Full">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_marginTop">20dp</item>
-    <item name="android:layout_marginBottom">30dp</item>
     <item name="android:layout_marginRight">25dp</item>
     <item name="android:layout_marginLeft">25dp</item>
   </style>
@@ -427,6 +364,8 @@
     <item name="android:layout_marginLeft">5dp</item>
   </style>
   <style name="Appboy.InAppMessage.CloseButton.Full">
+    <item name="android:layout_marginRight">25dp</item>
+    <item name="android:layout_marginTop">25dp</item>
   </style>
   <style name="Appboy.InAppMessage.Frame.Full">
   </style>
@@ -440,6 +379,7 @@
   </style>
   <style name="Appboy.InAppMessage.Layout.Button.Full.Graphic">
     <item name="android:layout_alignParentBottom">true</item>
+    <item name="android:layout_marginBottom">30dp</item>
   </style>
   <style name="Appboy.InAppMessage.Button.Full.Single.Graphic">
   </style>

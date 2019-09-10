@@ -2,19 +2,25 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.NonNull;
+import android.support.v4.view.DisplayCutoutCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.models.IInAppMessage;
+import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
 import com.appboy.ui.support.ViewUtils;
 
 public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageSlideupView.class);
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
 
   public AppboyInAppMessageSlideupView(Context context, AttributeSet attrs) {
@@ -27,13 +33,10 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
   }
 
   public void setMessageChevron(int color, ClickAction clickAction) {
-    switch (clickAction) {
-      case NONE:
-        getMessageChevronView().setVisibility(View.GONE);
-        break;
-      default:
-        InAppMessageViewUtils.setViewBackgroundColorFilter(getMessageChevronView(),
-            color);
+    if (clickAction == ClickAction.NONE) {
+      getMessageChevronView().setVisibility(View.GONE);
+    } else {
+      InAppMessageViewUtils.setViewBackgroundColorFilter(getMessageChevronView(), color);
     }
   }
 
@@ -85,6 +88,36 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
   @Override
   public TextView getMessageIconView() {
     return findViewById(R.id.com_appboy_inappmessage_slideup_icon);
+  }
+
+  /**
+   * Applies the {@link WindowInsetsCompat} by ensuring any part of the slideup does not render in the cutout area.
+   *
+   * @param insets The {@link WindowInsetsCompat} object directly from {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
+   */
+  @Override
+  public void applyWindowInsets(@NonNull WindowInsetsCompat windowInsets) {
+    // The screen has a notch if the cutout has a value.
+    // Add some margin to compensate for where the notch bounds are on screen.
+    final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
+    if (displayCutout == null) {
+      AppboyLogger.d(TAG, "Cannot fix margins in applyWindowInsets without a cutout. Not applying window insets.");
+      return;
+    }
+
+    if (getLayoutParams() == null || !(getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
+      AppboyLogger.d(TAG, "Close button view is null or not of the expected class. Not applying window insets.");
+      return;
+    }
+
+    // Offset the existing margin with whatever the inset margins safe area values are
+    final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
+    layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin);
+    layoutParams.setMargins(
+        displayCutout.getSafeInsetLeft() + layoutParams.leftMargin,
+        displayCutout.getSafeInsetTop() + layoutParams.topMargin,
+        displayCutout.getSafeInsetRight() + layoutParams.rightMargin,
+        displayCutout.getSafeInsetBottom() + layoutParams.bottomMargin);
   }
 
   public View getMessageChevronView() {

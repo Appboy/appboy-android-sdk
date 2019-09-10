@@ -2,6 +2,7 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,7 +46,7 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
    * @return return the local image Url, if present. Otherwise, return the remote image Url. Local
    * image Urls are Urls for images pre-fetched by the SDK for triggers.
    */
-  public String getAppropriateImageUrl(IInAppMessage inAppMessage) {
+  public String getAppropriateImageUrl(@NonNull IInAppMessage inAppMessage) {
     if (!StringUtils.isNullOrBlank(inAppMessage.getLocalImageUrl())) {
       return inAppMessage.getLocalImageUrl();
     } else {

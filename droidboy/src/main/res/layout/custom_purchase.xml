@@ -65,6 +65,5 @@
         </TableRow>
 
         <include layout="@layout/custom_properties"/>
-        <include layout="@layout/request_flush"/>
     </TableLayout>
 </LinearLayout>

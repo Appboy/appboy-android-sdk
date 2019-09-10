@@ -1,7 +1,6 @@
 package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
-import android.support.v4.view.DisplayCutoutCompat;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -123,6 +122,7 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
 
   @Override
   public void open(Activity activity) {
+    AppboyLogger.v(TAG, "Opening in-app message view wrapper");
     // Retrieve the FrameLayout view which will display the in-app message and its height. The
     // content FrameLayout contains the activity's top-level layout as its first child.
     final FrameLayout frameLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
@@ -160,19 +160,22 @@ public class InAppMessageViewWrapper implements IInAppMessageViewWrapper {
     AppboyLogger.d(TAG, "Adding In-app message view to root FrameLayout.");
     frameLayout.addView(mInAppMessageView, getLayoutParams());
 
-    ViewCompat.requestApplyInsets(frameLayout);
-    ViewCompat.setOnApplyWindowInsetsListener(frameLayout, new OnApplyWindowInsetsListener() {
-      @Override
-      public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        final DisplayCutoutCompat displayCutout = insets.getDisplayCutout();
-        if (displayCutout != null) {
-          // The screen has a notch. Add some margin to compensate for where the notch bounds are on screen
-          final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mInAppMessageView.getLayoutParams();
-          layoutParams.setMargins(displayCutout.getSafeInsetLeft(), displayCutout.getSafeInsetTop(), displayCutout.getSafeInsetRight(), displayCutout.getSafeInsetBottom());
+    if (mInAppMessageView instanceof IInAppMessageView) {
+      ViewCompat.requestApplyInsets(frameLayout);
+      ViewCompat.setOnApplyWindowInsetsListener(frameLayout, new OnApplyWindowInsetsListener() {
+        @Override
+        public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+          if (insets == null) {
+            // No margin fixing can be done with a null window inset
+            return insets;
+          }
+
+          AppboyLogger.v(TAG, "Calling applyWindowInsets on in-app message view.");
+          ((IInAppMessageView) mInAppMessageView).applyWindowInsets(insets);
+          return insets;
         }
-        return insets;
-      }
-    });
+      });
+    }
 
     if (mInAppMessage.getAnimateIn()) {
       AppboyLogger.d(TAG, "In-app message view will animate into the visible area.");
