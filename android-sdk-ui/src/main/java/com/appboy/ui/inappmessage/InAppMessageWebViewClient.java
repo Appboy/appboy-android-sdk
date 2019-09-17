@@ -3,6 +3,7 @@ package com.appboy.ui.inappmessage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -44,6 +45,7 @@ public class InAppMessageWebViewClient extends WebViewClient {
   private IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
   private final IInAppMessage mInAppMessage;
   private Context mContext;
+  @Nullable
   private IWebViewClientStateListener mWebViewClientStateListener;
   private boolean mHasPageFinishedLoading = false;
   private AtomicBoolean mHasCalledPageFinishedOnListener = new AtomicBoolean(false);
@@ -122,9 +124,9 @@ public class InAppMessageWebViewClient extends WebViewClient {
     return true;
   }
 
-  public void setWebViewClientStateListener(IWebViewClientStateListener listener) {
+  public void setWebViewClientStateListener(@Nullable IWebViewClientStateListener listener) {
     // If the page is already done loading, inform the new listener
-    if (mHasPageFinishedLoading && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
+    if (listener != null && mHasPageFinishedLoading && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
       listener.onPageFinished();
     }
     mWebViewClientStateListener = listener;

@@ -7,7 +7,7 @@
   <!-- To disable automatic flushing in any of these network conditions, simply set the value to -1. To turn off
     all automatic data flushing, set all three intervals to -1. When automatic flushing is disabled, you can use
     IAppboy.RequestImmediateDataFlush to manually flush analytics data to the server. Note, however, that any
-    refreshes of the news feed or in app message will automatically flush your analytics data as well. -->
+    refreshes of Content Cards, In-App Messages, or the News Feed will automatically flush your analytics data as well. -->
   <!-- On GPRS and EDGE, allow a flush request up to every 30 seconds. (default is 60)  -->
   <integer name="com_appboy_data_flush_interval_bad_network">30</integer>
   <!-- With a 3G connection, allow a flush request up to every 15 seconds. (default is 30) -->

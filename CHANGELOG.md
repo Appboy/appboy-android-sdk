@@ -1,7 +1,13 @@
-## 3.7.0
+## 3.7.1
 
-##### Important
-- Please note the breaking push changes in release 3.1.1 regarding the `AppboyFirebaseMessagingService` before upgrading to this version.
+##### Fixed
+- Fixed an issue where a slow loading HTML In-App Message could throw an exception if the Activity changed before `onPageFinished()` was called.
+- Removed `FEATURE_INDETERMINATE_PROGRESS` and `FEATURE_PROGRESS` from `AppboyWebViewActivity`.
+
+##### Added
+- Added `IInAppMessage.setExtras()` to set extras on In-App Messages.
+
+## 3.7.0
 
 ##### Changed
 - Improves support for in-app messages on “notched” devices (for example, iPhone X, Pixel 3XL). Full-screen messages now expand to fill the entire screen of any phone, while covering the status bar.

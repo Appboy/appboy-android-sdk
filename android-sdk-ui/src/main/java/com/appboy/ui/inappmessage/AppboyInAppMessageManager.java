@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -92,18 +93,28 @@ public final class AppboyInAppMessageManager {
   private static volatile AppboyInAppMessageManager sInstance = null;
 
   private final Stack<IInAppMessage> mInAppMessageStack = new Stack<IInAppMessage>();
-  private Activity mActivity;
-  private IEventSubscriber<InAppMessageEvent> mInAppMessageEventSubscriber;
-  private IInAppMessageViewFactory mCustomInAppMessageViewFactory;
-  private IInAppMessageAnimationFactory mCustomInAppMessageAnimationFactory;
-  private IInAppMessageViewWrapper mInAppMessageViewWrapper;
-  private IInAppMessage mCarryoverInAppMessage;
-  private IInAppMessage mUnRegisteredInAppMessage;
   private AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
-  private Context mApplicationContext;
-  private Integer mOriginalOrientation;
-  private AppboyConfigurationProvider mAppboyConfigurationProvider;
   private boolean mBackButtonDismissesInAppMessageView = true;
+  @Nullable
+  private IEventSubscriber<InAppMessageEvent> mInAppMessageEventSubscriber;
+  @Nullable
+  private IInAppMessage mCarryoverInAppMessage;
+  @Nullable
+  private IInAppMessage mUnRegisteredInAppMessage;
+  @Nullable
+  private Context mApplicationContext;
+  @Nullable
+  private Integer mOriginalOrientation;
+  @Nullable
+  private AppboyConfigurationProvider mAppboyConfigurationProvider;
+  @Nullable
+  private IInAppMessageViewFactory mCustomInAppMessageViewFactory;
+  @Nullable
+  private IInAppMessageAnimationFactory mCustomInAppMessageAnimationFactory;
+  @Nullable
+  private Activity mActivity;
+  @Nullable
+  private IInAppMessageViewWrapper mInAppMessageViewWrapper;
 
   // view listeners
   private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new AppboyInAppMessageWebViewClientListener();
@@ -180,11 +191,17 @@ public final class AppboyInAppMessageManager {
    * @param activity The current Activity.
    */
   public void registerInAppMessageManager(Activity activity) {
-    AppboyLogger.d(TAG, "registerInAppMessageManager called");
+    if (activity == null) {
+      AppboyLogger.w(TAG, "Null Activity passed to registerInAppMessageManager. Doing nothing");
+      return;
+    } else {
+      AppboyLogger.v(TAG, "Registering InAppMessageManager with activity: " + activity.getLocalClassName());
+    }
+
     // We need the current Activity so that we can inflate or programmatically create the in-app message
     // View for each Activity. We cannot share the View because doing so would create a memory leak.
     mActivity = activity;
-    if (mActivity != null && mApplicationContext == null) {
+    if (mApplicationContext == null) {
       // Note, because this class is a singleton and doesn't have any dependencies passed in,
       // we cache the application context here because it's not available (as it normally would be
       // from Braze initialization).
@@ -216,7 +233,12 @@ public final class AppboyInAppMessageManager {
    * @param activity The current Activity.
    */
   public void unregisterInAppMessageManager(Activity activity) {
-    AppboyLogger.d(TAG, "unregisterInAppMessageManager called");
+    if (activity == null) {
+      // The activity is not needed to unregister so we can continue unregistration with it being null.
+      AppboyLogger.w(TAG, "Null Activity passed to unregisterInAppMessageManager.");
+    } else {
+      AppboyLogger.v(TAG, "Unregistering InAppMessageManager from activity: " + activity.getLocalClassName());
+    }
 
     // If there is an in-app message being displayed when the host app transitions to another Activity (or
     // requests an orientation change), we save it in memory so that we can redisplay it when the
@@ -231,6 +253,13 @@ public final class AppboyInAppMessageManager {
         mCarryoverInAppMessage = mInAppMessageViewWrapper.getInAppMessage();
       }
 
+      // If this message includes HTML, delay display until the content has finished loading
+      if (mInAppMessageViewWrapper.getInAppMessageView() instanceof AppboyInAppMessageHtmlBaseView) {
+        AppboyLogger.d(TAG, "In-app message view includes HTML. Removing the page finished listener.");
+        final AppboyInAppMessageHtmlBaseView appboyInAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) mInAppMessageViewWrapper.getInAppMessageView();
+        appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(null);
+      }
+      AppboyLogger.d(TAG, "Setting view wrapper to null");
       mInAppMessageViewWrapper = null;
     } else {
       mCarryoverInAppMessage = null;
@@ -422,10 +451,12 @@ public final class AppboyInAppMessageManager {
     return mCustomHtmlInAppMessageActionListener != null ? mCustomHtmlInAppMessageActionListener : mDefaultHtmlInAppMessageActionListener;
   }
 
+  @Nullable
   public Activity getActivity() {
     return mActivity;
   }
 
+  @Nullable
   public Context getApplicationContext() {
     return mApplicationContext;
   }
@@ -494,6 +525,8 @@ public final class AppboyInAppMessageManager {
   }
 
   boolean displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
+    AppboyLogger.v(TAG, "Attempting to display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()));
+
     // Note: for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
     // of this try/catch when we know whether we are successfully displaying the in-app message or not.
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
@@ -586,8 +619,14 @@ public final class AppboyInAppMessageManager {
         appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(new IWebViewClientStateListener() {
           @Override
           public void onPageFinished() {
-            AppboyLogger.d(TAG, "Page has finished loading. Opening in-app message view wrapper.");
-            mInAppMessageViewWrapper.open(mActivity);
+            try {
+              if (mInAppMessageViewWrapper != null && mActivity != null) {
+                AppboyLogger.d(TAG, "Page has finished loading. Opening in-app message view wrapper.");
+                mInAppMessageViewWrapper.open(mActivity);
+              }
+            } catch (Exception e) {
+              AppboyLogger.e(TAG, "Failed to open view wrapper in page finished listener", e);
+            }
           }
         });
       } else {

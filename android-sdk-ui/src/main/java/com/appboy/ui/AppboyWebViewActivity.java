@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
@@ -31,8 +30,6 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    requestWindowFeature(Window.FEATURE_PROGRESS);
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
     // Enables hardware acceleration for the window. See https://developer.android.com/guide/topics/graphics/hardware-accel.html#controlling.
     // With this flag, we can view Youtube videos since HTML5 requires hardware acceleration.
@@ -40,7 +37,6 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
         WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
         WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
     setContentView(R.layout.com_appboy_webview_activity);
-    setProgressBarVisibility(true);
 
     WebView webView = findViewById(R.id.com_appboy_webview_activity_webview);
 
@@ -63,15 +59,6 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     webView.setLayoutParams(layoutParams);
 
     webView.setWebChromeClient(new WebChromeClient() {
-      @Override
-      public void onProgressChanged(WebView view, int progress) {
-        if (progress < 100) {
-          setProgressBarVisibility(true);
-        } else {
-          setProgressBarVisibility(false);
-        }
-      }
-
       @Nullable
       @Override
       public Bitmap getDefaultVideoPoster() {
