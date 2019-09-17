@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<metadata modelVersion="1.1.0">
+<metadata>
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-ui</artifactId>
-  <version>3.7.0</version>
+  <version>3.7.1</version>
   <versioning>
-    <latest>3.7.0</latest>
-    <release>3.7.0</release>
+    <latest>3.7.1</latest>
+    <release>3.7.1</release>
     <versions>
       <version>1.5.1</version>
       <version>1.5.2</version>
@@ -84,7 +84,8 @@
       <version>3.5.0</version>
       <version>3.6.0</version>
       <version>3.7.0</version>
+      <version>3.7.1</version>
     </versions>
-    <lastUpdated>20190910212658</lastUpdated>
+    <lastUpdated>20190917202556</lastUpdated>
   </versioning>
 </metadata>

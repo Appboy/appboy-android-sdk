@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<metadata modelVersion="1.1.0">
+<metadata>
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-wear-library</artifactId>
   <version>1.19.0</version>
@@ -12,6 +12,6 @@
       <version>1.18.0</version>
       <version>1.19.0</version>
     </versions>
-    <lastUpdated>20190910212634</lastUpdated>
+    <lastUpdated>20190917202528</lastUpdated>
   </versioning>
 </metadata>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<metadata modelVersion="1.1.0">
+<metadata>
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-jar</artifactId>
   <version>1.17.0</version>
@@ -46,6 +46,6 @@
       <version>1.16.0</version>
       <version>1.17.0</version>
     </versions>
-    <lastUpdated>20190910212636</lastUpdated>
+    <lastUpdated>20190917202530</lastUpdated>
   </versioning>
 </metadata>
