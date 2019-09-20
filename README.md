@@ -1,4 +1,4 @@
-![Braze Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png)
+<img src="https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png" width="300" title="Braze Logo" />
 
 # Android SDK
 
