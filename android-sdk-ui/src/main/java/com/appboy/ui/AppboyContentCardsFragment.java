@@ -66,7 +66,8 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(LayoutInflater inflater,
+                           ViewGroup container,
                            Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.com_appboy_content_cards, container, false);
 
@@ -150,7 +151,6 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     }
     Appboy.getInstance(getContext()).subscribeToContentCardsUpdates(mContentCardsUpdatedSubscriber);
     Appboy.getInstance(getContext()).requestContentCardsRefresh(true);
-
     Appboy.getInstance(getContext()).logContentCardsDisplayed();
   }
 
@@ -182,24 +182,28 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
 
       // If the update came from storage and is stale, then request a refresh.
       if (mEvent.isFromOfflineStorage() && (mEvent.getLastUpdatedInSecondsFromEpoch() + MAX_CONTENT_CARDS_TTL_SECONDS) * 1000L < System.currentTimeMillis()) {
-        AppboyLogger.i(TAG, "ContentCards received was older than the max time to live of " + MAX_CONTENT_CARDS_TTL_SECONDS + " seconds, displaying it "
+        AppboyLogger.i(TAG, "ContentCards received was older than the max time "
+            + "to live of " + MAX_CONTENT_CARDS_TTL_SECONDS + " seconds, displaying it "
             + "for now, but requesting an updated view from the server.");
         Appboy.getInstance(getContext()).requestContentCardsRefresh(false);
 
-        // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
+        // If we don't have any cards to display, we put up the spinner while
+        // we wait for the network to return.
         // Eventually displaying an error message if it doesn't.
         if (mEvent.isEmpty()) {
           // Display a loading indicator
           mContentCardsSwipeLayout.setRefreshing(true);
 
-          AppboyLogger.d(TAG, "Old Content Cards was empty, putting up a network spinner and registering the network "
-              + "error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + "ms.");
+          AppboyLogger.d(TAG, "Old Content Cards was empty, putting up a "
+              + "network spinner and registering the network "
+              + "error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + " ms.");
           mMainThreadLooper.postDelayed(mShowNetworkUnavailableRunnable, NETWORK_PROBLEM_WARNING_MS);
           return;
         }
       }
 
-      // The cards are either fresh from the cache, or came directly from a network request. An empty Content Cards should just display
+      // The cards are either fresh from the cache, or came directly from a
+      // network request. An empty Content Cards should just display
       // an "empty ContentCards" message.
       if (!mEvent.isEmpty()) {
         // The Content Cards contains cards and should be displayed
@@ -258,10 +262,12 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   }
 
   /**
-   * Sets the {@link IContentCardsViewBindingHandler}. Note that this method should only be called before the {@link AppboyContentCardsFragment} is first displayed
+   * Sets the {@link IContentCardsViewBindingHandler}. Note that this method should
+   * only be called before the {@link AppboyContentCardsFragment} is first displayed
    * or the {@link AppboyCardAdapter} will not update correctly.
    *
-   * @param contentCardsViewBindingHandler The {@link IContentCardsViewBindingHandler} responsible for rendering each {@link Card} in the {@link RecyclerView}.
+   * @param contentCardsViewBindingHandler The {@link IContentCardsViewBindingHandler}
+   *                                       responsible for rendering each {@link Card} in the {@link RecyclerView}.
    */
   public void setContentCardsViewBindingHandler(@Nullable IContentCardsViewBindingHandler contentCardsViewBindingHandler) {
     mCustomContentCardsViewBindingHandler = contentCardsViewBindingHandler;

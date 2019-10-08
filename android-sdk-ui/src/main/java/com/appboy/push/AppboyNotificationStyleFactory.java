@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
@@ -71,7 +70,7 @@ public class AppboyNotificationStyleFactory {
 
     if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
       AppboyLogger.d(TAG, "Rendering push notification with DecoratedCustomViewStyle (Story)");
-      style = getStoryStyle(context, notificationExtras, notificationBuilder);
+      style = getStoryStyle(context, notificationExtras, appboyExtras, notificationBuilder);
     } else if (appboyExtras != null && appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
       AppboyLogger.d(TAG, "Rendering push notification with BigPictureStyle");
       style = getBigPictureNotificationStyle(context, notificationExtras, appboyExtras);
@@ -130,10 +129,10 @@ public class AppboyNotificationStyleFactory {
    * @return a DecoratedCustomViewStyle that describes the appearance of the push story.
    */
   public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context, Bundle notificationExtras,
-                                                                                                    NotificationCompat.Builder notificationBuilder) {
+                                                                          Bundle appboyExtras, NotificationCompat.Builder notificationBuilder) {
     int pageIndex = getPushStoryPageIndex(notificationExtras);
     RemoteViews storyView = new RemoteViews(context.getPackageName(), R.layout.com_appboy_notification_story_one_image);
-    if (!populatePushStoryPage(storyView, context, notificationExtras, pageIndex)) {
+    if (!populatePushStoryPage(storyView, context, notificationExtras, appboyExtras, pageIndex)) {
       AppboyLogger.w(TAG, "Push story page was not populated correctly. Not using DecoratedCustomViewStyle.");
       return null;
     }
@@ -168,8 +167,10 @@ public class AppboyNotificationStyleFactory {
       return null;
     }
 
-    Bitmap imageBitmap = AppboyImageUtils.getBitmap(context, Uri.parse(imageUrl), AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
+    Bitmap imageBitmap = Appboy.getInstance(context).getAppboyImageLoader()
+        .getPushBitmapFromUrl(context, appboyExtras, imageUrl, AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
     if (imageBitmap == null) {
+      AppboyLogger.d(TAG, "Failed to download image bitmap for big picture notification style. Url: " + imageUrl);
       return null;
     }
 
@@ -275,7 +276,7 @@ public class AppboyNotificationStyleFactory {
    * @param index The index of the story page.
    * @return True if the push story page was populated correctly.
    */
-  private static boolean populatePushStoryPage(RemoteViews view, Context context, Bundle notificationExtras, int index) {
+  private static boolean populatePushStoryPage(RemoteViews view, Context context, Bundle notificationExtras, Bundle appboyExtras, int index) {
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
 
     // Set up title
@@ -313,7 +314,7 @@ public class AppboyNotificationStyleFactory {
     String bitmapUrl = AppboyNotificationActionUtils.getActionFieldAtIndex(index,
         notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
     Bitmap largeNotificationBitmap = Appboy.getInstance(context).getAppboyImageLoader()
-        .getBitmapFromUrl(context, bitmapUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
+        .getPushBitmapFromUrl(context, appboyExtras, bitmapUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
     if (largeNotificationBitmap == null) {
       return false;
     }

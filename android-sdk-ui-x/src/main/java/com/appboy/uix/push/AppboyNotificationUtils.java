@@ -137,10 +137,10 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * @see com.appboy.push.AppboyNotificationUtils#prefetchBitmapsIfNewlyReceivedStoryPush(Context, Bundle)
+   * @see com.appboy.push.AppboyNotificationUtils#prefetchBitmapsIfNewlyReceivedStoryPush(Context, Bundle, Bundle)
    */
-  public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras) {
-    com.appboy.push.AppboyNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras);
+  public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras, Bundle appboyExtras) {
+    com.appboy.push.AppboyNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras, appboyExtras);
   }
 
   public static void setTitleIfPresent(AppboyConfigurationProvider appboyConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {

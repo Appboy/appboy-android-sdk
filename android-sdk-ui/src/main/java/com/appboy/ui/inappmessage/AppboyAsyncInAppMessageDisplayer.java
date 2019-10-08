@@ -152,7 +152,7 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
 
         Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
         IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-        inAppMessage.setBitmap(appboyImageLoader.getBitmapFromUrl(applicationContext, remoteImageUrl, viewBounds));
+        inAppMessage.setBitmap(appboyImageLoader.getInAppMessageBitmapFromUrl(applicationContext, inAppMessage, remoteImageUrl, viewBounds));
       } else {
         AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
         if (inAppMessage instanceof InAppMessageFull) {

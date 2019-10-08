@@ -29,6 +29,9 @@
     be overridden at runtime by a push notification that sets a custom accent color. -->
   <integer name="com_appboy_default_notification_accent_color">0xFF000000</integer>
 
+  <!-- A color resource id can also be set for the accent color as demonstrated below -->
+  <!--  <color name="com_appboy_default_notification_accent_color">@color/my_color_here</color>-->
+
   <drawable name="com_appboy_push_small_notification_icon">@drawable/ic_stat_notify_droidboy</drawable>
   <drawable name="com_appboy_push_large_notification_icon">@drawable/ic_stat_notify_droidboy_large</drawable>
 

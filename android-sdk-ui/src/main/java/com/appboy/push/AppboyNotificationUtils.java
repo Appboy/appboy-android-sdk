@@ -32,7 +32,6 @@ import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
 import com.appboy.push.support.HtmlUtils;
-import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.PermissionUtils;
@@ -389,11 +388,11 @@ public class AppboyNotificationUtils {
   /**
    * Checks that the notification is a story that has only just been received. If so, each
    * image within the story is put in the Braze image loader's cache.
-   *
-   * @param context            Application context.
+   * @param context Application context.
    * @param notificationExtras Notification extras as provided by FCM/ADM.
+   * @param appboyExtras Bundle object containing 'extra' key value pairs defined by the client.
    */
-  public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras) {
+  public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras, Bundle appboyExtras) {
     if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
       return;
     }
@@ -403,7 +402,7 @@ public class AppboyNotificationUtils {
       while (!StringUtils.isNullOrBlank(imageUrl)) {
         AppboyLogger.v(TAG, "Pre-fetching bitmap at URL: " + imageUrl);
         IAppboyImageLoader imageLoader = Appboy.getInstance(context).getAppboyImageLoader();
-        imageLoader.getBitmapFromUrl(context, imageUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
+        imageLoader.getPushBitmapFromUrl(context, appboyExtras, imageUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
         count++;
         imageUrl = AppboyNotificationActionUtils.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
       }
@@ -518,7 +517,8 @@ public class AppboyNotificationUtils {
           && notificationExtras.containsKey(Constants.APPBOY_PUSH_LARGE_ICON_KEY)) {
         AppboyLogger.d(TAG, "Setting large icon for notification");
         String bitmapUrl = notificationExtras.getString(Constants.APPBOY_PUSH_LARGE_ICON_KEY);
-        Bitmap largeNotificationBitmap = AppboyImageUtils.getBitmap(context, Uri.parse(bitmapUrl), AppboyViewBounds.NOTIFICATION_LARGE_ICON);
+        Bitmap largeNotificationBitmap = Appboy.getInstance(context).getAppboyImageLoader()
+            .getPushBitmapFromUrl(context, null, bitmapUrl, AppboyViewBounds.NOTIFICATION_LARGE_ICON);
         notificationBuilder.setLargeIcon(largeNotificationBitmap);
         return true;
       }

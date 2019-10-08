@@ -104,7 +104,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       }
 
       imageView.setImageResource(android.R.color.transparent);
-      Appboy.getInstance(getContext()).getAppboyImageLoader().renderUrlIntoView(getContext(), imageUrl, imageView, AppboyViewBounds.BASE_CARD_VIEW);
+      Appboy.getInstance(getContext()).getAppboyImageLoader().renderUrlIntoCardView(getContext(), mCard, imageUrl, imageView, AppboyViewBounds.BASE_CARD_VIEW);
       imageView.setTag(R.string.com_appboy_image_resize_tag_key, imageUrl);
     }
   }

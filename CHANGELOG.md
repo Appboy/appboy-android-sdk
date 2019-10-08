@@ -1,17 +1,52 @@
+## 3.8.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v3.8.0)
+
+##### ⚠ Breaking
+- Added `renderUrlIntoInAppMessageView()`, `renderUrlIntoCardView()`, `getPushBitmapFromUrl()`, and `getInAppMessageBitmapFromUrl()` to the `IAppboyImageLoader` interface. These methods provide more information about the rendered object. For example, `renderUrlIntoCardView()` provides the `Card` object being rendered in the feed.
+  - `IAppboyImageLoader.renderUrlIntoView()` and `IAppboyImageLoader.getBitmapFromUrl()` have been removed.
+  - For maintaining behavioral parity, `renderUrlIntoInAppMessageView()` and `renderUrlIntoCardView()` can reuse your previous `IAppboyImageLoader.renderUrlIntoView()` implementation while `getPushBitmapFromUrl()` and `getInAppMessageBitmapFromUrl()` can reuse your previous `IAppboyImageLoader.getBitmapFromUrl()` implementation.
+  - The Glide `IAppboyImageLoader` implementation has been updated and can be found [here](https://github.com/Appboy/appboy-android-sdk/blob/master/samples/glide-image-integration/src/main/java/com/appboy/glideimageintegration/GlideAppboyImageLoader.java).
+- Removed `MessageButton#getIsSecondaryButton()` and `MessageButton#setIsSecondaryButton()`.
+
+##### Added
+- Added support for the upcoming feature, In-App Messages in Dark Mode.
+  - Dark Mode enabled messages must be created from the dashboard. Braze does not dynamically theme In-App Messages for Dark Mode.
+  - Added `IInAppMessageThemeable` interface to In-App Messages, which adds `enableDarkTheme()` to In-App Messages.
+  - To configure/disable Braze from automatically applying a Dark Theme (when available from Braze's servers), use a custom `IInAppMessageManagerListener`.
+    - ```
+        if (inAppMessage instanceof IInAppMessageThemeable && ViewUtils.isDeviceInNightMode(AppboyInAppMessageManager.getInstance().getApplicationContext())) {
+          ((IInAppMessageThemeable) inAppMessage).enableDarkTheme();
+        }
+      ```
+- Added `Card.isContentCard()`.
+- Added the ability to use an existing color resource for `com_appboy_default_notification_accent_color` in your `appboy.xml`.
+  - For example: `<color name="com_appboy_default_notification_accent_color">@color/my_color_here</color>`.
+
+##### Fixed
+- Fixed an edge case where the `AppboyInAppMessageManager` could throw an `NullPointerException` if an in-app message was in the process of animating out while `AppboyInAppMessageManager.unregisterInAppMessageManager()` was called.
+- Fixed an issue where multiple subscribers to Content Cards updates could cause a `ConcurrentModificationException` if they simultaneously attempted to mutate the list returned in `ContentCardsUpdatedEvent.getAllCards()`.
+  - `ContentCardsUpdatedEvent.getAllCards()` now returns a shallow copy of the list of Content Cards model objects.
+- Fixed an issue (introduced in 3.7.0) where the background color for fullscreen in-app messages was not set.
+- Fixed an issue (introduced in 3.7.0) were images for fullscreen in-app messages would not appear on API 21 and below devices.
+
 ## 3.7.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v3.7.1)
+
+##### Added
+- Added `IInAppMessage.setExtras()` to set extras on In-App Messages.
 
 ##### Fixed
 - Fixed an issue where a slow loading HTML In-App Message could throw an exception if the Activity changed before `onPageFinished()` was called.
 - Removed `FEATURE_INDETERMINATE_PROGRESS` and `FEATURE_PROGRESS` from `AppboyWebViewActivity`.
 
-##### Added
-- Added `IInAppMessage.setExtras()` to set extras on In-App Messages.
-
 ## 3.7.0
 
-##### Changed
-- Improves support for in-app messages on “notched” devices (for example, iPhone X, Pixel 3XL). Full-screen messages now expand to fill the entire screen of any phone, while covering the status bar.
-- Changed the behavior of HTML In-App Messages to not display until the content has finished loading as determined via `WebViewClient#onPageFinished()` on the in-app message's `WebView`.
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v3.7.0)
+
+##### Known Issues
+- This release introduced issues with in-app message unregistration (`AppboyInAppMessageManager.unregisterInAppMessageManager()`) and fullscreen in-app messages. These issues have been fixed in version 3.8.0 of the SDK.
 
 ##### Breaking
 - Added the `applyWindowInsets()` method to `IInAppMessageView` interface. This allows for granular customization at the in-app message view level with respect to device notches.
@@ -21,7 +56,13 @@
 ##### Fixed
 - Changed the behavior of In-App Messages to allow analytics to be logged again when the same In-App Message is displaying a new time.
 
+##### Changed
+- Improves support for in-app messages on “notched” devices (for example, iPhone X, Pixel 3XL). Full-screen messages now expand to fill the entire screen of any phone, while covering the status bar.
+- Changed the behavior of HTML In-App Messages to not display until the content has finished loading as determined via `WebViewClient#onPageFinished()` on the in-app message's `WebView`.
+
 ## 3.6.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v3.6.0)
 
 ##### Breaking
 - External user ids (provided via `Appboy.changeUser()`), are now limited to 997 bytes in UTF-8 encoding.
@@ -34,16 +75,22 @@
   - You can also enable location collection at runtime by setting `AppboyConfig.setIsLocationCollectionEnabled()` to true.
   - The old configuration value `com_appboy_disable_location_collection` in appboy.xml is deprecated. It should be replaced with new configuration value of `com_appboy_enable_location_collection`.
 
+##### Added
+- Added `AppboyContentCardsFragment.getContentCardsRecyclerView()` to obtain the RecyclerView associated with the Content Cards fragment.
+- Added `AppboyInAppMessageManager.getDefaultInAppMessageViewFactory()` to simplify most custom implementations of `IInAppMessageViewFactory`.
+
 ##### Changed
 - Changed the click target area of in-app message close buttons to 48dp. The close button drawable was increased to `20dp` from `14dp`.
   - The width/height in dp of this click target can be configured with a `dimens` override for `com_appboy_in_app_message_close_button_click_area_width` and `com_appboy_in_app_message_close_button_click_area_height` respectively.
 - Changed `UriUtils.getQueryParameters()` to handle the parsing of an opaque/non-hierarchical Uri such as `mailto:` or `tel:`.
 
-##### Added
-- Added `AppboyContentCardsFragment.getContentCardsRecyclerView()` to obtain the RecyclerView associated with the Content Cards fragment.
-- Added `AppboyInAppMessageManager.getDefaultInAppMessageViewFactory()` to simplify most custom implementations of `IInAppMessageViewFactory`.
-
 ## 3.5.0
+
+##### Breaking
+- Removed `IAppboyUnitySupport` interface from Appboy singleton object. Its methods have been added to the `IAppboy` interface.
+- The `IAction` in `IContentCardsActionListener.onContentCardClicked()` is now annotated as `@Nullable`. Previously, this field was always non-null.
+- Fixed an issue where `FLAG_ACTIVITY_NEW_TASK` was not added to configured back stack Activities when opening push. This resulted in push notifications failing to open deep links in that situation.
+  - Custom push back stack Activities are set via `AppboyConfig.setPushDeepLinkBackStackActivityClass()`.
 
 ##### Added
 - Added `Appboy.getCachedContentCards()` to provide an easier way to obtain the cached/offline list of Content Cards on the device.
@@ -54,12 +101,6 @@
 
 ##### Fixed
 - Fixed behavior in Content Cards and News Feed where cards without a click action wouldn't have their client click listeners called.
-
-##### Breaking
-- Removed `IAppboyUnitySupport` interface from Appboy singleton object. Its methods have been added to the `IAppboy` interface.
-- The `IAction` in `IContentCardsActionListener.onContentCardClicked()` is now annotated as `@Nullable`. Previously, this field was always non-null.
-- Fixed an issue where `FLAG_ACTIVITY_NEW_TASK` was not added to configured back stack Activities when opening push. This resulted in push notifications failing to open deep links in that situation.
-  - Custom push back stack Activities are set via `AppboyConfig.setPushDeepLinkBackStackActivityClass()`.
 
 ## 3.4.0
 

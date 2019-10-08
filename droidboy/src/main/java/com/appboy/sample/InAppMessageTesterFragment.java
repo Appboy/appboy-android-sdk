@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.appboy.Appboy;
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.enums.inappmessage.DismissType;
@@ -237,46 +238,59 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     backButtonDismissalCheckBox.setChecked(customDisableBackButtonChecked);
 
     Button createAndAddInAppMessageButton = view.findViewById(R.id.create_and_add_inappmessage_button);
-    createAndAddInAppMessageButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
-          addInAppMessage(new CustomInAppMessage());
-        } else {
-          if ("slideup".equals(mMessageType)) {
-            addInAppMessage(new InAppMessageSlideup());
-          } else if ("modal".equals(mMessageType)) {
+    createAndAddInAppMessageButton.setOnClickListener(view1 -> {
+      if (getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
+        addInAppMessage(new CustomInAppMessage());
+      } else {
+        switch (mMessageType) {
+          case "modal":
             addInAppMessage(new InAppMessageModal());
-          } else if ("modal_graphic".equals(mMessageType)) {
+            break;
+          case "modal_graphic":
             InAppMessageModal inAppMessageModal = new InAppMessageModal();
             inAppMessageModal.setImageStyle(ImageStyle.GRAPHIC);
             // graphic modals must be center cropped, the default for newly constructed modals
             // is center_fit
             inAppMessageModal.setCropType(CropType.CENTER_CROP);
             addInAppMessage(inAppMessageModal);
-          } else if ("full".equals(mMessageType)) {
+            break;
+          case "full":
             addInAppMessage(new InAppMessageFull());
-          } else if ("full_graphic".equals(mMessageType)) {
+            break;
+          case "full_graphic":
             InAppMessageFull inAppMessageFull = new InAppMessageFull();
             inAppMessageFull.setImageStyle(ImageStyle.GRAPHIC);
             addInAppMessage(inAppMessageFull);
-          } else if ("html_full_no_js".equals(mMessageType)) {
+            break;
+          case "html_full_no_js":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.NO_JS);
-          } else if ("html_full_inline_js".equals(mMessageType)) {
+            break;
+          case "html_full_inline_js":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.INLINE_JS);
-          } else if ("html_full_external_js".equals(mMessageType)) {
+            break;
+          case "html_full_external_js":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.EXTERNAL_JS);
-          } else if ("html_full_star_wars".equals(mMessageType)) {
+            break;
+          case "html_full_star_wars":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.STAR_WARS);
-          } else if ("html_full_youtube".equals(mMessageType)) {
+            break;
+          case "html_full_youtube":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.YOUTUBE);
-          } else if ("html_full_bridge_tester".equals(mMessageType)) {
+            break;
+          case "html_full_bridge_tester":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.BRIDGE_TESTER);
-          } else if ("html_full_slow_loading".equals(mMessageType)) {
+            break;
+          case "html_full_slow_loading":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.SLOW_LOADING);
-          } else {
+            break;
+          case "modal_dark_theme":
+            final String darkModeJson = getStringFromAssets(getContext(), "modal_inapp_message_with_dark_theme.json");
+            addInAppMessageFromString(darkModeJson);
+            break;
+          case "slideup":
+          default:
             addInAppMessage(new InAppMessageSlideup());
-          }
+            break;
         }
       }
     });
@@ -367,7 +381,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       }
     }
     inAppMessage.setHeader("Hello from Braze!");
-    ArrayList<MessageButton> messageButtons = new ArrayList<MessageButton>();
+    ArrayList<MessageButton> messageButtons = new ArrayList<>();
     MessageButton buttonOne = new MessageButton();
     buttonOne.setText("NewsFeed");
     buttonOne.setClickAction(ClickAction.NEWS_FEED);
@@ -378,6 +392,14 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setCloseButtonColor(inAppMessage);
     setFrameColor(inAppMessage);
     setHeaderTextAlign(inAppMessage);
+  }
+
+  /**
+   * Adds an {@link IInAppMessage} from its {@link IInAppMessage#forJsonPut()} form.
+   */
+  private void addInAppMessageFromString(String serializedInAppMessage) {
+    final IInAppMessage inAppMessage = Appboy.getInstance(getContext()).deserializeInAppMessageString(serializedInAppMessage);
+    AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
   }
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
@@ -676,7 +698,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         case "long":
           buttonOne.setText("No Webview");
           buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
-          buttonOne.setIsSecondaryButton(true);
           buttonTwo.setText("Webview");
           buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
           buttonTwo.setOpenUriInWebview(true);
@@ -690,7 +711,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         case "deeplink":
           buttonOne.setText("TELEPHONE");
           buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.telephone_uri)));
-          buttonOne.setIsSecondaryButton(true);
           buttonTwo.setText("PLAY STORE");
           buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.play_store_uri)));
           messageButtons.add(buttonOne);
@@ -801,6 +821,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
   }
 
+  @Override
   public void onNothingSelected(AdapterView<?> parent) {
     // Do nothing
   }
@@ -843,7 +864,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   }
 
   private String readHtmlBodyFromAssetsWithFileName(HtmlMessageType jsType) {
-    String htmlBody = null;
     String filename = "html_inapp_message_body_no_js.html";
     switch (jsType) {
       case INLINE_JS:
@@ -867,22 +887,24 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       default:
         break;
     }
+    return getStringFromAssets(getContext(), filename);
+  }
 
+  private static String getStringFromAssets(Context context, String filename) {
     // Get the text of the html from the assets folder
     try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(getActivity()
-          .getAssets().open(filename), "UTF-8"));
+      BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(filename), "UTF-8"));
       String line;
       StringBuilder stringBuilder = new StringBuilder();
       while ((line = reader.readLine()) != null) {
         stringBuilder.append(line);
       }
       reader.close();
-      htmlBody = stringBuilder.toString();
+      return stringBuilder.toString();
     } catch (IOException e) {
       Log.e(TAG, "Error while reading html body from assets.", e);
     }
 
-    return htmlBody;
+    return null;
   }
 }

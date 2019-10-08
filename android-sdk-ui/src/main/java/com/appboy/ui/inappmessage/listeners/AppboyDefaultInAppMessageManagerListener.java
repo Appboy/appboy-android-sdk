@@ -1,9 +1,12 @@
 package com.appboy.ui.inappmessage.listeners;
 
 import com.appboy.models.IInAppMessage;
+import com.appboy.models.IInAppMessageThemeable;
 import com.appboy.models.MessageButton;
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
 import com.appboy.ui.inappmessage.InAppMessageOperation;
+import com.appboy.ui.support.ViewUtils;
 
 public class AppboyDefaultInAppMessageManagerListener implements IInAppMessageManagerListener {
   @Override
@@ -14,6 +17,9 @@ public class AppboyDefaultInAppMessageManagerListener implements IInAppMessageMa
 
   @Override
   public InAppMessageOperation beforeInAppMessageDisplayed(IInAppMessage inAppMessage) {
+    if (inAppMessage instanceof IInAppMessageThemeable && ViewUtils.isDeviceInNightMode(AppboyInAppMessageManager.getInstance().getApplicationContext())) {
+      ((IInAppMessageThemeable) inAppMessage).enableDarkTheme();
+    }
     return InAppMessageOperation.DISPLAY_NOW;
   }
 

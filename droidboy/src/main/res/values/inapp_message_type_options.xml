@@ -4,6 +4,7 @@
     <item>Message Type: Slideup</item>
     <item>Message Type: Modal</item>
     <item>Message Type: Modal - Graphic</item>
+    <item>Message Type: Dark Theme Modal</item>
     <item>Message Type: Full</item>
     <item>Message Type: Full - Graphic</item>
     <item>Message Type: HTML Full No JS</item>
@@ -18,6 +19,7 @@
     <item>slideup</item>
     <item>modal</item>
     <item>modal_graphic</item>
+    <item>modal_dark_theme</item>
     <item>full</item>
     <item>full_graphic</item>
     <item>html_full_no_js</item>

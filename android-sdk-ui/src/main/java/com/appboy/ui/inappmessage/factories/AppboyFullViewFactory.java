@@ -32,7 +32,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
   public AppboyInAppMessageFullView createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
     final Context applicationContext = activity.getApplicationContext();
     final InAppMessageFull inAppMessageFull = (InAppMessageFull) inAppMessage;
-    boolean isGraphic = inAppMessageFull.getImageStyle().equals(ImageStyle.GRAPHIC);
+    final boolean isGraphic = inAppMessageFull.getImageStyle().equals(ImageStyle.GRAPHIC);
     final AppboyInAppMessageFullView view = getAppropriateFullView(activity, isGraphic);
     view.createAppropriateViews(activity, inAppMessageFull, isGraphic);
 
@@ -40,7 +40,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     String imageUrl = view.getAppropriateImageUrl(inAppMessage);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-      appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);
+      appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);
     }
 
     // modal frame should not be clickable.

@@ -40,7 +40,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
 
     // If this notification is a push story,
     // make a best effort to preload bitmap images into the cache.
-    AppboyNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras);
+    AppboyNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras, appboyExtras);
 
     String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(context, appboyConfigurationProvider, notificationExtras);
     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, notificationChannelId)

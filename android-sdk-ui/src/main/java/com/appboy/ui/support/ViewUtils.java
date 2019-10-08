@@ -2,6 +2,7 @@ package com.appboy.ui.support;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.view.Display;
@@ -81,5 +82,14 @@ public class ViewUtils {
     ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
     layoutParams.height = height;
     view.setLayoutParams(layoutParams);
+  }
+
+  /**
+   * Checks if the device is in night mode. In Android 10, this corresponds
+   * to "Dark Theme" being enabled by the user.
+   */
+  public static boolean isDeviceInNightMode(Context context) {
+    int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+    return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
   }
 }

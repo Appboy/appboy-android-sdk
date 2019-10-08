@@ -42,9 +42,14 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
   @Override
   public void setMessageBackgroundColor(int color) {
     if (getMessageBackgroundObject().getBackground() instanceof GradientDrawable) {
-      InAppMessageViewUtils.setViewBackgroundColorFilter(findViewById(R.id.com_appboy_inappmessage_full), color);
+      InAppMessageViewUtils.setViewBackgroundColorFilter(getMessageBackgroundObject(), color);
     } else {
-      super.setMessageBackgroundColor(color);
+      if (mIsGraphic) {
+        super.setMessageBackgroundColor(color);
+      } else {
+        InAppMessageViewUtils.setViewBackgroundColor(findViewById(R.id.com_appboy_inappmessage_full_all_content_parent), color);
+        InAppMessageViewUtils.setViewBackgroundColor(findViewById(R.id.com_appboy_inappmessage_full_text_and_button_content_parent), color);
+      }
     }
   }
 

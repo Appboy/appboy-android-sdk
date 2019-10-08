@@ -44,9 +44,10 @@ public class AppboyNotificationStyleFactory {
   }
 
   @Nullable
-  public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context, Bundle notificationExtras, NotificationCompat.Builder notificationBuilder) {
+  public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context, Bundle notificationExtras,
+                                                                          Bundle appboyExtras, NotificationCompat.Builder notificationBuilder) {
     String thisMethodName = "getStoryStyle";
-    Object[] args = new Object[]{context, notificationExtras, notificationBuilder};
+    Object[] args = new Object[]{context, notificationExtras, appboyExtras, notificationBuilder};
     return (NotificationCompat.DecoratedCustomViewStyle) invokeOriginalMethod(thisMethodName, null, args);
   }
 

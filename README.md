@@ -1,4 +1,4 @@
-<img src="https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png" width="300" title="Braze Logo" />
+![Braze Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png)
 
 # Android SDK
 
@@ -38,7 +38,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:3.7.+'
+   compile 'com.appboy:android-sdk-ui:3.8.+'
    ...
 }
 ```
@@ -57,7 +57,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:3.7.+'
+  compile 'com.appboy:android-sdk-ui:3.8.+'
 }
 ```
 

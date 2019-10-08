@@ -1,0 +1,66 @@
+{
+  "message": "This is a test modal in-app message",
+  "duration": 5000,
+  "slide_from": "bottom",
+  "extras": {
+    "one": "1",
+    "two": "2",
+    "three": "3"
+  },
+  "card_id": "bbbbbbbb-bbbb-bbbb-cccc-bbbbbbbbbbbb",
+  "click_action": "uri",
+  "message_close": "swipe",
+  "uri": "http://www.sports.yahoo.com/",
+  "bg_color": 0xffffffff,
+  "icon_color": 0xffffffff,
+  "icon_bg_color": 0xff0000ff,
+  "text_color": 0xff0000ff,
+  "header": "I'm a header",
+  "header_text_color": 0xff0000ff,
+  "close_btn_color": 0xff000000,
+  "orientation": "PORTRAIT",
+  "type": "MODAL",
+  "icon": "\uffff",
+  "image_url": "https://appboy-images.com/appboy/communication/assets/image_assets/images/57c7610856ec31384ef556bf/original.?1472684296",
+  "btns": [
+    {
+      "text": "button one",
+      "bg_color": 0xff468ae3,
+      "text_color": 0xffe8fc49,
+      "id": 0,
+      "use_webview": true,
+      "click_action": "none"
+    },
+    {
+      "text": "button two",
+      "bg_color": 0xff468ae3,
+      "text_color": 0xffe8fc49,
+      "id": 0,
+      "use_webview": true,
+      "click_action": "none"
+    }
+  ],
+  "themes" : {
+    "dark" : {
+      "close_btn_color": 0xddedf5f0,
+      "icon_color": 0x00d3c0d3,
+      "icon_bg_color": 0xdead2bad,
+      "bg_color": 0xffa18f8f,
+      "text_color": 0xb0c0c9ca,
+      "header_text_color": 0xbbe7e8e6,
+      "frame_color": 0xc0363030,
+      "btns" : [
+        {
+          "bg_color": 0xff969090,
+          "text_color": 0xfff7f0f0,
+          "border_color": 0xff524949
+        },
+        {
+          "bg_color": 0xff969090,
+          "text_color": 0xfff7f0f0,
+          "border_color": 0xff524949
+        }
+      ]
+    }
+  }
+}

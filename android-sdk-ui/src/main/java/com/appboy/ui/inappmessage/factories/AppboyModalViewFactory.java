@@ -30,7 +30,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     String imageUrl = view.getAppropriateImageUrl(inAppMessage);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-      appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_MODAL);
+      appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_MODAL);
     }
 
     // modal frame should not be clickable.

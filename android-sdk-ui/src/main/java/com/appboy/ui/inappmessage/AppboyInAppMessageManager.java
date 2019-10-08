@@ -244,22 +244,23 @@ public final class AppboyInAppMessageManager {
     // requests an orientation change), we save it in memory so that we can redisplay it when the
     // operation is done.
     if (mInAppMessageViewWrapper != null) {
-      ViewUtils.removeViewFromParent(mInAppMessageViewWrapper.getInAppMessageView());
+      final View inAppMessageView = mInAppMessageViewWrapper.getInAppMessageView();
+      if (inAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
+        AppboyLogger.d(TAG, "In-app message view includes HTML. Removing the page finished listener.");
+        final AppboyInAppMessageHtmlBaseView appboyInAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) inAppMessageView;
+        appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(null);
+      }
+      ViewUtils.removeViewFromParent(inAppMessageView);
+
       // Only continue if we're not animating a close
       if (mInAppMessageViewWrapper.getIsAnimatingClose()) {
+        // Note that mInAppMessageViewWrapper may be null after this call
         mInAppMessageViewLifecycleListener.afterClosed(mInAppMessageViewWrapper.getInAppMessage());
         mCarryoverInAppMessage = null;
       } else {
         mCarryoverInAppMessage = mInAppMessageViewWrapper.getInAppMessage();
       }
 
-      // If this message includes HTML, delay display until the content has finished loading
-      if (mInAppMessageViewWrapper.getInAppMessageView() instanceof AppboyInAppMessageHtmlBaseView) {
-        AppboyLogger.d(TAG, "In-app message view includes HTML. Removing the page finished listener.");
-        final AppboyInAppMessageHtmlBaseView appboyInAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) mInAppMessageViewWrapper.getInAppMessageView();
-        appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(null);
-      }
-      AppboyLogger.d(TAG, "Setting view wrapper to null");
       mInAppMessageViewWrapper = null;
     } else {
       mCarryoverInAppMessage = null;

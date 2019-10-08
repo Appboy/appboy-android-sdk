@@ -24,7 +24,7 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     String imageUrl = view.getAppropriateImageUrl(inAppMessage);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-      appboyImageLoader.renderUrlIntoView(applicationContext, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_SLIDEUP);
+      appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_SLIDEUP);
     }
 
     view.setMessageBackgroundColor(inAppMessageSlideup.getBackgroundColor());
