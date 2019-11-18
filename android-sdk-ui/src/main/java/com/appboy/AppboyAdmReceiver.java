@@ -18,6 +18,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
   private static final String ADM_RECEIVE_INTENT_ACTION = "com.amazon.device.messaging.intent.RECEIVE";
   private static final String ADM_REGISTRATION_INTENT_ACTION = "com.amazon.device.messaging.intent.REGISTRATION";
   private static final String ADM_ERROR_KEY = "error";
+  private static final String ADM_ERROR_DESCRIPTION_KEY = "error_description";
   private static final String ADM_REGISTRATION_ID_KEY = "registration_id";
   private static final String ADM_UNREGISTERED_KEY = "unregistered";
   private static final String ADM_MESSAGE_TYPE_KEY = "message_type";
@@ -54,11 +55,12 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
    */
   boolean handleRegistrationIntent(Context context, Intent intent) {
     String error = intent.getStringExtra(ADM_ERROR_KEY);
+    String errorDescription = intent.getStringExtra(ADM_ERROR_DESCRIPTION_KEY);
     String registrationId = intent.getStringExtra(ADM_REGISTRATION_ID_KEY);
     String unregistered = intent.getStringExtra(ADM_UNREGISTERED_KEY);
 
     if (error != null) {
-      AppboyLogger.e(TAG, "Error during ADM registration: " + error);
+      AppboyLogger.e(TAG, "Error during ADM registration: " + error + " description: " + errorDescription);
     } else if (registrationId != null) {
       AppboyLogger.i(TAG, "Registering for ADM messages with registrationId: " + registrationId);
       Appboy.getInstance(context).registerAppboyPushMessages(registrationId);

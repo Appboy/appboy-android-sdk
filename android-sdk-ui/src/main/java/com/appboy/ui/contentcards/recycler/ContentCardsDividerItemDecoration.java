@@ -54,6 +54,7 @@ public class ContentCardsDividerItemDecoration extends RecyclerView.ItemDecorati
     // Now we have to center the view horizontally in the RecyclerView
     // by adding in a margin on to the left & right of the view
     itemViewOutputRect.left = getSidePaddingValue(parent.getWidth());
+    itemViewOutputRect.right = getSidePaddingValue(parent.getWidth());
   }
 
   /**

@@ -62,8 +62,8 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
     super.bindViewHolder(viewHolder, card);
     ViewHolder shortNewsCardViewHolder = (ViewHolder) viewHolder;
 
-    shortNewsCardViewHolder.getTitle().setText(card.getTitle());
-    shortNewsCardViewHolder.getDescription().setText(card.getDescription());
+    setOptionalTextView(shortNewsCardViewHolder.getTitle(), card.getTitle());
+    setOptionalTextView(shortNewsCardViewHolder.getDescription(), card.getDescription());
     shortNewsCardViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
     // Using the default aspect ratio here since the card doesn't specify an aspect ratio

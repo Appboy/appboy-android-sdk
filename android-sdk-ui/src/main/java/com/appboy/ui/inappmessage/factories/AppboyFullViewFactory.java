@@ -83,7 +83,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
           final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
           int nonScrollViewHeight = layoutParams.bottomMargin + layoutParams.topMargin;
 
-          if (inAppMessageFull.getMessageButtons() != null && !inAppMessageFull.getMessageButtons().isEmpty()) {
+          if (!inAppMessageFull.getMessageButtons().isEmpty()) {
             // Account for all appropriate height / margins
             nonScrollViewHeight += (int) ViewUtils.convertDpToPixels(applicationContext, BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP);
           }

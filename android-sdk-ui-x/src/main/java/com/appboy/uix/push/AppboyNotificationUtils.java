@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.appboy.IAppboyNotificationFactory;
@@ -326,6 +327,10 @@ public class AppboyNotificationUtils {
 
   public static boolean isUninstallTrackingPush(Bundle notificationExtras) {
     return com.appboy.push.AppboyNotificationUtils.isUninstallTrackingPush(notificationExtras);
+  }
+
+  public static boolean isInAppMessageTestPush(@NonNull Intent intent) {
+    return com.appboy.push.AppboyNotificationUtils.isInAppMessageTestPush(intent);
   }
 
   private static void invokeOriginalMethod(String methodName, Object[] args) {

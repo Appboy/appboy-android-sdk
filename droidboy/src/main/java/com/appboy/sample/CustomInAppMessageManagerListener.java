@@ -1,6 +1,7 @@
 package com.appboy.sample;
 
 import android.app.Activity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.appboy.models.IInAppMessage;
@@ -77,4 +78,16 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
       Toast.makeText(mActivity, "The in-app message was dismissed.", Toast.LENGTH_LONG).show();
     }
   }
+
+  @Override
+  public void beforeInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void afterInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void beforeInAppMessageViewClosed(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void afterInAppMessageViewClosed(IInAppMessage inAppMessage) { }
 }

@@ -1,5 +1,7 @@
 package com.appboy.ui.inappmessage.listeners;
 
+import android.view.View;
+
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageThemeable;
 import com.appboy.models.MessageButton;
@@ -34,6 +36,17 @@ public class AppboyDefaultInAppMessageManagerListener implements IInAppMessageMa
   }
 
   @Override
-  public void onInAppMessageDismissed(IInAppMessage inAppMessage) {
-  }
+  public void onInAppMessageDismissed(IInAppMessage inAppMessage) { }
+
+  @Override
+  public void beforeInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void afterInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void beforeInAppMessageViewClosed(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void afterInAppMessageViewClosed(IInAppMessage inAppMessage) { }
 }

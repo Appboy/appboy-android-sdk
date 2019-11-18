@@ -8,23 +8,25 @@ Successful marketing automation is essential to the future of your mobile app. B
 - [Braze Developer Guide](https://www.braze.com/docs/developer_guide/platform_integration_guides/android/initial_sdk_setup/android_sdk_integration/ "Braze Developer Guide")
 - [JavaDocs](http://appboy.github.io/appboy-android-sdk/javadocs/ "Braze Android SDK Class Documentation")
 
+## Version Information
+
+- The Braze Android SDK supports Android 4.1+ / API 16+ (Jelly Bean and up).
+- Last Target SDK Version: 29
+- Last Compiled Support Library Version: 28.0.0
+- Last Compiled Firebase Cloud Messaging Version: 18.0.0
+- Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
+- Braze requires either a custom [IAppboyImageLoader](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) to display animated `gif` images.
+
 ## Components
 
 - `android-sdk-base` - the Braze SDK base analytics library.
 - `android-sdk-ui` - the Braze SDK user interface library for in-app messages, push, and the news feed.
+- `android-sdk-ui-x` - the Braze SDK interface for methods that AndroidX Jetifier could not directly transform.
 - `droidboy` - a sample app demonstrating how to use Braze in-depth.
 - `hello-appboy` - a sample app demonstrating a basic Braze integration.
 - `china-push-sample` - a sample app demonstrating the Braze + Baidu push integration.
 - `android-sdk-unity` - a library that enables Braze SDK integrations on Unity.
 - `samples` - a folder containing several sample apps for various integration options.
-
-## Version Support
-
-- The Braze Android SDK supports Android 4.1+ / API 16+ (Jelly Bean and up).
-- Last Target SDK Version: 29
-- Last Compiled Support Library Version: 28.0.0
-- Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
-- Braze requires either a custom [IAppboyImageLoader](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) to display animated `gif` images.
 
 ## Remote repository for gradle
 The version should match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
@@ -38,7 +40,7 @@ repositories {
 
 ```
 dependencies {
-   compile 'com.appboy:android-sdk-ui:3.8.+'
+   implementation 'com.appboy:android-sdk-ui:4.0.+'
    ...
 }
 ```
@@ -57,7 +59,7 @@ repositories {
 
 ```
 dependencies {
-  compile 'com.appboy:android-sdk-ui:3.8.+'
+  implementation 'com.appboy:android-sdk-ui:4.0.+'
 }
 ```
 

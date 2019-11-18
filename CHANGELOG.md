@@ -1,3 +1,57 @@
+## 4.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v4.0.0)
+
+##### ⚠ Breaking
+- Added `beforeInAppMessageViewOpened(), afterInAppMessageViewOpened(), beforeInAppMessageViewClosed(), afterInAppMessageViewClosed()` to the `IInAppMessageManagerListener` interface.
+  - These methods are intended to help instrument each stage of the In-App Message View gaining and losing visibility status.
+- Renamed `Card.getIsDismissible()` to `Card.getIsDismissibleByUser()`.
+
+##### Added
+- Added the ability to more easily test In-App Messages from the dashboard when sending a test push by bypassing the need to click the test push notification and instead directly display the test In-App Message when the app is in the foreground.
+  - A push notification will still display if a test In-App Message push is received and the app is in the background.
+  - You can enable this feature by configuring the boolean value for `com_appboy_in_app_message_push_test_eager_display_enabled` in your `appboy.xml`. The default value is false.
+  - You can also enable this feature at runtime by setting `AppboyConfig.setInAppMessageTestPushEagerDisplayEnabled()` to true. The default value is false.
+- Added the ability to customize how In-App Messages views are added to the view hierarchy with a custom `IInAppMessageViewWrapperFactory`.
+  - See `AppboyInAppMessageManager.setCustomInAppMessageViewWrapperFactory()`.
+  - For lightweight customizations, consider extending `DefaultInAppMessageViewWrapper` and overriding `getParentViewGroup()`, `getLayoutParams()`, and `addInAppMessageViewToViewGroup()`.
+  - Addresses https://github.com/Appboy/appboy-android-sdk/issues/138.
+- Added `Card.setIsDismissibleByUser()` to allow for integrators to disable the default swipe-to-dismiss behavior on a per-card basis.
+- Added the ability to set the initial `AppboyLogger` log level via `appboy.xml`.
+  - In your `appboy.xml`, set an integer value for `com_appboy_logger_initial_log_level`. The integer should correspond to a constant in `Log`, such as `Log.VERBOSE` which is 2.
+  - Values set via `AppboyLogger.setLogLevel()` take precedence over values set in `appboy.xml`.
+- Added the ability to use a custom Activity when opening deeplinks inside the app via a WebView. This Activity will be used in place of the default `AppboyWebViewActivity`.
+  - You can do this by configuring the string value for `com_appboy_custom_html_webview_activity_class_name` in your `appboy.xml`. Note that the class name used `appboy.xml` must be the exact class name string as returned from `YourClass.class.getName()`.
+  - You can also configure this at runtime by setting `AppboyConfig.setCustomWebViewActivityClass()`.
+  - To retrieve the url in your custom WebView:
+  ```
+  final Bundle extras = getIntent().getExtras();
+  if (extras.containsKey(Constants.APPBOY_WEBVIEW_URL_EXTRA)) {
+    String url = extras.getString(Constants.APPBOY_WEBVIEW_URL_EXTRA);
+  }
+  ```
+
+##### Fixed
+- Fixed the inability to scroll through Content Cards when not using standard input mechanisms, aiding accessibility.
+  - All Content Card views now have `selectable` and `focusable` attributes set to true.
+  - Amazon Fire TV integrators should update to this version.
+- Changed `AppboyInAppMessageHtmlUserJavascriptInterface.setCustomAttribute()` in the HTML javascript bridge to not coerce `Double` into `Float`.
+- Fixed default Content Card rendering on low screen density devices. Previously, Content Cards could render without a margin and overflow off screen.
+  - `@dimens/com_appboy_content_cards_max_width` now accurately sets the maximum possible width of a Content Card.
+  - `@dimens/com_appboy_content_cards_divider_left_margin` and `@dimens/com_appboy_content_cards_divider_right_margin` are now used to provide a margin for Content Cards when the width of the Content Card does not exceed the max width of `@dimens/com_appboy_content_cards_max_width`.
+- Fixed an issue where images in Content Cards could be resized before they had finished a layout, resulting in an 0 width/height ImageView.
+
+##### Changed
+- `InAppMessageImmersiveBase.getMessageButtons()` is now guaranteed to be non-null. When buttons are not set on the message, this list will be non-null and empty.
+  - Calling `InAppMessageImmersiveBase.setMessageButtons()` with null will instead clear the `MessageButton` list
+- Changed the SDK to compile against the 18.0.0 version of the Firebase Cloud Messaging dependency.
+- Updated the exported `android-sdk-ui` consumer proguard rules to keep javascript interface methods.
+- Changed the WebView used in HTML In-App Messages to have DOM storage enabled via `setDomStorageEnabled(true)`.
+- Changed Content Cards to allow for blank or empty values for the title or description. In these situations, the `TextView`'s visibility is changed to `GONE` in the view hierarchy.
+
+##### Removed
+- Removed `Constants.APPBOY_WEBVIEW_URL_KEY`.
+
 ## 3.8.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v3.8.0)
@@ -111,7 +165,6 @@
 - Added the ability to enable Braze Geofences without enabling Braze location collection. Set `AppboyConfig.setGeofencesEnabled()` or `com_appboy_geofences_enabled` in your `appboy.xml` to enable Braze Geofences.
   - Note that Braze Geofences will continue to work on existing integrations if location collection is enabled and this new configuration is not present. This new configuration is intended for integrations that want Braze Geofences, but not location collection enabled as well.
 - Added `Appboy.setGoogleAdvertisingId()` to pass a Google Advertising ID and Ad Tracking Limiting enabled flag back to Braze. Note that the SDK will not automatically collect either field.
-  - Access to this feature is currently limited. If you're interested in using this feature, please reach out to your Customer Success Manager or Account Manager.
 
 ##### Fixed
 - Fixed in-app message buttons not properly respecting colors when using a Material Design style theme.

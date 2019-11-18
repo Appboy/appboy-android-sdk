@@ -79,8 +79,10 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
     mFloatingActionButton = findViewById(R.id.floating_action_bar);
     mFloatingActionButton.setOnClickListener(view -> {
-      Appboy.getInstance(view.getContext()).requestImmediateDataFlush();
-      Toast.makeText(view.getContext(), "Requested data flush.", Toast.LENGTH_SHORT).show();
+      final Context context = view.getContext();
+      Appboy.getInstance(context).requestContentCardsRefresh(false);
+      Appboy.getInstance(context).requestImmediateDataFlush();
+      Toast.makeText(context, "Requested data flush and content card sync.", Toast.LENGTH_SHORT).show();
     });
 
     TabLayout tabLayout = findViewById(R.id.tabs);

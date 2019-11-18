@@ -5,10 +5,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.animation.Animation;
 
@@ -22,19 +21,9 @@ import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageImmersiveBase;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.JsonUtils;
-import com.appboy.ui.inappmessage.factories.AppboyFullViewFactory;
-import com.appboy.ui.inappmessage.factories.AppboyHtmlFullViewFactory;
-import com.appboy.ui.inappmessage.factories.AppboyInAppMessageAnimationFactory;
-import com.appboy.ui.inappmessage.factories.AppboyModalViewFactory;
-import com.appboy.ui.inappmessage.factories.AppboySlideupViewFactory;
-import com.appboy.ui.inappmessage.listeners.AppboyDefaultHtmlInAppMessageActionListener;
-import com.appboy.ui.inappmessage.listeners.AppboyDefaultInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.AppboyInAppMessageViewLifecycleListener;
-import com.appboy.ui.inappmessage.listeners.AppboyInAppMessageWebViewClientListener;
-import com.appboy.ui.inappmessage.listeners.IHtmlInAppMessageActionListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
-import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
 import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlBaseView;
 import com.appboy.ui.support.ViewUtils;
@@ -88,13 +77,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 // Static field leak doesn't apply to this singleton since the activity is nullified after the manager is unregistered.
 @SuppressLint("StaticFieldLeak")
-public final class AppboyInAppMessageManager {
+public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBase {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageManager.class);
   private static volatile AppboyInAppMessageManager sInstance = null;
 
   private final Stack<IInAppMessage> mInAppMessageStack = new Stack<IInAppMessage>();
-  private AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
-  private boolean mBackButtonDismissesInAppMessageView = true;
+  private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new AppboyInAppMessageViewLifecycleListener();
+  private final AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
+
   @Nullable
   private IEventSubscriber<InAppMessageEvent> mInAppMessageEventSubscriber;
   @Nullable
@@ -102,46 +92,11 @@ public final class AppboyInAppMessageManager {
   @Nullable
   private IInAppMessage mUnRegisteredInAppMessage;
   @Nullable
-  private Context mApplicationContext;
-  @Nullable
   private Integer mOriginalOrientation;
   @Nullable
   private AppboyConfigurationProvider mAppboyConfigurationProvider;
   @Nullable
-  private IInAppMessageViewFactory mCustomInAppMessageViewFactory;
-  @Nullable
-  private IInAppMessageAnimationFactory mCustomInAppMessageAnimationFactory;
-  @Nullable
-  private Activity mActivity;
-  @Nullable
   private IInAppMessageViewWrapper mInAppMessageViewWrapper;
-
-  // view listeners
-  private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener = new AppboyInAppMessageWebViewClientListener();
-  private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new AppboyInAppMessageViewLifecycleListener();
-
-  // manager listeners
-  private IInAppMessageManagerListener mDefaultInAppMessageManagerListener = new AppboyDefaultInAppMessageManagerListener();
-  private IInAppMessageManagerListener mCustomInAppMessageManagerListener;
-  /**
-   * A custom listener to be fired for control in-app messages.
-   * <p/>
-   * see {@link IInAppMessage#isControl()}
-   */
-  private IInAppMessageManagerListener mCustomControlInAppMessageManagerListener;
-
-  // html action listeners
-  private IHtmlInAppMessageActionListener mDefaultHtmlInAppMessageActionListener = new AppboyDefaultHtmlInAppMessageActionListener();
-  private IHtmlInAppMessageActionListener mCustomHtmlInAppMessageActionListener;
-
-  // view factories
-  private IInAppMessageViewFactory mInAppMessageSlideupViewFactory = new AppboySlideupViewFactory();
-  private IInAppMessageViewFactory mInAppMessageModalViewFactory = new AppboyModalViewFactory();
-  private IInAppMessageViewFactory mInAppMessageFullViewFactory = new AppboyFullViewFactory();
-  private IInAppMessageViewFactory mInAppMessageHtmlFullViewFactory = new AppboyHtmlFullViewFactory(mInAppMessageWebViewClientListener);
-
-  // animation factory
-  private IInAppMessageAnimationFactory mInAppMessageAnimationFactory = new AppboyInAppMessageAnimationFactory();
 
   public static AppboyInAppMessageManager getInstance() {
     if (sInstance == null) {
@@ -271,69 +226,6 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
-   * Assigns a custom {@link IInAppMessageManagerListener} that will be used when displaying in-app messages. To revert
-   * back to the default {@link IInAppMessageManagerListener}, call the
-   * {@link AppboyInAppMessageManager#setCustomInAppMessageManagerListener(IInAppMessageManagerListener)}  method with null.
-   * <p/>
-   * see {@link IInAppMessage#isControl()}
-   *
-   * @param inAppMessageManagerListener A custom {@link IInAppMessageManagerListener} or null (to revert back to the
-   *                                    default {@link IInAppMessageManagerListener}).
-   */
-  public void setCustomInAppMessageManagerListener(IInAppMessageManagerListener inAppMessageManagerListener) {
-    AppboyLogger.d(TAG, "Custom InAppMessageManagerListener set");
-    mCustomInAppMessageManagerListener = inAppMessageManagerListener;
-  }
-
-  /**
-   * Assigns a custom {@link IInAppMessageManagerListener} that will be used when displaying control in-app messages. To revert
-   * back to the default {@link IInAppMessageManagerListener}, call the
-   * {@link AppboyInAppMessageManager#setCustomControlInAppMessageManagerListener(IInAppMessageManagerListener)} method with null.
-   *
-   * @param inAppMessageManagerListener A custom {@link IInAppMessageManagerListener} for control in-app messages or null (to revert back to the
-   *                                    default {@link IInAppMessageManagerListener}).
-   */
-  public void setCustomControlInAppMessageManagerListener(IInAppMessageManagerListener inAppMessageManagerListener) {
-    AppboyLogger.d(TAG, "Custom ControlInAppMessageManagerListener set. This listener will only be used for control in-app messages.");
-    mCustomControlInAppMessageManagerListener = inAppMessageManagerListener;
-  }
-
-  /**
-   * Assigns a custom IHtmlInAppMessageActionListener that will be used during the display of Html in-app messages.
-   *
-   * @param htmlInAppMessageActionListener A custom IHtmlInAppMessageActionListener or null (to revert back to the
-   *                                       default IHtmlInAppMessageActionListener).
-   */
-  public void setCustomHtmlInAppMessageActionListener(IHtmlInAppMessageActionListener htmlInAppMessageActionListener) {
-    AppboyLogger.d(TAG, "Custom htmlInAppMessageActionListener set");
-    mCustomHtmlInAppMessageActionListener = htmlInAppMessageActionListener;
-  }
-
-  /**
-   * Assigns a custom IInAppMessageAnimationFactory that will be used to animate the in-app message View. To revert
-   * back to the default IInAppMessageAnimationFactory, call the setCustomInAppMessageAnimationFactory method with null.
-   *
-   * @param inAppMessageAnimationFactory A custom IInAppMessageAnimationFactory or null (to revert back to the default
-   *                                     IInAppMessageAnimationFactory).
-   */
-  public void setCustomInAppMessageAnimationFactory(IInAppMessageAnimationFactory inAppMessageAnimationFactory) {
-    AppboyLogger.d(TAG, "Custom InAppMessageAnimationFactory set");
-    mCustomInAppMessageAnimationFactory = inAppMessageAnimationFactory;
-  }
-
-  /**
-   * Assigns a custom IInAppMessageViewFactory that will be used to create the in-app message View. To revert
-   * back to the default IInAppMessageViewFactory, call the setCustomInAppMessageViewFactory method with null.
-   *
-   * @param inAppMessageViewFactory A custom IInAppMessageViewFactory or null (to revert back to the default
-   *                                IInAppMessageViewFactory).
-   */
-  public void setCustomInAppMessageViewFactory(IInAppMessageViewFactory inAppMessageViewFactory) {
-    AppboyLogger.d(TAG, "Custom InAppMessageViewFactory set");
-    mCustomInAppMessageViewFactory = inAppMessageViewFactory;
-  }
-
-  /**
    * Provides a in-app message that will then be handled by the in-app message manager. If no in-app message is being
    * displayed, it will attempt to display the in-app message immediately.
    *
@@ -435,54 +327,6 @@ public final class AppboyInAppMessageManager {
     }
   }
 
-  public IInAppMessageManagerListener getInAppMessageManagerListener() {
-    return mCustomInAppMessageManagerListener != null ? mCustomInAppMessageManagerListener : mDefaultInAppMessageManagerListener;
-  }
-
-  /**
-   * A {@link IInAppMessageManagerListener} to be used only for control in-app messages.
-   * <p/>
-   * see {@link IInAppMessage#isControl()}
-   */
-  public IInAppMessageManagerListener getControlInAppMessageManagerListener() {
-    return mCustomControlInAppMessageManagerListener != null ? mCustomControlInAppMessageManagerListener : mDefaultInAppMessageManagerListener;
-  }
-
-  public IHtmlInAppMessageActionListener getHtmlInAppMessageActionListener() {
-    return mCustomHtmlInAppMessageActionListener != null ? mCustomHtmlInAppMessageActionListener : mDefaultHtmlInAppMessageActionListener;
-  }
-
-  @Nullable
-  public Activity getActivity() {
-    return mActivity;
-  }
-
-  @Nullable
-  public Context getApplicationContext() {
-    return mApplicationContext;
-  }
-
-  /**
-   * Gets the default {@link IInAppMessageViewFactory} as returned by the {@link AppboyInAppMessageManager}
-   * for the given {@link IInAppMessage}.
-   *
-   * @return The {@link IInAppMessageViewFactory} or null if the message type does not have a {@link IInAppMessageViewFactory}.
-   */
-  public IInAppMessageViewFactory getDefaultInAppMessageViewFactory(IInAppMessage inAppMessage) {
-    switch (inAppMessage.getMessageType()) {
-      case SLIDEUP:
-        return mInAppMessageSlideupViewFactory;
-      case MODAL:
-        return mInAppMessageModalViewFactory;
-      case FULL:
-        return mInAppMessageFullViewFactory;
-      case HTML_FULL:
-        return mInAppMessageHtmlFullViewFactory;
-      default:
-        return null;
-    }
-  }
-
   /**
    * Resets the {@link AppboyInAppMessageManager} to its original state before the last in-app message
    * was displayed. This allows for a new in-app message to be displayed after calling this method.
@@ -501,31 +345,12 @@ public final class AppboyInAppMessageManager {
   }
 
   /**
-   * Sets whether the hardware back button dismisses in-app messages. Defaults to true.
-   * Note that the hardware back button default behavior will be used instead (i.e. the host {@link Activity}'s
-   * {@link Activity#onKeyDown(int, KeyEvent)} method will be called).
+   * Attempts to display an {@link IInAppMessage} to the user.
+   *
+   * @param inAppMessage The {@link IInAppMessage}.
+   * @param isCarryOver If this {@link IInAppMessage} is "carried over" from an {@link Activity} transition.
    */
-  public void setBackButtonDismissesInAppMessageView(boolean backButtonDismissesInAppMessageView) {
-    mBackButtonDismissesInAppMessageView = backButtonDismissesInAppMessageView;
-  }
-
-  public boolean getDoesBackButtonDismissInAppMessageView() {
-    return mBackButtonDismissesInAppMessageView;
-  }
-
-  private IInAppMessageAnimationFactory getInAppMessageAnimationFactory() {
-    return mCustomInAppMessageAnimationFactory != null ? mCustomInAppMessageAnimationFactory : mInAppMessageAnimationFactory;
-  }
-
-  private IInAppMessageViewFactory getInAppMessageViewFactory(IInAppMessage inAppMessage) {
-    if (mCustomInAppMessageViewFactory != null) {
-      return mCustomInAppMessageViewFactory;
-    } else {
-      return getDefaultInAppMessageViewFactory(inAppMessage);
-    }
-  }
-
-  boolean displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
+  void displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
     AppboyLogger.v(TAG, "Attempting to display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()));
 
     // Note: for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
@@ -533,21 +358,22 @@ public final class AppboyInAppMessageManager {
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
       AppboyLogger.d(TAG, "A in-app message is currently being displayed. Adding in-app message back on the stack.");
       mInAppMessageStack.push(inAppMessage);
-      return false;
+      return;
     }
 
     try {
       if (mActivity == null) {
         mCarryoverInAppMessage = inAppMessage;
-        throw new Exception("No activity is currently registered to receive in-app messages. Registering in-app message as carry-over "
-            + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
+        throw new Exception("No Activity is currently registered to receive in-app messages. Registering in-app message as carry-over "
+            + "in-app message. It will automatically be displayed when the next Activity registers to receive in-app messages.");
       }
       if (!isCarryOver) {
         long inAppMessageExpirationTimestamp = inAppMessage.getExpirationTimestamp();
         if (inAppMessageExpirationTimestamp > 0) {
           long currentTimeMillis = System.currentTimeMillis();
           if (currentTimeMillis > inAppMessageExpirationTimestamp) {
-            throw new Exception("In-app message is expired. Doing nothing. Expiration: $" + inAppMessageExpirationTimestamp + ". Current time: " + currentTimeMillis);
+            throw new Exception("In-app message is expired. Doing nothing. Expiration: $"
+                + inAppMessageExpirationTimestamp + ". Current time: " + currentTimeMillis);
           }
         } else {
           AppboyLogger.d(TAG, "Expiration timestamp not defined. Continuing.");
@@ -566,7 +392,7 @@ public final class AppboyInAppMessageManager {
         AppboyLogger.d(TAG, "Not displaying control in-app message. Logging impression and ending display execution.");
         inAppMessage.logImpression();
         resetAfterInAppMessageClose();
-        return true;
+        return;
       }
 
       IInAppMessageViewFactory inAppMessageViewFactory = getInAppMessageViewFactory(inAppMessage);
@@ -592,25 +418,42 @@ public final class AppboyInAppMessageManager {
 
       Animation openingAnimation = getInAppMessageAnimationFactory().getOpeningAnimation(inAppMessage);
       Animation closingAnimation = getInAppMessageAnimationFactory().getClosingAnimation(inAppMessage);
+      IInAppMessageViewWrapperFactory viewWrapperFactory = getInAppMessageViewWrapperFactory();
 
       if (inAppMessageView instanceof IInAppMessageImmersiveView) {
         AppboyLogger.d(TAG, "Creating view wrapper for immersive in-app message.");
         IInAppMessageImmersiveView inAppMessageViewImmersive = (IInAppMessageImmersiveView) inAppMessageView;
         InAppMessageImmersiveBase inAppMessageImmersiveBase = (InAppMessageImmersiveBase) inAppMessage;
 
-        int numButtons = inAppMessageImmersiveBase.getMessageButtons() != null ? inAppMessageImmersiveBase.getMessageButtons().size() : 0;
-        mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
-            mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageViewImmersive.getMessageClickableView(),
-            inAppMessageViewImmersive.getMessageButtonViews(numButtons), inAppMessageViewImmersive.getMessageCloseButtonView());
+        int numButtons = inAppMessageImmersiveBase.getMessageButtons().size();
+        mInAppMessageViewWrapper = viewWrapperFactory.createInAppMessageViewWrapper(inAppMessageView,
+            inAppMessage,
+            mInAppMessageViewLifecycleListener,
+            mAppboyConfigurationProvider,
+            openingAnimation,
+            closingAnimation,
+            inAppMessageViewImmersive.getMessageClickableView(),
+            inAppMessageViewImmersive.getMessageButtonViews(numButtons),
+            inAppMessageViewImmersive.getMessageCloseButtonView());
       } else if (inAppMessageView instanceof IInAppMessageView) {
         AppboyLogger.d(TAG, "Creating view wrapper for base in-app message.");
         IInAppMessageView inAppMessageViewBase = (IInAppMessageView) inAppMessageView;
-        mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
-            mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageViewBase.getMessageClickableView());
+        mInAppMessageViewWrapper = viewWrapperFactory.createInAppMessageViewWrapper(inAppMessageView,
+            inAppMessage,
+            mInAppMessageViewLifecycleListener,
+            mAppboyConfigurationProvider,
+            openingAnimation,
+            closingAnimation,
+            inAppMessageViewBase.getMessageClickableView());
       } else {
         AppboyLogger.d(TAG, "Creating view wrapper for in-app message.");
-        mInAppMessageViewWrapper = new InAppMessageViewWrapper(inAppMessageView, inAppMessage, mInAppMessageViewLifecycleListener,
-            mAppboyConfigurationProvider, openingAnimation, closingAnimation, inAppMessageView);
+        mInAppMessageViewWrapper = viewWrapperFactory.createInAppMessageViewWrapper(inAppMessageView,
+            inAppMessage,
+            mInAppMessageViewLifecycleListener,
+            mAppboyConfigurationProvider,
+            openingAnimation,
+            closingAnimation,
+            inAppMessageView);
       }
 
       // If this message includes HTML, delay display until the content has finished loading
@@ -633,16 +476,25 @@ public final class AppboyInAppMessageManager {
       } else {
         mInAppMessageViewWrapper.open(mActivity);
       }
-      return true;
     } catch (Throwable e) {
       AppboyLogger.e(TAG, "Could not display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()), e);
       resetAfterInAppMessageClose();
-      return false;
     }
   }
 
+  private IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber() {
+    return new IEventSubscriber<InAppMessageEvent>() {
+      @Override
+      public void trigger(InAppMessageEvent event) {
+        if (getInAppMessageManagerListener().onInAppMessageReceived(event.getInAppMessage())) {
+          return;
+        }
+        addInAppMessage(event.getInAppMessage());
+      }
+    };
+  }
+
   /**
-   *
    * For in-app messages that have a preferred orientation, locks the screen orientation and
    * returns true if the screen is currently in the preferred orientation. If the screen is not
    * currently in the preferred orientation, returns false.
@@ -650,12 +502,14 @@ public final class AppboyInAppMessageManager {
    * Always returns true for tablets, regardless of current orientation.
    *
    * Always returns true if the in-app message doesn't have a preferred orientation.
-   *
-   * @param inAppMessage
-   * @return
    */
   @SuppressLint("InlinedApi")
+  @VisibleForTesting
   boolean verifyOrientationStatus(IInAppMessage inAppMessage) {
+    if (mActivity == null) {
+      AppboyLogger.w(TAG, "Cannot verify orientation status with null Activity.");
+      return true;
+    }
     if (ViewUtils.isRunningOnTablet(mActivity)) {
       AppboyLogger.d(TAG, "Running on tablet. In-app message can be displayed in any orientation.");
       return true;
@@ -670,7 +524,7 @@ public final class AppboyInAppMessageManager {
       return true;
     }
     int currentScreenOrientation = mActivity.getResources().getConfiguration().orientation;
-    if (currentOrientationIsValid(currentScreenOrientation, preferredOrientation)) {
+    if (ViewUtils.isCurrentOrientationValid(currentScreenOrientation, preferredOrientation)) {
       if (mOriginalOrientation == null) {
         AppboyLogger.d(TAG, "Requesting orientation lock.");
         mOriginalOrientation = mActivity.getRequestedOrientation();
@@ -680,32 +534,5 @@ public final class AppboyInAppMessageManager {
       return true;
     }
     return false;
-  }
-
-  private boolean currentOrientationIsValid(int currentScreenOrientation, Orientation preferredOrientation) {
-    if (currentScreenOrientation == Configuration.ORIENTATION_LANDSCAPE
-        && preferredOrientation == Orientation.LANDSCAPE) {
-      AppboyLogger.d(TAG, "Current and preferred orientation are landscape.");
-      return true;
-    } else if (currentScreenOrientation == Configuration.ORIENTATION_PORTRAIT
-        && preferredOrientation == Orientation.PORTRAIT) {
-      AppboyLogger.d(TAG, "Current and preferred orientation are portrait.");
-      return true;
-    } else {
-      AppboyLogger.d(TAG, "Current orientation " + currentScreenOrientation + " and preferred orientation " + preferredOrientation + " don't match");
-      return false;
-    }
-  }
-
-  private IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber() {
-    return new IEventSubscriber<InAppMessageEvent>() {
-      @Override
-      public void trigger(InAppMessageEvent event) {
-        if (getInAppMessageManagerListener().onInAppMessageReceived(event.getInAppMessage())) {
-          return;
-        }
-        addInAppMessage(event.getInAppMessage());
-      }
-    };
   }
 }

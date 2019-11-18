@@ -40,12 +40,14 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         // relying on the cache dir right now.
         // See http://developer.android.com/reference/android/os/AsyncTask.html#execute(Params...)
         if (!prepareInAppMessageWithHtml(inAppMessage)) {
+          AppboyLogger.w(TAG, "Logging html in-app message zip asset download failure");
           inAppMessage.logDisplayFailure(InAppMessageFailureType.ZIP_ASSET_DOWNLOAD);
           return null;
         }
       } else {
         boolean imageDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
         if (!imageDownloadSucceeded) {
+          AppboyLogger.w(TAG, "Logging in-app message image download failure");
           inAppMessage.logDisplayFailure(InAppMessageFailureType.IMAGE_DOWNLOAD);
           return null;
         }
@@ -138,7 +140,7 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
     if (inAppMessage.getBitmap() == null) {
       String remoteImageUrl = inAppMessage.getRemoteImageUrl();
       if (!StringUtils.isNullOrBlank(remoteImageUrl)) {
-        AppboyLogger.i(TAG, "In-app message has remote image url. Downloading.");
+        AppboyLogger.i(TAG, "In-app message has remote image url. Downloading image at url: " + remoteImageUrl);
 
         // Try to sample the image for slideup and modal in-app messages
         // By default, the image won't be sampled

@@ -154,12 +154,25 @@ public class UriAction implements IAction {
    * Returns an intent that opens the uri inside of a {@link AppboyWebViewActivity}.
    */
   private static Intent getWebViewActivityIntent(Context context, Uri uri, Bundle extras) {
-    Intent intent = new Intent(context, AppboyWebViewActivity.class);
-    if (extras != null) {
-      intent.putExtras(extras);
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
+    final String customWebViewActivityClassName = configurationProvider.getCustomHtmlWebViewActivityClassName();
+    Intent webViewActivityIntent;
+
+    // If the class is valid and is manifest registered, use it as the launching intent
+    if (!StringUtils.isNullOrBlank(customWebViewActivityClassName)
+        && UriUtils.isActivityRegisteredInManifest(context, customWebViewActivityClassName)) {
+      AppboyLogger.d(TAG, "Launching custom WebView Activity with class name: " + customWebViewActivityClassName);
+      webViewActivityIntent = new Intent()
+          .setClassName(context, customWebViewActivityClassName);
+    } else {
+      webViewActivityIntent = new Intent(context, AppboyWebViewActivity.class);
     }
-    intent.putExtra(Constants.APPBOY_WEBVIEW_URL_EXTRA, uri.toString());
-    return intent;
+
+    if (extras != null) {
+      webViewActivityIntent.putExtras(extras);
+    }
+    webViewActivityIntent.putExtra(Constants.APPBOY_WEBVIEW_URL_EXTRA, uri.toString());
+    return webViewActivityIntent;
   }
 
   private static Intent getActionViewIntent(Context context, Uri uri, Bundle extras) {

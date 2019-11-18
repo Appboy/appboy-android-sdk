@@ -13,6 +13,7 @@ import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
@@ -53,9 +54,13 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     mClassLogTag = AppboyLogger.getAppboyLogTag(this.getClass());
   }
 
-  public void setOptionalTextView(TextView view, String value) {
-    if (value != null && !value.trim().equals("")) {
-      view.setText(value);
+  /**
+   * Applies the text to the {@link TextView}. If the text is null or blank,
+   * the {@link TextView}'s visibility is changed to {@link android.view.View#GONE}.
+   */
+  public void setOptionalTextView(TextView view, String text) {
+    if (!StringUtils.isNullOrBlank(text)) {
+      view.setText(text);
       view.setVisibility(VISIBLE);
     } else {
       view.setText("");
@@ -171,6 +176,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   }
 
   protected void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
+    AppboyLogger.v(TAG, "Handling card click for card: " + card);
     card.setIndicatorHighlighted(true);
     if (!isClickHandled(context, card, cardAction)) {
       if (cardAction != null) {

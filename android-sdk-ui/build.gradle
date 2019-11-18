@@ -8,7 +8,6 @@ dependencies {
   compileOnly "com.android.support:design:${SUPPORT_LIBS_VERSION}"
 
   // Required for the FirebaseMessagingService
-  compileOnly "com.google.firebase:firebase-core:${FIREBASE_CORE_VERSION}"
   compileOnly "com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}"
 }
 

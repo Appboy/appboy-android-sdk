@@ -561,9 +561,11 @@
 
   <!-- Content Cards -->
   <style name="Appboy.ContentCards">
-    <item name="android:layout_width">@dimen/com_appboy_content_cards_max_width</item>
+    <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:orientation">horizontal</item>
+    <item name="android:focusable">true</item>
+    <item name="android:clickable">true</item>
   </style>
   <style name="Appboy.ContentCards.EmptyContainer">
     <item name="android:layout_height">match_parent</item>
@@ -595,6 +597,10 @@
   <!-- Captioned Image Content Card -->
   <style name="Appboy.ContentCards.CaptionedImage">
     <item name="android:layout_height">wrap_content</item>
+  </style>
+  <style name="Appboy.ContentCards.CaptionedImage.Root">
+    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
   </style>
   <style name="Appboy.ContentCards.CaptionedImage.ImageContainer">
     <item name="android:layout_width">match_parent</item>
@@ -641,6 +647,10 @@
 
   <!-- Banner Content Card -->
   <style name="Appboy.ContentCards.BannerImage"/>
+  <style name="Appboy.ContentCards.BannerImage.Root">
+    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
+  </style>
   <style name="Appboy.ContentCards.BannerImage.ImageContainer">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
@@ -658,6 +668,10 @@
 
   <!-- Short News Content Card -->
   <style name="Appboy.ContentCards.ShortNews"/>
+  <style name="Appboy.ContentCards.ShortNews.Root">
+    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
+  </style>
   <style name="Appboy.ContentCards.ShortNews.ImageContainer">
     <item name="android:layout_width">57.5dp</item>
     <item name="android:layout_height">57.5dp</item>
@@ -713,6 +727,10 @@
   <!-- Text Announcement Content Card -->
   <style name="Appboy.ContentCards.TextAnnouncement">
     <item name="android:layout_height">wrap_content</item>
+  </style>
+  <style name="Appboy.ContentCards.TextAnnouncement.Root">
+    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
   </style>
   <style name="Appboy.ContentCards.TextAnnouncement.Container">
     <item name="android:layout_marginLeft">25dp</item>

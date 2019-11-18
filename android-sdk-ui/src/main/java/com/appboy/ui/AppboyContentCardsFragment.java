@@ -46,18 +46,18 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   private static final String KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY = "KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY";
 
   private final Handler mMainThreadLooper = new Handler(Looper.getMainLooper());
-  private Runnable mShowNetworkUnavailableRunnable;
+  protected Runnable mShowNetworkUnavailableRunnable;
 
-  private RecyclerView mRecyclerView;
-  private AppboyCardAdapter mCardAdapter;
-  private AppboyEmptyContentCardsAdapter mEmptyContentCardsAdapter;
-  private SwipeRefreshLayout mContentCardsSwipeLayout;
+  protected RecyclerView mRecyclerView;
+  protected AppboyCardAdapter mCardAdapter;
+  protected AppboyEmptyContentCardsAdapter mEmptyContentCardsAdapter;
+  protected SwipeRefreshLayout mContentCardsSwipeLayout;
 
-  private IEventSubscriber<ContentCardsUpdatedEvent> mContentCardsUpdatedSubscriber;
-  private IContentCardsUpdateHandler mDefaultContentCardUpdateHandler = new DefaultContentCardsUpdateHandler();
-  private IContentCardsUpdateHandler mCustomContentCardUpdateHandler;
-  private IContentCardsViewBindingHandler mDefaultContentCardsViewBindingHandler = new DefaultContentCardsViewBindingHandler();
-  private IContentCardsViewBindingHandler mCustomContentCardsViewBindingHandler;
+  protected IEventSubscriber<ContentCardsUpdatedEvent> mContentCardsUpdatedSubscriber;
+  protected IContentCardsUpdateHandler mDefaultContentCardUpdateHandler = new DefaultContentCardsUpdateHandler();
+  protected IContentCardsUpdateHandler mCustomContentCardUpdateHandler;
+  protected IContentCardsViewBindingHandler mDefaultContentCardsViewBindingHandler = new DefaultContentCardsViewBindingHandler();
+  protected IContentCardsViewBindingHandler mCustomContentCardsViewBindingHandler;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -81,44 +81,6 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
         R.color.com_appboy_content_cards_swipe_refresh_color_3,
         R.color.com_appboy_content_cards_swipe_refresh_color_4);
     return rootView;
-  }
-
-  /**
-   * Set RecyclerView's LayoutManager to the one given.
-   */
-  public void initializeRecyclerView() {
-    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    mCardAdapter = new AppboyCardAdapter(getContext(), layoutManager, new ArrayList<Card>(), getContentCardsViewBindingHandler());
-    mRecyclerView.setAdapter(mCardAdapter);
-    mRecyclerView.setLayoutManager(layoutManager);
-
-    ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mCardAdapter);
-    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-    itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-    // Disable any animations when the items change to avoid any issues when the data changes
-    // see https://stackoverflow.com/questions/29331075/recyclerview-blinking-after-notifydatasetchanged
-    RecyclerView.ItemAnimator animator = mRecyclerView.getItemAnimator();
-    if (animator instanceof SimpleItemAnimator) {
-      ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
-    }
-
-    // Add an item divider
-    mRecyclerView.addItemDecoration(new ContentCardsDividerItemDecoration(getContext()));
-
-    // Create the "empty" adapter
-    mEmptyContentCardsAdapter = new AppboyEmptyContentCardsAdapter();
-  }
-
-  /**
-   * The {@link RecyclerView} used in this fragment. Note that this will be
-   * null until {@link Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)} is called.
-   *
-   * @return A {@link android.support.v7.widget.RecyclerView} associated with {@link com.appboy.ui.AppboyContentCardsFragment}.
-   */
-  @Nullable
-  public RecyclerView getContentCardsRecyclerView() {
-    return mRecyclerView;
   }
 
   /**
@@ -161,81 +123,6 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     Appboy.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
     mMainThreadLooper.removeCallbacks(mShowNetworkUnavailableRunnable);
     mCardAdapter.markOnScreenCardsAsRead();
-  }
-
-  /**
-   * A main thread runnable to handle {@link ContentCardsUpdatedEvent} on the main thread.
-   */
-  private class ContentCardsUpdateRunnable implements Runnable {
-    private final ContentCardsUpdatedEvent mEvent;
-
-    ContentCardsUpdateRunnable(ContentCardsUpdatedEvent event) {
-      mEvent = event;
-    }
-
-    @Override
-    public void run() {
-      AppboyLogger.v(TAG, "Updating Content Cards views in response to ContentCardsUpdatedEvent: " + mEvent);
-      List<Card> cardsForRendering = getContentCardUpdateHandler().handleCardUpdate(mEvent);
-      mCardAdapter.replaceCards(cardsForRendering);
-      mMainThreadLooper.removeCallbacks(mShowNetworkUnavailableRunnable);
-
-      // If the update came from storage and is stale, then request a refresh.
-      if (mEvent.isFromOfflineStorage() && (mEvent.getLastUpdatedInSecondsFromEpoch() + MAX_CONTENT_CARDS_TTL_SECONDS) * 1000L < System.currentTimeMillis()) {
-        AppboyLogger.i(TAG, "ContentCards received was older than the max time "
-            + "to live of " + MAX_CONTENT_CARDS_TTL_SECONDS + " seconds, displaying it "
-            + "for now, but requesting an updated view from the server.");
-        Appboy.getInstance(getContext()).requestContentCardsRefresh(false);
-
-        // If we don't have any cards to display, we put up the spinner while
-        // we wait for the network to return.
-        // Eventually displaying an error message if it doesn't.
-        if (mEvent.isEmpty()) {
-          // Display a loading indicator
-          mContentCardsSwipeLayout.setRefreshing(true);
-
-          AppboyLogger.d(TAG, "Old Content Cards was empty, putting up a "
-              + "network spinner and registering the network "
-              + "error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + " ms.");
-          mMainThreadLooper.postDelayed(mShowNetworkUnavailableRunnable, NETWORK_PROBLEM_WARNING_MS);
-          return;
-        }
-      }
-
-      // The cards are either fresh from the cache, or came directly from a
-      // network request. An empty Content Cards should just display
-      // an "empty ContentCards" message.
-      if (!mEvent.isEmpty()) {
-        // The Content Cards contains cards and should be displayed
-        swapRecyclerViewAdapter(mCardAdapter);
-      } else {
-        // The Content Cards is empty and should display an "empty" message to the user.
-        swapRecyclerViewAdapter(mEmptyContentCardsAdapter);
-      }
-
-      // Stop the refresh animation
-      mContentCardsSwipeLayout.setRefreshing(false);
-    }
-  }
-
-  /**
-   * A main thread runnable to handle displaying network unavailable messages on the main thread.
-   */
-  private class NetworkUnavailableRunnable implements Runnable {
-    private final Context mApplicationContext;
-
-    private NetworkUnavailableRunnable(Context applicationContext) {
-      mApplicationContext = applicationContext;
-    }
-
-    @Override
-    public void run() {
-      AppboyLogger.v(TAG, "Displaying network unavailable toast.");
-      Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.com_appboy_feed_connection_error_title), Toast.LENGTH_LONG).show();
-
-      swapRecyclerViewAdapter(mEmptyContentCardsAdapter);
-      mContentCardsSwipeLayout.setRefreshing(false);
-    }
   }
 
   /**
@@ -308,10 +195,127 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   }
 
   /**
+   * The {@link RecyclerView} used in this fragment. Note that this will be
+   * null until {@link Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)} is called.
+   *
+   * @return A {@link android.support.v7.widget.RecyclerView} associated with {@link com.appboy.ui.AppboyContentCardsFragment}.
+   */
+  @Nullable
+  public RecyclerView getContentCardsRecyclerView() {
+    return mRecyclerView;
+  }
+
+  protected void initializeRecyclerView() {
+    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+    mCardAdapter = new AppboyCardAdapter(getContext(), layoutManager, new ArrayList<Card>(), getContentCardsViewBindingHandler());
+    mRecyclerView.setAdapter(mCardAdapter);
+    mRecyclerView.setLayoutManager(layoutManager);
+
+    attachSwipeHelperCallback();
+
+    // Disable any animations when the items change to avoid any issues when the data changes
+    // see https://stackoverflow.com/questions/29331075/recyclerview-blinking-after-notifydatasetchanged
+    RecyclerView.ItemAnimator animator = mRecyclerView.getItemAnimator();
+    if (animator instanceof SimpleItemAnimator) {
+      ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+    }
+
+    // Add an item divider
+    mRecyclerView.addItemDecoration(new ContentCardsDividerItemDecoration(getContext()));
+
+    // Create the "empty" adapter
+    mEmptyContentCardsAdapter = new AppboyEmptyContentCardsAdapter();
+  }
+
+  /**
+   * Creates and attaches a {@link SimpleItemTouchHelperCallback} to handle swipe-to-dismiss functionality.
+   */
+  protected void attachSwipeHelperCallback() {
+    ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mCardAdapter);
+    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+    itemTouchHelper.attachToRecyclerView(mRecyclerView);
+  }
+
+  /**
+   * A main thread runnable to handle {@link ContentCardsUpdatedEvent} on the main thread.
+   */
+  protected class ContentCardsUpdateRunnable implements Runnable {
+    private final ContentCardsUpdatedEvent mEvent;
+
+    ContentCardsUpdateRunnable(ContentCardsUpdatedEvent event) {
+      mEvent = event;
+    }
+
+    @Override
+    public void run() {
+      AppboyLogger.v(TAG, "Updating Content Cards views in response to ContentCardsUpdatedEvent: " + mEvent);
+      List<Card> cardsForRendering = getContentCardUpdateHandler().handleCardUpdate(mEvent);
+      mCardAdapter.replaceCards(cardsForRendering);
+      mMainThreadLooper.removeCallbacks(mShowNetworkUnavailableRunnable);
+
+      // If the update came from storage and is stale, then request a refresh.
+      if (mEvent.isFromOfflineStorage() && mEvent.isTimestampOlderThan(MAX_CONTENT_CARDS_TTL_SECONDS)) {
+        AppboyLogger.i(TAG, "ContentCards received was older than the max time "
+            + "to live of " + MAX_CONTENT_CARDS_TTL_SECONDS + " seconds, displaying it "
+            + "for now, but requesting an updated view from the server.");
+        Appboy.getInstance(getContext()).requestContentCardsRefresh(false);
+
+        // If we don't have any cards to display, we put up the spinner while
+        // we wait for the network to return.
+        // Eventually displaying an error message if it doesn't.
+        if (mEvent.isEmpty()) {
+          // Display a loading indicator
+          mContentCardsSwipeLayout.setRefreshing(true);
+
+          AppboyLogger.d(TAG, "Old Content Cards was empty, putting up a "
+              + "network spinner and registering the network "
+              + "error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + " ms.");
+          mMainThreadLooper.postDelayed(mShowNetworkUnavailableRunnable, NETWORK_PROBLEM_WARNING_MS);
+          return;
+        }
+      }
+
+      // The cards are either fresh from the cache, or came directly from a
+      // network request. An empty Content Cards should just display
+      // an "empty ContentCards" message.
+      if (!mEvent.isEmpty()) {
+        // The Content Cards contains cards and should be displayed
+        swapRecyclerViewAdapter(mCardAdapter);
+      } else {
+        // The Content Cards is empty and should display an "empty" message to the user.
+        swapRecyclerViewAdapter(mEmptyContentCardsAdapter);
+      }
+
+      // Stop the refresh animation
+      mContentCardsSwipeLayout.setRefreshing(false);
+    }
+  }
+
+  /**
+   * A main thread runnable to handle displaying network unavailable messages on the main thread.
+   */
+  protected class NetworkUnavailableRunnable implements Runnable {
+    private final Context mApplicationContext;
+
+    private NetworkUnavailableRunnable(Context applicationContext) {
+      mApplicationContext = applicationContext;
+    }
+
+    @Override
+    public void run() {
+      AppboyLogger.v(TAG, "Displaying network unavailable toast.");
+      Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.com_appboy_feed_connection_error_title), Toast.LENGTH_LONG).show();
+
+      swapRecyclerViewAdapter(mEmptyContentCardsAdapter);
+      mContentCardsSwipeLayout.setRefreshing(false);
+    }
+  }
+
+  /**
    * Swaps the current {@link RecyclerView} {@link android.support.v7.widget.RecyclerView.Adapter} for a new one. If
    * the current adapter matches the new adapter, then this method does nothing.
    */
-  private void swapRecyclerViewAdapter(RecyclerView.Adapter newAdapter) {
+  protected void swapRecyclerViewAdapter(RecyclerView.Adapter newAdapter) {
     if (mRecyclerView != null && mRecyclerView.getAdapter() != newAdapter) {
       mRecyclerView.setAdapter(newAdapter);
     }

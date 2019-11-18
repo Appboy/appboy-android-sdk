@@ -49,8 +49,8 @@ public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnn
     super.bindViewHolder(viewHolder, card);
     ViewHolder textAnnouncementViewHolder = (ViewHolder) viewHolder;
 
-    textAnnouncementViewHolder.getTitle().setText(card.getTitle());
-    textAnnouncementViewHolder.getDescription().setText(card.getDescription());
+    setOptionalTextView(textAnnouncementViewHolder.getTitle(), card.getTitle());
+    setOptionalTextView(textAnnouncementViewHolder.getDescription(), card.getDescription());
     textAnnouncementViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
   }
 }

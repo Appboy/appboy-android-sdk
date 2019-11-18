@@ -4,9 +4,9 @@ package com.appboy.ui.inappmessage;
  * A delegate method class used to close the currently displayed in-app message.
  */
 public class InAppMessageCloser {
-  private InAppMessageViewWrapper mInAppMessageViewWrapper;
+  private IInAppMessageViewWrapper mInAppMessageViewWrapper;
 
-  public InAppMessageCloser(InAppMessageViewWrapper inAppMessageViewWrapper) {
+  public InAppMessageCloser(IInAppMessageViewWrapper inAppMessageViewWrapper) {
     mInAppMessageViewWrapper = inAppMessageViewWrapper;
   }
 

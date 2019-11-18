@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                style="@style/Appboy.ContentCards.ShortNews">
+                style="@style/Appboy.ContentCards.ShortNews.Root">
     <RelativeLayout
       android:id="@+id/com_appboy_content_cards_short_news_card_image_container"
       style="@style/Appboy.ContentCards.ShortNews.ImageContainer">

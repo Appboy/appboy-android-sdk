@@ -2,6 +2,7 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.TouchDelegate;
@@ -34,11 +35,8 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
    */
   public abstract List<View> getMessageButtonViews(int numButtons);
 
-  public void setMessageButtons(List<MessageButton> messageButtons) {
-    // Change the weight sum if only a single button is present. This
-    // makes the single button sit in the center of the parent view.
-    int numButtons = messageButtons != null ? messageButtons.size() : 0;
-    InAppMessageViewUtils.setButtons(getMessageButtonViews(numButtons), messageButtons);
+  public void setMessageButtons(@NonNull List<MessageButton> messageButtons) {
+    InAppMessageViewUtils.setButtons(getMessageButtonViews(messageButtons.size()), messageButtons);
   }
 
   public void setMessageCloseButtonColor(int color) {

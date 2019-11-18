@@ -21,7 +21,7 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlFullView.class);
   public static final String APPBOY_BRIDGE_PREFIX = "appboyInternalBridge";
 
-  private WebView mMessageWebView;
+  protected WebView mMessageWebView;
 
   public AppboyInAppMessageHtmlFullView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -39,6 +39,7 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDisplayZoomControls(false);
+        webSettings.setDomStorageEnabled(true);
         // This enables hardware acceleration if the manifest also has it defined. If not defined, then the layer type will fallback to software
         mMessageWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         mMessageWebView.setBackgroundColor(Color.TRANSPARENT);
@@ -47,7 +48,10 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
         mMessageWebView.setWebChromeClient(new WebChromeClient() {
           @Override
           public boolean onConsoleMessage(ConsoleMessage cm) {
-            AppboyLogger.d(TAG, "Html In-app log. Line: " + cm.lineNumber() + ". SourceId: " + cm.sourceId() + ". Log Level: " + cm.messageLevel() + ". Message: " + cm.message());
+            AppboyLogger.d(TAG, "Braze HTML In-app Message log. Line: " + cm.lineNumber()
+                + ". SourceId: " + cm.sourceId()
+                + ". Log Level: " + cm.messageLevel()
+                + ". Message: " + cm.message());
             return true;
           }
 

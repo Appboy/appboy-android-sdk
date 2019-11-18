@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.support.AppboyLogger;
 
 public class ViewUtils {
@@ -91,5 +92,25 @@ public class ViewUtils {
   public static boolean isDeviceInNightMode(Context context) {
     int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
     return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+  }
+
+  /**
+   * @return Whether the current screen orientation (e.g. {@link Configuration#ORIENTATION_LANDSCAPE})
+   * matches the preferred orientation (e.g. {@link Orientation#LANDSCAPE}.
+   */
+  public static boolean isCurrentOrientationValid(int currentScreenOrientation, Orientation preferredOrientation) {
+    if (currentScreenOrientation == Configuration.ORIENTATION_LANDSCAPE
+        && preferredOrientation == Orientation.LANDSCAPE) {
+      AppboyLogger.d(TAG, "Current and preferred orientation are landscape.");
+      return true;
+    } else if (currentScreenOrientation == Configuration.ORIENTATION_PORTRAIT
+        && preferredOrientation == Orientation.PORTRAIT) {
+      AppboyLogger.d(TAG, "Current and preferred orientation are portrait.");
+      return true;
+    } else {
+      AppboyLogger.d(TAG, "Current orientation " + currentScreenOrientation
+          + " and preferred orientation " + preferredOrientation + " don't match");
+      return false;
+    }
   }
 }

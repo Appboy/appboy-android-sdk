@@ -212,6 +212,7 @@ public class MainFragment extends Fragment {
       try {
         AdvertisingIdClient.Info advertisingIdInfo = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
         Appboy.getInstance(mContext).setGoogleAdvertisingId(advertisingIdInfo.getId(), advertisingIdInfo.isLimitAdTrackingEnabled());
+        Appboy.getInstance(mContext).requestImmediateDataFlush();
       } catch (Exception e) {
         AppboyLogger.e(TAG, "Failed to collect Google Advertising ID information.", e);
       }

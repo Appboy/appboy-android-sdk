@@ -2,6 +2,7 @@ package com.appboy.unity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.MessageButton;
@@ -186,6 +187,18 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
       mAppboyUnityInAppMessageListener.onInAppMessageDismissed(inAppMessage);
     }
   }
+
+  @Override
+  public void beforeInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void afterInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void beforeInAppMessageViewClosed(View inAppMessageView, IInAppMessage inAppMessage) { }
+
+  @Override
+  public void afterInAppMessageViewClosed(IInAppMessage inAppMessage) { }
 
   /**
    * Allows the client to specify that they will handle the display of in-app messages

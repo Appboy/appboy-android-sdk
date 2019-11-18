@@ -77,7 +77,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
     if (mCardData.isEmpty()) {
       return false;
     }
-    return mCardData.get(position).getIsDismissible();
+    return mCardData.get(position).getIsDismissibleByUser();
   }
 
   @Override

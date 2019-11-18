@@ -172,6 +172,8 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
     try {
       JSONObject jsonObject = new JSONObject(jsonStringValue);
       Object valueObject = jsonObject.get(JS_BRIDGE_ATTRIBUTE_VALUE);
+      // JSONObject in Android never deals with float values, which
+      // accounts for why that instanceof check is missing below
       if (valueObject instanceof String) {
         user.setCustomUserAttribute(key, (String) valueObject);
       } else if (valueObject instanceof Boolean) {
@@ -179,12 +181,14 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
       } else if (valueObject instanceof Integer) {
         user.setCustomUserAttribute(key, (Integer) valueObject);
       } else if (valueObject instanceof Double) {
-        user.setCustomUserAttribute(key, ((Double) valueObject).floatValue());
+        user.setCustomUserAttribute(key, ((Double) valueObject));
       } else {
-        AppboyLogger.e(TAG, "Failed to parse custom attribute type for key: " + key);
+        AppboyLogger.e(TAG, "Failed to parse custom attribute type for key: " + key
+            + " and json string value: " + jsonStringValue);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to parse custom attribute type for key: " + key, e);
+      AppboyLogger.e(TAG, "Failed to parse custom attribute type for key: " + key
+          + " and json string value: " + jsonStringValue, e);
     }
   }
 

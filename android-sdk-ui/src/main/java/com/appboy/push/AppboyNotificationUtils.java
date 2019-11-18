@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
@@ -983,6 +984,15 @@ public class AppboyNotificationUtils {
       AppboyLogger.d(TAG, "Push contains associated Content Cards card. User id: " + contentCardDataUserId + " Card data: " + contentCardData);
       AppboyInternal.addSerializedContentCardToStorage(context, contentCardData, contentCardDataUserId);
     }
+  }
+
+  /**
+   * Checks if a push {@link Intent} contains extras found in a test push for in-app messages.
+   *
+   * @return True if this {@link Intent} is from an in-app message test send.
+   */
+  public static boolean isInAppMessageTestPush(@NonNull Intent intent) {
+    return intent.hasExtra(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY) && intent.getStringExtra(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY).equals("true");
   }
 
   /**

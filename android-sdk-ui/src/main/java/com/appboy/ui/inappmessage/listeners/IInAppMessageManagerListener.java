@@ -1,5 +1,7 @@
 package com.appboy.ui.inappmessage.listeners;
 
+import android.view.View;
+
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.MessageButton;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
@@ -62,4 +64,50 @@ public interface IInAppMessageManagerListener {
    * @param inAppMessage the in-app message that was closed.
    */
   void onInAppMessageDismissed(IInAppMessage inAppMessage);
+
+  /**
+   * Called before the in-app message View is added to the layout.
+   *
+   * Note that this is called before any default processing in
+   * {@link AppboyInAppMessageViewLifecycleListener} takes place.
+   *
+   * @param inAppMessageView The {@link View} representing the {@link IInAppMessage}.
+   * @param inAppMessage The {@link IInAppMessage} being displayed.
+   */
+  void beforeInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage);
+
+  /**
+   * Called after the in-app message View has been added to the layout
+   * (and the appearing animation has completed).
+   *
+   * Note that this is called after any default processing in
+   * {@link AppboyInAppMessageViewLifecycleListener} takes place.
+   *
+   * @param inAppMessageView The {@link View} representing the {@link IInAppMessage}.
+   * @param inAppMessage The {@link IInAppMessage} being displayed.
+   */
+  void afterInAppMessageViewOpened(View inAppMessageView, IInAppMessage inAppMessage);
+
+  /**
+   * Called before the in-app message View is removed from the layout
+   * (and before any closing animation starts).
+   *
+   * Note that this is called before any default processing in
+   * {@link AppboyInAppMessageViewLifecycleListener} takes place.
+   *
+   * @param inAppMessageView The {@link View} representing the {@link IInAppMessage}.
+   * @param inAppMessage The {@link IInAppMessage} being displayed.
+   */
+  void beforeInAppMessageViewClosed(View inAppMessageView, IInAppMessage inAppMessage);
+
+  /**
+   * Called after the in-app message View has been removed from the
+   * layout (and the disappearing animation has completed).
+   *
+   * Note that this is called after any default processing in
+   * {@link AppboyInAppMessageViewLifecycleListener} takes place.
+   *
+   * @param inAppMessage The {@link IInAppMessage} being displayed.
+   */
+  void afterInAppMessageViewClosed(IInAppMessage inAppMessage);
 }

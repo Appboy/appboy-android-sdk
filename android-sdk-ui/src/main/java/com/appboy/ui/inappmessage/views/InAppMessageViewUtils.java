@@ -108,6 +108,10 @@ public class InAppMessageViewUtils {
           Drawable drawable = button.getBackground();
           if (drawable instanceof GradientDrawable) {
             GradientDrawable gradientDrawable = (GradientDrawable) drawable;
+            // Mutating this drawable to guarantee that color changes to it
+            // don't propagate to other instances of the button and be seen after
+            // invalidating the in-app message view
+            gradientDrawable.mutate();
             gradientDrawable.setStroke(strokeWidth, messageButton.getBorderColor());
             gradientDrawable.setColor(messageButton.getBackgroundColor());
           }
@@ -226,6 +230,10 @@ public class InAppMessageViewUtils {
           return false;
         }
       }
+    } catch (ClassNotFoundException c) {
+      // This exception is expected so there's no
+      // reason to log it
+      return false;
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Caught error while checking for Material Design on the classpath", e);
       return false;

@@ -28,33 +28,43 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
 
   @Override
   public void beforeOpened(View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeOpened called.");
+    // Note that the client method must be called before any default processing below
+    getInAppMessageManager().getInAppMessageManagerListener().beforeInAppMessageViewOpened(inAppMessageView, inAppMessage);
+    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.beforeOpened called.");
     inAppMessage.logImpression();
   }
 
   @Override
   public void afterOpened(View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterOpened called.");
+    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.afterOpened called.");
+
+    // Note that the client method must be called after any default processing above
+    getInAppMessageManager().getInAppMessageManagerListener().afterInAppMessageViewOpened(inAppMessageView, inAppMessage);
   }
 
   @Override
   public void beforeClosed(View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.beforeClosed called.");
+    // Note that the client method must be called before any default processing below
+    getInAppMessageManager().getInAppMessageManagerListener().beforeInAppMessageViewClosed(inAppMessageView, inAppMessage);
+    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.beforeClosed called.");
   }
 
   @Override
   public void afterClosed(IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.afterClosed called.");
+    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.afterClosed called.");
     getInAppMessageManager().resetAfterInAppMessageClose();
     if (inAppMessage instanceof IInAppMessageHtml) {
       startClearHtmlInAppMessageAssetsThread();
     }
     inAppMessage.onAfterClosed();
+
+    // Note that the client method must be called after any default processing above
+    getInAppMessageManager().getInAppMessageManagerListener().afterInAppMessageViewClosed(inAppMessage);
   }
 
   @Override
   public void onClicked(InAppMessageCloser inAppMessageCloser, View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onClicked called.");
+    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.onClicked called.");
     inAppMessage.logClick();
 
     // Perform the in-app message clicked listener action from the host application first. This give
@@ -74,7 +84,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
 
   @Override
   public void onButtonClicked(InAppMessageCloser inAppMessageCloser, MessageButton messageButton, IInAppMessageImmersive inAppMessageImmersive) {
-    AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onButtonClicked called.");
+    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.onButtonClicked called.");
     inAppMessageImmersive.logButtonClick(messageButton);
 
     boolean handled = getInAppMessageManager().getInAppMessageManagerListener().onInAppMessageButtonClicked(inAppMessageImmersive, messageButton, inAppMessageCloser);
@@ -87,7 +97,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
 
   @Override
   public void onDismissed(View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "InAppMessageViewWrapper.IInAppMessageViewLifecycleListener.onDismissed called.");
+    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.onDismissed called.");
     getInAppMessageManager().getInAppMessageManagerListener().onInAppMessageDismissed(inAppMessage);
   }
 

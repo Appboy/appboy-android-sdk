@@ -668,10 +668,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
 
   @SuppressWarnings("checkstyle:MissingSwitchDefault")
   private void addMessageButtons(IInAppMessageImmersive inAppMessage) {
-    // add message buttons.
     if (!SpinnerUtils.spinnerItemNotSet(mButtons)) {
       if (getString(R.string.none).equals(mButtons)) {
-        inAppMessage.setMessageButtons(null);
+        inAppMessage.setMessageButtons(Collections.emptyList());
         return;
       }
       ArrayList<MessageButton> messageButtons = new ArrayList<>();
@@ -719,17 +718,17 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       }
       inAppMessage.setMessageButtons(messageButtons);
     }
-    if (!SpinnerUtils.spinnerItemNotSet(mButtonColor) && inAppMessage.getMessageButtons() != null) {
+    if (!SpinnerUtils.spinnerItemNotSet(mButtonColor) && !inAppMessage.getMessageButtons().isEmpty()) {
       for (MessageButton button : inAppMessage.getMessageButtons()) {
         button.setBackgroundColor(parseColorFromString(mButtonColor));
       }
     }
-    if (!SpinnerUtils.spinnerItemNotSet(mButtonTextColor) && inAppMessage.getMessageButtons() != null) {
+    if (!SpinnerUtils.spinnerItemNotSet(mButtonTextColor) && !inAppMessage.getMessageButtons().isEmpty()) {
       for (MessageButton button : inAppMessage.getMessageButtons()) {
         button.setTextColor(parseColorFromString(mButtonTextColor));
       }
     }
-    if (!SpinnerUtils.spinnerItemNotSet(mButtonBorderColor) && inAppMessage.getMessageButtons() != null) {
+    if (!SpinnerUtils.spinnerItemNotSet(mButtonBorderColor) && !inAppMessage.getMessageButtons().isEmpty()) {
       for (MessageButton button : inAppMessage.getMessageButtons()) {
         button.setBorderColor(parseColorFromString(mButtonBorderColor));
       }

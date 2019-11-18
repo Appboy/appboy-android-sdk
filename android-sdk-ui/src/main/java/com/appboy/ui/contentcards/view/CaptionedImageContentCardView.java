@@ -62,8 +62,8 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
     super.bindViewHolder(viewHolder, card);
     ViewHolder captionedImageViewHolder = (ViewHolder) viewHolder;
 
-    captionedImageViewHolder.getTitle().setText(card.getTitle());
-    captionedImageViewHolder.getDescription().setText(card.getDescription());
+    setOptionalTextView(captionedImageViewHolder.getTitle(), card.getTitle());
+    setOptionalTextView(captionedImageViewHolder.getDescription(), card.getDescription());
     captionedImageViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
     setOptionalCardImage(captionedImageViewHolder.getImageView(),

@@ -12,6 +12,7 @@ import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.push.AppboyNotificationActionUtils;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 public final class AppboyFcmReceiver extends BroadcastReceiver {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFcmReceiver.class);
@@ -88,6 +89,17 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
         return false;
       }
 
+      AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+      if (appConfigurationProvider.getIsInAppMessageTestPushEagerDisplayEnabled()
+          && AppboyNotificationUtils.isInAppMessageTestPush(intent)
+          && AppboyInAppMessageManager.getInstance().getActivity() != null) {
+        // Pass this test in-app message along for eager display and bypass displaying a push
+        AppboyLogger.d(TAG, "Bypassing push display due to test in-app message presence and "
+            + "eager test in-app message display configuration setting.");
+        AppboyInternal.handleInAppMessageTestPush(context, intent);
+        return false;
+      }
+
       // Parse the notification for any associated ContentCard
       AppboyNotificationUtils.handleContentCardsSerializedCardIfPresent(context, fcmExtras);
 
@@ -95,8 +107,6 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
         AppboyLogger.d(TAG, "Received notification push");
         int notificationId = AppboyNotificationUtils.getNotificationId(fcmExtras);
         fcmExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
-        AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
-
         IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
 
         if (fcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {

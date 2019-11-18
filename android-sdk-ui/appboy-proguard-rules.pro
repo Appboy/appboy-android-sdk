@@ -12,3 +12,7 @@
 
 -dontwarn com.appboy.ui.**
 -dontwarn com.google.firebase.messaging.**
+
+-keepclassmembers class * {
+   @android.webkit.JavascriptInterface <methods>;
+}
