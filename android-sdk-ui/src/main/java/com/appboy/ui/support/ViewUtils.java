@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
+import android.support.v4.view.DisplayCutoutCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,6 +113,58 @@ public class ViewUtils {
       AppboyLogger.d(TAG, "Current orientation " + currentScreenOrientation
           + " and preferred orientation " + preferredOrientation + " don't match");
       return false;
+    }
+  }
+
+  /**
+   * @return The maximum of the display cutout left inset and the system window left inset.
+   */
+  public static int getMaxSafeLeftInset(@NonNull WindowInsetsCompat windowInsets) {
+    if (windowInsets.getDisplayCutout() != null) {
+      final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
+      return Math.max(displayCutout.getSafeInsetLeft(), windowInsets.getSystemWindowInsetLeft());
+    } else {
+      // The max inset is just the system value since the display cutout does not exist
+      return windowInsets.getSystemWindowInsetLeft();
+    }
+  }
+
+  /**
+   * @return The maximum of the display cutout right inset and the system window right inset.
+   */
+  public static int getMaxSafeRightInset(@NonNull WindowInsetsCompat windowInsets) {
+    if (windowInsets.getDisplayCutout() != null) {
+      final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
+      return Math.max(displayCutout.getSafeInsetRight(), windowInsets.getSystemWindowInsetRight());
+    } else {
+      // The max inset is just the system value since the display cutout does not exist
+      return windowInsets.getSystemWindowInsetRight();
+    }
+  }
+
+  /**
+   * @return The maximum of the display cutout top inset and the system window top inset.
+   */
+  public static int getMaxSafeTopInset(@NonNull WindowInsetsCompat windowInsets) {
+    if (windowInsets.getDisplayCutout() != null) {
+      final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
+      return Math.max(displayCutout.getSafeInsetTop(), windowInsets.getSystemWindowInsetTop());
+    } else {
+      // The max inset is just the system value since the display cutout does not exist
+      return windowInsets.getSystemWindowInsetTop();
+    }
+  }
+
+  /**
+   * @return The maximum of the display cutout bottom inset and the system window bottom inset.
+   */
+  public static int getMaxSafeBottomInset(@NonNull WindowInsetsCompat windowInsets) {
+    if (windowInsets.getDisplayCutout() != null) {
+      final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
+      return Math.max(displayCutout.getSafeInsetBottom(), windowInsets.getSystemWindowInsetBottom());
+    } else {
+      // The max inset is just the system value since the display cutout does not exist
+      return windowInsets.getSystemWindowInsetBottom();
     }
   }
 }

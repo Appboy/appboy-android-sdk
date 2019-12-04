@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
-import android.support.v4.view.DisplayCutoutCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -146,18 +145,11 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
    * Applies the {@link WindowInsetsCompat} by ensuring the close button and message text on the in-app message does not render
    * in the display cutout area.
    *
-   * @param insets The {@link WindowInsetsCompat} object directly from {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
+   * @param insets The {@link WindowInsetsCompat} object directly from
+   * {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
    */
   @Override
-  public void applyWindowInsets(WindowInsetsCompat insets) {
-    // The screen has a notch if the cutout has a value.
-    // Add some margin to compensate for where the notch bounds are on screen.
-    final DisplayCutoutCompat displayCutout = insets.getDisplayCutout();
-    if (displayCutout == null) {
-      AppboyLogger.d(TAG, "No margin fixing can be done without a display cutout. Not applying window insets.");
-      return;
-    }
-
+  public void applyWindowInsets(@NonNull WindowInsetsCompat insets) {
     // Attempt to fix the close button
     View closeButtonView = getMessageCloseButtonView();
     if (closeButtonView != null) {
@@ -234,15 +226,14 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
       AppboyLogger.d(TAG, "Close button layout params are null or not of the expected class. Not applying window insets.");
       return;
     }
-    final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
 
     // Offset the existing margin with whatever the inset margins safe area values are
     final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) closeButtonView.getLayoutParams();
     layoutParams.setMargins(
-        Math.max(displayCutout.getSafeInsetLeft(), windowInsets.getSystemWindowInsetLeft()) + layoutParams.leftMargin,
-        Math.max(displayCutout.getSafeInsetTop(), windowInsets.getSystemWindowInsetTop()) + layoutParams.topMargin,
-        Math.max(displayCutout.getSafeInsetRight(), windowInsets.getSystemWindowInsetRight()) + layoutParams.rightMargin,
-        Math.max(displayCutout.getSafeInsetBottom(), windowInsets.getSystemWindowInsetBottom()) + layoutParams.bottomMargin);
+        ViewUtils.getMaxSafeLeftInset(windowInsets) + layoutParams.leftMargin,
+        ViewUtils.getMaxSafeTopInset(windowInsets) + layoutParams.topMargin,
+        ViewUtils.getMaxSafeRightInset(windowInsets) + layoutParams.rightMargin,
+        ViewUtils.getMaxSafeBottomInset(windowInsets) + layoutParams.bottomMargin);
   }
 
   /**
@@ -253,14 +244,13 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
       AppboyLogger.d(TAG, "Content area layout params are null or not of the expected class. Not applying window insets.");
       return;
     }
-    final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
 
     // Offset the existing margin with whatever the inset margins safe area values are
     final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentAreaView.getLayoutParams();
     layoutParams.setMargins(
-        Math.max(displayCutout.getSafeInsetLeft(), windowInsets.getSystemWindowInsetLeft()) + layoutParams.leftMargin,
+        ViewUtils.getMaxSafeLeftInset(windowInsets) + layoutParams.leftMargin,
         layoutParams.topMargin,
-        Math.max(displayCutout.getSafeInsetRight(), windowInsets.getSystemWindowInsetRight()) + layoutParams.rightMargin,
-        Math.max(displayCutout.getSafeInsetBottom(), windowInsets.getSystemWindowInsetBottom()) + layoutParams.bottomMargin);
+        ViewUtils.getMaxSafeRightInset(windowInsets) + layoutParams.rightMargin,
+        ViewUtils.getMaxSafeBottomInset(windowInsets) + layoutParams.bottomMargin);
   }
 }

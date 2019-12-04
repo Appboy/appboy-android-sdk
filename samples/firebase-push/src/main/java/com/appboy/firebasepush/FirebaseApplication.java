@@ -22,6 +22,7 @@ public class FirebaseApplication extends Application {
         .setDefaultNotificationChannelDescription("Appboy related push")
         .setPushDeepLinkBackStackActivityEnabled(true)
         .setPushDeepLinkBackStackActivityClass(MainActivity.class)
+        .setInAppMessageTestPushEagerDisplayEnabled(true)
         .setHandlePushDeepLinksAutomatically(true);
     Appboy.configure(this, appboyConfig.build());
 

@@ -1,3 +1,10 @@
+## 4.0.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v4.0.1)
+
+##### Fixed
+- Fixed an issue where in-app messages could display behind translucent status and navigation bars.
+
 ## 4.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v4.0.0)

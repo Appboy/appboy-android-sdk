@@ -1,5 +1,6 @@
 package com.appboy.ui.inappmessage;
 
+import android.support.annotation.NonNull;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
@@ -31,8 +32,15 @@ public interface IInAppMessageView {
    * should have their close buttons moved to not be obscured by the status bar, slideups should not
    * render behind the notch, and modal in-app messages will have no changes since they do not render
    * in the cutout area.
+   * <br>
+   * <br>
+   * The screen has a notch if {@link WindowInsetsCompat#getDisplayCutout()} is non-null.
+   * The system window insets (e.g. {@link WindowInsetsCompat#getSystemWindowInsetTop()}
+   * will be present if the status bar is translucent or the status/navigation bars are otherwise
+   * non-occluding of the root Activity content.
    *
-   * @param insets The {@link WindowInsetsCompat} object directly from {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
+   * @param insets The {@link WindowInsetsCompat} object directly from
+   * {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
    */
-  void applyWindowInsets(WindowInsetsCompat insets);
+  void applyWindowInsets(@NonNull WindowInsetsCompat insets);
 }
