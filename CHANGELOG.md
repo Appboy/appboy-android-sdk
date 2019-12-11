@@ -1,3 +1,11 @@
+## 4.0.2
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v4.0.2)
+
+##### Fixed
+- Fixed an issue introduced in 4.0.0 where Content Card clicks wouldn't get forwarded to the parent RecyclerView based on its View's `clickable` status.
+  - This would result in clicks not being handled or logged for Content Cards.
+
 ## 4.0.1
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v4.0.1)
@@ -8,6 +16,9 @@
 ## 4.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v4.0.0)
+
+##### Known Issues with version 4.0.0
+- Content Card clicks are not handled or logged for Content Cards due to the `"Appboy.ContentCards"` style containing the `"clickable=true"` style. This is fixed in SDK version 4.0.2.
 
 ##### ⚠ Breaking
 - Added `beforeInAppMessageViewOpened(), afterInAppMessageViewOpened(), beforeInAppMessageViewClosed(), afterInAppMessageViewClosed()` to the `IInAppMessageManagerListener` interface.
