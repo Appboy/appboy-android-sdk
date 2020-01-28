@@ -45,9 +45,6 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
     setAdjustViewBounds(true);
   }
 
-  /**
-   * See {@link IInAppMessageImageView#setCornersRadiiPx(float, float, float, float)}
-   */
   @Override
   public void setCornersRadiiPx(float topLeft, float topRight, float bottomLeft, float bottomRight) {
     mInAppRadii = new float[]{
@@ -58,17 +55,11 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
     };
   }
 
-  /**
-   * See {@link IInAppMessageImageView#setCornersRadiusPx(float)}
-   */
   @Override
   public void setCornersRadiusPx(float cornersRadius) {
     setCornersRadiiPx(cornersRadius, cornersRadius, cornersRadius, cornersRadius);
   }
 
-  /**
-   * See {@link IInAppMessageImageView#setInAppMessageImageCropType(CropType)}
-   */
   @Override
   public void setInAppMessageImageCropType(CropType cropType) {
     if (cropType.equals(CropType.FIT_CENTER)) {

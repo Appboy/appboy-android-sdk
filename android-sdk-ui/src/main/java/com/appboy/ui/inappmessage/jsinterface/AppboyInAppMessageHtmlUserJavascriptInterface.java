@@ -234,7 +234,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   }
 
   @JavascriptInterface
-  public void setLocationCustomUserAttribute(String attribute, double latitude, double longitude) {
+  public void setCustomLocationAttribute(String attribute, double latitude, double longitude) {
     Appboy.getInstance(mContext).getCurrentUser().setLocationCustomAttribute(attribute, latitude, longitude);
   }
 }

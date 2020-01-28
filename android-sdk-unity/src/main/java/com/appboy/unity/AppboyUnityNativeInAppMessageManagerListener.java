@@ -100,9 +100,6 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
     finishOverlayActivity();
   }
 
-  /**
-   * See {@link IInAppMessageManagerListener#onInAppMessageReceived(IInAppMessage)}
-   */
   @Override
   public boolean onInAppMessageReceived(IInAppMessage inAppMessage) {
     if (mAppboyUnityInAppMessageListener != null) {
@@ -151,9 +148,6 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
     }
   }
 
-  /**
-   * See {@link IInAppMessageManagerListener#onInAppMessageClicked(IInAppMessage, InAppMessageCloser)}
-   */
   @Override
   public boolean onInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
     inAppMessageCloser.close(true);
@@ -164,9 +158,6 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
     return false;
   }
 
-  /**
-   * See {@link IInAppMessageManagerListener#onInAppMessageButtonClicked(IInAppMessage, MessageButton, InAppMessageCloser)}
-   */
   @Override
   public boolean onInAppMessageButtonClicked(IInAppMessage inAppMessage, MessageButton button, InAppMessageCloser inAppMessageCloser) {
     inAppMessageCloser.close(true);
@@ -177,9 +168,6 @@ public class AppboyUnityNativeInAppMessageManagerListener implements IInAppMessa
     return false;
   }
 
-  /**
-   * See {@link IInAppMessageManagerListener#onInAppMessageDismissed(IInAppMessage)}
-   */
   @Override
   public void onInAppMessageDismissed(IInAppMessage inAppMessage) {
     finishOverlayActivity();

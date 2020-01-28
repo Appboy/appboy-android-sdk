@@ -1,10 +1,12 @@
 package com.appboy.ui.inappmessage.jsinterface;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.webkit.JavascriptInterface;
 
 import com.appboy.Appboy;
+import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.support.AppboyLogger;
 
@@ -20,10 +22,12 @@ public class AppboyInAppMessageHtmlJavascriptInterface {
 
   private Context mContext;
   private AppboyInAppMessageHtmlUserJavascriptInterface mUserInterface;
+  private final IInAppMessageHtml mInAppMessage;
 
-  public AppboyInAppMessageHtmlJavascriptInterface(Context context) {
+  public AppboyInAppMessageHtmlJavascriptInterface(Context context, @NonNull IInAppMessageHtml inAppMessage) {
     mContext = context;
     mUserInterface = new AppboyInAppMessageHtmlUserJavascriptInterface(context);
+    mInAppMessage = inAppMessage;
   }
 
   @JavascriptInterface
@@ -41,6 +45,16 @@ public class AppboyInAppMessageHtmlJavascriptInterface {
   public void logPurchaseWithJSON(String productId, double price, String currencyCode, int quantity, String propertiesJSON) {
     AppboyProperties appboyProperties = parseProperties(propertiesJSON);
     Appboy.getInstance(mContext).logPurchase(productId, currencyCode, new BigDecimal(Double.toString(price)), quantity, appboyProperties);
+  }
+
+  @JavascriptInterface
+  public void logButtonClick(String buttonId) {
+    mInAppMessage.logButtonClick(buttonId);
+  }
+
+  @JavascriptInterface
+  public void logClick() {
+    mInAppMessage.logClick();
   }
 
   @JavascriptInterface

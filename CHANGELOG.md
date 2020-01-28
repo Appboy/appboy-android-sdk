@@ -1,3 +1,24 @@
+## 5.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v5.0.0)
+
+##### ⚠ Breaking
+- Added `IInAppMessageView.hasAppliedWindowInsets()`.
+- Removed `AppboyInAppMessageHtmlJavascriptInterface(Context)` in favor of `AppboyInAppMessageHtmlJavascriptInterface(Context, IInAppMessageHtml)`.
+
+##### Added
+- Added `appboyBridge.logClick()` and `appboyBridge.getUser().setLanguage()` to the javascript interface for HTML In-App Messages.
+- Added `Appboy.requestGeofences()` to request a Braze Geofences update for a manually provided GPS coordinate. Automatic Braze Geofence requests must be disabled to properly use this method.
+  - Braze Geofences can only be requested once per session, either automatically by the SDK or manually with the above method.
+- Added the ability to disable Braze Geofences from being requested automatically at session start.
+  - You can do this by configuring the boolean value for `com_appboy_automatic_geofence_requests_enabled` in your `appboy.xml`.
+  - You can also configure this at runtime by setting `AppboyConfig.setAutomaticGeofenceRequestEnabled()`.
+
+##### Fixed
+- Fixed an issue where multiple calls to `ViewCompat.setOnApplyWindowInsetsListener()` could result in in-app messages margins getting applied multiple times instead of exactly once.
+- Fixed an issue where pure white `#ffffffff` in a dark theme in-app message would not be used when the device was in dark mode.
+  - In this case, the original non-dark theme color would be used by the in-app message instead.
+
 ## 4.0.2
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v4.0.2)

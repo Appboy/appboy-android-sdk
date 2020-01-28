@@ -262,8 +262,13 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
             return insets;
           }
 
-          AppboyLogger.v(TAG, "Calling applyWindowInsets on in-app message view.");
-          ((IInAppMessageView) inAppMessageView).applyWindowInsets(insets);
+          final IInAppMessageView castInAppMessageView = (IInAppMessageView) inAppMessageView;
+          if (!castInAppMessageView.hasAppliedWindowInsets()) {
+            AppboyLogger.v(TAG, "Calling applyWindowInsets on in-app message view.");
+            castInAppMessageView.applyWindowInsets(insets);
+          } else {
+            AppboyLogger.d(TAG, "Not reapplying window insets to in-app message view.");
+          }
           return insets;
         }
       });

@@ -97,6 +97,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
    */
   @Override
   public void applyWindowInsets(@NonNull WindowInsetsCompat windowInsets) {
+    super.applyWindowInsets(windowInsets);
     if (getLayoutParams() == null || !(getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
       AppboyLogger.d(TAG, "Close button view is null or not of the expected class. Not applying window insets.");
       return;
@@ -104,7 +105,6 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
 
     // Offset the existing margin with whatever the inset margins safe area values are
     final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
-    layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin);
     layoutParams.setMargins(
         ViewUtils.getMaxSafeLeftInset(windowInsets) + layoutParams.leftMargin,
         ViewUtils.getMaxSafeTopInset(windowInsets) + layoutParams.topMargin,

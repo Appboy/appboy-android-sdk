@@ -150,6 +150,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
    */
   @Override
   public void applyWindowInsets(@NonNull WindowInsetsCompat insets) {
+    super.applyWindowInsets(insets);
     // Attempt to fix the close button
     View closeButtonView = getMessageCloseButtonView();
     if (closeButtonView != null) {

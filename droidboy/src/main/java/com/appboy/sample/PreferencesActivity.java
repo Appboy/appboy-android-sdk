@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.IAppboyImageLoader;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.lrucache.AppboyLruImageLoader;
 import com.appboy.models.outgoing.AttributionData;
 import com.appboy.sample.imageloading.GlideAppboyImageLoader;
@@ -42,6 +43,8 @@ import java.util.Map;
 
 import io.branch.referral.Branch;
 
+@SuppressLint("ApplySharedPref")
+@SuppressWarnings("deprecation")
 public class PreferencesActivity extends PreferenceActivity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(PreferencesActivity.class);
   private static final Map<String, String> API_KEY_TO_APP_MAP;
@@ -49,6 +52,8 @@ public class PreferencesActivity extends PreferenceActivity {
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment";
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT = "endpoint";
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_API_KEY = "api_key";
+  private static final String KUBERNETES_DROIDBOY_API_KEY = "da8f263e-1483-4e9f-ac0c-7b40030c8f40";
+  private static final String KUBERNETES_DROIDBOY_SDK_ENDPOINT = "https://elsa.braze.com/";
 
   static {
     Map<String, String> keyToAppMap = new HashMap<>();
@@ -57,21 +62,19 @@ public class PreferencesActivity extends PreferenceActivity {
     API_KEY_TO_APP_MAP = Collections.unmodifiableMap(keyToAppMap);
   }
 
-  private String mEnvironmentBarcodePhotoPath;
   private SharedPreferences mSharedPreferences;
   private int mAttributionUniqueInt = 0;
   private IAppboyImageLoader mGlideAppboyImageLoader;
   private IAppboyImageLoader mAppboyLruImageLoader;
+  private AppboyConfigurationProvider mAppboyConfigurationProvider;
 
-  // This lint suppression is for the shared prefs commits done for app restarts. You can't apply
-  // annotations on lambdas so this has to go here
-  @SuppressLint("ApplySharedPref")
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mGlideAppboyImageLoader = new GlideAppboyImageLoader();
     mAppboyLruImageLoader = new AppboyLruImageLoader(getApplicationContext());
     mSharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE);
+    mAppboyConfigurationProvider = new AppboyConfigurationProvider(getApplicationContext());
 
     addPreferencesFromResource(R.xml.preferences);
     setContentView(R.layout.preference_wrapper_view);
@@ -82,31 +85,20 @@ public class PreferencesActivity extends PreferenceActivity {
     toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button_droidboy));
     toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
+    setAboutSectionInfo();
     Preference dataFlushPreference = findPreference("data_flush");
     Preference setManualLocationPreference = findPreference("set_manual_location");
     Preference locationRuntimePermissionDialogPreference = findPreference("location_runtime_permission_dialog");
     Preference openSessionPreference = findPreference("open_session");
     Preference closeSessionPreference = findPreference("close_session");
     Preference anonymousUserRevertPreference = findPreference("anonymous_revert");
-    Preference sdkPreference = findPreference("sdk_version");
-    Preference apiKeyPreference = findPreference("api_key");
-    Preference pushTokenPreference = findPreference("push_token");
-    Preference buildTypePreference = findPreference("build_type");
-    Preference flavorPreference = findPreference("flavor");
-    Preference versionCodePreference = findPreference("version_code");
-    Preference buildNamePreference = findPreference("build_name");
-    Preference currentUserIdPreference = findPreference("current_user_id");
-    Preference apiKeyBackendPreference = findPreference("api_key_backend");
-    Preference branchNamePreference = findPreference("branch_name");
-    Preference commitHashPreference = findPreference("commit_hash");
-    Preference installTimePreference = findPreference("install_time");
-    Preference deviceIdPreference = findPreference("device_id");
     Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
     Preference logAttributionPreference = findPreference("log_attribution");
     Preference enableAutomaticNetworkRequestsPreference = findPreference("enable_outbound_network_requests");
     Preference disableAutomaticNetworkRequestsPreference = findPreference("disable_outbound_network_requests");
     Preference brazeEnvironmentBarcodePreference = findPreference("environment_barcode_picture_intent_key");
     Preference brazeEnvironmentResetPreference = findPreference("environment_reset_key");
+    Preference brazeEnvironmentKubernetesPreference = findPreference("environment_switch_k8s");
     CheckBoxPreference sortNewsFeed = (CheckBoxPreference) findPreference("sort_feed");
     SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     sortNewsFeed.setChecked(sharedPrefSort.getBoolean(getString(R.string.sort_feed), false));
@@ -122,171 +114,107 @@ public class PreferencesActivity extends PreferenceActivity {
     CheckBoxPreference displayInCutoutPreference = (CheckBoxPreference) findPreference("display_in_full_cutout_setting_key");
     CheckBoxPreference displayNoLimitsPreference = (CheckBoxPreference) findPreference("display_no_limits_setting_key");
 
-    sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
-    apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
-    String pushToken = Appboy.getInstance(this).getAppboyPushMessageRegistrationId();
-    if (StringUtils.isNullOrBlank(pushToken)) {
-      pushToken = "None";
-    }
-    pushTokenPreference.setSummary(pushToken);
-    buildTypePreference.setSummary(BuildConfig.BUILD_TYPE);
-    flavorPreference.setSummary(BuildConfig.FLAVOR);
-    versionCodePreference.setSummary(String.valueOf(BuildConfig.VERSION_CODE));
-    buildNamePreference.setSummary(BuildConfig.VERSION_NAME);
-    currentUserIdPreference.setSummary(getUserId());
-    String apiKeyBackendString = getApiKeyBackendString();
-    apiKeyBackendPreference.setSummary(apiKeyBackendString);
-    commitHashPreference.setSummary(BuildConfig.COMMIT_HASH);
-    branchNamePreference.setSummary(BuildConfig.CURRENT_BRANCH);
-    installTimePreference.setSummary(BuildConfig.BUILD_TIME);
-    deviceIdPreference.setSummary(Appboy.getInstance(getApplicationContext()).getDeviceId());
-    setManualLocationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(PreferencesActivity.this).getCurrentUser().setLastKnownLocation(1.0, 2.0, 3.0, 4.0);
-        showToast("Manually set location to latitude 1.0d, longitude 2.0d, altitude 3.0m, accuracy 4.0m.");
-        return true;
-      }
+    setManualLocationPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.getInstance(this).getCurrentUser().setLastKnownLocation(1.0, 2.0, 3.0, 4.0);
+      showToast("Manually set location to latitude 1.0d, longitude 2.0d, altitude 3.0m, accuracy 4.0m.");
+      return true;
     });
-    locationRuntimePermissionDialogPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
-        } else {
-          Toast.makeText(PreferencesActivity.this, "Below Android M there is no need to check for runtime permissions.", Toast.LENGTH_SHORT).show();
-        }
-        return true;
+    locationRuntimePermissionDialogPreference.setOnPreferenceClickListener(preference -> {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+      } else {
+        Toast.makeText(this, "Below Android M there is no need to check for runtime permissions.", Toast.LENGTH_SHORT).show();
       }
+      return true;
     });
 
-    disableAutomaticNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.setOutboundNetworkRequestsOffline(true);
-        showToast(getString(R.string.disabled_outbound_network_requests_toast));
-        return true;
-      }
+    disableAutomaticNetworkRequestsPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.setOutboundNetworkRequestsOffline(true);
+      showToast(getString(R.string.disabled_outbound_network_requests_toast));
+      return true;
     });
-    enableAutomaticNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.setOutboundNetworkRequestsOffline(false);
-        showToast(getString(R.string.enabled_outbound_network_requests_toast));
-        return true;
-      }
+    enableAutomaticNetworkRequestsPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.setOutboundNetworkRequestsOffline(false);
+      showToast(getString(R.string.enabled_outbound_network_requests_toast));
+      return true;
     });
 
-    dataFlushPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(PreferencesActivity.this).requestImmediateDataFlush();
-        showToast(getString(R.string.data_flush_toast));
-        return true;
-      }
+    dataFlushPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.getInstance(this).requestImmediateDataFlush();
+      showToast(getString(R.string.data_flush_toast));
+      return true;
     });
-    openSessionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(PreferencesActivity.this).openSession(PreferencesActivity.this);
-        return true;
-      }
+    openSessionPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.getInstance(this).openSession(this);
+      return true;
     });
-    closeSessionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(PreferencesActivity.this).closeSession(PreferencesActivity.this);
-        showToast(getString(R.string.close_session_toast));
-        return true;
-      }
+    closeSessionPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.getInstance(this).closeSession(this);
+      showToast(getString(R.string.close_session_toast));
+      return true;
     });
-    anonymousUserRevertPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      @SuppressLint("ApplySharedPref")
-      public boolean onPreferenceClick(Preference preference) {
-        // Note that .commit() is used here since we're restarting the process and thus need to immediately flush all shared prefs changes to disk
-        SharedPreferences userSharedPreferences = getSharedPreferences("com.appboy.offline.storagemap", Context.MODE_PRIVATE);
-        userSharedPreferences
-            .edit()
-            .clear()
-            .commit();
-        SharedPreferences droidboySharedPrefs = getSharedPreferences("droidboy", Context.MODE_PRIVATE);
-        droidboySharedPrefs
-            .edit()
-            .remove(MainFragment.USER_ID_KEY)
-            .commit();
-        LifecycleUtils.restartApp(getApplicationContext());
-        return true;
-      }
+    anonymousUserRevertPreference.setOnPreferenceClickListener(preference -> {
+      // Note that .commit() is used here since we're restarting the process and thus need to immediately flush all shared prefs changes to disk
+      SharedPreferences userSharedPreferences = getSharedPreferences("com.appboy.offline.storagemap", Context.MODE_PRIVATE);
+      userSharedPreferences
+          .edit()
+          .clear()
+          .commit();
+      SharedPreferences droidboySharedPrefs = getSharedPreferences("droidboy", Context.MODE_PRIVATE);
+      droidboySharedPrefs
+          .edit()
+          .remove(MainFragment.USER_ID_KEY)
+          .commit();
+      LifecycleUtils.restartApp(getApplicationContext());
+      return true;
     });
-    toggleDisableAppboyNetworkRequestsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        boolean newDisableAppboyNetworkRequestsPreference = !Boolean
-            .parseBoolean(getApplicationContext().getSharedPreferences(
-                getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
-                .getString(getString(R.string.mock_appboy_network_requests), null));
-        SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
-        sharedPreferencesEditor.putBoolean(getString(R.string.mock_appboy_network_requests), newDisableAppboyNetworkRequestsPreference);
-        sharedPreferencesEditor.apply();
-        if (newDisableAppboyNetworkRequestsPreference) {
-          Toast.makeText(PreferencesActivity.this, "Disabling Braze network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
-        } else {
-          Toast.makeText(PreferencesActivity.this, "Enabling Braze network requests for the next app run for all devices", Toast.LENGTH_LONG).show();
-        }
-        return true;
+    toggleDisableAppboyNetworkRequestsPreference.setOnPreferenceClickListener(preference -> {
+      boolean newDisableAppboyNetworkRequestsPreference = !Boolean
+          .parseBoolean(getApplicationContext().getSharedPreferences(
+              getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
+              .getString(getString(R.string.mock_appboy_network_requests), null));
+      SharedPreferences.Editor sharedPreferencesEditor = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE).edit();
+      sharedPreferencesEditor.putBoolean(getString(R.string.mock_appboy_network_requests), newDisableAppboyNetworkRequestsPreference);
+      sharedPreferencesEditor.apply();
+      if (newDisableAppboyNetworkRequestsPreference) {
+        Toast.makeText(this, "Disabling Braze network requests for selected emulators in the next app run", Toast.LENGTH_LONG).show();
+      } else {
+        Toast.makeText(this, "Enabling Braze network requests for the next app run for all devices", Toast.LENGTH_LONG).show();
       }
+      return true;
     });
 
-    logAttributionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.getInstance(getApplicationContext()).getCurrentUser().setAttributionData(new AttributionData("network_val_" + mAttributionUniqueInt,
-            "campaign_val_" + mAttributionUniqueInt,
-            "adgroup_val_" + mAttributionUniqueInt,
-            "creative_val_" + mAttributionUniqueInt));
-        mAttributionUniqueInt++;
-        showToast("Attribution data sent to server");
-        return true;
-      }
+    logAttributionPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.getInstance(getApplicationContext()).getCurrentUser().setAttributionData(new AttributionData("network_val_" + mAttributionUniqueInt,
+          "campaign_val_" + mAttributionUniqueInt,
+          "adgroup_val_" + mAttributionUniqueInt,
+          "creative_val_" + mAttributionUniqueInt));
+      mAttributionUniqueInt++;
+      showToast("Attribution data sent to server");
+      return true;
     });
-    sortNewsFeed.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(getString(R.string.sort_feed), (boolean) newValue);
-        editor.apply();
-        return true;
-      }
+    sortNewsFeed.setOnPreferenceChangeListener((preference, newValue) -> {
+      SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
+      SharedPreferences.Editor editor = sharedPref.edit();
+      editor.putBoolean(getString(R.string.sort_feed), (boolean) newValue);
+      editor.apply();
+      return true;
     });
-    setCustomNewsFeedClickActionListener.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        AppboyFeedManager.getInstance().setFeedCardClickActionListener((boolean) newValue ? new CustomFeedClickActionListener() : null);
-        return true;
-      }
+    setCustomNewsFeedClickActionListener.setOnPreferenceChangeListener((preference, newValue) -> {
+      AppboyFeedManager.getInstance().setFeedCardClickActionListener((boolean) newValue ? new CustomFeedClickActionListener() : null);
+      return true;
     });
-    wipeSdkDataPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.wipeData(PreferencesActivity.this);
-        return true;
-      }
+    wipeSdkDataPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.wipeData(this);
+      return true;
     });
-    enableSdkPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.enableSdk(PreferencesActivity.this);
-        return true;
-      }
+    enableSdkPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.enableSdk(this);
+      return true;
     });
-    disableSdkPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        Appboy.disableSdk(PreferencesActivity.this);
-        return true;
-      }
+    disableSdkPreference.setOnPreferenceClickListener(preference -> {
+      Appboy.disableSdk(this);
+      return true;
     });
 
     enableGlideLibraryPreference.setOnPreferenceClickListener(preference -> {
@@ -334,6 +262,10 @@ public class PreferencesActivity extends PreferenceActivity {
 
       sharedPreferencesEditor.commit();
       LifecycleUtils.restartApp(this);
+      return true;
+    });
+    brazeEnvironmentKubernetesPreference.setOnPreferenceClickListener((Preference preference) -> {
+      changeEndpointToKubernetes();
       return true;
     });
   }
@@ -421,6 +353,43 @@ public class PreferencesActivity extends PreferenceActivity {
     }
   }
 
+  private void setAboutSectionInfo() {
+    Preference sdkPreference = findPreference("sdk_version");
+    Preference apiKeyPreference = findPreference("api_key");
+    Preference pushTokenPreference = findPreference("push_token");
+    Preference buildTypePreference = findPreference("build_type");
+    Preference flavorPreference = findPreference("flavor");
+    Preference versionCodePreference = findPreference("version_code");
+    Preference buildNamePreference = findPreference("build_name");
+    Preference currentUserIdPreference = findPreference("current_user_id");
+    Preference apiKeyBackendPreference = findPreference("api_key_backend");
+    Preference branchNamePreference = findPreference("branch_name");
+    Preference commitHashPreference = findPreference("commit_hash");
+    Preference installTimePreference = findPreference("install_time");
+    Preference deviceIdPreference = findPreference("device_id");
+    Preference endpointPreference = findPreference("current_endpoint");
+
+    sdkPreference.setSummary(Constants.APPBOY_SDK_VERSION);
+    apiKeyPreference.setSummary(DroidboyApplication.getApiKeyInUse(getApplicationContext()));
+    String pushToken = Appboy.getInstance(this).getAppboyPushMessageRegistrationId();
+    if (StringUtils.isNullOrBlank(pushToken)) {
+      pushToken = "None";
+    }
+    pushTokenPreference.setSummary(pushToken);
+    buildTypePreference.setSummary(BuildConfig.BUILD_TYPE);
+    flavorPreference.setSummary(BuildConfig.FLAVOR);
+    versionCodePreference.setSummary(String.valueOf(BuildConfig.VERSION_CODE));
+    buildNamePreference.setSummary(BuildConfig.VERSION_NAME);
+    currentUserIdPreference.setSummary(getUserId());
+    String apiKeyBackendString = getApiKeyBackendString();
+    apiKeyBackendPreference.setSummary(apiKeyBackendString);
+    commitHashPreference.setSummary(BuildConfig.COMMIT_HASH);
+    branchNamePreference.setSummary(BuildConfig.CURRENT_BRANCH);
+    installTimePreference.setSummary(BuildConfig.BUILD_TIME);
+    deviceIdPreference.setSummary(Appboy.getInstance(getApplicationContext()).getDeviceId());
+    endpointPreference.setSummary(Appboy.getAppboyApiEndpoint(Uri.parse(mAppboyConfigurationProvider.getBaseUrlForRequests())).toString());
+  }
+
   private void analyzeBitmapForEnvironmentBarcode(final Bitmap bitmap) {
     // Build the barcode detector
     FirebaseVisionBarcodeDetectorOptions options =
@@ -492,5 +461,14 @@ public class PreferencesActivity extends PreferenceActivity {
         .setNegativeButton(android.R.string.no, null)
         .setIcon(android.R.drawable.ic_dialog_info)
         .show();
+  }
+
+  private void changeEndpointToKubernetes() {
+    SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, KUBERNETES_DROIDBOY_API_KEY);
+    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, KUBERNETES_DROIDBOY_SDK_ENDPOINT);
+
+    sharedPreferencesEditor.commit();
+    LifecycleUtils.restartApp(getApplicationContext());
   }
 }

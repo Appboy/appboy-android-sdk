@@ -19,25 +19,16 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
     mActivity = activity;
   }
 
-  /**
-   * see {@link IInAppMessageManagerListener#onInAppMessageReceived(IInAppMessage)}
-   */
   @Override
   public boolean onInAppMessageReceived(IInAppMessage inAppMessage) {
     return false;
   }
 
-  /**
-   * see {@link IInAppMessageManagerListener#beforeInAppMessageDisplayed(IInAppMessage)}
-   */
   @Override
   public InAppMessageOperation beforeInAppMessageDisplayed(IInAppMessage inAppMessage) {
     return InAppMessageOperation.DISPLAY_NOW;
   }
 
-  /**
-   * see {@link IInAppMessageManagerListener#onInAppMessageClicked(IInAppMessage, InAppMessageCloser)}
-   */
   @Override
   public boolean onInAppMessageClicked(IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser) {
     Toast.makeText(mActivity, "The click was ignored.", Toast.LENGTH_LONG).show();
@@ -48,9 +39,6 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
     return true;
   }
 
-  /**
-   * see {@link IInAppMessageManagerListener#onInAppMessageButtonClicked(IInAppMessage, MessageButton, InAppMessageCloser)}
-   */
   @Override
   public boolean onInAppMessageButtonClicked(IInAppMessage inAppMessage, MessageButton button, InAppMessageCloser inAppMessageCloser) {
     Toast.makeText(mActivity, "The button click was ignored.", Toast.LENGTH_LONG).show();
@@ -61,9 +49,6 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
     return true;
   }
 
-  /**
-   * see {@link IInAppMessageManagerListener#onInAppMessageDismissed(IInAppMessage)}
-   */
   @Override
   public void onInAppMessageDismissed(IInAppMessage inAppMessage) {
     if (inAppMessage.getExtras() != null && !inAppMessage.getExtras().isEmpty()) {

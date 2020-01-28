@@ -3,7 +3,6 @@ package com.appboy.ui.inappmessage.views;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -146,11 +145,6 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
     resizeGraphicFrameIfAppropriate(this.getContext(), mInAppMessage);
-  }
-
-  @Override
-  public void applyWindowInsets(WindowInsetsCompat insets) {
-    // Modal in-app messages don't have special behavior with respect to notched devices at the View level.
   }
 
   /**

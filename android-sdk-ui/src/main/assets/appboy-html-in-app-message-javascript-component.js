@@ -4,8 +4,15 @@ var appboyBridge = {
     appboyInternalBridge.logPurchaseWithJSON(productId, price, currencyCode, quantity != null ? quantity : 1, JSON.stringify(purchaseProperties));
   },
   closeMessage: function () { window.location = 'appboy://close'; },
-  requestImmediateDataFlush: function () { appboyInternalBridge.requestImmediateDataFlush() },
+  requestImmediateDataFlush: function () { appboyInternalBridge.requestImmediateDataFlush(); },
   display: { showFeed: function () {  window.open('appboy://feed'); } },
+  logClick: function(buttonId) {
+    if (buttonId != null) {
+      appboyInternalBridge.logButtonClick(buttonId);
+    } else {
+      appboyInternalBridge.logClick();
+    }
+  },
   appboyBridgeUserObject: {
     setFirstName: function(firstName) { appboyInternalBridge.getUser().setFirstName(firstName); },
     setLastName: function(lastName) { appboyInternalBridge.getUser().setLastName(lastName); },
@@ -37,10 +44,19 @@ var appboyBridge = {
         appboyInternalBridge.getUser().setCustomUserAttributeJSON(key, JSON.stringify({"value":value}));
       }
     },
-    setLocationCustomUserAttribute: function(key, latitude, longitude) { appboyInternalBridge.getUser().setLocationCustomUserAttribute(key, latitude, longitude); }
+    setLocationCustomUserAttribute: function(key, latitude, longitude) {
+      console.log("setLocationCustomUserAttribute() is deprecated and only support on Android. Please use setCustomLocationAttribute() instead.");
+      appboyInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude);
+    },
+    setCustomLocationAttribute: function(key, latitude, longitude) { appboyInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude); },
+    setLanguage: function(language) { appboyInternalBridge.getUser().setLanguage(language); }
   },
-  getUser : function() {
+  getUser: function() {
     return this.appboyBridgeUserObject;
+  },
+  web: {
+    registerAppboyPushMessages: function(successCallback, deniedCallback) { console.log("This method is a no-op on Android."); },
+    trackLocation: function() { console.log("This method is a no-op on Android."); },
   }
 };
 window.dispatchEvent(new Event("ab.BridgeReady"));

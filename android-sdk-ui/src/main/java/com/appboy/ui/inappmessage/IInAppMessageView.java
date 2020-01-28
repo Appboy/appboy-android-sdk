@@ -43,4 +43,13 @@ public interface IInAppMessageView {
    * {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
    */
   void applyWindowInsets(@NonNull WindowInsetsCompat insets);
+
+  /**
+   * Helper method to prevent {@link WindowInsetsCompat} from getting applied
+   * multiple times on the same in-app message view.
+   *
+   * @see #applyWindowInsets(WindowInsetsCompat)
+   * @return Whether {@link WindowInsetsCompat} has been applied to this in-app message.
+   */
+  boolean hasAppliedWindowInsets();
 }

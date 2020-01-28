@@ -108,17 +108,23 @@ public class InAppMessageWebViewClient extends WebViewClient {
 
     Uri uri = Uri.parse(url);
     Bundle queryBundle = getBundleFromUrl(url);
-    if (uri.getScheme().equals(APPBOY_INAPP_MESSAGE_SCHEME)) {
+    if (uri.getScheme() != null && uri.getScheme().equals(APPBOY_INAPP_MESSAGE_SCHEME)) {
       // Check the authority
       String authority = uri.getAuthority();
-      if (authority.equals(AUTHORITY_NAME_CLOSE)) {
-        mInAppMessageWebViewClientListener.onCloseAction(mInAppMessage, url, queryBundle);
-      } else if (authority.equals(AUTHORITY_NAME_NEWSFEED)) {
-        mInAppMessageWebViewClientListener.onNewsfeedAction(mInAppMessage, url, queryBundle);
-      } else if (authority.equals(AUTHORITY_NAME_CUSTOM_EVENT)) {
-        mInAppMessageWebViewClientListener.onCustomEventAction(mInAppMessage, url, queryBundle);
+      if (authority != null) {
+        if (authority.equals(AUTHORITY_NAME_CLOSE)) {
+          mInAppMessageWebViewClientListener.onCloseAction(mInAppMessage, url, queryBundle);
+        } else if (authority.equals(AUTHORITY_NAME_NEWSFEED)) {
+          mInAppMessageWebViewClientListener.onNewsfeedAction(mInAppMessage, url, queryBundle);
+        } else if (authority.equals(AUTHORITY_NAME_CUSTOM_EVENT)) {
+          mInAppMessageWebViewClientListener.onCustomEventAction(mInAppMessage, url, queryBundle);
+        }
+      } else {
+        AppboyLogger.d(TAG, "Uri authority was null. Uri: " + uri);
       }
       return true;
+    } else {
+      AppboyLogger.d(TAG, "Uri scheme was null. Uri: " + uri);
     }
     mInAppMessageWebViewClientListener.onOtherUrlAction(mInAppMessage, url, queryBundle);
     return true;

@@ -59,6 +59,11 @@ public class CustomInAppMessageView extends RelativeLayout implements IInAppMess
     // Does nothing
   }
 
+  @Override
+  public boolean hasAppliedWindowInsets() {
+    return false;
+  }
+
   public TextView getMessageTextView() {
     return findViewById(R.id.inappmessage_message);
   }

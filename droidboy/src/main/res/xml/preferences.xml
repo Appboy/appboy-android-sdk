@@ -115,6 +115,9 @@
         <Preference
           android:key="environment_reset_key"
           android:title="Reset environment override"/>
+        <Preference
+          android:key="environment_switch_k8s"
+          android:title="❄️ Change to K8s endpoint ❄️"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -180,6 +183,9 @@
         <Preference
             android:key="sdk_version"
             android:title="SDK Version"/>
+        <Preference
+            android:key="current_endpoint"
+            android:title="SDK Endpoint"/>
         <Preference
             android:key="api_key"
             android:title="API Key"/>

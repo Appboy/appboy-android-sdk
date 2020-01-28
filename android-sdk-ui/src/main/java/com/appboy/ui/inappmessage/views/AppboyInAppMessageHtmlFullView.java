@@ -15,7 +15,6 @@ import android.webkit.WebView;
 
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
-import com.appboy.ui.inappmessage.jsinterface.AppboyInAppMessageHtmlJavascriptInterface;
 
 public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseView {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlFullView.class);
@@ -27,7 +26,7 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
     super(context, attrs);
   }
 
-  @SuppressLint({"AddJavascriptInterface", "SetJavaScriptEnabled"})
+  @SuppressLint({"SetJavaScriptEnabled"})
   @Override
   public WebView getMessageWebView() {
     if (mMessageWebView == null) {
@@ -63,8 +62,6 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
             return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
           }
         });
-
-        mMessageWebView.addJavascriptInterface(new AppboyInAppMessageHtmlJavascriptInterface(getContext()), APPBOY_BRIDGE_PREFIX);
       }
     }
     return mMessageWebView;
@@ -73,5 +70,12 @@ public class AppboyInAppMessageHtmlFullView extends AppboyInAppMessageHtmlBaseVi
   @Override
   public void applyWindowInsets(WindowInsetsCompat insets) {
     // HTML in-app messages don't have special behavior with respect to notched devices at the View level.
+  }
+
+  @Override
+  public boolean hasAppliedWindowInsets() {
+    // HTML in-app messages don't have special behavior with respect to notched devices at the View level.
+    // Thus we return true here to short-circuit any extra inset handling behavior.
+    return true;
   }
 }

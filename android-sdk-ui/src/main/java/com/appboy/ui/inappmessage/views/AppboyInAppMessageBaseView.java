@@ -3,6 +3,7 @@ package com.appboy.ui.inappmessage.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,8 @@ import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.support.ViewUtils;
 
 public abstract class AppboyInAppMessageBaseView extends RelativeLayout implements IInAppMessageView {
+
+  protected boolean mHasAppliedWindowInsets = false;
 
   public AppboyInAppMessageBaseView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -79,6 +82,16 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
 
   public View getMessageClickableView() {
     return this;
+  }
+
+  @Override
+  public void applyWindowInsets(@NonNull WindowInsetsCompat insets) {
+    mHasAppliedWindowInsets = true;
+  }
+
+  @Override
+  public boolean hasAppliedWindowInsets() {
+    return mHasAppliedWindowInsets;
   }
 
   public abstract TextView getMessageTextView();
