@@ -1,4 +1,4 @@
-package com.appboy.sample;
+package com.appboy.sample.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -28,6 +27,11 @@ import android.widget.Toast;
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.enums.CardCategory;
+import com.appboy.sample.FeedCategoriesFragment;
+import com.appboy.sample.InAppMessageTesterFragment;
+import com.appboy.sample.MainFragment;
+import com.appboy.sample.PushTesterFragment;
+import com.appboy.sample.R;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.ViewUtils;
 import com.appboy.support.AppboyLogger;
@@ -89,10 +93,6 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     tabLayout.setupWithViewPager(viewPager);
 
     mDrawerLayout = findViewById(R.id.root);
-    NavigationView navigationView = findViewById(R.id.nav_view);
-    if (navigationView != null) {
-      setupDrawerContent(navigationView);
-    }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !mRequestedLocationPermissions) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         boolean hasAllPermissions = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)
@@ -156,26 +156,6 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     });
   }
 
-  private void setupDrawerContent(NavigationView navigationView) {
-    navigationView.setNavigationItemSelectedListener(this::getNavigationItem);
-  }
-
-  public boolean getNavigationItem(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.geofences_map:
-        mDrawerLayout.closeDrawers();
-        startActivity(new Intent(mApplicationContext, GeofencesMapActivity.class));
-        break;
-      case R.id.settings:
-        mDrawerLayout.closeDrawers();
-        startActivity(new Intent(mApplicationContext, PreferencesActivity.class));
-        break;
-      default:
-        Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
-    }
-    return true;
-  }
-
   @Override
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
@@ -201,7 +181,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         startActivity(new Intent(this, PreferencesActivity.class));
         break;
       case R.id.geofences_map:
-        startActivity(new Intent(this, GeofencesMapActivity.class));
+        mDrawerLayout.closeDrawers();
+        startActivity(new Intent(mApplicationContext, GeofencesMapActivity.class));
+        break;
+      case R.id.iam_sandbox:
+        startActivity(new Intent(mApplicationContext, InAppMessageSandboxActivity.class));
         break;
       case R.id.feed_categories:
         AppboyFeedFragment feedFragment = getFeedFragment();
@@ -221,7 +205,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         }
         break;
       default:
-        Log.e(TAG, String.format("The %s menu item was not found. Ignoring.", item.getTitle()));
+        Log.e(TAG, String.format("The %s options item was not found. Ignoring.", item.getTitle()));
     }
     return true;
   }

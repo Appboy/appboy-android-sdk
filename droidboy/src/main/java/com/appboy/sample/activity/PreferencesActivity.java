@@ -1,4 +1,4 @@
-package com.appboy.sample;
+package com.appboy.sample.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,6 +25,11 @@ import com.appboy.IAppboyImageLoader;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.lrucache.AppboyLruImageLoader;
 import com.appboy.models.outgoing.AttributionData;
+import com.appboy.sample.BuildConfig;
+import com.appboy.sample.CustomFeedClickActionListener;
+import com.appboy.sample.DroidboyApplication;
+import com.appboy.sample.MainFragment;
+import com.appboy.sample.R;
 import com.appboy.sample.imageloading.GlideAppboyImageLoader;
 import com.appboy.sample.util.LifecycleUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;

@@ -95,6 +95,7 @@
     <item name="android:textAllCaps">false</item>
     <item name="android:minWidth">80dp</item>
     <item name="android:layout_weight">1</item>
+    <item name="android:focusable">true</item>
   </style>
   <style name="Appboy.InAppMessage.CloseButton">
     <item name="android:contentDescription">@string/com_appboy_inappmessage_close_content_description</item>
@@ -104,7 +105,8 @@
     <item name="android:background">@drawable/com_appboy_inappmessage_button_close</item>
     <item name="android:layout_marginRight">15dp</item>
     <item name="android:layout_marginTop">15dp</item>
-    <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    <item name="android:foreground">?android:attr/selectableItemBackgroundBorderless</item>
+    <item name="android:focusable">true</item>
   </style>
   <style name="Appboy.InAppMessage.Chevron">
     <item name="android:layout_height">20dp</item>

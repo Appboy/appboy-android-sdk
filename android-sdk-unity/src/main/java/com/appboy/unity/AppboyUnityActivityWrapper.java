@@ -16,16 +16,14 @@ import com.appboy.unity.configuration.UnityConfigurationProvider;
 public class AppboyUnityActivityWrapper {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityActivityWrapper.class);
 
-  private UnityConfigurationProvider mUnityConfigurationProvider;
-
   /**
    * Call from {@link Activity#onCreate(Bundle)}
    */
   public void onCreateCalled(Activity activity) {
-    mUnityConfigurationProvider = new UnityConfigurationProvider(activity);
-    Appboy.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(mUnityConfigurationProvider));
-    Appboy.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(mUnityConfigurationProvider));
-    Appboy.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(mUnityConfigurationProvider));
+    UnityConfigurationProvider unityConfigurationProvider = new UnityConfigurationProvider(activity);
+    Appboy.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(unityConfigurationProvider));
+    Appboy.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(unityConfigurationProvider));
+    Appboy.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(unityConfigurationProvider));
     AppboyLogger.d(TAG, TAG + " finished onCreateCalled setup.");
   }
 
@@ -34,13 +32,6 @@ public class AppboyUnityActivityWrapper {
    */
   public void onStartCalled(Activity activity) {
     Appboy.getInstance(activity).openSession(activity);
-    if (!mUnityConfigurationProvider.getShowInAppMessagesAutomaticallyKey()) {
-      AppboyUnityNativeInAppMessageManagerListener.getInstance().setShowInAppMessagesManually(true);
-      AppboyLogger.i(TAG, "In-app message display will be handled manually.");
-    }
-    AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(AppboyUnityNativeInAppMessageManagerListener.getInstance());
-    AppboyUnityNativeInAppMessageManagerListener.getInstance().registerContainerActivity(activity);
-    AppboyLogger.d(TAG, "Starting " + TAG + ".");
   }
 
   /**

@@ -39,4 +39,15 @@ public interface IInAppMessageImmersiveView extends IInAppMessageView {
    * object so that listeners are set correctly.
    */
   List<View> getMessageButtonViews(int numButtons);
+
+  /**
+   * Sets up the directional navigation pointers needed to support d-pad/TV-remote
+   * navigation of the in-app message.
+   *
+   * See https://developer.android.com/training/keyboard-input/navigation#Direction
+   *
+   * @param numButtons The number of {@link com.appboy.models.MessageButton}'s
+   *                   on this message.
+   */
+  void setupDirectionalNavigation(int numButtons);
 }

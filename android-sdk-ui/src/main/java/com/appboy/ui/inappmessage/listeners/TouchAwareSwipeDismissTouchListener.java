@@ -18,6 +18,10 @@ public class TouchAwareSwipeDismissTouchListener extends SwipeDismissTouchListen
     void onTouchEnded();
   }
 
+  public TouchAwareSwipeDismissTouchListener(View view, DismissCallbacks callbacks) {
+    this(view, null, callbacks);
+  }
+
   public TouchAwareSwipeDismissTouchListener(View view, Object token, DismissCallbacks callbacks) {
     super(view, token, callbacks);
   }

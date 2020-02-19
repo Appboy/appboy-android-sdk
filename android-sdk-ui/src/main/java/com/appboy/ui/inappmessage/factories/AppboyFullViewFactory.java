@@ -63,6 +63,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     }
     view.setLargerCloseButtonClickArea(view.getMessageCloseButtonView());
     resetLayoutParamsIfAppropriate(activity, inAppMessageFull, view);
+    view.setupDirectionalNavigation(inAppMessageFull.getMessageButtons().size());
 
     // Get the scrollView, if it exists. For graphic full, it will not
     final View scrollView = view.findViewById(R.id.com_appboy_inappmessage_full_scrollview);

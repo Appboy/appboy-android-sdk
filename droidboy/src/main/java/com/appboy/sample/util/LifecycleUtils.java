@@ -5,7 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.appboy.sample.DroidBoyActivity;
+import com.appboy.sample.activity.DroidBoyActivity;
 import com.appboy.support.AppboyLogger;
 
 @SuppressWarnings("PMD.DoNotCallSystemExit")

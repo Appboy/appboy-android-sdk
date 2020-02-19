@@ -26,4 +26,9 @@
   <!-- The click area target size in dp for modals and fullscreen in-app messages to ensure the click area extends beyond the drawable. -->
   <dimen name="com_appboy_in_app_message_close_button_click_area_width">48dp</dimen>
   <dimen name="com_appboy_in_app_message_close_button_click_area_height">48dp</dimen>
+
+  <dimen name="com_appboy_in_app_message_button_corner_radius">5dp</dimen>
+  <!-- The width of the stroke used in drawing the button color -->
+  <dimen name="com_appboy_in_app_message_button_border_stroke">1dp</dimen>
+  <dimen name="com_appboy_in_app_message_button_border_stroke_focused">4dp</dimen>
 </resources>

@@ -2,6 +2,7 @@ package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -45,6 +46,12 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
   protected View mCloseButton;
   protected List<View> mButtonViews;
   /**
+   * The {@link View} that previously held focus before a message is displayed as
+   * given via {@link Activity#getCurrentFocus()}.
+   */
+  @Nullable
+  protected View mPreviouslyFocusedView = null;
+  /**
    * The {@link ViewGroup} parent of the in-app message.
    */
   private ViewGroup mContentViewGroupParentLayout;
@@ -84,7 +91,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
       // Adds the swipe listener to the in-app message View. All slideup in-app messages should be dismissible via a swipe
       // (even auto close slideup in-app messages).
       SwipeDismissTouchListener.DismissCallbacks dismissCallbacks = createDismissCallbacks();
-      TouchAwareSwipeDismissTouchListener touchAwareSwipeListener = new TouchAwareSwipeDismissTouchListener(inAppMessageView, null, dismissCallbacks);
+      TouchAwareSwipeDismissTouchListener touchAwareSwipeListener = new TouchAwareSwipeDismissTouchListener(inAppMessageView, dismissCallbacks);
       // We set a custom touch listener that cancel the auto close runnable when touched and adds
       // a new runnable when the touch ends.
       touchAwareSwipeListener.setTouchListener(createTouchAwareListener());
@@ -151,6 +158,8 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
       mContentViewGroupParentLayout = parentViewGroup;
       setAllViewGroupChildrenAsNonAccessibilityImportant(mContentViewGroupParentLayout);
     }
+
+    mPreviouslyFocusedView = activity.getCurrentFocus();
 
     // If the parent ViewGroup's height is 0, that implies it hasn't been drawn yet. We add a
     // ViewTreeObserver to wait until its drawn so we can get a proper measurement.
@@ -284,9 +293,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
       if (inAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
         addDismissRunnable();
       }
-      ViewUtils.setFocusableInTouchModeAndRequestFocus(inAppMessageView);
-      announceForAccessibilityIfNecessary();
-      inAppMessageViewLifecycleListener.afterOpened(inAppMessageView, inAppMessage);
+      finalizeViewBeforeDisplay(inAppMessage, inAppMessageView, inAppMessageViewLifecycleListener);
     }
   }
 
@@ -423,7 +430,25 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
         inAppMessageHtmlBaseView.getMessageWebView().destroy();
       }
     }
+
+    // Return the focus before closing the message
+    if (mPreviouslyFocusedView != null) {
+      AppboyLogger.d(TAG, "Returning focus to view after closing message. View: " + mPreviouslyFocusedView);
+      mPreviouslyFocusedView.requestFocus();
+    }
     mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
+  }
+
+  /**
+   * Performs any last actions before calling
+   * {@link IInAppMessageViewLifecycleListener#beforeOpened(View, IInAppMessage)}.
+   */
+  protected void finalizeViewBeforeDisplay(final IInAppMessage inAppMessage,
+                                           final View inAppMessageView,
+                                           final IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener) {
+    ViewUtils.setFocusableInTouchModeAndRequestFocus(inAppMessageView);
+    announceForAccessibilityIfNecessary();
+    inAppMessageViewLifecycleListener.afterOpened(inAppMessageView, inAppMessage);
   }
 
   protected SwipeDismissTouchListener.DismissCallbacks createDismissCallbacks() {
@@ -471,9 +496,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
             addDismissRunnable();
           }
           AppboyLogger.d(TAG, "In-app message animated into view.");
-          ViewUtils.setFocusableInTouchModeAndRequestFocus(mInAppMessageView);
-          announceForAccessibilityIfNecessary();
-          mInAppMessageViewLifecycleListener.afterOpened(mInAppMessageView, mInAppMessage);
+          finalizeViewBeforeDisplay(mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener);
         }
 
         @Override

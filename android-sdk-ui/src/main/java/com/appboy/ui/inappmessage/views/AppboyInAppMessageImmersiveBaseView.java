@@ -2,6 +2,7 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -27,16 +28,98 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
     super(context, attrs);
   }
 
-  /**
-   * Returns a list of all button views for this {@link IInAppMessageImmersiveView}. The default views
-   * for in-app messages can contain multiple layouts depending on the number of buttons.
-   *
-   * @param numButtons The number of buttons used for this layout.
-   */
-  public abstract List<View> getMessageButtonViews(int numButtons);
+  @Override
+  public void resetMessageMargins(boolean imageRetrievalSuccessful) {
+    super.resetMessageMargins(imageRetrievalSuccessful);
+    if (StringUtils.isNullOrBlank(getMessageTextView().getText().toString())) {
+      ViewUtils.removeViewFromParent(getMessageTextView());
+    }
+    if (StringUtils.isNullOrBlank(getMessageHeaderTextView().getText().toString())) {
+      ViewUtils.removeViewFromParent(getMessageHeaderTextView());
+    }
+    InAppMessageViewUtils.resetMessageMarginsIfNecessary(getMessageTextView(), getMessageHeaderTextView());
+  }
+
+  @Override
+  public void setupDirectionalNavigation(int numButtons) {
+    // Buttons should focus to each other and the close button
+    final List<View> messageButtonViews = getMessageButtonViews(numButtons);
+    final View closeButton = getMessageCloseButtonView();
+    final int closeButtonId = closeButton.getId();
+    // If the user happens to leave touch mode while the IAM is already on-screen,
+    // we need to specify what View will receive that initial focus.
+    int defaultFocusId = closeButtonId;
+    View defaultFocusView = closeButton;
+    View primaryButton;
+    View secondaryButton;
+    int primaryId;
+    int secondaryId;
+
+    switch (numButtons) {
+      case 2:
+        primaryButton = messageButtonViews.get(1);
+        secondaryButton = messageButtonViews.get(0);
+        primaryId = primaryButton.getId();
+        secondaryId = secondaryButton.getId();
+        defaultFocusId = primaryId;
+        defaultFocusView = primaryButton;
+
+        // Primary points to close and secondary button
+        primaryButton.setNextFocusLeftId(secondaryId);
+        primaryButton.setNextFocusRightId(secondaryId);
+        primaryButton.setNextFocusUpId(closeButtonId);
+        primaryButton.setNextFocusDownId(closeButtonId);
+
+        // Secondary also points to close and secondary button
+        secondaryButton.setNextFocusLeftId(primaryId);
+        secondaryButton.setNextFocusRightId(primaryId);
+        secondaryButton.setNextFocusUpId(closeButtonId);
+        secondaryButton.setNextFocusDownId(closeButtonId);
+
+        // Close button points to primary, then secondary
+        closeButton.setNextFocusUpId(primaryId);
+        closeButton.setNextFocusDownId(primaryId);
+        closeButton.setNextFocusRightId(primaryId);
+        closeButton.setNextFocusLeftId(secondaryId);
+        break;
+      case 1:
+        primaryButton = messageButtonViews.get(0);
+        primaryId = primaryButton.getId();
+        defaultFocusId = primaryId;
+        defaultFocusView = primaryButton;
+
+        // Primary points to close
+        primaryButton.setNextFocusLeftId(closeButtonId);
+        primaryButton.setNextFocusRightId(closeButtonId);
+        primaryButton.setNextFocusUpId(closeButtonId);
+        primaryButton.setNextFocusDownId(closeButtonId);
+
+        // Close button points to primary
+        closeButton.setNextFocusUpId(primaryId);
+        closeButton.setNextFocusDownId(primaryId);
+        closeButton.setNextFocusRightId(primaryId);
+        closeButton.setNextFocusLeftId(primaryId);
+        break;
+      default:
+        AppboyLogger.w(TAG, "Cannot setup directional navigation. Got unsupported number of buttons.: " + numButtons);
+    }
+
+    // The entire view should focus back to the close
+    // button and not allow for backwards navigation.
+    this.setNextFocusUpId(defaultFocusId);
+    this.setNextFocusDownId(defaultFocusId);
+    this.setNextFocusRightId(defaultFocusId);
+    this.setNextFocusLeftId(defaultFocusId);
+
+    // Request focus for the default view
+    defaultFocusView.requestFocus();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      defaultFocusView.setFocusedByDefault(true);
+    }
+  }
 
   public void setMessageButtons(@NonNull List<MessageButton> messageButtons) {
-    InAppMessageViewUtils.setButtons(getMessageButtonViews(messageButtons.size()), messageButtons);
+    InAppMessageButtonViewUtils.setButtons(getMessageButtonViews(messageButtons.size()), messageButtons);
   }
 
   public void setMessageCloseButtonColor(int color) {
@@ -59,17 +142,13 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
     InAppMessageViewUtils.setFrameColor(getFrameView(), color);
   }
 
-  @Override
-  public void resetMessageMargins(boolean imageRetrievalSuccessful) {
-    super.resetMessageMargins(imageRetrievalSuccessful);
-    if (StringUtils.isNullOrBlank(getMessageTextView().getText().toString())) {
-      ViewUtils.removeViewFromParent(getMessageTextView());
-    }
-    if (StringUtils.isNullOrBlank(getMessageHeaderTextView().getText().toString())) {
-      ViewUtils.removeViewFromParent(getMessageHeaderTextView());
-    }
-    InAppMessageViewUtils.resetMessageMarginsIfNecessary(getMessageTextView(), getMessageHeaderTextView());
-  }
+  /**
+   * Returns a list of all button views for this {@link IInAppMessageImmersiveView}. The default views
+   * for in-app messages can contain multiple layouts depending on the number of buttons.
+   *
+   * @param numButtons The number of buttons used for this layout.
+   */
+  public abstract List<View> getMessageButtonViews(int numButtons);
 
   public abstract View getFrameView();
 
@@ -79,6 +158,7 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
 
   /**
    * Immersive messages can alternatively be closed by the back button.
+   *
    * @return If the button pressed was the back button, close the in-app message
    * and return true to indicate that the event was handled.
    */
@@ -89,6 +169,21 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
       return true;
     }
     return super.onKeyDown(keyCode, event);
+  }
+
+  /**
+   * Immersive messages can alternatively be closed by the back button.
+   *
+   * @return If the button pressed was the back button, close the in-app message
+   * and return true to indicate that the event was handled.
+   */
+  @Override
+  public boolean dispatchKeyEvent(KeyEvent event) {
+    if (!isInTouchMode() && event.getKeyCode() == KeyEvent.KEYCODE_BACK && AppboyInAppMessageManager.getInstance().getDoesBackButtonDismissInAppMessageView()) {
+      InAppMessageViewUtils.closeInAppMessageOnKeycodeBack();
+      return true;
+    }
+    return super.dispatchKeyEvent(event);
   }
 
   /**

@@ -39,7 +39,7 @@ public class FeedCategoriesFragment extends DialogFragment {
 
   static final String[] CATEGORIES = {"all", CardCategory.ADVERTISING.toString(), CardCategory.ANNOUNCEMENTS.toString(), CardCategory.NEWS.toString(), CardCategory.SOCIAL.toString()};
 
-  static FeedCategoriesFragment newInstance(EnumSet<CardCategory> categories) {
+  public static FeedCategoriesFragment newInstance(EnumSet<CardCategory> categories) {
     FeedCategoriesFragment categoriesFragment = new FeedCategoriesFragment();
 
     Bundle args = new Bundle();

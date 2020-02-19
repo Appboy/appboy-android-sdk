@@ -1,4 +1,4 @@
-package com.appboy.sample;
+package com.appboy.sample.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.appboy.models.AppboyGeofence;
+import com.appboy.sample.R;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;

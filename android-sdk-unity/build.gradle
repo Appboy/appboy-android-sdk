@@ -1,11 +1,8 @@
 apply plugin: 'com.android.library'
 
-configurations {
-}
-
 dependencies {
   compileOnly files("libs/Prime31UnityActivity-1.0.jar")
-  compileOnly files("libs/unity-2017.3.jar")
+  compileOnly files("libs/unity-2019.2.12f1.jar")
   compileOnly "com.android.support:support-annotations:${SUPPORT_LIBS_VERSION}"
   implementation project(':android-sdk-ui')
 }

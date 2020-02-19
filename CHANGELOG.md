@@ -1,3 +1,27 @@
+## 6.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v6.0.0)
+
+##### ⚠ Breaking
+- Slideup and HTML Full In-App Messages now require the device to be in touch mode at the time of display. This is enforced in their respective `IInAppMessageViewFactory` default implementations.
+  - See https://developer.android.com/reference/android/view/View.html#isInTouchMode().
+- Removed `ViewUtils.setFocusableInTouchModeAndRequestFocus()`.
+- `AppboyUnityPlayerNativeActivity`, `AppboyOverlayActivity`, `AppboyUnityNativeInAppMessageManagerListener`, `AppboyUnityPlayerNativeActivity`, `AppboyUnityPlayerNativeActivity`, and `IAppboyUnityInAppMessageListener` have been removed from the `android-sdk-unity` project.
+  - `UnityPlayerNativeActivity` was deprecated in 2015. See https://unity3d.com/unity/beta/unity5.4.0b1.
+
+##### Added
+- Added proper support for navigating and closing Braze In-App Messages with directional-pads/TV remote input devices.
+- Added the ability to customize the in-app message button border radius via `@dimen/com_appboy_in_app_message_button_corner_radius`.
+- Added the ability to customize the in-app message button border color stroke width via `@dimen/com_appboy_in_app_message_button_border_stroke`.
+  - The stroke width used when an in-app message button border is focused is set via `@dimen/com_appboy_in_app_message_button_border_stroke_focused`.
+
+##### Fixed
+- Fixed an issue where Content Cards syncs were suppressed too often.
+- Fixed an issue where in-app messages could not be closed on TVs or other devices without touch interactions.
+
+##### Changed
+- Changed in-app messages to return focus back to the view that previously held focus before a message is displayed as given via `Activity#getCurrentFocus()`.
+
 ## 5.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v5.0.0)

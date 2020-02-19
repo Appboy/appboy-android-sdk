@@ -71,4 +71,19 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
     }
     return super.onKeyDown(keyCode, event);
   }
+
+  /**
+   * HTML messages can alternatively be closed by the back button.
+   *
+   * @return If the button pressed was the back button, close the in-app message
+   * and return true to indicate that the event was handled.
+   */
+  @Override
+  public boolean dispatchKeyEvent(KeyEvent event) {
+    if (!isInTouchMode() && event.getKeyCode() == KeyEvent.KEYCODE_BACK && AppboyInAppMessageManager.getInstance().getDoesBackButtonDismissInAppMessageView()) {
+      InAppMessageViewUtils.closeInAppMessageOnKeycodeBack();
+      return true;
+    }
+    return super.dispatchKeyEvent(event);
+  }
 }

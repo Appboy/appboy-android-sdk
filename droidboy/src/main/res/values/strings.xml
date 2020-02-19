@@ -247,4 +247,6 @@
   <string name = "home">home</string>
   <string name = "feed_key">feed</string>
   <string name="environment_preference_category">Environment</string>
+  <string name="display_message">Display Message</string>
+  <string name="dummy_button">Dummy Button</string>
 </resources>

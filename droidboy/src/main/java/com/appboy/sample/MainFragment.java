@@ -40,7 +40,8 @@ public class MainFragment extends Fragment {
   private static final String INCREMENT_ATTRIBUTE_KEY = "incrementAttribute";
   private static final String ATTRIBUTION_DATA_KEY = "ab_install_attribution";
   private static final String LAST_CUSTOM_EVENT_PREFERENCE_KEY = "last_custom_event";
-  static final String USER_ID_KEY = "user.id";
+
+  public static final String USER_ID_KEY = "user.id";
 
   private EditText mUserIdEditText;
   private EditText mCustomEventOrPurchaseEditText;

@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/settings"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/feed_categories"
-        android:title="Feed Categories"
-        app:showAsAction="never" />
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+    android:id="@+id/action_settings"
+    android:title="@string/settings"
+    app:showAsAction="ifRoom" />
+  <item
+    android:id="@+id/feed_categories"
+    android:title="Feed Categories"
+    app:showAsAction="never" />
+  <item
+    android:id="@+id/geofences_map"
+    android:title="Geofences"
+    app:showAsAction="never" />
+  <item
+    android:id="@+id/iam_sandbox"
+    android:title="IAM Sandbox"
+    app:showAsAction="never" />
 </menu>

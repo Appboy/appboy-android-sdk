@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
+import com.appboy.sample.activity.DroidBoyActivity;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.NewsfeedAction;

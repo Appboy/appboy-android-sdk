@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyLifecycleCallbackListener;
@@ -23,9 +24,10 @@ import java.util.Arrays;
 
 public class DroidboyApplication extends Application {
   private static final String TAG = AppboyLogger.getAppboyLogTag(DroidboyApplication.class);
-  protected static final String OVERRIDE_API_KEY_PREF_KEY = "override_api_key";
-  protected static final String OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url";
   private static String sOverrideApiKeyInUse;
+
+  public static final String OVERRIDE_API_KEY_PREF_KEY = "override_api_key";
+  public static final String OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url";
 
   @Override
   public void onCreate() {
@@ -33,6 +35,9 @@ public class DroidboyApplication extends Application {
 
     if (BuildConfig.DEBUG) {
       activateStrictMode();
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      WebView.setWebContentsDebuggingEnabled(true);
     }
 
     int logLevel = getApplicationContext().getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE)
@@ -147,7 +152,7 @@ public class DroidboyApplication extends Application {
     }
   }
 
-  protected static String getApiKeyInUse(Context context) {
+  public static String getApiKeyInUse(Context context) {
     if (!StringUtils.isNullOrBlank(sOverrideApiKeyInUse)) {
       return sOverrideApiKeyInUse;
     } else {

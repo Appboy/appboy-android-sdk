@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:amazon="http://schemas.amazon.com/apk/res/android"
-          package="com.appboy.sample">
-
+  xmlns:amazon="http://schemas.amazon.com/apk/res/android"
+  package="com.appboy.sample">
   <!-- Permissions -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Permissions for ADM -->
+  <permission
+    android:name="${applicationId}.permission.RECEIVE_ADM_MESSAGE"
+    android:protectionLevel="signature" />
 
-  <!-- Permissions for ADM -->
-  <permission android:name="${applicationId}.permission.RECEIVE_ADM_MESSAGE" android:protectionLevel="signature" />
   <uses-permission android:name="${applicationId}.permission.RECEIVE_ADM_MESSAGE" />
   <uses-permission android:name="com.amazon.device.messaging.permission.RECEIVE" />
 
-  <application android:label="@string/app_name" android:icon="@drawable/ic_launcher_droidboy"
-               android:usesCleartextTraffic="true"
-               android:allowBackup="false" android:name="DroidboyApplication"
-               android:theme="@style/Theme.Droidboy" android:hardwareAccelerated="true">
-    <amazon:enable-feature android:name="com.amazon.device.messaging" android:required="false" />
-    <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_flzo8WNh8i9tdQl713oTFkhlrri9uA8k" />
+  <application
+    android:name=".DroidboyApplication"
+    android:allowBackup="false"
+    android:hardwareAccelerated="true"
+    android:icon="@drawable/ic_launcher_droidboy"
+    android:label="@string/app_name"
+    android:theme="@style/Theme.Droidboy"
+    android:usesCleartextTraffic="true">
+    <amazon:enable-feature
+      android:name="com.amazon.device.messaging"
+      android:required="false" />
 
+    <meta-data
+      android:name="io.branch.sdk.BranchKey"
+      android:value="key_live_flzo8WNh8i9tdQl713oTFkhlrri9uA8k" />
     <meta-data
       android:name="com.google.android.gms.version"
       android:value="@integer/google_play_services_version" />
@@ -30,69 +38,78 @@
       android:name="com.google.android.geo.API_KEY"
       android:value="@string/google_maps_key" />
 
-    <receiver android:name="com.appboy.AppboyAdmReceiver" android:permission="com.amazon.device.messaging.permission.SEND">
+    <receiver
+      android:name="com.appboy.AppboyAdmReceiver"
+      android:permission="com.amazon.device.messaging.permission.SEND">
       <intent-filter>
         <action android:name="com.amazon.device.messaging.intent.RECEIVE" />
         <action android:name="com.amazon.device.messaging.intent.REGISTRATION" />
+
         <category android:name="${applicationId}" />
       </intent-filter>
     </receiver>
 
-    <activity android:name=".DroidBoyActivity" android:label="@string/droid_boy" android:icon="@drawable/ic_launcher_droidboy"
-              android:windowSoftInputMode="stateUnchanged">
+    <activity android:name=".activity.InAppMessageSandboxActivity" android:exported="true" />
+
+    <activity
+      android:name=".activity.DroidBoyActivity"
+      android:icon="@drawable/ic_launcher_droidboy"
+      android:label="@string/droid_boy"
+      android:windowSoftInputMode="stateUnchanged">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-
-    <activity android:name=".GeofencesMapActivity" />
-    <!-- Deep link example -->
-    <activity android:name=".PreferencesActivity" android:label="Preferences" android:theme="@style/Theme.Droidboy">
+    <activity android:name=".activity.GeofencesMapActivity" /> <!-- Deep link example -->
+    <activity
+      android:name=".activity.PreferencesActivity"
+      android:label="Preferences"
+      android:theme="@style/Theme.Droidboy">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
+
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
         <!-- Accepts URI "droidboy://preferences” -->
-        <data android:scheme="droidboy"
-              android:host="preferences"/>
+        <data
+          android:host="preferences"
+          android:scheme="droidboy" />
       </intent-filter>
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
+
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
         <!-- Accepts URIs that begin with "https://www.droidboy.com/preferences” -->
-        <data android:scheme="https"
-              android:host="www.droidboy.com"
-              android:pathPrefix="/preferences" />
+        <data
+          android:host="www.droidboy.com"
+          android:pathPrefix="/preferences"
+          android:scheme="https" />
       </intent-filter>
     </activity>
-    <activity android:name=".FeedFragmentActivity" />
+    <activity android:name=".activity.FeedFragmentActivity" />
 
     <receiver android:name="com.appboy.AppboyBootReceiver">
       <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED" />
       </intent-filter>
     </receiver>
-
     <service android:name="com.appboy.AppboyFirebaseMessagingService">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
-
-    <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
+    <receiver
+      android:name="io.branch.referral.InstallListener"
+      android:exported="true">
       <intent-filter>
         <action android:name="com.android.vending.INSTALL_REFERRER" />
       </intent-filter>
-    </receiver>
-
-    <!-- See https://issuetracker.google.com/issues/79478779 -->
+    </receiver> <!-- See https://issuetracker.google.com/issues/79478779 -->
     <uses-library
-        android:name="org.apache.http.legacy"
-        android:required="false" />
-
-    <!-- For the environment barcode reader -->
+      android:name="org.apache.http.legacy"
+      android:required="false" /> <!-- For the environment barcode reader -->
     <meta-data
       android:name="com.google.firebase.ml.vision.DEPENDENCIES"
       android:value="barcode" />

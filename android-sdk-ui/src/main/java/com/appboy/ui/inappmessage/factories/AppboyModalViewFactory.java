@@ -23,7 +23,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
   public AppboyInAppMessageModalView createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
     Context applicationContext = activity.getApplicationContext();
     InAppMessageModal inAppMessageModal = (InAppMessageModal) inAppMessage;
-    boolean isGraphic = inAppMessageModal.getImageStyle().equals(ImageStyle.GRAPHIC);
+    final boolean isGraphic = inAppMessageModal.getImageStyle().equals(ImageStyle.GRAPHIC);
     AppboyInAppMessageModalView view = getAppropriateModalView(activity, isGraphic);
     view.applyInAppMessageParameters(applicationContext, inAppMessageModal);
 
@@ -51,6 +51,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
       ((AppboyInAppMessageImageView) view.getMessageImageView()).setAspectRatio(NON_GRAPHIC_ASPECT_RATIO);
     }
     view.setLargerCloseButtonClickArea(view.getMessageCloseButtonView());
+    view.setupDirectionalNavigation(inAppMessageModal.getMessageButtons().size());
     return view;
   }
 

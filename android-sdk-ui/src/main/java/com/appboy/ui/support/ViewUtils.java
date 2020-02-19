@@ -23,7 +23,6 @@ public class ViewUtils {
     if (view != null) {
       if (view.getParent() instanceof ViewGroup) {
         final ViewGroup parent = (ViewGroup) view.getParent();
-        setFocusableInTouchModeAndRequestFocus(parent);
         parent.removeView(view);
       }
     }
@@ -166,5 +165,12 @@ public class ViewUtils {
       // The max inset is just the system value since the display cutout does not exist
       return windowInsets.getSystemWindowInsetBottom();
     }
+  }
+
+  /**
+   * Detects if this device is currently in touch mode given a {@link View}.
+   */
+  public static boolean isDeviceNotInTouchMode(View view) {
+    return !view.isInTouchMode();
   }
 }

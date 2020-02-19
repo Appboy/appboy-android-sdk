@@ -11,7 +11,7 @@ import com.unity3d.player.UnityPlayerActivity;
  * the Unity application.
  *
  * NOTE: This Activity is not compatible with Prime31 plugins. If you are using any Prime31 plugins, you
- * must use the AppboyUnityPlayerNativeActivity in the com.appboy.unity.prime31compatible package instead.
+ * must use the {@link AppboyUnityPlayerActivity} in the com.appboy.unity.prime31compatible package instead.
  */
 public class AppboyUnityPlayerActivity extends UnityPlayerActivity {
   private AppboyUnityActivityWrapper mAppboyUnityActivityWrapper;

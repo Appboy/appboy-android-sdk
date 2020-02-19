@@ -1,6 +1,8 @@
-package com.appboy.sample;
+package com.appboy.sample.activity;
 
 import android.os.Bundle;
+
+import com.appboy.sample.R;
 
 public class FeedFragmentActivity extends AppboyFragmentActivity {
   @Override
