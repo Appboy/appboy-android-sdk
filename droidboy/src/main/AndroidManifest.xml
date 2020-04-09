@@ -63,7 +63,7 @@
     </activity>
     <activity android:name=".activity.GeofencesMapActivity" /> <!-- Deep link example -->
     <activity
-      android:name=".activity.PreferencesActivity"
+      android:name=".activity.SettingsPreferencesActivity"
       android:label="Preferences"
       android:theme="@style/Theme.Droidboy">
       <intent-filter>
@@ -113,5 +113,15 @@
     <meta-data
       android:name="com.google.firebase.ml.vision.DEPENDENCIES"
       android:value="barcode" />
+    <!-- File provider for logcat exporting -->
+    <provider
+      android:name="android.support.v4.content.FileProvider"
+      android:authorities="${applicationId}.fileprovider"
+      android:grantUriPermissions="true"
+      android:exported="false">
+      <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/provider_filepaths" />
+    </provider>
   </application>
 </manifest>

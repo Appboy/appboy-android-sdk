@@ -26,7 +26,7 @@ public interface IAppboyNavigator {
   /**
    * This delegate method will be called when Braze wants to navigate to a particular URI. If an
    * IAppboyNavigator is set, this method will be called instead of the default method (which
-   * is defined in {@link AppboyNavigator}
+   * is defined in {@link AppboyNavigator}.
    *
    * @param context The current context.
    * @param uriAction The Uri action to execute.

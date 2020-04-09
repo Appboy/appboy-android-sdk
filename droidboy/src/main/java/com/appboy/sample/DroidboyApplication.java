@@ -47,10 +47,7 @@ public class DroidboyApplication extends Application {
     SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), MODE_PRIVATE);
     disableNetworkRequestsIfConfigured(sharedPreferences);
 
-    // Clear the configuration cache with null
-    Appboy.configure(this, null);
-    AppboyConfig.Builder appboyConfigBuilder = new AppboyConfig.Builder()
-        .setInAppMessageTestPushEagerDisplayEnabled(true);
+    AppboyConfig.Builder appboyConfigBuilder = new AppboyConfig.Builder();
     setOverrideApiKeyIfConfigured(sharedPreferences, appboyConfigBuilder);
     Appboy.configure(this, appboyConfigBuilder.build());
 

@@ -5,7 +5,9 @@
     <RelativeLayout
       android:id="@+id/com_appboy_content_cards_short_news_card_image_container"
       style="@style/Appboy.ContentCards.ShortNews.ImageContainer">
-        <!--The image will be dynamically created added as a child element here-->
+        <ImageView
+          android:id="@+id/com_appboy_content_cards_short_news_card_image"
+          style="@style/Appboy.ContentCards.ShortNews.Image"/>
     </RelativeLayout>
 
     <ImageView

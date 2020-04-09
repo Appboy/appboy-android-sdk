@@ -19,17 +19,15 @@ public class BannerImageContentCardView extends BaseContentCardView<BannerImageC
   }
 
   private class ViewHolder extends ContentCardViewHolder {
-    private View mCardImage;
+    private final ImageView mCardImage;
 
     ViewHolder(View view) {
       super(view, isUnreadIndicatorEnabled());
-
-      mCardImage = createCardImageWithStyle(getContext(), view,
-          R.style.Appboy_ContentCards_BannerImage_ImageContainer_Image, R.id.com_appboy_content_cards_banner_image_card_image_container);
+      mCardImage = view.findViewById(R.id.com_appboy_content_cards_banner_image_card_image);
     }
 
     ImageView getImageView() {
-      return mCardImage instanceof ImageView ? (ImageView) mCardImage : null;
+      return mCardImage;
     }
   }
 

@@ -1,3 +1,43 @@
+## 7.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v7.0.0)
+
+##### ⚠ Breaking
+- Made several changes to the default Content Card views to more easily customize and apply ImageView styling.
+  - Changed `Appboy.ContentCards.BannerImage.ImageContainer.Image` to `Appboy.ContentCards.BannerImage.Image`.
+- Removed `com.appboy.ui.contentcards.view.ContentCardViewHolder.createCardImageWithStyle()`.
+
+##### Added
+- Added Czech and Ukrainian language translations for Braze UI elements.
+- Added `android-sdk-base-jetified` and `android-sdk-ui-jetified` to reference jetified SDK AAR artifacts from the artifact repository.
+  - This is a direct replacement for `android-sdk-ui-x` and is a more complete integration path for using the Braze SDK with AndroidX.
+  - Usage as follows:
+  ```
+  dependencies {
+    implementation "com.appboy:android-sdk-ui-jetified:${BRAZE_SDK_VERSION}"
+  }
+  ```
+  - If previously using the `android-sdk-ui-x` module, you must replace any imports under the `com.appboy.uix.push` package to be under `com.appboy.ui.push`.
+  - The gradle properties `android.enableJetifier=true` and `android.useAndroidX=true` are no longer required when using androidX libraries with the Braze SDK.
+- Added Material Design Button class names to exported consumer proguard rules.
+  ```
+  -keepnames class android.support.design.button.MaterialButton
+  -keepnames class com.google.android.material.button.MaterialButton
+  ```
+
+##### Fixed
+- Fixed issue in `AppboyCardAdapter` where a card index could be out of bounds when marking a card as seen.
+
+##### Changed
+- In-App Message "test sends" from the dashboard now display automatically if your app is in the foreground.
+  - Backgrounded apps will continue to receive a push notification to display the message.
+  - You can disable this feature by changing the boolean value for `com_appboy_in_app_message_push_test_eager_display_enabled` in your `appboy.xml`, or at runtime by setting `AppboyConfig.setInAppMessageTestPushEagerDisplayEnabled()` to false.
+- Changed `UriAction` to be more easily customizable.
+
+##### Removed
+- Removed the `android-sdk-ui-x` module. See the `Added` section for more information.
+- Removed the China Push Sample app.
+
 ## 6.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v6.0.0)

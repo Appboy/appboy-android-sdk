@@ -12,7 +12,7 @@ import io.branch.referral.Branch;
  *
  * To start tracking analytics using the Braze Android SDK, in all activities, you must call Appboy.openSession()
  * and Appboy.closeSession() in the activity's onStart() and onStop() respectively. You can see that in this
- * activity (inherited by most other activities) and com.appboy.sample.activity.PreferencesActivity.
+ * activity (inherited by most other activities) and com.appboy.sample.activity.SettingsPreferencesActivity.
  */
 public class AppboyFragmentActivity extends AppCompatActivity {
   protected static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFragmentActivity.class);

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Cards -->
-  <string name="com_appboy_recommendation_free">निःशुल्क</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">हमारे पास कोई अपडेट नहीं हैं। कृपया बाद में फिर से जाँच करें.।</string>
   <string name="com_appboy_feed_connection_error_title">कनेक्शन की त्रुटि</string>

@@ -2,6 +2,17 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+      android:title="@string/content_card_preference_category">
+        <Preference
+          android:key="content_card_populate_random_cards_setting_key"
+          android:title="Add random cards"
+          android:summary="Does not alter existing saved cards"/>
+        <Preference
+          android:key="content_card_dismiss_all_cards_setting_key"
+          android:title="Dismiss all Cached Content Cards"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
       android:title="@string/notch_settings_category">
         <CheckBoxPreference
           android:key="display_in_full_cutout_setting_key"
@@ -76,20 +87,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/feed">
-        <CheckBoxPreference
-            android:key="sort_feed"
-            android:title="@string/sort_feed"
-            android:summary="@string/sort_feed_summary"
-            android:defaultValue="false"/>
-        <CheckBoxPreference
-            android:key="set_custom_news_feed_card_click_action_listener"
-            android:title="@string/custom_news_feed_card_click_action_listener"
-            android:summary="@string/custom_news_feed_card_click_action_listener_summary"
-            android:defaultValue="false"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/image_loading_preference_category">
         <Preference
             android:key="glide_image_loader_enable_setting_key"
@@ -144,6 +141,10 @@
             android:key="anonymous_revert"
             android:title="Revert to Anonymous User"
             android:summary="Will cause an app restart."/>
+        <Preference
+            android:key="logcat_export_file_key"
+            android:title="Export Droidboy Logcat to a File"
+            android:summary="Will reset the logcat after click!"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -222,5 +223,19 @@
         <Preference
             android:key="device_id"
             android:title="Device Id"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+      android:title="@string/feed">
+        <CheckBoxPreference
+          android:key="sort_feed"
+          android:title="@string/sort_feed"
+          android:summary="@string/sort_feed_summary"
+          android:defaultValue="false"/>
+        <CheckBoxPreference
+          android:key="set_custom_news_feed_card_click_action_listener"
+          android:title="@string/custom_news_feed_card_click_action_listener"
+          android:summary="@string/custom_news_feed_card_click_action_listener_summary"
+          android:defaultValue="false"/>
     </PreferenceCategory>
 </PreferenceScreen>

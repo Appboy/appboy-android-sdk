@@ -16,3 +16,6 @@
 -keepclassmembers class * {
    @android.webkit.JavascriptInterface <methods>;
 }
+
+-keepnames class android.support.design.button.MaterialButton
+-keepnames class com.google.android.material.button.MaterialButton

@@ -23,14 +23,12 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
   private class ViewHolder extends ContentCardViewHolder {
     private final TextView mTitle;
     private final TextView mDescription;
-    private View mCardImage;
+    private final ImageView mCardImage;
 
     ViewHolder(View view) {
       super(view, isUnreadIndicatorEnabled());
 
-      mCardImage = createCardImageWithStyle(getContext(), view,
-          R.style.Appboy_ContentCards_ShortNews_ImageContainer_Image, R.id.com_appboy_content_cards_short_news_card_image_container);
-
+      mCardImage = view.findViewById(R.id.com_appboy_content_cards_short_news_card_image);
       mTitle = view.findViewById(R.id.com_appboy_content_cards_short_news_card_title);
       mDescription = view.findViewById(R.id.com_appboy_content_cards_short_news_card_description);
     }
@@ -44,7 +42,7 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
     }
 
     ImageView getImageView() {
-      return mCardImage instanceof ImageView ? (ImageView) mCardImage : null;
+      return mCardImage;
     }
   }
 

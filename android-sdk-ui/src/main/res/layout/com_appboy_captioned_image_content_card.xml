@@ -5,8 +5,9 @@
     <RelativeLayout
       android:id="@+id/com_appboy_content_cards_captioned_image_card_image_container"
       style="@style/Appboy.ContentCards.CaptionedImage.ImageContainer">
-
-        <!--The card image will be dynamically created and added as a child element here-->
+        <ImageView
+          android:id="@+id/com_appboy_content_cards_captioned_image_card_image"
+          style="@style/Appboy.ContentCards.CaptionedImage.Image"/>
     </RelativeLayout>
 
     <ImageView

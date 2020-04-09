@@ -46,8 +46,10 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
    * @param cardImageUrl The image url
    * @param defaultAspectRatio The default aspect ratio if the cardAspectRatio is 0
    */
-  public void setOptionalCardImage(@Nullable ImageView imageView, float cardAspectRatio,
-                                   String cardImageUrl, float defaultAspectRatio) {
+  public void setOptionalCardImage(@Nullable ImageView imageView,
+                                   float cardAspectRatio,
+                                   String cardImageUrl,
+                                   float defaultAspectRatio) {
     float aspectRatio = defaultAspectRatio;
 
     if (cardAspectRatio != 0f) {

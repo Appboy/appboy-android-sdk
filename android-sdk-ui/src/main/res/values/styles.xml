@@ -607,7 +607,7 @@
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_alignParentTop">true</item>
   </style>
-  <style name="Appboy.ContentCards.CaptionedImage.ImageContainer.Image">
+  <style name="Appboy.ContentCards.CaptionedImage.Image">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:scaleType">centerCrop</item>
@@ -652,11 +652,7 @@
     <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
     <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
   </style>
-  <style name="Appboy.ContentCards.BannerImage.ImageContainer">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-  </style>
-  <style name="Appboy.ContentCards.BannerImage.ImageContainer.Image">
+  <style name="Appboy.ContentCards.BannerImage.Image">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:scaleType">centerCrop</item>
@@ -682,7 +678,7 @@
     <item name="android:layout_marginTop">20dp</item>
     <item name="android:layout_marginBottom">25.0dp</item>
   </style>
-  <style name="Appboy.ContentCards.ShortNews.ImageContainer.Image">
+  <style name="Appboy.ContentCards.ShortNews.Image">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:scaleType">centerCrop</item>

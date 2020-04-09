@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Cards -->
-  <string name="com_appboy_recommendation_free">Miễn phí</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">Chúng tôi không có cập nhật nào. Vui lòng kiểm tra lại sau.</string>
   <string name="com_appboy_feed_connection_error_title">Lỗi Kết Nối</string>

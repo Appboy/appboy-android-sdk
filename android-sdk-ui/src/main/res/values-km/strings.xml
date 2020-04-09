@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Cards -->
-  <string name="com_appboy_recommendation_free">ដោយឥតគិតថ្លៃ</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">យើងមិនមានការធ្វើបច្ចុប្បន្នភាពទេ។ សូមពិនិត្យមើលម្តងទៀតនៅពេលក្រោយ.</string>
   <string name="com_appboy_feed_connection_error_title">កំហុសឆ្គងក្នុងការតភ្ជាប់</string>

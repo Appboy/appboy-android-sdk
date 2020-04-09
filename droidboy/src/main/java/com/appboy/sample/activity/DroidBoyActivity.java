@@ -178,7 +178,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.action_settings:
-        startActivity(new Intent(this, PreferencesActivity.class));
+        startActivity(new Intent(this, SettingsPreferencesActivity.class));
         break;
       case R.id.geofences_map:
         mDrawerLayout.closeDrawers();

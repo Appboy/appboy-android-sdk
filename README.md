@@ -21,10 +21,8 @@ Successful marketing automation is essential to the future of your mobile app. B
 
 - `android-sdk-base` - the Braze SDK base analytics library.
 - `android-sdk-ui` - the Braze SDK user interface library for in-app messages, push, and the news feed.
-- `android-sdk-ui-x` - the Braze SDK interface for methods that AndroidX Jetifier could not directly transform.
 - `droidboy` - a sample app demonstrating how to use Braze in-depth.
 - `hello-appboy` - a sample app demonstrating a basic Braze integration.
-- `china-push-sample` - a sample app demonstrating the Braze + Baidu push integration.
 - `android-sdk-unity` - a library that enables Braze SDK integrations on Unity.
 - `samples` - a folder containing several sample apps for various integration options.
 
@@ -40,7 +38,7 @@ repositories {
 
 ```
 dependencies {
-   implementation 'com.appboy:android-sdk-ui:6.0.+'
+   implementation 'com.appboy:android-sdk-ui:7.0.+'
    ...
 }
 ```
@@ -59,7 +57,7 @@ repositories {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:6.0.+'
+  implementation 'com.appboy:android-sdk-ui:7.0.+'
 }
 ```
 

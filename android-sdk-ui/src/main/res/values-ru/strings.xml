@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Cards -->
-  <string name="com_appboy_recommendation_free">Бесплатно</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">Обновления недоступны. Пожалуйста, проверьте снова позже.</string>
   <string name="com_appboy_feed_connection_error_title">Ошибка подключения</string>

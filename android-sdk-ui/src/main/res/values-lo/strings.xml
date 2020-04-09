@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Cards -->
-  <string name="com_appboy_recommendation_free">ຟ​ຣີ</string>
-
   <!-- News feed -->
   <string name="com_appboy_feed_empty">ພວກ​ເຮົາ​ບໍ່​ມີ​ການ​ອັບ​ເດດ. ກະ​ລຸ​ນາ​ລອງ​ໃໝ່​ພາຍ​ຫຼັງ.</string>
   <string name="com_appboy_feed_connection_error_title">ການ​ເຊື່ອມ​ຕໍ່​ຜິດ​ພາດ</string>

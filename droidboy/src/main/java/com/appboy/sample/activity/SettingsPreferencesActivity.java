@@ -20,10 +20,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
+import com.appboy.AppboyInternal;
 import com.appboy.Constants;
 import com.appboy.IAppboyImageLoader;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.lrucache.AppboyLruImageLoader;
+import com.appboy.models.cards.Card;
 import com.appboy.models.outgoing.AttributionData;
 import com.appboy.sample.BuildConfig;
 import com.appboy.sample.CustomFeedClickActionListener;
@@ -31,7 +33,9 @@ import com.appboy.sample.DroidboyApplication;
 import com.appboy.sample.MainFragment;
 import com.appboy.sample.R;
 import com.appboy.sample.imageloading.GlideAppboyImageLoader;
+import com.appboy.sample.util.ContentCardsTestingUtil;
 import com.appboy.sample.util.LifecycleUtils;
+import com.appboy.sample.util.LogcatExportUtil;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
@@ -44,14 +48,15 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.branch.referral.Branch;
 
-@SuppressLint("ApplySharedPref")
+@SuppressLint({"ApplySharedPref", "ExportedPreferenceActivity"})
 @SuppressWarnings("deprecation")
-public class PreferencesActivity extends PreferenceActivity {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(PreferencesActivity.class);
+public class SettingsPreferencesActivity extends PreferenceActivity {
+  private static final String TAG = AppboyLogger.getAppboyLogTag(SettingsPreferencesActivity.class);
   private static final Map<String, String> API_KEY_TO_APP_MAP;
   private static final int REQUEST_IMAGE_CAPTURE = 271;
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment";
@@ -271,6 +276,35 @@ public class PreferencesActivity extends PreferenceActivity {
     });
     brazeEnvironmentKubernetesPreference.setOnPreferenceClickListener((Preference preference) -> {
       changeEndpointToKubernetes();
+      return true;
+    });
+
+    findPreference("content_card_populate_random_cards_setting_key").setOnPreferenceClickListener((Preference preference) -> {
+      final List<Card> randomCards = ContentCardsTestingUtil.Companion.createRandomCards(getApplicationContext(), 3);
+      for (Card card : randomCards) {
+        final String userId = Appboy.getInstance(getApplicationContext()).getCurrentUser().getUserId();
+        AppboyInternal.addSerializedContentCardToStorage(getApplicationContext(), card.forJsonPut().toString(), userId);
+      }
+      return true;
+    });
+    findPreference("content_card_dismiss_all_cards_setting_key").setOnPreferenceClickListener((Preference preference) -> {
+      final List<Card> cachedContentCards = Appboy.getInstance(getApplicationContext()).getCachedContentCards();
+      if (cachedContentCards != null) {
+        for (Card card : cachedContentCards) {
+          card.setIsDismissed(true);
+        }
+      }
+      return true;
+    });
+    findPreference("logcat_export_file_key").setOnPreferenceClickListener((Preference preference) -> {
+      final Uri logcatFileUri = LogcatExportUtil.Companion.exportLogcatToFile(getApplicationContext());
+      Intent shareIntent = new Intent(Intent.ACTION_SEND);
+      shareIntent.setType("text/plain");
+      shareIntent.putExtra(Intent.EXTRA_STREAM, logcatFileUri);
+
+      // Grant temporary read permission to the content URI
+      shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      startActivity(Intent.createChooser(shareIntent, "Export logcat as a big text file"));
       return true;
     });
   }

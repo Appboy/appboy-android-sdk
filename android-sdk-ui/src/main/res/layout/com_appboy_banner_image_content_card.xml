@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 style="@style/Appboy.ContentCards.BannerImage.Root">
-    <RelativeLayout
-      android:id="@+id/com_appboy_content_cards_banner_image_card_image_container"
-      style="@style/Appboy.ContentCards.BannerImage.ImageContainer">
-        <!--The image will be dynamically created added as a child element here-->
-    </RelativeLayout>
+    <ImageView
+      android:id="@+id/com_appboy_content_cards_banner_image_card_image"
+      style="@style/Appboy.ContentCards.BannerImage.Image"/>
 
     <ImageView
       android:id="@+id/com_appboy_content_cards_pinned_icon"

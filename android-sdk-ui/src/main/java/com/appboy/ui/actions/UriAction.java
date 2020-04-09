@@ -41,6 +41,18 @@ public class UriAction implements IAction {
     mChannel = channel;
   }
 
+  /**
+   * Constructor to copy an existing {@link UriAction}.
+   *
+   * @param originalUriAction A {@link UriAction} to copy parameters from.
+   */
+  public UriAction(@NonNull UriAction originalUriAction) {
+    this.mUri = originalUriAction.mUri;
+    this.mExtras = originalUriAction.mExtras;
+    this.mUseWebView = originalUriAction.mUseWebView;
+    this.mChannel = originalUriAction.mChannel;
+  }
+
   @Override
   public Channel getChannel() {
     return mChannel;
@@ -80,11 +92,17 @@ public class UriAction implements IAction {
     mUseWebView = openInWebView;
   }
 
+  /**
+   * @return the {@link Uri} that represents this {@link UriAction}.
+   */
   @NonNull
   public Uri getUri() {
     return mUri;
   }
 
+  /**
+   * @return whether this {@link UriAction} should open
+   */
   public boolean getUseWebView() {
     return mUseWebView;
   }
@@ -96,7 +114,7 @@ public class UriAction implements IAction {
   /**
    * Opens the remote scheme Uri in {@link AppboyWebViewActivity}.
    */
-  static void openUriWithWebViewActivity(Context context, Uri uri, Bundle extras) {
+  protected void openUriWithWebViewActivity(Context context, Uri uri, Bundle extras) {
     Intent intent = getWebViewActivityIntent(context, uri, extras);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     try {
@@ -109,7 +127,7 @@ public class UriAction implements IAction {
   /**
    * Uses an Intent.ACTION_VIEW intent to open the Uri.
    */
-  private static void openUriWithActionView(Context context, Uri uri, Bundle extras) {
+  protected void openUriWithActionView(Context context, Uri uri, Bundle extras) {
     Intent intent = getActionViewIntent(context, uri, extras);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     if (intent.resolveActivity(context.getPackageManager()) != null) {
@@ -124,7 +142,7 @@ public class UriAction implements IAction {
    *
    * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
    */
-  private static void openUriWithWebViewActivityFromPush(Context context, Uri uri, Bundle extras) {
+  protected void openUriWithWebViewActivityFromPush(Context context, Uri uri, Bundle extras) {
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
     try {
       Intent webViewIntent = getWebViewActivityIntent(context, uri, extras);
@@ -140,7 +158,7 @@ public class UriAction implements IAction {
    *
    * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
    */
-  private static void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
+  protected void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
     try {
       Intent uriIntent = getActionViewIntent(context, uri, extras);
@@ -153,7 +171,7 @@ public class UriAction implements IAction {
   /**
    * Returns an intent that opens the uri inside of a {@link AppboyWebViewActivity}.
    */
-  private static Intent getWebViewActivityIntent(Context context, Uri uri, Bundle extras) {
+  protected Intent getWebViewActivityIntent(Context context, Uri uri, Bundle extras) {
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
     final String customWebViewActivityClassName = configurationProvider.getCustomHtmlWebViewActivityClassName();
     Intent webViewActivityIntent;
@@ -175,7 +193,7 @@ public class UriAction implements IAction {
     return webViewActivityIntent;
   }
 
-  private static Intent getActionViewIntent(Context context, Uri uri, Bundle extras) {
+  protected Intent getActionViewIntent(Context context, Uri uri, Bundle extras) {
     Intent intent = new Intent(Intent.ACTION_VIEW);
     intent.setData(uri);
 
@@ -207,8 +225,10 @@ public class UriAction implements IAction {
    * @see AppboyConfigurationProvider#getPushDeepLinkBackStackActivityClassName()
    */
   @VisibleForTesting
-  static Intent[] getIntentArrayWithConfiguredBackStack(Context context, Bundle extras, Intent targetIntent,
-                                                        AppboyConfigurationProvider configurationProvider) {
+  protected Intent[] getIntentArrayWithConfiguredBackStack(Context context,
+                                                           Bundle extras,
+                                                           Intent targetIntent,
+                                                           AppboyConfigurationProvider configurationProvider) {
     // The root intent will either point to the launcher activity,
     // some custom activity, or nothing if the back-stack is disabled.
     Intent rootIntent = null;

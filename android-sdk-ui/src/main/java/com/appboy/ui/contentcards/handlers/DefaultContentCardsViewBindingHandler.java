@@ -32,6 +32,9 @@ public class DefaultContentCardsViewBindingHandler implements IContentCardsViewB
 
   @Override
   public void onBindViewHolder(Context context, List<Card> cards, ContentCardViewHolder viewHolder, int adapterPosition) {
+    if (adapterPosition < 0 || adapterPosition >= cards.size()) {
+      return;
+    }
     Card cardAtPosition = cards.get(adapterPosition);
     BaseContentCardView contentCardView = getContentCardsViewFromCache(context, cardAtPosition.getCardType());
     contentCardView.bindViewHolder(viewHolder, cardAtPosition);
@@ -39,6 +42,9 @@ public class DefaultContentCardsViewBindingHandler implements IContentCardsViewB
 
   @Override
   public int getItemViewType(Context context, List<Card> cards, int adapterPosition) {
+    if (adapterPosition < 0 || adapterPosition >= cards.size()) {
+      return -1;
+    }
     Card card = cards.get(adapterPosition);
     return card.getCardType().getValue();
   }
