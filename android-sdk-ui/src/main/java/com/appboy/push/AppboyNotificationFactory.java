@@ -86,7 +86,9 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    */
   @Override
   public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
-                                                Context context, Bundle notificationExtras, Bundle appboyExtras) {
+                                         Context context,
+                                         Bundle notificationExtras,
+                                         Bundle appboyExtras) {
     return populateNotificationBuilder(appConfigurationProvider, context, notificationExtras, appboyExtras).build();
   }
 }

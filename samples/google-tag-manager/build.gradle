@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    applicationId "com.appboy.googletagmanager"
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode 1
+    versionName "1.0"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      signingConfig signingConfigs.debug
+      debuggable true
+    }
+  }
+}
+
+dependencies {
+  implementation(project(':android-sdk-ui')) {
+    exclude group: 'com.google.firebase'
+    exclude group: 'com.google.android.gms'
+  }
+  implementation ("com.android.support:appcompat-v7:${SUPPORT_LIBS_VERSION}") {
+    exclude group: 'com.android.support', module: 'support-v4'
+  }
+  implementation "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
+  implementation "com.google.android.gms:play-services-tagmanager:${PLAY_SERVICES_TAG_MANAGER}"
+}
+
+apply plugin: 'com.google.gms.google-services'

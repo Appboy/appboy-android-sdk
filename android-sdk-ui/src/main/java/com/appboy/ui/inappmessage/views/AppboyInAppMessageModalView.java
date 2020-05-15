@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.models.IInAppMessageImmersive;
+import com.appboy.models.InAppMessageModal;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
@@ -24,13 +25,13 @@ import java.util.List;
 public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBaseView {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageModalView.class);
   private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
-  private IInAppMessageImmersive mInAppMessage;
+  private InAppMessageModal mInAppMessage;
 
   public AppboyInAppMessageModalView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
-  public void applyInAppMessageParameters(Context context, IInAppMessageImmersive inAppMessage) {
+  public void applyInAppMessageParameters(Context context, InAppMessageModal inAppMessage) {
     mInAppMessage = inAppMessage;
     mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_modal_imageview);
     setInAppMessageImageViewAttributes(context, inAppMessage, mAppboyInAppMessageImageView);
@@ -168,7 +169,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
    * If displaying a graphic modal, resize its bounds based on the aspect ratio of the input image
    * and its maximum size.
    */
-  private void resizeGraphicFrameIfAppropriate(final Context context, final IInAppMessageImmersive inAppMessage) {
+  private void resizeGraphicFrameIfAppropriate(final Context context, final InAppMessageModal inAppMessage) {
     if (inAppMessage == null || inAppMessage.getBitmap() == null) {
       return;
     }

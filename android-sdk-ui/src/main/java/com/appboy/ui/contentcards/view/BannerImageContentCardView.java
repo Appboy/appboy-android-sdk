@@ -36,7 +36,7 @@ public class BannerImageContentCardView extends BaseContentCardView<BannerImageC
     View view = LayoutInflater.from(viewGroup.getContext())
         .inflate(R.layout.com_appboy_banner_image_content_card, viewGroup, false);
 
-    view.setBackground(getResources().getDrawable(R.drawable.com_appboy_card_background));
+    view.setBackground(getResources().getDrawable(R.drawable.com_appboy_content_card_background));
     return new ViewHolder(view);
   }
 

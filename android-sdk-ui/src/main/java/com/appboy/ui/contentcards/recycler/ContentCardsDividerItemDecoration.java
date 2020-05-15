@@ -2,6 +2,7 @@ package com.appboy.ui.contentcards.recycler;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -29,7 +30,7 @@ public class ContentCardsDividerItemDecoration extends RecyclerView.ItemDecorati
   }
 
   @Override
-  public void getItemOffsets(Rect itemViewOutputRect, View view, RecyclerView parent, RecyclerView.State state) {
+  public void getItemOffsets(@NonNull Rect itemViewOutputRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
     super.getItemOffsets(itemViewOutputRect, view, parent, state);
 
     int childAdapterPosition = parent.getChildAdapterPosition(view);
@@ -46,9 +47,9 @@ public class ContentCardsDividerItemDecoration extends RecyclerView.ItemDecorati
     // If the card is a control, then don't set any extra divider on the card
     itemViewOutputRect.bottom = isControlCard ? 0 : mItemDividerHeight;
 
-    // If this is the first card, then set the top value to the divider as well
+    // If this is the first card, then don't set a top value to the divider
     if (childAdapterPosition == 0) {
-      itemViewOutputRect.top = isControlCard ? 0 : mItemDividerHeight;
+      itemViewOutputRect.top = 0;
     }
 
     // Now we have to center the view horizontally in the RecyclerView

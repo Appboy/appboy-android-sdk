@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="com_appboy_content_card_background_border">#555555</color>
+  <color name="com_appboy_content_card_background_shadow">#555555</color>
+  <color name="com_appboy_content_card_background">#555555</color>
+
+  <!-- The color used to highlight unread Content Cards at their bottom edge -->
+  <color name="com_appboy_content_cards_unread_bar_color">#8AC7FF</color>
+
+  <!-- The color of the "Read More >" text when card actions are present -->
+  <color name="com_appboy_content_cards_action_hint_text_color">#8AC7FF</color>
+
+  <color name="com_appboy_content_cards_title">@android:color/white</color>
+  <color name="com_appboy_content_cards_description">@android:color/white</color>
+  <color name="com_appboy_content_cards_display_background_color">#1E1E1E</color>
+
+  <color name="com_appboy_content_card_empty_text_color">@android:color/white</color>
+</resources>

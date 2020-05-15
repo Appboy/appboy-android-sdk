@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<style>
+  :root {
+    --page-background: #fff;
+    --page-title: #333;
+    --page-text: #333;
+  }
+
+  @media screen and (prefers-color-scheme: dark) {
+    :root {
+      --page-background: #2d3239;
+      --page-title: #e9d970;
+      --page-text: #75715e;
+    }
+  }
+
+  body {
+    background: var(--page-background);
+    color: var(--page-text);
+  }
+</style>
+  <head lang="en">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  </head>
+  <body>
+    <a onclick="window.location='appboy://customEvent?name=htmlIAMCustomEvent&p1=p2'">Click to log a Custom Event</a>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href="appboy://close">X</a>
+  </body>
+
+</html>

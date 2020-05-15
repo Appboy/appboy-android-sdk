@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <!--Replace this stand-in key with your actual Braze API key from the dashboard-->
-  <string translatable="false" name="com_appboy_api_key">YOUR-APPBOY-API-KEY-HERE</string>
-
-</resources>

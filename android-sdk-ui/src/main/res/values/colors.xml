@@ -38,6 +38,11 @@
   <color name="com_appboy_newsfeed_swipe_refresh_color_3">#2f3436</color>
   <color name="com_appboy_newsfeed_swipe_refresh_color_4">#ffffff</color>
 
+  <color name="com_appboy_content_card_empty_text_color">#3F3F3F</color>
+  <color name="com_appboy_content_card_background_border">#50CCCCCC</color>
+  <color name="com_appboy_content_card_background_shadow">#30CCCCCC</color>
+  <color name="com_appboy_content_card_background">@android:color/white</color>
+
   <!-- See https://developer.android.com/reference/android/support/v4/widget/SwipeRefreshLayout.html#setColorSchemeResources(int...)
   for where these get used-->
   <color name="com_appboy_content_cards_swipe_refresh_color_1">#f33e3e</color>

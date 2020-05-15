@@ -84,8 +84,10 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    *                                 will not occur. Each class should be retrieved via {@link Activity#getClass()}.
    *                                 If null, an empty set is used instead.
    */
-  public AppboyLifecycleCallbackListener(boolean sessionHandlingEnabled, boolean registerInAppMessageManager,
-                                         @Nullable Set<Class> inAppMessagingRegistrationBlacklist, @Nullable Set<Class> sessionHandlingBlacklist) {
+  public AppboyLifecycleCallbackListener(boolean sessionHandlingEnabled,
+                                         boolean registerInAppMessageManager,
+                                         @Nullable Set<Class> inAppMessagingRegistrationBlacklist,
+                                         @Nullable Set<Class> sessionHandlingBlacklist) {
     mRegisterInAppMessageManager = registerInAppMessageManager;
     mSessionHandlingEnabled = sessionHandlingEnabled;
     mInAppMessagingRegistrationBlacklist = inAppMessagingRegistrationBlacklist != null ? inAppMessagingRegistrationBlacklist : Collections.<Class>emptySet();
@@ -112,45 +114,50 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   }
 
   @Override
-  public void onActivityStarted(Activity activity) {
+  public void onActivityStarted(@NonNull Activity activity) {
     if (mSessionHandlingEnabled && shouldHandleLifecycleMethodsInActivity(activity, true)) {
+      AppboyLogger.v(TAG, "Automatically calling lifecycle method: openSession");
       Appboy.getInstance(activity.getApplicationContext()).openSession(activity);
     }
   }
 
   @Override
-  public void onActivityStopped(Activity activity) {
+  public void onActivityStopped(@NonNull Activity activity) {
     if (mSessionHandlingEnabled && shouldHandleLifecycleMethodsInActivity(activity, true)) {
+      AppboyLogger.v(TAG, "Automatically calling lifecycle method: closeSession");
       Appboy.getInstance(activity.getApplicationContext()).closeSession(activity);
     }
   }
 
   @Override
-  public void onActivityResumed(Activity activity) {
+  public void onActivityResumed(@NonNull Activity activity) {
     if (mRegisterInAppMessageManager && shouldHandleLifecycleMethodsInActivity(activity, false)) {
+      AppboyLogger.v(TAG, "Automatically calling lifecycle method: registerInAppMessageManager");
       AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
     }
   }
 
   @Override
-  public void onActivityPaused(Activity activity) {
+  public void onActivityPaused(@NonNull Activity activity) {
     if (mRegisterInAppMessageManager && shouldHandleLifecycleMethodsInActivity(activity, false)) {
+      AppboyLogger.v(TAG, "Automatically calling lifecycle method: unregisterInAppMessageManager");
       AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
     }
   }
 
   @Override
-  public void onActivityCreated(Activity activity, Bundle bundle) {
+  public void onActivityCreated(@NonNull Activity activity, Bundle bundle) {
     if (mRegisterInAppMessageManager && shouldHandleLifecycleMethodsInActivity(activity, false)) {
+      AppboyLogger.v(TAG, "Automatically calling lifecycle method: ensureSubscribedToInAppMessageEvents");
       AppboyInAppMessageManager.getInstance().ensureSubscribedToInAppMessageEvents(activity.getApplicationContext());
     }
   }
 
   @Override
-  public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {}
+  public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {}
 
   @Override
-  public void onActivityDestroyed(Activity activity) {}
+  public void onActivityDestroyed(@NonNull Activity activity) {}
 
   /**
    * Determines if this {@link Activity} should be ignored for the purposes of session tracking or in-app message registration.

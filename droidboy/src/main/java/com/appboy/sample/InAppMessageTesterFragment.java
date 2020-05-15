@@ -1,9 +1,12 @@
 package com.appboy.sample;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
@@ -26,7 +28,10 @@ import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
+import com.appboy.models.IInAppMessageWithImage;
+import com.appboy.models.IInAppMessageZippedAssetHtml;
 import com.appboy.models.InAppMessageFull;
+import com.appboy.models.InAppMessageHtml;
 import com.appboy.models.InAppMessageHtmlFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
@@ -44,12 +49,42 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class InAppMessageTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
   protected static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageTesterFragment.class);
 
   private enum HtmlMessageType {
-    NO_JS, INLINE_JS, EXTERNAL_JS, STAR_WARS, YOUTUBE, BRIDGE_TESTER, SLOW_LOADING
+    NO_JS("html_inapp_message_body_no_js.html",
+        "https://appboy-staging-dashboard-uploads.s3.amazonaws.com/zip_uploads/files/585c1776bf5cea3cbe1b36b2/124fae83d6ba4023d4ede28e9177980e6373747c/original.zip?1482430326"),
+    INLINE_JS("html_inapp_message_body_inline_js.html", null),
+    EXTERNAL_JS("html_inapp_message_body_external_js.html",
+        "https://appboy-staging-dashboard-uploads.s3.amazonaws.com/zip_uploads/files/585c18c3bf5cea3c861b36ba/b0c7e536230b34ef800c8e0ef0747eaac53545a5/original.zip?1482430659"),
+    STAR_WARS("html_inapp_message_body_star_wars.html", null),
+    YOUTUBE("html_inapp_message_body_youtube_iframe.html", null),
+    BRIDGE_TESTER("html_in_app_message_bridge_tester.html",
+        "https://appboy-images.com/HTML_ZIP_STOPWATCH.zip"),
+    SLOW_LOADING("html_inapp_message_delayed_open.html", null),
+    DARK_MODE("html_inapp_message_dark_mode.html", null),
+    UNIFIED_HTML_BOOTSTRAP_ALBUM("html_in_app_message_unified_bootstrap_album.html", null);
+
+    private final String mFileName;
+    private final String mZipUri;
+
+    HtmlMessageType(String filename, String zipUri) {
+      mFileName = filename;
+      mZipUri = zipUri;
+    }
+
+    @NonNull
+    public String getFileName() {
+      return mFileName;
+    }
+
+    @Nullable
+    public String getZippedAssetUrl() {
+      return mZipUri;
+    }
   }
 
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
@@ -76,7 +111,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private static final Map<Integer, Integer> sSpinnerOptionMap;
 
   static {
-    Map<Integer, Integer> spinnerOptionMap = new HashMap<Integer, Integer>();
+    Map<Integer, Integer> spinnerOptionMap = new HashMap<>();
     spinnerOptionMap.put(R.id.inapp_set_message_type_spinner, R.array.inapp_message_type_options);
     spinnerOptionMap.put(R.id.inapp_click_action_spinner, R.array.inapp_click_action_options);
     spinnerOptionMap.put(R.id.inapp_dismiss_type_spinner, R.array.inapp_dismiss_type_options);
@@ -132,13 +167,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private String mAnimateIn;
   private String mAnimateOut;
   private String mUseWebview;
-  private String mHtmlBodyFromAssets;
-  private String mHtmlBodyFromAssetsInlineJs;
-  private String mHtmlBodyFromAssetsExternalJs;
-  private String mHtmlBodyFromAssetsStarWars;
-  private String mHtmlBodyFromAssetsYoutube;
-  private String mHtmlBodyFromBridgeTester;
-  private String mHtmlBodyFromSlowLoading;
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -149,80 +177,65 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
 
     CheckBox customInAppMessageViewCheckBox = view.findViewById(R.id.custom_inappmessage_view_factory_checkbox);
-    customInAppMessageViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-          AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(new CustomInAppMessageViewFactory());
-        } else {
-          AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
-        }
-        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
+    customInAppMessageViewCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(new CustomInAppMessageViewFactory());
+      } else {
+        AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
       }
+      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
     });
-    boolean usingCustomInAppMessageView = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
+    boolean usingCustomInAppMessageView = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
     customInAppMessageViewCheckBox.setChecked(usingCustomInAppMessageView);
 
     CheckBox customInAppMessageManagerListenerCheckBox = view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox);
-    customInAppMessageManagerListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-          AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(getActivity()));
-        } else {
-          AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
-        }
-        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
+    customInAppMessageManagerListenerCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(getActivity()));
+      } else {
+        AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
       }
+      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
     });
-    boolean usingCustomInAppMessageManagerListener = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
+    boolean usingCustomInAppMessageManagerListener = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
     customInAppMessageManagerListenerCheckBox.setChecked(usingCustomInAppMessageManagerListener);
 
     CheckBox customAppboyNavigatorCheckBox = view.findViewById(R.id.custom_appboy_navigator_checkbox);
-    customAppboyNavigatorCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-          AppboyNavigator.setAppboyNavigator(new CustomAppboyNavigator());
-        } else {
-          AppboyNavigator.setAppboyNavigator(null);
-        }
-        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
+    customAppboyNavigatorCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyNavigator.setAppboyNavigator(new CustomAppboyNavigator());
+      } else {
+        AppboyNavigator.setAppboyNavigator(null);
       }
+      getSettingsPreferences().edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
     });
-    boolean usingCustomAppboyNavigator = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
+    boolean usingCustomAppboyNavigator = getSettingsPreferences().getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
     customAppboyNavigatorCheckBox.setChecked(usingCustomAppboyNavigator);
 
     CheckBox maxSizeCheckBox = view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox);
-    maxSizeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-          AppboyInAppMessageParams.setGraphicModalMaxHeightDp(420);
-          AppboyInAppMessageParams.setGraphicModalMaxWidthDp(320);
-        } else {
-          AppboyInAppMessageParams.setGraphicModalMaxHeightDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
-          AppboyInAppMessageParams.setGraphicModalMaxWidthDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
-        }
-        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, isChecked).apply();
+    maxSizeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyInAppMessageParams.setGraphicModalMaxHeightDp(420);
+        AppboyInAppMessageParams.setGraphicModalMaxWidthDp(320);
+      } else {
+        AppboyInAppMessageParams.setGraphicModalMaxHeightDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
+        AppboyInAppMessageParams.setGraphicModalMaxWidthDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
       }
+      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, isChecked).apply();
     });
-    boolean maxSizedChecked = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, false);
+    boolean maxSizedChecked = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, false);
     maxSizeCheckBox.setChecked(maxSizedChecked);
 
     CheckBox imageRadiusCheckBox = view.findViewById(R.id.custom_appboy_image_radius_checkbox);
-    imageRadiusCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-          AppboyInAppMessageParams.setModalizedImageRadiusDp(0);
-        } else {
-          AppboyInAppMessageParams.setModalizedImageRadiusDp(AppboyInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
-        }
-        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, isChecked).apply();
+    imageRadiusCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyInAppMessageParams.setModalizedImageRadiusDp(0);
+      } else {
+        AppboyInAppMessageParams.setModalizedImageRadiusDp(AppboyInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
       }
+      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, isChecked).apply();
     });
-    boolean customRadiusChecked = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, false);
+    boolean customRadiusChecked = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, false);
     imageRadiusCheckBox.setChecked(customRadiusChecked);
 
     CheckBox backButtonDismissalCheckBox = view.findViewById(R.id.disable_back_button_dismiss_behavior);
@@ -232,14 +245,14 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       } else {
         AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(true);
       }
-      getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(DISABLE_BACK_BUTTON_DISMISSAL, isChecked).apply();
+      getSettingsPreferences().edit().putBoolean(DISABLE_BACK_BUTTON_DISMISSAL, isChecked).apply();
     });
-    boolean customDisableBackButtonChecked = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(DISABLE_BACK_BUTTON_DISMISSAL, false);
+    boolean customDisableBackButtonChecked = getSettingsPreferences().getBoolean(DISABLE_BACK_BUTTON_DISMISSAL, false);
     backButtonDismissalCheckBox.setChecked(customDisableBackButtonChecked);
 
     Button createAndAddInAppMessageButton = view.findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(view1 -> {
-      if (getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
+      if (getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false)) {
         addInAppMessage(new CustomInAppMessage());
       } else {
         switch (mMessageType) {
@@ -283,6 +296,12 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
           case "html_full_slow_loading":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.SLOW_LOADING);
             break;
+          case "html_full_unified_bootstrap":
+            addInAppMessage(new InAppMessageHtml(), HtmlMessageType.UNIFIED_HTML_BOOTSTRAP_ALBUM);
+            break;
+          case "html_full_dark_mode":
+            addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.DARK_MODE);
+            break;
           case "modal_dark_theme":
             final String darkModeJson = getStringFromAssets(getContext(), "modal_inapp_message_with_dark_theme.json");
             addInAppMessageFromString(darkModeJson);
@@ -295,88 +314,68 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       }
     });
     CheckBox customInAppMessageAnimationCheckBox = view.findViewById(R.id.custom_appboy_animation_checkbox);
-    customInAppMessageAnimationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-          AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(new CustomInAppMessageAnimationFactory());
-        } else {
-          AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
-        }
-        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
+    customInAppMessageAnimationCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(new CustomInAppMessageAnimationFactory());
+      } else {
+        AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
       }
+      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
     });
-    boolean usingCustomInAppAnimation = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
+    boolean usingCustomInAppAnimation = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
     customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
 
     CheckBox customHtmlInAppMessageActionListenerCheckBox = view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
-    customHtmlInAppMessageActionListenerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(getContext()));
-        } else {
-          AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
-        }
-        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
+    customHtmlInAppMessageActionListenerCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(getContext()));
+      } else {
+        AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
       }
+      getSettingsPreferences().edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
     });
-    boolean usingCustomHtmlInAppActionListener = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
+    boolean usingCustomHtmlInAppActionListener = getSettingsPreferences().getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
     customHtmlInAppMessageActionListenerCheckBox.setChecked(usingCustomHtmlInAppActionListener);
 
     Button displayNextInAppMessageButton = view.findViewById(R.id.display_next_inappmessage_button);
-    displayNextInAppMessageButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage();
-      }
-    });
+    displayNextInAppMessageButton.setOnClickListener(v -> AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage());
 
     Button hideCurrentInAppMessageButton = view.findViewById(R.id.hide_current_inappmessage_button);
-    hideCurrentInAppMessageButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false);
-      }
-    });
+    hideCurrentInAppMessageButton.setOnClickListener(v -> AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false));
     return view;
   }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    mHtmlBodyFromAssets = readHtmlBodyFromAssets(HtmlMessageType.NO_JS);
-    mHtmlBodyFromAssetsInlineJs = readHtmlBodyFromAssets(HtmlMessageType.INLINE_JS);
-    mHtmlBodyFromAssetsExternalJs = readHtmlBodyFromAssets(HtmlMessageType.EXTERNAL_JS);
-    mHtmlBodyFromAssetsStarWars = readHtmlBodyFromAssets(HtmlMessageType.STAR_WARS);
-    mHtmlBodyFromBridgeTester = readHtmlBodyFromAssets(HtmlMessageType.BRIDGE_TESTER);
-    mHtmlBodyFromAssetsYoutube = readHtmlBodyFromAssets(HtmlMessageType.YOUTUBE);
-    mHtmlBodyFromSlowLoading = readHtmlBodyFromAssets(HtmlMessageType.SLOW_LOADING);
   }
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
   private void addInAppMessageImmersive(IInAppMessageImmersive inAppMessage) {
     if (inAppMessage instanceof InAppMessageModal) {
-      inAppMessage.setMessage("Welcome to Braze! Braze is Marketing Automation for Apps!");
-      if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
-        inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_1000h));
+      InAppMessageModal inAppMessageModal = (InAppMessageModal) inAppMessage;
+
+      inAppMessageModal.setMessage("Welcome to Braze! Braze is Marketing Automation for Apps!");
+      if (inAppMessageModal.getImageStyle().equals(ImageStyle.GRAPHIC)) {
+        inAppMessageModal.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_1000h));
       } else {
-        inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1160w_400h));
+        inAppMessageModal.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1160w_400h));
       }
     } else if (inAppMessage instanceof InAppMessageFull) {
-      inAppMessage.setMessage("Welcome to Braze! Braze is Marketing Automation for Apps. This is an example of a full in-app message.");
-      if (inAppMessage.getImageStyle().equals(ImageStyle.GRAPHIC)) {
-        if (inAppMessage.getOrientation().equals(Orientation.LANDSCAPE)) {
-          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1600w_1000h));
+      InAppMessageFull inAppMessageFull = (InAppMessageFull) inAppMessage;
+
+      inAppMessageFull.setMessage("Welcome to Braze! Braze is Marketing Automation for Apps. This is an example of a full in-app message.");
+      if (inAppMessageFull.getImageStyle().equals(ImageStyle.GRAPHIC)) {
+        if (inAppMessageFull.getOrientation().equals(Orientation.LANDSCAPE)) {
+          inAppMessageFull.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1600w_1000h));
         } else {
-          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_1600h));
+          inAppMessageFull.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_1600h));
         }
       } else {
-        if (inAppMessage.getOrientation().equals(Orientation.LANDSCAPE)) {
-          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1600w_500h));
+        if (inAppMessageFull.getOrientation().equals(Orientation.LANDSCAPE)) {
+          inAppMessageFull.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1600w_500h));
         } else {
-          inAppMessage.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_800h));
+          inAppMessageFull.setRemoteImageUrl(getResources().getString(R.string.appboy_image_url_1000w_800h));
         }
       }
     }
@@ -417,34 +416,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     inAppMessage.setIcon("\uf091");
   }
 
-  private void addInAppMessageHtmlFull(IInAppMessageHtml inAppMessage, HtmlMessageType jsType) {
-    switch (jsType) {
-      case NO_JS:
-        inAppMessage.setMessage(mHtmlBodyFromAssets);
-        inAppMessage.setAssetsZipRemoteUrl(getString(R.string.html_assets_no_js_remote_url));
-        break;
-      case INLINE_JS:
-        inAppMessage.setMessage(mHtmlBodyFromAssetsInlineJs);
-        break;
-      case EXTERNAL_JS:
-        inAppMessage.setMessage(mHtmlBodyFromAssetsExternalJs);
-        inAppMessage.setAssetsZipRemoteUrl(getString(R.string.html_assets_external_js_remote_url));
-        break;
-      case STAR_WARS:
-        inAppMessage.setMessage(mHtmlBodyFromAssetsStarWars);
-        break;
-      case YOUTUBE:
-        inAppMessage.setMessage(mHtmlBodyFromAssetsYoutube);
-        break;
-      case BRIDGE_TESTER:
-        inAppMessage.setMessage(mHtmlBodyFromBridgeTester);
-        inAppMessage.setAssetsZipRemoteUrl("https://appboy-images.com/HTML_ZIP_STOPWATCH.zip");
-        break;
-      case SLOW_LOADING:
-        inAppMessage.setMessage(mHtmlBodyFromSlowLoading);
-        break;
-      default:
-        break;
+  private void addInAppMessageHtml(IInAppMessageHtml inAppMessage, HtmlMessageType htmlMessageType) {
+    inAppMessage.setMessage(getStringFromAssets(getContext(), htmlMessageType.getFileName()));
+    if (htmlMessageType.getZippedAssetUrl() != null && inAppMessage instanceof IInAppMessageZippedAssetHtml) {
+      ((IInAppMessageZippedAssetHtml) inAppMessage).setAssetsZipRemoteUrl(htmlMessageType.getZippedAssetUrl());
     }
   }
 
@@ -455,14 +430,21 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private void addInAppMessage(IInAppMessage inAppMessage, HtmlMessageType messageType) {
     // set orientation early to help determine which default image to use
     setOrientation(inAppMessage);
-    if (inAppMessage instanceof IInAppMessageImmersive) {
-      addInAppMessageImmersive((IInAppMessageImmersive) inAppMessage);
-    } else if (inAppMessage instanceof InAppMessageSlideup) {
-      addInAppMessageSlideup((InAppMessageSlideup) inAppMessage);
-    } else if (inAppMessage instanceof InAppMessageHtmlFull) {
-      addInAppMessageHtmlFull((InAppMessageHtmlFull) inAppMessage, messageType);
-    } else if (inAppMessage instanceof IInAppMessage) {
-      addInAppMessageCustom(inAppMessage);
+    switch (inAppMessage.getMessageType()) {
+      case SLIDEUP:
+        addInAppMessageSlideup((InAppMessageSlideup) inAppMessage);
+        break;
+      case MODAL:
+      case FULL:
+        addInAppMessageImmersive((IInAppMessageImmersive) inAppMessage);
+        break;
+      case HTML:
+      case HTML_FULL:
+        addInAppMessageHtml((IInAppMessageHtml) inAppMessage, messageType);
+        break;
+      default:
+        addInAppMessageCustom(inAppMessage);
+        break;
     }
     if (!addClickAction(inAppMessage)) {
       return;
@@ -471,7 +453,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setBackgroundColor(inAppMessage);
     setMessage(inAppMessage);
     setIcon(inAppMessage);
-    setImage(inAppMessage);
+    if (inAppMessage instanceof IInAppMessageWithImage) {
+      setImage((IInAppMessageWithImage) inAppMessage);
+    }
     setMessageTextAlign(inAppMessage);
     setAnimation(inAppMessage);
     setUseWebview(inAppMessage);
@@ -573,7 +557,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
   }
 
-  private void setImage(IInAppMessage inAppMessage) {
+  private void setImage(IInAppMessageWithImage inAppMessage) {
     // set in-app message image url
     if (!SpinnerUtils.spinnerItemNotSet(mImage)) {
       if (mImage.equals(getString(R.string.none))) {
@@ -855,40 +839,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
   }
 
-  /**
-   * @return the html body string from the assets folder or null if the read fails.
-   */
-  private String readHtmlBodyFromAssets(HtmlMessageType jsType) {
-    return readHtmlBodyFromAssetsWithFileName(jsType);
-  }
-
-  private String readHtmlBodyFromAssetsWithFileName(HtmlMessageType jsType) {
-    String filename = "html_inapp_message_body_no_js.html";
-    switch (jsType) {
-      case INLINE_JS:
-        filename = "html_inapp_message_body_inline_js.html";
-        break;
-      case EXTERNAL_JS:
-        filename = "html_inapp_message_body_external_js.html";
-        break;
-      case STAR_WARS:
-        filename = "html_inapp_message_body_star_wars.html";
-        break;
-      case YOUTUBE:
-        filename = "html_inapp_message_body_youtube_iframe.html";
-        break;
-      case BRIDGE_TESTER:
-        filename = "html_in_app_message_bridge_tester.html";
-        break;
-      case SLOW_LOADING:
-        filename = "html_inapp_message_delayed_open.html";
-        break;
-      default:
-        break;
-    }
-    return getStringFromAssets(getContext(), filename);
-  }
-
   private static String getStringFromAssets(Context context, String filename) {
     // Get the text of the html from the assets folder
     try {
@@ -905,5 +855,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
 
     return null;
+  }
+
+  @NonNull
+  private SharedPreferences getSettingsPreferences() {
+    return Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
   }
 }

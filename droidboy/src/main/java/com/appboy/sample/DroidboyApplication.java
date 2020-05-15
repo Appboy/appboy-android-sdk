@@ -35,6 +35,9 @@ public class DroidboyApplication extends Application {
 
     if (BuildConfig.DEBUG) {
       activateStrictMode();
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        WebView.setWebContentsDebuggingEnabled(true);
+      }
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       WebView.setWebContentsDebuggingEnabled(true);

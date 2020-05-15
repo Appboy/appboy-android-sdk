@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     // Create an in-app message as soon as the Activity starts
     InAppMessageFull inAppMessageFull = new InAppMessageFull();
     inAppMessageFull.setImageStyle(ImageStyle.GRAPHIC);
-    inAppMessageFull.setImageUrl(getString(R.string.gif_3_url));
+    inAppMessageFull.setRemoteImageUrl(getString(R.string.gif_3_url));
     inAppMessageFull.setHeader("Glide Sample App");
     inAppMessageFull.setMessage("It's Amazing");
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         InAppMessageModal inAppMessageModal = new InAppMessageModal();
-        inAppMessageModal.setImageUrl(getString(R.string.gif_1_url));
+        inAppMessageModal.setRemoteImageUrl(getString(R.string.gif_1_url));
         inAppMessageModal.setImageStyle(ImageStyle.GRAPHIC);
         inAppMessageModal.setCropType(CropType.CENTER_CROP);
         showInAppMessage(inAppMessageModal);
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         InAppMessageSlideup inAppMessageSlideup = new InAppMessageSlideup();
-        inAppMessageSlideup.setImageUrl(getString(R.string.gif_2_url));
+        inAppMessageSlideup.setRemoteImageUrl(getString(R.string.gif_2_url));
         inAppMessageSlideup.setMessage("This is a slideup with a GIF");
         showInAppMessage(inAppMessageSlideup);
       }

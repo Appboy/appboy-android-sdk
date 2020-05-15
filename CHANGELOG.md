@@ -1,3 +1,64 @@
+## 8.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v8.0.0)
+
+##### ⚠ Breaking
+* Integrators note: most of the changes listed below are on lightly used interfaces that do no affect most clients.
+- Moved `InAppMessageHtmlBase.getAssetsZipRemoteUrl(), InAppMessageHtmlBase.setAssetsZipRemoteUrl()` to `InAppMessageZippedAssetHtmlBase.java`.
+- Moved `AppboyInAppMessageHtmlFullView.APPBOY_BRIDGE_PREFIX` to `AppboyInAppMessageHtmlBaseView.APPBOY_BRIDGE_PREFIX`
+- Renamed `IInAppMessage.getRemoteAssetPathForPrefetch` to `IInAppMessage.getRemoteAssetPathsForPrefetch` and changed signature to List<String>.
+- Renamed `IInAppMessage.setLocalAssetPathForPrefetch` to `IInAppMessage.setLocalAssetPathsForPrefetch` and changed signature to Map<String, String>.
+- Created In-App Message interface `IInAppMessageWithImage` for slideup, modal, and fulls to hold image based methods. These methods have been refactored out of the `IInAppMessage` interface.
+  - These methods are `getImageUrl(), getRemoteImageUrl(), getLocalImageUrl(), getBitmap(), getImageDownloadSuccessful(), setImageUrl(), setLocalImageUrl(), setImageDownloadSuccessful(), setRemoteImageUrl()`, and `setBitmap()`.
+- Content Card backgrounds (in the default UI), now have their colors set via `/android-sdk-ui/src/main/res/drawable-nodpi/com_appboy_content_card_background.xml`.
+- Several Content Cards related style values are now fully decoupled from News Feed values and are enumerated below.
+ - The color `@color/com_appboy_card_background_border` is now `@color/com_appboy_content_card_background_border` for Content Cards.
+ - The color `@color/com_appboy_card_background_shadow` is now `@color/com_appboy_content_card_background_shadow` for Content Cards.
+ - The color `@color/com_appboy_card_background` is now `@color/com_appboy_content_card_background` for Content Cards.
+ - The color used for the text in the empty `AppboyContentCardsFragment`, `@color/com_appboy_title` is now `@color/com_appboy_content_card_empty_text_color`.
+- Several News Feed dimensions values also used in Content Card styles now have Content Card specific values, enumerated below. Note that if these values were overridden in your styles for use in Content Cards, they will have to be updated to the new keys.
+ - The dimension `@dimen/com_appboy_card_background_border_left` is now `@dimen/com_appboy_content_card_background_border_left`.
+ - The dimension `@dimen/com_appboy_card_background_border_right` is now `@dimen/com_appboy_content_card_background_border_right`.
+ - The dimension `@dimen/com_appboy_card_background_border_top` is now `@dimen/com_appboy_content_card_background_border_top`.
+ - The dimension `@dimen/com_appboy_card_background_border_bottom` is now `@dimen/com_appboy_content_card_background_border_bottom`.
+ - The dimension `@dimen/com_appboy_card_background_shadow_bottom` is now `@dimen/com_appboy_content_card_background_shadow_bottom`.
+ - The dimension `@dimen/com_appboy_card_background_corner_radius` is now `@dimen/com_appboy_content_card_background_corner_radius`.
+ - The dimension `@dimen/com_appboy_card_background_shadow_radius` is now `@dimen/com_appboy_content_card_background_shadow_radius`.
+- Removed `AppboyInAppMessageHtmlJavascriptInterface(Context)` in favor of `AppboyInAppMessageHtmlJavascriptInterface(Context, IInAppMessageHtml)`.
+- Removed `IAppboy.logPushDeliveryEvent()` and `AppboyNotificationUtils.logPushDeliveryEvent()`.
+
+##### Added
+- Added support for upcoming HTML In-App Message templates.
+- Added `appboyBridge.logClick(String), appboyBridge.logClick()` and `appboyBridge.getUser().setLanguage()` to the javascript interface for HTML In-App Messages.
+- Added support for dark mode in HTML in-app messages and remote urls opened in `AppboyWebViewActivity` for deeplinks via the `prefers-color-scheme: dark` css style.
+  - The decision to display content in dark mode will be determined at display time based on the device's state.
+- Added support for dark mode in the default Content Cards UI.
+  - This feature is enabled by default. To disable or change, override the values present in `android-sdk-ui/src/main/res/values-night/colors.xml` and `android-sdk-ui/src/main/res/values-night/dimens.xml`.
+- Added `IAppboy.subscribeToSessionUpdates()` which allows for the host app to be notified when a session is started or ended.
+- Added the ability to optionally set a custom list of location providers when obtaining a single location, such as on session start. See `AppboyConfig.Builder.setCustomLocationProviderNames()` for more information.
+  - The following example showcases instructing the SDK to use `LocationManager.GPS_PROVIDER` and `LocationManager.NETWORK_PROVIDER`.
+    ```
+      new AppboyConfig.Builder()
+          .setCustomLocationProviderNames(EnumSet.of(LocationProviderName.GPS, LocationProviderName.NETWORK));
+    ```
+  - In xml:
+    ```
+      <string-array translatable="false" name="com_appboy_custom_location_providers_list">
+        <item>GPS</item>
+        <item>NETWORK</item>
+      </string-array>
+    ```
+  - By default, only the passive and network providers are used when obtaining a single location from the system.
+  - This change does not affect Braze Geofences.
+
+##### Fixed
+- Fixed an issue where the pending intent flags on a push story only allowed for the main deeplink to be fired once.
+- Fixed behavior of the `com.appboy.ui.AppboyContentCardsFragment` to not double the margin of the first card in the feed from the top of the feed.
+- Fixed an issue where calling `wipeData()` or `disableSdk()` could result in not being able to set runtime configuration afterwards.
+
+##### Changed
+- Deprecated `com.appboy.models.IInAppMessageWithImage#setImageUrl()` in favor of `com.appboy.models.IInAppMessageWithImage#setRemoteImageUrl(String)`.
+
 ## 7.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v7.0.0)
@@ -68,7 +129,6 @@
 
 ##### ⚠ Breaking
 - Added `IInAppMessageView.hasAppliedWindowInsets()`.
-- Removed `AppboyInAppMessageHtmlJavascriptInterface(Context)` in favor of `AppboyInAppMessageHtmlJavascriptInterface(Context, IInAppMessageHtml)`.
 
 ##### Added
 - Added `appboyBridge.logClick()` and `appboyBridge.getUser().setLanguage()` to the javascript interface for HTML In-App Messages.

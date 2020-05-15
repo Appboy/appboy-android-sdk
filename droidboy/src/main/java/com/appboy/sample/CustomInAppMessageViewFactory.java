@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.appboy.models.IInAppMessage;
+import com.appboy.models.IInAppMessageWithImage;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 
 public class CustomInAppMessageViewFactory implements IInAppMessageViewFactory {
@@ -17,7 +18,9 @@ public class CustomInAppMessageViewFactory implements IInAppMessageViewFactory {
     inAppMessageView.setMessage(inAppMessage.getMessage());
     inAppMessageView.setMessageTextColor(inAppMessage.getMessageTextColor());
     inAppMessageView.setMessageIcon(inAppMessage.getIcon(), inAppMessage.getIconBackgroundColor(), inAppMessage.getIconColor());
-    inAppMessageView.setMessageImage(inAppMessage.getBitmap());
+    if (inAppMessage instanceof IInAppMessageWithImage) {
+      inAppMessageView.setMessageImage(((IInAppMessageWithImage) inAppMessage).getBitmap());
+    }
     inAppMessageView.resetMessageMargins();
 
     return inAppMessageView;

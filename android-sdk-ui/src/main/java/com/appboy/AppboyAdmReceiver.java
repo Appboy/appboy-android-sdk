@@ -105,9 +105,6 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         admExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
       }
 
-      // Log the push delivery event
-      AppboyNotificationUtils.logPushDeliveryEvent(context, admExtras);
-
       // Parsing the Braze data extras (data push).
       Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);
       admExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);

@@ -1,0 +1,7 @@
+<resources>
+  <string translatable="false" name="app_name">Google Tag Manager Sample</string>
+  <string translatable="false" name="set_user_id_button_prompt">Set User Id and request data flush</string>
+  <string translatable="false" name="set_user_id_edit_text_hint">Set a user id here</string>
+  <string name="log_event">Log Event</string>
+  <string name="log_user_property">Log User Property</string>
+</resources>

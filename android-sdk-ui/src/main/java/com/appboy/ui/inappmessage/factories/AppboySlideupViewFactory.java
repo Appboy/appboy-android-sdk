@@ -30,7 +30,7 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     Context applicationContext = activity.getApplicationContext();
     view.applyInAppMessageParameters(inAppMessage);
 
-    String imageUrl = view.getAppropriateImageUrl(inAppMessage);
+    String imageUrl = view.getAppropriateImageUrl(inAppMessageSlideup);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
       appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_SLIDEUP);
@@ -42,8 +42,8 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     view.setMessageTextAlign(inAppMessageSlideup.getMessageTextAlign());
     view.setMessageIcon(inAppMessageSlideup.getIcon(), inAppMessageSlideup.getIconColor(), inAppMessageSlideup.getIconBackgroundColor());
     view.setMessageChevron(inAppMessageSlideup.getChevronColor(), inAppMessageSlideup.getClickAction());
-    view.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
-
+    view.resetMessageMargins(inAppMessageSlideup.getImageDownloadSuccessful());
+    view.resetMessageMargins(inAppMessageSlideup.getImageDownloadSuccessful());
     return view;
   }
 

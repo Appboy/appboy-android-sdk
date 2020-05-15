@@ -554,7 +554,7 @@
   <style name="Appboy.ContentCardsDisplay.Empty">
     <item name="android:lineSpacingExtra">1.5dp</item>
     <item name="android:text">@string/com_appboy_feed_empty</item>
-    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textColor">@color/com_appboy_content_card_empty_text_color</item>
     <item name="android:textSize">18.0sp</item>
     <item name="android:gravity">center</item>
     <item name="android:layout_height">match_parent</item>

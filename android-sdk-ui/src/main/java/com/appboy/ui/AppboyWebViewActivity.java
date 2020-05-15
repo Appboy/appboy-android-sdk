@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.activities.AppboyBaseActivity;
+import com.appboy.ui.support.ViewUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class AppboyWebViewActivity extends AppboyBaseActivity {
@@ -53,6 +55,9 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     webSettings.setUseWideViewPort(true);
     webSettings.setLoadWithOverviewMode(true);
     webSettings.setDomStorageEnabled(true);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ViewUtils.isDeviceInNightMode(this.getApplicationContext())) {
+      webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
+    }
 
     // Instruct webview to be as large as its parent view.
     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);

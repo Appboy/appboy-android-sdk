@@ -27,7 +27,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageModalView view = getAppropriateModalView(activity, isGraphic);
     view.applyInAppMessageParameters(applicationContext, inAppMessageModal);
 
-    String imageUrl = view.getAppropriateImageUrl(inAppMessage);
+    String imageUrl = view.getAppropriateImageUrl(inAppMessageModal);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
       appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_MODAL);
@@ -47,7 +47,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
       view.setMessageIcon(inAppMessage.getIcon(), inAppMessage.getIconColor(), inAppMessage.getIconBackgroundColor());
       view.setMessageHeaderTextAlignment(inAppMessageModal.getHeaderTextAlign());
       view.setMessageTextAlign(inAppMessageModal.getMessageTextAlign());
-      view.resetMessageMargins(inAppMessage.getImageDownloadSuccessful());
+      view.resetMessageMargins(inAppMessageModal.getImageDownloadSuccessful());
       ((AppboyInAppMessageImageView) view.getMessageImageView()).setAspectRatio(NON_GRAPHIC_ASPECT_RATIO);
     }
     view.setLargerCloseButtonClickArea(view.getMessageCloseButtonView());

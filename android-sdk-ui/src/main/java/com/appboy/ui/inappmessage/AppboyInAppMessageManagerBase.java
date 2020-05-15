@@ -8,6 +8,7 @@ import com.appboy.models.IInAppMessage;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.factories.AppboyFullViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyHtmlFullViewFactory;
+import com.appboy.ui.inappmessage.factories.AppboyHtmlViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyInAppMessageAnimationFactory;
 import com.appboy.ui.inappmessage.factories.AppboyInAppMessageViewWrapperFactory;
 import com.appboy.ui.inappmessage.factories.AppboyModalViewFactory;
@@ -38,6 +39,7 @@ public class AppboyInAppMessageManagerBase {
   private final IInAppMessageViewFactory mInAppMessageModalViewFactory = new AppboyModalViewFactory();
   private final IInAppMessageViewFactory mInAppMessageFullViewFactory = new AppboyFullViewFactory();
   private final IInAppMessageViewFactory mInAppMessageHtmlFullViewFactory = new AppboyHtmlFullViewFactory(mInAppMessageWebViewClientListener);
+  private final IInAppMessageViewFactory mInAppMessageHtmlViewFactory = new AppboyHtmlViewFactory(mInAppMessageWebViewClientListener);
 
   // animation factory
   private final IInAppMessageAnimationFactory mInAppMessageAnimationFactory = new AppboyInAppMessageAnimationFactory();
@@ -100,7 +102,10 @@ public class AppboyInAppMessageManagerBase {
         return mInAppMessageFullViewFactory;
       case HTML_FULL:
         return mInAppMessageHtmlFullViewFactory;
+      case HTML:
+        return mInAppMessageHtmlViewFactory;
       default:
+        AppboyLogger.w(TAG, "Failed to find view factory for in-app message with type: " + inAppMessage.getMessageType());
         return null;
     }
   }

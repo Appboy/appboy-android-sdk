@@ -113,12 +113,7 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
           if (!fcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
             AppboyLogger.d(TAG, "Received the initial push story notification.");
             fcmExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
-            // Log the push delivery event for the initial push story notification
-            AppboyNotificationUtils.logPushDeliveryEvent(context, fcmExtras);
           }
-        } else {
-          // Log the push delivery event for regular foreground push
-          AppboyNotificationUtils.logPushDeliveryEvent(context, fcmExtras);
         }
 
         Notification notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, fcmExtras, appboyExtras);
@@ -141,8 +136,6 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
         return true;
       } else {
         AppboyLogger.d(TAG, "Received data push");
-        // Log the push delivery event
-        AppboyNotificationUtils.logPushDeliveryEvent(context, fcmExtras);
         AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, fcmExtras);
         AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, fcmExtras);
         return false;

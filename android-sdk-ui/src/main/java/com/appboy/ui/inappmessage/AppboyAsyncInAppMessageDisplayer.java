@@ -10,9 +10,10 @@ import com.appboy.IAppboyImageLoader;
 import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.inappmessage.InAppMessageFailureType;
 import com.appboy.models.IInAppMessage;
+import com.appboy.models.IInAppMessageWithImage;
+import com.appboy.models.IInAppMessageZippedAssetHtml;
 import com.appboy.models.InAppMessageFull;
-import com.appboy.models.InAppMessageHtmlBase;
-import com.appboy.models.InAppMessageHtmlFull;
+import com.appboy.models.InAppMessageHtml;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.support.AppboyImageUtils;
@@ -34,23 +35,28 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         return inAppMessage;
       }
       AppboyLogger.d(TAG, "Starting asynchronous in-app message preparation.");
-      if (inAppMessage instanceof InAppMessageHtmlFull) {
-        // Note, this will clear the in-app message cache, which is OK because no other in-app message is currently displaying
-        // and AsyncTasks are are executed on a single thread, which guarantees no other in-app message is
-        // relying on the cache dir right now.
-        // See http://developer.android.com/reference/android/os/AsyncTask.html#execute(Params...)
-        if (!prepareInAppMessageWithHtml(inAppMessage)) {
-          AppboyLogger.w(TAG, "Logging html in-app message zip asset download failure");
-          inAppMessage.logDisplayFailure(InAppMessageFailureType.ZIP_ASSET_DOWNLOAD);
-          return null;
-        }
-      } else {
-        boolean imageDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
-        if (!imageDownloadSucceeded) {
-          AppboyLogger.w(TAG, "Logging in-app message image download failure");
-          inAppMessage.logDisplayFailure(InAppMessageFailureType.IMAGE_DOWNLOAD);
-          return null;
-        }
+      switch (inAppMessage.getMessageType()) {
+        case HTML_FULL:
+          // Note, this will clear the in-app message cache, which is OK because no other in-app message is currently displaying
+          // and AsyncTasks are are executed on a single thread, which guarantees no other in-app message is
+          // relying on the cache dir right now.
+          // See http://developer.android.com/reference/android/os/AsyncTask.html#execute(Params...)
+          if (!prepareInAppMessageWithZippedAssetHtml((IInAppMessageZippedAssetHtml) inAppMessage)) {
+            AppboyLogger.w(TAG, "Logging html in-app message zip asset download failure");
+            inAppMessage.logDisplayFailure(InAppMessageFailureType.ZIP_ASSET_DOWNLOAD);
+            return null;
+          }
+          break;
+        case HTML:
+          prepareInAppMessageWithHtml((InAppMessageHtml) inAppMessage);
+          break;
+        default:
+          boolean imageDownloadSucceeded = prepareInAppMessageWithBitmapDownload(inAppMessage);
+          if (!imageDownloadSucceeded) {
+            AppboyLogger.w(TAG, "Logging in-app message image download failure");
+            inAppMessage.logDisplayFailure(InAppMessageFailureType.IMAGE_DOWNLOAD);
+            return null;
+          }
       }
       return inAppMessage;
     } catch (Exception e) {
@@ -85,11 +91,9 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
    * Prepares the in-app message for displaying Html content.
    *
    * @param inAppMessage the in-app message to be prepared
-   *
-   * @return whether or not asset download succeeded
+   * @return The success of the asset download.
    */
-  boolean prepareInAppMessageWithHtml(IInAppMessage inAppMessage) {
-    InAppMessageHtmlBase inAppMessageHtml = (InAppMessageHtmlBase) inAppMessage;
+  boolean prepareInAppMessageWithZippedAssetHtml(IInAppMessageZippedAssetHtml inAppMessageHtml) {
     // If the local assets exist already, return right away.
     String localAssets = inAppMessageHtml.getLocalAssetsDirectoryUrl();
     if (!StringUtils.isNullOrBlank(localAssets) && new File(localAssets).exists()) {
@@ -120,25 +124,32 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
    * Prepares the in-app message for displaying images using a bitmap downloader. The in-app
    * message must have a valid image url.
    *
-   * @param inAppMessage the in-app message to be prepared
+   * @param inAppMessageWithImage the in-app message to be prepared
    * @return whether or not the asset download succeeded
    */
   boolean prepareInAppMessageWithBitmapDownload(IInAppMessage inAppMessage) {
-    if (inAppMessage.getBitmap() != null) {
+    if (!(inAppMessage instanceof IInAppMessageWithImage)) {
+      AppboyLogger.d(TAG, "Cannot prepare non IInAppMessageWithImage object with bitmap download.");
+      return false;
+    }
+
+    IInAppMessageWithImage inAppMessageWithImage = (IInAppMessageWithImage) inAppMessage;
+    
+    if (inAppMessageWithImage.getBitmap() != null) {
       AppboyLogger.i(TAG, "In-app message already contains image bitmap. Not downloading image from URL.");
-      inAppMessage.setImageDownloadSuccessful(true);
+      inAppMessageWithImage.setImageDownloadSuccessful(true);
       return true;
     }
     // If the image already has a local Uri, attempt to load it
-    String localImageUrl = inAppMessage.getLocalImageUrl();
+    String localImageUrl = inAppMessageWithImage.getLocalImageUrl();
     if (!StringUtils.isNullOrBlank(localImageUrl) && new File(localImageUrl).exists()) {
       AppboyLogger.i(TAG, "In-app message has local image url.");
-      inAppMessage.setBitmap(AppboyImageUtils.getBitmap(Uri.parse(localImageUrl)));
+      inAppMessageWithImage.setBitmap(AppboyImageUtils.getBitmap(Uri.parse(localImageUrl)));
     }
     // If loading fails or no local image is specified, download from the remote url.
     // Return if no remote uri is specified.
-    if (inAppMessage.getBitmap() == null) {
-      String remoteImageUrl = inAppMessage.getRemoteImageUrl();
+    if (inAppMessageWithImage.getBitmap() == null) {
+      String remoteImageUrl = inAppMessageWithImage.getRemoteImageUrl();
       if (!StringUtils.isNullOrBlank(remoteImageUrl)) {
         AppboyLogger.i(TAG, "In-app message has remote image url. Downloading image at url: " + remoteImageUrl);
 
@@ -146,28 +157,43 @@ public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, I
         // By default, the image won't be sampled
         AppboyViewBounds viewBounds = AppboyViewBounds.NO_BOUNDS;
 
-        if (inAppMessage instanceof InAppMessageSlideup) {
+        if (inAppMessageWithImage instanceof InAppMessageSlideup) {
           viewBounds = AppboyViewBounds.IN_APP_MESSAGE_SLIDEUP;
-        } else if (inAppMessage instanceof InAppMessageModal) {
+        } else if (inAppMessageWithImage instanceof InAppMessageModal) {
           viewBounds = AppboyViewBounds.IN_APP_MESSAGE_MODAL;
         }
 
         Context applicationContext = AppboyInAppMessageManager.getInstance().getApplicationContext();
         IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-        inAppMessage.setBitmap(appboyImageLoader.getInAppMessageBitmapFromUrl(applicationContext, inAppMessage, remoteImageUrl, viewBounds));
+        inAppMessageWithImage.setBitmap(appboyImageLoader.getInAppMessageBitmapFromUrl(applicationContext, inAppMessage, remoteImageUrl, viewBounds));
       } else {
         AppboyLogger.w(TAG, "In-app message has no remote image url. Not downloading image.");
-        if (inAppMessage instanceof InAppMessageFull) {
+        if (inAppMessageWithImage instanceof InAppMessageFull) {
           AppboyLogger.w(TAG, "In-app message full has no remote image url yet is required to have an image. Failing download.");
           return false;
         }
         return true;
       }
     }
-    if (inAppMessage.getBitmap() != null) {
-      inAppMessage.setImageDownloadSuccessful(true);
+    if (inAppMessageWithImage.getBitmap() != null) {
+      inAppMessageWithImage.setImageDownloadSuccessful(true);
       return true;
     }
     return false;
+  }
+
+  /**
+   * Prepares the in-app message for display by substituting locally cached assets into the message of the {@link InAppMessageHtml}
+   *
+   * @param inAppMessage
+   */
+  void prepareInAppMessageWithHtml(InAppMessageHtml inAppMessage) {
+    if (inAppMessage.getLocalPrefetchedAssetPaths().isEmpty()) {
+      AppboyLogger.d(TAG, "HTML in-app message does not have prefetched assets. Not performing any substitutions.");
+      return;
+    }
+
+    String transformedHtml = WebContentUtils.replacePrefetchedUrlsWithLocalAssets(inAppMessage.getMessage(), inAppMessage.getLocalPrefetchedAssetPaths());
+    inAppMessage.setMessage(transformedHtml);
   }
 }

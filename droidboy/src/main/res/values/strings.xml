@@ -206,8 +206,6 @@
   <string name="youtube_https_link">https://www.youtube.com/watch?v=1PJCQTGbLq4</string>
   <string name="telephone_uri">tel:555555555</string>
   <string name="push_story">story1</string>
-  <string name="html_assets_no_js_remote_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/zip_uploads/files/585c1776bf5cea3cbe1b36b2/124fae83d6ba4023d4ede28e9177980e6373747c/original.zip?1482430326</string>
-  <string name="html_assets_external_js_remote_url">https://appboy-staging-dashboard-uploads.s3.amazonaws.com/zip_uploads/files/585c18c3bf5cea3c861b36ba/b0c7e536230b34ef800c8e0ef0747eaac53545a5/original.zip?1482430659</string>
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
   <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</string>
   <string name="youtube_regex">^(http\\:\\/\\/|https\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/(.+$|)</string>

@@ -920,20 +920,6 @@ public class AppboyNotificationUtils {
     }
   }
 
-  public static void logPushDeliveryEvent(Context context, Bundle pushExtras) {
-    if (pushExtras != null) {
-      // Get the campaign ID
-      String campaignId = pushExtras.getString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
-      if (!StringUtils.isNullOrBlank(campaignId)) {
-        Appboy.getInstance(context).logPushDeliveryEvent(campaignId);
-      } else {
-        AppboyLogger.d(TAG, "Could not log push delivery event due to null or blank campaign id in push extras bundle: " + pushExtras);
-      }
-    } else {
-      AppboyLogger.d(TAG, "Could not log push delivery event due to null push extras bundle.");
-    }
-  }
-
   /**
    * Handles a push story page click. Called by FCM/ADM receiver when an
    * Braze push story click intent is received.

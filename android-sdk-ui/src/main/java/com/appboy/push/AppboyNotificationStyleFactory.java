@@ -219,7 +219,7 @@ public class AppboyNotificationStyleFactory {
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY, useWebView);
     storyClickedIntent.putExtra(Constants.APPBOY_STORY_PAGE_ID, storyPageId);
     storyClickedIntent.putExtra(Constants.APPBOY_CAMPAIGN_ID, campaignId);
-    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), storyClickedIntent, PendingIntent.FLAG_ONE_SHOT);
+    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), storyClickedIntent, 0);
   }
 
   private static PendingIntent createStoryTraversedPendingIntent(Context context, Bundle notificationExtras, int pageIndex) {

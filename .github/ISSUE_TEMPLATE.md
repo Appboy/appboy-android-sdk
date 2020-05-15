@@ -6,7 +6,7 @@ If you are experiencing issues with our product, please consider directing your 
 For other items, like requests for modifications to our SDK or bug reports, please use the following format:
 -->
 
-* [ ] I have checked [Braze's documentation](https://www.braze.com/documentation/Android/) and am still experiencing the issue.
+* [ ] I have checked [Braze's documentation](https://www.braze.com/docs/developer_guide/platform_integration_guides/android/initial_sdk_setup/android_sdk_integration/) and am still experiencing the issue.
 * [ ] I have an ANR related issue and have filled out the "ANR Reporting" section below.
 
 # Standard Reporting

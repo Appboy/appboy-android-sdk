@@ -37,7 +37,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     view.createAppropriateViews(activity, inAppMessageFull, isGraphic);
 
     // Since this image is the width of the screen, the view bounds are uncapped
-    String imageUrl = view.getAppropriateImageUrl(inAppMessage);
+    String imageUrl = view.getAppropriateImageUrl(inAppMessageFull);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
       appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);

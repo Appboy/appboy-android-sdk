@@ -6,4 +6,4 @@ To get the sample working, you will need to create a Firebase project, add a `go
 
 For more information, see our [firebase push][1] documentation.
 
-[1]: https://www.appboy.com/documentation/Android/#firebase-integration
+[1]: https://www.braze.com/docs/developer_guide/platform_integration_guides/android/push_notifications/integration/

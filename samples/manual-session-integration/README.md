@@ -1,10 +1,7 @@
 # Manual Session Integration Sample
 
-This sample app showcases manual session integration, used by apps supporting API 13 and below.
+This sample app showcases manual session integration.
 
-If your app does not need to support API 13 and below, we recommend using [automatic session integration][2].
+Note that in most cases, we recommend using automatic session integration, which is the default in our [docs on session integration][1].
 
-For more information, see our [docs on session integration][1].
-
-[1]: https://www.appboy.com/documentation/Android/#step-5-tracking-user-sessions-in-android
-[2]: https://www.appboy.com/documentation/Android/#activity-lifecycle-callback-integration-api-14
+[1]: https://www.braze.com/docs/developer_guide/platform_integration_guides/android/initial_sdk_setup/android_sdk_integration/#step-4-tracking-user-sessions-in-android

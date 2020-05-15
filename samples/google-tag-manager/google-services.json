@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "170050408521",
+    "firebase_url": "https://tag-manager-sample-c227d.firebaseio.com",
+    "project_id": "tag-manager-sample-c227d",
+    "storage_bucket": "tag-manager-sample-c227d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170050408521:android:8a8dfe7c9b7c0bdc306f98",
+        "android_client_info": {
+          "package_name": "com.appboy.googletagmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170050408521-p492ht9psevabuadfu90039i9qvv5bb3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170050408521-p492ht9psevabuadfu90039i9qvv5bb3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

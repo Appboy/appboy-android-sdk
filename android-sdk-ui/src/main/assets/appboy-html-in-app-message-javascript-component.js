@@ -5,7 +5,7 @@ var appboyBridge = {
   },
   closeMessage: function () { window.location = 'appboy://close'; },
   requestImmediateDataFlush: function () { appboyInternalBridge.requestImmediateDataFlush(); },
-  display: { showFeed: function () {  window.open('appboy://feed'); } },
+  display: { showFeed: function () { window.open('appboy://feed'); } },
   logClick: function(buttonId) {
     if (buttonId != null) {
       appboyInternalBridge.logButtonClick(buttonId);
