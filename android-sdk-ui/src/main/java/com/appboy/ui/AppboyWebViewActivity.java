@@ -1,7 +1,6 @@
 package com.appboy.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -9,12 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.DownloadListener;
+import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.RelativeLayout;
 
 import com.appboy.Constants;
 import com.appboy.enums.Channel;
@@ -41,29 +39,30 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     setContentView(R.layout.com_appboy_webview_activity);
 
     WebView webView = findViewById(R.id.com_appboy_webview_activity_webview);
+    webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
     WebSettings webSettings = webView.getSettings();
-    // JavaScript is enabled by default to support a larger number of web pages. If JavaScript support is not
-    // necessary, then it should be disabled.
-    webSettings.setJavaScriptEnabled(true);
     webSettings.setAllowFileAccess(false);
-    // Plugin support is disabled by default. If plugins, such as flash, are required, change the PluginState.
-    webSettings.setPluginState(WebSettings.PluginState.OFF);
-    webSettings.setDisplayZoomControls(false);
-
     webSettings.setBuiltInZoomControls(true);
+    webSettings.setJavaScriptEnabled(true);
     webSettings.setUseWideViewPort(true);
     webSettings.setLoadWithOverviewMode(true);
+    webSettings.setDisplayZoomControls(false);
     webSettings.setDomStorageEnabled(true);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ViewUtils.isDeviceInNightMode(this.getApplicationContext())) {
       webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
     }
 
-    // Instruct webview to be as large as its parent view.
-    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-    webView.setLayoutParams(layoutParams);
-
     webView.setWebChromeClient(new WebChromeClient() {
+      @Override
+      public boolean onConsoleMessage(ConsoleMessage cm) {
+        AppboyLogger.d(TAG, "Braze WebView Activity log. Line: " + cm.lineNumber()
+            + ". SourceId: " + cm.sourceId()
+            + ". Log Level: " + cm.messageLevel()
+            + ". Message: " + cm.message());
+        return true;
+      }
+
       @Nullable
       @Override
       public Bitmap getDefaultVideoPoster() {
@@ -72,19 +71,6 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
         return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
       }
     });
-
-    webView.setDownloadListener(new DownloadListener() {
-      public void onDownloadStart(String url, String userAgent,
-                                  String contentDisposition, String mimetype,
-                                  long contentLength) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-      }
-    });
-
-    webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-    webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
     webView.setWebViewClient(new WebViewClient() {
       @Override
@@ -95,15 +81,19 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
           // for example, redirects to the play store via a "store://" Uri.
           if (!AppboyFileUtils.REMOTE_SCHEMES.contains(Uri.parse(url).getScheme())) {
             IAction action = ActionFactory.createUriActionFromUrlString(url, getIntent().getExtras(), false, Channel.UNKNOWN);
-            // Instead of using AppboyNavigator, just open directly.
-            action.execute(view.getContext());
+            if (action != null) {
+              // Instead of using AppboyNavigator, just open directly.
+              action.execute(view.getContext());
 
-            // Close the WebView if the action was executed successfully
-            finish();
-            return true;
+              // Close the WebView if the action was executed successfully
+              finish();
+              return true;
+            } else {
+              return false;
+            }
           }
         } catch (Exception e) {
-          AppboyLogger.i(TAG, "Unexpected exception while processing url " + url + ". Passing url back to WebView.", e);
+          AppboyLogger.e(TAG, "Unexpected exception while processing url " + url + ". Passing url back to WebView.", e);
         }
         return super.shouldOverrideUrlLoading(view, url);
       }

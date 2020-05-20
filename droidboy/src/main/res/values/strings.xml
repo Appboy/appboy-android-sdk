@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">@string/droid_boy</string>
-  <string name="droid_boy">DroidBoy</string>
+  <string name="app_name">Droidboy</string>
 
   <string name="feed">News Feed</string>
   <string name="settings">Settings</string>

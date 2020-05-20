@@ -5,21 +5,23 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.appboy.sample.R;
+
 import java.util.List;
 
 public class SpinnerUtils {
   public static final String NOT_SET = "not set";
 
   public static void setUpSpinner(Spinner spinner, OnItemSelectedListener listener, int arrayId) {
-    ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(spinner.getContext(), arrayId, android.R.layout.simple_spinner_item);
-    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(spinner.getContext(), arrayId, R.layout.spinner_item);
+    arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
     spinner.setAdapter(arrayAdapter);
     spinner.setOnItemSelectedListener(listener);
   }
 
   public static void setUpSpinnerWithList(Spinner spinner, OnItemSelectedListener listener, List list) {
-    ArrayAdapter arrayAdapter = new ArrayAdapter(spinner.getContext(), android.R.layout.simple_spinner_item, list);
-    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    ArrayAdapter arrayAdapter = new ArrayAdapter(spinner.getContext(), R.layout.spinner_item, list);
+    arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
     spinner.setAdapter(arrayAdapter);
     spinner.setOnItemSelectedListener(listener);
   }

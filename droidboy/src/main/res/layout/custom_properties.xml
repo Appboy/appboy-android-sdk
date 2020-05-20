@@ -12,14 +12,14 @@
             android:id="@+id/property_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/UserEmailAddress"
+            style="@style/BaseWidget.UserEmailAddress"
             android:layout_span="2"/>
 
         <EditText
             android:id="@+id/property_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/UserEmailAddress"
+            style="@style/BaseWidget.UserEmailAddress"
             android:layout_span="2"/>
     </TableRow>
     <TableRow

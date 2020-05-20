@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto">
+  <!--Note: As of Android Support Library 26.0, you must declare both sets of attributes
+      to ensure your fonts load on devices running Android 8.0 (API level 26) or lower.
+      See https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml.html -->
+  <font android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/sailec_regular"
+
+        app:fontStyle="normal"
+        app:fontWeight="400"
+        app:font="@font/sailec_regular"/>
+</font-family>

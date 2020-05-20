@@ -66,7 +66,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     if (shouldDisplayNoLimitsMode) {
       ViewUtils.enableNoLimitsMode(getWindow());
     }
-    setContentView(R.layout.droid_boy);
+    setContentView(R.layout.landing_page);
     mApplicationContext = getApplicationContext();
 
     Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.viewpager);

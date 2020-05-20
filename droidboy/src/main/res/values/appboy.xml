@@ -32,8 +32,8 @@
   <!-- A color resource id can also be set for the accent color as demonstrated below -->
   <!--  <color name="com_appboy_default_notification_accent_color">@color/my_color_here</color>-->
 
-  <drawable name="com_appboy_push_small_notification_icon">@drawable/ic_stat_notify_droidboy</drawable>
-  <drawable name="com_appboy_push_large_notification_icon">@drawable/ic_stat_notify_droidboy_large</drawable>
+  <drawable name="com_appboy_push_small_notification_icon">@drawable/notification_small_icon</drawable>
+  <drawable name="com_appboy_push_large_notification_icon">@drawable/notification_large_icon</drawable>
 
   <!-- News Feed configuration -->
   <!-- This boolean sets whether the read/unread visual indicator at the top right of news feed cards

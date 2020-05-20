@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/com_appboy_push_tester_root"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  tools:ignore="RtlHardcoded">
   <LinearLayout
       android:id="@+id/push_testing_buttons"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      style="@style/PushBottomButton">
+      style="@style/BaseWidget.PushBottomButton">
     <Button
         android:id="@+id/test_push_button"
         android:text="@string/test_push"
-        style="@style/DroidboyButton"/>
+        style="@style/BaseWidget.DroidboyButton"/>
   </LinearLayout>
   <ScrollView
       android:layout_width="match_parent"
@@ -25,6 +25,8 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="25dp"
         android:orientation="vertical">
         <CheckBox
           android:id="@+id/push_tester_big_title"

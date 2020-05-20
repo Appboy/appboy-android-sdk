@@ -40,7 +40,7 @@
 
             <Button
                 android:id="@+id/first_name_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/user_dialog_first_name"/>
 
             <EditText
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
-                style="@style/UserSingleLineText"/>
+                style="@style/BaseWidget.UserSingleLineText"/>
         </TableRow>
 
         <TableRow
@@ -57,7 +57,7 @@
 
             <Button
                 android:id="@+id/last_name_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/user_dialog_last_name"/>
 
             <EditText
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
-                style="@style/UserSingleLineText"/>
+                style="@style/BaseWidget.UserSingleLineText"/>
         </TableRow>
 
         <TableRow
@@ -74,7 +74,7 @@
 
             <Button
                 android:id="@+id/email_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/user_dialog_email_address"/>
 
             <EditText
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -91,7 +91,7 @@
 
             <Button
                 android:id="@+id/avatar_image_url_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/user_dialog_avatar_image_url"/>
 
             <EditText
@@ -109,7 +109,7 @@
 
             <Button
                     android:id="@+id/birthday_button"
-                    style="@style/PopulateButton"
+                    style="@style/BaseWidget.PopulateButton"
                     android:text="@string/user_dialog_birthday_button"/>
 
             <TextView
@@ -183,7 +183,7 @@
 
             <Button
                 android:id="@+id/language_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/user_dialog_language"/>
 
             <EditText
@@ -191,7 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
-                style="@style/UserSingleLineText"/>
+                style="@style/BaseWidget.UserSingleLineText"/>
         </TableRow>
 
     </TableLayout>

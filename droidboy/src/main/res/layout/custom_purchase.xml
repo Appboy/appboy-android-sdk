@@ -20,7 +20,7 @@
 
             <Button
                 android:id="@+id/purchase_qty_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/custom_logging_custom_purchase_qty"/>
             <EditText
                 android:id="@+id/purchase_qty"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_span="4"
                 android:inputType="number"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -37,14 +37,14 @@
 
             <Button
                 android:id="@+id/custom_purchase_currency_code_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/custom_logging_custom_purchase_currency_code"/>
             <EditText
                 android:id="@+id/custom_purchase_currency_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="4"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -53,7 +53,7 @@
 
             <Button
                 android:id="@+id/custom_purchase_price_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/custom_logging_custom_purchase_price_code"/>
             <EditText
                 android:id="@+id/custom_purchase_price_code"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_span="4"
                 android:inputType="numberDecimal|numberSigned"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <include layout="@layout/custom_properties"/>

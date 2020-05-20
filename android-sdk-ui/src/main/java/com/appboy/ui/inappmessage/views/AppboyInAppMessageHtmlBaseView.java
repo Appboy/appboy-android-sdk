@@ -48,7 +48,6 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
       if (mMessageWebView != null) {
         WebSettings webSettings = mMessageWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDisplayZoomControls(false);

@@ -1,3 +1,11 @@
+## 8.0.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v8.0.1)
+
+##### Fixed
+- Fixed an Activity resolution issue in `com.appboy.ui.AppboyWebViewActivity` by removing a call to `setDownloadListener()`.
+- Fixed an implementation issue in 8.0.0 related to setting runtime configuration after stopping the SDK.
+
 ## 8.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v8.0.0)

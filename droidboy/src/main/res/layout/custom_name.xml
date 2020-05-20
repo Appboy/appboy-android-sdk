@@ -5,7 +5,7 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/custom_name_button"
-            style="@style/PopulateButton"
+            style="@style/BaseWidget.PopulateButton"
             android:text="@string/custom_logging_name"/>
 
         <EditText
@@ -13,6 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_span="4"
-            style="@style/UserEmailAddress"/>
+            style="@style/BaseWidget.UserEmailAddress"/>
     </TableRow>
 </merge>

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
@@ -82,7 +81,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private static final Map<Integer, String[]> PUSH_STORY_PAGE_VALUES;
 
   static {
-    Map<Integer, String[]> pushStoryPageValues = new HashMap<Integer, String[]>();
+    Map<Integer, String[]> pushStoryPageValues = new HashMap<>();
     pushStoryPageValues.put(0, new String[]{"http://appboy.com", "Twenty WWWWWWW WWWW#", "Twenty WWWWWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/09/AB17_blog_header_REVEAL.png?resize=1200%2C600&ssl=1"});
     pushStoryPageValues.put(1, new String[]{"http://google.com", "Twenty Five WW WWWW WWWW#", "Twenty Five WW WWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/08/abcnews_blog.png?resize=1200%2C600&ssl=1"});
     pushStoryPageValues.put(2, new String[]{"http://appboy.com", "Thirty WW WWWW WWWW WWWW WWWW#", "Thirty WW WWWW WWWW WWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/02/Man-Using_Smartphone-While-Watching-TV.jpg?resize=1200%2C600&ssl=1"});
@@ -100,72 +99,17 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
 
     mNotificationManager = NotificationManagerCompat.from(getContext());
 
-    ((CheckBox) mView.findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mUseBigTitle = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mUseSummary = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mUseBigSummary = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mShouldOverflowText = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mSetPublicVersion = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mTestTriggerFetch = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_constant_nid)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mUseConstantNotificationId = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_set_open_webview)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mOpenInWebview = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_story_deep_link)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mStoryDeepLink = isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_story_title)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mStoryTitles = !isChecked;
-      }
-    });
-    ((CheckBox) mView.findViewById(R.id.push_tester_story_subtitle)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mStorySubtitles = !isChecked;
-      }
-    });
+    ((CheckBox) mView.findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseBigTitle = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseSummary = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseBigSummary = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener((buttonView, isChecked) -> mShouldOverflowText = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener((buttonView, isChecked) -> mSetPublicVersion = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener((buttonView, isChecked) -> mTestTriggerFetch = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_constant_nid)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseConstantNotificationId = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_set_open_webview)).setOnCheckedChangeListener((buttonView, isChecked) -> mOpenInWebview = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_story_deep_link)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryDeepLink = isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_story_title)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryTitles = !isChecked);
+    ((CheckBox) mView.findViewById(R.id.push_tester_story_subtitle)).setOnCheckedChangeListener((buttonView, isChecked) -> mStorySubtitles = !isChecked);
 
     // Creates the push image spinner.
     SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
@@ -211,102 +155,95 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
 
     mAppConfigurationProvider = new AppboyConfigurationProvider(getContext());
     Button pushTestButton = mView.findViewById(R.id.test_push_button);
-    pushTestButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View clickedView) {
-        (new Thread(new Runnable() {
-          public void run() {
-            Bundle notificationExtras = new Bundle();
-            notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
-            notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
-            notificationExtras.putString(Constants.APPBOY_PUSH_APPBOY_KEY, "true");
+    pushTestButton.setOnClickListener(clickedView -> (new Thread(() -> {
+      Bundle notificationExtras = new Bundle();
+      notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
+      notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
+      notificationExtras.putString(Constants.APPBOY_PUSH_APPBOY_KEY, "true");
 
-            int notificationId;
-            if (mUseConstantNotificationId) {
-              notificationId = 100;
-            } else {
-              notificationId = AppboyNotificationUtils.getNotificationId(notificationExtras);
-            }
-            notificationExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
-            notificationExtras = addActionButtons(notificationExtras);
-
-            if (mUseSummary) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(SUMMARY_TEXT));
-            }
-            if (mUseClickAction) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, mClickActionUrl);
-            }
-            notificationExtras.putString(Constants.APPBOY_PUSH_PRIORITY_KEY, mPriority);
-            if (mUseBigTitle) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY, generateDisplayValue(BIG_TITLE));
-            }
-            if (mUseBigSummary) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY, generateDisplayValue(BIG_SUMMARY));
-            }
-            if (mUseCategory) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_CATEGORY_KEY, mCategory);
-            }
-            if (mUseVisibility) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_VISIBILITY_KEY, mVisibility);
-            }
-            if (mOpenInWebview) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, "true");
-            }
-            if (mSetPublicVersion) {
-              try {
-                notificationExtras.putString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY, getPublicVersionNotificationString());
-              } catch (JSONException jsonException) {
-                Log.e(TAG, "Failed to created public version notification JSON string", jsonException);
-              }
-            }
-            if (mTestTriggerFetch) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY, "true");
-            }
-            if (mSetAccentColor) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_ACCENT_KEY, mAccentColorString);
-            }
-            if (mSetLargeIcon) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_LARGE_ICON_KEY, mLargeIconString);
-            }
-            if (mSetChannel) {
-              notificationExtras.putString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, mChannel);
-            }
-            setNotificationFactory();
-
-            if (mPushStoryType != 0) {
-              addPushStoryPages(notificationExtras);
-              notificationExtras.putString(Constants.APPBOY_PUSH_STORY_KEY, Integer.toString(mPushStoryType));
-            }
-
-            // Manually build the Braze extras bundle.
-            Bundle appboyExtras = new Bundle();
-            if (mUseImage) {
-              if (Constants.IS_AMAZON) {
-                // Amazon flattens the extras bundle so we have to put it in the regular notification
-                // extras to imitate that functionality.
-                notificationExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
-                appboyExtras = new Bundle(notificationExtras);
-              } else {
-                appboyExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
-              }
-            }
-            appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_1, "Hamburger");
-            appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_2, "Fries");
-            appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_3, "Lemonade");
-            notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
-            Notification notification = AppboyNotificationUtils.getActiveNotificationFactory().createNotification(
-                mAppConfigurationProvider,
-                getContext(),
-                notificationExtras,
-                appboyExtras);
-
-            if (notification != null) {
-              mNotificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
-            }
-          }
-        })).start();
+      int notificationId;
+      if (mUseConstantNotificationId) {
+        notificationId = 100;
+      } else {
+        notificationId = AppboyNotificationUtils.getNotificationId(notificationExtras);
       }
-    });
+      notificationExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
+      notificationExtras = addActionButtons(notificationExtras);
+
+      if (mUseSummary) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(SUMMARY_TEXT));
+      }
+      if (mUseClickAction) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, mClickActionUrl);
+      }
+      notificationExtras.putString(Constants.APPBOY_PUSH_PRIORITY_KEY, mPriority);
+      if (mUseBigTitle) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY, generateDisplayValue(BIG_TITLE));
+      }
+      if (mUseBigSummary) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY, generateDisplayValue(BIG_SUMMARY));
+      }
+      if (mUseCategory) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_CATEGORY_KEY, mCategory);
+      }
+      if (mUseVisibility) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_VISIBILITY_KEY, mVisibility);
+      }
+      if (mOpenInWebview) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, "true");
+      }
+      if (mSetPublicVersion) {
+        try {
+          notificationExtras.putString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY, getPublicVersionNotificationString());
+        } catch (JSONException jsonException) {
+          Log.e(TAG, "Failed to created public version notification JSON string", jsonException);
+        }
+      }
+      if (mTestTriggerFetch) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY, "true");
+      }
+      if (mSetAccentColor) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACCENT_KEY, mAccentColorString);
+      }
+      if (mSetLargeIcon) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_LARGE_ICON_KEY, mLargeIconString);
+      }
+      if (mSetChannel) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, mChannel);
+      }
+      setNotificationFactory();
+
+      if (mPushStoryType != 0) {
+        addPushStoryPages(notificationExtras);
+        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_KEY, Integer.toString(mPushStoryType));
+      }
+
+      // Manually build the Braze extras bundle.
+      Bundle appboyExtras = new Bundle();
+      if (mUseImage) {
+        if (Constants.IS_AMAZON) {
+          // Amazon flattens the extras bundle so we have to put it in the regular notification
+          // extras to imitate that functionality.
+          notificationExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
+          appboyExtras = new Bundle(notificationExtras);
+        } else {
+          appboyExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
+        }
+      }
+      appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_1, "Hamburger");
+      appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_2, "Fries");
+      appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_3, "Lemonade");
+      notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
+      Notification notification = AppboyNotificationUtils.getActiveNotificationFactory().createNotification(
+          mAppConfigurationProvider,
+          getContext(),
+          notificationExtras,
+          appboyExtras);
+
+      if (notification != null) {
+        mNotificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
+      }
+    })).start());
     return mView;
   }
 

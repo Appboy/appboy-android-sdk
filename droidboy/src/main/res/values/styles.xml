@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="PopulateButton">
+  <style name="BaseWidget">
+    <item name="android:fontFamily">@font/sailec_font_family</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+
+  <style name="BaseWidget.PopulateButton">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:padding">0dp</item>
@@ -8,49 +13,54 @@
     <item name="android:maxLines">3</item>
   </style>
 
-  <style name="DroidboyButton">
+  <style name="BaseWidget.DroidboyButton">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:padding">0dp</item>
-    <item name="android:textSize">12dp</item>
+    <item name="android:textSize">12sp</item>
   </style>
 
-  <style name="UserSingleLineText">
+  <style name="BaseWidget.UserSingleLineText">
     <item name="android:inputType">text|textCapWords</item>
     <item name="android:singleLine">true</item>
   </style>
-  <style name="UserEmailAddress">
+  <style name="BaseWidget.UserEmailAddress">
     <item name="android:inputType">textEmailAddress</item>
     <item name="android:singleLine">true</item>
   </style>
 
-  <style name="InAppMessageTesterButton">
+  <style name="BaseWidget.InAppMessageTesterButton">
     <item name="android:layout_width">0.0dp</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_weight">1</item>
-    <item name="android:textSize">14dp</item>
+    <item name="android:textSize">13sp</item>
   </style>
 
-  <style name="InAppMessageTesterCheckBox">
+  <style name="BaseWidget.InAppMessageTesterCheckBox">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
 
-  <style name="InAppMessageTesterTextView">
+  <style name="BaseWidget.InAppMessageTesterTextView">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:paddingLeft">10dp</item>
-    <item name="android:paddingTop">10dp</item>
     <item name="android:paddingRight">20dp</item>
     <item name="android:textStyle">bold</item>
   </style>
 
-  <style name="PushBottomButton">
+  <style name="BaseWidget.PushBottomButton">
     <item name="android:padding">4dp</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_alignParentBottom">true</item>
     <item name="android:background">@color/window_background</item>
+  </style>
+
+  <style name="BaseWidget.SpinnerItem">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">marquee</item>
   </style>
 
   <style name="Appboy.Feed.List">
@@ -69,7 +79,7 @@
   <style name="Base.Theme.Droidboy" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="colorPrimary">#1c222b</item>
     <item name="colorPrimaryDark">#1c222b</item>
-    <item name="colorAccent">#3fc1bf</item>
+    <item name="colorAccent">#3accdd</item>
     <item name="android:windowBackground">@color/window_background</item>
     <item name="titleTextColor">@android:color/white</item>
   </style>

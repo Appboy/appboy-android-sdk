@@ -17,7 +17,7 @@
             android:hint="Enter UserId here"/>
         <Button
             android:id="@+id/com_appboy_sample_set_user_id_button"
-            style="@style/DroidboyButton"
+            style="@style/BaseWidget.DroidboyButton"
             android:text="Set UserId"/>
         <EditText
             android:id="@+id/com_appboy_sample_custom_event_or_purchase_edit_text"
@@ -28,23 +28,23 @@
             android:hint="Custom event or purchase name"/>
         <Button
             android:id="@+id/com_appboy_sample_log_custom_event_button"
-            style="@style/DroidboyButton"
+            style="@style/BaseWidget.DroidboyButton"
             android:text="Log Custom Event"/>
         <Button
             android:id="@+id/com_appboy_sample_log_purchase_button"
-            style="@style/DroidboyButton"
+            style="@style/BaseWidget.DroidboyButton"
             android:text="Log Purchase"/>
         <Button
             android:id="@+id/com_appboy_sample_set_user_attributes_button"
-            style="@style/DroidboyButton"
+            style="@style/BaseWidget.DroidboyButton"
             android:text="Set User Attributes"/>
         <Button
             android:id="@+id/com_appboy_sample_unset_user_attributes_button"
-            style="@style/DroidboyButton"
+            style="@style/BaseWidget.DroidboyButton"
             android:text="Unset User Attributes"/>
         <Button
             android:id="@+id/com_appboy_sample_request_flush_button"
-            style="@style/DroidboyButton"
+            style="@style/BaseWidget.DroidboyButton"
             android:text="Request Flush"/>
         <EditText
           android:id="@+id/com_appboy_sample_set_alias_edit_text"
@@ -62,11 +62,11 @@
           android:hint="Enter Alias Label here"/>
         <Button
           android:id="@+id/com_appboy_sample_set_user_alias_button"
-          style="@style/DroidboyButton"
+          style="@style/BaseWidget.DroidboyButton"
           android:text="Add User Alias"/>
         <Button
           android:id="@+id/com_appboy_sample_collect_and_flush_google_advertising_id_button"
-          style="@style/DroidboyButton"
+          style="@style/BaseWidget.DroidboyButton"
           android:text="Get/Flush Google Advertising ID"/>
     </LinearLayout>
 </ScrollView>

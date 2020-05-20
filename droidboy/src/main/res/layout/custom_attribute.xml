@@ -18,7 +18,7 @@
 
             <Button
                 android:id="@+id/custom_attribute_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/custom_logging_user_attribute"/>
 
             <EditText
@@ -26,14 +26,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_attribute_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -42,7 +42,7 @@
 
             <Button
                 android:id="@+id/custom_number_attribute_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/custom_logging_user_number_attribute"/>
 
             <EditText
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_number_attribute_value"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_span="2"
                 android:inputType="number"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -67,7 +67,7 @@
 
             <Button
                 android:id="@+id/custom_attribute_increment_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/custom_logging_user_attribute_increment"/>
 
             <EditText
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_attribute_increment_value"
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_span="2"
                 android:inputType="number"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -92,7 +92,7 @@
 
             <Button
                 android:id="@+id/custom_attribute_unset_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/custom_logging_user_attribute_unset"/>
 
             <EditText
@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="4"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
@@ -109,7 +109,7 @@
 
             <Button
                 android:id="@+id/custom_attribute_array_button"
-                style="@style/PopulateButton"
+                style="@style/BaseWidget.PopulateButton"
                 android:text="@string/attribute_array_key"/>
 
             <EditText
@@ -117,14 +117,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
 
             <EditText
                 android:id="@+id/custom_attribute_array_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                style="@style/UserEmailAddress"/>
+                style="@style/BaseWidget.UserEmailAddress"/>
         </TableRow>
 
         <TableRow
