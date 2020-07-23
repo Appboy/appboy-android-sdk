@@ -130,10 +130,10 @@ public class UriAction implements IAction {
   protected void openUriWithActionView(Context context, Uri uri, Bundle extras) {
     Intent intent = getActionViewIntent(context, uri, extras);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    if (intent.resolveActivity(context.getPackageManager()) != null) {
+    try {
       context.startActivity(intent);
-    } else {
-      AppboyLogger.w(TAG, "Could not find appropriate activity to open for deep link " + uri + ".");
+    } catch (Exception e) {
+      AppboyLogger.e(TAG, "Failed to handle uri " + uri + " with extras: " + extras, e);
     }
   }
 

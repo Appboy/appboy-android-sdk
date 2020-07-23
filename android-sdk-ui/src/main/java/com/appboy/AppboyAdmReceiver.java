@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -24,6 +23,10 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
   private static final String ADM_MESSAGE_TYPE_KEY = "message_type";
   private static final String ADM_DELETED_MESSAGES_KEY = "deleted_messages";
   private static final String ADM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
+  /**
+   * @deprecated Use {@link Constants#APPBOY_PUSH_CAMPAIGN_ID_KEY}
+   */
+  @Deprecated
   public static final String CAMPAIGN_ID_KEY = Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY;
 
   @Override
@@ -147,7 +150,8 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
    * Runs the handleAppboyAdmMessage method in a background thread in case of an image push
    * notification, which cannot be downloaded on the main thread.
    */
-  public class HandleAppboyAdmMessageTask extends AsyncTask<Void, Void, Void> {
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-420
+  public class HandleAppboyAdmMessageTask extends android.os.AsyncTask<Void, Void, Void> {
     private final Context mContext;
     private final Intent mIntent;
 

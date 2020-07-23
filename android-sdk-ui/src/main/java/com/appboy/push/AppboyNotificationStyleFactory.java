@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -180,12 +179,12 @@ public class AppboyNotificationStyleFactory {
       // Note: if the height is greater than the width it's going to look poor, so we might
       // as well let the system modify it and not complicate things by trying to smoosh it here.
       if (imageBitmap.getWidth() > imageBitmap.getHeight()) {
-        DisplayMetrics displayMetrics = AppboyImageUtils.getDefaultScreenDisplayMetrics(context);
-        int bigPictureHeightPixels = AppboyImageUtils.getPixelsFromDensityAndDp(displayMetrics.densityDpi, BIG_PICTURE_STYLE_IMAGE_HEIGHT);
+        int bigPictureHeightPixels = AppboyImageUtils.getPixelsFromDensityAndDp(AppboyImageUtils.getDensityDpi(context), BIG_PICTURE_STYLE_IMAGE_HEIGHT);
         // 2:1 aspect ratio
         int bigPictureWidthPixels = 2 * bigPictureHeightPixels;
-        if (bigPictureWidthPixels > displayMetrics.widthPixels) {
-          bigPictureWidthPixels = displayMetrics.widthPixels;
+        final int displayWidthPixels = AppboyImageUtils.getDisplayWidthPixels(context);
+        if (bigPictureWidthPixels > displayWidthPixels) {
+          bigPictureWidthPixels = displayWidthPixels;
         }
 
         try {

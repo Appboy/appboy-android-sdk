@@ -23,7 +23,7 @@ public class LogLevelDialogPreference extends DialogPreference {
   private static final String SUPPRESS = "suppress";
   private static final String LOG_SELECT_PREFIX = "Updated minimum log level to ";
   private static final String LOG_LEVEL_TOAST = "Appboy Logging Level set to %s.";
-  private static final String[] OPTIONS = new String[]{VERBOSE, DEBUG, INFO, WARN, ERROR, SUPPRESS};
+  private static final String[] OPTIONS = {VERBOSE, DEBUG, INFO, WARN, ERROR, SUPPRESS};
   private View mView;
   private Spinner mLogLevelSpinner;
 

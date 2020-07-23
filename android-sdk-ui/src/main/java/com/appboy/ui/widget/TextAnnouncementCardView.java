@@ -21,6 +21,7 @@ public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementC
     this(context, null);
   }
 
+  @SuppressWarnings("deprecation") // getDrawable() until Build.VERSION_CODES.LOLLIPOP
   public TextAnnouncementCardView(final Context context, TextAnnouncementCard card) {
     super(context);
     mTitle = findViewById(R.id.com_appboy_text_announcement_card_title);

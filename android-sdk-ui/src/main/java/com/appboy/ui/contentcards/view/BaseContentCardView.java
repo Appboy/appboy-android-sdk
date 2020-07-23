@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.appboy.models.cards.Card;
+import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.contentcards.AppboyContentCardsManager;
@@ -71,5 +72,10 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
     if (imageView != null) {
       imageView.setClipToOutline(true);
     }
+  }
+
+  @SuppressWarnings("deprecation") // getDrawable() is deprecated but the alternatives are above our min SDK version
+  protected void setViewBackground(View view) {
+    view.setBackground(getResources().getDrawable(R.drawable.com_appboy_content_card_background));
   }
 }

@@ -7,7 +7,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.4.1'
+    classpath 'com.android.tools.build:gradle:4.0.0'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     classpath 'com.google.gms:google-services:4.2.0'
     classpath "org.ajoberstar.grgit:grgit-gradle:${AJOBERSTAR_GIT_GRADLE_PLUGIN_VERSION}"
@@ -16,11 +16,11 @@ buildscript {
 }
 
 ext {
-  compileSdkVersion = 29
-  buildToolsVersion = '29.0.0'
+  compileSdkVersion = 30
+  buildToolsVersion = '30.0.1'
   minSdkVersion = 16
-  targetSdkVersion = 29
-  appVersionName = '8.0.1'
+  targetSdkVersion = 30
+  appVersionName = '8.1.0'
 }
 
 subprojects {
@@ -33,5 +33,5 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '8.0.1'
+  version = '8.1.0'
 }

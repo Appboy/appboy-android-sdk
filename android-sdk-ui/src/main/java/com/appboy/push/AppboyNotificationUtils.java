@@ -302,6 +302,7 @@ public class AppboyNotificationUtils {
    * <p>
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-428
   public static int getNotificationPriority(Bundle notificationExtras) {
     if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_PRIORITY_KEY)) {
       try {
@@ -323,6 +324,7 @@ public class AppboyNotificationUtils {
    * <p>
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-428
   public static boolean isValidNotificationPriority(int priority) {
     return (priority >= Notification.PRIORITY_MIN && priority <= Notification.PRIORITY_MAX);
   }
@@ -333,6 +335,7 @@ public class AppboyNotificationUtils {
    * and the permission is present, this does nothing. If the priority of the incoming notification
    * is min, this does nothing.
    */
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-428
   public static boolean wakeScreenIfAppropriate(Context context, AppboyConfigurationProvider configurationProvider, Bundle notificationExtras) {
     // Check for the wake lock permission.
     if (!PermissionUtils.hasPermission(context, Manifest.permission.WAKE_LOCK)) {

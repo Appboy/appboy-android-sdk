@@ -197,9 +197,6 @@
             android:key="build_type"
             android:title="Build Type"/>
         <Preference
-            android:key="flavor"
-            android:title="Flavor"/>
-        <Preference
             android:key="version_code"
             android:title="Version Code"/>
         <Preference

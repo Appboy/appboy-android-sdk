@@ -242,6 +242,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    *
    * @return A boolean value indicating whether an asynchronous task to display the in-app message display was executed.
    */
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-420
   public boolean requestDisplayInAppMessage() {
     try {
       if (mActivity == null) {
@@ -484,6 +485,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
 
   private IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber() {
     return new IEventSubscriber<InAppMessageEvent>() {
+      @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-419
       @Override
       public void trigger(InAppMessageEvent event) {
         if (getInAppMessageManagerListener().onInAppMessageReceived(event.getInAppMessage())) {

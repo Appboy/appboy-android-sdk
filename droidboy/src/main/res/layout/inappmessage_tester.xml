@@ -278,6 +278,10 @@
           android:id="@+id/disable_back_button_dismiss_behavior"
           style="@style/BaseWidget.InAppMessageTesterCheckBox"
           android:text="@string/disable_back_button_dismiss_behavior" />
+        <CheckBox
+          android:id="@+id/enable_tap_outside_modal_dismiss_behavior"
+          style="@style/BaseWidget.InAppMessageTesterCheckBox"
+          android:text="@string/enable_tap_outside_modal_dismiss_behavior" />
       </LinearLayout>
     </LinearLayout>
   </ScrollView>

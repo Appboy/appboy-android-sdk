@@ -106,14 +106,13 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
   }
 
   private void setCustomAttribute(Map<String, Object> tagParameterMap) {
-    String key = String.valueOf(tagParameterMap.get(CUSTOM_ATTRIBUTE_KEY));
-    Object value = tagParameterMap.get(CUSTOM_ATTRIBUTE_VALUE_KEY);
-
     AppboyUser appboyUser = Appboy.getInstance(sApplicationContext).getCurrentUser();
     if (appboyUser == null) {
       AppboyLogger.w(TAG, "AppboyUser was null. Returning.");
       return;
     }
+    String key = String.valueOf(tagParameterMap.get(CUSTOM_ATTRIBUTE_KEY));
+    Object value = tagParameterMap.get(CUSTOM_ATTRIBUTE_VALUE_KEY);
 
     if (value instanceof Boolean) {
       appboyUser.setCustomUserAttribute(key, (Boolean) value);

@@ -18,6 +18,7 @@ import com.appboy.AppboyLifecycleCallbackListener;
 import com.appboy.configuration.AppboyConfig;
 import com.appboy.sample.util.EmulatorDetectionUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.PackageUtils;
 import com.appboy.support.StringUtils;
 
 import java.util.Arrays;
@@ -156,7 +157,29 @@ public class DroidboyApplication extends Application {
     if (!StringUtils.isNullOrBlank(sOverrideApiKeyInUse)) {
       return sOverrideApiKeyInUse;
     } else {
-      return context.getResources().getString(R.string.com_appboy_api_key);
+      // Check if the api key is in resources
+      return readStringResourceValue(context, "com_appboy_api_key", "NO-API-KEY-SET");
+    }
+  }
+
+  private static String readStringResourceValue(Context context, String key, String defaultValue) {
+    try {
+      if (key == null) {
+        return defaultValue;
+      }
+
+      int resId = context.getResources().getIdentifier(key, "string", PackageUtils.getResourcePackageName(context));
+      if (resId == 0) {
+        AppboyLogger.d(TAG, "Unable to find the xml string value with key " + key + ". "
+            + "Using default value '" + defaultValue + "'.");
+        return defaultValue;
+      } else {
+        return context.getResources().getString(resId);
+      }
+    } catch (Exception e) {
+      AppboyLogger.d(TAG, "Unexpected exception retrieving the xml string configuration"
+          + " value with key " + key + ". Using default value " + defaultValue + "'.");
+      return defaultValue;
     }
   }
 }

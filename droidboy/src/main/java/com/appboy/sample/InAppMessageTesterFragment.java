@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.appboy.Appboy;
@@ -88,13 +89,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   }
 
   private static final String CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view";
-  private static final String CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY = "inappmessages_custom_inappmessage_manager_listener";
-  private static final String CUSTOM_APPBOY_NAVIGATOR_KEY = "inappmessages_custom_appboy_navigator";
-  private static final String CUSTOM_INAPPMESSAGE_ANIMATION_KEY = "inappmessages_custom_inappmessage_animation";
-  private static final String CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY = "inappmessages_custom_appboy_html_inappmessage_action_listener";
-  private static final String CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE = "inappmessages_custom_appboy_graphic_modal_max_size";
-  private static final String CUSTOM_INAPPMESSAGE_IMAGE_RADIUS = "inappmessages_custom_appboy_image_radius";
-  private static final String DISABLE_BACK_BUTTON_DISMISSAL = "inappmessages_disable_back_button_dismiss_behavior";
 
   // color reference: http://www.google.com/design/spec/style/color.html
   private static final int APPBOY_RED = 0xFFf33e3e;
@@ -176,79 +170,88 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       SpinnerUtils.setUpSpinner(view.findViewById(key), this, sSpinnerOptionMap.get(key));
     }
 
-    CheckBox customInAppMessageViewCheckBox = view.findViewById(R.id.custom_inappmessage_view_factory_checkbox);
-    customInAppMessageViewCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(new CustomInAppMessageViewFactory());
-      } else {
-        AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
-      }
-      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, isChecked).apply();
-    });
-    boolean usingCustomInAppMessageView = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_VIEW_KEY, false);
-    customInAppMessageViewCheckBox.setChecked(usingCustomInAppMessageView);
+    setupCheckbox(view.findViewById(R.id.custom_inappmessage_view_factory_checkbox),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(new CustomInAppMessageViewFactory());
+          } else {
+            AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
+          }
+        });
 
-    CheckBox customInAppMessageManagerListenerCheckBox = view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox);
-    customInAppMessageManagerListenerCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(getActivity()));
-      } else {
-        AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
-      }
-      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, isChecked).apply();
-    });
-    boolean usingCustomInAppMessageManagerListener = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_MANAGER_LISTENER_KEY, false);
-    customInAppMessageManagerListenerCheckBox.setChecked(usingCustomInAppMessageManagerListener);
+    setupCheckbox(view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(getActivity()));
+          } else {
+            AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
+          }
+        });
 
-    CheckBox customAppboyNavigatorCheckBox = view.findViewById(R.id.custom_appboy_navigator_checkbox);
-    customAppboyNavigatorCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyNavigator.setAppboyNavigator(new CustomAppboyNavigator());
-      } else {
-        AppboyNavigator.setAppboyNavigator(null);
-      }
-      getSettingsPreferences().edit().putBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, isChecked).apply();
-    });
-    boolean usingCustomAppboyNavigator = getSettingsPreferences().getBoolean(CUSTOM_APPBOY_NAVIGATOR_KEY, false);
-    customAppboyNavigatorCheckBox.setChecked(usingCustomAppboyNavigator);
+    setupCheckbox(view.findViewById(R.id.custom_appboy_navigator_checkbox),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyNavigator.setAppboyNavigator(new CustomAppboyNavigator());
+          } else {
+            AppboyNavigator.setAppboyNavigator(null);
+          }
+        });
 
-    CheckBox maxSizeCheckBox = view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox);
-    maxSizeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyInAppMessageParams.setGraphicModalMaxHeightDp(420);
-        AppboyInAppMessageParams.setGraphicModalMaxWidthDp(320);
-      } else {
-        AppboyInAppMessageParams.setGraphicModalMaxHeightDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
-        AppboyInAppMessageParams.setGraphicModalMaxWidthDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
-      }
-      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, isChecked).apply();
-    });
-    boolean maxSizedChecked = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_GRAPHIC_MODAL_MAX_SIZE, false);
-    maxSizeCheckBox.setChecked(maxSizedChecked);
+    setupCheckbox(view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageParams.setGraphicModalMaxHeightDp(420);
+            AppboyInAppMessageParams.setGraphicModalMaxWidthDp(320);
+          } else {
+            AppboyInAppMessageParams.setGraphicModalMaxHeightDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
+            AppboyInAppMessageParams.setGraphicModalMaxWidthDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
+          }
+        });
 
-    CheckBox imageRadiusCheckBox = view.findViewById(R.id.custom_appboy_image_radius_checkbox);
-    imageRadiusCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyInAppMessageParams.setModalizedImageRadiusDp(0);
-      } else {
-        AppboyInAppMessageParams.setModalizedImageRadiusDp(AppboyInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
-      }
-      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, isChecked).apply();
-    });
-    boolean customRadiusChecked = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_IMAGE_RADIUS, false);
-    imageRadiusCheckBox.setChecked(customRadiusChecked);
+    setupCheckbox(view.findViewById(R.id.custom_appboy_image_radius_checkbox),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageParams.setModalizedImageRadiusDp(0);
+          } else {
+            AppboyInAppMessageParams.setModalizedImageRadiusDp(AppboyInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
+          }
+        });
 
-    CheckBox backButtonDismissalCheckBox = view.findViewById(R.id.disable_back_button_dismiss_behavior);
-    backButtonDismissalCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(false);
-      } else {
-        AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(true);
-      }
-      getSettingsPreferences().edit().putBoolean(DISABLE_BACK_BUTTON_DISMISSAL, isChecked).apply();
-    });
-    boolean customDisableBackButtonChecked = getSettingsPreferences().getBoolean(DISABLE_BACK_BUTTON_DISMISSAL, false);
-    backButtonDismissalCheckBox.setChecked(customDisableBackButtonChecked);
+    setupCheckbox(view.findViewById(R.id.disable_back_button_dismiss_behavior),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(false);
+          } else {
+            AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(true);
+          }
+        });
+
+    setupCheckbox(view.findViewById(R.id.enable_tap_outside_modal_dismiss_behavior),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageManager.getInstance().setClickOutsideModalViewDismissInAppMessageView(true);
+          } else {
+            AppboyInAppMessageManager.getInstance().setClickOutsideModalViewDismissInAppMessageView(false);
+          }
+        });
+
+    setupCheckbox(view.findViewById(R.id.custom_appboy_animation_checkbox),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(new CustomInAppMessageAnimationFactory());
+          } else {
+            AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
+          }
+        });
+
+    setupCheckbox(view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox),
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(getContext()));
+          } else {
+            AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
+          }
+        });
 
     Button createAndAddInAppMessageButton = view.findViewById(R.id.create_and_add_inappmessage_button);
     createAndAddInAppMessageButton.setOnClickListener(view1 -> {
@@ -313,29 +316,6 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         }
       }
     });
-    CheckBox customInAppMessageAnimationCheckBox = view.findViewById(R.id.custom_appboy_animation_checkbox);
-    customInAppMessageAnimationCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(new CustomInAppMessageAnimationFactory());
-      } else {
-        AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
-      }
-      getSettingsPreferences().edit().putBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, isChecked).apply();
-    });
-    boolean usingCustomInAppAnimation = getSettingsPreferences().getBoolean(CUSTOM_INAPPMESSAGE_ANIMATION_KEY, false);
-    customInAppMessageAnimationCheckBox.setChecked(usingCustomInAppAnimation);
-
-    CheckBox customHtmlInAppMessageActionListenerCheckBox = view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox);
-    customHtmlInAppMessageActionListenerCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      if (isChecked) {
-        AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(getContext()));
-      } else {
-        AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
-      }
-      getSettingsPreferences().edit().putBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, isChecked).apply();
-    });
-    boolean usingCustomHtmlInAppActionListener = getSettingsPreferences().getBoolean(CUSTOM_HTML_INAPPMESSAGE_ACTION_LISTENER_KEY, false);
-    customHtmlInAppMessageActionListenerCheckBox.setChecked(usingCustomHtmlInAppActionListener);
 
     Button displayNextInAppMessageButton = view.findViewById(R.id.display_next_inappmessage_button);
     displayNextInAppMessageButton.setOnClickListener(v -> AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage());
@@ -839,6 +819,29 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
   }
 
+  @NonNull
+  private SharedPreferences getSettingsPreferences() {
+    return Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
+  }
+
+  private void setupCheckbox(CheckBox checkBoxView, final CompoundButton.OnCheckedChangeListener listener) {
+    // Generate the preferences id. Note that this will change
+    // if the id changes but that is ok for this use-case
+    final String key = "checkbox_pref_" + checkBoxView.getId();
+
+    // Set the initial checked state
+    checkBoxView.setChecked(getSettingsPreferences().getBoolean(key, false));
+
+    // Call the provided listener
+    checkBoxView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      listener.onCheckedChanged(buttonView, isChecked);
+      getSettingsPreferences()
+          .edit()
+          .putBoolean(key, isChecked)
+          .apply();
+    });
+  }
+
   private static String getStringFromAssets(Context context, String filename) {
     // Get the text of the html from the assets folder
     try {
@@ -855,10 +858,5 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     }
 
     return null;
-  }
-
-  @NonNull
-  private SharedPreferences getSettingsPreferences() {
-    return Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
   }
 }

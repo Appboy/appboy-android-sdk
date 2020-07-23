@@ -2,9 +2,12 @@ package com.appboy.ui.inappmessage;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.VisibleForTesting;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -92,8 +95,27 @@ public class InAppMessageWebViewClient extends WebViewClient {
    *
    * @return true since all actions in Html In-App Messages are handled outside of the In-App Message itself.
    */
+  @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+  @Override
+  public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+    return handleUrlOverride(request.getUrl().toString());
+  }
+
+  @SuppressWarnings("deprecation") // Updated `shouldOverrideUrlLoading()` method is called elsewhere in this client
   @Override
   public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    return handleUrlOverride(url);
+  }
+
+  public void setWebViewClientStateListener(@Nullable IWebViewClientStateListener listener) {
+    // If the page is already done loading, inform the new listener
+    if (listener != null && mHasPageFinishedLoading && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
+      listener.onPageFinished();
+    }
+    mWebViewClientStateListener = listener;
+  }
+
+  private boolean handleUrlOverride(String url) {
     if (mInAppMessageWebViewClientListener == null) {
       AppboyLogger.i(TAG, "InAppMessageWebViewClient was given null IInAppMessageWebViewClientListener listener. Returning true.");
       return true;
@@ -128,14 +150,6 @@ public class InAppMessageWebViewClient extends WebViewClient {
     }
     mInAppMessageWebViewClientListener.onOtherUrlAction(mInAppMessage, url, queryBundle);
     return true;
-  }
-
-  public void setWebViewClientStateListener(@Nullable IWebViewClientStateListener listener) {
-    // If the page is already done loading, inform the new listener
-    if (listener != null && mHasPageFinishedLoading && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
-      listener.onPageFinished();
-    }
-    mWebViewClientStateListener = listener;
   }
 
   /**

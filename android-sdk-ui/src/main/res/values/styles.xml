@@ -588,6 +588,8 @@
     <item name="android:layout_alignParentRight">true</item>
     <item name="android:layout_alignParentTop">true</item>
     <item name="android:src">@drawable/icon_pinned</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="android:importantForAccessibility">no</item>
   </style>
   <style name="Appboy.ContentCards.ActionHint">
     <item name="android:textSize">13sp</item>
@@ -612,6 +614,8 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:scaleType">centerCrop</item>
     <item name="android:adjustViewBounds">true</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="android:importantForAccessibility">no</item>
   </style>
   <style name="Appboy.ContentCards.CaptionedImage.Container">
     <item name="android:layout_marginLeft">25dp</item>
@@ -657,6 +661,8 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:scaleType">centerCrop</item>
     <item name="android:adjustViewBounds">true</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="android:importantForAccessibility">no</item>
   </style>
   <style name="Appboy.ContentCards.PinnedIcon.Banner">
   </style>
@@ -684,6 +690,8 @@
     <item name="android:scaleType">centerCrop</item>
     <item name="android:adjustViewBounds">true</item>
     <item name="android:background">@drawable/com_appboy_content_cards_rounded_corner_background</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="android:importantForAccessibility">no</item>
   </style>
   <style name="Appboy.ContentCards.ShortNews.Container">
     <item name="android:layout_marginLeft">12dp</item>

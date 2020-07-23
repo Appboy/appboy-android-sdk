@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PropertyManager implements AdapterView.OnItemSelectedListener {
-  private static final String[] propertyTypes = new String[]{"integer", "double", "string", "boolean", "date", "long"};
+  private static final String[] propertyTypes = {"integer", "double", "string", "boolean", "date", "long"};
   private Map<String, Object> mProperties = new HashMap<>();
   private List<String> mKeys = new ArrayList<>();
   private int selectedPropertyType;

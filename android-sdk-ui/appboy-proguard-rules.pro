@@ -9,6 +9,8 @@
 #
 # See https://github.com/Appboy/appboy-android-sdk/issues/49
 -keepnames class com.appboy.ui.** { *; }
+-keepnames class com.appboy.** { *; }
+-keepnames class bo.app.** { *; }
 
 -dontwarn com.appboy.ui.**
 -dontwarn com.google.firebase.messaging.**

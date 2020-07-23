@@ -162,11 +162,6 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     return sUnreadCardVisualIndicatorEnabled;
   }
 
-  /**
-   * Calls the corresponding card manager to see if the action listener has handled the click.
-   */
-  protected abstract boolean isClickHandled(Context context, Card card, IAction cardAction);
-
   protected static UriAction getUriActionForCard(Card card) {
     Bundle extras = new Bundle();
     for (String key : card.getExtras().keySet()) {
@@ -196,4 +191,9 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       card.logClick();
     }
   }
+
+  /**
+   * Calls the corresponding card manager to see if the action listener has handled the click.
+   */
+  protected abstract boolean isClickHandled(Context context, Card card, IAction cardAction);
 }

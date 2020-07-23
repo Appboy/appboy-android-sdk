@@ -22,6 +22,8 @@ import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
 
 public class AppboyInAppMessageManagerBase {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageManagerBase.class);
+
+  private boolean mClickOutsideModalDismissesInAppMessageView = false;
   private boolean mBackButtonDismissesInAppMessageView = true;
   @Nullable
   Activity mActivity;
@@ -118,6 +120,10 @@ public class AppboyInAppMessageManagerBase {
     return mBackButtonDismissesInAppMessageView;
   }
 
+  public boolean getDoesClickOutsideModalViewDismissInAppMessageView() {
+    return mClickOutsideModalDismissesInAppMessageView;
+  }
+
   public IInAppMessageAnimationFactory getInAppMessageAnimationFactory() {
     return mCustomInAppMessageAnimationFactory != null ? mCustomInAppMessageAnimationFactory : mInAppMessageAnimationFactory;
   }
@@ -148,6 +154,15 @@ public class AppboyInAppMessageManagerBase {
   public void setBackButtonDismissesInAppMessageView(boolean backButtonDismissesInAppMessageView) {
     AppboyLogger.d(TAG, "In-App Message back button dismissal set to " + backButtonDismissesInAppMessageView);
     mBackButtonDismissesInAppMessageView = backButtonDismissesInAppMessageView;
+  }
+
+  /**
+   * Sets whether the tapping outside the modal in-app message content dismiss the
+   * message. Defaults to false.
+   */
+  public void setClickOutsideModalViewDismissInAppMessageView(boolean doesDismiss) {
+    AppboyLogger.d(TAG, "Modal In-App Message outside tap dismissal set to " + doesDismiss);
+    mClickOutsideModalDismissesInAppMessageView = doesDismiss;
   }
 
   /**

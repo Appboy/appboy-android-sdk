@@ -2,7 +2,6 @@ package com.appboy.ui.inappmessage;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Handler;
 
 import com.appboy.Appboy;
@@ -23,7 +22,8 @@ import com.appboy.support.WebContentUtils;
 
 import java.io.File;
 
-public class AppboyAsyncInAppMessageDisplayer extends AsyncTask<IInAppMessage, Integer, IInAppMessage> {
+@SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-420
+public class AppboyAsyncInAppMessageDisplayer extends android.os.AsyncTask<IInAppMessage, Integer, IInAppMessage> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyAsyncInAppMessageDisplayer.class);
 
   @Override

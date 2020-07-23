@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     findViewById(R.id.bLogEvent).setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         Bundle params = new Bundle();
         params.putString("eventName", "played_song_event");
         params.putInt("intParam", 1);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     findViewById(R.id.bLogUserProperty).setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         Bundle params = new Bundle();
         params.putString("customAttributeKey", "favorite song");
         params.putString("customAttributeValue", "Private Eyes");

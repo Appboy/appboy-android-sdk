@@ -6,8 +6,8 @@
   <string name="com_appboy_feed_connection_error_body">Cannot establish network connection.\nPlease try again later.</string>
 
   <!-- Content descriptions -->
-  <string name="com_appboy_inappmessage_close_content_description" tools:ignore="MissingTranslation">in-app message close</string>
-  <string name="com_appboy_inappmessage_image_content_description" tools:ignore="MissingTranslation">in-app message image</string>
-  <string name="com_appboy_inappmessage_icon_content_description" tools:ignore="MissingTranslation">in-app message icon</string>
+  <string name="com_appboy_inappmessage_close_content_description" tools:ignore="MissingTranslation">close</string>
+  <string name="com_appboy_inappmessage_image_content_description" tools:ignore="MissingTranslation">@null</string>
+  <string name="com_appboy_inappmessage_icon_content_description" tools:ignore="MissingTranslation">@null</string>
 
 </resources>

@@ -38,19 +38,17 @@ public class ContentCardsDividerItemDecoration extends RecyclerView.ItemDecorati
     boolean isControlCard = false;
     if (parent.getAdapter() instanceof AppboyCardAdapter) {
       AppboyCardAdapter cardAdapter = (AppboyCardAdapter) parent.getAdapter();
-      if (childAdapterPosition > 0) {
-        isControlCard = cardAdapter.isControlCardAtPosition(childAdapterPosition);
-      }
+      isControlCard = cardAdapter.isControlCardAtPosition(childAdapterPosition);
     }
 
-    // Set the top of the divider item to the proper height in pixels, if not a control
-    // If the card is a control, then don't set any extra divider on the card
+    // The goal here is to ensure that:
+    // * The first visible card in the has a margin to the top
+    // * All cards have the same margin between them
+    // * The last visible card has a margin to the bottom
+
+    // Only the first card in the list gets a top divider. All other non-control cards get a bottom divider.
+    itemViewOutputRect.top = childAdapterPosition == 0 ? mItemDividerHeight : 0;
     itemViewOutputRect.bottom = isControlCard ? 0 : mItemDividerHeight;
-
-    // If this is the first card, then don't set a top value to the divider
-    if (childAdapterPosition == 0) {
-      itemViewOutputRect.top = 0;
-    }
 
     // Now we have to center the view horizontally in the RecyclerView
     // by adding in a margin on to the left & right of the view

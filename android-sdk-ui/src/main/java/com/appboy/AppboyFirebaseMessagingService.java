@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.StringUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -14,6 +16,22 @@ import java.util.Map;
 public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFirebaseMessagingService.class);
   private static final AppboyFcmReceiver mAppboyFcmReceiver = new AppboyFcmReceiver();
+
+  @Override
+  public void onNewToken(String newToken) {
+    super.onNewToken(newToken);
+    if (StringUtils.isNullOrEmpty(Appboy.getConfiguredApiKey(this))) {
+      AppboyLogger.v(TAG, "No configured API key, not registering token in onNewToken.");
+      return;
+    }
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(this);
+    if (!configurationProvider.isFirebaseCloudMessagingRegistrationEnabled()) {
+      AppboyLogger.v(TAG, "Automatic Firebase registration disabled, not registering token in onNewToken.");
+      return;
+    }
+    AppboyLogger.v(TAG, "Registering Firebase push token in onNewToken. Token: " + newToken);
+    Appboy.getInstance(this).registerAppboyPushMessages(newToken);
+  }
 
   @Override
   public void onMessageReceived(RemoteMessage remoteMessage) {

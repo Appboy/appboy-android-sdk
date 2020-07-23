@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.appboy.ui">
+  package="com.appboy.ui">
 
   <application>
-    <activity android:name="com.appboy.ui.AppboyWebViewActivity"/>
-    <activity android:name="com.appboy.ui.activities.AppboyFeedActivity"/>
-    <activity android:name="com.appboy.ui.activities.AppboyContentCardsActivity"/>
+    <activity
+      android:name="com.appboy.ui.AppboyWebViewActivity"
+      android:exported="false" />
+    <activity
+      android:name="com.appboy.ui.activities.AppboyFeedActivity"
+      android:exported="false" />
+    <activity
+      android:name="com.appboy.ui.activities.AppboyContentCardsActivity"
+      android:exported="false" />
     <activity
       android:name="com.appboy.push.AppboyNotificationRoutingActivity"
-      android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+      android:exported="false"
+      android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     <!-- Although the AppboyFcmReceiver doesn't explicitly handle FCM messages
          directly any more, push is still redirected to it and thus needs to be registered. -->
     <receiver
       android:name="com.appboy.AppboyFcmReceiver"
-      android:exported="false"/>
+      android:exported="false" />
   </application>
 </manifest>

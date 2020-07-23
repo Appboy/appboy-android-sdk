@@ -141,7 +141,7 @@ public class CustomUserAttributeDialog extends DialogPreference {
       AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
       switch (attributeArrayResourceId) {
         case R.id.custom_attribute_array_set:
-          String[] attributeArray = new String[]{customAttributeArrayValue};
+          String[] attributeArray = {customAttributeArrayValue};
           notifyResult(appboyUser.setCustomAttributeArray(customAttributeArrayKey, attributeArray),
               "setCustomAttributeArray! Setting new array key=" + customAttributeArrayKey + ", values={" + customAttributeArrayValue + "}");
           break;

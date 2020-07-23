@@ -2,7 +2,6 @@ package com.appboy.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,8 +30,8 @@ import com.appboy.ui.adapters.AppboyListAdapter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-@SuppressWarnings("PMD.UnnecessaryConstructor")
-public class AppboyXamarinFormsFeedFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
+@SuppressWarnings({"PMD.UnnecessaryConstructor", "deprecation"})
+public class AppboyXamarinFormsFeedFragment extends android.app.ListFragment implements SwipeRefreshLayout.OnRefreshListener {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyXamarinFormsFeedFragment.class);
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;
   private static final int MAX_FEED_TTL_SECONDS = 60;

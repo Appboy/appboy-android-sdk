@@ -49,8 +49,7 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
   public ContentCardViewHolder createViewHolder(ViewGroup viewGroup) {
     View view = LayoutInflater.from(viewGroup.getContext())
         .inflate(R.layout.com_appboy_captioned_image_content_card, viewGroup, false);
-
-    view.setBackground(getResources().getDrawable(R.drawable.com_appboy_content_card_background));
+    setViewBackground(view);
     return new ViewHolder(view);
   }
 
@@ -65,5 +64,6 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
 
     setOptionalCardImage(captionedImageViewHolder.getImageView(),
         card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO);
+    viewHolder.itemView.setContentDescription(card.getTitle() + " . " + card.getDescription());
   }
 }

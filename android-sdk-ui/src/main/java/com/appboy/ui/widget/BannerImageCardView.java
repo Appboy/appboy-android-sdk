@@ -23,6 +23,7 @@ public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
     this(context, null);
   }
 
+  @SuppressWarnings("deprecation") // getDrawable() until Build.VERSION_CODES.LOLLIPOP
   public BannerImageCardView(final Context context, BannerImageCard card) {
     super(context);
     mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_banner_image_card_imageview_stub);

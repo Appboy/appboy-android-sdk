@@ -48,9 +48,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   private EnumSet<CardCategory> mAppboyFeedCategories;
   protected Context mApplicationContext;
   protected DrawerLayout mDrawerLayout;
-  private Adapter mAdapter;
   private static boolean mRequestedLocationPermissions = false;
-  private SharedPreferences.OnSharedPreferenceChangeListener mNewsfeedSortListener;
   private FloatingActionButton mFloatingActionButton;
 
   @Override
@@ -94,7 +92,16 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
     mDrawerLayout = findViewById(R.id.root);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !mRequestedLocationPermissions) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        boolean hasFineLocationPermission = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        if (!hasFineLocationPermission) {
+          // Only request fine location
+          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+        } else {
+          // Request background now that fine is set
+          requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+        }
+      } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         boolean hasAllPermissions = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             && PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         if (!hasAllPermissions) {
@@ -114,26 +121,26 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
     SharedPreferences sharedPref = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     // We implement the listener this way so that it doesn't get garbage collected when we navigate to and from this activity
-    mNewsfeedSortListener = (prefs, key) -> {
+    SharedPreferences.OnSharedPreferenceChangeListener newsfeedSortListener = (prefs, key) -> {
       SharedPreferences sharedPref1 = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
       AppboyFeedFragment feedFragment = getFeedFragment();
       if (feedFragment != null) {
         feedFragment.setSortEnabled(sharedPref1.getBoolean(getString(R.string.sort_feed), false));
       }
     };
-    sharedPref.registerOnSharedPreferenceChangeListener(mNewsfeedSortListener);
+    sharedPref.registerOnSharedPreferenceChangeListener(newsfeedSortListener);
 
     Log.i(TAG, "Braze device id is " + Appboy.getInstance(getApplicationContext()).getDeviceId());
   }
 
   private void setupViewPager(final ViewPager viewPager) {
-    mAdapter = new Adapter(getSupportFragmentManager());
-    mAdapter.addFragment(new MainFragment(), "Events");
-    mAdapter.addFragment(new InAppMessageTesterFragment(), getString(R.string.inappmessage_tester_tab_title));
-    mAdapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
-    mAdapter.addFragment(new PushTesterFragment(), "Push");
-    mAdapter.addFragment(new AppboyFeedFragment(), "Feed");
-    viewPager.setAdapter(mAdapter);
+    Adapter adapter = new Adapter(getSupportFragmentManager());
+    adapter.addFragment(new MainFragment(), "Events");
+    adapter.addFragment(new InAppMessageTesterFragment(), getString(R.string.inappmessage_tester_tab_title));
+    adapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
+    adapter.addFragment(new PushTesterFragment(), "Push");
+    adapter.addFragment(new AppboyFeedFragment(), "Feed");
+    viewPager.setAdapter(adapter);
 
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override

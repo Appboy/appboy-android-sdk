@@ -50,8 +50,7 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
   public ContentCardViewHolder createViewHolder(ViewGroup viewGroup) {
     View view = LayoutInflater.from(viewGroup.getContext())
         .inflate(R.layout.com_appboy_short_news_content_card, viewGroup, false);
-
-    view.setBackground(getResources().getDrawable(R.drawable.com_appboy_content_card_background));
+    setViewBackground(view);
     return new ViewHolder(view);
   }
 
@@ -71,5 +70,6 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       safeSetClipToOutline(shortNewsCardViewHolder.getImageView());
     }
+    viewHolder.itemView.setContentDescription(card.getTitle() + " . " + card.getDescription());
   }
 }

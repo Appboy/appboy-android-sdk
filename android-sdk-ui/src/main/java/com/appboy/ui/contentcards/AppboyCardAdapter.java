@@ -2,6 +2,7 @@ package com.appboy.ui.contentcards;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -38,7 +39,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
                            IContentCardsViewBindingHandler contentCardsViewBindingHandler) {
     mContext = context;
     mCardData = cardData;
-    mHandler = new Handler();
+    mHandler = new Handler(Looper.getMainLooper());
     mLayoutManager = layoutManager;
     mContentCardsViewBindingHandler = contentCardsViewBindingHandler;
 

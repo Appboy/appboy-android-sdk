@@ -1,3 +1,58 @@
+## 8.1.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v8.1.0)
+
+##### Added support for Android 11 R (API 30).
+- Note that apps targeting API 30 should update to this SDK version.
+
+##### Changed
+- Changed Content Card subscriptions to automatically re-fire when silent push syncs or test send cards are received via push.
+- Improved several accessibility features of In-App Messages and Content Cards as per [Principles for improving app accessibility](https://developer.android.com/guide/topics/ui/accessibility/principles).
+  - Changed non-informative accessibility content descriptions for in-app message and Content Card images to `@null`.
+  - Content Cards now have content descriptions on their views that incorporate the title and description.
+- Changed the `AppboyFirebaseMessagingService` to override the `onNewToken()` method to register a Firebase push token when automatic Firebase registration enabled.
+
+##### Added
+- Added `appboyBridge.getUser().addAlias()` to the javascript interface for HTML In-App Messages.
+- Added `Appboy.getConfiguredApiKey()` to aid in determining if the SDK has an API key properly configured.
+- Added an overload for `IAppboy.getCurrentUser()` that adds an asynchronous callback for when the current user is available instead of blocking on the caller thread.
+  - The following is an example of the full interface:
+  - ```java
+    Appboy.getInstance(mContext).getCurrentUser(new IValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setFirstName("Jared");
+      }
+
+      @Override
+      public void onError() {}
+    });
+  ```
+  - A convenience class is also provided with `SimpleValueCallback`:
+  - ```java
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setFirstName("Julian");
+      }
+    });
+  ```
+- Added `AppboyInAppMessageManager.setClickOutsideModalViewDismissInAppMessageView()` allow for the dismissal of a Modal In-App Message when tapping on the frame behind the message itself.
+  - The default (and historical) value is false, meaning that clicks outside the modal do not close the modal.
+  - To toggle the feature on, call: `AppboyInAppMessageManager.getInstance().setClickOutsideModalViewDismissInAppMessageView(true)`
+
+##### Fixed
+- Fixed behavior of the `com.appboy.ui.AppboyContentCardsFragment` to not assign margin of the first card in the feed from the top of the feed.
+- Fixed an issue with Content Card test sends where the test send wouldn't be visible in some conditions.
+- Fixed an issue with regex based event property triggers not working as expected. Previously they had to match the entire string, now they will search for matches as expected. The regex is now also case-insensitive.
+- Fixed an issue with `resolveActivity()` in the default `UriAction` logic not returning a valid `Activity` to handle external deeplinks on Android 11 devices without the `QUERY_ALL_PACKAGES` permission.
+- Fixed an issue introduced in 4.0.1 where upgrading the SDK could result in server configuration values getting removed until the next session start.
+
+##### Removed
+- Removed `AppboyConfig.Builder.setNotificationsEnabledTrackingOn()`.
+- Removed `AppboyImageUtils.getPixelsFromDp()`.
+- Removed `ViewUtils.getDisplayHeight()`.
+
 ## 8.0.1
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v8.0.1)

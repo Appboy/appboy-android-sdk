@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.appboy.AppboyUser;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
+import com.appboy.events.IValueCallback;
 import com.appboy.models.outgoing.AttributionData;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
@@ -124,69 +127,87 @@ public class MainFragment extends Fragment {
       }
     });
     mSetUserAttributesButton.setOnClickListener(view -> {
-      AppboyUser currentUser = Appboy.getInstance(mContext).getCurrentUser();
-      currentUser.setFirstName("firstName");
-      currentUser.setLastName("lastName");
-      currentUser.setEmail("email@test.com");
-      currentUser.setGender(Gender.FEMALE);
-      currentUser.setCountry("USA");
-      currentUser.setLanguage("cs");
-      currentUser.setHomeCity("New York");
-      currentUser.setPhoneNumber("1234567890");
-      currentUser.setDateOfBirth(1984, Month.AUGUST, 18);
-      currentUser.setAvatarImageUrl("https://raw.githubusercontent.com/Appboy/appboy-android-sdk/master/braze-logo.png");
-      currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN);
-      currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN);
-      currentUser.setCustomUserAttribute(STRING_ATTRIBUTE_KEY, "stringValue");
-      currentUser.setCustomUserAttribute(FLOAT_ATTRIBUTE_KEY, 1.5f);
-      currentUser.setCustomUserAttribute(INT_ATTRIBUTE_KEY, 100);
-      currentUser.setCustomUserAttribute(BOOL_ATTRIBUTE_KEY, true);
-      currentUser.setCustomUserAttribute(LONG_ATTRIBUTE_KEY, 10L);
-      currentUser.setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1);
-      currentUser.setCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY, 3.1d);
-      currentUser.incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4);
-      currentUser.setCustomUserAttributeToSecondsFromEpoch(DATE_ATTRIBUTE_KEY, new Date().getTime() / 1000L);
-      currentUser.setCustomAttributeArray(STRING_ARRAY_ATTRIBUTE_KEY, new String[]{"a", "b"});
-      currentUser.addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c");
-      currentUser.removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b");
-      currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "cat");
-      currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "dog");
-      currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "bird");
-      currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "deer");
-      currentUser.setAttributionData(new AttributionData("network", "campaign", "ad group", "creative"));
-      currentUser.setLocationCustomAttribute("Favorite Location", 33.078883d, -116.603131d);
-      Toast.makeText(getContext(), "Set user attributes.", Toast.LENGTH_SHORT).show();
+      Appboy.getInstance(mContext).getCurrentUser(new IValueCallback<AppboyUser>() {
+        @Override
+        public void onSuccess(@NonNull AppboyUser currentUser) {
+          currentUser.setFirstName("first name least");
+          currentUser.setLastName("lastName");
+          currentUser.setEmail("email@test.com");
+          currentUser.setGender(Gender.FEMALE);
+          currentUser.setCountry("USA");
+          currentUser.setLanguage("cs");
+          currentUser.setHomeCity("New York");
+          currentUser.setPhoneNumber("1234567890");
+          currentUser.setDateOfBirth(1984, Month.AUGUST, 18);
+          currentUser.setAvatarImageUrl("https://raw.githubusercontent.com/Appboy/appboy-android-sdk/master/braze-logo.png");
+          currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN);
+          currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN);
+          currentUser.setCustomUserAttribute(STRING_ATTRIBUTE_KEY, "stringValue");
+          currentUser.setCustomUserAttribute(FLOAT_ATTRIBUTE_KEY, 1.5f);
+          currentUser.setCustomUserAttribute(INT_ATTRIBUTE_KEY, 100);
+          currentUser.setCustomUserAttribute(BOOL_ATTRIBUTE_KEY, true);
+          currentUser.setCustomUserAttribute(LONG_ATTRIBUTE_KEY, 10L);
+          currentUser.setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1);
+          currentUser.setCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY, 3.1d);
+          currentUser.incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4);
+          currentUser.setCustomUserAttributeToSecondsFromEpoch(DATE_ATTRIBUTE_KEY, new Date().getTime() / 1000L);
+          currentUser.setCustomAttributeArray(STRING_ARRAY_ATTRIBUTE_KEY, new String[]{"a", "b"});
+          currentUser.addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c");
+          currentUser.removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b");
+          currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "cat");
+          currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "dog");
+          currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "bird");
+          currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "deer");
+          currentUser.setAttributionData(new AttributionData("network", "campaign", "ad group", "creative"));
+          currentUser.setLocationCustomAttribute("Favorite Location", 33.078883d, -116.603131d);
+          showToast("Set user attributes.");
+        }
+
+        @Override
+        public void onError() {
+          showToast("Failed to set user attributes.");
+        }
+      });
     });
     mUnsetUserAttributesButton.setOnClickListener(view -> {
-      AppboyUser currentUser = Appboy.getInstance(mContext).getCurrentUser();
-      // Unset current user default attributes
-      currentUser.setFirstName(null);
-      currentUser.setLastName(null);
-      currentUser.setEmail(null);
-      currentUser.setGender(Gender.UNKNOWN);
-      currentUser.setCountry(null);
-      currentUser.setLanguage(null);
-      currentUser.setHomeCity(null);
-      currentUser.setPhoneNumber(null);
-      currentUser.setDateOfBirth(1970, Month.JANUARY, 1);
-      currentUser.setAvatarImageUrl(null);
-      currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED);
-      currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED);
-      // Unset current user custom attributes
-      currentUser.unsetCustomUserAttribute(STRING_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(FLOAT_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(INT_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(BOOL_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(LONG_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(DATE_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(ARRAY_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(STRING_ARRAY_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(PETS_ARRAY_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY);
-      currentUser.unsetCustomUserAttribute(ATTRIBUTION_DATA_KEY);
-      currentUser.unsetLocationCustomAttribute("Mediocre Location");
-      Toast.makeText(getContext(), "Unset user attributes.", Toast.LENGTH_SHORT).show();
+      Appboy.getInstance(mContext).getCurrentUser(new IValueCallback<AppboyUser>() {
+        @Override
+        public void onSuccess(@NonNull AppboyUser currentUser) {
+          // Unset current user default attributes
+          currentUser.setFirstName(null);
+          currentUser.setLastName(null);
+          currentUser.setEmail(null);
+          currentUser.setGender(Gender.UNKNOWN);
+          currentUser.setCountry(null);
+          currentUser.setLanguage(null);
+          currentUser.setHomeCity(null);
+          currentUser.setPhoneNumber(null);
+          currentUser.setDateOfBirth(1970, Month.JANUARY, 1);
+          currentUser.setAvatarImageUrl(null);
+          currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED);
+          currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED);
+          // Unset current user custom attributes
+          currentUser.unsetCustomUserAttribute(STRING_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(FLOAT_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(INT_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(BOOL_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(LONG_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(DATE_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(ARRAY_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(STRING_ARRAY_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(PETS_ARRAY_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY);
+          currentUser.unsetCustomUserAttribute(ATTRIBUTION_DATA_KEY);
+          currentUser.unsetLocationCustomAttribute("Mediocre Location");
+          showToast("Unset user attributes.");
+        }
+
+        @Override
+        public void onError() {
+          showToast("Failed to unset user attributes.");
+        }
+      });
     });
     mRequestFlushButton.setOnClickListener(view -> {
       Appboy.getInstance(mContext).requestImmediateDataFlush();
@@ -199,11 +220,28 @@ public class MainFragment extends Fragment {
   private void handleAliasClick() {
     String alias = mAliasEditText.getText().toString();
     String label = mAliasLabelEditText.getText().toString();
-    if (Appboy.getInstance(mContext).getCurrentUser().addAlias(alias, label)) {
-      Toast.makeText(getContext(), "Added alias " + alias + " with label "
-          + label, Toast.LENGTH_SHORT).show();
-    } else {
-      Toast.makeText(getContext(), "Failed to add alias", Toast.LENGTH_SHORT).show();
+    Appboy.getInstance(mContext).getCurrentUser(new IValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser value) {
+        value.addAlias(alias, label);
+        Toast.makeText(getContext(), "Added alias " + alias + " with label "
+            + label, Toast.LENGTH_SHORT).show();
+      }
+
+      @Override
+      public void onError() {
+        Toast.makeText(getContext(), "Failed to add alias", Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
+
+  /**
+   * Shows a toast on the activity's UI thread
+   */
+  private void showToast(final String msg) {
+    final FragmentActivity activity = getActivity();
+    if (activity != null) {
+      activity.runOnUiThread(() -> Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show());
     }
   }
 

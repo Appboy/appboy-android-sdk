@@ -1,6 +1,7 @@
 package com.appboy.ui.inappmessage.jsinterface;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.webkit.JavascriptInterface;
 
@@ -9,6 +10,7 @@ import com.appboy.AppboyUser;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
+import com.appboy.events.SimpleValueCallback;
 import com.appboy.support.AppboyLogger;
 
 import org.json.JSONArray;
@@ -38,63 +40,213 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   }
 
   @JavascriptInterface
-  public void setFirstName(String firstName) {
-    Appboy.getInstance(mContext).getCurrentUser().setFirstName(firstName);
+  public void setFirstName(final String firstName) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setFirstName(firstName);
+      }
+    });
   }
 
   @JavascriptInterface
-  public void setLastName(String lastName) {
-    Appboy.getInstance(mContext).getCurrentUser().setLastName(lastName);
+  public void setLastName(final String lastName) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setLastName(lastName);
+      }
+    });
   }
 
   @JavascriptInterface
-  public void setEmail(String email) {
-    Appboy.getInstance(mContext).getCurrentUser().setEmail(email);
+  public void setEmail(final String email) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setEmail(email);
+      }
+    });
   }
 
   @JavascriptInterface
   public void setGender(String genderString) {
-    Gender gender = parseGender(genderString);
+    final Gender gender = parseGender(genderString);
     if (gender == null) {
-      AppboyLogger.e(TAG, "Failed to parse gender in Braze HTML in-app message javascript interface with gender: " + genderString);
+      AppboyLogger.e(TAG, "Failed to parse gender in Braze HTML in-app message "
+          + "javascript interface with gender: " + genderString);
     } else {
-      Appboy.getInstance(mContext).getCurrentUser().setGender(gender);
+      Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+        @Override
+        public void onSuccess(@NonNull AppboyUser currentUser) {
+          currentUser.setGender(gender);
+        }
+      });
     }
-  }
-
-  @VisibleForTesting
-  Gender parseGender(String genderString) {
-    if (genderString == null) {
-      return null;
-    }
-
-    String genderStringLowerCase = genderString.toLowerCase(Locale.US);
-    if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_MALE)) {
-      return Gender.MALE;
-    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_FEMALE)) {
-      return Gender.FEMALE;
-    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_OTHER)) {
-      return Gender.OTHER;
-    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_UNKNOWN)) {
-      return Gender.UNKNOWN;
-    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_NOT_APPLICABLE)) {
-      return Gender.NOT_APPLICABLE;
-    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_PREFER_NOT_TO_SAY)) {
-      return Gender.PREFER_NOT_TO_SAY;
-    }
-
-    return null;
   }
 
   @JavascriptInterface
-  public void setDateOfBirth(int year, int monthInt, int day) {
-    Month month = monthFromInt(monthInt);
+  public void setDateOfBirth(final int year, int monthInt, final int day) {
+    final Month month = monthFromInt(monthInt);
     if (month == null) {
       AppboyLogger.e(TAG, "Failed to parse month for value " + monthInt);
       return;
     }
 
-    Appboy.getInstance(mContext).getCurrentUser().setDateOfBirth(year, month, day);
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setDateOfBirth(year, month, day);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setCountry(final String country) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setCountry(country);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setLanguage(final String language) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setLanguage(language);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setHomeCity(final String homeCity) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setHomeCity(homeCity);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setEmailNotificationSubscriptionType(String subscriptionType) {
+    final NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
+    if (subscriptionTypeEnum == null) {
+      AppboyLogger.e(TAG, "Failed to parse email subscription type in Braze HTML in-app message javascript interface with subscription " + subscriptionType);
+      return;
+    }
+
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setEmailNotificationSubscriptionType(subscriptionTypeEnum);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setPushNotificationSubscriptionType(String subscriptionType) {
+    final NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
+    if (subscriptionTypeEnum == null) {
+      AppboyLogger.e(TAG, "Failed to parse push subscription type in Braze HTML in-app message javascript interface with subscription: " + subscriptionType);
+      return;
+    }
+
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setPushNotificationSubscriptionType(subscriptionTypeEnum);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setPhoneNumber(final String phoneNumber) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setPhoneNumber(phoneNumber);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setCustomUserAttributeJSON(final String key, final String jsonStringValue) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        setCustomAttribute(currentUser, key, jsonStringValue);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setCustomUserAttributeArray(final String key, String jsonArrayString) {
+    final String[] arrayValue = parseStringArrayFromJsonString(jsonArrayString);
+    if (arrayValue == null) {
+      AppboyLogger.e(TAG, "Failed to set custom attribute array for key " + key);
+      return;
+    }
+
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setCustomAttributeArray(key, arrayValue);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void addToCustomAttributeArray(final String key, final String value) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.addToCustomAttributeArray(key, value);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void removeFromCustomAttributeArray(final String key, final String value) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.removeFromCustomAttributeArray(key, value);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void incrementCustomUserAttribute(final String attribute) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.incrementCustomUserAttribute(attribute);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void setCustomLocationAttribute(final String attribute, final double latitude, final double longitude) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.setLocationCustomAttribute(attribute, latitude, longitude);
+      }
+    });
+  }
+
+  @JavascriptInterface
+  public void addAlias(final String alias, final String label) {
+    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      @Override
+      public void onSuccess(@NonNull AppboyUser currentUser) {
+        currentUser.addAlias(alias, label);
+      }
+    });
   }
 
   @VisibleForTesting
@@ -104,43 +256,6 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
     }
 
     return Month.getMonth(monthInt - 1);
-  }
-
-  @JavascriptInterface
-  public void setCountry(String country) {
-    Appboy.getInstance(mContext).getCurrentUser().setCountry(country);
-  }
-
-  @JavascriptInterface
-  public void setLanguage(String language) {
-    Appboy.getInstance(mContext).getCurrentUser().setLanguage(language);
-  }
-
-  @JavascriptInterface
-  public void setHomeCity(String homeCity) {
-    Appboy.getInstance(mContext).getCurrentUser().setHomeCity(homeCity);
-  }
-
-  @JavascriptInterface
-  public void setEmailNotificationSubscriptionType(String subscriptionType) {
-    NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
-    if (subscriptionTypeEnum == null) {
-      AppboyLogger.e(TAG, "Failed to parse email subscription type in Braze HTML in-app message javascript interface with subscription " + subscriptionType);
-      return;
-    }
-
-    Appboy.getInstance(mContext).getCurrentUser().setEmailNotificationSubscriptionType(subscriptionTypeEnum);
-  }
-
-  @JavascriptInterface
-  public void setPushNotificationSubscriptionType(String subscriptionType) {
-    NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
-    if (subscriptionTypeEnum == null) {
-      AppboyLogger.e(TAG, "Failed to parse push subscription type in Braze HTML in-app message javascript interface with subscription: " + subscriptionType);
-      return;
-    }
-
-    Appboy.getInstance(mContext).getCurrentUser().setPushNotificationSubscriptionType(subscriptionTypeEnum);
   }
 
   @VisibleForTesting
@@ -155,16 +270,6 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
     }
 
     return null;
-  }
-
-  @JavascriptInterface
-  public void setPhoneNumber(String phoneNumber) {
-    Appboy.getInstance(mContext).getCurrentUser().setPhoneNumber(phoneNumber);
-  }
-
-  @JavascriptInterface
-  public void setCustomUserAttributeJSON(String key, String jsonStringValue) {
-    setCustomAttribute(Appboy.getInstance(mContext).getCurrentUser(), key, jsonStringValue);
   }
 
   @VisibleForTesting
@@ -192,17 +297,6 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
     }
   }
 
-  @JavascriptInterface
-  public void setCustomUserAttributeArray(String key, String jsonArrayString) {
-    String[] arrayValue = parseStringArrayFromJsonString(jsonArrayString);
-    if (arrayValue == null) {
-      AppboyLogger.e(TAG, "Failed to set custom attribute array for key " + key);
-      return;
-    }
-
-    Appboy.getInstance(mContext).getCurrentUser().setCustomAttributeArray(key, arrayValue);
-  }
-
   @VisibleForTesting
   String[] parseStringArrayFromJsonString(String jsonArrayString) {
     try {
@@ -218,23 +312,27 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
     return null;
   }
 
-  @JavascriptInterface
-  public void addToCustomAttributeArray(String key, String value) {
-    Appboy.getInstance(mContext).getCurrentUser().addToCustomAttributeArray(key, value);
-  }
+  @VisibleForTesting
+  Gender parseGender(String genderString) {
+    if (genderString == null) {
+      return null;
+    }
 
-  @JavascriptInterface
-  public void removeFromCustomAttributeArray(String key, String value) {
-    Appboy.getInstance(mContext).getCurrentUser().removeFromCustomAttributeArray(key, value);
-  }
+    String genderStringLowerCase = genderString.toLowerCase(Locale.US);
+    if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_MALE)) {
+      return Gender.MALE;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_FEMALE)) {
+      return Gender.FEMALE;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_OTHER)) {
+      return Gender.OTHER;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_UNKNOWN)) {
+      return Gender.UNKNOWN;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_NOT_APPLICABLE)) {
+      return Gender.NOT_APPLICABLE;
+    } else if (genderStringLowerCase.equals(JS_BRIDGE_GENDER_PREFER_NOT_TO_SAY)) {
+      return Gender.PREFER_NOT_TO_SAY;
+    }
 
-  @JavascriptInterface
-  public void incrementCustomUserAttribute(String attribute) {
-    Appboy.getInstance(mContext).getCurrentUser().incrementCustomUserAttribute(attribute);
-  }
-
-  @JavascriptInterface
-  public void setCustomLocationAttribute(String attribute, double latitude, double longitude) {
-    Appboy.getInstance(mContext).getCurrentUser().setLocationCustomAttribute(attribute, latitude, longitude);
+    return null;
   }
 }

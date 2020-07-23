@@ -25,6 +25,7 @@ public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
     this(context, null);
   }
 
+  @SuppressWarnings("deprecation") // getDrawable() until Build.VERSION_CODES.LOLLIPOP
   public ShortNewsCardView(final Context context, ShortNewsCard card) {
     super(context);
     mDescription = findViewById(R.id.com_appboy_short_news_card_description);

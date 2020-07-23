@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -147,7 +146,8 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
    * Runs the {@link HandleAppboyFcmMessageTask} method in a background thread in case of an image push
    * notification, which cannot be downloaded on the main thread.
    */
-  public class HandleAppboyFcmMessageTask extends AsyncTask<Void, Void, Void> {
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-420
+  public class HandleAppboyFcmMessageTask extends android.os.AsyncTask<Void, Void, Void> {
     private final Context mContext;
     private final Intent mIntent;
 

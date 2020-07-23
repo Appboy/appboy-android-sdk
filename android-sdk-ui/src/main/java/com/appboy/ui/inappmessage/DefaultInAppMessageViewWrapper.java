@@ -152,7 +152,6 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
     // Retrieve the ViewGroup which will display the in-app message
     final ViewGroup parentViewGroup = getParentViewGroup(activity);
     final int parentViewGroupHeight = parentViewGroup.getHeight();
-    final int activityDisplayHeight = ViewUtils.getDisplayHeight(activity);
 
     if (mAppboyConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
       mContentViewGroupParentLayout = parentViewGroup;
@@ -170,8 +169,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
             new ViewTreeObserver.OnGlobalLayoutListener() {
               @Override
               public void onGlobalLayout() {
-                AppboyLogger.d(TAG, "Detected root view height of " + parentViewGroup.getHeight()
-                    + ", display height of " + activityDisplayHeight + " in onGlobalLayout");
+                AppboyLogger.d(TAG, "Detected root view height of " + parentViewGroup.getHeight() + " in onGlobalLayout");
                 parentViewGroup.removeView(mInAppMessageView);
                 addInAppMessageViewToViewGroup(parentViewGroup, mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener);
                 parentViewGroup.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -179,8 +177,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
             });
       }
     } else {
-      AppboyLogger.d(TAG, "Detected root view height of " + parentViewGroupHeight
-          + ", display height of " + activityDisplayHeight);
+      AppboyLogger.d(TAG, "Detected root view height of " + parentViewGroupHeight);
       addInAppMessageViewToViewGroup(parentViewGroup, mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener);
     }
   }
@@ -312,7 +309,14 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
    */
   protected void announceForAccessibilityIfNecessary(String fallbackAccessibilityMessage) {
     if (mInAppMessageView instanceof IInAppMessageImmersiveView) {
-      mInAppMessageView.announceForAccessibility(mInAppMessage.getMessage());
+      final String message = mInAppMessage.getMessage();
+      if (mInAppMessage instanceof IInAppMessageImmersive) {
+        // Announce the header and message together with a brief pause between them
+        final String header = ((IInAppMessageImmersive) mInAppMessage).getHeader();
+        mInAppMessageView.announceForAccessibility(header + " . " + message);
+      } else {
+        mInAppMessageView.announceForAccessibility(message);
+      }
     } else if (mInAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
       mInAppMessageView.announceForAccessibility(fallbackAccessibilityMessage);
     }

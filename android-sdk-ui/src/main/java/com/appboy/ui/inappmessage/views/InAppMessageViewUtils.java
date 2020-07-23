@@ -2,6 +2,8 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -30,7 +32,7 @@ public class InAppMessageViewUtils {
   }
 
   public static void setIcon(Context context, String icon, int iconColor, int iconBackgroundColor, TextView textView) {
-    if (isValidIcon(icon)) {
+    if (icon != null) {
       try {
         Typeface fontFamily = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf");
         textView.setTypeface(fontFamily);
@@ -63,21 +65,23 @@ public class InAppMessageViewUtils {
   }
 
   public static void setViewBackgroundColorFilter(View view, @ColorInt int color) {
-    view.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    setDrawableColorFilter(view.getBackground(), color);
 
     // The alpha needs to be set separately from the background color filter or else it won't apply
     view.getBackground().setAlpha(Color.alpha(color));
   }
 
-  public static void setDrawableColor(Drawable drawable, int color) {
+  public static void setDrawableColor(Drawable drawable, @ColorInt int color) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       if (drawable instanceof LayerDrawable) {
-        // This layer drawable should have the GradientDrawable as the 0th layer and the RippleDrawable as the 1st layer
+        // This layer drawable should have the GradientDrawable as the
+        // 0th layer and the RippleDrawable as the 1st layer
         LayerDrawable layerDrawable = (LayerDrawable) drawable;
         if (layerDrawable.getNumberOfLayers() > 0 && layerDrawable.getDrawable(0) instanceof GradientDrawable) {
           setDrawableColor(layerDrawable.getDrawable(0), color);
         } else {
-          AppboyLogger.d(TAG, "LayerDrawable for button background did not have the expected number of layers or the 0th layer was not a GradientDrawable.");
+          AppboyLogger.d(TAG, "LayerDrawable for button background did not have the expected "
+              + "number of layers or the 0th layer was not a GradientDrawable.");
         }
       }
     }
@@ -85,12 +89,8 @@ public class InAppMessageViewUtils {
     if (drawable instanceof GradientDrawable) {
       ((GradientDrawable) drawable).setColor(color);
     } else {
-      drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+      setDrawableColorFilter(drawable, color);
     }
-  }
-
-  public static boolean isValidIcon(String icon) {
-    return icon != null;
   }
 
   protected static void resetMessageMarginsIfNecessary(TextView messageView, TextView headerView) {
@@ -115,5 +115,22 @@ public class InAppMessageViewUtils {
     } else if (textAlign.equals(TextAlign.CENTER)) {
       textView.setGravity(Gravity.CENTER);
     }
+  }
+
+  private static void setDrawableColorFilter(Drawable drawable, @ColorInt int color) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+    } else {
+      setDrawableColorFilterOld(drawable, color);
+    }
+  }
+
+  /**
+   * Calls {@link Drawable#setColorFilter(int, PorterDuff.Mode)}. Extracted out this call
+   * since deprecation warning suppressions only work at the method level.
+   */
+  @SuppressWarnings("deprecation")
+  private static void setDrawableColorFilterOld(Drawable drawable, @ColorInt int color) {
+    drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
   }
 }

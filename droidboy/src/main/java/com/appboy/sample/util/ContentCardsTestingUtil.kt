@@ -26,6 +26,7 @@ class ContentCardsTestingUtil {
         }
       }
 
+      cards.shuffle()
       return cards
     }
 
@@ -43,7 +44,8 @@ class ContentCardsTestingUtil {
           ccp.getKey(CardKey.DISMISSED) to false,
           ccp.getKey(CardKey.REMOVED) to false,
           ccp.getKey(CardKey.PINNED) to getRandomBoolean(),
-          ccp.getKey(CardKey.DISMISSIBLE) to getRandomBoolean()
+          ccp.getKey(CardKey.DISMISSIBLE) to getRandomBoolean(),
+          ccp.getKey(CardKey.IS_TEST) to true
       )
 
       // Based on the card type, add new fields

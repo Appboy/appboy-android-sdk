@@ -16,6 +16,7 @@ public class ContentCardViewHolder extends RecyclerView.ViewHolder {
   @Nullable
   private final TextView mActionHint;
 
+  @SuppressWarnings("deprecation") // getDrawable() is deprecated but the alternatives are above our min SDK version
   public ContentCardViewHolder(final View view, boolean showUnreadIndicator) {
     super(view);
 

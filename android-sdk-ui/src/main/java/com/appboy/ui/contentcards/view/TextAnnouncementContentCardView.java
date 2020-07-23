@@ -39,8 +39,7 @@ public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnn
   public ContentCardViewHolder createViewHolder(ViewGroup viewGroup) {
     View view = LayoutInflater.from(viewGroup.getContext())
         .inflate(R.layout.com_appboy_text_announcement_content_card, viewGroup, false);
-
-    view.setBackground(getResources().getDrawable(R.drawable.com_appboy_content_card_background));
+    setViewBackground(view);
     return new ViewHolder(view);
   }
 
@@ -52,5 +51,6 @@ public class TextAnnouncementContentCardView extends BaseContentCardView<TextAnn
     setOptionalTextView(textAnnouncementViewHolder.getTitle(), card.getTitle());
     setOptionalTextView(textAnnouncementViewHolder.getDescription(), card.getDescription());
     textAnnouncementViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
+    viewHolder.itemView.setContentDescription(card.getTitle() + " . " + card.getDescription());
   }
 }

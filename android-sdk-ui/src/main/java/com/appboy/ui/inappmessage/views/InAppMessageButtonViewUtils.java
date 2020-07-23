@@ -27,7 +27,7 @@ public class InAppMessageButtonViewUtils {
   /**
    * Handling only 1 state is ok here since the other button states default to enabled.
    */
-  private static final int[][] MATERIAL_DESIGN_BUTTON_COLOR_STATE_LIST_STATES = new int[][]{new int[]{android.R.attr.state_enabled}};
+  private static final int[][] MATERIAL_DESIGN_BUTTON_COLOR_STATE_LIST_STATES = {new int[]{android.R.attr.state_enabled}};
 
   /**
    * Sets the appropriate colors for the button text, background, and border.
@@ -90,8 +90,8 @@ public class InAppMessageButtonViewUtils {
     button.setText(messageButton.getText());
     button.setContentDescription(messageButton.getText());
 
-    int[] borderColorArray = new int[]{messageButton.getBorderColor()};
-    int[] backgroundColorArray = new int[]{messageButton.getBackgroundColor()};
+    int[] borderColorArray = {messageButton.getBorderColor()};
+    int[] backgroundColorArray = {messageButton.getBackgroundColor()};
 
     ColorStateList colorStateListBorder = new ColorStateList(MATERIAL_DESIGN_BUTTON_COLOR_STATE_LIST_STATES, borderColorArray);
     ColorStateList colorStateListBackground = new ColorStateList(MATERIAL_DESIGN_BUTTON_COLOR_STATE_LIST_STATES, backgroundColorArray);
@@ -125,6 +125,7 @@ public class InAppMessageButtonViewUtils {
     return true;
   }
 
+  @SuppressWarnings("deprecation") // getDrawable() is deprecated but the alternatives are above our min SDK version Build.VERSION_CODES.JELLY_BEAN
   private static Drawable getDrawable(Context context, int drawableId) {
     return context.getResources().getDrawable(drawableId);
   }

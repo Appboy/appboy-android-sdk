@@ -1,15 +1,18 @@
 package com.appboy.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -73,29 +76,58 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     });
 
     webView.setWebViewClient(new WebViewClient() {
+      @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+      @Override
+      public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        Boolean didHandleUrl = handleUrlOverride(view.getContext(), request.getUrl().toString());
+        if (didHandleUrl != null) {
+          return didHandleUrl;
+        }
+        return super.shouldOverrideUrlLoading(view, request);
+      }
+
+      @SuppressWarnings("deprecation") // Updated method is called above
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        try {
-          // If the Uri scheme is not supported by a web action (i.e. if it's not a web url),
-          // allow the system to try to open the uri first. This allows the system to handle,
-          // for example, redirects to the play store via a "store://" Uri.
-          if (!AppboyFileUtils.REMOTE_SCHEMES.contains(Uri.parse(url).getScheme())) {
-            IAction action = ActionFactory.createUriActionFromUrlString(url, getIntent().getExtras(), false, Channel.UNKNOWN);
-            if (action != null) {
-              // Instead of using AppboyNavigator, just open directly.
-              action.execute(view.getContext());
+        Boolean didHandleUrl = handleUrlOverride(view.getContext(), url);
+        if (didHandleUrl != null) {
+          return didHandleUrl;
+        }
+        return super.shouldOverrideUrlLoading(view, url);
+      }
 
-              // Close the WebView if the action was executed successfully
-              finish();
-              return true;
-            } else {
-              return false;
-            }
+      /**
+       * Handles the URL override when the link is not better handled by this WebView instead.
+       * <br>
+       * <br>
+       * E.g. in the presence of a https link, this WebView should handle it and not
+       * forward to Chrome. However in the presence of a sms link, the system itself
+       * should handle it since a WebView lacks that ability.
+       *
+       * @return True/False when this URL override was handled. Returns null when the super implementation of
+       * {@link WebViewClient#shouldOverrideUrlLoading(WebView, WebResourceRequest)} should be called instead.
+       */
+      private Boolean handleUrlOverride(Context context, String url) {
+        try {
+          if (AppboyFileUtils.REMOTE_SCHEMES.contains(Uri.parse(url).getScheme())) {
+            return null;
+          }
+
+          IAction action = ActionFactory.createUriActionFromUrlString(url, getIntent().getExtras(), false, Channel.UNKNOWN);
+          if (action != null) {
+            // Instead of using AppboyNavigator, just open directly.
+            action.execute(context);
+
+            // Close the WebView if the action was executed successfully
+            finish();
+            return true;
+          } else {
+            return false;
           }
         } catch (Exception e) {
           AppboyLogger.e(TAG, "Unexpected exception while processing url " + url + ". Passing url back to WebView.", e);
         }
-        return super.shouldOverrideUrlLoading(view, url);
+        return null;
       }
     });
 
@@ -103,7 +135,9 @@ public class AppboyWebViewActivity extends AppboyBaseActivity {
     // Opens the URL passed as an intent extra (if one exists).
     if (extras != null && extras.containsKey(Constants.APPBOY_WEBVIEW_URL_EXTRA)) {
       String url = extras.getString(Constants.APPBOY_WEBVIEW_URL_EXTRA);
-      webView.loadUrl(url);
+      if (url != null) {
+        webView.loadUrl(url);
+      }
     }
   }
 }

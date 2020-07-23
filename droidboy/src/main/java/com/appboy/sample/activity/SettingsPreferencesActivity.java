@@ -260,8 +260,10 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
     brazeEnvironmentBarcodePreference.setOnPreferenceClickListener((Preference preference) -> {
       // Take a picture via intent
       Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-      if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+      try {
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+      } catch (Exception e) {
+        AppboyLogger.e(TAG, "Failed to handle image capture intent", e);
       }
       return true;
     });
@@ -315,7 +317,7 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
   }
 
   private String getApiKeyBackendString() {
-    String apiKey = this.getResources().getString(R.string.com_appboy_api_key);
+    String apiKey = DroidboyApplication.getApiKeyInUse(this);
     String apiKeyTarget = API_KEY_TO_APP_MAP.get(apiKey);
     if (StringUtils.isNullOrBlank(apiKeyTarget)) {
       return "Unknown";
@@ -397,7 +399,6 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
     Preference apiKeyPreference = findPreference("api_key");
     Preference pushTokenPreference = findPreference("push_token");
     Preference buildTypePreference = findPreference("build_type");
-    Preference flavorPreference = findPreference("flavor");
     Preference versionCodePreference = findPreference("version_code");
     Preference buildNamePreference = findPreference("build_name");
     Preference currentUserIdPreference = findPreference("current_user_id");
@@ -416,7 +417,6 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
     }
     pushTokenPreference.setSummary(pushToken);
     buildTypePreference.setSummary(BuildConfig.BUILD_TYPE);
-    flavorPreference.setSummary(BuildConfig.FLAVOR);
     versionCodePreference.setSummary(String.valueOf(BuildConfig.VERSION_CODE));
     buildNamePreference.setSummary(BuildConfig.VERSION_NAME);
     currentUserIdPreference.setSummary(getUserId());

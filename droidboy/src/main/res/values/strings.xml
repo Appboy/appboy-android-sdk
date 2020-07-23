@@ -100,6 +100,7 @@
   <string name="custom_inappmessage_modal_size">Custom Max Graphic Modal Size</string>
   <string name="custom_inappmessage_image_radius">Custom Image Radius (remove radius)</string>
   <string name="disable_back_button_dismiss_behavior">Disable back button IAM dismissal</string>
+  <string name="enable_tap_outside_modal_dismiss_behavior">Enable tapping outside Modal to dismiss</string>
   <string name="inappmessage_activity">In-App Messages</string>
   <string name="custom_iinappmessage_view_factory">Custom IInAppMessageViewFactory</string>
   <string name="push_testing">Push</string>
@@ -206,7 +207,7 @@
   <string name="telephone_uri">tel:555555555</string>
   <string name="push_story">story1</string>
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
-  <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</string>
+  <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 201 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 202</string>
   <string name="youtube_regex">^(http\\:\\/\\/|https\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/(.+$|)</string>
 
   <string name="droidboy_close_button_text">close</string>

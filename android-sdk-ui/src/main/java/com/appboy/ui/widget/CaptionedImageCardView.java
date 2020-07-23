@@ -27,6 +27,7 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
     this(context, null);
   }
 
+  @SuppressWarnings("deprecation") // getDrawable() until Build.VERSION_CODES.LOLLIPOP
   public CaptionedImageCardView(final Context context, CaptionedImageCard card) {
     super(context);
     mImage = (ImageView) getProperViewFromInflatedStub(R.id.com_appboy_captioned_image_card_imageview_stub);

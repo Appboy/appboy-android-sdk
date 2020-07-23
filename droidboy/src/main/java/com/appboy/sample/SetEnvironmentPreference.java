@@ -61,7 +61,7 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
 
     // populate default API key
     if (!apiKeys.keySet().contains("Default")) {
-      String appboyXmlApiKey = getContext().getResources().getString(R.string.com_appboy_api_key);
+      String appboyXmlApiKey = DroidboyApplication.getApiKeyInUse(getContext());
       storedApiKeyLinearLayout.addView(getApiKeyButton("Default", appboyXmlApiKey));
     }
     // populate previously stored API keys

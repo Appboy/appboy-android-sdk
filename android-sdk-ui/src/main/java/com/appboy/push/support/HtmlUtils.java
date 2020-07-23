@@ -16,6 +16,7 @@ public class HtmlUtils {
    * <br>
    * When disabled, returns the input text.
    */
+  @SuppressWarnings("deprecation") // fromHtml(String)
   public static CharSequence getHtmlSpannedTextIfEnabled(AppboyConfigurationProvider appboyConfigurationProvider, String text) {
     if (StringUtils.isNullOrBlank(text)) {
       AppboyLogger.d(TAG, "Cannot create html spanned text on null or empty text. Returning blank string.");

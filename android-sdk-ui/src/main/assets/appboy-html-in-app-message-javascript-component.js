@@ -49,7 +49,8 @@ var appboyBridge = {
       appboyInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude);
     },
     setCustomLocationAttribute: function(key, latitude, longitude) { appboyInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude); },
-    setLanguage: function(language) { appboyInternalBridge.getUser().setLanguage(language); }
+    setLanguage: function(language) { appboyInternalBridge.getUser().setLanguage(language); },
+    addAlias: function(alias, label) { appboyInternalBridge.getUser().addAlias(alias, label); }
   },
   getUser: function() {
     return this.appboyBridgeUserObject;
