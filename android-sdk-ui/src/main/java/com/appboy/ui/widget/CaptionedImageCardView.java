@@ -1,7 +1,6 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +12,7 @@ import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(CaptionedImageCardView.class);
-  private ImageView mImage;
+  private final ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;
@@ -56,12 +55,7 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
     mDescription.setText(card.getDescription());
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = getUriActionForCard(card);
-    setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        handleCardClick(mContext, card, mCardAction, TAG);
-      }
-    });
+    setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
 
     if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();

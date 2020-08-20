@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
-import android.widget.ViewSwitcher;
 
 import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
@@ -33,12 +32,7 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
     // in them and thus we do the null-check below.
     mImageSwitcher = findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
     if (mImageSwitcher != null) {
-      mImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-        @Override
-        public View makeView() {
-          return new ImageView(mContext.getApplicationContext());
-        }
-      });
+      mImageSwitcher.setFactory(() -> new ImageView(mContext.getApplicationContext()));
     }
 
     // If the visual indicator on cards shouldn't be on, due to the xml setting in appboy.xml, then set the

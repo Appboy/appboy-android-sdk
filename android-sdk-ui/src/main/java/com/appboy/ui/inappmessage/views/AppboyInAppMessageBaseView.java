@@ -75,7 +75,7 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
       }
     }
 
-    if (getMessageIconView() != null && StringUtils.isNullOrBlank((String) getMessageIconView().getText())) {
+    if (getMessageIconView() != null && getMessageIconView().getText() != null && StringUtils.isNullOrBlank(getMessageIconView().getText().toString())) {
       ViewUtils.removeViewFromParent(getMessageIconView());
     }
   }

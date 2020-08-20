@@ -1,7 +1,6 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.appboy.models.cards.BannerImageCard;
@@ -12,7 +11,7 @@ import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(BannerImageCardView.class);
-  private ImageView mImage;
+  private final ImageView mImage;
   private IAction mCardAction;
 
   // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
@@ -50,11 +49,6 @@ public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
     setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
 
     mCardAction = getUriActionForCard(card);
-    setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        handleCardClick(mContext, card, mCardAction, TAG);
-      }
-    });
+    setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
   }
 }

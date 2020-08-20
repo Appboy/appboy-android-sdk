@@ -23,7 +23,6 @@ import com.appboy.Appboy;
 import com.appboy.enums.CardCategory;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
-import com.appboy.models.cards.Card;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.adapters.AppboyListAdapter;
 
@@ -79,7 +78,7 @@ public class AppboyXamarinFormsFeedFragment extends android.app.ListFragment imp
     super.onAttach(context);
     mAppboy = Appboy.getInstance(context);
     if (mAdapter == null) {
-      mAdapter = new AppboyListAdapter(context, R.id.tag, new ArrayList<Card>());
+      mAdapter = new AppboyListAdapter(context, R.id.tag, new ArrayList<>());
       mCategories = CardCategory.getAllCategories();
     }
     setRetainInstance(true);
@@ -122,12 +121,9 @@ public class AppboyXamarinFormsFeedFragment extends android.app.ListFragment imp
     listView.addHeaderView(inflater.inflate(R.layout.com_appboy_feed_header, null));
     listView.addFooterView(inflater.inflate(R.layout.com_appboy_feed_footer, null));
 
-    mFeedRootLayout.setOnTouchListener(new View.OnTouchListener() {
-      @Override
-      public boolean onTouch(View view, MotionEvent motionEvent) {
-        // Send touch events from the background view to the gesture detector to enable margin listview scrolling
-        return mGestureDetector.onTouchEvent(motionEvent);
-      }
+    mFeedRootLayout.setOnTouchListener((view, motionEvent) -> {
+      // Send touch events from the background view to the gesture detector to enable margin listview scrolling
+      return mGestureDetector.onTouchEvent(motionEvent);
     });
 
     // Enable the swipe-to-refresh view only when the user is at the head of the listview.
@@ -163,80 +159,71 @@ public class AppboyXamarinFormsFeedFragment extends android.app.ListFragment imp
 
     // We need the transparent view to pass it's touch events to the swipe-to-refresh view. We
     // do this by consuming touch events in the transparent view.
-    mTransparentFullBoundsContainerView.setOnTouchListener(new View.OnTouchListener() {
-      @Override
-      public boolean onTouch(View view, MotionEvent motionEvent) {
-        // Only consume events if the view is visible
-        return view.getVisibility() == View.VISIBLE;
-      }
+    mTransparentFullBoundsContainerView.setOnTouchListener((view, motionEvent) -> {
+      // Only consume events if the view is visible
+      return view.getVisibility() == View.VISIBLE;
     });
 
     // Remove the previous subscriber before rebuilding a new one with our new activity.
     mAppboy.removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
-    mFeedUpdatedSubscriber = new IEventSubscriber<FeedUpdatedEvent>() {
-      @Override
-      public void trigger(final FeedUpdatedEvent event) {
-        Activity activity = getActivity();
-        // Not strictly necessary, but being defensive in the face of a lot of inconsistent behavior with
-        // fragment/activity lifecycles.
-        if (activity == null) {
-          return;
+    mFeedUpdatedSubscriber = event -> {
+      Activity activity = getActivity();
+      // Not strictly necessary, but being defensive in the face of a lot of inconsistent behavior with
+      // fragment/activity lifecycles.
+      if (activity == null) {
+        return;
+      }
+
+      activity.runOnUiThread(() -> {
+        AppboyLogger.d(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
+        // If a FeedUpdatedEvent comes in, we make sure that the network error isn't visible. It could become
+        // visible again later if we need to request a new feed and it doesn't return in time, but we display a
+        // network spinner while we wait, instead of keeping the network error up.
+        mMainThreadLooper.removeCallbacks(mShowNetworkError);
+        mNetworkErrorLayout.setVisibility(View.GONE);
+
+        // If there are no cards, regardless of what happens further down, we're not going to show the list view, so
+        // clear the list view and change relevant visibility now.
+        if (event.getCardCount(mCategories) == 0) {
+          listView.setVisibility(View.GONE);
+          mAdapter.clear();
+        } else {
+          mEmptyFeedLayout.setVisibility(View.GONE);
+          mLoadingSpinner.setVisibility(View.GONE);
+          mTransparentFullBoundsContainerView.setVisibility(View.GONE);
         }
 
-        activity.runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            AppboyLogger.d(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
-            // If a FeedUpdatedEvent comes in, we make sure that the network error isn't visible. It could become
-            // visible again later if we need to request a new feed and it doesn't return in time, but we display a
-            // network spinner while we wait, instead of keeping the network error up.
-            mMainThreadLooper.removeCallbacks(mShowNetworkError);
-            mNetworkErrorLayout.setVisibility(View.GONE);
-
-            // If there are no cards, regardless of what happens further down, we're not going to show the list view, so
-            // clear the list view and change relevant visibility now.
-            if (event.getCardCount(mCategories) == 0) {
-              listView.setVisibility(View.GONE);
-              mAdapter.clear();
-            } else {
-              mEmptyFeedLayout.setVisibility(View.GONE);
-              mLoadingSpinner.setVisibility(View.GONE);
-              mTransparentFullBoundsContainerView.setVisibility(View.GONE);
-            }
-
-            // If we got our feed from offline storage, and it was old, we asynchronously request a new one from the server,
-            // putting up a spinner if the old feed was empty.
-            if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
-              AppboyLogger.i(TAG, "Feed received was older than the max time to live of " + MAX_FEED_TTL_SECONDS + " seconds, displaying it "
-                  + "for now, but requesting an updated view from the server.");
-              mAppboy.requestFeedRefresh();
-              // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
-              // Eventually displaying an error message if it doesn't.
-              if (event.getCardCount(mCategories) == 0) {
-                AppboyLogger.d(TAG, "Old feed was empty, putting up a network spinner and registering the network error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + "ms.");
-                mEmptyFeedLayout.setVisibility(View.GONE);
-                mLoadingSpinner.setVisibility(View.VISIBLE);
-                mTransparentFullBoundsContainerView.setVisibility(View.VISIBLE);
-                mMainThreadLooper.postDelayed(mShowNetworkError, NETWORK_PROBLEM_WARNING_MS);
-                return;
-              }
-            }
-
-            // If we get here, we know that our feed is either fresh from the cache, or came down directly from a
-            // network request. Thus, an empty feed shouldn't have a network error, or a spinner, we should just
-            // tell the user that the feed is empty.
-            if (event.getCardCount(mCategories) == 0) {
-              mLoadingSpinner.setVisibility(View.GONE);
-              mEmptyFeedLayout.setVisibility(View.VISIBLE);
-              mTransparentFullBoundsContainerView.setVisibility(View.VISIBLE);
-            } else {
-              mAdapter.replaceFeed(event.getFeedCards(mCategories));
-              listView.setVisibility(View.VISIBLE);
-            }
-            mFeedSwipeLayout.setRefreshing(false);
+        // If we got our feed from offline storage, and it was old, we asynchronously request a new one from the server,
+        // putting up a spinner if the old feed was empty.
+        if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
+          AppboyLogger.i(TAG, "Feed received was older than the max time to live of " + MAX_FEED_TTL_SECONDS + " seconds, displaying it "
+              + "for now, but requesting an updated view from the server.");
+          mAppboy.requestFeedRefresh();
+          // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
+          // Eventually displaying an error message if it doesn't.
+          if (event.getCardCount(mCategories) == 0) {
+            AppboyLogger.d(TAG, "Old feed was empty, putting up a network spinner and registering the network error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + "ms.");
+            mEmptyFeedLayout.setVisibility(View.GONE);
+            mLoadingSpinner.setVisibility(View.VISIBLE);
+            mTransparentFullBoundsContainerView.setVisibility(View.VISIBLE);
+            mMainThreadLooper.postDelayed(mShowNetworkError, NETWORK_PROBLEM_WARNING_MS);
+            return;
           }
-        });
-      }
+        }
+
+        // If we get here, we know that our feed is either fresh from the cache, or came down directly from a
+        // network request. Thus, an empty feed shouldn't have a network error, or a spinner, we should just
+        // tell the user that the feed is empty.
+        if (event.getCardCount(mCategories) == 0) {
+          mLoadingSpinner.setVisibility(View.GONE);
+          mEmptyFeedLayout.setVisibility(View.VISIBLE);
+          mTransparentFullBoundsContainerView.setVisibility(View.VISIBLE);
+        } else {
+          mAdapter.replaceFeed(event.getFeedCards(mCategories));
+          listView.setVisibility(View.VISIBLE);
+        }
+        mFeedSwipeLayout.setRefreshing(false);
+      });
     };
     mAppboy.subscribeToFeedUpdates(mFeedUpdatedSubscriber);
 
@@ -334,12 +321,7 @@ public class AppboyXamarinFormsFeedFragment extends android.app.ListFragment imp
   @Override
   public void onRefresh() {
     mAppboy.requestFeedRefresh();
-    mMainThreadLooper.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        mFeedSwipeLayout.setRefreshing(false);
-      }
-    }, AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS);
+    mMainThreadLooper.postDelayed(() -> mFeedSwipeLayout.setRefreshing(false), AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS);
   }
 
   // This class is a custom listener to catch gestures happening outside the bounds of the listview that

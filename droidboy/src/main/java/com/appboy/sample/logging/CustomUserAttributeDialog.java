@@ -29,7 +29,6 @@ public class CustomUserAttributeDialog extends DialogPreference {
   private EditText mCustomAttributeArrayKey;
   private EditText mCustomAttributeArrayValue;
   private RadioGroup mCustomAttributeArrayChoices;
-  private View mView;
 
   public CustomUserAttributeDialog(Context context, AttributeSet attributeSet) {
     super(context, attributeSet);
@@ -46,27 +45,27 @@ public class CustomUserAttributeDialog extends DialogPreference {
 
   @Override
   protected View onCreateDialogView() {
-    mView = super.onCreateDialogView();
-    mCustomAttributeKey = mView.findViewById(R.id.custom_attribute_key);
-    mCustomAttributeValue = mView.findViewById(R.id.custom_attribute_value);
-    mCustomAttributeNumberKey = mView.findViewById(R.id.custom_number_attribute_key);
-    mCustomAttributeNumberValue = mView.findViewById(R.id.custom_number_attribute_value);
-    mCustomAttributeIncrementKey = mView.findViewById(R.id.custom_attribute_increment_key);
-    mCustomAttributeIncrementValue = mView.findViewById(R.id.custom_attribute_increment_value);
-    mCustomAttributeUnsetKey = mView.findViewById(R.id.custom_attribute_unset_key);
-    mCustomAttributeArrayKey = mView.findViewById(R.id.custom_attribute_array_key);
-    mCustomAttributeArrayValue = mView.findViewById(R.id.custom_attribute_array_value);
-    mCustomAttributeArrayChoices = mView.findViewById(R.id.custom_attribute_array_radio);
+    View view = super.onCreateDialogView();
+    mCustomAttributeKey = view.findViewById(R.id.custom_attribute_key);
+    mCustomAttributeValue = view.findViewById(R.id.custom_attribute_value);
+    mCustomAttributeNumberKey = view.findViewById(R.id.custom_number_attribute_key);
+    mCustomAttributeNumberValue = view.findViewById(R.id.custom_number_attribute_value);
+    mCustomAttributeIncrementKey = view.findViewById(R.id.custom_attribute_increment_key);
+    mCustomAttributeIncrementValue = view.findViewById(R.id.custom_attribute_increment_value);
+    mCustomAttributeUnsetKey = view.findViewById(R.id.custom_attribute_unset_key);
+    mCustomAttributeArrayKey = view.findViewById(R.id.custom_attribute_array_key);
+    mCustomAttributeArrayValue = view.findViewById(R.id.custom_attribute_array_value);
+    mCustomAttributeArrayChoices = view.findViewById(R.id.custom_attribute_array_radio);
 
     mCustomAttributeArrayChoices.check(R.id.custom_attribute_array_set);
 
-    ButtonUtils.setUpPopulateButton(mView, R.id.custom_attribute_button, mCustomAttributeKey, "color", mCustomAttributeValue, "green");
-    ButtonUtils.setUpPopulateButton(mView, R.id.custom_number_attribute_button, mCustomAttributeNumberKey, "leagues", mCustomAttributeNumberValue, DEFAULT_NUMBER_VALUE);
-    ButtonUtils.setUpPopulateButton(mView, R.id.custom_attribute_increment_button, mCustomAttributeIncrementKey, "height", mCustomAttributeIncrementValue, "10");
-    ButtonUtils.setUpPopulateButton(mView, R.id.custom_attribute_unset_button, mCustomAttributeUnsetKey, "color");
-    ButtonUtils.setUpPopulateButton(mView, R.id.custom_attribute_array_button, mCustomAttributeArrayKey, "toys", mCustomAttributeArrayValue, "doll");
+    ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_button, mCustomAttributeKey, "color", mCustomAttributeValue, "green");
+    ButtonUtils.setUpPopulateButton(view, R.id.custom_number_attribute_button, mCustomAttributeNumberKey, "leagues", mCustomAttributeNumberValue, DEFAULT_NUMBER_VALUE);
+    ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_increment_button, mCustomAttributeIncrementKey, "height", mCustomAttributeIncrementValue, "10");
+    ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_unset_button, mCustomAttributeUnsetKey, "color");
+    ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_array_button, mCustomAttributeArrayKey, "toys", mCustomAttributeArrayValue, "doll");
 
-    return mView;
+    return view;
   }
 
   @Override

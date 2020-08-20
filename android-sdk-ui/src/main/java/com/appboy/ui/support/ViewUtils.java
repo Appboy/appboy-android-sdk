@@ -21,6 +21,7 @@ public class ViewUtils {
       if (view.getParent() instanceof ViewGroup) {
         final ViewGroup parent = (ViewGroup) view.getParent();
         parent.removeView(view);
+        AppboyLogger.d(TAG, "Removed view: " + view + "\nfrom parent: " + parent);
       }
     }
   }

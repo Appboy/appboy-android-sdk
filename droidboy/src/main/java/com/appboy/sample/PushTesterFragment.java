@@ -3,6 +3,7 @@ package com.appboy.sample;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private static final String BIG_TITLE = "Big Title";
   private static final String BIG_SUMMARY = "Big Summary";
   private static final String SUMMARY_TEXT = "Summary Text";
-  private static SecureRandom sSecureRandom = new SecureRandom();
+  private static final SecureRandom sSecureRandom = new SecureRandom();
   private AppboyConfigurationProvider mAppConfigurationProvider;
   private NotificationManagerCompat mNotificationManager;
   @SuppressLint("InlinedApi")
@@ -74,7 +75,6 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mStoryDeepLink = false;
   private boolean mStoryTitles = true;
   private boolean mStorySubtitles = true;
-  private View mView;
   static final String EXAMPLE_APPBOY_EXTRA_KEY_1 = "Entree";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_2 = "Side";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_3 = "Drink";
@@ -95,66 +95,66 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
 
   @Override
   public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
-    mView = layoutInflater.inflate(R.layout.push_tester, container, false);
+    View view = layoutInflater.inflate(R.layout.push_tester, container, false);
 
     mNotificationManager = NotificationManagerCompat.from(getContext());
 
-    ((CheckBox) mView.findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseBigTitle = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseSummary = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseBigSummary = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener((buttonView, isChecked) -> mShouldOverflowText = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener((buttonView, isChecked) -> mSetPublicVersion = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener((buttonView, isChecked) -> mTestTriggerFetch = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_constant_nid)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseConstantNotificationId = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_set_open_webview)).setOnCheckedChangeListener((buttonView, isChecked) -> mOpenInWebview = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_story_deep_link)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryDeepLink = isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_story_title)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryTitles = !isChecked);
-    ((CheckBox) mView.findViewById(R.id.push_tester_story_subtitle)).setOnCheckedChangeListener((buttonView, isChecked) -> mStorySubtitles = !isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_big_title)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseBigTitle = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_summary)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseSummary = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_big_summary)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseBigSummary = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_overflow_text)).setOnCheckedChangeListener((buttonView, isChecked) -> mShouldOverflowText = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_set_public_version)).setOnCheckedChangeListener((buttonView, isChecked) -> mSetPublicVersion = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_test_triggers)).setOnCheckedChangeListener((buttonView, isChecked) -> mTestTriggerFetch = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_constant_nid)).setOnCheckedChangeListener((buttonView, isChecked) -> mUseConstantNotificationId = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_set_open_webview)).setOnCheckedChangeListener((buttonView, isChecked) -> mOpenInWebview = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_story_deep_link)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryDeepLink = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_story_title)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryTitles = !isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_story_subtitle)).setOnCheckedChangeListener((buttonView, isChecked) -> mStorySubtitles = !isChecked);
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the push image number spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_image_number_spinner), this, R.array.push_image_number_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_image_number_spinner), this, R.array.push_image_number_options);
 
     // Creates the push priority spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_priority_spinner), this, R.array.push_priority_options);
 
     // Creates the push click action spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_click_action_spinner), this, R.array.push_click_action_options);
 
     // Creates the notification category spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_category_spinner), this, R.array.push_category_options);
 
     // Creates the visibility spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_visibility_spinner), this, R.array.push_visibility_options);
 
     // Creates the push image spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
 
     // Creates the story title align spinner
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_story_title_align_spinner), this, R.array.push_story_title_align_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_story_title_align_spinner), this, R.array.push_story_title_align_options);
 
     // Creates the story subtitle align spinner
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_story_subtitle_align_spinner), this, R.array.push_story_subtitle_align_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_story_subtitle_align_spinner), this, R.array.push_story_subtitle_align_options);
 
     // Creates the push action spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_action_spinner), this, R.array.push_action_options);
 
     // Creates the push accent color spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_accent_color_spinner), this, R.array.push_accent_color_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_accent_color_spinner), this, R.array.push_accent_color_options);
 
     // Creates the large icon spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_large_icon_spinner), this, R.array.push_large_icon_options);
 
     // Creates the notification factory spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_notification_factory_spinner), this, R.array.push_notification_factory_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_notification_factory_spinner), this, R.array.push_notification_factory_options);
 
     // Creates the notification channel spinner.
-    SpinnerUtils.setUpSpinner(mView.findViewById(R.id.push_channel_spinner), this, R.array.push_channel_options);
+    SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_channel_spinner), this, R.array.push_channel_options);
 
     mAppConfigurationProvider = new AppboyConfigurationProvider(getContext());
-    Button pushTestButton = mView.findViewById(R.id.test_push_button);
+    Button pushTestButton = view.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(clickedView -> (new Thread(() -> {
       Bundle notificationExtras = new Bundle();
       notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
@@ -244,7 +244,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         mNotificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
       }
     })).start());
-    return mView;
+    return view;
   }
 
   @Override
@@ -294,19 +294,11 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         break;
       case R.id.push_category_spinner:
         mCategory = getResources().getStringArray(R.array.push_category_values)[parent.getSelectedItemPosition()];
-        if (!StringUtils.isNullOrBlank(mCategory)) {
-          mUseCategory = true;
-        } else {
-          mUseCategory = false;
-        }
+        mUseCategory = !StringUtils.isNullOrBlank(mCategory);
         break;
       case R.id.push_visibility_spinner:
         mVisibility = getResources().getStringArray(R.array.push_visibility_values)[parent.getSelectedItemPosition()];
-        if (!StringUtils.isNullOrBlank(mVisibility)) {
-          mUseVisibility = true;
-        } else {
-          mUseVisibility = false;
-        }
+        mUseVisibility = !StringUtils.isNullOrBlank(mVisibility);
         break;
       case R.id.push_action_spinner:
         mActionType = getResources().getStringArray(R.array.push_action_values)[parent.getSelectedItemPosition()];
@@ -335,11 +327,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         break;
       case R.id.push_channel_spinner:
         mChannel = getResources().getStringArray(R.array.push_channel_values)[parent.getSelectedItemPosition()];
-        if (!StringUtils.isNullOrBlank(mChannel)) {
-          mSetChannel = true;
-        } else {
-          mSetChannel = false;
-        }
+        mSetChannel = !StringUtils.isNullOrBlank(mChannel);
         break;
       default:
         Log.e(TAG, "Item selected for unknown spinner");
@@ -347,7 +335,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(getContext(), requestCode, grantResults);
   }
 
@@ -399,35 +387,40 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     if (StringUtils.isNullOrBlank(mActionType)) {
       return notificationExtras;
     }
-    if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_OPEN)) {
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_OPEN);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Open app");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
-    } else if (mActionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI)) {
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy (webview)");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.braze_homepage_url));
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Google");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.google_url));
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "false");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
-      if (mOpenInWebview) {
+    switch (mActionType) {
+      case Constants.APPBOY_PUSH_ACTION_TYPE_OPEN:
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_OPEN);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Open app");
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
+        break;
+      case Constants.APPBOY_PUSH_ACTION_TYPE_URI:
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy (webview)");
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.braze_homepage_url));
         notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "true");
-      }
-    } else if (mActionType.equals("deep_link")) {
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Preferences");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.droidboy_deep_link));
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Telephone");
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.telephone_uri));
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-      notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Google");
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.google_url));
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "false");
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
+        if (mOpenInWebview) {
+          notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
+          notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "true");
+        }
+        break;
+      case "deep_link":
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Preferences");
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.droidboy_deep_link));
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Telephone");
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.telephone_uri));
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
+        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
+        break;
+      default:
     }
     return notificationExtras;
   }

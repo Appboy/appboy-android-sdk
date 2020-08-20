@@ -1,7 +1,6 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,13 +12,12 @@ import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
   private static final String TAG = AppboyLogger.getAppboyLogTag(ShortNewsCardView.class);
-  private ImageView mImage;
+  private final ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;
   private IAction mCardAction;
   private final float mAspectRatio = 1f;
-
 
   public ShortNewsCardView(Context context) {
     this(context, null);
@@ -55,12 +53,7 @@ public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = getUriActionForCard(card);
 
-    setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        handleCardClick(mContext, card, mCardAction, TAG);
-      }
-    });
+    setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
 
     setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
   }

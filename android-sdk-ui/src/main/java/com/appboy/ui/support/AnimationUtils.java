@@ -7,8 +7,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
 
 public class AnimationUtils {
-  private static Interpolator sAccelerateInterpolator = new AccelerateInterpolator();
-  private static Interpolator sDecelerateInterpolator = new DecelerateInterpolator();
+  private static final Interpolator sAccelerateInterpolator = new AccelerateInterpolator();
+  private static final Interpolator sDecelerateInterpolator = new DecelerateInterpolator();
 
   /**
    * @param fromY Change in Y coordinate to apply at the start of the animation, represented as a percentage (where 1.0 is 100%).

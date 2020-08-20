@@ -27,15 +27,38 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
   private static final String HTML_MIME_TYPE = "text/html";
   private static final String HTML_ENCODING = "utf-8";
   private static final String FILE_URI_SCHEME_PREFIX = "file://";
-
-  protected WebView mMessageWebView;
+  /**
+   * A url for the {@link WebView} to load when display is finished.
+   */
+  private static final String FINISHED_WEBVIEW_URL = "about:blank";
 
   public static final String APPBOY_BRIDGE_PREFIX = "appboyInternalBridge";
 
+  protected WebView mMessageWebView;
   private InAppMessageWebViewClient mInAppMessageWebViewClient;
+  private boolean mIsFinished = false;
 
   public AppboyInAppMessageHtmlBaseView(Context context, AttributeSet attrs) {
     super(context, attrs);
+  }
+
+  /**
+   * Should be called when the held {@link WebView} of this class is
+   * done displaying its message. Future calls to
+   * {@link #getMessageWebView()} will return null afterwards.
+   */
+  public void finishWebViewDisplay() {
+    AppboyLogger.d(TAG, "Finishing WebView display");
+    // Note that WebView.destroy() is not called here since that
+    // causes immense issues with the system's own closing of
+    // the WebView after we're done with it.
+    mIsFinished = true;
+    if (mMessageWebView != null) {
+      mMessageWebView.loadUrl(FINISHED_WEBVIEW_URL);
+      mMessageWebView.onPause();
+      mMessageWebView.removeAllViews();
+      mMessageWebView = null;
+    }
   }
 
   /**
@@ -43,46 +66,58 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
    */
   @SuppressLint({"SetJavaScriptEnabled"})
   public WebView getMessageWebView() {
-    if (mMessageWebView == null && getWebViewViewId() != 0) {
-      mMessageWebView = findViewById(getWebViewViewId());
-      if (mMessageWebView != null) {
-        WebSettings webSettings = mMessageWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setDisplayZoomControls(false);
-        webSettings.setDomStorageEnabled(true);
-        // Needed since locally downloaded assets are under `file://` schemes
-        webSettings.setAllowFileAccess(true);
-        // This enables hardware acceleration if the manifest also has it defined.
-        // If not defined, then the layer type will fallback to software.
-        mMessageWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        mMessageWebView.setBackgroundColor(Color.TRANSPARENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ViewUtils.isDeviceInNightMode(getContext())) {
-          webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
-        }
-
-        // Set the client for console logging. See https://developer.android.com/guide/webapps/debugging.html
-        mMessageWebView.setWebChromeClient(new WebChromeClient() {
-          @Override
-          public boolean onConsoleMessage(ConsoleMessage cm) {
-            AppboyLogger.d(TAG, "Braze HTML In-app Message log. Line: " + cm.lineNumber()
-                + ". SourceId: " + cm.sourceId()
-                + ". Log Level: " + cm.messageLevel()
-                + ". Message: " + cm.message());
-            return true;
-          }
-
-          @Nullable
-          @Override
-          public Bitmap getDefaultVideoPoster() {
-            // This bitmap is used to eliminate the default black & white
-            // play icon used as the default poster.
-            return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-          }
-        });
-      }
+    if (mIsFinished) {
+      AppboyLogger.w(TAG, "Cannot return the WebView for an already finished message");
+      return null;
     }
+    final int webViewViewId = getWebViewViewId();
+    if (webViewViewId == 0) {
+      AppboyLogger.d(TAG, "Cannot find WebView. getWebViewViewId() returned 0.");
+      return null;
+    }
+    if (mMessageWebView != null) {
+      return mMessageWebView;
+    }
+    mMessageWebView = findViewById(webViewViewId);
+    if (mMessageWebView == null) {
+      AppboyLogger.d(TAG, "findViewById for " + webViewViewId + " returned null. Returning null for WebView.");
+      return null;
+    }
+    WebSettings webSettings = mMessageWebView.getSettings();
+    webSettings.setJavaScriptEnabled(true);
+    webSettings.setUseWideViewPort(true);
+    webSettings.setLoadWithOverviewMode(true);
+    webSettings.setDisplayZoomControls(false);
+    webSettings.setDomStorageEnabled(true);
+    // Needed since locally downloaded assets are under `file://` schemes
+    webSettings.setAllowFileAccess(true);
+    // This enables hardware acceleration if the manifest also has it defined.
+    // If not defined, then the layer type will fallback to software.
+    mMessageWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+    mMessageWebView.setBackgroundColor(Color.TRANSPARENT);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ViewUtils.isDeviceInNightMode(getContext())) {
+      webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
+    }
+
+    // Set the client for console logging. See https://developer.android.com/guide/webapps/debugging.html
+    mMessageWebView.setWebChromeClient(new WebChromeClient() {
+      @Override
+      public boolean onConsoleMessage(ConsoleMessage cm) {
+        AppboyLogger.d(TAG, "Braze HTML In-app Message log. Line: " + cm.lineNumber()
+            + ". SourceId: " + cm.sourceId()
+            + ". Log Level: " + cm.messageLevel()
+            + ". Message: " + cm.message());
+        return true;
+      }
+
+      @Nullable
+      @Override
+      public Bitmap getDefaultVideoPoster() {
+        // This bitmap is used to eliminate the default black & white
+        // play icon used as the default poster.
+        return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+      }
+    });
     return mMessageWebView;
   }
 

@@ -67,7 +67,8 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         "https://appboy-images.com/HTML_ZIP_STOPWATCH.zip"),
     SLOW_LOADING("html_inapp_message_delayed_open.html", null),
     DARK_MODE("html_inapp_message_dark_mode.html", null),
-    UNIFIED_HTML_BOOTSTRAP_ALBUM("html_in_app_message_unified_bootstrap_album.html", null);
+    UNIFIED_HTML_BOOTSTRAP_ALBUM("html_in_app_message_unified_bootstrap_album.html", null),
+    SHARK_HTML("html_shark_unified.html", null);
 
     private final String mFileName;
     private final String mZipUri;
@@ -301,6 +302,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
             break;
           case "html_full_unified_bootstrap":
             addInAppMessage(new InAppMessageHtml(), HtmlMessageType.UNIFIED_HTML_BOOTSTRAP_ALBUM);
+            break;
+          case "html_shark_unified":
+            addInAppMessage(new InAppMessageHtml(), HtmlMessageType.SHARK_HTML);
             break;
           case "html_full_dark_mode":
             addInAppMessage(new InAppMessageHtmlFull(), HtmlMessageType.DARK_MODE);
@@ -551,12 +555,17 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private void setOrientation(IInAppMessage inAppMessage) {
     // set in-app message preferred orientation
     if (!SpinnerUtils.spinnerItemNotSet(mOrientation)) {
-      if (mOrientation.equals("any")) {
-        inAppMessage.setOrientation(Orientation.ANY);
-      } else if (mOrientation.equals("portrait")) {
-        inAppMessage.setOrientation(Orientation.PORTRAIT);
-      } else if (mOrientation.equals("landscape")) {
-        inAppMessage.setOrientation(Orientation.LANDSCAPE);
+      switch (mOrientation) {
+        case "any":
+          inAppMessage.setOrientation(Orientation.ANY);
+          break;
+        case "portrait":
+          inAppMessage.setOrientation(Orientation.PORTRAIT);
+          break;
+        case "landscape":
+          inAppMessage.setOrientation(Orientation.LANDSCAPE);
+          break;
+        default:
       }
     }
   }
@@ -620,14 +629,16 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   }
 
   private TextAlign parseTextAlign(String textAlign) {
-    if (textAlign.equals("start")) {
-      return TextAlign.START;
-    } else if (textAlign.equals("end")) {
-      return TextAlign.END;
-    } else if (textAlign.equals("center")) {
-      return TextAlign.CENTER;
+    switch (textAlign) {
+      case "start":
+        return TextAlign.START;
+      case "end":
+        return TextAlign.END;
+      case "center":
+        return TextAlign.CENTER;
+      default:
+        return null;
     }
-    return null;
   }
 
   @SuppressWarnings("checkstyle:MissingSwitchDefault")
@@ -790,32 +801,33 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   }
 
   private int parseColorFromString(String colorString) {
-    if (colorString.equals("red")) {
-      return APPBOY_RED;
-    } else if (colorString.equals("orange")) {
-      return GOOGLE_ORANGE;
-    } else if (colorString.equals("yellow")) {
-      return GOOGLE_YELLOW;
-    } else if (colorString.equals("green")) {
-      return GOOGLE_GREEN;
-    } else if (colorString.equals("blue")) {
-      return APPBOY_BLUE;
-    } else if (colorString.equals("purple")) {
-      return GOOGLE_PURPLE;
-    } else if (colorString.equals("brown")) {
-      return GOOGLE_BROWN;
-    } else if (colorString.equals("grey")) {
-      return GOOGLE_GREY;
-    } else if (colorString.equals("black")) {
-      return BLACK;
-    } else if (colorString.equals("white")) {
-      return WHITE;
-    } else if (colorString.equals("transparent")) {
-      return Color.argb(0, 0, 0, 0);
-    } else if (colorString.equals("almost_transparent_blue")) {
-      return TRANSPARENT_APPBOY_BLUE;
-    } else {
-      return 0;
+    switch (colorString) {
+      case "red":
+        return APPBOY_RED;
+      case "orange":
+        return GOOGLE_ORANGE;
+      case "yellow":
+        return GOOGLE_YELLOW;
+      case "green":
+        return GOOGLE_GREEN;
+      case "blue":
+        return APPBOY_BLUE;
+      case "purple":
+        return GOOGLE_PURPLE;
+      case "brown":
+        return GOOGLE_BROWN;
+      case "grey":
+        return GOOGLE_GREY;
+      case "black":
+        return BLACK;
+      case "white":
+        return WHITE;
+      case "transparent":
+        return Color.argb(0, 0, 0, 0);
+      case "almost_transparent_blue":
+        return TRANSPARENT_APPBOY_BLUE;
+      default:
+        return 0;
     }
   }
 

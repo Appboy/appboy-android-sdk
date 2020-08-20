@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.VisibleForTesting;
@@ -11,9 +12,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.IInAppMessage;
 import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.HandlerUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
 import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
@@ -45,22 +48,40 @@ public class InAppMessageWebViewClient extends WebViewClient {
   public static final String QUERY_NAME_DEEPLINK = "abDeepLink";
   public static final String JAVASCRIPT_PREFIX = "javascript:";
 
-  private IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
+  private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
   private final IInAppMessage mInAppMessage;
-  private Context mContext;
+  private final Context mContext;
   @Nullable
   private IWebViewClientStateListener mWebViewClientStateListener;
   private boolean mHasPageFinishedLoading = false;
-  private AtomicBoolean mHasCalledPageFinishedOnListener = new AtomicBoolean(false);
+  private final AtomicBoolean mHasCalledPageFinishedOnListener = new AtomicBoolean(false);
+  private final Handler mHandler;
+  private final Runnable mPostOnFinishedTimeoutRunnable;
+  private final int mMaxOnPageFinishedWaitTimeMs;
 
   /**
    * @param inAppMessage                      the In-App Message being displayed in this WebView
    * @param inAppMessageWebViewClientListener the client listener. Should be non-null.
    */
-  public InAppMessageWebViewClient(Context context, IInAppMessage inAppMessage, IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {
+  public InAppMessageWebViewClient(Context context,
+                                   IInAppMessage inAppMessage,
+                                   IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {
     mInAppMessageWebViewClientListener = inAppMessageWebViewClientListener;
     mInAppMessage = inAppMessage;
     mContext = context;
+    mHandler = HandlerUtils.createHandler();
+    mPostOnFinishedTimeoutRunnable = new Runnable() {
+      @Override
+      public void run() {
+        if (mWebViewClientStateListener != null
+            && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
+          AppboyLogger.v(TAG, "Page may not have finished loading, but max wait time has expired."
+              + " Calling onPageFinished on listener.");
+          mWebViewClientStateListener.onPageFinished();
+        }
+      }
+    };
+    mMaxOnPageFinishedWaitTimeMs = new AppboyConfigurationProvider(context).getInAppMessageWebViewClientOnPageFinishedMaxWaitMs();
   }
 
   @Override
@@ -71,6 +92,9 @@ public class InAppMessageWebViewClient extends WebViewClient {
       mWebViewClientStateListener.onPageFinished();
     }
     mHasPageFinishedLoading = true;
+
+    // Cancel any pending runnables based on the page finished wait
+    mHandler.removeCallbacks(mPostOnFinishedTimeoutRunnable);
   }
 
   private void appendBridgeJavascript(WebView view) {
@@ -79,7 +103,7 @@ public class InAppMessageWebViewClient extends WebViewClient {
 
       // Fail instead of present a broken WebView
       AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false);
-      AppboyLogger.e(TAG, "Failed to get HTML in-app message javascript additions");
+      AppboyLogger.w(TAG, "Failed to get HTML in-app message javascript additions");
       return;
     }
 
@@ -111,6 +135,8 @@ public class InAppMessageWebViewClient extends WebViewClient {
     // If the page is already done loading, inform the new listener
     if (listener != null && mHasPageFinishedLoading && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
       listener.onPageFinished();
+    } else {
+      mHandler.postDelayed(mPostOnFinishedTimeoutRunnable, mMaxOnPageFinishedWaitTimeMs);
     }
     mWebViewClientStateListener = listener;
   }
@@ -134,12 +160,18 @@ public class InAppMessageWebViewClient extends WebViewClient {
       // Check the authority
       String authority = uri.getAuthority();
       if (authority != null) {
-        if (authority.equals(AUTHORITY_NAME_CLOSE)) {
-          mInAppMessageWebViewClientListener.onCloseAction(mInAppMessage, url, queryBundle);
-        } else if (authority.equals(AUTHORITY_NAME_NEWSFEED)) {
-          mInAppMessageWebViewClientListener.onNewsfeedAction(mInAppMessage, url, queryBundle);
-        } else if (authority.equals(AUTHORITY_NAME_CUSTOM_EVENT)) {
-          mInAppMessageWebViewClientListener.onCustomEventAction(mInAppMessage, url, queryBundle);
+        switch (authority) {
+          case AUTHORITY_NAME_CLOSE:
+            mInAppMessageWebViewClientListener.onCloseAction(mInAppMessage, url, queryBundle);
+            break;
+          case AUTHORITY_NAME_NEWSFEED:
+            mInAppMessageWebViewClientListener.onNewsfeedAction(mInAppMessage, url, queryBundle);
+            break;
+          case AUTHORITY_NAME_CUSTOM_EVENT:
+            mInAppMessageWebViewClientListener.onCustomEventAction(mInAppMessage, url, queryBundle);
+            break;
+          default:
+            // continue on
         }
       } else {
         AppboyLogger.d(TAG, "Uri authority was null. Uri: " + uri);

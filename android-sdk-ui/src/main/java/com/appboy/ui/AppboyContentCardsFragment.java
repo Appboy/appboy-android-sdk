@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -54,9 +55,9 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   protected SwipeRefreshLayout mContentCardsSwipeLayout;
 
   protected IEventSubscriber<ContentCardsUpdatedEvent> mContentCardsUpdatedSubscriber;
-  protected IContentCardsUpdateHandler mDefaultContentCardUpdateHandler = new DefaultContentCardsUpdateHandler();
+  protected final IContentCardsUpdateHandler mDefaultContentCardUpdateHandler = new DefaultContentCardsUpdateHandler();
   protected IContentCardsUpdateHandler mCustomContentCardUpdateHandler;
-  protected IContentCardsViewBindingHandler mDefaultContentCardsViewBindingHandler = new DefaultContentCardsViewBindingHandler();
+  protected final IContentCardsViewBindingHandler mDefaultContentCardsViewBindingHandler = new DefaultContentCardsViewBindingHandler();
   protected IContentCardsViewBindingHandler mCustomContentCardsViewBindingHandler;
 
   @Override
@@ -89,12 +90,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   @Override
   public void onRefresh() {
     Appboy.getInstance(getContext()).requestContentCardsRefresh(false);
-    mMainThreadLooper.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        mContentCardsSwipeLayout.setRefreshing(false);
-      }
-    }, AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS);
+    mMainThreadLooper.postDelayed(() -> mContentCardsSwipeLayout.setRefreshing(false), AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS);
   }
 
   @Override
@@ -103,12 +99,9 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     // Remove the previous subscriber before rebuilding a new one with our new activity.
     Appboy.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
     if (mContentCardsUpdatedSubscriber == null) {
-      mContentCardsUpdatedSubscriber = new IEventSubscriber<ContentCardsUpdatedEvent>() {
-        @Override
-        public void trigger(ContentCardsUpdatedEvent event) {
-          ContentCardsUpdateRunnable contentCardsUpdateRunnable = new ContentCardsUpdateRunnable(event);
-          mMainThreadLooper.post(contentCardsUpdateRunnable);
-        }
+      mContentCardsUpdatedSubscriber = event -> {
+        ContentCardsUpdateRunnable contentCardsUpdateRunnable = new ContentCardsUpdateRunnable(event);
+        mMainThreadLooper.post(contentCardsUpdateRunnable);
       };
     }
     Appboy.getInstance(getContext()).subscribeToContentCardsUpdates(mContentCardsUpdatedSubscriber);
@@ -161,7 +154,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   }
 
   @Override
-  public void onSaveInstanceState(Bundle outState) {
+  public void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
     if (mRecyclerView != null && mRecyclerView.getLayoutManager() != null) {
       outState.putParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY, mRecyclerView.getLayoutManager().onSaveInstanceState());
@@ -178,18 +171,15 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
       // do nothing and return
       return;
     }
-    mMainThreadLooper.post(new Runnable() {
-      @Override
-      public void run() {
-        Parcelable layoutManagerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY);
-        RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
-        if (layoutManagerState != null && layoutManager != null) {
-          layoutManager.onRestoreInstanceState(layoutManagerState);
-        }
-        List<String> savedCardIdImpressions = savedInstanceState.getStringArrayList(KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY);
-        if (savedCardIdImpressions != null) {
-          mCardAdapter.setImpressedCardIds(savedCardIdImpressions);
-        }
+    mMainThreadLooper.post(() -> {
+      Parcelable layoutManagerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY);
+      RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+      if (layoutManagerState != null && layoutManager != null) {
+        layoutManager.onRestoreInstanceState(layoutManagerState);
+      }
+      List<String> savedCardIdImpressions = savedInstanceState.getStringArrayList(KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY);
+      if (savedCardIdImpressions != null) {
+        mCardAdapter.setImpressedCardIds(savedCardIdImpressions);
       }
     });
   }
@@ -207,7 +197,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
 
   protected void initializeRecyclerView() {
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    mCardAdapter = new AppboyCardAdapter(getContext(), layoutManager, new ArrayList<Card>(), getContentCardsViewBindingHandler());
+    mCardAdapter = new AppboyCardAdapter(getContext(), layoutManager, new ArrayList<>(), getContentCardsViewBindingHandler());
     mRecyclerView.setAdapter(mCardAdapter);
     mRecyclerView.setLayoutManager(layoutManager);
 
@@ -315,7 +305,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
    * Swaps the current {@link RecyclerView} {@link android.support.v7.widget.RecyclerView.Adapter} for a new one. If
    * the current adapter matches the new adapter, then this method does nothing.
    */
-  protected void swapRecyclerViewAdapter(RecyclerView.Adapter newAdapter) {
+  protected void swapRecyclerViewAdapter(RecyclerView.Adapter<?> newAdapter) {
     if (mRecyclerView != null && mRecyclerView.getAdapter() != newAdapter) {
       mRecyclerView.setAdapter(newAdapter);
     }

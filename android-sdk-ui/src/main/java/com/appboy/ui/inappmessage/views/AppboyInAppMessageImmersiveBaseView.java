@@ -101,7 +101,7 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
         closeButton.setNextFocusLeftId(primaryId);
         break;
       default:
-        AppboyLogger.w(TAG, "Cannot setup directional navigation. Got unsupported number of buttons.: " + numButtons);
+        AppboyLogger.w(TAG, "Cannot setup directional navigation. Got unsupported number of buttons: " + numButtons);
     }
 
     // The entire view should focus back to the close
@@ -200,34 +200,31 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
     }
 
     if (closeButtonView.getParent() instanceof View) {
-      ((View) closeButtonView.getParent()).post(new Runnable() {
-        @Override
-        public void run() {
-          Rect delegateArea = new Rect();
+      ((View) closeButtonView.getParent()).post(() -> {
+        Rect delegateArea = new Rect();
 
-          // The hit rectangle for the ImageButton
-          closeButtonView.getHitRect(delegateArea);
+        // The hit rectangle for the ImageButton
+        closeButtonView.getHitRect(delegateArea);
 
-          // Extend the touch area of the ImageButton beyond its bounds
-          final int desiredCloseButtonClickAreaWidth = getContext().getResources().getDimensionPixelSize(R.dimen.com_appboy_in_app_message_close_button_click_area_width);
-          final int desiredCloseButtonClickAreaHeight = getContext().getResources().getDimensionPixelSize(R.dimen.com_appboy_in_app_message_close_button_click_area_height);
-          int extraHorizontalPadding = (desiredCloseButtonClickAreaWidth - delegateArea.width()) / 2;
-          int extraVerticalPadding = (desiredCloseButtonClickAreaHeight - delegateArea.height()) / 2;
+        // Extend the touch area of the ImageButton beyond its bounds
+        final int desiredCloseButtonClickAreaWidth = getContext().getResources().getDimensionPixelSize(R.dimen.com_appboy_in_app_message_close_button_click_area_width);
+        final int desiredCloseButtonClickAreaHeight = getContext().getResources().getDimensionPixelSize(R.dimen.com_appboy_in_app_message_close_button_click_area_height);
+        int extraHorizontalPadding = (desiredCloseButtonClickAreaWidth - delegateArea.width()) / 2;
+        int extraVerticalPadding = (desiredCloseButtonClickAreaHeight - delegateArea.height()) / 2;
 
-          delegateArea.top -= extraVerticalPadding;
-          delegateArea.bottom += extraVerticalPadding;
-          delegateArea.left -= extraHorizontalPadding;
-          delegateArea.right += extraHorizontalPadding;
+        delegateArea.top -= extraVerticalPadding;
+        delegateArea.bottom += extraVerticalPadding;
+        delegateArea.left -= extraHorizontalPadding;
+        delegateArea.right += extraHorizontalPadding;
 
-          // Instantiate a TouchDelegate.
-          // "delegateArea" is the bounds in local coordinates of
-          // the containing view to be mapped to the delegate view.
-          TouchDelegate touchDelegate = new TouchDelegate(delegateArea, closeButtonView);
+        // Instantiate a TouchDelegate.
+        // "delegateArea" is the bounds in local coordinates of
+        // the containing view to be mapped to the delegate view.
+        TouchDelegate touchDelegate = new TouchDelegate(delegateArea, closeButtonView);
 
-          // Sets the TouchDelegate on the parent view, such that touches
-          // within the touch delegate bounds are routed to the child.
-          ((View) closeButtonView.getParent()).setTouchDelegate(touchDelegate);
-        }
+        // Sets the TouchDelegate on the parent view, such that touches
+        // within the touch delegate bounds are routed to the child.
+        ((View) closeButtonView.getParent()).setTouchDelegate(touchDelegate);
       });
     }
   }

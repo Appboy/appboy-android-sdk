@@ -9,8 +9,8 @@ import com.appboy.IAppboyEndpointProvider;
  * An {@link IAppboyEndpointProvider} that sets an override endpoint if given.
  */
 public class DroidboyEndpointProvider implements IAppboyEndpointProvider {
-  private Uri mEndpointUri;
-  private String mEndpoint;
+  private final Uri mEndpointUri;
+  private final String mEndpoint;
 
   public DroidboyEndpointProvider(@NonNull String endpoint) {
     mEndpoint = endpoint;

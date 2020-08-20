@@ -3,15 +3,12 @@ package com.appboy.ui.inappmessage;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
-import android.webkit.WebView;
 import android.widget.FrameLayout;
 
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -42,7 +39,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
   protected final InAppMessageCloser mInAppMessageCloser;
   protected boolean mIsAnimatingClose;
   protected Runnable mDismissRunnable;
-  protected View mClickableInAppMessageView;
+  protected final View mClickableInAppMessageView;
   protected View mCloseButton;
   protected List<View> mButtonViews;
   /**
@@ -260,23 +257,20 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
 
     if (inAppMessageView instanceof IInAppMessageView) {
       ViewCompat.requestApplyInsets(parentViewGroup);
-      ViewCompat.setOnApplyWindowInsetsListener(parentViewGroup, new OnApplyWindowInsetsListener() {
-        @Override
-        public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-          if (insets == null) {
-            // No margin fixing can be done with a null window inset
-            return insets;
-          }
-
-          final IInAppMessageView castInAppMessageView = (IInAppMessageView) inAppMessageView;
-          if (!castInAppMessageView.hasAppliedWindowInsets()) {
-            AppboyLogger.v(TAG, "Calling applyWindowInsets on in-app message view.");
-            castInAppMessageView.applyWindowInsets(insets);
-          } else {
-            AppboyLogger.d(TAG, "Not reapplying window insets to in-app message view.");
-          }
+      ViewCompat.setOnApplyWindowInsetsListener(parentViewGroup, (view, insets) -> {
+        if (insets == null) {
+          // No margin fixing can be done with a null window inset
           return insets;
         }
+
+        final IInAppMessageView castInAppMessageView = (IInAppMessageView) inAppMessageView;
+        if (!castInAppMessageView.hasAppliedWindowInsets()) {
+          AppboyLogger.v(TAG, "Calling applyWindowInsets on in-app message view.");
+          castInAppMessageView.applyWindowInsets(insets);
+        } else {
+          AppboyLogger.d(TAG, "Not reapplying window insets to in-app message view.");
+        }
+        return insets;
       });
     }
 
@@ -332,17 +326,14 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
    * Slideup in-app messages are always clickable.
    */
   protected View.OnClickListener createClickListener() {
-    return new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (mInAppMessage instanceof IInAppMessageImmersive) {
-          IInAppMessageImmersive inAppMessageImmersive = (IInAppMessageImmersive) mInAppMessage;
-          if (inAppMessageImmersive.getMessageButtons().isEmpty()) {
-            mInAppMessageViewLifecycleListener.onClicked(mInAppMessageCloser, mInAppMessageView, mInAppMessage);
-          }
-        } else {
+    return view -> {
+      if (mInAppMessage instanceof IInAppMessageImmersive) {
+        IInAppMessageImmersive inAppMessageImmersive = (IInAppMessageImmersive) mInAppMessage;
+        if (inAppMessageImmersive.getMessageButtons().isEmpty()) {
           mInAppMessageViewLifecycleListener.onClicked(mInAppMessageCloser, mInAppMessageView, mInAppMessage);
         }
+      } else {
+        mInAppMessageViewLifecycleListener.onClicked(mInAppMessageCloser, mInAppMessageView, mInAppMessage);
       }
     };
   }
@@ -352,43 +343,30 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
    * if the clicked {@link View#getId()} matches that of a {@link MessageButton}'s {@link View}.
    */
   protected View.OnClickListener createButtonClickListener() {
-    return new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        // The onClicked lifecycle method is called and it can be used to turn off the close animation.
-        IInAppMessageImmersive inAppMessageImmersive = (IInAppMessageImmersive) mInAppMessage;
-        if (inAppMessageImmersive.getMessageButtons().isEmpty()) {
-          AppboyLogger.d(TAG, "Cannot create button click listener since this in-app message does not have message buttons.");
+    return view -> {
+      // The onClicked lifecycle method is called and it can be used to turn off the close animation.
+      IInAppMessageImmersive inAppMessageImmersive = (IInAppMessageImmersive) mInAppMessage;
+      if (inAppMessageImmersive.getMessageButtons().isEmpty()) {
+        AppboyLogger.d(TAG, "Cannot create button click listener since this in-app message does not have message buttons.");
+        return;
+      }
+      for (int i = 0; i < mButtonViews.size(); i++) {
+        if (view.getId() == mButtonViews.get(i).getId()) {
+          MessageButton messageButton = inAppMessageImmersive.getMessageButtons().get(i);
+          mInAppMessageViewLifecycleListener.onButtonClicked(mInAppMessageCloser, messageButton, inAppMessageImmersive);
           return;
-        }
-        for (int i = 0; i < mButtonViews.size(); i++) {
-          if (view.getId() == mButtonViews.get(i).getId()) {
-            MessageButton messageButton = inAppMessageImmersive.getMessageButtons().get(i);
-            mInAppMessageViewLifecycleListener.onButtonClicked(mInAppMessageCloser, messageButton, inAppMessageImmersive);
-            return;
-          }
         }
       }
     };
   }
 
   protected View.OnClickListener createCloseInAppMessageClickListener() {
-    return new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
-      }
-    };
+    return view -> AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
   }
 
   protected void addDismissRunnable() {
     if (mDismissRunnable == null) {
-      mDismissRunnable = new Runnable() {
-        @Override
-        public void run() {
-          AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
-        }
-      };
+      mDismissRunnable = () -> AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
       mInAppMessageView.postDelayed(mDismissRunnable, mInAppMessage.getDurationInMilliseconds());
     }
   }
@@ -419,20 +397,18 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
    * In this order, the following actions are performed:
    * <ul>
    * <li> The view is removed from the parent. </li>
-   * <li> Any WebViews have their {@link WebView#destroy()} methods called. </li>
+   * <li> Any WebViews are explicitly paused or frame execution finished in some way. </li>
    * <li> {@link IInAppMessageViewLifecycleListener#afterClosed(IInAppMessage)} is called. </li>
    * </ul>
    */
   protected void closeInAppMessageView() {
     AppboyLogger.d(TAG, "Closing in-app message view");
     ViewUtils.removeViewFromParent(mInAppMessageView);
-    // In the case of HTML in-app messages, we need to make sure the WebView stops once the in-app message is removed.
+    // In the case of HTML in-app messages, we need to make sure the
+    // WebView stops once the in-app message is removed.
     if (mInAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
       final AppboyInAppMessageHtmlBaseView inAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) mInAppMessageView;
-      if (inAppMessageHtmlBaseView.getMessageWebView() != null) {
-        AppboyLogger.d(TAG, "Called destroy on the AppboyInAppMessageHtmlBaseView WebView");
-        inAppMessageHtmlBaseView.getMessageWebView().destroy();
-      }
+      inAppMessageHtmlBaseView.finishWebViewDisplay();
     }
 
     // Return the focus before closing the message

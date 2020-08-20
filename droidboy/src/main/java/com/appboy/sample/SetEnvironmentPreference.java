@@ -60,7 +60,7 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
     Map<String, ?> apiKeys = mApiKeySharedPreferences.getAll();
 
     // populate default API key
-    if (!apiKeys.keySet().contains("Default")) {
+    if (!apiKeys.containsKey("Default")) {
       String appboyXmlApiKey = DroidboyApplication.getApiKeyInUse(getContext());
       storedApiKeyLinearLayout.addView(getApiKeyButton("Default", appboyXmlApiKey));
     }
@@ -76,12 +76,9 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
   private Button getApiKeyButton(final String alias, final String apiKey) {
     Button button = new Button(getContext());
     button.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            mApiKeyAliasTextView.setText(alias);
-            mApiKeyTextView.setText(apiKey);
-          }
+        view -> {
+          mApiKeyAliasTextView.setText(alias);
+          mApiKeyTextView.setText(apiKey);
         }
     );
     button.setText(alias + ": " + apiKey);
@@ -89,7 +86,7 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
   }
 
   @Override
-  @SuppressLint("CommitPrefEdits")
+  @SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
   protected void onDialogClosed(boolean clickedPositiveButton) {
     super.onDialogClosed(clickedPositiveButton);
     if (clickedPositiveButton) {

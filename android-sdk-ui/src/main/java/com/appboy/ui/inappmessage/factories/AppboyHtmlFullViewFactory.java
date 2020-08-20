@@ -17,7 +17,7 @@ import com.appboy.ui.support.ViewUtils;
 
 public class AppboyHtmlFullViewFactory implements IInAppMessageViewFactory {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyHtmlFullViewFactory.class);
-  private IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
+  private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
 
   public AppboyHtmlFullViewFactory(IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {
     mInAppMessageWebViewClientListener = inAppMessageWebViewClientListener;

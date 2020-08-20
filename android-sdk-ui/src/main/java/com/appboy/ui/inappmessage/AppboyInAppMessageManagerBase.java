@@ -167,8 +167,7 @@ public class AppboyInAppMessageManagerBase {
 
   /**
    * Assigns a custom {@link IInAppMessageManagerListener} that will be used when displaying in-app messages. To revert
-   * back to the default {@link IInAppMessageManagerListener}, call the
-   * {@link AppboyInAppMessageManager#setCustomInAppMessageManagerListener(IInAppMessageManagerListener)}  method with null.
+   * back to the default {@link IInAppMessageManagerListener}, call this method with null.
    * <p/>
    * see {@link IInAppMessage#isControl()}
    *
@@ -182,8 +181,7 @@ public class AppboyInAppMessageManagerBase {
 
   /**
    * Assigns a custom {@link IInAppMessageManagerListener} that will be used when displaying control in-app messages. To revert
-   * back to the default {@link IInAppMessageManagerListener}, call the
-   * {@link AppboyInAppMessageManager#setCustomControlInAppMessageManagerListener(IInAppMessageManagerListener)} method with null.
+   * back to the default {@link IInAppMessageManagerListener}, call this method with null.
    *
    * @param inAppMessageManagerListener A custom {@link IInAppMessageManagerListener} for control in-app messages or null (to revert back to the
    *                                    default {@link IInAppMessageManagerListener}).

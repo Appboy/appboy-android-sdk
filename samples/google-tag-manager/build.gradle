@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply from: rootProject.file("config/quality/quality-android-application.gradle")
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -18,6 +17,15 @@ android {
       signingConfig signingConfigs.debug
       debuggable true
     }
+  }
+
+  lintOptions {
+    ignore("Instantiatable")
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 }
 

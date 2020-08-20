@@ -57,14 +57,14 @@ import android.view.ViewGroup;
 @SuppressWarnings("checkstyle:missingswitchdefault")
 public class SwipeDismissTouchListener implements View.OnTouchListener {
   // Cached ViewConfiguration and system-wide constant values
-  private int mSlop;
-  private int mMinFlingVelocity;
-  private int mMaxFlingVelocity;
-  private long mAnimationTime;
+  private final int mSlop;
+  private final int mMinFlingVelocity;
+  private final int mMaxFlingVelocity;
+  private final long mAnimationTime;
 
   // Fixed properties
-  private View mView;
-  private DismissCallbacks mCallbacks;
+  private final View mView;
+  private final DismissCallbacks mCallbacks;
   private int mViewWidth = 1; // 1 and not 0 to prevent dividing by zero
 
   // Transient properties
@@ -72,7 +72,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
   private float mDownY;
   private boolean mSwiping;
   private int mSwipingSlop;
-  private Object mToken;
+  private final Object mToken;
   private VelocityTracker mVelocityTracker;
   private float mTranslationX;
 
@@ -266,12 +266,9 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
       }
     });
 
-    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override
-      public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        lp.height = (Integer) valueAnimator.getAnimatedValue();
-        mView.setLayoutParams(lp);
-      }
+    animator.addUpdateListener(valueAnimator -> {
+      lp.height = (Integer) valueAnimator.getAnimatedValue();
+      mView.setLayoutParams(lp);
     });
 
     animator.start();

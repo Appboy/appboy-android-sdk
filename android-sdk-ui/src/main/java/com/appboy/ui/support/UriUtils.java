@@ -30,7 +30,7 @@ public class UriUtils {
       return Collections.emptyMap();
     }
 
-    Map<String, String> parameterValueMap = new HashMap<String, String>();
+    Map<String, String> parameterValueMap = new HashMap<>();
     try {
       if (uri.isOpaque()) {
         // Convert the opaque uri into a parseable hierarchical one

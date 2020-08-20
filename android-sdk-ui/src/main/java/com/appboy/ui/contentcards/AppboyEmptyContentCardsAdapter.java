@@ -1,5 +1,6 @@
 package com.appboy.ui.contentcards;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.appboy.ui.R;
  */
 public class AppboyEmptyContentCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+  @NonNull
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
     View view = LayoutInflater.from(viewGroup.getContext())
@@ -20,7 +22,7 @@ public class AppboyEmptyContentCardsAdapter extends RecyclerView.Adapter<Recycle
   }
 
   @Override
-  public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+  public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
     // This method is here since all adapters require a bind implementation. This adapter is static, so no binding occurs.
   }
 
@@ -29,7 +31,7 @@ public class AppboyEmptyContentCardsAdapter extends RecyclerView.Adapter<Recycle
     return 1;
   }
 
-  class NetworkUnavailableViewHolder extends RecyclerView.ViewHolder {
+  static class NetworkUnavailableViewHolder extends RecyclerView.ViewHolder {
     NetworkUnavailableViewHolder(View view) {
       super(view);
     }

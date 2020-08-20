@@ -3,6 +3,7 @@ package com.appboy.sample;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.LayerDrawable;
+import android.support.annotation.NonNull;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -55,7 +56,7 @@ public class CustomInAppMessageView extends RelativeLayout implements IInAppMess
   }
 
   @Override
-  public void applyWindowInsets(WindowInsetsCompat insets) {
+  public void applyWindowInsets(@NonNull WindowInsetsCompat insets) {
     // Does nothing
   }
 

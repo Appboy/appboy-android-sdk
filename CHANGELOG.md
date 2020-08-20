@@ -1,3 +1,26 @@
+## 9.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v9.0.0)
+
+##### ⚠ Breaking
+- The Android SDK now has a source and target build compatibility set to Java 8.
+
+##### Changed
+- Simplified the email regex used in the SDK to centralize most validation on the server.
+  - The original email validation used is reproduced below:
+  ```
+  (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])
+  ```
+
+##### Fixed
+- Fixed an issue where in-app message icon TextViews could throw a `ClassCastException` on certain devices and prevent display.
+
+##### Removed
+- Removed `com.appboy.support.AppboyImageUtils.getBitmap(android.net.Uri)` in favor of `com.appboy.support.AppboyImageUtils.getBitmap(android.content.Context, android.net.Uri, com.appboy.enums.AppboyViewBounds)`.
+- Removed `com.appboy.AppboyAdmReceiver.CAMPAIGN_ID_KEY`.
+  - Use `Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY` instead.
+- Removed `com.appboy.push.AppboyNotificationUtils.isValidNotificationPriority()`.
+
 ## 8.1.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v8.1.0)

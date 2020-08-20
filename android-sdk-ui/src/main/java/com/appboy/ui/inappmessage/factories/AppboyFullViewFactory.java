@@ -69,36 +69,33 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     final View scrollView = view.findViewById(R.id.com_appboy_inappmessage_full_scrollview);
     if (scrollView != null) {
       final View allContentParent = view.findViewById(R.id.com_appboy_inappmessage_full_all_content_parent);
-      scrollView.post(new Runnable() {
-        @Override
-        public void run() {
-          // Get the parent height
-          int parentHeight = allContentParent.getHeight();
+      scrollView.post(() -> {
+        // Get the parent height
+        int parentHeight = allContentParent.getHeight();
 
-          // Half of that is the Image
-          // So we have another half allotted for us + some margins + the buttons
-          int halfHeight = parentHeight / 2;
+        // Half of that is the Image
+        // So we have another half allotted for us + some margins + the buttons
+        int halfHeight = parentHeight / 2;
 
-          // Compute the rest of the height for the ScrollView + buttons + margins
-          View contentView = view.findViewById(R.id.com_appboy_inappmessage_full_text_and_button_content_parent);
-          final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
-          int nonScrollViewHeight = layoutParams.bottomMargin + layoutParams.topMargin;
+        // Compute the rest of the height for the ScrollView + buttons + margins
+        View contentView = view.findViewById(R.id.com_appboy_inappmessage_full_text_and_button_content_parent);
+        final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
+        int nonScrollViewHeight = layoutParams.bottomMargin + layoutParams.topMargin;
 
-          if (!inAppMessageFull.getMessageButtons().isEmpty()) {
-            // Account for all appropriate height / margins
-            nonScrollViewHeight += (int) ViewUtils.convertDpToPixels(applicationContext, BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP);
-          }
-
-          // The remaining height is the MOST that the scrollView can take up
-          int scrollViewAppropriateHeight = Math.min(scrollView.getHeight(), halfHeight - nonScrollViewHeight);
-
-          // Now set that height for the ScrollView
-          ViewUtils.setHeightOnViewLayoutParams(scrollView, scrollViewAppropriateHeight);
-
-          // Request another layout since we changed bounds for everything
-          scrollView.requestLayout();
-          view.getMessageImageView().requestLayout();
+        if (!inAppMessageFull.getMessageButtons().isEmpty()) {
+          // Account for all appropriate height / margins
+          nonScrollViewHeight += (int) ViewUtils.convertDpToPixels(applicationContext, BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP);
         }
+
+        // The remaining height is the MOST that the scrollView can take up
+        int scrollViewAppropriateHeight = Math.min(scrollView.getHeight(), halfHeight - nonScrollViewHeight);
+
+        // Now set that height for the ScrollView
+        ViewUtils.setHeightOnViewLayoutParams(scrollView, scrollViewAppropriateHeight);
+
+        // Request another layout since we changed bounds for everything
+        scrollView.requestLayout();
+        view.getMessageImageView().requestLayout();
       });
     }
 

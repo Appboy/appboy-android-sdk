@@ -3,7 +3,6 @@ package com.appboy.ui.inappmessage.factories;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.view.View;
 
 import com.appboy.Appboy;
 import com.appboy.IAppboyImageLoader;
@@ -38,13 +37,10 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     }
 
     // Modal frame should only dismiss the message when configured.
-    view.getFrameView().setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (AppboyInAppMessageManager.getInstance().getDoesClickOutsideModalViewDismissInAppMessageView()) {
-          AppboyLogger.i(TAG, "Dismissing modal after frame click");
-          AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
-        }
+    view.getFrameView().setOnClickListener(view1 -> {
+      if (AppboyInAppMessageManager.getInstance().getDoesClickOutsideModalViewDismissInAppMessageView()) {
+        AppboyLogger.i(TAG, "Dismissing modal after frame click");
+        AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
       }
     });
     view.setMessageBackgroundColor(inAppMessage.getBackgroundColor());

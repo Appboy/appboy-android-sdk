@@ -24,7 +24,6 @@ import com.appboy.support.JsonUtils;
 import com.appboy.ui.inappmessage.listeners.AppboyInAppMessageViewLifecycleListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
-import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlBaseView;
 import com.appboy.ui.support.ViewUtils;
 
@@ -81,7 +80,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageManager.class);
   private static volatile AppboyInAppMessageManager sInstance = null;
 
-  private final Stack<IInAppMessage> mInAppMessageStack = new Stack<IInAppMessage>();
+  private final Stack<IInAppMessage> mInAppMessageStack = new Stack<>();
   private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new AppboyInAppMessageViewLifecycleListener();
   private final AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
 
@@ -242,16 +241,18 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    *
    * @return A boolean value indicating whether an asynchronous task to display the in-app message display was executed.
    */
-  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-420
   public boolean requestDisplayInAppMessage() {
     try {
       if (mActivity == null) {
         if (!mInAppMessageStack.empty()) {
-          AppboyLogger.w(TAG, "No activity is currently registered to receive in-app messages. Saving in-app message as unregistered "
-              + "in-app message. It will automatically be displayed when the next activity registers to receive in-app messages.");
+          AppboyLogger.w(TAG, "No activity is currently registered to receive in-app messages. "
+              + "Saving in-app message as unregistered "
+              + "in-app message. It will automatically be displayed when the next activity "
+              + "registers to receive in-app messages.");
           mUnRegisteredInAppMessage = mInAppMessageStack.pop();
         } else {
-          AppboyLogger.d(TAG, "No activity is currently registered to receive in-app messages and the in-app message stack is empty. Doing nothing.");
+          AppboyLogger.d(TAG, "No activity is currently registered to receive in-app messages and the "
+              + "in-app message stack is empty. Doing nothing.");
         }
         return false;
       }
@@ -289,19 +290,14 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
               + "in-app message will not be displayed and will not be put back on the stack.");
           return false;
         default:
-          AppboyLogger.e(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a "
+          AppboyLogger.w(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a "
               + "InAppMessageOperation. Ignoring the in-app message. Please check the IInAppMessageStackBehaviour "
               + "implementation.");
           return false;
       }
 
-      Handler mainLooperHandler = new Handler(mApplicationContext.getMainLooper());
-      mainLooperHandler.post(new Runnable() {
-        @Override
-        public void run() {
-          new AppboyAsyncInAppMessageDisplayer().execute(inAppMessage);
-        }
-      });
+      Handler mainLooperHandler = new Handler(mActivity.getMainLooper());
+      BackgroundInAppMessagePreparer.prepareInAppMessageForDisplay(mainLooperHandler, inAppMessage);
       return true;
     } catch (Exception e) {
       AppboyLogger.e(TAG, "Error running requestDisplayInAppMessage", e);
@@ -461,17 +457,14 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
       if (inAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
         AppboyLogger.d(TAG, "In-app message view includes HTML. Delaying display until the content has finished loading.");
         final AppboyInAppMessageHtmlBaseView appboyInAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) inAppMessageView;
-        appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(new IWebViewClientStateListener() {
-          @Override
-          public void onPageFinished() {
-            try {
-              if (mInAppMessageViewWrapper != null && mActivity != null) {
-                AppboyLogger.d(TAG, "Page has finished loading. Opening in-app message view wrapper.");
-                mInAppMessageViewWrapper.open(mActivity);
-              }
-            } catch (Exception e) {
-              AppboyLogger.e(TAG, "Failed to open view wrapper in page finished listener", e);
+        appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(() -> {
+          try {
+            if (mInAppMessageViewWrapper != null && mActivity != null) {
+              AppboyLogger.d(TAG, "Page has finished loading. Opening in-app message view wrapper.");
+              mInAppMessageViewWrapper.open(mActivity);
             }
+          } catch (Exception e) {
+            AppboyLogger.e(TAG, "Failed to open view wrapper in page finished listener", e);
           }
         });
       } else {
@@ -483,16 +476,13 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
     }
   }
 
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-419
   private IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber() {
-    return new IEventSubscriber<InAppMessageEvent>() {
-      @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-419
-      @Override
-      public void trigger(InAppMessageEvent event) {
-        if (getInAppMessageManagerListener().onInAppMessageReceived(event.getInAppMessage())) {
-          return;
-        }
-        addInAppMessage(event.getInAppMessage());
+    return event -> {
+      if (getInAppMessageManagerListener().onInAppMessageReceived(event.getInAppMessage())) {
+        return;
       }
+      addInAppMessage(event.getInAppMessage());
     };
   }
 

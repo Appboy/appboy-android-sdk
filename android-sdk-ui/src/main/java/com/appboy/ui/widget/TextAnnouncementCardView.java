@@ -1,7 +1,6 @@
 package com.appboy.ui.widget;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.appboy.models.cards.TextAnnouncementCard;
@@ -47,11 +46,6 @@ public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementC
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = getUriActionForCard(card);
 
-    setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        handleCardClick(mContext, card, mCardAction, TAG);
-      }
-    });
+    setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
   }
 }

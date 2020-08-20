@@ -30,8 +30,8 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
   private final LinearLayoutManager mLayoutManager;
   private final IContentCardsViewBindingHandler mContentCardsViewBindingHandler;
 
-  private List<Card> mCardData;
-  private Set<String> mImpressedCardIds = new HashSet<String>();
+  private final List<Card> mCardData;
+  private Set<String> mImpressedCardIds = new HashSet<>();
 
   public AppboyCardAdapter(Context context,
                            LinearLayoutManager layoutManager,
@@ -143,12 +143,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
     cardAtPosition.setIndicatorHighlighted(true);
 
     // Mark as changed
-    mHandler.post(new Runnable() {
-      @Override
-      public void run() {
-        notifyItemChanged(adapterPosition);
-      }
-    });
+    mHandler.post(() -> notifyItemChanged(adapterPosition));
   }
 
   @Override
@@ -196,14 +191,11 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
       }
     }
 
-    mHandler.post(new Runnable() {
-      @Override
-      public void run() {
-        // We add 1 since the number of items since if indices 0 & 1
-        // were changed, then a total of 2 items were changed.
-        final int itemsChangedCount = (lastVisibleIndex - firstVisibleIndex) + 1;
-        notifyItemRangeChanged(firstVisibleIndex, itemsChangedCount);
-      }
+    mHandler.post(() -> {
+      // We add 1 since the number of items since if indices 0 & 1
+      // were changed, then a total of 2 items were changed.
+      final int itemsChangedCount = (lastVisibleIndex - firstVisibleIndex) + 1;
+      notifyItemRangeChanged(firstVisibleIndex, itemsChangedCount);
     });
   }
 
@@ -211,7 +203,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
    * @return a {@link List} snapshot of the impressed card ids.
    */
   public List<String> getImpressedCardIds() {
-    return new ArrayList<String>(mImpressedCardIds);
+    return new ArrayList<>(mImpressedCardIds);
   }
 
   /**
@@ -220,7 +212,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
    * @param impressedCardIds a list of the card ids with impressions.
    */
   public void setImpressedCardIds(List<String> impressedCardIds) {
-    mImpressedCardIds = new HashSet<String>(impressedCardIds);
+    mImpressedCardIds = new HashSet<>(impressedCardIds);
   }
 
   /**
@@ -288,7 +280,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
    * A {@link Card} based implementation of the {@link DiffUtil.Callback}. This implementation assumes cards with the same id
    * are equivalent content-wise and visually.
    */
-  private class CardListDiffCallback extends DiffUtil.Callback {
+  private static class CardListDiffCallback extends DiffUtil.Callback {
     private final List<Card> mOldCards;
     private final List<Card> mNewCards;
 

@@ -60,12 +60,9 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     // Make scrollView pass click events to message clickable view, so that clicking on the scrollView
     // dismisses the in-app message.
     View scrollViewChild = findViewById(R.id.com_appboy_inappmessage_modal_text_layout);
-    scrollViewChild.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View scrollView) {
-        AppboyLogger.d(TAG, "Passing scrollView click event to message clickable view.");
-        getMessageClickableView().performClick();
-      }
+    scrollViewChild.setOnClickListener(scrollView -> {
+      AppboyLogger.d(TAG, "Passing scrollView click event to message clickable view.");
+      getMessageClickableView().performClick();
     });
   }
 
@@ -76,7 +73,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
 
   @Override
   public List<View> getMessageButtonViews(int numButtons) {
-    List<View> buttonViews = new ArrayList<View>();
+    List<View> buttonViews = new ArrayList<>();
 
     // Based on the number of buttons, make one of the button parent layouts visible
     if (numButtons == 1) {
@@ -184,24 +181,21 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
 
     // The measured width is only available after the draw phase, which
     // this runnable will draw after.
-    this.post(new Runnable() {
-      @Override
-      public void run() {
-        double maxWidthPixelSize = Math.min(getMeasuredWidth() - marginPixels, maxModalWidth);
-        double maxHeightPixelSize = Math.min(getMeasuredHeight() - marginPixels, maxModalHeight);
-        double maxSizeAspectRatio = maxWidthPixelSize / maxHeightPixelSize;
+    this.post(() -> {
+      double maxWidthPixelSize = Math.min(getMeasuredWidth() - marginPixels, maxModalWidth);
+      double maxHeightPixelSize = Math.min(getMeasuredHeight() - marginPixels, maxModalHeight);
+      double maxSizeAspectRatio = maxWidthPixelSize / maxHeightPixelSize;
 
-        final View modalBoundView = findViewById(R.id.com_appboy_inappmessage_modal_graphic_bound);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) modalBoundView.getLayoutParams();
-        if (imageAspectRatio >= maxSizeAspectRatio) {
-          params.width = (int) maxWidthPixelSize;
-          params.height = (int) (maxWidthPixelSize / imageAspectRatio);
-        } else {
-          params.width = (int) (maxHeightPixelSize * imageAspectRatio);
-          params.height = (int) maxHeightPixelSize;
-        }
-        modalBoundView.setLayoutParams(params);
+      final View modalBoundView = findViewById(R.id.com_appboy_inappmessage_modal_graphic_bound);
+      LayoutParams params = (LayoutParams) modalBoundView.getLayoutParams();
+      if (imageAspectRatio >= maxSizeAspectRatio) {
+        params.width = (int) maxWidthPixelSize;
+        params.height = (int) (maxWidthPixelSize / imageAspectRatio);
+      } else {
+        params.width = (int) (maxHeightPixelSize * imageAspectRatio);
+        params.height = (int) maxHeightPixelSize;
       }
+      modalBoundView.setLayoutParams(params);
     });
   }
 }

@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public class SharedPreferencesDataDialog extends DialogPreference implements AdapterView.OnItemSelectedListener {
-  private Context mContext;
-  private List mOptionList;
+  private final Context mContext;
+  private final List mOptionList;
   private View mMainView;
 
   public SharedPreferencesDataDialog(Context context, AttributeSet attrs) {
@@ -39,7 +39,7 @@ public class SharedPreferencesDataDialog extends DialogPreference implements Ada
 
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     String sharedPreferencesFileName = (String) mOptionList.get(position);
-    List<String> sharedPreferencesData = new ArrayList<String>();
+    List<String> sharedPreferencesData = new ArrayList<>();
     SharedPreferences sharedPreferences = mContext.getApplicationContext().getSharedPreferences(sharedPreferencesFileName.replace(".xml", ""), Context.MODE_PRIVATE);
     Map<String,?> keys = sharedPreferences.getAll();
     for (Map.Entry<String,?> entry : keys.entrySet()) {

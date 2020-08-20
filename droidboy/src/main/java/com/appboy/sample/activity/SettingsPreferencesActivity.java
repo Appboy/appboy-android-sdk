@@ -96,33 +96,30 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
     toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
     setAboutSectionInfo();
-    Preference dataFlushPreference = findPreference("data_flush");
-    Preference setManualLocationPreference = findPreference("set_manual_location");
-    Preference locationRuntimePermissionDialogPreference = findPreference("location_runtime_permission_dialog");
-    Preference openSessionPreference = findPreference("open_session");
-    Preference closeSessionPreference = findPreference("close_session");
-    Preference anonymousUserRevertPreference = findPreference("anonymous_revert");
-    Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
-    Preference logAttributionPreference = findPreference("log_attribution");
-    Preference enableAutomaticNetworkRequestsPreference = findPreference("enable_outbound_network_requests");
-    Preference disableAutomaticNetworkRequestsPreference = findPreference("disable_outbound_network_requests");
-    Preference brazeEnvironmentBarcodePreference = findPreference("environment_barcode_picture_intent_key");
-    Preference brazeEnvironmentResetPreference = findPreference("environment_reset_key");
-    Preference brazeEnvironmentKubernetesPreference = findPreference("environment_switch_k8s");
-    CheckBoxPreference sortNewsFeed = (CheckBoxPreference) findPreference("sort_feed");
-    SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
+    final Preference dataFlushPreference = findPreference("data_flush");
+    final Preference setManualLocationPreference = findPreference("set_manual_location");
+    final Preference locationRuntimePermissionDialogPreference = findPreference("location_runtime_permission_dialog");
+    final Preference openSessionPreference = findPreference("open_session");
+    final Preference closeSessionPreference = findPreference("close_session");
+    final Preference anonymousUserRevertPreference = findPreference("anonymous_revert");
+    final Preference toggleDisableAppboyNetworkRequestsPreference = findPreference("toggle_disable_appboy_network_requests_for_filtered_emulators");
+    final Preference logAttributionPreference = findPreference("log_attribution");
+    final Preference enableAutomaticNetworkRequestsPreference = findPreference("enable_outbound_network_requests");
+    final Preference disableAutomaticNetworkRequestsPreference = findPreference("disable_outbound_network_requests");
+    final CheckBoxPreference sortNewsFeed = (CheckBoxPreference) findPreference("sort_feed");
+    final SharedPreferences sharedPrefSort = getSharedPreferences(getString(R.string.feed), Context.MODE_PRIVATE);
     sortNewsFeed.setChecked(sharedPrefSort.getBoolean(getString(R.string.sort_feed), false));
-    CheckBoxPreference setCustomNewsFeedClickActionListener = (CheckBoxPreference) findPreference("set_custom_news_feed_card_click_action_listener");
+    final CheckBoxPreference setCustomNewsFeedClickActionListener = (CheckBoxPreference) findPreference("set_custom_news_feed_card_click_action_listener");
 
-    Preference enableSdkPreference = findPreference("enable_sdk_key");
-    Preference disableSdkPreference = findPreference("disable_sdk_key");
-    Preference wipeSdkDataPreference = findPreference("wipe_data_preference_key");
+    final Preference enableSdkPreference = findPreference("enable_sdk_key");
+    final Preference disableSdkPreference = findPreference("disable_sdk_key");
+    final Preference wipeSdkDataPreference = findPreference("wipe_data_preference_key");
 
-    Preference enableGlideLibraryPreference = findPreference("glide_image_loader_enable_setting_key");
-    Preference disableGlideLibraryPreference = findPreference("glide_image_loader_disable_setting_key");
+    final Preference enableGlideLibraryPreference = findPreference("glide_image_loader_enable_setting_key");
+    final Preference disableGlideLibraryPreference = findPreference("glide_image_loader_disable_setting_key");
 
-    CheckBoxPreference displayInCutoutPreference = (CheckBoxPreference) findPreference("display_in_full_cutout_setting_key");
-    CheckBoxPreference displayNoLimitsPreference = (CheckBoxPreference) findPreference("display_no_limits_setting_key");
+    final CheckBoxPreference displayInCutoutPreference = (CheckBoxPreference) findPreference("display_in_full_cutout_setting_key");
+    final CheckBoxPreference displayNoLimitsPreference = (CheckBoxPreference) findPreference("display_no_limits_setting_key");
 
     setManualLocationPreference.setOnPreferenceClickListener(preference -> {
       Appboy.getInstance(this).getCurrentUser().setLastKnownLocation(1.0, 2.0, 3.0, 4.0);
@@ -257,7 +254,7 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
       return true;
     });
 
-    brazeEnvironmentBarcodePreference.setOnPreferenceClickListener((Preference preference) -> {
+    findPreference("environment_barcode_picture_intent_key").setOnPreferenceClickListener((Preference preference) -> {
       // Take a picture via intent
       Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
       try {
@@ -267,7 +264,7 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
       }
       return true;
     });
-    brazeEnvironmentResetPreference.setOnPreferenceClickListener((Preference preference) -> {
+    findPreference("environment_reset_key").setOnPreferenceClickListener((Preference preference) -> {
       SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
       sharedPreferencesEditor.remove(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY);
       sharedPreferencesEditor.remove(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY);
@@ -276,7 +273,7 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
       LifecycleUtils.restartApp(this);
       return true;
     });
-    brazeEnvironmentKubernetesPreference.setOnPreferenceClickListener((Preference preference) -> {
+    findPreference("environment_switch_k8s").setOnPreferenceClickListener((Preference preference) -> {
       changeEndpointToKubernetes();
       return true;
     });

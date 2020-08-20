@@ -71,7 +71,7 @@ public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMa
 
   // Note that this is for testing purposes only.  This storage location and format are not a supported API.
   private static List<AppboyGeofence> retrieveAppboyGeofencesFromLocalStorage(SharedPreferences sharedPreferences) {
-    List<AppboyGeofence> geofences = new ArrayList<AppboyGeofence>();
+    List<AppboyGeofence> geofences = new ArrayList<>();
     Map<String, ?> storedGeofences = sharedPreferences.getAll();
     if (storedGeofences == null || storedGeofences.size() == 0) {
       AppboyLogger.d(TAG, "Did not find stored geofences.");

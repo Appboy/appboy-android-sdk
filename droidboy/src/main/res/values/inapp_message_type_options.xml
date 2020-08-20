@@ -8,6 +8,7 @@
     <item>Message Type: Full</item>
     <item>Message Type: Full - Graphic</item>
     <item>Message Type: HTML Bootstrap Album</item>
+    <item>Message Type: HTML Baby Shark</item>
     <item>Message Type: HTML Full No JS</item>
     <item>Message Type: HTML Full Inline JS</item>
     <item>Message Type: HTML Full External JS</item>
@@ -25,6 +26,7 @@
     <item>full</item>
     <item>full_graphic</item>
     <item>html_full_unified_bootstrap</item>
+    <item>html_shark_unified</item>
     <item>html_full_no_js</item>
     <item>html_full_inline_js</item>
     <item>html_full_external_js</item>

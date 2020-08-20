@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.appboy.configuration.AppboyConfigurationProvider;
@@ -17,7 +19,8 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFcmReceiver.class);
   /**
    * @deprecated This intent was used in legacy integrations only.
-   * Incoming intents should only be received via {@link AppboyFcmReceiver#FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION}
+   * Incoming intents should only be received via
+   * {@link AppboyFcmReceiver#FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION}
    */
   @Deprecated()
   private static final String FCM_RECEIVE_INTENT_ACTION = "com.google.android.c2dm.intent.RECEIVE";
@@ -29,40 +32,71 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    AppboyLogger.i(TAG, "Received broadcast message. Message: " + intent.toString());
-    String action = intent.getAction();
-    if (FCM_RECEIVE_INTENT_ACTION.equals(action) || FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION.equals(action)) {
-      handleAppboyFcmReceiveIntent(context, intent);
-    } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action)) {
-      AppboyNotificationUtils.handleCancelNotificationAction(context, intent);
-    } else if (Constants.APPBOY_ACTION_CLICKED_ACTION.equals(action)) {
-      AppboyNotificationActionUtils.handleNotificationActionClicked(context, intent);
-    } else if (Constants.APPBOY_STORY_TRAVERSE_CLICKED_ACTION.equals(action)) {
-      handleAppboyFcmReceiveIntent(context, intent);
-    } else if (Constants.APPBOY_STORY_CLICKED_ACTION.equals(action)) {
-      AppboyNotificationUtils.handlePushStoryPageClicked(context, intent);
-    } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
-      AppboyNotificationUtils.handleNotificationOpened(context, intent);
-    } else if (Constants.APPBOY_PUSH_DELETED_ACTION.equals(action)) {
-      AppboyNotificationUtils.handleNotificationDeleted(context, intent);
-    } else {
-      AppboyLogger.w(TAG, "The FCM receiver received a message not sent from Appboy. Ignoring the message.");
+    if (intent == null) {
+      AppboyLogger.w(TAG, "Received null intent. Doing nothing.");
+      return;
+    }
+    Context applicationContext = context.getApplicationContext();
+    PushHandlerRunnable pushHandlerRunnable = new PushHandlerRunnable(applicationContext, intent);
+    new Thread(pushHandlerRunnable).start();
+  }
+
+  private static class PushHandlerRunnable implements Runnable {
+    private final String mAction;
+    private final Context mApplicationContext;
+    private final Intent mIntent;
+
+    PushHandlerRunnable(Context applicationContext, @NonNull Intent intent) {
+      mApplicationContext = applicationContext;
+      mIntent = intent;
+      mAction = intent.getAction();
+    }
+
+    @Override
+    public void run() {
+      try {
+        performWork();
+      } catch (Exception e) {
+        AppboyLogger.e(TAG, "Caught exception while performing the push "
+            + "notification handling work. Action: " + mAction + " Intent: " + mIntent, e);
+      }
+    }
+
+    private void performWork() {
+      AppboyLogger.i(TAG, "Received broadcast message. Message: " + mIntent.toString());
+      String action = mIntent.getAction();
+      if (FCM_RECEIVE_INTENT_ACTION.equals(action)
+          || FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION.equals(action)
+          || Constants.APPBOY_STORY_TRAVERSE_CLICKED_ACTION.equals(action)) {
+        handlePushNotificationPayload(mApplicationContext, mIntent);
+      } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action)) {
+        AppboyNotificationUtils.handleCancelNotificationAction(mApplicationContext, mIntent);
+      } else if (Constants.APPBOY_ACTION_CLICKED_ACTION.equals(action)) {
+        AppboyNotificationActionUtils.handleNotificationActionClicked(mApplicationContext, mIntent);
+      } else if (Constants.APPBOY_STORY_CLICKED_ACTION.equals(action)) {
+        AppboyNotificationUtils.handlePushStoryPageClicked(mApplicationContext, mIntent);
+      } else if (Constants.APPBOY_PUSH_CLICKED_ACTION.equals(action)) {
+        AppboyNotificationUtils.handleNotificationOpened(mApplicationContext, mIntent);
+      } else if (Constants.APPBOY_PUSH_DELETED_ACTION.equals(action)) {
+        AppboyNotificationUtils.handleNotificationDeleted(mApplicationContext, mIntent);
+      } else {
+        AppboyLogger.w(TAG, "The FCM receiver received a message not sent from Appboy. Ignoring the message.");
+      }
     }
   }
 
-  /**
-   * Handles both Braze data push FCM messages and notification messages. Notification messages are
-   * posted to the notification center if the FCM message contains a title and body and the payload
-   * is sent to the application via an Intent. Data push messages do not post to the notification
-   * center, although the payload is forwarded to the application via an Intent as well.
-   */
-  boolean handleAppboyFcmMessage(Context context, Intent intent) {
+  @VisibleForTesting
+  static boolean handlePushNotificationPayload(Context context, Intent intent) {
+    if (!AppboyNotificationUtils.isAppboyPushMessage(intent)) {
+      return false;
+    }
+
     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
     String messageType = intent.getStringExtra(FCM_MESSAGE_TYPE_KEY);
     if (FCM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(FCM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
-        AppboyLogger.e(TAG, "Unable to parse FCM message. Intent: " + intent.toString());
+        AppboyLogger.w(TAG, "Unable to parse FCM message. Intent: " + intent.toString());
       } else {
         AppboyLogger.i(TAG, "FCM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
       }
@@ -129,9 +163,8 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
         // Set a custom duration for this notification.
         if (fcmExtras != null && fcmExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
           int durationInMillis = Integer.parseInt(fcmExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));
-          AppboyNotificationUtils.setNotificationDurationAlarm(context, this.getClass(), notificationId, durationInMillis);
+          AppboyNotificationUtils.setNotificationDurationAlarm(context, AppboyFcmReceiver.class, notificationId, durationInMillis);
         }
-
         return true;
       } else {
         AppboyLogger.d(TAG, "Received data push");
@@ -139,38 +172,6 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
         AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, fcmExtras);
         return false;
       }
-    }
-  }
-
-  /**
-   * Runs the {@link HandleAppboyFcmMessageTask} method in a background thread in case of an image push
-   * notification, which cannot be downloaded on the main thread.
-   */
-  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-420
-  public class HandleAppboyFcmMessageTask extends android.os.AsyncTask<Void, Void, Void> {
-    private final Context mContext;
-    private final Intent mIntent;
-
-    public HandleAppboyFcmMessageTask(Context context, Intent intent) {
-      mContext = context;
-      mIntent = intent;
-      execute();
-    }
-
-    @Override
-    protected Void doInBackground(Void... voids) {
-      try {
-        handleAppboyFcmMessage(mContext, mIntent);
-      } catch (Exception e) {
-        AppboyLogger.e(TAG, "Failed to create and display notification.", e);
-      }
-      return null;
-    }
-  }
-
-  void handleAppboyFcmReceiveIntent(Context context, Intent intent) {
-    if (AppboyNotificationUtils.isAppboyPushMessage(intent)) {
-      new HandleAppboyFcmMessageTask(context, intent);
     }
   }
 }

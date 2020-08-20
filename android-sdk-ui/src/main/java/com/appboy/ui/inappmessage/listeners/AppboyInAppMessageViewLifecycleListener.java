@@ -141,14 +141,11 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
   }
 
   private void startClearHtmlInAppMessageAssetsThread() {
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        Activity inAppMessageActivity = AppboyInAppMessageManager.getInstance().getActivity();
-        if (inAppMessageActivity != null) {
-          File internalStorageCacheDirectory = WebContentUtils.getHtmlInAppMessageAssetCacheDirectory(inAppMessageActivity);
-          AppboyFileUtils.deleteFileOrDirectory(internalStorageCacheDirectory);
-        }
+    new Thread(() -> {
+      Activity inAppMessageActivity = AppboyInAppMessageManager.getInstance().getActivity();
+      if (inAppMessageActivity != null) {
+        File internalStorageCacheDirectory = WebContentUtils.getHtmlInAppMessageAssetCacheDirectory(inAppMessageActivity);
+        AppboyFileUtils.deleteFileOrDirectory(internalStorageCacheDirectory);
       }
     }).start();
   }

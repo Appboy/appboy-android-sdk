@@ -9,7 +9,7 @@ import com.appboy.ui.actions.UriAction;
 
 public class AppboyNavigator implements IAppboyNavigator {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNavigator.class);
-  private static volatile IAppboyNavigator sDefaultAppboyNavigator = new AppboyNavigator();
+  private static final IAppboyNavigator sDefaultAppboyNavigator = new AppboyNavigator();
   private static volatile IAppboyNavigator sCustomAppboyNavigator;
 
   @Override
@@ -24,7 +24,7 @@ public class AppboyNavigator implements IAppboyNavigator {
 
   public static void executeNewsFeedAction(Context context, NewsfeedAction newsfeedAction) {
     if (newsfeedAction == null) {
-      AppboyLogger.e(TAG, "IAppboyNavigator cannot open News feed because the news feed action object was null.");
+      AppboyLogger.w(TAG, "IAppboyNavigator cannot open News feed because the news feed action object was null.");
       return;
     }
     newsfeedAction.execute(context);
@@ -32,7 +32,7 @@ public class AppboyNavigator implements IAppboyNavigator {
 
   public static void executeUriAction(Context context, UriAction uriAction) {
     if (uriAction == null) {
-      AppboyLogger.e(TAG, "IAppboyNavigator cannot open Uri because the Uri action object was null.");
+      AppboyLogger.w(TAG, "IAppboyNavigator cannot open Uri because the Uri action object was null.");
       return;
     }
     uriAction.execute(context);

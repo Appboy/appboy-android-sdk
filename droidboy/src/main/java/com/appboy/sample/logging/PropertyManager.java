@@ -2,13 +2,10 @@ package com.appboy.sample.logging;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -31,60 +28,53 @@ import java.util.Map;
 
 public class PropertyManager implements AdapterView.OnItemSelectedListener {
   private static final String[] propertyTypes = {"integer", "double", "string", "boolean", "date", "long"};
-  private Map<String, Object> mProperties = new HashMap<>();
-  private List<String> mKeys = new ArrayList<>();
+  private final Map<String, Object> mProperties = new HashMap<>();
+  private final List<String> mKeys = new ArrayList<>();
   private int selectedPropertyType;
   private Date lastDatePicked;
-  private LinearLayout mLinearLayout;
-  private EditText mPropertyKey;
-  private EditText mPropertyValue;
-  private Spinner mPropertyTypeSpinner;
-  private Button mAddProperty;
-  private Context mContext;
+  private final LinearLayout mLinearLayout;
+  private final EditText mPropertyKey;
+  private final EditText mPropertyValue;
+  private final Context mContext;
 
   public PropertyManager(Context context, LinearLayout linearLayout, EditText propertyKey, EditText propertyValue, Spinner propertyTypeSpinner, Button addPropertyButton) {
     mContext = context;
     mLinearLayout = linearLayout;
     mPropertyKey = propertyKey;
     mPropertyValue = propertyValue;
-    mPropertyTypeSpinner = propertyTypeSpinner;
-    mAddProperty = addPropertyButton;
     ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, propertyTypes);
-    mPropertyTypeSpinner.setAdapter(adapter);
-    mPropertyTypeSpinner.setOnItemSelectedListener(this);
-    mAddProperty.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        String key = mPropertyKey.getText().toString();
-        Object value;
-        switch (selectedPropertyType) {
-          case 0:
-            value = getIntegerProperty();
-            break;
-          case 1:
-            value = getDoubleProperty();
-            break;
-          case 2:
-            value = getStringProperty();
-            break;
-          case 3:
-            value = getBooleanProperty();
-            break;
-          case 4:
-            value = lastDatePicked;
-            break;
-          case 5:
-            value = getLongProperty();
-            break;
-          default:
-            value = null;
-            break;
-        }
-        if (value != null) {
-          mPropertyKey.setText("");
-          mPropertyValue.setText("");
-          addPropertyView(key, value);
-        }
+    propertyTypeSpinner.setAdapter(adapter);
+    propertyTypeSpinner.setOnItemSelectedListener(this);
+    addPropertyButton.setOnClickListener(view -> {
+      String key = mPropertyKey.getText().toString();
+      Object value;
+      switch (selectedPropertyType) {
+        case 0:
+          value = getIntegerProperty();
+          break;
+        case 1:
+          value = getDoubleProperty();
+          break;
+        case 2:
+          value = getStringProperty();
+          break;
+        case 3:
+          value = getBooleanProperty();
+          break;
+        case 4:
+          value = lastDatePicked;
+          break;
+        case 5:
+          value = getLongProperty();
+          break;
+        default:
+          value = null;
+          break;
+      }
+      if (value != null) {
+        mPropertyKey.setText("");
+        mPropertyValue.setText("");
+        addPropertyView(key, value);
       }
     });
   }
@@ -106,7 +96,7 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
       } else if (value instanceof Long) {
         appboyProperties.addProperty(key, (long) value);
       } else {
-        AppboyLogger.e(this.getClass().toString(), "invalid property type");
+        AppboyLogger.w(this.getClass().toString(), "invalid property type");
       }
     }
     return appboyProperties;
@@ -186,39 +176,27 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
     List<String> properties = Arrays.asList(propertyTypes);
     if (selectedPropertyType == properties.indexOf("date")) {
       Calendar calendar = Calendar.getInstance();
-      final DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-          mPropertyValue.setText(String.format(Locale.getDefault(), "%d/%d/%d", monthOfYear + 1, dayOfMonth, year));
-          Calendar pickedCalendar = Calendar.getInstance();
-          pickedCalendar.set(year, monthOfYear, dayOfMonth);
-          lastDatePicked = pickedCalendar.getTime();
-        }
+      final DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, (view14, year, monthOfYear, dayOfMonth) -> {
+        mPropertyValue.setText(String.format(Locale.getDefault(), "%d/%d/%d", monthOfYear + 1, dayOfMonth, year));
+        Calendar pickedCalendar = Calendar.getInstance();
+        pickedCalendar.set(year, monthOfYear, dayOfMonth);
+        lastDatePicked = pickedCalendar.getTime();
       }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-      mPropertyValue.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          if (!datePickerDialog.isShowing()) {
-            datePickerDialog.show();
-          }
+      mPropertyValue.setOnClickListener(view13 -> {
+        if (!datePickerDialog.isShowing()) {
+          datePickerDialog.show();
         }
       });
 
-      mPropertyValue.setOnTouchListener(new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent event) {
-          mPropertyValue.performClick();
-          return true;
-        }
+      mPropertyValue.setOnTouchListener((view12, event) -> {
+        mPropertyValue.performClick();
+        return true;
       });
 
-      mPropertyValue.setOnKeyListener(new View.OnKeyListener() {
-        @Override
-        public boolean onKey(View view, int keyCode, KeyEvent event) {
-          mPropertyValue.performClick();
-          return true;
-        }
+      mPropertyValue.setOnKeyListener((view1, keyCode, event) -> {
+        mPropertyValue.performClick();
+        return true;
       });
     } else {
       mPropertyValue.setOnClickListener(null);

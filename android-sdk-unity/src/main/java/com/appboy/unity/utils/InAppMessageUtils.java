@@ -19,13 +19,13 @@ public class InAppMessageUtils {
     if (inAppMessage != null) {
       inAppMessage.logClick();
     } else {
-      AppboyLogger.e(TAG, "The in-app message is null, Not logging in-app message click.");
+      AppboyLogger.w(TAG, "The in-app message is null, Not logging in-app message click.");
     }
   }
 
   public static void logInAppMessageButtonClick(IInAppMessage inAppMessage, int buttonId) {
     if (inAppMessage == null) {
-      AppboyLogger.e(TAG, "The in-app message is null. Not logging in-app message button click.");
+      AppboyLogger.w(TAG, "The in-app message is null. Not logging in-app message button click.");
       return;
     }
     if (inAppMessage instanceof IInAppMessageImmersive) {
@@ -37,7 +37,7 @@ public class InAppMessageUtils {
         }
       }
     } else {
-      AppboyLogger.e(TAG, "The in-app message %s isn't an instance of "
+      AppboyLogger.w(TAG, "The in-app message %s isn't an instance of "
           + "InAppMessageImmersive. Not logging in-app message button click.");
     }
   }
@@ -46,7 +46,7 @@ public class InAppMessageUtils {
     if (inAppMessage != null) {
       inAppMessage.logImpression();
     } else {
-      AppboyLogger.e(TAG, "The in-app message is null, Not logging in-app message impression.");
+      AppboyLogger.w(TAG, "The in-app message is null, Not logging in-app message impression.");
     }
   }
 }

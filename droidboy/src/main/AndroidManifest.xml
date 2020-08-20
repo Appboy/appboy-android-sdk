@@ -40,7 +40,8 @@
 
     <receiver
       android:name="com.appboy.AppboyAdmReceiver"
-      android:permission="com.amazon.device.messaging.permission.SEND">
+      android:permission="com.amazon.device.messaging.permission.SEND"
+      android:exported="false">
       <intent-filter>
         <action android:name="com.amazon.device.messaging.intent.RECEIVE" />
         <action android:name="com.amazon.device.messaging.intent.REGISTRATION" />

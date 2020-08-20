@@ -7,7 +7,7 @@ public class AppboyContentCardsManager {
   private static volatile AppboyContentCardsManager sInstance = null;
 
   private IContentCardsActionListener mCustomContentCardsActionListener;
-  private IContentCardsActionListener mDefaultContentCardsActionListener = new AppboyContentCardsActionListener();
+  private final IContentCardsActionListener mDefaultContentCardsActionListener = new AppboyContentCardsActionListener();
 
   public static AppboyContentCardsManager getInstance() {
     if (sInstance == null) {

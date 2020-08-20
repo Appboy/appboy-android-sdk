@@ -18,7 +18,7 @@ import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlView;
  * An {@link IInAppMessageViewFactory} for {@link InAppMessageHtml} messages.
  */
 public class AppboyHtmlViewFactory implements IInAppMessageViewFactory {
-  private IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
+  private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
 
   public AppboyHtmlViewFactory(IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {
     mInAppMessageWebViewClientListener = inAppMessageWebViewClientListener;

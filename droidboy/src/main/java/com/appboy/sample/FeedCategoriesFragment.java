@@ -3,8 +3,8 @@ package com.appboy.sample;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.ListView;
@@ -64,6 +64,7 @@ public class FeedCategoriesFragment extends DialogFragment {
     }
   }
 
+  @NonNull
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     selectedCategories = (EnumSet<CardCategory>)getArguments().getSerializable(CATEGORIES_STRING);
@@ -77,39 +78,30 @@ public class FeedCategoriesFragment extends DialogFragment {
         // Specify the list array, the items to be selected by default (the EnumSet from DroidBoyActivity),
         // and the listener through which to receive callbacks when items are selected
         .setMultiChoiceItems(CATEGORIES, mCategoryIsChecked,
-            new DialogInterface.OnMultiChoiceClickListener() {
-              @Override
-              public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                ListView lv = ((AlertDialog)getDialog()).getListView();
-                if (which == 0) {
-                  // The "All" option is clicked, we should update all other options to be checked/unchecked.
-                  for (int i = 0; i < Arrays.asList(CATEGORIES).size(); i++) {
-                    lv.setItemChecked(i, isChecked);
-                    mCategoryIsChecked[i] = isChecked;
-                  }
-                } else if (which < Arrays.asList(CATEGORIES).size()) {
-                  mCategoryIsChecked[which] = isChecked;
-                  if (!isChecked) {
-                    // When there is an option is unchecked, we should also unchecked the "All" option
-                    lv.setItemChecked(0, false);
-                    mCategoryIsChecked[0] = false;
-                  }
+            (dialog, which, isChecked) -> {
+              ListView lv = ((AlertDialog)getDialog()).getListView();
+              if (which == 0) {
+                // The "All" option is clicked, we should update all other options to be checked/unchecked.
+                for (int i = 0; i < Arrays.asList(CATEGORIES).size(); i++) {
+                  lv.setItemChecked(i, isChecked);
+                  mCategoryIsChecked[i] = isChecked;
+                }
+              } else if (which < Arrays.asList(CATEGORIES).size()) {
+                mCategoryIsChecked[which] = isChecked;
+                if (!isChecked) {
+                  // When there is an option is unchecked, we should also unchecked the "All" option
+                  lv.setItemChecked(0, false);
+                  mCategoryIsChecked[0] = false;
                 }
               }
             }
         )
         // Set the action buttons
-        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int id) {
-            selectedCategories = getEnumSetFromBooleans(mCategoryIsChecked);
-            mListener.onDialogPositiveClick(FeedCategoriesFragment.this);
-          }
+        .setPositiveButton("OK", (dialog, id) -> {
+          selectedCategories = getEnumSetFromBooleans(mCategoryIsChecked);
+          mListener.onDialogPositiveClick(this);
         })
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int id) {
-          }
+        .setNegativeButton("Cancel", (dialog, id) -> {
         });
     return builder.create();
   }

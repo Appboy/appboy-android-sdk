@@ -24,8 +24,6 @@ public class LogLevelDialogPreference extends DialogPreference {
   private static final String LOG_SELECT_PREFIX = "Updated minimum log level to ";
   private static final String LOG_LEVEL_TOAST = "Appboy Logging Level set to %s.";
   private static final String[] OPTIONS = {VERBOSE, DEBUG, INFO, WARN, ERROR, SUPPRESS};
-  private View mView;
-  private Spinner mLogLevelSpinner;
 
   public LogLevelDialogPreference(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -35,19 +33,16 @@ public class LogLevelDialogPreference extends DialogPreference {
 
   @Override
   protected View onCreateDialogView() {
-    mView = super.onCreateDialogView();
-    mLogLevelSpinner = mView.findViewById(R.id.log_level_spinner);
+    View view = super.onCreateDialogView();
+    Spinner logLevelSpinner = view.findViewById(R.id.log_level_spinner);
 
     ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, OPTIONS);
-    mLogLevelSpinner.setAdapter(adapter);
+    logLevelSpinner.setAdapter(adapter);
 
     int currentLogLevel = AppboyLogger.getLogLevel();
     int initialSelection;
 
     switch (currentLogLevel) {
-      case Log.VERBOSE:
-        initialSelection = 0;
-        break;
       case Log.DEBUG:
         initialSelection = 1;
         break;
@@ -63,14 +58,15 @@ public class LogLevelDialogPreference extends DialogPreference {
       case AppboyLogger.SUPPRESS:
         initialSelection = 5;
         break;
+      case Log.VERBOSE:
       default:
         initialSelection = 0;
         break;
     }
 
-    mLogLevelSpinner.setSelection(initialSelection);
+    logLevelSpinner.setSelection(initialSelection);
 
-    mLogLevelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    logLevelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (OPTIONS[position]) {
@@ -111,7 +107,7 @@ public class LogLevelDialogPreference extends DialogPreference {
               showToast(LOG_LEVEL_TOAST, OPTIONS[position]);
             }
             AppboyLogger.setLogLevel(Log.ERROR);
-            AppboyLogger.e(TAG, LOG_SELECT_PREFIX + ERROR);
+            AppboyLogger.w(TAG, LOG_SELECT_PREFIX + ERROR);
             saveLogLevel(Log.ERROR);
             break;
           case SUPPRESS:
@@ -130,7 +126,7 @@ public class LogLevelDialogPreference extends DialogPreference {
       public void onNothingSelected(AdapterView<?> parent) {
       }
     });
-    return mView;
+    return view;
   }
 
   // Displays a toast to the user

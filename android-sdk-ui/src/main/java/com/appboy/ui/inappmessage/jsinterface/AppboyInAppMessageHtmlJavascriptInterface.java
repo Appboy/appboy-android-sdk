@@ -20,8 +20,8 @@ import java.math.BigDecimal;
 public class AppboyInAppMessageHtmlJavascriptInterface {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlJavascriptInterface.class);
 
-  private Context mContext;
-  private AppboyInAppMessageHtmlUserJavascriptInterface mUserInterface;
+  private final Context mContext;
+  private final AppboyInAppMessageHtmlUserJavascriptInterface mUserInterface;
   private final IInAppMessageHtml mInAppMessage;
 
   public AppboyInAppMessageHtmlJavascriptInterface(Context context, @NonNull IInAppMessageHtml inAppMessage) {

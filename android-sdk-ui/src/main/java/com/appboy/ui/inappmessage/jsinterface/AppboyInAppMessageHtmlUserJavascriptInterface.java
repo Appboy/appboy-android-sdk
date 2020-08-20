@@ -33,7 +33,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public static final String JS_BRIDGE_GENDER_PREFER_NOT_TO_SAY = Gender.PREFER_NOT_TO_SAY.forJsonPut();
   public static final String JS_BRIDGE_ATTRIBUTE_VALUE = "value";
 
-  private Context mContext;
+  private final Context mContext;
 
   public AppboyInAppMessageHtmlUserJavascriptInterface(Context context) {
     mContext = context;
@@ -73,7 +73,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setGender(String genderString) {
     final Gender gender = parseGender(genderString);
     if (gender == null) {
-      AppboyLogger.e(TAG, "Failed to parse gender in Braze HTML in-app message "
+      AppboyLogger.w(TAG, "Failed to parse gender in Braze HTML in-app message "
           + "javascript interface with gender: " + genderString);
     } else {
       Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
@@ -89,7 +89,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setDateOfBirth(final int year, int monthInt, final int day) {
     final Month month = monthFromInt(monthInt);
     if (month == null) {
-      AppboyLogger.e(TAG, "Failed to parse month for value " + monthInt);
+      AppboyLogger.w(TAG, "Failed to parse month for value " + monthInt);
       return;
     }
 
@@ -135,7 +135,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setEmailNotificationSubscriptionType(String subscriptionType) {
     final NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
     if (subscriptionTypeEnum == null) {
-      AppboyLogger.e(TAG, "Failed to parse email subscription type in Braze HTML in-app message javascript interface with subscription " + subscriptionType);
+      AppboyLogger.w(TAG, "Failed to parse email subscription type in Braze HTML in-app message javascript interface with subscription " + subscriptionType);
       return;
     }
 
@@ -151,7 +151,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setPushNotificationSubscriptionType(String subscriptionType) {
     final NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
     if (subscriptionTypeEnum == null) {
-      AppboyLogger.e(TAG, "Failed to parse push subscription type in Braze HTML in-app message javascript interface with subscription: " + subscriptionType);
+      AppboyLogger.w(TAG, "Failed to parse push subscription type in Braze HTML in-app message javascript interface with subscription: " + subscriptionType);
       return;
     }
 
@@ -187,7 +187,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setCustomUserAttributeArray(final String key, String jsonArrayString) {
     final String[] arrayValue = parseStringArrayFromJsonString(jsonArrayString);
     if (arrayValue == null) {
-      AppboyLogger.e(TAG, "Failed to set custom attribute array for key " + key);
+      AppboyLogger.w(TAG, "Failed to set custom attribute array for key " + key);
       return;
     }
 
@@ -261,15 +261,16 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   @VisibleForTesting
   NotificationSubscriptionType subscriptionTypeFromJavascriptString(String subscriptionType) {
     String subscriptionTypeLowerCase = subscriptionType.toLowerCase(Locale.US);
-    if (subscriptionTypeLowerCase.equals(JS_BRIDGE_SUBSCRIBED)) {
-      return NotificationSubscriptionType.SUBSCRIBED;
-    } else if (subscriptionTypeLowerCase.equals(JS_BRIDGE_UNSUBSCRIBED)) {
-      return NotificationSubscriptionType.UNSUBSCRIBED;
-    } else if (subscriptionTypeLowerCase.equals(JS_BRIDGE_OPTED_IN)) {
-      return NotificationSubscriptionType.OPTED_IN;
+    switch (subscriptionTypeLowerCase) {
+      case JS_BRIDGE_SUBSCRIBED:
+        return NotificationSubscriptionType.SUBSCRIBED;
+      case JS_BRIDGE_UNSUBSCRIBED:
+        return NotificationSubscriptionType.UNSUBSCRIBED;
+      case JS_BRIDGE_OPTED_IN:
+        return NotificationSubscriptionType.OPTED_IN;
+      default:
+        return null;
     }
-
-    return null;
   }
 
   @VisibleForTesting
@@ -288,7 +289,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
       } else if (valueObject instanceof Double) {
         user.setCustomUserAttribute(key, ((Double) valueObject));
       } else {
-        AppboyLogger.e(TAG, "Failed to parse custom attribute type for key: " + key
+        AppboyLogger.w(TAG, "Failed to parse custom attribute type for key: " + key
             + " and json string value: " + jsonStringValue);
       }
     } catch (Exception e) {
@@ -301,7 +302,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   String[] parseStringArrayFromJsonString(String jsonArrayString) {
     try {
       JSONArray parsedArray = new JSONArray(jsonArrayString);
-      List<String> list = new ArrayList<String>();
+      List<String> list = new ArrayList<>();
       for (int i = 0; i < parsedArray.length(); i++) {
         list.add(parsedArray.getString(i));
       }

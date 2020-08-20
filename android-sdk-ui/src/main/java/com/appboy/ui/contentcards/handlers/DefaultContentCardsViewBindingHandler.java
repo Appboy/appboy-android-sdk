@@ -22,7 +22,7 @@ public class DefaultContentCardsViewBindingHandler implements IContentCardsViewB
   /**
    * A cache for the views used in binding the items in the {@link android.support.v7.widget.RecyclerView}.
    */
-  private final Map<CardType, BaseContentCardView> mContentCardViewCache = new HashMap<CardType, BaseContentCardView>();
+  private final Map<CardType, BaseContentCardView> mContentCardViewCache = new HashMap<>();
 
   @Override
   public ContentCardViewHolder onCreateViewHolder(Context context, List<Card> cards, ViewGroup viewGroup, int viewType) {

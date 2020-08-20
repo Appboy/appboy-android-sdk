@@ -302,15 +302,15 @@ public class AppboyNotificationUtils {
    * <p>
    * Starting with Android O, priority is set on a notification channel and not individually on notifications.
    */
-  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-428
+  @SuppressWarnings("deprecation") // Notification Priority usage
   public static int getNotificationPriority(Bundle notificationExtras) {
     if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_PRIORITY_KEY)) {
       try {
         int notificationPriority = Integer.parseInt(notificationExtras.getString(Constants.APPBOY_PUSH_PRIORITY_KEY));
-        if (isValidNotificationPriority(notificationPriority)) {
+        if ((notificationPriority >= Notification.PRIORITY_MIN && notificationPriority <= Notification.PRIORITY_MAX)) {
           return notificationPriority;
         } else {
-          AppboyLogger.e(TAG, "Received invalid notification priority " + notificationPriority);
+          AppboyLogger.w(TAG, "Received invalid notification priority " + notificationPriority);
         }
       } catch (NumberFormatException e) {
         AppboyLogger.e(TAG, "Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT, e);
@@ -320,22 +320,14 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Checks whether the given integer value is a valid Android notification priority constant.
-   * <p>
-   * Starting with Android O, priority is set on a notification channel and not individually on notifications.
-   */
-  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-428
-  public static boolean isValidNotificationPriority(int priority) {
-    return (priority >= Notification.PRIORITY_MIN && priority <= Notification.PRIORITY_MAX);
-  }
-
-  /**
    * This method will wake the device using a wake lock if the {@link android.Manifest.permission#WAKE_LOCK} permission is present in the
    * manifest. If the permission is not present, this does nothing. If the screen is already on,
    * and the permission is present, this does nothing. If the priority of the incoming notification
    * is min, this does nothing.
    */
-  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-428
+  @SuppressWarnings("deprecation")
+  // Deprecation warning suppressed for PowerManager.FULL_WAKE_LOCK usage. Alternative requires Activity instance which is unavailable in this context.
+  // Deprecation warning suppressed for Notification.PRIORITY_MIN usage.
   public static boolean wakeScreenIfAppropriate(Context context, AppboyConfigurationProvider configurationProvider, Bundle notificationExtras) {
     // Check for the wake lock permission.
     if (!PermissionUtils.hasPermission(context, Manifest.permission.WAKE_LOCK)) {
@@ -367,6 +359,7 @@ public class AppboyNotificationUtils {
       }
     }
 
+    AppboyLogger.d(TAG, "Waking screen for notification");
     // Get the power manager for the wake lock.
     PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
     PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
@@ -676,7 +669,7 @@ public class AppboyNotificationUtils {
             AppboyLogger.d(TAG, "Setting visibility for notification");
             notificationBuilder.setVisibility(visibility);
           } else {
-            AppboyLogger.e(TAG, "Received invalid notification visibility " + visibility);
+            AppboyLogger.w(TAG, "Received invalid notification visibility " + visibility);
           }
         } catch (Exception e) {
           AppboyLogger.e(TAG, "Failed to parse visibility from notificationExtras", e);

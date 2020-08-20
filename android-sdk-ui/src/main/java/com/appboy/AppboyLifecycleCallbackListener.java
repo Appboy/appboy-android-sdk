@@ -25,15 +25,15 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   private final boolean mRegisterInAppMessageManager;
   private final boolean mSessionHandlingEnabled;
   @NonNull
-  private Set<Class> mInAppMessagingRegistrationBlacklist;
+  private Set<Class<?>> mInAppMessagingRegistrationBlacklist;
   @NonNull
-  private Set<Class> mSessionHandlingBlacklist;
+  private Set<Class<?>> mSessionHandlingBlacklist;
 
   /**
    * A default constructor equivalent to calling AppboyLifecycleCallbackListener(true, true, Collections.<Class>emptySet(), Collections.<Class>emptySet())
    */
   public AppboyLifecycleCallbackListener() {
-    this(true, true, Collections.<Class>emptySet(), Collections.<Class>emptySet());
+    this(true, true, Collections.emptySet(), Collections.emptySet());
   }
 
   /**
@@ -44,7 +44,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    *                                    and {@link Application.ActivityLifecycleCallbacks#onActivityPaused(Activity)} respectively.
    */
   public AppboyLifecycleCallbackListener(boolean sessionHandlingEnabled, boolean registerInAppMessageManager) {
-    this(sessionHandlingEnabled, registerInAppMessageManager, Collections.<Class>emptySet(), Collections.<Class>emptySet());
+    this(sessionHandlingEnabled, registerInAppMessageManager, Collections.emptySet(), Collections.emptySet());
   }
 
   /**
@@ -55,7 +55,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    * @param sessionHandlingBlacklist A set of {@link Activity}s for which session handling
    *                                 will not occur. Each class should be retrieved via {@link Activity#getClass()}.
    */
-  public AppboyLifecycleCallbackListener(@Nullable Set<Class> inAppMessagingRegistrationBlacklist, @Nullable Set<Class> sessionHandlingBlacklist) {
+  public AppboyLifecycleCallbackListener(@Nullable Set<Class<?>> inAppMessagingRegistrationBlacklist, @Nullable Set<Class<?>> sessionHandlingBlacklist) {
     this(true, true, inAppMessagingRegistrationBlacklist, sessionHandlingBlacklist);
   }
 
@@ -67,8 +67,8 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    *                                            registration will not occur. Each class should be retrieved via {@link Activity#getClass()}.
    *                                            If null, an empty set is used instead.
    */
-  public AppboyLifecycleCallbackListener(@Nullable Set<Class> inAppMessagingRegistrationBlacklist) {
-    this(true, true, inAppMessagingRegistrationBlacklist, Collections.<Class>emptySet());
+  public AppboyLifecycleCallbackListener(@Nullable Set<Class<?>> inAppMessagingRegistrationBlacklist) {
+    this(true, true, inAppMessagingRegistrationBlacklist, Collections.emptySet());
   }
 
   /**
@@ -86,12 +86,12 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    */
   public AppboyLifecycleCallbackListener(boolean sessionHandlingEnabled,
                                          boolean registerInAppMessageManager,
-                                         @Nullable Set<Class> inAppMessagingRegistrationBlacklist,
-                                         @Nullable Set<Class> sessionHandlingBlacklist) {
+                                         @Nullable Set<Class<?>> inAppMessagingRegistrationBlacklist,
+                                         @Nullable Set<Class<?>> sessionHandlingBlacklist) {
     mRegisterInAppMessageManager = registerInAppMessageManager;
     mSessionHandlingEnabled = sessionHandlingEnabled;
-    mInAppMessagingRegistrationBlacklist = inAppMessagingRegistrationBlacklist != null ? inAppMessagingRegistrationBlacklist : Collections.<Class>emptySet();
-    mSessionHandlingBlacklist = sessionHandlingBlacklist != null ? sessionHandlingBlacklist : Collections.<Class>emptySet();
+    mInAppMessagingRegistrationBlacklist = inAppMessagingRegistrationBlacklist != null ? inAppMessagingRegistrationBlacklist : Collections.emptySet();
+    mSessionHandlingBlacklist = sessionHandlingBlacklist != null ? sessionHandlingBlacklist : Collections.emptySet();
 
     AppboyLogger.v(TAG, "AppboyLifecycleCallbackListener using in-app messaging blacklist: " + mInAppMessagingRegistrationBlacklist);
     AppboyLogger.v(TAG, "AppboyLifecycleCallbackListener using session handling blacklist: " + mSessionHandlingBlacklist);
@@ -100,7 +100,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   /**
    * Sets the {@link Activity#getClass()} blacklist for which in-app message registration will not occur.
    */
-  public void setInAppMessagingRegistrationBlacklist(@NonNull Set<Class> blacklist) {
+  public void setInAppMessagingRegistrationBlacklist(@NonNull Set<Class<?>> blacklist) {
     AppboyLogger.v(TAG, "setInAppMessagingRegistrationBlacklist called with blacklist: " + blacklist);
     mInAppMessagingRegistrationBlacklist = blacklist;
   }
@@ -108,7 +108,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   /**
    * Sets the {@link Activity#getClass()} blacklist for which session handling will not occur.
    */
-  public void setSessionHandlingBlacklist(@NonNull Set<Class> blacklist) {
+  public void setSessionHandlingBlacklist(@NonNull Set<Class<?>> blacklist) {
     AppboyLogger.v(TAG, "setSessionHandlingBlacklist called with blacklist: " + blacklist);
     mSessionHandlingBlacklist = blacklist;
   }

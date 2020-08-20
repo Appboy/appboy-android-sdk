@@ -53,7 +53,7 @@ public class AppboyNotificationStyleFactory {
   private static final Map<String, Integer> GRAVITY_MAP;
 
   static {
-    Map<String, Integer> stringToGravityInt = new HashMap<String, Integer>();
+    Map<String, Integer> stringToGravityInt = new HashMap<>();
     stringToGravityInt.put(START, Gravity.START);
     stringToGravityInt.put(CENTER, Gravity.CENTER);
     stringToGravityInt.put(END, Gravity.END);

@@ -41,15 +41,15 @@ public class FileDataDialog extends DialogPreference implements AdapterView.OnIt
 
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     String selection = (String) mOptionList.get(position);
-    List<String> filesData = new ArrayList<String>();
+    List<String> filesData = new ArrayList<>();
     if (FILES_DIR.equals(selection)) {
-      List<String> getFilesDirFiles = new ArrayList<String>();
+      List<String> getFilesDirFiles = new ArrayList<>();
       getContentsOfDirectory(getContext().getFilesDir(), getFilesDirFiles);
       filesData.add("getFilesDir(): " + getFilesDirFiles.size() + " items");
       filesData.addAll(getFilesDirFiles);
       ((TextView) mMainView.findViewById(R.id.data_dialog_text_view)).setText(StringUtils.join(filesData, "\n"));
     } else if (CACHE_FILES_DIR.equals(selection)) {
-      List<String> getCacheDirFiles = new ArrayList<String>();
+      List<String> getCacheDirFiles = new ArrayList<>();
       getContentsOfDirectory(getContext().getCacheDir(), getCacheDirFiles);
       filesData.add("getCacheDir(): " + getCacheDirFiles.size() + " items");
       filesData.addAll(getCacheDirFiles);

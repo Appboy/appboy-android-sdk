@@ -1,6 +1,7 @@
 package com.appboy.ui.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -51,7 +52,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
   public AppboyListAdapter(Context context, int layoutResourceId, List<Card> cards) {
     super(context, layoutResourceId, cards);
     mContext = context;
-    mCardIdImpressions = new HashSet<String>();
+    mCardIdImpressions = new HashSet<>();
   }
 
   /**
@@ -83,8 +84,9 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    * Always try to use a convert view if possible, otherwise create one from scratch. The convertView should always
    * be of the appropriate type, but it will be recycled, so you need to fully re-populate it with data from the card.
    */
+  @NonNull
   @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
+  public View getView(int position, View convertView, @NonNull ViewGroup parent) {
     BaseFeedCardView view;
     Card card = getItem(position);
 

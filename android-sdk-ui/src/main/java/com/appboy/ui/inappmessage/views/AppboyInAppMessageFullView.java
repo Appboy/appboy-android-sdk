@@ -54,7 +54,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
 
   @Override
   public List<View> getMessageButtonViews(int numButtons) {
-    List<View> buttonViews = new ArrayList<View>();
+    List<View> buttonViews = new ArrayList<>();
 
     // Based on the number of buttons, make one of the button parent layouts visible
     if (numButtons == 1) {
@@ -132,12 +132,9 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
     // Make scrollView pass click events to message clickable view, so that clicking on the scrollView
     // dismisses the in-app message.
     View scrollViewChild = findViewById(R.id.com_appboy_inappmessage_full_text_layout);
-    scrollViewChild.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View scrollView) {
-        AppboyLogger.d(TAG, "Passing scrollView click event to message clickable view.");
-        getMessageClickableView().performClick();
-      }
+    scrollViewChild.setOnClickListener(scrollView -> {
+      AppboyLogger.d(TAG, "Passing scrollView click event to message clickable view.");
+      getMessageClickableView().performClick();
     });
   }
 

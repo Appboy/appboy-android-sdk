@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
@@ -218,7 +219,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(this, requestCode, grantResults);
   }
 
@@ -292,13 +293,13 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     if (bundle == null) {
       return "Received intent with null extras Bundle from Braze.";
     }
-    String bundleString = "Received intent with extras Bundle of size " + bundle.size()
-        + " from Braze containing [";
+    StringBuilder bundleString = new StringBuilder("Received intent with extras Bundle of size " + bundle.size()
+        + " from Braze containing [");
     for (String key : bundle.keySet()) {
-      bundleString += " '" + key + "':'" + bundle.get(key) + "'";
+      bundleString.append(" '").append(key).append("':'").append(bundle.get(key)).append('\'');
     }
-    bundleString += " ].";
-    return bundleString;
+    bundleString.append(" ].");
+    return bundleString.toString();
   }
   
   @SuppressLint("RestrictedApi")

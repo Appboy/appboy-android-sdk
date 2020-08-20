@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -51,7 +50,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   private static final String SAMPLE_EMAIL = "jane@appboy.com";
   private static final int SAMPLE_GENDER = R.id.female;
   private static final String SAMPLE_AVATAR_URL = "https://s3.amazonaws.com/appboy-dashboard-uploads/news/default-news-image.png";
-  private static final String SAMPLE_BIRTHDAY = Integer.toString(mCalendar.get(Calendar.MONTH) + 1) + "/" + mCalendar.get(Calendar.DAY_OF_MONTH) + "/" + mCalendar.get(Calendar.YEAR);
+  private static final String SAMPLE_BIRTHDAY = (mCalendar.get(Calendar.MONTH) + 1) + "/" + mCalendar.get(Calendar.DAY_OF_MONTH) + "/" + mCalendar.get(Calendar.YEAR);
 
   private EditText mFirstName;
   private EditText mLastName;
@@ -126,15 +125,12 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     clearButton.setOnClickListener(this);
     birthdayButton.setOnClickListener(this);
 
-    mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-      @Override
-      public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        mBirthYear = year;
-        mBirthMonth = monthOfYear;
-        mBirthDay = dayOfMonth;
-        mBirthday.setText(getBirthday());
-        isBirthdaySet = true;
-      }
+    mDatePickerDialog = new DatePickerDialog(getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
+      mBirthYear = year;
+      mBirthMonth = monthOfYear;
+      mBirthDay = dayOfMonth;
+      mBirthday.setText(getBirthday());
+      isBirthdaySet = true;
     }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
   }
 
@@ -287,7 +283,7 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   }
 
   private String getBirthday() {
-    return Integer.toString(mBirthMonth + 1) + "/" + mBirthDay + "/" + mBirthYear;
+    return (mBirthMonth + 1) + "/" + mBirthDay + "/" + mBirthYear;
   }
 
   private int parseGenderFromSharedPreferences() {

@@ -19,14 +19,8 @@ import com.appboy.sample.util.ButtonUtils;
 import com.appboy.support.StringUtils;
 
 public abstract class CustomLogger extends DialogPreference {
-  private Context mContext;
+  private final Context mContext;
   private EditText mName;
-  private EditText mPropertyKey;
-  private EditText mPropertyValue;
-  private LinearLayout mPropertyLayout;
-  private Spinner mTypeSpinner;
-  private Button mAddProperty;
-  private View mView;
   private PropertyManager mPropertyManager;
 
   public CustomLogger(Context context, AttributeSet attributeSet, int resourceId) {
@@ -45,18 +39,18 @@ public abstract class CustomLogger extends DialogPreference {
 
   @Override
   protected View onCreateDialogView() {
-    mView = super.onCreateDialogView();
-    mName = mView.findViewById(R.id.custom_name);
-    mPropertyKey = mView.findViewById(R.id.property_key);
-    mPropertyValue = mView.findViewById(R.id.property_value);
-    mTypeSpinner = mView.findViewById(R.id.property_type_spinner);
-    mAddProperty = mView.findViewById(R.id.add_property_button);
-    mPropertyLayout = mView.findViewById(R.id.property_linear_layout);
+    View view = super.onCreateDialogView();
+    mName = view.findViewById(R.id.custom_name);
+    EditText propertyKey = view.findViewById(R.id.property_key);
+    EditText propertyValue = view.findViewById(R.id.property_value);
+    Spinner typeSpinner = view.findViewById(R.id.property_type_spinner);
+    Button addProperty = view.findViewById(R.id.add_property_button);
+    LinearLayout propertyLayout = view.findViewById(R.id.property_linear_layout);
 
-    ButtonUtils.setUpPopulateButton(mView, R.id.custom_name_button, mName, "football");
+    ButtonUtils.setUpPopulateButton(view, R.id.custom_name_button, mName, "football");
 
-    mPropertyManager = new PropertyManager(mContext, mPropertyLayout, mPropertyKey, mPropertyValue, mTypeSpinner, mAddProperty);
-    return mView;
+    mPropertyManager = new PropertyManager(mContext, propertyLayout, propertyKey, propertyValue, typeSpinner, addProperty);
+    return view;
   }
 
   @Override

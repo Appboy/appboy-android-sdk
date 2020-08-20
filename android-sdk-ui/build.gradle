@@ -20,4 +20,9 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     consumerProguardFiles 'appboy-proguard-rules.pro'
   }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }

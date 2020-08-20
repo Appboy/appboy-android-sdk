@@ -8,7 +8,7 @@ public class AppboyFeedManager {
 
   // card click listeners
   private IFeedClickActionListener mCustomFeedClickActionListener;
-  private IFeedClickActionListener mDefaultFeedClickActionListener = new AppboyDefaultFeedClickActionListener();
+  private final IFeedClickActionListener mDefaultFeedClickActionListener = new AppboyDefaultFeedClickActionListener();
 
   public static AppboyFeedManager getInstance() {
     if (sInstance == null) {
