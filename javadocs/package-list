@@ -11,6 +11,7 @@ com.appboy.push
 com.appboy.push.support
 com.appboy.receivers
 com.appboy.services
+com.appboy.storage
 com.appboy.support
 com.appboy.ui
 com.appboy.ui.actions
