@@ -2,10 +2,11 @@ package com.appboy.ui.contentcards.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
 
 import com.appboy.models.cards.Card;
 import com.appboy.ui.R;
@@ -37,15 +38,17 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
   /**
    * Sets the card's image to a given url. The view may be null.
    *
-   * @param imageView The ImageView
-   * @param cardAspectRatio The aspect ratio as set by the card itself
-   * @param cardImageUrl The image url
+   * @param imageView          The ImageView
+   * @param cardAspectRatio    The aspect ratio as set by the card itself
+   * @param cardImageUrl       The image url
    * @param defaultAspectRatio The default aspect ratio if the cardAspectRatio is 0
+   * @param card               The card being rendered
    */
   public void setOptionalCardImage(@Nullable ImageView imageView,
                                    float cardAspectRatio,
                                    String cardImageUrl,
-                                   float defaultAspectRatio) {
+                                   float defaultAspectRatio,
+                                   Card card) {
     float aspectRatio = defaultAspectRatio;
 
     if (cardAspectRatio != 0f) {
@@ -53,7 +56,7 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
     }
 
     if (imageView != null) {
-      setImageViewToUrl(imageView, cardImageUrl, aspectRatio);
+      setImageViewToUrl(imageView, cardImageUrl, aspectRatio, card);
     }
   }
 

@@ -3,9 +3,6 @@ package com.appboy.sample;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
@@ -75,6 +76,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mStoryDeepLink = false;
   private boolean mStoryTitles = true;
   private boolean mStorySubtitles = true;
+  private boolean mInlineImagePushEnabled = false;
   static final String EXAMPLE_APPBOY_EXTRA_KEY_1 = "Entree";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_2 = "Side";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_3 = "Drink";
@@ -110,6 +112,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     ((CheckBox) view.findViewById(R.id.push_tester_story_deep_link)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryDeepLink = isChecked);
     ((CheckBox) view.findViewById(R.id.push_tester_story_title)).setOnCheckedChangeListener((buttonView, isChecked) -> mStoryTitles = !isChecked);
     ((CheckBox) view.findViewById(R.id.push_tester_story_subtitle)).setOnCheckedChangeListener((buttonView, isChecked) -> mStorySubtitles = !isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_inline_image_push_enabled)).setOnCheckedChangeListener((buttonView, isChecked) -> mInlineImagePushEnabled = isChecked);
 
     // Creates the push image spinner.
     SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
@@ -170,6 +173,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       notificationExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
       notificationExtras = addActionButtons(notificationExtras);
 
+      if (mInlineImagePushEnabled) {
+        notificationExtras.putString(Constants.APPBOY_PUSH_INLINE_IMAGE_STYLE_KEY, "true");
+      }
       if (mUseSummary) {
         notificationExtras.putString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(SUMMARY_TEXT));
       }
@@ -221,13 +227,21 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       // Manually build the Braze extras bundle.
       Bundle appboyExtras = new Bundle();
       if (mUseImage) {
+        String pushImageUrl = mImage;
+        // Template the image if it's random
+        if (mImage.equals(getString(R.string.random_2_by_1_image_url))) {
+          pushImageUrl = "https://picsum.photos/seed/" + System.nanoTime() + "/800/400";
+        } else if (mImage.equals(getString(R.string.random_3_by_2_image_url))) {
+          pushImageUrl = "https://picsum.photos/seed/" + System.nanoTime() + "/750/500";
+        }
+
         if (Constants.IS_AMAZON) {
           // Amazon flattens the extras bundle so we have to put it in the regular notification
           // extras to imitate that functionality.
-          notificationExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
+          notificationExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, pushImageUrl.replaceAll("&amp;", "&"));
           appboyExtras = new Bundle(notificationExtras);
         } else {
-          appboyExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, mImage.replaceAll("&amp;", "&"));
+          appboyExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, pushImageUrl.replaceAll("&amp;", "&"));
         }
       }
       appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_1, "Hamburger");

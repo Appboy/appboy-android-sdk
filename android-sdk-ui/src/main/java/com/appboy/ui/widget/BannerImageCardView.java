@@ -46,7 +46,7 @@ public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
     if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();
     }
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, mCard);
 
     mCardAction = getUriActionForCard(card);
     setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));

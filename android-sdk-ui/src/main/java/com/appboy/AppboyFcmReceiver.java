@@ -5,11 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.NotificationManagerCompat;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.AppboyNotificationActionUtils;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
@@ -102,21 +104,21 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
       }
       return false;
     } else {
-      Bundle fcmExtras = intent.getExtras();
-      AppboyLogger.i(TAG, "Push message payload received: " + fcmExtras);
+      Bundle notificationExtras = intent.getExtras();
+      AppboyLogger.i(TAG, "Push message payload received: " + notificationExtras);
 
       // Parsing the Appboy data extras (data push).
       // We convert the JSON in the extras key into a Bundle.
-      Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(fcmExtras);
-      fcmExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
+      Bundle appboyExtras = BrazeNotificationPayload.getAttachedAppboyExtras(notificationExtras);
+      notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
-      if (!fcmExtras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
-        fcmExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
+      if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
+        notificationExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
       }
 
       // This call must occur after the "extras" parsing above since we're expecting
       // a bundle instead of a raw JSON string for the APPBOY_PUSH_EXTRAS_KEY key
-      if (AppboyNotificationUtils.isUninstallTrackingPush(fcmExtras)) {
+      if (AppboyNotificationUtils.isUninstallTrackingPush(notificationExtras)) {
         // Note that this re-implementation of this method does not forward the notification to receivers.
         AppboyLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
         return false;
@@ -133,45 +135,64 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
         return false;
       }
 
+      BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
+          appConfigurationProvider,
+          notificationExtras,
+          appboyExtras
+      );
       // Parse the notification for any associated ContentCard
-      AppboyNotificationUtils.handleContentCardsSerializedCardIfPresent(context, fcmExtras);
+      AppboyNotificationUtils.handleContentCardsSerializedCardIfPresent(payload);
 
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
         AppboyLogger.d(TAG, "Received notification push");
-        int notificationId = AppboyNotificationUtils.getNotificationId(fcmExtras);
-        fcmExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
-        IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
+        int notificationId = AppboyNotificationUtils.getNotificationId(payload);
+        notificationExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
 
-        if (fcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
-          if (!fcmExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
+        if (payload.isPushStory()) {
+          if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
             AppboyLogger.d(TAG, "Received the initial push story notification.");
-            fcmExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
+            notificationExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
           }
         }
 
-        Notification notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, fcmExtras, appboyExtras);
-
+        Notification notification = createNotification(payload);
         if (notification == null) {
           AppboyLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
           return false;
         }
 
         notificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
-        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, fcmExtras);
-        AppboyNotificationUtils.wakeScreenIfAppropriate(context, appConfigurationProvider, fcmExtras);
+        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, notificationExtras);
+        AppboyNotificationUtils.wakeScreenIfAppropriate(context, appConfigurationProvider, notificationExtras);
 
         // Set a custom duration for this notification.
-        if (fcmExtras != null && fcmExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
-          int durationInMillis = Integer.parseInt(fcmExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));
-          AppboyNotificationUtils.setNotificationDurationAlarm(context, AppboyFcmReceiver.class, notificationId, durationInMillis);
+        if (payload.getPushDuration() != null) {
+          AppboyNotificationUtils.setNotificationDurationAlarm(context, AppboyFcmReceiver.class, notificationId, payload.getPushDuration());
         }
         return true;
       } else {
         AppboyLogger.d(TAG, "Received data push");
-        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, fcmExtras);
-        AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, fcmExtras);
+        AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, notificationExtras);
+        AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, notificationExtras);
         return false;
       }
     }
+  }
+
+  @SuppressWarnings("deprecation") // createNotification() with old method
+  private static Notification createNotification(BrazeNotificationPayload payload) {
+    AppboyLogger.v(TAG, "Creating notification with payload:\n" + payload);
+    IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
+    Notification notification = appboyNotificationFactory.createNotification(payload);
+    if (notification == null) {
+      AppboyLogger.d(TAG, "Calling older notification factory method after null notification returned on newer method");
+      // Use the older factory method on null. Potentially only the one method is implemented
+      notification = appboyNotificationFactory.createNotification(payload.getAppboyConfigurationProvider(),
+          payload.getContext(),
+          payload.getNotificationExtras(),
+          payload.getAppboyExtras());
+    }
+
+    return notification;
   }
 }

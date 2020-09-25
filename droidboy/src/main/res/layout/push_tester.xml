@@ -34,6 +34,11 @@
           android:layout_height="wrap_content"
           android:text="@string/push_tester_big_title_label"/>
         <CheckBox
+          android:id="@+id/push_tester_inline_image_push_enabled"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/push_tester_inline_image_push"/>
+        <CheckBox
           android:id="@+id/push_tester_big_summary"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

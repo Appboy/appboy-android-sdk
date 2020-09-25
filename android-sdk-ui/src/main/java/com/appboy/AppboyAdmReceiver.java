@@ -6,10 +6,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.AppboyNotificationActionUtils;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
@@ -144,17 +146,16 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       }
 
       // Parsing the Braze data extras (data push).
-      Bundle appboyExtras = AppboyNotificationUtils.getAppboyExtrasWithoutPreprocessing(admExtras);
+      Bundle appboyExtras = BrazeNotificationPayload.getAttachedAppboyExtras(admExtras);
       admExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
+      final AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+      final BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, admExtras);
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
-        int notificationId = AppboyNotificationUtils.getNotificationId(admExtras);
+        int notificationId = AppboyNotificationUtils.getNotificationId(payload);
         admExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
-        AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
 
-        IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
-        Notification notification = appboyNotificationFactory.createNotification(appConfigurationProvider, context, admExtras, appboyExtras);
-
+        Notification notification = createNotification(payload);
         if (notification == null) {
           AppboyLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
           return false;
@@ -167,9 +168,8 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
         AppboyNotificationUtils.wakeScreenIfAppropriate(context, appConfigurationProvider, admExtras);
 
         // Set a custom duration for this notification.
-        if (admExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY)) {
-          int durationInMillis = Integer.parseInt(admExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_DURATION_KEY));
-          AppboyNotificationUtils.setNotificationDurationAlarm(context, AppboyAdmReceiver.class, notificationId, durationInMillis);
+        if (payload.getPushDuration() != null) {
+          AppboyNotificationUtils.setNotificationDurationAlarm(context, AppboyAdmReceiver.class, notificationId, payload.getPushDuration());
         }
 
         return true;
@@ -194,6 +194,23 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     AppboyLogger.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set "
         + "com_appboy_push_adm_messaging_registration_enabled to true in your appboy.xml to enable ADM.");
     return false;
+  }
+
+  @SuppressWarnings("deprecation") // createNotification() with old method
+  private static Notification createNotification(BrazeNotificationPayload payload) {
+    AppboyLogger.v(TAG, "Creating notification with payload:\n" + payload);
+    IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
+    Notification notification = appboyNotificationFactory.createNotification(payload);
+    if (notification == null) {
+      AppboyLogger.d(TAG, "Calling older notification factory method after null notification returned on newer method");
+      // Use the older factory method on null. Potentially only the one method is implemented
+      notification = appboyNotificationFactory.createNotification(payload.getAppboyConfigurationProvider(),
+          payload.getContext(),
+          payload.getNotificationExtras(),
+          payload.getAppboyExtras());
+    }
+
+    return notification;
   }
 }
 

@@ -3,11 +3,12 @@ package com.appboy.ui.support;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
-import android.support.v4.view.DisplayCutoutCompat;
-import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.DisplayCutoutCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.support.AppboyLogger;

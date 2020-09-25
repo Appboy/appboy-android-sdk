@@ -1,9 +1,10 @@
 package com.appboy.ui.inappmessage;
 
-import android.support.annotation.NonNull;
-import android.support.v4.view.OnApplyWindowInsetsListener;
-import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.WindowInsetsCompat;
 
 /**
  * InAppMessageBase is the base view interface for all in-app messages.
@@ -40,7 +41,7 @@ public interface IInAppMessageView {
    * non-occluding of the root Activity content.
    *
    * @param insets The {@link WindowInsetsCompat} object directly from
-   * {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
+   * {@link androidx.core.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
    */
   void applyWindowInsets(@NonNull WindowInsetsCompat insets);
 

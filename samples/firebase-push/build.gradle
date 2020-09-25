@@ -27,14 +27,8 @@ android {
 
 dependencies {
   implementation project(':android-sdk-ui')
-  implementation ("com.android.support:appcompat-v7:${SUPPORT_LIBS_VERSION}") {
-    exclude group: 'com.android.support', module: 'support-v4'
-  }
-  implementation ("com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}") {
-    exclude group: 'com.android.support', module: 'support-v4'
-  }
-  // Force the transitive support v4 dependencies in firebase to use our support v4 version.
-  implementation "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
+  implementation "androidx.appcompat:appcompat:${ANDROIDX_APPCOMPAT_VERSION}"
+  implementation "com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}"
 }
 
 apply plugin: 'com.google.gms.google-services'

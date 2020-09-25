@@ -1,7 +1,8 @@
 package com.appboy.ui.contentcards.listeners;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.appboy.models.cards.Card;
 import com.appboy.ui.actions.IAction;

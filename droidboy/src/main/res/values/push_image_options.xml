@@ -6,6 +6,8 @@
     <item>Push Type: Image (s3)</item>
     <item>Push Type: Image (Blue)</item>
     <item>Push Type: Push Story</item>
+    <item>Push Type: Random 2:1</item>
+    <item>Push Type: Random 3:2</item>
   </string-array>
   <string-array name="push_image_values">
     <item></item>
@@ -13,5 +15,7 @@
     <item>@string/appboy_image_url_s3</item>
     <item>@string/blue_url</item>
     <item>@string/push_story</item>
+    <item>@string/random_2_by_1_image_url</item>
+    <item>@string/random_3_by_2_image_url</item>
   </string-array>
 </resources>

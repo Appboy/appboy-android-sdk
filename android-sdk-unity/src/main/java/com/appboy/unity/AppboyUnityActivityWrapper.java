@@ -16,11 +16,13 @@ import com.appboy.unity.configuration.UnityConfigurationProvider;
 public class AppboyUnityActivityWrapper {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityActivityWrapper.class);
 
+  private UnityConfigurationProvider mUnityConfigurationProvider;
+
   /**
    * Call from {@link Activity#onCreate(Bundle)}
    */
   public void onCreateCalled(Activity activity) {
-    UnityConfigurationProvider unityConfigurationProvider = new UnityConfigurationProvider(activity);
+    UnityConfigurationProvider unityConfigurationProvider = getUnityConfigurationProvider(activity);
     Appboy.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(unityConfigurationProvider));
     Appboy.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(unityConfigurationProvider));
     Appboy.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(unityConfigurationProvider));
@@ -38,14 +40,20 @@ public class AppboyUnityActivityWrapper {
    * Call from {@link Activity#onResume()}
    */
   public void onResumeCalled(Activity activity) {
-    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
+    UnityConfigurationProvider unityConfigurationProvider = getUnityConfigurationProvider(activity);
+    if (unityConfigurationProvider.getShowInAppMessagesAutomaticallyKey()) {
+      AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
+    }
   }
 
   /**
    * Call from {@link Activity#onPause()}
    */
   public void onPauseCalled(Activity activity) {
-    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
+    UnityConfigurationProvider unityConfigurationProvider = getUnityConfigurationProvider(activity);
+    if (unityConfigurationProvider.getShowInAppMessagesAutomaticallyKey()) {
+      AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
+    }
   }
 
   /**
@@ -62,5 +70,12 @@ public class AppboyUnityActivityWrapper {
     // If the Activity is already open and we receive an intent to open the Activity again, we set
     // the new intent as the current one (which has the new intent extras).
     activity.setIntent(intent);
+  }
+
+  private UnityConfigurationProvider getUnityConfigurationProvider(Activity activity) {
+    if (mUnityConfigurationProvider == null) {
+      mUnityConfigurationProvider = new UnityConfigurationProvider(activity.getApplicationContext());
+    }
+    return mUnityConfigurationProvider;
   }
 }

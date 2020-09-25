@@ -1,8 +1,10 @@
 package com.appboy.ui.contentcards.handlers;
 
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
 import android.view.ViewGroup;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.appboy.enums.CardType;
 import com.appboy.models.cards.Card;
@@ -20,7 +22,7 @@ import java.util.Map;
 
 public class DefaultContentCardsViewBindingHandler implements IContentCardsViewBindingHandler {
   /**
-   * A cache for the views used in binding the items in the {@link android.support.v7.widget.RecyclerView}.
+   * A cache for the views used in binding the items in the {@link RecyclerView}.
    */
   private final Map<CardType, BaseContentCardView> mContentCardViewCache = new HashMap<>();
 

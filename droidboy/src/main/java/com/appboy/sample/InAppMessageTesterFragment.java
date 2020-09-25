@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +14,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.appboy.Appboy;
 import com.appboy.enums.inappmessage.ClickAction;
@@ -50,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class InAppMessageTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
   protected static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageTesterFragment.class);
@@ -833,7 +833,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
 
   @NonNull
   private SharedPreferences getSettingsPreferences() {
-    return Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
+    return getActivity().getPreferences(Context.MODE_PRIVATE);
   }
 
   private void setupCheckbox(CheckBox checkBoxView, final CompoundButton.OnCheckedChangeListener listener) {

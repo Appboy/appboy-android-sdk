@@ -3,9 +3,13 @@ apply plugin: 'android-maven'
 
 dependencies {
   api "com.appboy:android-sdk-base:${BRAZE_SDK_VERSION}"
-  implementation "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
-  implementation "com.android.support:recyclerview-v7:${SUPPORT_LIBS_VERSION}"
-  compileOnly "com.android.support:design:${SUPPORT_LIBS_VERSION}"
+  compileOnly "com.google.android.material:material:${GOOGLE_MATERIAL_VERSION}"
+
+  implementation "androidx.core:core:${ANDROIDX_CORE_VERSION}"
+  implementation "androidx.fragment:fragment:${ANDROIDX_FRAGMENT_VERSION}"
+  implementation "androidx.recyclerview:recyclerview:${ANDROIDX_RECYCLERVIEW_VERSION}"
+  implementation "androidx.swiperefreshlayout:swiperefreshlayout:${ANDROIDX_SWIPE_REFRESH_LAYOUT_VERSION}"
+  implementation "androidx.webkit:webkit:${ANDROIDX_WEBKIT_VERSION}"
 
   // Required for the FirebaseMessagingService
   compileOnly "com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}"

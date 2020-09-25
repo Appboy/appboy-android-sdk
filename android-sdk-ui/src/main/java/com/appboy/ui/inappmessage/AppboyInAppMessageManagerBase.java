@@ -2,7 +2,8 @@ package com.appboy.ui.inappmessage;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.appboy.models.IInAppMessage;
 import com.appboy.support.AppboyLogger;

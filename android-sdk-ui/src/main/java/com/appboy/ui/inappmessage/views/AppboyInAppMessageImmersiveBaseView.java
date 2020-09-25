@@ -3,12 +3,13 @@ package com.appboy.ui.inappmessage.views;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.MessageButton;

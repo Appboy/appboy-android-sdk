@@ -17,10 +17,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.NotificationCompat;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
@@ -32,9 +32,11 @@ import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
+import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.support.HtmlUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
+import com.appboy.support.JsonUtils;
 import com.appboy.support.PermissionUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
@@ -42,10 +44,7 @@ import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.support.UriUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Iterator;
 
 public class AppboyNotificationUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationUtils.class);
@@ -59,7 +58,7 @@ public class AppboyNotificationUtils {
    * Handles a push notification click. Called by FCM/ADM receiver when a
    * Braze push notification click intent is received.
    * <p/>
-   * See {@link #logNotificationOpened} and {@link #sendNotificationOpenedBroadcast}
+   * See {@link #sendNotificationOpenedBroadcast}
    *
    * @param context Application context
    * @param intent  the internal notification clicked intent constructed in
@@ -67,7 +66,7 @@ public class AppboyNotificationUtils {
    */
   public static void handleNotificationOpened(Context context, Intent intent) {
     try {
-      logNotificationOpened(context, intent);
+      Appboy.getInstance(context).logPushNotificationOpened(intent);
       sendNotificationOpenedBroadcast(context, intent);
       AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
       if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
@@ -139,25 +138,11 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Get the Braze extras Bundle from the notification extras. Notification extras must be in FCM/ADM format.
-   *
-   * @param notificationExtras Notification extras as provided by FCM/ADM.
-   * @return Returns the Braze extras Bundle from the notification extras. Amazon ADM recursively flattens all JSON messages,
-   *     so for Amazon devices we just return a copy of the original bundle.
+   * @deprecated Please use {@link BrazeNotificationPayload#getAttachedAppboyExtras(Bundle)}
    */
+  @Deprecated
   public static Bundle getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) {
-    if (notificationExtras == null) {
-      return null;
-    }
-    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)
-        && !notificationExtras.getBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
-      return notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY);
-    }
-    if (!Constants.IS_AMAZON) {
-      return AppboyNotificationUtils.parseJSONStringDictionaryIntoBundle(notificationExtras.getString(Constants.APPBOY_PUSH_EXTRAS_KEY, "{}"));
-    } else {
-      return new Bundle(notificationExtras);
-    }
+    return BrazeNotificationPayload.getAttachedAppboyExtras(notificationExtras);
   }
 
   /**
@@ -171,23 +156,11 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Parses the JSON into a bundle. The JSONObject parsed from the input string must be a flat
-   * dictionary with all string values.
+   * @deprecated Please use {@link com.appboy.support.JsonUtils#parseJsonObjectIntoBundle(String)}
    */
+  @Deprecated
   public static Bundle parseJSONStringDictionaryIntoBundle(String jsonStringDictionary) {
-    try {
-      Bundle bundle = new Bundle();
-      JSONObject json = new JSONObject(jsonStringDictionary);
-      Iterator keys = json.keys();
-      while (keys.hasNext()) {
-        String key = (String) keys.next();
-        bundle.putString(key, json.getString(key));
-      }
-      return bundle;
-    } catch (JSONException e) {
-      AppboyLogger.e(TAG, "Unable parse JSON into a bundle.", e);
-      return null;
-    }
+    return JsonUtils.parseJsonObjectIntoBundle(jsonStringDictionary);
   }
 
   /**
@@ -264,35 +237,43 @@ public class AppboyNotificationUtils {
   }
 
   /**
+   * @deprecated Please use {@link #getNotificationId(BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static int getNotificationId(Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    return getNotificationId(payload);
+  }
+
+  /**
    * Returns an id for the new notification we'll send to the notification center.
    * Notification id is used by the Android OS to override currently active notifications with identical ids.
    * If a custom notification id is not defined in the payload, Braze derives an id value from the message's contents
    * to prevent duplication in the notification center.
    */
-  public static int getNotificationId(Bundle notificationExtras) {
-    if (notificationExtras != null) {
-      if (notificationExtras.containsKey(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID)) {
-        try {
-          int notificationId = Integer.parseInt(notificationExtras.getString(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID));
-          AppboyLogger.d(TAG, "Using notification id provided in the message's extras bundle: " + notificationId);
-          return notificationId;
-
-        } catch (NumberFormatException e) {
-          AppboyLogger.e(TAG, "Unable to parse notification id provided in the "
-              + "message's extras bundle. Using default notification id instead: "
-              + Constants.APPBOY_DEFAULT_NOTIFICATION_ID, e);
-          return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
-        }
-      } else {
-        String messageKey = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY, "")
-            + notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY, "");
-        int notificationId = messageKey.hashCode();
-        AppboyLogger.d(TAG, "Message without notification id provided in the extras bundle received. Using a hash of the message: " + notificationId);
-        return notificationId;
-      }
-    } else {
-      AppboyLogger.d(TAG, "Message without extras bundle received. Using default notification id: ");
+  public static int getNotificationId(@NonNull BrazeNotificationPayload payload) {
+    if (payload == null) {
+      AppboyLogger.d(TAG, "Message without extras bundle received. Using default notification id");
       return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
+    }
+
+    if (payload.getCustomNotificationId() != null) {
+      int notificationId = payload.getCustomNotificationId();
+      AppboyLogger.d(TAG, "Using notification id provided in the message's extras bundle: " + notificationId);
+      return notificationId;
+    } else {
+      String messageKey = "";
+      // Don't concatenate if null
+      if (payload.getTitleText() != null) {
+        messageKey += payload.getTitleText();
+      }
+      if (payload.getContentText() != null) {
+        messageKey += payload.getContentText();
+      }
+      int notificationId = messageKey.hashCode();
+      AppboyLogger.d(TAG, "Message without notification id provided in the extras "
+          + "bundle received. Using a hash of the message: " + notificationId);
+      return notificationId;
     }
   }
 
@@ -385,9 +366,10 @@ public class AppboyNotificationUtils {
   /**
    * Checks that the notification is a story that has only just been received. If so, each
    * image within the story is put in the Braze image loader's cache.
-   * @param context Application context.
+   *
+   * @param context            Application context.
    * @param notificationExtras Notification extras as provided by FCM/ADM.
-   * @param appboyExtras Bundle object containing 'extra' key value pairs defined by the client.
+   * @param appboyExtras       Bundle object containing 'extra' key value pairs defined by the client.
    */
   public static void prefetchBitmapsIfNewlyReceivedStoryPush(Context context, Bundle notificationExtras, Bundle appboyExtras) {
     if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
@@ -408,35 +390,61 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Sets notification title if it exists in the notificationExtras.
+   * @deprecated Please use {@link #setTitleIfPresent(NotificationCompat.Builder, BrazeNotificationPayload)} instead.
    */
-  public static void setTitleIfPresent(AppboyConfigurationProvider appboyConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (notificationExtras != null) {
-      AppboyLogger.d(TAG, "Setting title for notification");
-      String title = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY);
-      notificationBuilder.setContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, title));
-    }
+  @Deprecated
+  public static void setTitleIfPresent(AppboyConfigurationProvider appboyConfigurationProvider,
+                                       NotificationCompat.Builder notificationBuilder,
+                                       Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setTitleIfPresent(notificationBuilder, payload);
+  }
+
+  public static void setTitleIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
+                                       @NonNull BrazeNotificationPayload payload) {
+    AppboyLogger.d(TAG, "Setting title for notification");
+    notificationBuilder.setContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getAppboyConfigurationProvider(), payload.getTitleText()));
   }
 
   /**
-   * Sets notification content if it exists in the notificationExtras.
+   * @deprecated Please use {@link #setContentIfPresent(NotificationCompat.Builder, BrazeNotificationPayload)} instead.
    */
-  public static void setContentIfPresent(AppboyConfigurationProvider appboyConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (notificationExtras != null) {
-      AppboyLogger.d(TAG, "Setting content for notification");
-      String content = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
-      notificationBuilder.setContentText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, content));
-    }
+  @Deprecated
+  public static void setContentIfPresent(AppboyConfigurationProvider appboyConfigurationProvider,
+                                         NotificationCompat.Builder notificationBuilder,
+                                         Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setContentIfPresent(notificationBuilder, payload);
+  }
+
+  /**
+   * Sets notification content if it exists in the payload.
+   */
+  public static void setContentIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
+                                         @NonNull BrazeNotificationPayload payload) {
+    AppboyLogger.d(TAG, "Setting content for notification");
+    notificationBuilder.setContentText(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getAppboyConfigurationProvider(), payload.getContentText()));
+  }
+
+  /**
+   * Sets notification ticker to the title if it exists in the notificationExtras.
+   *
+   * @deprecated Please use {@link #setTickerIfPresent(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static void setTickerIfPresent(NotificationCompat.Builder notificationBuilder,
+                                        Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setTickerIfPresent(notificationBuilder, payload);
   }
 
   /**
    * Sets notification ticker to the title if it exists in the notificationExtras.
    */
-  public static void setTickerIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (notificationExtras != null) {
-      AppboyLogger.d(TAG, "Setting ticker for notification");
-      notificationBuilder.setTicker(notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY));
-    }
+  public static void setTickerIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
+                                        @NonNull BrazeNotificationPayload payload) {
+    AppboyLogger.d(TAG, "Setting ticker for notification");
+    notificationBuilder.setTicker(payload.getTitleText());
   }
 
   /**
@@ -457,7 +465,6 @@ public class AppboyNotificationUtils {
   }
 
   public static void setDeleteIntent(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    AppboyLogger.d(TAG, "Setting delete intent.");
     try {
       PendingIntent pushDeletedPendingIntent = getPushActionPendingIntent(context, Constants.APPBOY_PUSH_DELETED_ACTION, notificationExtras);
       notificationBuilder.setDeleteIntent(pushDeletedPendingIntent);
@@ -486,14 +493,35 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * This method exists to disable {@link NotificationCompat.Builder#setShowWhen(boolean)} for push
-   * stories.
+   * @deprecated Please use {@link #setSetShowWhen(NotificationCompat.Builder, BrazeNotificationPayload)}
    */
+  @Deprecated
   public static void setSetShowWhen(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setSetShowWhen(notificationBuilder, payload);
+  }
+
+  /**
+   * This method exists to disable {@link NotificationCompat.Builder#setShowWhen(boolean)}
+   * for push stories.
+   */
+  public static void setSetShowWhen(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    if (payload.isPushStory()) {
       AppboyLogger.d(TAG, "Set show when not supported in story push.");
       notificationBuilder.setShowWhen(false);
     }
+  }
+
+  /**
+   * @deprecated Please use {@link #setLargeIconIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static boolean setLargeIconIfPresentAndSupported(Context context,
+                                                          AppboyConfigurationProvider appConfigurationProvider,
+                                                          NotificationCompat.Builder notificationBuilder,
+                                                          Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
+    return setLargeIconIfPresentAndSupported(notificationBuilder, payload);
   }
 
   /**
@@ -503,23 +531,33 @@ public class AppboyNotificationUtils {
    *
    * @return whether a large icon was successfully set.
    */
-  public static boolean setLargeIconIfPresentAndSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
-                                                          NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
+  public static boolean setLargeIconIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    if (payload.isPushStory()) {
       AppboyLogger.d(TAG, "Large icon not supported in story push.");
       return false;
     }
     try {
-      if (notificationExtras != null
-          && notificationExtras.containsKey(Constants.APPBOY_PUSH_LARGE_ICON_KEY)) {
-        AppboyLogger.d(TAG, "Setting large icon for notification");
-        String bitmapUrl = notificationExtras.getString(Constants.APPBOY_PUSH_LARGE_ICON_KEY);
-        Bitmap largeNotificationBitmap = Appboy.getInstance(context).getAppboyImageLoader()
-            .getPushBitmapFromUrl(context, null, bitmapUrl, AppboyViewBounds.NOTIFICATION_LARGE_ICON);
+      final Context context = payload.getContext();
+      if (context == null) {
+        AppboyLogger.d(TAG, "Cannot set large icon with null context");
+        return false;
+      }
+
+      AppboyLogger.d(TAG, "Setting large icon for notification");
+      String bitmapUrl = payload.getLargeIcon();
+      if (bitmapUrl != null) {
+        Bitmap largeNotificationBitmap = Appboy.getInstance(context)
+            .getAppboyImageLoader()
+            .getPushBitmapFromUrl(context,
+                null,
+                bitmapUrl,
+                AppboyViewBounds.NOTIFICATION_LARGE_ICON);
         notificationBuilder.setLargeIcon(largeNotificationBitmap);
         return true;
       }
+
       AppboyLogger.d(TAG, "Large icon bitmap url not present in extras. Attempting to use resource id instead.");
+      final AppboyConfigurationProvider appConfigurationProvider = payload.getAppboyConfigurationProvider();
       int largeNotificationIconResourceId = appConfigurationProvider.getLargeNotificationIconResourceId();
       if (largeNotificationIconResourceId != 0) {
         Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(), largeNotificationIconResourceId);
@@ -537,22 +575,28 @@ public class AppboyNotificationUtils {
   }
 
   /**
+   * @deprecated Please use {@link #setSoundIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static void setSoundIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setSoundIfPresentAndSupported(notificationBuilder, payload);
+  }
+
+  /**
    * Notifications can optionally include a sound to play when the notification is delivered.
    * <p/>
    * Starting with Android O, sound is set on a notification channel and not individually on notifications.
    */
-  public static void setSoundIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY)) {
-      // Retrieve sound uri if included in notificationExtras bundle.
-      String soundUri = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_KEY);
-      if (soundUri != null) {
-        if (soundUri.equals(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE)) {
-          AppboyLogger.d(TAG, "Setting default sound for notification.");
-          notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
-        } else {
-          AppboyLogger.d(TAG, "Setting sound for notification via uri.");
-          notificationBuilder.setSound(Uri.parse(soundUri));
-        }
+  public static void setSoundIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    String soundUri = payload.getNotificationSound();
+    if (soundUri != null) {
+      if (soundUri.equals(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE)) {
+        AppboyLogger.d(TAG, "Setting default sound for notification.");
+        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
+      } else {
+        AppboyLogger.d(TAG, "Setting sound for notification via uri.");
+        notificationBuilder.setSound(Uri.parse(soundUri));
       }
     } else {
       AppboyLogger.d(TAG, "Sound key not present in notification extras. Not setting sound for notification.");
@@ -560,20 +604,26 @@ public class AppboyNotificationUtils {
   }
 
   /**
+   * @deprecated Please use {@link #setSummaryTextIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static void setSummaryTextIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setSummaryTextIfPresentAndSupported(notificationBuilder, payload);
+  }
+
+  /**
    * Sets the subText of the notification if a summary is present in the notification extras.
    * <p/>
    * Supported on JellyBean+.
    */
-  public static void setSummaryTextIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY)) {
-      // Retrieve summary text if included in notificationExtras bundle.
-      String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
-      if (summaryText != null) {
-        AppboyLogger.d(TAG, "Setting summary text for notification");
-        notificationBuilder.setSubText(summaryText);
-      }
+  public static void setSummaryTextIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    String summaryText = payload.getSummaryText();
+    if (summaryText != null) {
+      AppboyLogger.d(TAG, "Setting summary text for notification");
+      notificationBuilder.setSubText(summaryText);
     } else {
-      AppboyLogger.d(TAG, "Summary text not present in notification extras. Not setting summary text for notification.");
+      AppboyLogger.d(TAG, "Summary text not present. Not setting summary text for notification.");
     }
   }
 
@@ -592,19 +642,27 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Sets the style of the notification if supported.
-   * <p/>
-   * If there is an image url found in the extras payload and the image can be downloaded, then
-   * use the android BigPictureStyle as the notification. Else, use the BigTextStyle instead.
-   * <p/>
-   * Supported JellyBean+.
+   * @deprecated Please use
+   * {@link AppboyNotificationStyleFactory#setStyleIfSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
    */
-  public static void setStyleIfSupported(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras, Bundle appboyExtras) {
-    if (notificationExtras != null) {
-      AppboyLogger.d(TAG, "Setting style for notification");
-      NotificationCompat.Style style = AppboyNotificationStyleFactory.getBigNotificationStyle(context, notificationExtras, appboyExtras, notificationBuilder);
-      notificationBuilder.setStyle(style);
-    }
+  @Deprecated
+  public static void setStyleIfSupported(Context context,
+                                         NotificationCompat.Builder notificationBuilder,
+                                         Bundle notificationExtras,
+                                         Bundle appboyExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    AppboyNotificationStyleFactory.setStyleIfSupported(notificationBuilder, payload);
+  }
+
+  /**
+   * @deprecated Please use {@link #setAccentColorIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static void setAccentColorIfPresentAndSupported(AppboyConfigurationProvider appConfigurationProvider,
+                                                         NotificationCompat.Builder notificationBuilder,
+                                                         Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(appConfigurationProvider, notificationExtras);
+    setAccentColorIfPresentAndSupported(notificationBuilder, payload);
   }
 
   /**
@@ -614,37 +672,64 @@ public class AppboyNotificationUtils {
    * <p/>
    * Supported Lollipop+.
    */
-  public static void setAccentColorIfPresentAndSupported(AppboyConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_ACCENT_KEY)) {
-        // Color is an unsigned integer, so we first parse it as a long.
-        AppboyLogger.d(TAG, "Using accent color for notification from extras bundle");
-        notificationBuilder.setColor((int) Long.parseLong(notificationExtras.getString(Constants.APPBOY_PUSH_ACCENT_KEY)));
-      } else {
+  public static void setAccentColorIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+      return;
+    }
+
+    if (payload.getAccentColor() != null) {
+      AppboyLogger.d(TAG, "Using accent color for notification from extras bundle");
+      notificationBuilder.setColor(payload.getAccentColor());
+    } else {
+      final AppboyConfigurationProvider appboyConfigurationProvider = payload.getAppboyConfigurationProvider();
+      if (appboyConfigurationProvider != null) {
         AppboyLogger.d(TAG, "Using default accent color for notification");
-        notificationBuilder.setColor(appConfigurationProvider.getDefaultNotificationAccentColor());
+        notificationBuilder.setColor(appboyConfigurationProvider.getDefaultNotificationAccentColor());
+      } else {
+        AppboyLogger.d(TAG, "Cannot set default accent color for notification with null config provider");
       }
     }
   }
 
   /**
-   * Set category for devices on Lollipop and above. Category is one of the predefined notification categories (see the CATEGORY_* constants in Notification)
+   * @deprecated Please use {@link #setCategoryIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static void setCategoryIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setCategoryIfPresentAndSupported(notificationBuilder, payload);
+  }
+
+  /**
+   * Set category for devices on Lollipop and above. Category is one of the predefined notification
+   * categories (see the CATEGORY_* constants in Notification)
    * that best describes a Notification. May be used by the system for ranking and filtering.
    * <p/>
    * Supported Lollipop+.
    */
-  public static void setCategoryIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_CATEGORY_KEY)) {
-        AppboyLogger.d(TAG, "Setting category for notification");
-        String notificationCategory = notificationExtras.getString(Constants.APPBOY_PUSH_CATEGORY_KEY);
-        notificationBuilder.setCategory(notificationCategory);
-      } else {
-        AppboyLogger.d(TAG, "Category not present in notification extras. Not setting category for notification.");
-      }
-    } else {
-      AppboyLogger.d(TAG, "Notification category not supported on this android version. Not setting category for notification.");
+  public static void setCategoryIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder,
+                                                      @NonNull BrazeNotificationPayload payload) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+      AppboyLogger.d(TAG, "Notification category not supported on this android version. "
+          + "Not setting category for notification.");
+      return;
     }
+
+    if (payload.getNotificationCategory() != null) {
+      AppboyLogger.d(TAG, "Setting category for notification");
+      notificationBuilder.setCategory(payload.getNotificationCategory());
+    } else {
+      AppboyLogger.d(TAG, "Category not present in notification extras. Not setting category for notification.");
+    }
+  }
+
+  /**
+   * @deprecated Please use {@link #setVisibilityIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static void setVisibilityIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setVisibilityIfPresentAndSupported(notificationBuilder, payload);
   }
 
   /**
@@ -660,24 +745,34 @@ public class AppboyNotificationUtils {
    * <p/>
    * Supported Lollipop+.
    */
-  public static void setVisibilityIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_VISIBILITY_KEY)) {
-        try {
-          int visibility = Integer.parseInt(notificationExtras.getString(Constants.APPBOY_PUSH_VISIBILITY_KEY));
-          if (isValidNotificationVisibility(visibility)) {
-            AppboyLogger.d(TAG, "Setting visibility for notification");
-            notificationBuilder.setVisibility(visibility);
-          } else {
-            AppboyLogger.w(TAG, "Received invalid notification visibility " + visibility);
-          }
-        } catch (Exception e) {
-          AppboyLogger.e(TAG, "Failed to parse visibility from notificationExtras", e);
-        }
-      }
-    } else {
-      AppboyLogger.d(TAG, "Notification visibility not supported on this android version. Not setting visibility for notification.");
+  public static void setVisibilityIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+      AppboyLogger.d(TAG, "Notification visibility not supported on this "
+          + "android version. Not setting visibility for notification.");
+      return;
     }
+
+    if (payload.getNotificationVisibility() != null) {
+      int visibility = payload.getNotificationVisibility();
+      if (isValidNotificationVisibility(visibility)) {
+        AppboyLogger.d(TAG, "Setting visibility for notification");
+        notificationBuilder.setVisibility(visibility);
+      } else {
+        AppboyLogger.w(TAG, "Received invalid notification visibility " + visibility);
+      }
+    }
+  }
+
+  /**
+   * @deprecated Please use {@link #setPublicVersionIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static void setPublicVersionIfPresentAndSupported(Context context,
+                                                           AppboyConfigurationProvider appboyConfigurationProvider,
+                                                           NotificationCompat.Builder notificationBuilder,
+                                                           Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appboyConfigurationProvider, notificationExtras);
+    setPublicVersionIfPresentAndSupported(notificationBuilder, payload);
   }
 
   /**
@@ -685,22 +780,37 @@ public class AppboyNotificationUtils {
    * <p/>
    * Supported Lollipop+.
    */
-  public static void setPublicVersionIfPresentAndSupported(Context context, AppboyConfigurationProvider appboyConfigurationProvider,
-                                                           NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      if (notificationExtras != null && notificationExtras.containsKey(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY)) {
-        String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(context, appboyConfigurationProvider, notificationExtras);
-        String publicNotificationExtrasString = notificationExtras.getString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY);
-        Bundle publicNotificationExtras = parseJSONStringDictionaryIntoBundle(publicNotificationExtrasString);
-        NotificationCompat.Builder publicNotificationBuilder = new NotificationCompat.Builder(context, notificationChannelId);
-        setContentIfPresent(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
-        setTitleIfPresent(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
-        setSummaryTextIfPresentAndSupported(publicNotificationBuilder, publicNotificationExtras);
-        setSmallIcon(appboyConfigurationProvider, publicNotificationBuilder);
-        setAccentColorIfPresentAndSupported(appboyConfigurationProvider, publicNotificationBuilder, publicNotificationExtras);
-        notificationBuilder.setPublicVersion(publicNotificationBuilder.build());
-      }
+  public static void setPublicVersionIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+        || payload.getContext() == null
+        || payload.getPublicNotificationExtras() == null) {
+      return;
     }
+
+    String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(payload);
+    if (notificationChannelId == null) {
+      return;
+    }
+
+    Bundle publicNotificationExtras = parseJSONStringDictionaryIntoBundle(payload.getPublicNotificationExtras());
+    if (publicNotificationExtras == null) {
+      return;
+    }
+    BrazeNotificationPayload publicPayload = new BrazeNotificationPayload(payload.getContext(),
+        payload.getAppboyConfigurationProvider(),
+        publicNotificationExtras);
+
+    if (publicPayload.getAppboyConfigurationProvider() == null) {
+      return;
+    }
+    NotificationCompat.Builder publicNotificationBuilder = new NotificationCompat.Builder(payload.getContext(), notificationChannelId);
+    AppboyLogger.d(TAG, "Setting public version of notification");
+    setContentIfPresent(publicNotificationBuilder, publicPayload);
+    setTitleIfPresent(publicNotificationBuilder, publicPayload);
+    setSummaryTextIfPresentAndSupported(publicNotificationBuilder, publicPayload);
+    setSmallIcon(publicPayload.getAppboyConfigurationProvider(), publicNotificationBuilder);
+    setAccentColorIfPresentAndSupported(publicNotificationBuilder, publicPayload);
+    notificationBuilder.setPublicVersion(publicNotificationBuilder.build());
   }
 
   /**
@@ -832,10 +942,11 @@ public class AppboyNotificationUtils {
    */
   @Deprecated
   @SuppressLint({"InlinedApi", "NewApi"})
-  public static void setNotificationChannelIfSupported(Context context, AppboyConfigurationProvider appConfigurationProvider,
-                                                       NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+  public static void setNotificationChannelIfSupported(Context context,
+                                                       AppboyConfigurationProvider appConfigurationProvider,
+                                                       NotificationCompat.Builder notificationBuilder,
+                                                       Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       String channelId = getOrCreateNotificationChannelId(context, appConfigurationProvider, notificationExtras);
       notificationBuilder.setChannelId(channelId);
     }
@@ -854,17 +965,10 @@ public class AppboyNotificationUtils {
    * will be created and {@link Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID} will be
    * returned.</li>
    * </ol>
-   *
-   * @param context            Application context.
-   * @param notificationExtras Notification extras as provided by FCM/ADM.
-   * @return a channel id.
    */
   @Nullable
-  public static String getOrCreateNotificationChannelId(Context context,
-                                                        AppboyConfigurationProvider appConfigurationProvider,
-                                                        Bundle notificationExtras) {
-    String channelIdFromExtras = getNonBlankStringFromBundle(notificationExtras,
-        Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY);
+  public static String getOrCreateNotificationChannelId(BrazeNotificationPayload payload) {
+    String channelIdFromExtras = payload.getNotificationChannelId();
     String defaultChannelId = Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID;
 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -872,8 +976,12 @@ public class AppboyNotificationUtils {
       return channelIdFromExtras != null ? channelIdFromExtras : defaultChannelId;
     }
 
-    NotificationManager notificationManager =
-        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    final Context context = payload.getContext();
+    if (context == null) {
+      AppboyLogger.d(TAG, "BrazeNotificationPayload is missing a context");
+      return null;
+    }
+    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     // First try to get the channel from the extras
     if (channelIdFromExtras != null) {
       if (notificationManager.getNotificationChannel(channelIdFromExtras) != null) {
@@ -884,6 +992,7 @@ public class AppboyNotificationUtils {
       }
     }
 
+    final AppboyConfigurationProvider appConfigurationProvider = payload.getAppboyConfigurationProvider();
     // If we get here, we need to use the default channel
     if (notificationManager.getNotificationChannel(defaultChannelId) == null) {
       // If the default doesn't exist, create it now
@@ -900,19 +1009,39 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Sets the notification number, set via {@link NotificationCompat.Builder#setNumber(int)}. On Android O, this number is used with notification badges.
+   * @deprecated Please use {@link #getOrCreateNotificationChannelId(BrazeNotificationPayload)}
    */
+  @Nullable
+  @Deprecated
+  public static String getOrCreateNotificationChannelId(Context context,
+                                                        AppboyConfigurationProvider appConfigurationProvider,
+                                                        Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
+    return getOrCreateNotificationChannelId(payload);
+  }
+
+  /**
+   * @deprecated Please use {@link #setNotificationBadgeNumberIfPresent(NotificationCompat.Builder, BrazeNotificationPayload)}
+   */
+  @Deprecated
   public static void setNotificationBadgeNumberIfPresent(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      final String extrasBadgeCount = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_BADGE_COUNT_KEY, null);
-      if (!StringUtils.isNullOrBlank(extrasBadgeCount)) {
-        try {
-          int badgeCount = Integer.parseInt(extrasBadgeCount);
-          notificationBuilder.setNumber(badgeCount);
-        } catch (NumberFormatException e) {
-          AppboyLogger.e(TAG, "Caught exception while setting number on notification.", e);
-        }
-      }
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
+    setNotificationBadgeNumberIfPresent(notificationBuilder, payload);
+  }
+
+  /**
+   * Sets the notification number, set via {@link NotificationCompat.Builder#setNumber(int)}.
+   * On Android O, this number is used with notification badges.
+   */
+  public static void setNotificationBadgeNumberIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
+                                                         @NonNull BrazeNotificationPayload payload) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+      AppboyLogger.d(TAG, "Notification badge number not supported on "
+          + "this android version. Not setting badge number for notification.");
+      return;
+    }
+    if (payload.getNotificationBadgeNumber() != null) {
+      notificationBuilder.setNumber(payload.getNotificationBadgeNumber());
     }
   }
 
@@ -951,20 +1080,17 @@ public class AppboyNotificationUtils {
   }
 
   /**
-   * Parses the notification bundle for any associated ContentCards, if present. If found, the card object is added to
-   * card storage.
-   * <p>
-   * Note that this method is only supported for FCM payloads. For ADM, this method does nothing.
+   * Parses the notification bundle for any associated
+   * ContentCards, if present. If found, the card object
+   * is added to card storage.
    */
-  public static void handleContentCardsSerializedCardIfPresent(Context context, Bundle fcmExtras) {
-    if (!Constants.IS_AMAZON && fcmExtras.containsKey(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY)) {
-      String contentCardData = fcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_DATA_KEY, null);
+  public static void handleContentCardsSerializedCardIfPresent(BrazeNotificationPayload payload) {
+    String contentCardData = payload.getContentCardSyncData();
+    String contentCardDataUserId = payload.getContentCardSyncUserId();
 
-      // The user id can be absent for anonymous users so we'll default to null for it.
-      String contentCardDataUserId = fcmExtras.getString(Constants.APPBOY_PUSH_CONTENT_CARD_SYNC_USER_ID_KEY, null);
-
+    if (contentCardData != null && payload.getContext() != null) {
       AppboyLogger.d(TAG, "Push contains associated Content Cards card. User id: " + contentCardDataUserId + " Card data: " + contentCardData);
-      AppboyInternal.addSerializedContentCardToStorage(context, contentCardData, contentCardDataUserId);
+      AppboyInternal.addSerializedContentCardToStorage(payload.getContext(), contentCardData, contentCardDataUserId);
     }
   }
 
@@ -988,38 +1114,6 @@ public class AppboyNotificationUtils {
   static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
     AppboyLogger.d(TAG, "Sending notification opened broadcast");
     sendPushActionIntent(context, AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX, intent.getExtras());
-  }
-
-  /**
-   * Logs a push notification open.
-   *
-   * @param context Application context
-   * @param intent  The internal notification clicked intent constructed in
-   *                {@link #setContentIntentIfPresent}
-   */
-  private static void logNotificationOpened(Context context, Intent intent) {
-    Appboy.getInstance(context).logPushNotificationOpened(intent);
-  }
-
-  /**
-   * If {@literal bundle} contains a non-blank {@link String} associated with {@literal key}, this
-   * value is returned, otherwise {@literal null} is returned.
-   *
-   * @param bundle The bundle to be queried.
-   * @param key    The key to search for.
-   * @return A non-blank String value {@literal bundle} with key {@literal key}, or {@literal null}
-   *     if none exists.
-   */
-  @Nullable
-  @VisibleForTesting
-  private static String getNonBlankStringFromBundle(Bundle bundle, String key) {
-    if (bundle != null) {
-      String stringValue = bundle.getString(key, null);
-      if (!StringUtils.isNullOrBlank(stringValue)) {
-        return stringValue;
-      }
-    }
-    return null;
   }
 
   /**

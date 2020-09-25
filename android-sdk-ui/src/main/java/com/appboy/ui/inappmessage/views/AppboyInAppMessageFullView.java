@@ -3,13 +3,14 @@ package com.appboy.ui.inappmessage.views;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.NonNull;
-import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.models.IInAppMessageImmersive;
@@ -143,7 +144,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
    * in the display cutout area.
    *
    * @param insets The {@link WindowInsetsCompat} object directly from
-   * {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
+   * {@link androidx.core.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
    */
   @Override
   public void applyWindowInsets(@NonNull WindowInsetsCompat insets) {

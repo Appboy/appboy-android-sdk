@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,6 +12,10 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.Nullable;
+import androidx.webkit.WebSettingsCompat;
+import androidx.webkit.WebViewFeature;
 
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
@@ -95,8 +97,22 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
     // If not defined, then the layer type will fallback to software.
     mMessageWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
     mMessageWebView.setBackgroundColor(Color.TRANSPARENT);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ViewUtils.isDeviceInNightMode(getContext())) {
-      webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
+
+    try {
+      // Note that this check is OS version agnostic since the Android WebView can be
+      // updated independently
+      if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)
+          && ViewUtils.isDeviceInNightMode(getContext())) {
+        WebSettingsCompat.setForceDark(webSettings,
+            WebSettingsCompat.FORCE_DARK_ON);
+      }
+
+      if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+        WebSettingsCompat.setForceDarkStrategy(webSettings,
+            WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY);
+      }
+    } catch (Throwable e) {
+      AppboyLogger.e(TAG, "Failed to set dark mode WebView settings", e);
     }
 
     // Set the client for console logging. See https://developer.android.com/guide/webapps/debugging.html
@@ -129,7 +145,7 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
    * Loads the WebView using an html string and local file resource url. This url should be a path
    * to a file on the local filesystem.
    *
-   * @param htmlBody   Html text encoded in utf-8
+   * @param htmlBody          Html text encoded in utf-8
    * @param assetDirectoryUrl path to the local assets file
    */
   public void setWebViewContent(String htmlBody, String assetDirectoryUrl) {
@@ -161,7 +177,7 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
 
   /**
    * Html in-app messages can alternatively be closed by the back button.
-   *
+   * <p>
    * Note: If the internal WebView has focus instead of this view, back button events on html
    * in-app messages are handled separately in {@link AppboyInAppMessageWebView#onKeyDown(int, KeyEvent)}
    *

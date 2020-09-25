@@ -2,7 +2,8 @@ package com.appboy.ui.actions;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.appboy.enums.Channel;
 import com.appboy.support.StringUtils;

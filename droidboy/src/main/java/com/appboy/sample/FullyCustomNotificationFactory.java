@@ -3,26 +3,35 @@ package com.appboy.sample;
 import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 
-import com.appboy.Constants;
+import androidx.core.app.NotificationCompat;
+
 import com.appboy.IAppboyNotificationFactory;
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.AppboyNotificationUtils;
 
 public class FullyCustomNotificationFactory implements IAppboyNotificationFactory {
 
   @Override
-  public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
-                                         Context context, Bundle notificationExtras, Bundle appboyExtras) {
-    String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(context, appConfigurationProvider, notificationExtras);
-    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, notificationChannelId);
-    notificationBuilder.setContentTitle(notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY));
+  public Notification createNotification(BrazeNotificationPayload payload) {
+    String notificationChannelId = AppboyNotificationUtils.getOrCreateNotificationChannelId(payload);
+    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(payload.getContext(), notificationChannelId);
+    notificationBuilder.setContentTitle(payload.getTitleText());
     notificationBuilder.setSmallIcon(R.drawable.com_appboy_push_small_notification_icon);
-    AppboyNotificationUtils.setAccentColorIfPresentAndSupported(appConfigurationProvider, notificationBuilder, notificationExtras);
-    String contentString = parseContentsFromExtras(appboyExtras);
+    AppboyNotificationUtils.setAccentColorIfPresentAndSupported(notificationBuilder, payload);
+    String contentString = parseContentsFromExtras(payload.getAppboyExtras());
     notificationBuilder.setContentText(contentString);
     return notificationBuilder.build();
+  }
+
+  @Override
+  public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
+                                         Context context,
+                                         Bundle notificationExtras,
+                                         Bundle appboyExtras) {
+    BrazeNotificationPayload brazeNotificationPayload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
+    return createNotification(brazeNotificationPayload);
   }
 
   private String parseContentsFromExtras(Bundle appboyExtras) {

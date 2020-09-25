@@ -10,4 +10,6 @@
   <string name="com_appboy_inappmessage_image_content_description" tools:ignore="MissingTranslation">@null</string>
   <string name="com_appboy_inappmessage_icon_content_description" tools:ignore="MissingTranslation">@null</string>
 
+  <!--  Inline Image Push -->
+  <string name="com_appboy_inline_image_push_notification_header_divider_symbol" translatable="false">•</string>
 </resources>

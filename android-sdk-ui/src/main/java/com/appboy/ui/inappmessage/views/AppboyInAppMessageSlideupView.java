@@ -2,14 +2,15 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.NonNull;
-import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.models.IInAppMessage;
@@ -93,7 +94,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
    * Applies the {@link WindowInsetsCompat} by ensuring any part of the slideup does not render in the cutout area.
    *
    * @param insets The {@link WindowInsetsCompat} object directly from
-   * {@link android.support.v4.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
+   * {@link androidx.core.view.ViewCompat#setOnApplyWindowInsetsListener(View, OnApplyWindowInsetsListener)}.
    */
   @Override
   public void applyWindowInsets(@NonNull WindowInsetsCompat windowInsets) {

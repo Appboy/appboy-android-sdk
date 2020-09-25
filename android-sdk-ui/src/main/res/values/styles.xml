@@ -645,10 +645,8 @@
     <item name="android:layout_marginTop">12dp</item>
     <item name="android:layout_below">@id/com_appboy_content_cards_captioned_image_description</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.CaptionedImage">
-  </style>
-  <style name="Appboy.ContentCards.UnreadBar.CaptionedImage">
-  </style>
+  <style name="Appboy.ContentCards.PinnedIcon.CaptionedImage"/>
+  <style name="Appboy.ContentCards.UnreadBar.CaptionedImage"/>
 
   <!-- Banner Content Card -->
   <style name="Appboy.ContentCards.BannerImage"/>
@@ -664,10 +662,8 @@
     <item name="android:contentDescription">@null</item>
     <item name="android:importantForAccessibility">no</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.Banner">
-  </style>
-  <style name="Appboy.ContentCards.UnreadBar.Banner">
-  </style>
+  <style name="Appboy.ContentCards.PinnedIcon.Banner"/>
+  <style name="Appboy.ContentCards.UnreadBar.Banner"/>
 
   <!-- Short News Content Card -->
   <style name="Appboy.ContentCards.ShortNews"/>
@@ -724,10 +720,8 @@
     <item name="android:layout_marginTop">12dp</item>
     <item name="android:layout_below">@id/com_appboy_content_cards_short_news_card_description</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.ShortNews">
-  </style>
-  <style name="Appboy.ContentCards.UnreadBar.ShortNews">
-  </style>
+  <style name="Appboy.ContentCards.PinnedIcon.ShortNews"/>
+  <style name="Appboy.ContentCards.UnreadBar.ShortNews"/>
 
   <!-- Text Announcement Content Card -->
   <style name="Appboy.ContentCards.TextAnnouncement">
@@ -767,10 +761,8 @@
     <item name="android:layout_below">@id/com_appboy_content_cards_text_announcement_card_description</item>
     <item name="android:layout_marginTop">12dp</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.TextAnnouncement">
-  </style>
-  <style name="Appboy.ContentCards.UnreadBar.TextAnnouncement">
-  </style>
+  <style name="Appboy.ContentCards.PinnedIcon.TextAnnouncement"/>
+  <style name="Appboy.ContentCards.UnreadBar.TextAnnouncement"/>
 
   <!-- Push Story -->
   <style name="Appboy.Story"/>
@@ -853,4 +845,87 @@
     <item name="android:singleLine">true</item>
   </style>
   <style name="Appboy.Story.TextView.Subtitle.OneImage"/>
+
+  <!-- Inline Image Push -->
+  <style name="Appboy.Push"/>
+  <style name="Appboy.Push.InlineImage"/>
+  <style name="Appboy.Push.InlineImage.Layout">
+    <item name="android:orientation">horizontal</item>
+    <item name="android:weightSum">@dimen/com_appboy_push_inline_image_total_weight_sum</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea"/>
+  <style name="Appboy.Push.InlineImage.TextArea.Layout">
+    <item name="android:layout_weight">@dimen/com_appboy_push_inline_image_text_area_layout_weight</item>
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_marginBottom">20dp</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:layout_marginLeft">16dp</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.Header"/>
+  <style name="Appboy.Push.InlineImage.TextArea.Header.Layout">
+    <item name="android:paddingTop">16dp</item>
+    <item name="android:paddingBottom">16dp</item>
+    <item name="android:layout_marginBottom">0dp</item>
+    <item name="android:gravity">top</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.Header.AppIcon">
+    <item name="android:layout_width">18dp</item>
+    <item name="android:layout_height">18dp</item>
+    <item name="android:layout_marginRight">3dp</item>
+    <item name="android:contentDescription">@null</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.Header.AppNameText" parent="@style/TextAppearance.Compat.Notification.Info">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginLeft">3dp</item>
+    <item name="android:layout_marginRight">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
+    <item name="android:singleLine">true</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.Header.TextDivider" parent="@style/TextAppearance.Compat.Notification.Info">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginLeft">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
+    <item name="android:text">@string/com_appboy_inline_image_push_notification_header_divider_symbol</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.Header.TimeText" parent="@style/TextAppearance.Compat.Notification.Info">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginLeft">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
+    <item name="android:singleLine">true</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.TitleContent"/>
+  <style name="Appboy.Push.InlineImage.TextArea.TitleContent.Layout">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginRight">16dp</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.TitleContent.TitleText" parent="@style/TextAppearance.Compat.Notification.Title">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:fadingEdge">horizontal</item>
+    <item name="android:gravity">start</item>
+    <item name="android:singleLine">true</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.TextArea.TitleContent.ContentText" parent="@style/TextAppearance.Compat.Notification">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:fadingEdge">horizontal</item>
+    <item name="android:singleLine">true</item>
+  </style>
+  <style name="Appboy.Push.InlineImage.Image"/>
+  <style name="Appboy.Push.InlineImage.Image.ImageContent">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_weight">@dimen/com_appboy_push_inline_image_image_layout_weight</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="android:scaleType">fitXY</item>
+  </style>
 </resources>

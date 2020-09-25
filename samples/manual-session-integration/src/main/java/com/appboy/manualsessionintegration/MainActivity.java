@@ -1,7 +1,8 @@
 package com.appboy.manualsessionintegration;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.appboy.Appboy;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;

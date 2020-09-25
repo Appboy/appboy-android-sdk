@@ -2,13 +2,14 @@ package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.IInAppMessageWithImage;

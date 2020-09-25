@@ -1,9 +1,10 @@
 package com.appboy.ui.inappmessage.jsinterface;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.webkit.JavascriptInterface;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.appboy.Appboy;
 import com.appboy.models.IInAppMessageHtml;

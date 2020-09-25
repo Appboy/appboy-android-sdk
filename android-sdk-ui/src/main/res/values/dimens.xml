@@ -39,4 +39,12 @@
   <!-- The width of the stroke used in drawing the button color -->
   <dimen name="com_appboy_in_app_message_button_border_stroke">1dp</dimen>
   <dimen name="com_appboy_in_app_message_button_border_stroke_focused">4dp</dimen>
+
+  <!-- Inline Image Push -->
+  <!-- The margin before and after each of the items in the notification header. -->
+  <dimen name="com_appboy_push_inline_image_header_separating_margin">2dp</dimen>
+  <!-- Controls the ratio of image to the rest of the notification. The weights should add up to the sum. -->
+  <dimen name="com_appboy_push_inline_image_total_weight_sum">10</dimen>
+  <dimen name="com_appboy_push_inline_image_text_area_layout_weight">6</dimen>
+  <dimen name="com_appboy_push_inline_image_image_layout_weight">4</dimen>
 </resources>

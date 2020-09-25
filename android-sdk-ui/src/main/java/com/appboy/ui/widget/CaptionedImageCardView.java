@@ -60,6 +60,6 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
     if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();
     }
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, mCard);
   }
 }

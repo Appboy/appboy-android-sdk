@@ -139,6 +139,7 @@
   <string name="test_push">Send Push</string>
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
   <string name="push_tester_big_title_label">Add Big Title</string>
+  <string translatable="false" name="push_tester_inline_image_push">Inline Image Push</string>
   <string name="push_tester_big_summary_label">Add Big Summary</string>
   <string name="push_tester_summary_label">Add Summary Text</string>
   <string name="push_tester_overflow_text_label">Overflow Text</string>
@@ -206,6 +207,8 @@
   <string name="youtube_https_link">https://www.youtube.com/watch?v=1PJCQTGbLq4</string>
   <string name="telephone_uri">tel:555555555</string>
   <string name="push_story">story1</string>
+  <string name="random_2_by_1_image_url">random_2_by_1_image_url</string>
+  <string name="random_3_by_2_image_url">random_3_by_2_image_url</string>
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
   <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 201 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 202</string>
   <string name="youtube_regex">^(http\\:\\/\\/|https\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/(.+$|)</string>

@@ -3,9 +3,10 @@ package com.appboy.ui.feed;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.VisibleForTesting;
 import android.util.AttributeSet;
 import android.widget.ImageSwitcher;
+
+import androidx.annotation.VisibleForTesting;
 
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;

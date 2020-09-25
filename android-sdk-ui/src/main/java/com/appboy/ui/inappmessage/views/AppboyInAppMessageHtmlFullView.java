@@ -1,9 +1,10 @@
 package com.appboy.ui.inappmessage.views;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.ui.R;
 

@@ -43,7 +43,6 @@ public class BannerImageContentCardView extends BaseContentCardView<BannerImageC
   public void bindViewHolder(ContentCardViewHolder viewHolder, BannerImageCard card) {
     super.bindViewHolder(viewHolder, card);
     ViewHolder bannerImageViewHolder = (ViewHolder) viewHolder;
-    setOptionalCardImage(bannerImageViewHolder.getImageView(),
-        card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO);
+    setOptionalCardImage(bannerImageViewHolder.getImageView(), card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO, card);
   }
 }

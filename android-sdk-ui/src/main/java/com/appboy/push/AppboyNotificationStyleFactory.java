@@ -3,21 +3,32 @@ package com.appboy.push;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.app.NotificationCompat;
+
 import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.enums.AppboyDateFormat;
 import com.appboy.enums.AppboyViewBounds;
+import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.support.HtmlUtils;
 import com.appboy.support.AppboyImageUtils;
 import com.appboy.support.AppboyLogger;
+import com.appboy.support.DateTimeUtils;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
@@ -61,27 +72,77 @@ public class AppboyNotificationStyleFactory {
   }
 
   /**
+   * Sets the style of the notification if supported.
+   * <p/>
+   * If there is an image url found in the extras payload and the image can be downloaded, then
+   * use the android BigPictureStyle as the notification. Else, use the BigTextStyle instead.
+   * <p/>
+   * Supported JellyBean+.
+   */
+  public static void setStyleIfSupported(@NonNull NotificationCompat.Builder notificationBuilder,
+                                         @NonNull BrazeNotificationPayload payload) {
+    AppboyLogger.d(TAG, "Setting style for notification");
+    NotificationCompat.Style style = AppboyNotificationStyleFactory.getNotificationStyle(notificationBuilder, payload);
+
+    if (style != null && !(style instanceof NoOpSentinelStyle)) {
+      notificationBuilder.setStyle(style);
+    }
+  }
+
+  /**
+   * @deprecated Please use {@link #getNotificationStyle(BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static NotificationCompat.Style getBigNotificationStyle(Context context,
+                                                                 Bundle notificationExtras,
+                                                                 Bundle appboyExtras,
+                                                                 NotificationCompat.Builder notificationBuilder) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    return getNotificationStyle(notificationBuilder, payload);
+  }
+
+  /**
    * Returns a big style NotificationCompat.Style. If an image is present, this will be a BigPictureStyle,
    * otherwise it will be a BigTextStyle.
    */
-  public static NotificationCompat.Style getBigNotificationStyle(Context context, Bundle notificationExtras, Bundle appboyExtras, NotificationCompat.Builder notificationBuilder) {
+  @Nullable
+  public static NotificationCompat.Style getNotificationStyle(@NonNull NotificationCompat.Builder notificationBuilder,
+                                                              @NonNull BrazeNotificationPayload payload) {
     NotificationCompat.Style style = null;
 
-    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_KEY)) {
+    if (payload.isPushStory() && payload.getContext() != null) {
       AppboyLogger.d(TAG, "Rendering push notification with DecoratedCustomViewStyle (Story)");
-      style = getStoryStyle(context, notificationExtras, appboyExtras, notificationBuilder);
-    } else if (appboyExtras != null && appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
-      AppboyLogger.d(TAG, "Rendering push notification with BigPictureStyle");
-      style = getBigPictureNotificationStyle(context, notificationExtras, appboyExtras);
+      style = getStoryStyle(payload.getContext(),
+          payload.getNotificationExtras(),
+          payload.getAppboyExtras(),
+          notificationBuilder);
+    } else if (payload.getBigImageUrl() != null) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && payload.isInlineImagePush()) {
+        AppboyLogger.d(TAG, "Rendering push notification with custom inline image style");
+        style = getInlineImageStyle(payload, notificationBuilder);
+      } else {
+        AppboyLogger.d(TAG, "Rendering push notification with BigPictureStyle");
+        style = getBigPictureNotificationStyle(payload);
+      }
     }
 
     // Default style is BigTextStyle.
     if (style == null) {
       AppboyLogger.d(TAG, "Rendering push notification with BigTextStyle");
-      style = getBigTextNotificationStyle(new AppboyConfigurationProvider(context), notificationExtras);
+      style = getBigTextNotificationStyle(payload);
     }
 
     return style;
+  }
+
+  /**
+   * @deprecated Please use {@link #getBigTextNotificationStyle(BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(AppboyConfigurationProvider appboyConfigurationProvider,
+                                                                            Bundle notificationExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(appboyConfigurationProvider, notificationExtras);
+    return getBigTextNotificationStyle(payload);
   }
 
   /**
@@ -91,44 +152,33 @@ public class AppboyNotificationStyleFactory {
    * If summary text exists, it will be shown in the expanded notification view.
    * If a title exists, it will override the default in expanded notification view.
    */
-  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(AppboyConfigurationProvider appboyConfigurationProvider, Bundle notificationExtras) {
-    if (notificationExtras != null) {
-      NotificationCompat.BigTextStyle bigTextNotificationStyle = new NotificationCompat.BigTextStyle();
-      String pushContent = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
-      bigTextNotificationStyle.bigText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, pushContent));
+  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(@NonNull BrazeNotificationPayload payload) {
+    NotificationCompat.BigTextStyle bigTextNotificationStyle = new NotificationCompat.BigTextStyle();
+    final AppboyConfigurationProvider appConfigProvider = payload.getAppboyConfigurationProvider();
 
-      String bigSummary = null;
-      String bigTitle = null;
-
-      if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY)) {
-        bigSummary = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY);
-      }
-      if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY)) {
-        bigTitle = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY);
-      }
-      if (bigSummary != null) {
-        bigTextNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigSummary));
-      }
-      if (bigTitle != null) {
-        bigTextNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigTitle));
-      }
-
-      return bigTextNotificationStyle;
-    } else {
-      return null;
+    bigTextNotificationStyle.bigText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getContentText()));
+    if (payload.getBigSummaryText() != null) {
+      bigTextNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigSummaryText()));
     }
+    if (payload.getBigTitleText() != null) {
+      bigTextNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigTitleText()));
+    }
+
+    return bigTextNotificationStyle;
   }
 
   /**
    * Returns a DecoratedCustomViewStyle for push story.
    *
-   * @param context Current context.
-   * @param notificationExtras Notification extras as provided by FCM/ADM.
+   * @param context             Current context.
+   * @param notificationExtras  Notification extras as provided by FCM/ADM.
    * @param notificationBuilder Must be an instance of the v7 builder.
    * @return a DecoratedCustomViewStyle that describes the appearance of the push story.
    */
-  public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context, Bundle notificationExtras,
-                                                                          Bundle appboyExtras, NotificationCompat.Builder notificationBuilder) {
+  public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context,
+                                                                          Bundle notificationExtras,
+                                                                          Bundle appboyExtras,
+                                                                          NotificationCompat.Builder notificationBuilder) {
     int pageIndex = getPushStoryPageIndex(notificationExtras);
     RemoteViews storyView = new RemoteViews(context.getPackageName(), R.layout.com_appboy_notification_story_one_image);
     if (!populatePushStoryPage(storyView, context, notificationExtras, appboyExtras, pageIndex)) {
@@ -150,24 +200,115 @@ public class AppboyNotificationStyleFactory {
   }
 
   /**
+   * This method sets a fully custom {@link android.widget.RemoteViews.RemoteView} to render the
+   * notification.
+   * <p>
+   * In the successful case, a {@link NoOpSentinelStyle} is returned.
+   * In the failure case (image bitmap is null, system information not found, etc.), a
+   * null style is returned.
+   */
+  @RequiresApi(api = Build.VERSION_CODES.M)
+  @Nullable
+  public static NotificationCompat.Style getInlineImageStyle(@NonNull BrazeNotificationPayload payload,
+                                                             @NonNull NotificationCompat.Builder notificationBuilder) {
+    final Context context = payload.getContext();
+    if (context == null) {
+      AppboyLogger.d(TAG, "Inline Image Push cannot render without a context");
+      return null;
+    }
+
+    final String imageUrl = payload.getBigImageUrl();
+    if (StringUtils.isNullOrBlank(imageUrl)) {
+      AppboyLogger.d(TAG, "Inline Image Push image url invalid");
+      return null;
+    }
+    final Bundle notificationExtras = payload.getNotificationExtras();
+
+    // Set the image
+    Bitmap largeNotificationBitmap = Appboy.getInstance(context).getAppboyImageLoader()
+        .getPushBitmapFromUrl(context, notificationExtras, imageUrl, AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
+    if (largeNotificationBitmap == null) {
+      AppboyLogger.d(TAG, "Inline Image Push failed to get image bitmap");
+      return null;
+    }
+    RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.com_appboy_notification_inline_image);
+    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
+    remoteView.setImageViewBitmap(R.id.com_appboy_inline_image_push_side_image, largeNotificationBitmap);
+
+    // Set the app icon drawable
+    final Icon appIcon = Icon.createWithResource(context, configurationProvider.getSmallNotificationIconResourceId());
+    if (payload.getAccentColor() != null) {
+      appIcon.setTint(payload.getAccentColor());
+    }
+    remoteView.setImageViewIcon(R.id.com_appboy_inline_image_push_app_icon, appIcon);
+
+    // Set the app name
+    final PackageManager packageManager = context.getPackageManager();
+    ApplicationInfo applicationInfo;
+    try {
+      applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+    } catch (final PackageManager.NameNotFoundException e) {
+      AppboyLogger.d(TAG, "Inline Image Push application info was null");
+      return null;
+    }
+
+    final String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+    final CharSequence htmlSpannedAppName = HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, applicationName);
+    remoteView.setTextViewText(R.id.com_appboy_inline_image_push_app_name_text, htmlSpannedAppName);
+
+    // Set the current time
+    remoteView.setTextViewText(R.id.com_appboy_inline_image_push_time_text, DateTimeUtils.formatDateNow(AppboyDateFormat.CLOCK_12_HOUR));
+
+    // Set the text area title
+    String title = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY);
+    remoteView.setTextViewText(R.id.com_appboy_inline_image_push_title_text, HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, title));
+
+    // Set the text area content
+    String content = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
+    remoteView.setTextViewText(R.id.com_appboy_inline_image_push_content_text, HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, content));
+
+    notificationBuilder.setCustomContentView(remoteView);
+    AppboyLogger.v(TAG, "Inline Image Push full rendering finished");
+    // Since this is entirely custom, no decorated
+    // style is returned to the system.
+    return new NoOpSentinelStyle();
+  }
+
+  /**
+   * @deprecated Please use {@link #getBigPictureNotificationStyle(BrazeNotificationPayload)}
+   */
+  @Deprecated
+  public static NotificationCompat.BigPictureStyle getBigPictureNotificationStyle(Context context,
+                                                                                  Bundle notificationExtras,
+                                                                                  Bundle appboyExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    return getBigPictureNotificationStyle(payload);
+  }
+
+  /**
    * Returns a BigPictureStyle notification style initialized with the bitmap, big title, and big summary
    * specified in the notificationExtras and appboyExtras bundles.
    * <p/>
    * If summary text exists, it will be shown in the expanded notification view.
    * If a title exists, it will override the default in expanded notification view.
    */
-  public static NotificationCompat.BigPictureStyle getBigPictureNotificationStyle(Context context, Bundle notificationExtras, Bundle appboyExtras) {
-    if (appboyExtras == null || !appboyExtras.containsKey(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY)) {
+  public static NotificationCompat.BigPictureStyle getBigPictureNotificationStyle(@NonNull BrazeNotificationPayload payload) {
+    final Context context = payload.getContext();
+    if (context == null) {
       return null;
     }
 
-    String imageUrl = appboyExtras.getString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY);
+    final String imageUrl = payload.getBigImageUrl();
     if (StringUtils.isNullOrBlank(imageUrl)) {
       return null;
     }
 
+    final Bundle notificationExtras = payload.getNotificationExtras();
     Bitmap imageBitmap = Appboy.getInstance(context).getAppboyImageLoader()
-        .getPushBitmapFromUrl(context, appboyExtras, imageUrl, AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
+        .getPushBitmapFromUrl(context,
+            notificationExtras,
+            imageUrl,
+            AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
     if (imageBitmap == null) {
       AppboyLogger.d(TAG, "Failed to download image bitmap for big picture notification style. Url: " + imageUrl);
       return null;
@@ -200,7 +341,7 @@ public class AppboyNotificationStyleFactory {
 
       NotificationCompat.BigPictureStyle bigPictureNotificationStyle = new NotificationCompat.BigPictureStyle();
       bigPictureNotificationStyle.bigPicture(imageBitmap);
-      setBigPictureSummaryAndTitle(new AppboyConfigurationProvider(context), bigPictureNotificationStyle, notificationExtras);
+      setBigPictureSummaryAndTitle(bigPictureNotificationStyle, payload);
 
       return bigPictureNotificationStyle;
     } catch (Exception e) {
@@ -269,10 +410,10 @@ public class AppboyNotificationStyleFactory {
   /**
    * Adds the appropriate image, title/subtitle, and PendingIntents to the story page.
    *
-   * @param view The push story remoteView, as instantiated in the getStoryStyle method.
-   * @param context Current context.
+   * @param view               The push story remoteView, as instantiated in the getStoryStyle method.
+   * @param context            Current context.
    * @param notificationExtras Notification extras as provided by FCM/ADM.
-   * @param index The index of the story page.
+   * @param index              The index of the story page.
    * @return True if the push story page was populated correctly.
    */
   private static boolean populatePushStoryPage(RemoteViews view, Context context, Bundle notificationExtras, Bundle appboyExtras, int index) {
@@ -334,31 +475,33 @@ public class AppboyNotificationStyleFactory {
   }
 
   @VisibleForTesting
-  static void setBigPictureSummaryAndTitle(AppboyConfigurationProvider appboyConfigurationProvider,
-                                           NotificationCompat.BigPictureStyle bigPictureNotificationStyle, Bundle notificationExtras) {
-    String bigSummary = null;
-    String bigTitle = null;
-
-    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY)) {
-      bigSummary = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY);
+  static void setBigPictureSummaryAndTitle(NotificationCompat.BigPictureStyle bigPictureNotificationStyle, BrazeNotificationPayload payload) {
+    final AppboyConfigurationProvider appConfigProvider = payload.getAppboyConfigurationProvider();
+    if (payload.getBigSummaryText() != null) {
+      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigSummaryText()));
     }
-    if (notificationExtras.containsKey(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY)) {
-      bigTitle = notificationExtras.getString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY);
-    }
-
-    if (bigSummary != null) {
-      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigSummary));
-    }
-    if (bigTitle != null) {
-      bigPictureNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, bigTitle));
+    if (payload.getBigTitleText() != null) {
+      bigPictureNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigTitleText()));
     }
 
     // If summary is null (which we set to the subtext in setSummaryTextIfPresentAndSupported in AppboyNotificationUtils)
     // and bigSummary is null, set the summary to the message. Without this, the message would be blank in expanded mode.
-    String summaryText = notificationExtras.getString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY);
-    if (summaryText == null && bigSummary == null) {
-      String contentText = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
-      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appboyConfigurationProvider, contentText));
+    if (payload.getSummaryText() == null && payload.getBigSummaryText() == null) {
+      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getContentText()));
     }
+  }
+
+  /**
+   * A sentinel value used solely to denote that a style
+   * should not be set on the notification builder.
+   * <p>
+   * Example usage would be a fully custom {@link RemoteViews}
+   * that has handled rendering notification view without the
+   * use of a system style. Returning null in that scenario
+   * would lead to a lack of information as to whether that
+   * custom rendering failed.
+   */
+  private static class NoOpSentinelStyle extends NotificationCompat.Style {
+
   }
 }

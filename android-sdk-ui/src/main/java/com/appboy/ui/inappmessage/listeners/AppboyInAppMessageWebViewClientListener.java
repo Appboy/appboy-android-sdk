@@ -2,7 +2,8 @@ package com.appboy.ui.inappmessage.listeners;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
+
+import androidx.annotation.VisibleForTesting;
 
 import com.appboy.Appboy;
 import com.appboy.enums.Channel;

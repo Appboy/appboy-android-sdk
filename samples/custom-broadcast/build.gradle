@@ -29,5 +29,5 @@ android {
 
 dependencies {
   implementation project(':android-sdk-ui')
-  implementation "com.android.support:appcompat-v7:${SUPPORT_LIBS_VERSION}"
+  implementation "androidx.appcompat:appcompat:${ANDROIDX_APPCOMPAT_VERSION}"
 }

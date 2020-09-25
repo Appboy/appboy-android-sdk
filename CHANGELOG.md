@@ -1,3 +1,27 @@
+## 10.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v10.0.0)
+
+##### ⚠ Breaking
+- The Android SDK has now fully migrated to AndroidX dependencies. No backwards compatibility is possible with the no longer maintained Android Support Library.
+  - See https://developer.android.com/jetpack/androidx for more information on AndroidX, including migration steps.
+  - Braze Android 9.0.0 is the last SDK version compatible with the Android Support Library.
+- Added a new interface method, `IAppboyNotificationFactory.createNotification(BrazeNotificationPayload)`.
+  - The `BrazeNotificationPayload` is a data object that performs the task of extracting and surfacing values from the Braze push payload in a far more convenient way.
+  - Integrations without a custom `IAppboyNotificationFactory` will have no breaking changes.
+  - Integrations with a custom `IAppboyNotificationFactory` are recommended to switchover to their non-deprecated counterparts in `AppboyNotificationUtils.java`.
+
+##### Added
+- Added support for `com_appboy_inapp_show_inapp_messages_automatically` boolean configuration for Unity.
+
+##### Fixed
+- Fixed support for dark mode in HTML in-app messages and remote urls opened in `AppboyWebViewActivity` for deeplinks via the `prefers-color-scheme: dark` css style.
+  - The decision to display content in dark mode will still be determined at display time based on the device's state.
+- Fixed an issue where the card parameter in `com.appboy.IAppboyImageLoader.renderUrlIntoCardView()` was null for Content Cards.
+
+##### Removed
+- Removed `com.appboy.push.AppboyNotificationUtils.handleContentCardsSerializedCardIfPresent()`.
+
 ## 9.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v9.0.0)

@@ -62,8 +62,7 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
     setOptionalTextView(captionedImageViewHolder.getDescription(), card.getDescription());
     captionedImageViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
-    setOptionalCardImage(captionedImageViewHolder.getImageView(),
-        card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO);
+    setOptionalCardImage(captionedImageViewHolder.getImageView(), card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO, card);
     viewHolder.itemView.setContentDescription(card.getTitle() + " . " + card.getDescription());
   }
 }

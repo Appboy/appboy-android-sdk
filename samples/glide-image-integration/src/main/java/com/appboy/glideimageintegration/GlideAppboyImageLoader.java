@@ -3,9 +3,10 @@ package com.appboy.glideimageintegration;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.appboy.IAppboyImageLoader;
 import com.appboy.enums.AppboyViewBounds;
@@ -21,7 +22,7 @@ public class GlideAppboyImageLoader implements IAppboyImageLoader {
   private RequestOptions mRequestOptions = new RequestOptions();
 
   @Override
-  public void renderUrlIntoCardView(@NonNull Context context, @NonNull Card card, @NonNull String imageUrl, @NonNull ImageView imageView, @Nullable AppboyViewBounds viewBounds) {
+  public void renderUrlIntoCardView(@NonNull Context context, @Nullable Card card, @NonNull String imageUrl, @NonNull ImageView imageView, @Nullable AppboyViewBounds viewBounds) {
     renderUrlIntoView(context, imageUrl, imageView, viewBounds);
   }
 

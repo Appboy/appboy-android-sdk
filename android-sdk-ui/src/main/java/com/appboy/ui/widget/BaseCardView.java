@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.appboy.Appboy;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.AppboyViewBounds;
@@ -35,6 +37,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   private final String mClassLogTag;
 
   private static Boolean sUnreadCardVisualIndicatorEnabled;
+  @Nullable
   protected T mCard;
   protected AppboyImageSwitcher mImageSwitcher;
   protected AppboyConfigurationProvider mAppboyConfigurationProvider;
@@ -76,8 +79,9 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
    * @param imageUrl the URL of the image resource
    * @param placeholderAspectRatio a placeholder aspect ratio that will be used for sizing purposes.
    *                               The actual dimensions of the final image will dictate the final image aspect ratio.
+   * @param card
    */
-  public void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float placeholderAspectRatio) {
+  public void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float placeholderAspectRatio, Card card) {
     if (imageUrl == null) {
       AppboyLogger.w(TAG, "The image url to render is null. Not setting the card image.");
       return;
@@ -109,7 +113,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       }
 
       imageView.setImageResource(android.R.color.transparent);
-      Appboy.getInstance(getContext()).getAppboyImageLoader().renderUrlIntoCardView(getContext(), mCard, imageUrl, imageView, AppboyViewBounds.BASE_CARD_VIEW);
+      Appboy.getInstance(getContext()).getAppboyImageLoader().renderUrlIntoCardView(getContext(), card, imageUrl, imageView, AppboyViewBounds.BASE_CARD_VIEW);
       imageView.setTag(R.string.com_appboy_image_resize_tag_key, imageUrl);
     }
   }

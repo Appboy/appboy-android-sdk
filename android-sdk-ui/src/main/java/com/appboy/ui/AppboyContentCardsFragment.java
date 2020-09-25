@@ -5,18 +5,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.appboy.Appboy;
 import com.appboy.events.ContentCardsUpdatedEvent;
@@ -188,7 +189,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
    * The {@link RecyclerView} used in this fragment. Note that this will be
    * null until {@link Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)} is called.
    *
-   * @return A {@link android.support.v7.widget.RecyclerView} associated with {@link com.appboy.ui.AppboyContentCardsFragment}.
+   * @return A {@link RecyclerView} associated with {@link com.appboy.ui.AppboyContentCardsFragment}.
    */
   @Nullable
   public RecyclerView getContentCardsRecyclerView() {
@@ -302,7 +303,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   }
 
   /**
-   * Swaps the current {@link RecyclerView} {@link android.support.v7.widget.RecyclerView.Adapter} for a new one. If
+   * Swaps the current {@link RecyclerView} {@link RecyclerView.Adapter} for a new one. If
    * the current adapter matches the new adapter, then this method does nothing.
    */
   protected void swapRecyclerViewAdapter(RecyclerView.Adapter<?> newAdapter) {

@@ -64,8 +64,7 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
     shortNewsCardViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
     // Using the default aspect ratio here since the card doesn't specify an aspect ratio
-    setOptionalCardImage(shortNewsCardViewHolder.getImageView(),
-        DEFAULT_ASPECT_RATIO, card.getImageUrl(), DEFAULT_ASPECT_RATIO);
+    setOptionalCardImage(shortNewsCardViewHolder.getImageView(), DEFAULT_ASPECT_RATIO, card.getImageUrl(), DEFAULT_ASPECT_RATIO, card);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       safeSetClipToOutline(shortNewsCardViewHolder.getImageView());

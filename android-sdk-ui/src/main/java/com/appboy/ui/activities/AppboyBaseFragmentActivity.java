@@ -1,14 +1,13 @@
 package com.appboy.ui.activities;
 
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.appboy.Appboy;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 /**
  * The AppboyBaseFragmentActivity class is a base class that includes the necessary Braze method
- * calls for basic analytics and in-app message integration. This class extends the Android support library
- * v4 FragmentActivity class.
+ * calls for basic analytics and in-app message integration.
  */
 public class AppboyBaseFragmentActivity extends FragmentActivity {
   @Override

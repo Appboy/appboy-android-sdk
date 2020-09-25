@@ -3,7 +3,8 @@ package com.appboy;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.support.AppboyLogger;

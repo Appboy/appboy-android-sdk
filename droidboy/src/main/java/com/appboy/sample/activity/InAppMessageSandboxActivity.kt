@@ -2,9 +2,9 @@ package com.appboy.sample.activity
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.appboy.enums.inappmessage.DismissType
 import com.appboy.models.InAppMessageModal
 import com.appboy.models.MessageButton

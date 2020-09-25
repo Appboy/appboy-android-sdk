@@ -55,6 +55,6 @@ public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
 
     setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
 
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, mCard);
   }
 }

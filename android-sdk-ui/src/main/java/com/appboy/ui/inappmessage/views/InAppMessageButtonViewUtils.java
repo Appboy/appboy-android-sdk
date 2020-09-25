@@ -7,20 +7,19 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
-import android.support.design.button.MaterialButton;
 import android.view.View;
 import android.widget.Button;
 
 import com.appboy.models.MessageButton;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
 public class InAppMessageButtonViewUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageButtonViewUtils.class);
   private static final String[] REQUIRED_MATERIAL_DESIGN_BUTTON_CLASSES = {
-      "android.support.design.button.MaterialButton",
       "com.google.android.material.button.MaterialButton"
   };
 

@@ -3,6 +3,8 @@ package com.appboy.ui.contentcards.handlers;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.appboy.models.cards.Card;
 import com.appboy.ui.AppboyContentCardsFragment;
 import com.appboy.ui.contentcards.view.ContentCardViewHolder;
@@ -11,7 +13,7 @@ import java.util.List;
 
 /**
  * An interface to define how the cards display in the {@link AppboyContentCardsFragment}. The methods here
- * closely mirror those of {@link android.support.v7.widget.RecyclerView.Adapter} and are called as part of those methods in
+ * closely mirror those of {@link RecyclerView.Adapter} and are called as part of those methods in
  * the {@link com.appboy.ui.contentcards.AppboyCardAdapter}.
  */
 public interface IContentCardsViewBindingHandler {
@@ -22,7 +24,7 @@ public interface IContentCardsViewBindingHandler {
    * The new {@link ContentCardViewHolder} will be used to display adapter items
    * using {@link IContentCardsViewBindingHandler#onBindViewHolder(Context, List, ContentCardViewHolder, int)}.
    *
-   * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+   * @see RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
    * @param context The application context
    * @param cards The collection of card items in the adapter. Should not be modified.
    * @param viewGroup The {@link ViewGroup} into which the new View will be added after it is bound to an adapter position.
@@ -35,7 +37,7 @@ public interface IContentCardsViewBindingHandler {
    * Called to display the data at the specified adapter position. This method should update the contents of the
    * {@link ContentCardViewHolder#itemView} to reflect the item at the given adapter position.
    *
-   * @see android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)
+   * @see RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)
    * @param context The application context.
    * @param cards The collection of card items in the adapter. Should not be modified.
    * @param viewHolder The {@link ContentCardViewHolder} which should be updated to represent the contents
