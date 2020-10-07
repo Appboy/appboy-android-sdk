@@ -858,14 +858,13 @@
     <item name="android:layout_weight">@dimen/com_appboy_push_inline_image_text_area_layout_weight</item>
     <item name="android:layout_width">0dp</item>
     <item name="android:layout_height">match_parent</item>
-    <item name="android:layout_marginBottom">20dp</item>
     <item name="android:orientation">vertical</item>
     <item name="android:layout_marginLeft">16dp</item>
   </style>
   <style name="Appboy.Push.InlineImage.TextArea.Header"/>
   <style name="Appboy.Push.InlineImage.TextArea.Header.Layout">
     <item name="android:paddingTop">16dp</item>
-    <item name="android:paddingBottom">16dp</item>
+    <item name="android:paddingBottom">12dp</item>
     <item name="android:layout_marginBottom">0dp</item>
     <item name="android:gravity">top</item>
     <item name="android:layout_width">match_parent</item>
@@ -918,7 +917,7 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">marquee</item>
     <item name="android:fadingEdge">horizontal</item>
-    <item name="android:singleLine">true</item>
+    <item name="android:maxLines">1</item>
   </style>
   <style name="Appboy.Push.InlineImage.Image"/>
   <style name="Appboy.Push.InlineImage.Image.ImageContent">

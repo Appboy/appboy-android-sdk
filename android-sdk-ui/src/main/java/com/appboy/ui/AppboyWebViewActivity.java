@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
 
 import com.appboy.Constants;
 import com.appboy.enums.Channel;
@@ -24,18 +25,27 @@ import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
-import com.appboy.ui.activities.AppboyBaseActivity;
 import com.appboy.ui.support.ViewUtils;
 
+/**
+ * Note that this Activity is not and should not be exported by default in
+ * the AndroidManifest so external applications are not able to pass
+ * arbitrary URLs via this intent.
+ * <p>
+ * From https://developer.android.com/guide/topics/manifest/activity-element#exported ->
+ * "If "false", the activity can be launched only by components of the same
+ * application or applications with the same user ID."
+ */
 @SuppressLint("SetJavaScriptEnabled")
-public class AppboyWebViewActivity extends AppboyBaseActivity {
+public class AppboyWebViewActivity extends FragmentActivity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyWebViewActivity.class);
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Enables hardware acceleration for the window. See https://developer.android.com/guide/topics/graphics/hardware-accel.html#controlling.
+    // Enables hardware acceleration for the window.
+    // See https://developer.android.com/guide/topics/graphics/hardware-accel.html#controlling.
     // With this flag, we can view Youtube videos since HTML5 requires hardware acceleration.
     getWindow().setFlags(
         WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,

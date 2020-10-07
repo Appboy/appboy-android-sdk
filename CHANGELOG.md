@@ -1,3 +1,19 @@
+## 10.1.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v10.1.0)
+
+##### Changed
+- Changed `AppboyWebViewActivity` to extend `FragmentActivity` for better fragment management.
+  - Note that `AppboyWebViewActivity` now no longer performs session and in-app message registration on its own.
+  - Clients using `AppboyLifecycleCallbackListener` will see no effect.
+  - Clients performing manual session integration should override `AppboyWebViewActivity` to add back this registration and set the new Activity via `AppboyConfig.Builder#setCustomWebViewActivityClass()` or `com_appboy_custom_html_webview_activity_class_name` in the `appboy.xml` file.
+
+##### Added
+- Added support for receiving messages via the Huawei Messaging Service.
+
+##### Fixed
+- Fixed minor display issues with Inline Image Push.
+
 ## 10.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v10.0.0)

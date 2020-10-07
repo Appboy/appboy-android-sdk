@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".MainActivity"
+  tools:showIn="@layout/activity_main">
+  <EditText
+    android:id="@+id/etUserId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="108dp"
+    android:ems="10"
+    android:hint="User ID"
+    android:inputType="textPersonName"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.207"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+  <Button
+    android:id="@+id/bSubmitUserId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:text="Submit"
+    app:layout_constraintStart_toStartOf="@+id/etUserId"
+    app:layout_constraintTop_toBottomOf="@+id/etUserId" />
+  <Button
+    android:id="@+id/bGetAndSendToken"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="Manually Get Token"
+    app:layout_constraintStart_toStartOf="@+id/bSubmitUserId"
+    app:layout_constraintTop_toBottomOf="@+id/bSubmitUserId" />
+  <EditText
+    android:id="@+id/etSetCustomEndpoint"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    android:ems="10"
+    android:hint="Endpoint"
+    android:inputType="textPersonName"
+    app:layout_constraintStart_toStartOf="@+id/bGetAndSendToken"
+    app:layout_constraintTop_toBottomOf="@+id/bGetAndSendToken" />
+  <EditText
+    android:id="@+id/etSetCustomApiKey"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:ems="10"
+    android:hint="API Key"
+    android:inputType="textPersonName"
+    app:layout_constraintStart_toStartOf="@+id/bGetAndSendToken"
+    app:layout_constraintTop_toBottomOf="@+id/etSetCustomEndpoint" />
+  <Button
+    android:id="@+id/bSetCustomEnvironment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:text="Set Custom"
+    app:layout_constraintStart_toStartOf="@+id/etSetCustomApiKey"
+    app:layout_constraintTop_toBottomOf="@+id/etSetCustomApiKey" />
+  <Button
+    android:id="@+id/bResetCustomEnvironment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:text="Reset To Default"
+    app:layout_constraintStart_toEndOf="@+id/bSetCustomEnvironment"
+    app:layout_constraintTop_toBottomOf="@+id/etSetCustomApiKey" />
+</androidx.constraintlayout.widget.ConstraintLayout>

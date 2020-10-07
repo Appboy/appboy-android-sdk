@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    applicationId "com.braze.hms_sample"
+    // HMS requires a min SDK version of 17, which is
+    // (as of 3/9/2020) higher than our min of 16
+    minSdkVersion 17 //rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  signingConfigs {
+    release {
+      storeFile file("hms_sample_keystore.keystore")
+      storePassword "Z3SXw5ZyU!Up"
+      keyAlias "easter_egg"
+      keyPassword "Z3SXw5ZyU!Up"
+    }
+  }
+  buildTypes {
+    debug {
+      minifyEnabled false
+      signingConfig signingConfigs.release
+      debuggable true
+      useProguard false
+    }
+    release {
+      minifyEnabled false
+      signingConfig signingConfigs.release
+      debuggable true
+      useProguard false
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+
+dependencies {
+  implementation(project(':android-sdk-ui')) {
+    exclude group: 'com.google.firebase'
+    exclude group: 'com.google.android.gms'
+  }
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${KOTLIN_STDLIB_JDK7_VERSION}"
+  implementation "androidx.appcompat:appcompat:${ANDROIDX_APPCOMPAT_VERSION}"
+  implementation "androidx.constraintlayout:constraintlayout:${ANDROIDX_CONSTRAINT_LAYOUT_VERSION}"
+  implementation "androidx.coordinatorlayout:coordinatorlayout:${ANDROIDX_COORDINATOR_LAYOUT_VERSION}"
+  implementation "com.huawei.hms:push:${HUAWEI_HMS_PUSH_VERSION}"
+}
+
+repositories {
+  // Note that for security reasons, this repository should
+  // not be added at a higher level than this sample app's
+  // gradle file.
+  maven {
+    url "https://developer.huawei.com/repo/"
+  }
+}

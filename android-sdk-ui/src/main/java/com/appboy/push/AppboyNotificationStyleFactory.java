@@ -226,7 +226,7 @@ public class AppboyNotificationStyleFactory {
 
     // Set the image
     Bitmap largeNotificationBitmap = Appboy.getInstance(context).getAppboyImageLoader()
-        .getPushBitmapFromUrl(context, notificationExtras, imageUrl, AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
+        .getPushBitmapFromUrl(context, notificationExtras, imageUrl, AppboyViewBounds.NOTIFICATION_INLINE_PUSH_IMAGE);
     if (largeNotificationBitmap == null) {
       AppboyLogger.d(TAG, "Inline Image Push failed to get image bitmap");
       return null;

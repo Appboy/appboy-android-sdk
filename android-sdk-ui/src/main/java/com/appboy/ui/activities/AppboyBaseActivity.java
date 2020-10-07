@@ -6,9 +6,10 @@ import com.appboy.Appboy;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 /**
- * The AppboyBaseFragmentActivity class is a base class that includes the necessary Braze method
- * calls for basic analytics and in-app message integration. This class extends the Android Activity class.
+ * @deprecated Please use {@link com.appboy.AppboyLifecycleCallbackListener} to
+ * automatically register sessions and in-app messages.
  */
+@Deprecated
 public class AppboyBaseActivity extends Activity {
   @Override
   public void onStart() {

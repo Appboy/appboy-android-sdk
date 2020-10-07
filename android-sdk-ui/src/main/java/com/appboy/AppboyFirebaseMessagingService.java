@@ -16,7 +16,6 @@ import java.util.Map;
 
 public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFirebaseMessagingService.class);
-  private static final AppboyFcmReceiver mAppboyFcmReceiver = new AppboyFcmReceiver();
 
   @Override
   public void onNewToken(String newToken) {
@@ -72,7 +71,7 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
       bundle.putString(key, value);
     }
     pushIntent.putExtras(bundle);
-    mAppboyFcmReceiver.onReceive(context, pushIntent);
+    AppboyFcmReceiver.handleReceivedIntent(context, pushIntent);
     return true;
   }
 

@@ -31,6 +31,10 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
   private static final String FCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
 
   protected static final String FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION = "firebase_messaging_service_routing_action";
+  /**
+   * Internal API. Do not use.
+   */
+  public static final String HMS_PUSH_SERVICE_ROUTING_ACTION = "hms_push_service_routing_action";
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -38,6 +42,10 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
       AppboyLogger.w(TAG, "Received null intent. Doing nothing.");
       return;
     }
+    handleReceivedIntent(context, intent);
+  }
+
+  public static void handleReceivedIntent(Context context, Intent intent) {
     Context applicationContext = context.getApplicationContext();
     PushHandlerRunnable pushHandlerRunnable = new PushHandlerRunnable(applicationContext, intent);
     new Thread(pushHandlerRunnable).start();
@@ -69,7 +77,8 @@ public final class AppboyFcmReceiver extends BroadcastReceiver {
       String action = mIntent.getAction();
       if (FCM_RECEIVE_INTENT_ACTION.equals(action)
           || FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION.equals(action)
-          || Constants.APPBOY_STORY_TRAVERSE_CLICKED_ACTION.equals(action)) {
+          || Constants.APPBOY_STORY_TRAVERSE_CLICKED_ACTION.equals(action)
+          || HMS_PUSH_SERVICE_ROUTING_ACTION.equals(action)) {
         handlePushNotificationPayload(mApplicationContext, mIntent);
       } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action)) {
         AppboyNotificationUtils.handleCancelNotificationAction(mApplicationContext, mIntent);
