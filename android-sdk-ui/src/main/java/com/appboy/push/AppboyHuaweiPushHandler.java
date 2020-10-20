@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.appboy.AppboyFcmReceiver;
+import com.appboy.BrazePushReceiver;
 import com.appboy.Constants;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
@@ -45,9 +45,9 @@ public class AppboyHuaweiPushHandler {
 
     AppboyLogger.i(TAG, "Got remote message from Huawei: " + bundle);
 
-    Intent pushIntent = new Intent(AppboyFcmReceiver.HMS_PUSH_SERVICE_ROUTING_ACTION);
+    Intent pushIntent = new Intent(BrazePushReceiver.HMS_PUSH_SERVICE_ROUTING_ACTION);
     pushIntent.putExtras(bundle);
-    AppboyFcmReceiver.handleReceivedIntent(context, pushIntent);
+    BrazePushReceiver.handleReceivedIntent(context, pushIntent);
     return true;
   }
 }

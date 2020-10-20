@@ -7,6 +7,7 @@ import androidx.annotation.VisibleForTesting;
 
 import com.appboy.Appboy;
 import com.appboy.enums.Channel;
+import com.appboy.enums.inappmessage.MessageType;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
@@ -80,36 +81,41 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
   public void onOtherUrlAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
     AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onOtherUrlAction called.");
     if (getInAppMessageManager().getActivity() == null) {
-      AppboyLogger.w(TAG, "Can't perform other url action because the cached activity is null.");
+      AppboyLogger.w(TAG, "Can't perform other url action because the cached activity is null. Url: " + url);
       return;
     }
     // Log a click since the uri link was followed
     logHtmlInAppMessageClick(inAppMessage, queryBundle);
 
     boolean handled = getInAppMessageManager().getHtmlInAppMessageActionListener().onOtherUrlAction(inAppMessage, url, queryBundle);
-    if (!handled) {
-      // Parse the action
-      boolean useWebViewForWebLinks = parseUseWebViewFromQueryBundle(inAppMessage, queryBundle);
-      UriAction uriAction;
-      Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
-      inAppMessageBundle.putAll(queryBundle);
-      uriAction = ActionFactory.createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
-
-      // If a local Uri is being handled here, then we want to keep the user in the Html in-app message and not hide the current in-app message.
-      Uri uri = uriAction.getUri();
-      if (uri != null && AppboyFileUtils.isLocalUri(uri)) {
-        AppboyLogger.w(TAG, "Not passing local URI to AppboyNavigator. Got local uri: " + uri);
-        return;
-      }
-
-      // Handle the action if it's not a local Uri
-      inAppMessage.setAnimateOut(false);
-      // Dismiss the in-app message since we're handling the URI outside of the in-app message webView
-      getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-      if (uriAction != null) {
-        AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getApplicationContext(), uriAction);
-      }
+    if (handled) {
+      AppboyLogger.v(TAG, "HTML message action listener handled url in onOtherUrlAction. Doing nothing further. Url: " + url);
+      return;
     }
+
+    // Parse the action
+    boolean useWebViewForWebLinks = parseUseWebViewFromQueryBundle(inAppMessage, queryBundle);
+    Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
+    inAppMessageBundle.putAll(queryBundle);
+    UriAction uriAction = ActionFactory.createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
+
+    if (uriAction == null) {
+      AppboyLogger.w(TAG, "UriAction is null. Not passing any URI to AppboyNavigator. Url: " + url);
+      return;
+    }
+
+    // If a local Uri is being handled here, then we want to keep the user in the Html in-app message and not hide the current in-app message.
+    Uri uri = uriAction.getUri();
+    if (AppboyFileUtils.isLocalUri(uri)) {
+      AppboyLogger.w(TAG, "Not passing local uri to AppboyNavigator. Got local uri: " + uri + " for url: " + url);
+      return;
+    }
+
+    // Handle the action if it's not a local Uri
+    inAppMessage.setAnimateOut(false);
+    // Dismiss the in-app message since we're handling the URI outside of the in-app message webView
+    getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
+    AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getApplicationContext(), uriAction);
   }
 
   @VisibleForTesting
@@ -136,19 +142,25 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
     return AppboyInAppMessageManager.getInstance();
   }
 
-  private void logHtmlInAppMessageClick(IInAppMessage inAppMessage, Bundle queryBundle) {
+  @VisibleForTesting
+  static void logHtmlInAppMessageClick(IInAppMessage inAppMessage, Bundle queryBundle) {
     if (queryBundle != null && queryBundle.containsKey(InAppMessageWebViewClient.QUERY_NAME_BUTTON_ID)) {
       IInAppMessageHtml inAppMessageHtml = (IInAppMessageHtml) inAppMessage;
       inAppMessageHtml.logButtonClick(queryBundle.getString(InAppMessageWebViewClient.QUERY_NAME_BUTTON_ID));
     } else {
-      inAppMessage.logClick();
+      if (inAppMessage.getMessageType() == MessageType.HTML_FULL) {
+        // HTML Full messages are the only html type that log clicks implicitly
+        inAppMessage.logClick();
+      }
     }
   }
 
+  @VisibleForTesting
   static String parseCustomEventNameFromQueryBundle(Bundle queryBundle) {
     return queryBundle.getString(HTML_IN_APP_MESSAGE_CUSTOM_EVENT_NAME_KEY);
   }
 
+  @VisibleForTesting
   static AppboyProperties parsePropertiesFromQueryBundle(Bundle queryBundle) {
     AppboyProperties customEventProperties = new AppboyProperties();
     for (String key: queryBundle.keySet()) {

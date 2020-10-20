@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.CardCategory;
 import com.appboy.sample.FeedCategoriesFragment;
 import com.appboy.sample.InAppMessageTesterFragment;
@@ -36,6 +38,7 @@ import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.ViewUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PermissionUtils;
+import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyContentCardsFragment;
 import com.appboy.ui.AppboyFeedFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -175,6 +178,15 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   public void onResume() {
     super.onResume();
     processIntent();
+
+    final AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(this);
+    final String customEndpoint = configurationProvider.getCustomEndpoint();
+    final String configuredApiKey = Appboy.getConfiguredApiKey(this);
+
+    if (!StringUtils.isNullOrEmpty(customEndpoint)) {
+      ((TextView) findViewById(R.id.toolbar_info_endpoint)).setText("custom endpoint: " + customEndpoint);
+    }
+    ((TextView) findViewById(R.id.toolbar_info_api_key)).setText("current api key: " + configuredApiKey);
   }
 
   @Override

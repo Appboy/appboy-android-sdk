@@ -25,6 +25,7 @@ import com.appboy.models.outgoing.AttributionData;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -101,6 +102,7 @@ public class MainFragment extends Fragment {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(USER_ID_KEY, userId);
         editor.apply();
+        FirebaseCrashlytics.getInstance().setUserId(userId);
       } else {
         Toast.makeText(getContext(), "Please enter a userId.", Toast.LENGTH_SHORT).show();
       }
@@ -115,7 +117,6 @@ public class MainFragment extends Fragment {
         editor.apply();
       } else {
         Toast.makeText(getContext(), "Please enter a custom event.", Toast.LENGTH_SHORT).show();
-
       }
     });
     mLogPurchaseButton.setOnClickListener(view -> {

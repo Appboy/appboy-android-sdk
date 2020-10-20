@@ -46,13 +46,19 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;
   private static final String LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY = "LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY";
   private static final String KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY = "KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY";
+  private static final String VIEW_BINDING_HANDLER_SAVED_INSTANCE_STATE_KEY = "VIEW_BINDING_HANDLER_SAVED_INSTANCE_STATE_KEY";
+  private static final String UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY = "UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY";
 
   private final Handler mMainThreadLooper = new Handler(Looper.getMainLooper());
   protected Runnable mShowNetworkUnavailableRunnable;
 
+  @Nullable
   protected RecyclerView mRecyclerView;
+  @Nullable
   protected AppboyCardAdapter mCardAdapter;
+  @Nullable
   protected AppboyEmptyContentCardsAdapter mEmptyContentCardsAdapter;
+  @Nullable
   protected SwipeRefreshLayout mContentCardsSwipeLayout;
 
   protected IEventSubscriber<ContentCardsUpdatedEvent> mContentCardsUpdatedSubscriber;
@@ -74,8 +80,6 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     View rootView = inflater.inflate(R.layout.com_appboy_content_cards, container, false);
 
     mRecyclerView = rootView.findViewById(R.id.com_appboy_content_cards_recycler);
-    initializeRecyclerView();
-
     mContentCardsSwipeLayout = rootView.findViewById(R.id.appboy_content_cards_swipe_container);
     mContentCardsSwipeLayout.setOnRefreshListener(this);
     mContentCardsSwipeLayout.setColorSchemeResources(R.color.com_appboy_content_cards_swipe_refresh_color_1,
@@ -163,26 +167,43 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     if (mCardAdapter != null) {
       outState.putStringArrayList(KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY, (ArrayList<String>) mCardAdapter.getImpressedCardIds());
     }
+    if (mCustomContentCardsViewBindingHandler != null) {
+      outState.putParcelable(VIEW_BINDING_HANDLER_SAVED_INSTANCE_STATE_KEY, mCustomContentCardsViewBindingHandler);
+    }
+    if (mCustomContentCardUpdateHandler != null) {
+      outState.putParcelable(UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY, mCustomContentCardUpdateHandler);
+    }
   }
 
   @Override
   public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
     super.onViewStateRestored(savedInstanceState);
-    if (savedInstanceState == null) {
-      // do nothing and return
-      return;
+    if (savedInstanceState != null) {
+      IContentCardsUpdateHandler updateHandlerParcelable = savedInstanceState.getParcelable(UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY);
+      if (updateHandlerParcelable != null) {
+        setContentCardUpdateHandler(updateHandlerParcelable);
+      }
+      IContentCardsViewBindingHandler viewBindingHandlerParcelable = savedInstanceState.getParcelable(VIEW_BINDING_HANDLER_SAVED_INSTANCE_STATE_KEY);
+      if (viewBindingHandlerParcelable != null) {
+        setContentCardsViewBindingHandler(viewBindingHandlerParcelable);
+      }
+      mMainThreadLooper.post(() -> {
+        Parcelable layoutManagerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY);
+        if (mRecyclerView != null) {
+          RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+          if (layoutManagerState != null && layoutManager != null) {
+            layoutManager.onRestoreInstanceState(layoutManagerState);
+          }
+        }
+        if (mCardAdapter != null) {
+          List<String> savedCardIdImpressions = savedInstanceState.getStringArrayList(KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY);
+          if (savedCardIdImpressions != null) {
+            mCardAdapter.setImpressedCardIds(savedCardIdImpressions);
+          }
+        }
+      });
     }
-    mMainThreadLooper.post(() -> {
-      Parcelable layoutManagerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY);
-      RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
-      if (layoutManagerState != null && layoutManager != null) {
-        layoutManager.onRestoreInstanceState(layoutManagerState);
-      }
-      List<String> savedCardIdImpressions = savedInstanceState.getStringArrayList(KNOWN_CARD_IMPRESSIONS_SAVED_INSTANCE_STATE_KEY);
-      if (savedCardIdImpressions != null) {
-        mCardAdapter.setImpressedCardIds(savedCardIdImpressions);
-      }
-    });
+    initializeRecyclerView();
   }
 
   /**

@@ -37,7 +37,7 @@ repositories {
 
 ```
 dependencies {
-   implementation 'com.appboy:android-sdk-ui:10.1.+'
+   implementation 'com.appboy:android-sdk-ui:11.0.+'
    ...
 }
 ```
@@ -56,7 +56,7 @@ repositories {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:10.1.+'
+  implementation 'com.appboy:android-sdk-ui:11.0.+'
 }
 ```
 

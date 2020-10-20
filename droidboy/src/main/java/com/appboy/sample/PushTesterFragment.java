@@ -2,6 +2,7 @@ package com.appboy.sample;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.appboy.Appboy;
+import com.appboy.BrazePushReceiver;
 import com.appboy.Constants;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.push.AppboyNotificationUtils;
@@ -248,15 +250,10 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_2, "Fries");
       appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_3, "Lemonade");
       notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
-      Notification notification = AppboyNotificationUtils.getActiveNotificationFactory().createNotification(
-          mAppConfigurationProvider,
-          getContext(),
-          notificationExtras,
-          appboyExtras);
 
-      if (notification != null) {
-        mNotificationManager.notify(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId, notification);
-      }
+      Intent pushIntent = new Intent(BrazePushReceiver.FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION);
+      pushIntent.putExtras(notificationExtras);
+      BrazePushReceiver.handleReceivedIntent(getContext(), pushIntent);
     })).start());
     return view;
   }

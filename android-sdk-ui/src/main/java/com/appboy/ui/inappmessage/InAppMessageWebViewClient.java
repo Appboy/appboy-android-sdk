@@ -71,15 +71,12 @@ public class InAppMessageWebViewClient extends WebViewClient {
     mInAppMessage = inAppMessage;
     mContext = context;
     mHandler = HandlerUtils.createHandler();
-    mPostOnFinishedTimeoutRunnable = new Runnable() {
-      @Override
-      public void run() {
-        if (mWebViewClientStateListener != null
-            && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
-          AppboyLogger.v(TAG, "Page may not have finished loading, but max wait time has expired."
-              + " Calling onPageFinished on listener.");
-          mWebViewClientStateListener.onPageFinished();
-        }
+    mPostOnFinishedTimeoutRunnable = () -> {
+      if (mWebViewClientStateListener != null
+          && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
+        AppboyLogger.v(TAG, "Page may not have finished loading, but max wait time has expired."
+            + " Calling onPageFinished on listener.");
+        mWebViewClientStateListener.onPageFinished();
       }
     };
     mMaxOnPageFinishedWaitTimeMs = new AppboyConfigurationProvider(context).getInAppMessageWebViewClientOnPageFinishedMaxWaitMs();

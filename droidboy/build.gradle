@@ -17,6 +17,7 @@ dependencies {
   implementation "com.google.firebase:firebase-core:${FIREBASE_CORE_VERSION}"
   implementation "com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}"
   implementation "com.google.firebase:firebase-ml-vision:${FIREBASE_ML_VISION}"
+  implementation "com.google.firebase:firebase-crashlytics:${FIREBASE_CRASHLYTICS_VERSION}"
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${KOTLIN_STDLIB_JDK7_VERSION}"
 }
@@ -36,6 +37,7 @@ android {
     buildConfigField "String", "CURRENT_BRANCH", "\"\""
     buildConfigField "String", "COMMIT_HASH", "\"\""
     buildConfigField "String", "BUILD_TIME", "\"" + new Date() + "\""
+    buildConfigField "boolean", "IS_DROIDBOY_RELEASE_BUILD", "false"
 
     multiDexEnabled true
   }

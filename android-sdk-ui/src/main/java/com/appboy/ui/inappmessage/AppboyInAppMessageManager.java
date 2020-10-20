@@ -343,6 +343,13 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
   }
 
   /**
+   * Gets whether an in-app message is currently displaying on the device.
+   */
+  public boolean getIsCurrentlyDisplayingInAppMessage() {
+    return mDisplayingInAppMessage.get();
+  }
+
+  /**
    * Attempts to display an {@link IInAppMessage} to the user.
    *
    * @param inAppMessage The {@link IInAppMessage}.

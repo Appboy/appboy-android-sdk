@@ -24,8 +24,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
-import com.appboy.AppboyFcmReceiver;
 import com.appboy.AppboyInternal;
+import com.appboy.BrazePushReceiver;
 import com.appboy.Constants;
 import com.appboy.IAppboyImageLoader;
 import com.appboy.IAppboyNotificationFactory;
@@ -175,13 +175,13 @@ public class AppboyNotificationUtils {
 
   /**
    * Checks the intent received from FCM to determine whether this is a notification message or a
-   * data push.
+   * silent push.
    * <p/>
    * A notification message is a Braze push message that displays a notification in the
    * notification center (and optionally contains extra information that can be used directly
    * by the app).
    * <p/>
-   * A data push is a Braze push message that contains only extra information that can
+   * A silent push is a Braze push message that contains only extra information that can
    * be used directly by the app.
    */
   public static boolean isNotificationMessage(Intent intent) {
@@ -900,7 +900,7 @@ public class AppboyNotificationUtils {
     if (Constants.IS_AMAZON) {
       return AppboyAdmReceiver.class;
     } else {
-      return AppboyFcmReceiver.class;
+      return BrazePushReceiver.class;
     }
   }
 

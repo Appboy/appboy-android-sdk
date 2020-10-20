@@ -3,9 +3,6 @@ package com.appboy.push;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 
 import com.appboy.support.AppboyLogger;
 
@@ -23,9 +20,8 @@ public class AppboyNotificationRoutingActivity extends Activity {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationRoutingActivity.class);
 
   @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
+  protected void onResume() {
+    super.onResume();
     Intent receivedIntent = getIntent();
     if (receivedIntent == null) {
       AppboyLogger.d(TAG, "Notification routing activity received null intent. Doing nothing.");

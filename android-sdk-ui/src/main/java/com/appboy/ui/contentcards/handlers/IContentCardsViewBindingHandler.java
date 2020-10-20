@@ -1,6 +1,7 @@
 package com.appboy.ui.contentcards.handlers;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +17,7 @@ import java.util.List;
  * closely mirror those of {@link RecyclerView.Adapter} and are called as part of those methods in
  * the {@link com.appboy.ui.contentcards.AppboyCardAdapter}.
  */
-public interface IContentCardsViewBindingHandler {
+public interface IContentCardsViewBindingHandler extends Parcelable {
   /**
    * Creates an {@link ContentCardViewHolder} of the given type to represent an item in the ContentCards. You can create
    * a new View manually or inflate it from an XML layout file.

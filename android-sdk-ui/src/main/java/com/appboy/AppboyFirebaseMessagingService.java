@@ -18,15 +18,16 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFirebaseMessagingService.class);
 
   @Override
-  public void onNewToken(String newToken) {
+  public void onNewToken(@NonNull String newToken) {
     super.onNewToken(newToken);
     if (StringUtils.isNullOrEmpty(Appboy.getConfiguredApiKey(this))) {
-      AppboyLogger.v(TAG, "No configured API key, not registering token in onNewToken.");
+      AppboyLogger.v(TAG, "No configured API key, not registering token in onNewToken. Token: " + newToken);
       return;
     }
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(this);
-    if (!configurationProvider.isFirebaseCloudMessagingRegistrationEnabled()) {
-      AppboyLogger.v(TAG, "Automatic Firebase registration disabled, not registering token in onNewToken.");
+    if (!configurationProvider.getIsFirebaseMessagingServiceOnNewTokenRegistrationEnabled()) {
+      AppboyLogger.v(TAG, "Automatic FirebaseMessagingService.OnNewToken() registration"
+          + " disabled, not registering token: " + newToken);
       return;
     }
     AppboyLogger.v(TAG, "Registering Firebase push token in onNewToken. Token: " + newToken);
@@ -34,7 +35,7 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
   }
 
   @Override
-  public void onMessageReceived(RemoteMessage remoteMessage) {
+  public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
     super.onMessageReceived(remoteMessage);
     handleBrazeRemoteMessage(this, remoteMessage);
   }
@@ -61,7 +62,7 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
     Map<String, String> remoteMessageData = remoteMessage.getData();
     AppboyLogger.i(TAG, "Got remote message from FCM: " + remoteMessageData);
 
-    Intent pushIntent = new Intent(AppboyFcmReceiver.FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION);
+    Intent pushIntent = new Intent(BrazePushReceiver.FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION);
     Bundle bundle = new Bundle();
     for (Map.Entry<String, String> entry : remoteMessageData.entrySet()) {
       String key = entry.getKey();
@@ -71,7 +72,7 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
       bundle.putString(key, value);
     }
     pushIntent.putExtras(bundle);
-    AppboyFcmReceiver.handleReceivedIntent(context, pushIntent);
+    BrazePushReceiver.handleReceivedIntent(context, pushIntent);
     return true;
   }
 

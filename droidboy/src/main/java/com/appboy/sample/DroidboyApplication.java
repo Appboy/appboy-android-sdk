@@ -20,6 +20,7 @@ import com.appboy.sample.util.EmulatorDetectionUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.PackageUtils;
 import com.appboy.support.StringUtils;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.Arrays;
 
@@ -51,14 +52,11 @@ public class DroidboyApplication extends Application {
     SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.shared_prefs_location), MODE_PRIVATE);
     disableNetworkRequestsIfConfigured(sharedPreferences);
 
+    Appboy.configure(this, null);
     AppboyConfig.Builder appboyConfigBuilder = new AppboyConfig.Builder();
     setOverrideApiKeyIfConfigured(sharedPreferences, appboyConfigBuilder);
+    setOverrideEndpointIfConfigured(sharedPreferences, appboyConfigBuilder);
     Appboy.configure(this, appboyConfigBuilder.build());
-
-    String overrideEndpointUrl = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
-    if (!StringUtils.isNullOrBlank(overrideEndpointUrl)) {
-      Appboy.setAppboyEndpointProvider(new DroidboyEndpointProvider(overrideEndpointUrl));
-    }
 
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
 
@@ -73,6 +71,8 @@ public class DroidboyApplication extends Application {
         R.string.droidboy_notification_channel_offers_desc, R.string.droidboy_notification_group_01_id);
     createNotificationChannel(notificationManager, R.string.droidboy_notification_channel_04_id, R.string.droidboy_notification_channel_recommendations_name,
         R.string.droidboy_notification_channel_recommendations_desc, R.string.droidboy_notification_group_01_id);
+
+    setupFirebaseCrashlytics();
   }
 
   @SuppressLint("NewApi")
@@ -151,6 +151,25 @@ public class DroidboyApplication extends Application {
       appboyConfigBuilder.setApiKey(overrideApiKey);
       sOverrideApiKeyInUse = overrideApiKey;
     }
+  }
+
+  private void setOverrideEndpointIfConfigured(SharedPreferences sharedPreferences, AppboyConfig.Builder appboyConfigBuilder) {
+    String overrideEndpoint = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null);
+    if (!StringUtils.isNullOrBlank(overrideEndpoint)) {
+      Log.i(TAG, String.format("Override endpoint found, configuring Braze with override endpoint %s.", overrideEndpoint));
+      appboyConfigBuilder.setCustomEndpoint(overrideEndpoint);
+    }
+  }
+
+  private void setupFirebaseCrashlytics() {
+    // Only enable crash logging for the play store deployed released builds
+    final FirebaseCrashlytics firebaseCrashlytics = FirebaseCrashlytics.getInstance();
+    firebaseCrashlytics.setCrashlyticsCollectionEnabled(BuildConfig.IS_DROIDBOY_RELEASE_BUILD);
+    firebaseCrashlytics.setCustomKey("build_time", BuildConfig.BUILD_TIME);
+    firebaseCrashlytics.setCustomKey("version_code", BuildConfig.VERSION_CODE);
+    firebaseCrashlytics.setCustomKey("version_name", BuildConfig.VERSION_NAME);
+    firebaseCrashlytics.setCustomKey("commit_hash", BuildConfig.COMMIT_HASH);
+    firebaseCrashlytics.setCustomKey("current_branch", BuildConfig.CURRENT_BRANCH);
   }
 
   public static String getApiKeyInUse(Context context) {

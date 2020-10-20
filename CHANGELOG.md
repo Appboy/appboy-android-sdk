@@ -1,3 +1,31 @@
+## 11.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v11.0.0)
+
+##### ⚠ Breaking
+- Changed the behavior of new beta HTML In-App Messages with dashboard preview support (i.e. those with `MessageType.HTML` and not `MessageType.HTML_FULL`) to not automatically log analytics clicks on url follows in `IInAppMessageWebViewClientListener`.
+  - Body click analytics will no longer automatically be collected. To continue to receive body click analytics, you must log body clicks explicitly from your message via Javascript using `appboyBridge.logClick()`.
+- `IContentCardsUpdateHandler` and `IContentCardsViewBindingHandler` interfaces now extend `android.os.Parcelable`.
+  - This ensures that these handlers properly transition across instance state saves and reads.
+  - Examples on how to extend `Parcelable` can be found in `DefaultContentCardsUpdateHandler` and `DefaultContentCardsViewBindingHandler`.
+- Renamed `AppboyFcmReceiver` to `BrazePushHandler`.
+
+##### Added
+- Added `AppboyInAppMessageManager.getIsCurrentlyDisplayingInAppMessage()`.
+- Added ability to configure whether the `AppboyFirebaseMessagingService` will automatically register tokens in its `onNewToken` method.
+  - Defaults to whether FCM automatic registration is enabled. Note that FCM automatic registration is a separate configuration option and is not enabled by default.
+  - Configured by changing the boolean value for `firebase_messaging_service_automatically_register_on_new_token` in your `appboy.xml`, or at runtime by setting `AppboyConfig.setIsFirebaseMessagingServiceOnNewTokenRegistrationEnabled()`.
+  - Note that the Sender ID used to configure tokens received in `onNewToken()` is based on the app's default Firebase Project rather than the explicitly configured Sender ID on the Braze SDK. These should generally be the same value.
+
+##### Changed
+- Deprecated `AppboyLifecycleCallbackListener.setInAppMessagingRegistrationBlacklist()` in favor of `AppboyLifecycleCallbackListener.setInAppMessagingRegistrationBlocklist()`.
+- Deprecated `AppboyConfig.Builder.setDeviceObjectWhitelist()` in favor of `AppboyConfig.Builder.setDeviceObjectAllowlist()`.
+- Deprecated `AppboyConfig.Builder.setDeviceObjectWhitelistEnabled()` in favor of `AppboyConfig.Builder.setDeviceObjectAllowlistEnabled()`.
+
+##### Fixed
+- Fixed an issue where the `AppboyContentCardsFragment` would not transition a custom `IContentCardsUpdateHandler` or `IContentCardsViewBindingHandler` implementation in `onSaveInstanceState()`, which caused the defaults for both to be used instead.
+- Fixed an issue with deeplink handling where push action button deeplinks would only work once throughout the lifetime of the application.
+
 ## 10.1.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v10.1.0)

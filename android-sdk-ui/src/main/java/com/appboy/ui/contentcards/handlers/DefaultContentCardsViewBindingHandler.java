@@ -1,6 +1,8 @@
 package com.appboy.ui.contentcards.handlers;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.ViewGroup;
 
 import androidx.annotation.VisibleForTesting;
@@ -21,6 +23,19 @@ import java.util.List;
 import java.util.Map;
 
 public class DefaultContentCardsViewBindingHandler implements IContentCardsViewBindingHandler {
+
+  // Interface that must be implemented and provided as a public CREATOR
+  // field that generates instances of your Parcelable class from a Parcel.
+  public static final Parcelable.Creator<DefaultContentCardsViewBindingHandler> CREATOR = new Parcelable.Creator<DefaultContentCardsViewBindingHandler>() {
+    public DefaultContentCardsViewBindingHandler createFromParcel(Parcel in) {
+      return new DefaultContentCardsViewBindingHandler();
+    }
+
+    public DefaultContentCardsViewBindingHandler[] newArray(int size) {
+      return new DefaultContentCardsViewBindingHandler[size];
+    }
+  };
+
   /**
    * A cache for the views used in binding the items in the {@link RecyclerView}.
    */
@@ -81,5 +96,18 @@ public class DefaultContentCardsViewBindingHandler implements IContentCardsViewB
       mContentCardViewCache.put(cardType, contentCardView);
     }
     return mContentCardViewCache.get(cardType);
+  }
+
+  // Parcelable interface method
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  // Parcelable interface method
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    // Retaining views across a transition could lead to a
+    // resource leak so the parcel is left unmodified
   }
 }

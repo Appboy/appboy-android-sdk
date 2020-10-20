@@ -14,12 +14,11 @@
       android:exported="false" />
     <activity
       android:name="com.appboy.push.AppboyNotificationRoutingActivity"
+      android:launchMode="singleInstance"
       android:exported="false"
       android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-    <!-- Although the AppboyFcmReceiver doesn't explicitly handle FCM messages
-         directly any more, push is still redirected to it and thus needs to be registered. -->
     <receiver
-      android:name="com.appboy.AppboyFcmReceiver"
+      android:name="com.appboy.BrazePushReceiver"
       android:exported="false" />
   </application>
 </manifest>

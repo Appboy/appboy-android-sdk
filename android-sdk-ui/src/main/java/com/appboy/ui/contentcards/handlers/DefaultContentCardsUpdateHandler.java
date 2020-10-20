@@ -1,5 +1,10 @@
 package com.appboy.ui.contentcards.handlers;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.appboy.events.ContentCardsUpdatedEvent;
 import com.appboy.models.cards.Card;
 
@@ -7,6 +12,20 @@ import java.util.Collections;
 import java.util.List;
 
 public class DefaultContentCardsUpdateHandler implements IContentCardsUpdateHandler {
+
+  // Interface that must be implemented and provided as a public CREATOR
+  // field that generates instances of your Parcelable class from a Parcel.
+  public static final Parcelable.Creator<DefaultContentCardsUpdateHandler> CREATOR = new Parcelable.Creator<DefaultContentCardsUpdateHandler>() {
+    public DefaultContentCardsUpdateHandler createFromParcel(Parcel in) {
+      return new DefaultContentCardsUpdateHandler();
+    }
+
+    public DefaultContentCardsUpdateHandler[] newArray(int size) {
+      return new DefaultContentCardsUpdateHandler[size];
+    }
+  };
+
+  @NonNull
   @Override
   public List<Card> handleCardUpdate(ContentCardsUpdatedEvent event) {
     List<Card> sortedCards = event.getAllCards();
@@ -39,5 +58,17 @@ public class DefaultContentCardsUpdateHandler implements IContentCardsUpdateHand
     });
 
     return sortedCards;
+  }
+
+  // Parcelable interface method
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  // Parcelable interface method
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    // No state is kept in this class so the parcel is left unmodified
   }
 }
