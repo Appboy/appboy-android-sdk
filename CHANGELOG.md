@@ -8,7 +8,7 @@
 - `IContentCardsUpdateHandler` and `IContentCardsViewBindingHandler` interfaces now extend `android.os.Parcelable`.
   - This ensures that these handlers properly transition across instance state saves and reads.
   - Examples on how to extend `Parcelable` can be found in `DefaultContentCardsUpdateHandler` and `DefaultContentCardsViewBindingHandler`.
-- Renamed `AppboyFcmReceiver` to `BrazePushHandler`.
+- Renamed `AppboyFcmReceiver` to `BrazePushReceiver`.
 
 ##### Added
 - Added `AppboyInAppMessageManager.getIsCurrentlyDisplayingInAppMessage()`.
