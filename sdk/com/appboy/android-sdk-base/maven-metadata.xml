@@ -2,10 +2,10 @@
 <metadata>
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-base</artifactId>
-  <version>11.0.0</version>
+  <version>12.0.0</version>
   <versioning>
-    <latest>11.0.0</latest>
-    <release>11.0.0</release>
+    <latest>12.0.0</latest>
+    <release>12.0.0</release>
     <versions>
       <version>1.18.0</version>
       <version>1.19.0</version>
@@ -61,7 +61,8 @@
       <version>10.0.0</version>
       <version>10.1.0</version>
       <version>11.0.0</version>
+      <version>12.0.0</version>
     </versions>
-    <lastUpdated>20201020181719</lastUpdated>
+    <lastUpdated>20201201174920</lastUpdated>
   </versioning>
 </metadata>
