@@ -377,13 +377,13 @@ public class AppboyNotificationUtils {
     }
     if ((notificationExtras.getBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, false))) {
       int count = 0;
-      String imageUrl = AppboyNotificationActionUtils.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
+      String imageUrl = BrazeNotificationPayload.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
       while (!StringUtils.isNullOrBlank(imageUrl)) {
         AppboyLogger.v(TAG, "Pre-fetching bitmap at URL: " + imageUrl);
         IAppboyImageLoader imageLoader = Appboy.getInstance(context).getAppboyImageLoader();
         imageLoader.getPushBitmapFromUrl(context, appboyExtras, imageUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
         count++;
-        imageUrl = AppboyNotificationActionUtils.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
+        imageUrl = BrazeNotificationPayload.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
       }
       notificationExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, false);
     }

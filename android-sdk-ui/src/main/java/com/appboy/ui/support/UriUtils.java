@@ -8,8 +8,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.appboy.IAppboyNavigator;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.appboy.ui.AppboyNavigator;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,9 +59,8 @@ public class UriUtils {
   }
 
   public static Intent getMainActivityIntent(Context context, Bundle extras) {
-    // get main activity intent.
     Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    startActivityIntent.setFlags(AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.URI_UTILS_GET_MAIN_ACTIVITY_INTENT));
     if (extras != null) {
       startActivityIntent.putExtras(extras);
     }

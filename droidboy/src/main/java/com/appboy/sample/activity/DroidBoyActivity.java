@@ -180,12 +180,13 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     processIntent();
 
     final AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(this);
-    final String customEndpoint = configurationProvider.getCustomEndpoint();
-    final String configuredApiKey = Appboy.getConfiguredApiKey(this);
-
-    if (!StringUtils.isNullOrEmpty(customEndpoint)) {
-      ((TextView) findViewById(R.id.toolbar_info_endpoint)).setText("custom endpoint: " + customEndpoint);
+    String endpoint = configurationProvider.getBaseUrlForRequests();
+    if (!StringUtils.isNullOrEmpty(configurationProvider.getCustomEndpoint())) {
+      endpoint = configurationProvider.getCustomEndpoint();
     }
+    ((TextView) findViewById(R.id.toolbar_info_endpoint)).setText("endpoint: " + endpoint);
+
+    final String configuredApiKey = Appboy.getConfiguredApiKey(this);
     ((TextView) findViewById(R.id.toolbar_info_api_key)).setText("current api key: " + configuredApiKey);
   }
 

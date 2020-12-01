@@ -128,7 +128,7 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     AppboyNotificationUtils.setSummaryTextIfPresentAndSupported(notificationBuilder, payload);
     AppboyNotificationUtils.setPriorityIfPresentAndSupported(notificationBuilder, notificationExtras);
     AppboyNotificationStyleFactory.setStyleIfSupported(notificationBuilder, payload);
-    AppboyNotificationActionUtils.addNotificationActions(context, notificationBuilder, notificationExtras);
+    AppboyNotificationActionUtils.addNotificationActions(notificationBuilder, payload);
 
     // Accent color, category, visibility, and public notification were added in Lollipop.
     AppboyNotificationUtils.setAccentColorIfPresentAndSupported(notificationBuilder, payload);

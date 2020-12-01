@@ -5,51 +5,50 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.appboy.Appboy;
 import com.appboy.Constants;
+import com.appboy.IAppboyNavigator;
 import com.appboy.configuration.AppboyConfigurationProvider;
+import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.StringUtils;
+import com.appboy.ui.AppboyNavigator;
+
+import java.util.List;
 
 public class AppboyNotificationActionUtils {
   private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationActionUtils.class);
 
   /**
-   * Add notification actions to the provided notification builder.
-   *
-   * Notification action button schema:
-   *
-   * “ab_a*_id”: action button id, used for analytics - optional
-   * “ab_a*_t”: action button text - optional
-   * “ab_a*_a”: action type, one of “ab_uri”, ”ab_none”, “ab_open” (open the app) - required
-   * “ab_a*_uri”: uri, only used when the action is “uri” - required only when action is “uri”
-   * “ab_a*_use_webview”: whether to open the web link in a web view - optional
-   *
-   * The * is replaced with an integer string depending on the button being described
-   * (e.g. the uri for the second button is “ab_a1_uri”).
-   * The left-most button is defined as button zero.
-   *
-   * @param context
-   * @param notificationBuilder
-   * @param notificationExtras FCM/ADM extras
+   * @deprecated Please use {@link #addNotificationActions(NotificationCompat.Builder, BrazeNotificationPayload)}
    */
+  @Deprecated
   public static void addNotificationActions(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
-    try {
-      if (notificationExtras == null) {
-        AppboyLogger.w(TAG, "Notification extras were null. Doing nothing.");
-        return;
-      }
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    addNotificationActions(notificationBuilder, payload);
+  }
 
-      int actionIndex = 0;
-      while (!StringUtils.isNullOrBlank(getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE))) {
-        addNotificationAction(context, notificationBuilder, notificationExtras, actionIndex);
-        actionIndex++;
-      }
-    } catch (Exception e) {
-      AppboyLogger.e(TAG, "Caught exception while adding notification action buttons.", e);
+  /**
+   * Add notification actions to the provided notification builder.
+   */
+  public static void addNotificationActions(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+    if (payload.getContext() == null) {
+      AppboyLogger.d(TAG, "Context cannot be null when adding notification buttons.");
+      return;
+    }
+    final List<BrazeNotificationPayload.ActionButton> actionButtons = payload.getActionButtons();
+    if (actionButtons.isEmpty()) {
+      AppboyLogger.d(TAG, "No action buttons present. Not adding notification actions");
+      return;
+    }
+
+    for (BrazeNotificationPayload.ActionButton actionButton : actionButtons) {
+      AppboyLogger.v(TAG, "Adding action button: " + actionButton);
+      addNotificationAction(notificationBuilder, payload, actionButton);
     }
   }
 
@@ -105,41 +104,68 @@ public class AppboyNotificationActionUtils {
   }
 
   /**
+   * @deprecated Please use {@link #addNotificationAction(BrazeNotificationPayload.ActionButton)}
+   */
+  @Deprecated
+  public static void addNotificationAction(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras, int actionIndex) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    final List<BrazeNotificationPayload.ActionButton> actionButtons = payload.getActionButtons();
+    if (actionIndex - 1 > actionButtons.size()) {
+      return;
+    }
+    addNotificationAction(notificationBuilder, payload, actionButtons.get(actionIndex));
+  }
+
+  /**
    * Add the notification action at the specified index to the notification builder.
    */
-  public static void addNotificationAction(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras, int actionIndex) {
-    Bundle notificationActionExtras = new Bundle(notificationExtras);
+  public static void addNotificationAction(@NonNull NotificationCompat.Builder notificationBuilder,
+                                           @NonNull BrazeNotificationPayload payload,
+                                           @NonNull BrazeNotificationPayload.ActionButton actionButton) {
+    final Context context = payload.getContext();
+    final Bundle notificationActionExtras = new Bundle(payload.getNotificationExtras());
 
-    String actionType = getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE);
+    final int actionIndex = actionButton.getActionIndex();
     notificationActionExtras.putInt(Constants.APPBOY_ACTION_INDEX_KEY, actionIndex);
+
+    final String actionType = actionButton.getType();
     notificationActionExtras.putString(Constants.APPBOY_ACTION_TYPE_KEY, actionType);
-    notificationActionExtras.putString(Constants.APPBOY_ACTION_ID_KEY, getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_ID_KEY_TEMPLATE));
-    notificationActionExtras.putString(Constants.APPBOY_ACTION_URI_KEY, getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE));
-    notificationActionExtras.putString(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY,
-        getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE));
+
+    final String actionIdAtIndex = actionButton.getActionId();
+    notificationActionExtras.putString(Constants.APPBOY_ACTION_ID_KEY, actionIdAtIndex);
+
+    final String uriKeyAtIndex = actionButton.getUri();
+    notificationActionExtras.putString(Constants.APPBOY_ACTION_URI_KEY, uriKeyAtIndex);
+
+    final String useWebviewKeyAtIndex = actionButton.getUseWebview();
+    notificationActionExtras.putString(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY, useWebviewKeyAtIndex);
 
     PendingIntent pendingSendIntent;
-    if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_NONE)) {
-      // If no action is present, then we don't need the AppboyNotificationRoutingActivity.class to route us back to an Activity.
+    Intent sendIntent;
+    if (Constants.APPBOY_PUSH_ACTION_TYPE_NONE.equals(actionType)) {
+      // If no action is present, then we don't need the
+      // AppboyNotificationRoutingActivity.class to route us back to an Activity.
       AppboyLogger.v(TAG, "Adding notification action with type: " + actionType
-          + " . Setting intent class to notification receiver: " + AppboyNotificationUtils.getNotificationReceiverClass());
-      Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+          + " . Setting intent class to notification receiver: "
+          + AppboyNotificationUtils.getNotificationReceiverClass());
+      sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
       sendIntent.putExtras(notificationActionExtras);
       pendingSendIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     } else {
-      // However, if an action is present, then we need to route to the AppboyNotificationRoutingActivity to ensure
-      // the user is prompted to open the app on the lockscreen.
-      AppboyLogger.v(TAG, "Adding notification action with type: " + actionType + " Setting intent class to AppboyNotificationRoutingActivity");
-      Intent sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION)
+      // However, if an action is present, then we need to
+      // route to the AppboyNotificationRoutingActivity to
+      // ensure the user is prompted to open the app on the lockscreen.
+      AppboyLogger.v(TAG, "Adding notification action with type: "
+          + actionType + " Setting intent class to AppboyNotificationRoutingActivity");
+      sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION)
           .setClass(context, AppboyNotificationRoutingActivity.class);
       sendIntent
-        .setFlags(sendIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+          .setFlags(sendIntent.getFlags() | AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.NOTIFICATION_ACTION_WITH_DEEPLINK));
       sendIntent.putExtras(notificationActionExtras);
       pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    String actionText = getActionFieldAtIndex(actionIndex, notificationExtras, Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE);
-    NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(0, actionText, pendingSendIntent);
+    NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(0, actionButton.getText(), pendingSendIntent);
     notificationActionBuilder.addExtras(new Bundle(notificationActionExtras));
     notificationBuilder.addAction(notificationActionBuilder.build());
     AppboyLogger.v(TAG, "Added action with bundle: " + notificationActionExtras);
@@ -155,37 +181,5 @@ public class AppboyNotificationActionUtils {
     String campaignId = intent.getStringExtra(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
     String actionButtonId = intent.getStringExtra(Constants.APPBOY_ACTION_ID_KEY);
     Appboy.getInstance(context).logPushNotificationActionClicked(campaignId, actionButtonId, actionType);
-  }
-
-  /**
-   * Returns the value for the given action field key template at the specified index.
-   *
-   * @param actionIndex the index of the desired action
-   * @param notificationExtras FCM/ADM notification extras
-   * @param actionFieldKeyTemplate the template of the action field
-   * @return the desired notification action field value or the empty string if not present
-   */
-  public static String getActionFieldAtIndex(int actionIndex, Bundle notificationExtras, String actionFieldKeyTemplate) {
-    return getActionFieldAtIndex(actionIndex, notificationExtras, actionFieldKeyTemplate, "");
-  }
-
-  /**
-   * Returns the value for the given action field key template at the specified index.
-   *
-   * @param actionIndex the index of the desired action
-   * @param notificationExtras FCM/ADM notification extras
-   * @param actionFieldKeyTemplate the template of the action field
-   * @param defaultValue the default value to return if the value for the key in notificationExtras
-   *                     is null.
-   * @return the desired notification action field value or the empty string if not present
-   */
-  public static String getActionFieldAtIndex(int actionIndex, Bundle notificationExtras, String actionFieldKeyTemplate, String defaultValue) {
-    String actionFieldKey = actionFieldKeyTemplate.replace("*", String.valueOf(actionIndex));
-    String actionFieldValue = notificationExtras.getString(actionFieldKey);
-    if (actionFieldValue == null) {
-      return defaultValue;
-    } else {
-      return actionFieldValue;
-    }
   }
 }

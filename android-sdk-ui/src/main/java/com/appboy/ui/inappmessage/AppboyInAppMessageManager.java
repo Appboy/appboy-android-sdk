@@ -126,11 +126,13 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    * @param context The application context
    */
   public void ensureSubscribedToInAppMessageEvents(Context context) {
-    if (mInAppMessageEventSubscriber == null) {
-      AppboyLogger.d(TAG, "Subscribing in-app message event subscriber");
-      mInAppMessageEventSubscriber = createInAppMessageEventSubscriber();
-      Appboy.getInstance(context).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
+    if (mInAppMessageEventSubscriber != null) {
+      AppboyLogger.d(TAG, "Removing existing in-app message event subscriber before subscribing new one.");
+      Appboy.getInstance(context).removeSingleSubscription(mInAppMessageEventSubscriber, InAppMessageEvent.class);
     }
+    AppboyLogger.d(TAG, "Subscribing in-app message event subscriber");
+    mInAppMessageEventSubscriber = createInAppMessageEventSubscriber();
+    Appboy.getInstance(context).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
   }
 
   /**

@@ -11,11 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.appboy.Constants;
+import com.appboy.IAppboyNavigator;
 import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.Channel;
 import com.appboy.support.AppboyFileUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.AppboyWebViewActivity;
 import com.appboy.ui.support.UriUtils;
 
@@ -117,7 +119,7 @@ public class UriAction implements IAction {
    */
   protected void openUriWithWebViewActivity(Context context, Uri uri, Bundle extras) {
     Intent intent = getWebViewActivityIntent(context, uri, extras);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    intent.setFlags(AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.URI_ACTION_OPEN_WITH_WEBVIEW_ACTIVITY));
     try {
       context.startActivity(intent);
     } catch (Exception e) {
@@ -130,7 +132,7 @@ public class UriAction implements IAction {
    */
   protected void openUriWithActionView(Context context, Uri uri, Bundle extras) {
     Intent intent = getActionViewIntent(context, uri, extras);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    intent.setFlags(AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.URI_ACTION_OPEN_WITH_ACTION_VIEW));
     try {
       context.startActivity(intent);
     } catch (Exception e) {
@@ -207,7 +209,7 @@ public class UriAction implements IAction {
     if (resolveInfos.size() > 1) {
       for (ResolveInfo resolveInfo : resolveInfos) {
         if (resolveInfo.activityInfo.packageName.equals(context.getPackageName())) {
-          AppboyLogger.d(TAG, "Setting deep link activity to " + resolveInfo.activityInfo.packageName + ".");
+          AppboyLogger.d(TAG, "Setting deep link intent package to " + resolveInfo.activityInfo.packageName + ".");
           intent.setPackage(resolveInfo.activityInfo.packageName);
           break;
         }
@@ -246,7 +248,7 @@ public class UriAction implements IAction {
           AppboyLogger.i(TAG, "Adding custom back stack activity while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
           rootIntent = new Intent()
               .setClassName(context, pushDeepLinkBackStackActivityClassName)
-              .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+              .setFlags(AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.URI_ACTION_BACK_STACK_GET_ROOT_INTENT))
               .putExtras(extras);
         } else {
           AppboyLogger.i(TAG, "Not adding unregistered activity to the back stack while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
@@ -259,7 +261,7 @@ public class UriAction implements IAction {
     if (rootIntent == null) {
       // Calling startActivities() from outside of an Activity
       // context requires the FLAG_ACTIVITY_NEW_TASK flag on the first Intent
-      targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      targetIntent.setFlags(AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.URI_ACTION_BACK_STACK_ONLY_GET_TARGET_INTENT));
 
       // Just return the target intent by itself
       return new Intent[]{targetIntent};

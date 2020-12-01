@@ -1,3 +1,25 @@
+## 12.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v12.0.0)
+
+##### ⚠ Breaking
+- Added `getIntentFlags` to the `IAppboyNavigator` interface to more easily allow for customizing Activity launch behavior.
+  - A default implementation is available below:
+  ```
+    @Override
+    public int getIntentFlags(IntentFlagPurpose intentFlagPurpose) {
+      return new AppboyNavigator().getIntentFlags(intentFlagPurpose);
+    }
+  ```
+- Renamed `firebase_messaging_service_automatically_register_on_new_token` to `com_appboy_firebase_messaging_service_automatically_register_on_new_token` in `appboy.xml` configuration.
+
+##### Fixed
+- Fixed an issue with the default image loader not properly setting image bitmaps on API 23 and below devices.
+- Fixed an issue where the `AppboyInAppMessageManager.ensureSubscribedToInAppMessageEvents()` method wouldn't properly resubscribe after disabling and re-enabling the SDK.
+
+##### Changed
+- Changed Push Stories in `AppboyNotificationStyleFactory` to use `BrazeNotificationPayload`.
+
 ## 11.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v11.0.0)

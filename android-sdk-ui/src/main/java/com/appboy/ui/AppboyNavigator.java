@@ -1,6 +1,7 @@
 package com.appboy.ui;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.appboy.IAppboyNavigator;
 import com.appboy.support.AppboyLogger;
@@ -20,6 +21,24 @@ public class AppboyNavigator implements IAppboyNavigator {
   @Override
   public void gotoUri(Context context, UriAction uriAction) {
     executeUriAction(context, uriAction);
+  }
+
+  @Override
+  public int getIntentFlags(IntentFlagPurpose intentFlagPurpose) {
+    switch (intentFlagPurpose) {
+      case NOTIFICATION_ACTION_WITH_DEEPLINK:
+      case NOTIFICATION_PUSH_STORY_PAGE_CLICK:
+        return Intent.FLAG_ACTIVITY_NO_HISTORY;
+      case URI_ACTION_OPEN_WITH_WEBVIEW_ACTIVITY:
+      case URI_ACTION_OPEN_WITH_ACTION_VIEW:
+      case URI_UTILS_GET_MAIN_ACTIVITY_INTENT:
+        return Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+      case URI_ACTION_BACK_STACK_GET_ROOT_INTENT:
+      case URI_ACTION_BACK_STACK_ONLY_GET_TARGET_INTENT:
+        return Intent.FLAG_ACTIVITY_NEW_TASK;
+      default:
+        return 0;
+    }
   }
 
   public static void executeNewsFeedAction(Context context, NewsfeedAction newsfeedAction) {

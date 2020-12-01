@@ -11,6 +11,45 @@ import com.appboy.ui.actions.UriAction;
  * feed or open a URI.
  */
 public interface IAppboyNavigator {
+  enum IntentFlagPurpose {
+    /**
+     * Used for notification actions using a deeplink.
+     */
+    NOTIFICATION_ACTION_WITH_DEEPLINK,
+    /**
+     * Used when generating the intent to the {@link com.appboy.push.AppboyNotificationRoutingActivity}
+     * on a Push Story page traversal.
+     */
+    NOTIFICATION_PUSH_STORY_PAGE_CLICK,
+    /**
+     * Used in the default {@link UriAction} when opening
+     * a deeplink with the WebView activity.
+     */
+    URI_ACTION_OPEN_WITH_WEBVIEW_ACTIVITY,
+    /**
+     * Used in the default {@link UriAction} when opening
+     * a deeplink with {@link android.content.Intent#ACTION_VIEW}.
+     */
+    URI_ACTION_OPEN_WITH_ACTION_VIEW,
+    /**
+     * Used in the default {@link UriAction} when creating the
+     * root backstack activity when opening a deeplink from a
+     * push notification.
+     */
+    URI_ACTION_BACK_STACK_GET_ROOT_INTENT,
+    /**
+     * Used in the default {@link UriAction} when creating the
+     * the backstack only contains the target intent and no
+     * root intent.
+     */
+    URI_ACTION_BACK_STACK_ONLY_GET_TARGET_INTENT,
+    /**
+     * Used in push notifications when only opening the main
+     * Activity and not a deeplink.
+     */
+    URI_UTILS_GET_MAIN_ACTIVITY_INTENT,
+  }
+
   /**
    * This delegate method will be called when Braze wants to display the news feed.
    * <br/>
@@ -32,4 +71,10 @@ public interface IAppboyNavigator {
    * @param uriAction The Uri action to execute.
    */
   void gotoUri(Context context, UriAction uriAction);
+
+  /**
+   * Get the flag mask used for {@link android.content.Intent#setFlags(int)} based
+   * on the Intent usage.
+   */
+  int getIntentFlags(IntentFlagPurpose intentFlagPurpose);
 }

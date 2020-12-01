@@ -12,6 +12,7 @@ import com.appboy.IAppboyNavigator;
 import com.appboy.sample.activity.DroidBoyActivity;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
 
@@ -37,6 +38,11 @@ public class CustomAppboyNavigator implements IAppboyNavigator {
 
     CustomUriAction customUriAction = new CustomUriAction(uriAction);
     customUriAction.execute(context);
+  }
+
+  @Override
+  public int getIntentFlags(IntentFlagPurpose intentFlagPurpose) {
+    return new AppboyNavigator().getIntentFlags(intentFlagPurpose);
   }
 
   public static class CustomUriAction extends UriAction {

@@ -113,8 +113,8 @@
           android:key="environment_reset_key"
           android:title="Reset environment override"/>
         <Preference
-          android:key="environment_switch_k8s"
-          android:title="❄️ Change to K8s endpoint ❄️"/>
+          android:key="environment_switch_dev"
+          android:title="❄️ Change to Dev endpoint ❄️"/>
     </PreferenceCategory>
 
     <PreferenceCategory

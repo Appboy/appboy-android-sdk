@@ -63,13 +63,14 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment";
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT = "endpoint";
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_API_KEY = "api_key";
-  private static final String KUBERNETES_DROIDBOY_API_KEY = "da8f263e-1483-4e9f-ac0c-7b40030c8f40";
-  private static final String KUBERNETES_DROIDBOY_SDK_ENDPOINT = "https://elsa.braze.com/";
+  private static final String DEV_DROIDBOY_API_KEY = "da8f263e-1483-4e9f-ac0c-7b40030c8f40";
+  private static final String DEV_FIREOS_DROIDBOY_API_KEY = "ecb81855-149f-465c-bab0-0254d6512133";
+  private static final String DEV_SDK_ENDPOINT = "https://elsa.braze.com/";
 
   static {
     Map<String, String> keyToAppMap = new HashMap<>();
-    keyToAppMap.put("1d502a81-f92f-48d4-96a7-1cbafc42b425","App:Droidboy, App group:Droidboy, Company:Appboy, Environment:Staging");
-    keyToAppMap.put("b9514ba7-993b-4e81-b339-8447dde48547","App:Fireos, App group:Droidboy, Company:Appboy, Environment:Staging");
+    keyToAppMap.put("da8f263e-1483-4e9f-ac0c-7b40030c8f40","App: Droidboy, App group: Stopwatch & Droidboy, Company: Braze");
+    keyToAppMap.put("ecb81855-149f-465c-bab0-0254d6512133","App: Fire OS Droidboy, App group: Stopwatch & Droidboy, Company: Braze");
     API_KEY_TO_APP_MAP = Collections.unmodifiableMap(keyToAppMap);
   }
 
@@ -274,8 +275,8 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
       LifecycleUtils.restartApp(this);
       return true;
     });
-    findPreference("environment_switch_k8s").setOnPreferenceClickListener((Preference preference) -> {
-      changeEndpointToKubernetes();
+    findPreference("environment_switch_dev").setOnPreferenceClickListener((Preference preference) -> {
+      changeEndpointToDevelopment();
       return true;
     });
 
@@ -500,10 +501,14 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
         .show();
   }
 
-  private void changeEndpointToKubernetes() {
+  private void changeEndpointToDevelopment() {
     SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, KUBERNETES_DROIDBOY_API_KEY);
-    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, KUBERNETES_DROIDBOY_SDK_ENDPOINT);
+    if (Constants.IS_AMAZON) {
+      sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, DEV_FIREOS_DROIDBOY_API_KEY);
+    } else {
+      sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, DEV_DROIDBOY_API_KEY);
+    }
+    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, DEV_SDK_ENDPOINT);
 
     sharedPreferencesEditor.commit();
     LifecycleUtils.restartApp(getApplicationContext());
