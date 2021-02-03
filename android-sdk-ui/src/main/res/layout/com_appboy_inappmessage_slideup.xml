@@ -9,7 +9,7 @@
         <RelativeLayout
             android:id="@+id/com_appboy_inappmessage_slideup_image_layout"
             style="@style/Appboy.InAppMessage.Slideup.ImageContainer">
-            <com.appboy.ui.inappmessage.AppboyInAppMessageImageView
+            <com.appboy.ui.inappmessage.views.InAppMessageImageView
                 android:id="@+id/com_appboy_inappmessage_slideup_imageview"
                 style="@style/Appboy.InAppMessage.Image.Slideup"/>
             <TextView

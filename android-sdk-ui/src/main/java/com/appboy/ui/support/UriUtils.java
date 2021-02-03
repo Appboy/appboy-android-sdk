@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class UriUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(UriUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(UriUtils.class);
 
   /**
    * Parses the query part of the uri and returns a mapping of the query keys to the

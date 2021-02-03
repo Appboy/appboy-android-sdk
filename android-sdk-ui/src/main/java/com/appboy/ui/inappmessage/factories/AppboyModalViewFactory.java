@@ -13,13 +13,14 @@ import com.appboy.models.InAppMessageModal;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
-import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageBaseView;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
+import com.appboy.ui.inappmessage.views.InAppMessageImageView;
 
 public class AppboyModalViewFactory implements IInAppMessageViewFactory {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyModalViewFactory.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyModalViewFactory.class);
   private static final float NON_GRAPHIC_ASPECT_RATIO = 290f / 100f;
 
   @Override
@@ -30,7 +31,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
     AppboyInAppMessageModalView view = getAppropriateModalView(activity, isGraphic);
     view.applyInAppMessageParameters(applicationContext, inAppMessageModal);
 
-    String imageUrl = view.getAppropriateImageUrl(inAppMessageModal);
+    String imageUrl = AppboyInAppMessageBaseView.getAppropriateImageUrl(inAppMessageModal);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
       appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_MODAL);
@@ -56,7 +57,7 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
       view.setMessageHeaderTextAlignment(inAppMessageModal.getHeaderTextAlign());
       view.setMessageTextAlign(inAppMessageModal.getMessageTextAlign());
       view.resetMessageMargins(inAppMessageModal.getImageDownloadSuccessful());
-      ((AppboyInAppMessageImageView) view.getMessageImageView()).setAspectRatio(NON_GRAPHIC_ASPECT_RATIO);
+      ((InAppMessageImageView) view.getMessageImageView()).setAspectRatio(NON_GRAPHIC_ASPECT_RATIO);
     }
     view.setLargerCloseButtonClickArea(view.getMessageCloseButtonView());
     view.setupDirectionalNavigation(inAppMessageModal.getMessageButtons().size());

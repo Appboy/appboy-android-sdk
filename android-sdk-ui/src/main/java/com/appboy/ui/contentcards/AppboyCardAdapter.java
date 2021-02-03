@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolder> implements ItemTouchHelperAdapter {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyCardAdapter.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyCardAdapter.class);
 
   private final Context mContext;
   private final Handler mHandler;

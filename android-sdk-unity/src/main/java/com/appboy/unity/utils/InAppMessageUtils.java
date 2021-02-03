@@ -9,7 +9,7 @@ import com.appboy.models.MessageButton;
 import com.appboy.support.AppboyLogger;
 
 public class InAppMessageUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageUtils.class);
 
   public static IInAppMessage inAppMessageFromString(Context context, String messageJSONString) {
     return Appboy.getInstance(context).deserializeInAppMessageString(messageJSONString);

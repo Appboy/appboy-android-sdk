@@ -25,7 +25,7 @@ import com.appboy.support.StringUtils;
 import java.util.Calendar;
 
 public class UserProfileDialog extends DialogPreference implements View.OnClickListener {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(UserProfileDialog.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(UserProfileDialog.class);
   private static final int GENDER_UNSPECIFIED_INDEX = 0;
   private static final int GENDER_MALE_INDEX = 1;
   private static final int GENDER_FEMALE_INDEX = 2;

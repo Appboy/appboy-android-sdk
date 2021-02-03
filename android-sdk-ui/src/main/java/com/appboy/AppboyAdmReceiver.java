@@ -17,7 +17,7 @@ import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.support.AppboyLogger;
 
 public final class AppboyAdmReceiver extends BroadcastReceiver {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyAdmReceiver.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyAdmReceiver.class);
   private static final String ADM_RECEIVE_INTENT_ACTION = "com.amazon.device.messaging.intent.RECEIVE";
   private static final String ADM_REGISTRATION_INTENT_ACTION = "com.amazon.device.messaging.intent.REGISTRATION";
   private static final String ADM_ERROR_KEY = "error";

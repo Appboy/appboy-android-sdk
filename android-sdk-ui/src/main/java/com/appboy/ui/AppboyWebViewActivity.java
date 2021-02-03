@@ -38,7 +38,7 @@ import com.appboy.ui.support.ViewUtils;
  */
 @SuppressLint("SetJavaScriptEnabled")
 public class AppboyWebViewActivity extends FragmentActivity {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyWebViewActivity.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyWebViewActivity.class);
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

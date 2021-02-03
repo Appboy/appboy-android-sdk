@@ -11,7 +11,7 @@ import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(ShortNewsCardView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(ShortNewsCardView.class);
   private final ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;

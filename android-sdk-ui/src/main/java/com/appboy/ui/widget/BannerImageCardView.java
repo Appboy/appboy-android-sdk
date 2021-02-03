@@ -10,7 +10,7 @@ import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(BannerImageCardView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(BannerImageCardView.class);
   private final ImageView mImage;
   private IAction mCardAction;
 

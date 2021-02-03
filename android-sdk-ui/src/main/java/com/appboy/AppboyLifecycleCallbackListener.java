@@ -21,7 +21,7 @@ import java.util.Set;
  * be optionally called here as well.
  */
 public class AppboyLifecycleCallbackListener implements Application.ActivityLifecycleCallbacks {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyLifecycleCallbackListener.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyLifecycleCallbackListener.class);
 
   private final boolean mRegisterInAppMessageManager;
   private final boolean mSessionHandlingEnabled;

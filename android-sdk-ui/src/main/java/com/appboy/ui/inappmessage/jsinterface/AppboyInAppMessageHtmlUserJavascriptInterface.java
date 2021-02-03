@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class AppboyInAppMessageHtmlUserJavascriptInterface {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlUserJavascriptInterface.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageHtmlUserJavascriptInterface.class);
   public static final String JS_BRIDGE_UNSUBSCRIBED = "unsubscribed";
   public static final String JS_BRIDGE_SUBSCRIBED = "subscribed";
   public static final String JS_BRIDGE_OPTED_IN = "opted_in";

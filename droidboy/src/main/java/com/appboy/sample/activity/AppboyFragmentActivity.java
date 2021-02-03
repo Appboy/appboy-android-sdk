@@ -16,7 +16,7 @@ import io.branch.referral.Branch;
  * activity (inherited by most other activities) and com.appboy.sample.activity.SettingsPreferencesActivity.
  */
 public class AppboyFragmentActivity extends AppCompatActivity {
-  protected static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFragmentActivity.class);
+  protected static final String TAG = AppboyLogger.getBrazeLogTag(AppboyFragmentActivity.class);
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

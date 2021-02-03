@@ -16,9 +16,10 @@ import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageFull;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
-import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageBaseView;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
+import com.appboy.ui.inappmessage.views.InAppMessageImageView;
 import com.appboy.ui.support.ViewUtils;
 
 public class AppboyFullViewFactory implements IInAppMessageViewFactory {
@@ -37,7 +38,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     view.createAppropriateViews(activity, inAppMessageFull, isGraphic);
 
     // Since this image is the width of the screen, the view bounds are uncapped
-    String imageUrl = view.getAppropriateImageUrl(inAppMessageFull);
+    String imageUrl = AppboyInAppMessageBaseView.getAppropriateImageUrl(inAppMessageFull);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
       appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);
@@ -59,7 +60,7 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
       view.resetMessageMargins(inAppMessageFull.getImageDownloadSuccessful());
 
       // Only non-graphic full in-app messages should be capped to half the parent height
-      ((AppboyInAppMessageImageView) view.getMessageImageView()).setToHalfParentHeight(true);
+      ((InAppMessageImageView) view.getMessageImageView()).setToHalfParentHeight(true);
     }
     view.setLargerCloseButtonClickArea(view.getMessageCloseButtonView());
     resetLayoutParamsIfAppropriate(activity, inAppMessageFull, view);

@@ -16,7 +16,7 @@ import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlFullView;
 import com.appboy.ui.support.ViewUtils;
 
 public class AppboyHtmlFullViewFactory implements IInAppMessageViewFactory {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyHtmlFullViewFactory.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyHtmlFullViewFactory.class);
   private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
 
   public AppboyHtmlFullViewFactory(IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {

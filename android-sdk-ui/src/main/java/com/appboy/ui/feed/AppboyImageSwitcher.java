@@ -12,7 +12,7 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 
 public class AppboyImageSwitcher extends ImageSwitcher {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyImageSwitcher.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyImageSwitcher.class);
 
   private Drawable mReadIcon;
   private Drawable mUnReadIcon;

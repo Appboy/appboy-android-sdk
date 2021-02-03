@@ -19,7 +19,7 @@ import java.math.BigDecimal;
  * Used to generate the javascript API in html in-app messages.
  */
 public class AppboyInAppMessageHtmlJavascriptInterface {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlJavascriptInterface.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageHtmlJavascriptInterface.class);
 
   private final Context mContext;
   private final AppboyInAppMessageHtmlUserJavascriptInterface mUserInterface;

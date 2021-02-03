@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FileDataDialog extends DialogPreference implements AdapterView.OnItemSelectedListener {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(FileDataDialog.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(FileDataDialog.class);
   private static final String FILES_DIR = "Files Dir";
   private static final String CACHE_FILES_DIR = "Cache Files Dir";
   private List mOptionList;

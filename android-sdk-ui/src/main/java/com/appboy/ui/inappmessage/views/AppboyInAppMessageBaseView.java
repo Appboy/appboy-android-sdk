@@ -13,11 +13,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.IInAppMessageWithImage;
+import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.support.ViewUtils;
 
+import java.io.File;
+
 public abstract class AppboyInAppMessageBaseView extends RelativeLayout implements IInAppMessageView {
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageBaseView.class);
 
   protected boolean mHasAppliedWindowInsets = false;
 
@@ -43,19 +47,6 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
 
   public void setMessageImageView(Bitmap bitmap) {
     InAppMessageViewUtils.setImage(bitmap, getMessageImageView());
-  }
-
-  /**
-   * @param inAppMessage
-   * @return return the local image Url, if present. Otherwise, return the remote image Url. Local
-   * image Urls are Urls for images pre-fetched by the SDK for triggers.
-   */
-  public String getAppropriateImageUrl(@NonNull IInAppMessageWithImage inAppMessage) {
-    if (!StringUtils.isNullOrBlank(inAppMessage.getLocalImageUrl())) {
-      return inAppMessage.getLocalImageUrl();
-    } else {
-      return inAppMessage.getRemoteImageUrl();
-    }
   }
 
   public void setMessageIcon(String icon, int iconColor, int iconBackgroundColor) {
@@ -93,6 +84,24 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
   @Override
   public boolean hasAppliedWindowInsets() {
     return mHasAppliedWindowInsets;
+  }
+
+  /**
+   * @return return the local image Url, if present. Otherwise, return the remote image Url. Local
+   * image Urls are Urls for images pre-fetched by the SDK for triggers.
+   */
+  public static String getAppropriateImageUrl(@NonNull IInAppMessageWithImage inAppMessage) {
+    final String localImagePath = inAppMessage.getLocalImageUrl();
+    if (!StringUtils.isNullOrBlank(localImagePath)) {
+      File imageFile = new File(localImagePath);
+      if (imageFile.exists()) {
+        return localImagePath;
+      } else {
+        AppboyLogger.d(TAG, "Local bitmap file does not exist. Using remote url instead. Local path: " + localImagePath);
+      }
+    }
+
+    return inAppMessage.getRemoteImageUrl();
   }
 
   public abstract TextView getMessageTextView();

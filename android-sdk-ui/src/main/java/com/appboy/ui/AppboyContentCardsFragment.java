@@ -40,7 +40,7 @@ import java.util.List;
  * A fragment to display ContentCards.
  */
 public class AppboyContentCardsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyContentCardsFragment.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyContentCardsFragment.class);
   private static final int MAX_CONTENT_CARDS_TTL_SECONDS = 60;
   private static final long NETWORK_PROBLEM_WARNING_MS = 5000L;
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;
@@ -50,14 +50,14 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   private static final String UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY = "UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY";
 
   private final Handler mMainThreadLooper = new Handler(Looper.getMainLooper());
-  protected Runnable mShowNetworkUnavailableRunnable;
+  protected Runnable mDefaultNetworkUnavailableRunnable;
 
   @Nullable
   protected RecyclerView mRecyclerView;
   @Nullable
   protected AppboyCardAdapter mCardAdapter;
   @Nullable
-  protected AppboyEmptyContentCardsAdapter mEmptyContentCardsAdapter;
+  protected AppboyEmptyContentCardsAdapter mDefaultEmptyContentCardsAdapter;
   @Nullable
   protected SwipeRefreshLayout mContentCardsSwipeLayout;
 
@@ -70,7 +70,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mShowNetworkUnavailableRunnable = new NetworkUnavailableRunnable(getContext());
+    mDefaultNetworkUnavailableRunnable = new NetworkUnavailableRunnable(getContext());
   }
 
   @Override
@@ -104,10 +104,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     // Remove the previous subscriber before rebuilding a new one with our new activity.
     Appboy.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
     if (mContentCardsUpdatedSubscriber == null) {
-      mContentCardsUpdatedSubscriber = event -> {
-        ContentCardsUpdateRunnable contentCardsUpdateRunnable = new ContentCardsUpdateRunnable(event);
-        mMainThreadLooper.post(contentCardsUpdateRunnable);
-      };
+      mContentCardsUpdatedSubscriber = event -> mMainThreadLooper.post(getContentCardUpdateRunnable(event));
     }
     Appboy.getInstance(getContext()).subscribeToContentCardsUpdates(mContentCardsUpdatedSubscriber);
     Appboy.getInstance(getContext()).requestContentCardsRefresh(true);
@@ -119,7 +116,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     super.onPause();
     // If the view is going away, we don't care about updating it anymore. Remove the subscription immediately.
     Appboy.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
-    mMainThreadLooper.removeCallbacks(mShowNetworkUnavailableRunnable);
+    mMainThreadLooper.removeCallbacks(mDefaultNetworkUnavailableRunnable);
     mCardAdapter.markOnScreenCardsAsRead();
   }
 
@@ -236,7 +233,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     mRecyclerView.addItemDecoration(new ContentCardsDividerItemDecoration(getContext()));
 
     // Create the "empty" adapter
-    mEmptyContentCardsAdapter = new AppboyEmptyContentCardsAdapter();
+    mDefaultEmptyContentCardsAdapter = new AppboyEmptyContentCardsAdapter();
   }
 
   /**
@@ -261,9 +258,13 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     @Override
     public void run() {
       AppboyLogger.v(TAG, "Updating Content Cards views in response to ContentCardsUpdatedEvent: " + mEvent);
+      // This list of cards could undergo filtering in the card update handler
+      // and be a smaller list of cards compared to the original list
+      // in the update event. Thus, any "empty feed" checks should be
+      // performed on this filtered list and not the original list of cards.
       List<Card> cardsForRendering = getContentCardUpdateHandler().handleCardUpdate(mEvent);
       mCardAdapter.replaceCards(cardsForRendering);
-      mMainThreadLooper.removeCallbacks(mShowNetworkUnavailableRunnable);
+      mMainThreadLooper.removeCallbacks(getNetworkUnavailableRunnable());
 
       // If the update came from storage and is stale, then request a refresh.
       if (mEvent.isFromOfflineStorage() && mEvent.isTimestampOlderThan(MAX_CONTENT_CARDS_TTL_SECONDS)) {
@@ -275,14 +276,14 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
         // If we don't have any cards to display, we put up the spinner while
         // we wait for the network to return.
         // Eventually displaying an error message if it doesn't.
-        if (mEvent.isEmpty()) {
+        if (cardsForRendering.isEmpty()) {
           // Display a loading indicator
           mContentCardsSwipeLayout.setRefreshing(true);
 
           AppboyLogger.d(TAG, "Old Content Cards was empty, putting up a "
               + "network spinner and registering the network "
               + "error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + " ms.");
-          mMainThreadLooper.postDelayed(mShowNetworkUnavailableRunnable, NETWORK_PROBLEM_WARNING_MS);
+          mMainThreadLooper.postDelayed(getNetworkUnavailableRunnable(), NETWORK_PROBLEM_WARNING_MS);
           return;
         }
       }
@@ -290,12 +291,12 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
       // The cards are either fresh from the cache, or came directly from a
       // network request. An empty Content Cards should just display
       // an "empty ContentCards" message.
-      if (!mEvent.isEmpty()) {
+      if (!cardsForRendering.isEmpty()) {
         // The Content Cards contains cards and should be displayed
         swapRecyclerViewAdapter(mCardAdapter);
       } else {
         // The Content Cards is empty and should display an "empty" message to the user.
-        swapRecyclerViewAdapter(mEmptyContentCardsAdapter);
+        swapRecyclerViewAdapter(getEmptyCardsAdapter());
       }
 
       // Stop the refresh animation
@@ -318,7 +319,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
       AppboyLogger.v(TAG, "Displaying network unavailable toast.");
       Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.com_appboy_feed_connection_error_title), Toast.LENGTH_LONG).show();
 
-      swapRecyclerViewAdapter(mEmptyContentCardsAdapter);
+      swapRecyclerViewAdapter(getEmptyCardsAdapter());
       mContentCardsSwipeLayout.setRefreshing(false);
     }
   }
@@ -331,5 +332,29 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
     if (mRecyclerView != null && mRecyclerView.getAdapter() != newAdapter) {
       mRecyclerView.setAdapter(newAdapter);
     }
+  }
+
+  /**
+   * @return An adapter to display when no
+   * cards are available for display.
+   */
+  protected RecyclerView.Adapter<?> getEmptyCardsAdapter() {
+    return mDefaultEmptyContentCardsAdapter;
+  }
+
+  /**
+   * @return A runnable to execute any UI updates
+   * stemming from the {@link ContentCardsUpdatedEvent}/
+   */
+  protected Runnable getContentCardUpdateRunnable(ContentCardsUpdatedEvent event) {
+    return new ContentCardsUpdateRunnable(event);
+  }
+
+  /**
+   * @return A runnable to execute when the network is determined
+   * to be unavailable.
+   */
+  protected Runnable getNetworkUnavailableRunnable() {
+    return mDefaultNetworkUnavailableRunnable;
   }
 }

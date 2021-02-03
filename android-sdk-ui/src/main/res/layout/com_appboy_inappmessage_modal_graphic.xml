@@ -17,7 +17,7 @@
         <RelativeLayout
             android:id="@+id/com_appboy_inappmessage_modal"
             style="@style/Appboy.InAppMessage.Modal.Graphic">
-            <com.appboy.ui.inappmessage.AppboyInAppMessageImageView
+            <com.appboy.ui.inappmessage.views.InAppMessageImageView
                 android:id="@+id/com_appboy_inappmessage_modal_imageview"
                 style="@style/Appboy.InAppMessage.Image.Modal.Graphic"/>
             <RelativeLayout
@@ -36,7 +36,7 @@
                     android:gravity="center"
                     android:layout_centerHorizontal="true"
                     android:visibility="gone">
-                    <Button
+                    <com.appboy.ui.inappmessage.views.InAppMessageButton
                         android:id="@+id/com_appboy_inappmessage_modal_button_single_one"
                         style="@style/Appboy.InAppMessage.Button.Modal.Single.Graphic"/>
                 </LinearLayout>
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center">
-                        <Button
+                        <com.appboy.ui.inappmessage.views.InAppMessageButton
                             android:id="@+id/com_appboy_inappmessage_modal_button_dual_one"
                             style="@style/Appboy.InAppMessage.Button.Modal.Dual.One.Graphic"/>
                     </LinearLayout>
@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center">
-                        <Button
+                        <com.appboy.ui.inappmessage.views.InAppMessageButton
                             android:id="@+id/com_appboy_inappmessage_modal_button_dual_two"
                             style="@style/Appboy.InAppMessage.Button.Modal.Dual.Two.Graphic"/>
                     </LinearLayout>

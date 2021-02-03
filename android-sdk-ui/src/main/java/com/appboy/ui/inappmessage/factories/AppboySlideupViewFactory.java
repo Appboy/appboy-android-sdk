@@ -12,11 +12,12 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
+import com.appboy.ui.inappmessage.views.AppboyInAppMessageBaseView;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageSlideupView;
 import com.appboy.ui.support.ViewUtils;
 
 public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboySlideupViewFactory.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboySlideupViewFactory.class);
 
   @Override
   public AppboyInAppMessageSlideupView createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
@@ -30,7 +31,7 @@ public class AppboySlideupViewFactory implements IInAppMessageViewFactory {
     Context applicationContext = activity.getApplicationContext();
     view.applyInAppMessageParameters(inAppMessage);
 
-    String imageUrl = view.getAppropriateImageUrl(inAppMessageSlideup);
+    String imageUrl = AppboyInAppMessageBaseView.getAppropriateImageUrl(inAppMessageSlideup);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
       IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
       appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_SLIDEUP);

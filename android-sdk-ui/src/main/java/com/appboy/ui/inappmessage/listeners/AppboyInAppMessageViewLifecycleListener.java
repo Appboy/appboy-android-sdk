@@ -24,7 +24,7 @@ import com.appboy.ui.inappmessage.InAppMessageCloser;
 import java.io.File;
 
 public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageViewLifecycleListener {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageViewLifecycleListener.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageViewLifecycleListener.class);
 
   @Override
   public void beforeOpened(View inAppMessageView, IInAppMessage inAppMessage) {

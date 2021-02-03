@@ -17,7 +17,7 @@ import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
 
 public class CustomAppboyNavigator implements IAppboyNavigator {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(CustomAppboyNavigator.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(CustomAppboyNavigator.class);
 
   @Override
   public void gotoNewsFeed(Context context, NewsfeedAction newsfeedAction) {

@@ -10,7 +10,7 @@ import com.appboy.sample.R;
 import com.appboy.support.AppboyLogger;
 
 public abstract class SubscriptionStateDialogBase extends DialogPreference {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(SubscriptionStateDialogBase.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(SubscriptionStateDialogBase.class);
   protected static final int SUBSCRIBED_INDEX = 0;
   protected static final int OPTED_IN_INDEX = 1;
   protected static final int UNSUBSCRIBED_INDEX = 2;

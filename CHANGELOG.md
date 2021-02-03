@@ -1,3 +1,23 @@
+## 13.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.0.0)
+
+##### ⚠ Breaking
+- Moved all In-App Message buttons from `Button` to `com.appboy.ui.inappmessage.views.InAppMessageButton`.
+  - This ensures that the `MaterialComponentsViewInflater` does not interfere with standard In-App Message display when using a `MaterialComponents` theme.
+  - Apps extending a `Material` theme should test to ensure their In-App Messages appear as expected.
+- Moved `com.appboy.ui.inappmessage.AppboyInAppMessageImageView` to `com.appboy.ui.inappmessage.views.InAppMessageImageView`.
+- Removed all getter methods from `AppboyConfig`. Access to the underlying data is now directly possible via the variables of the object, e.g. `appboyConfig.getApiKey()` is now `appboyConfig.mApiKey`.
+
+##### Added
+- Added `getEmptyCardsAdapter(), getContentCardUpdateRunnable(), getNetworkUnavailableRunnable()` to protected methods in `AppboyContentCardsFragment` for easier customizability.
+- Changed the max content line length to 2 lines for Inline Image Push.
+  - This style can be found via `"Appboy.Push.InlineImage.TextArea.TitleContent.ContentText"`
+
+##### Fixed
+- Changed the `AppboyContentCardsFragment.ContentCardsUpdateRunnable` to determine network unavailability and feed emptiness based on the filtered list of cards and not the original input list of cards.
+- Fixed an issue with IAM display where a deleted local image would result in a failed image display.
+
 ## 12.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v12.0.0)

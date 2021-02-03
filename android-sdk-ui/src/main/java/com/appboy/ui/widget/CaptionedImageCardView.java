@@ -11,7 +11,7 @@ import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard> {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(CaptionedImageCardView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(CaptionedImageCardView.class);
   private final ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;

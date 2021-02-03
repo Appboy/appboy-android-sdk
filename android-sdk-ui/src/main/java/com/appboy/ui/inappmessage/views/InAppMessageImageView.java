@@ -1,6 +1,5 @@
-package com.appboy.ui.inappmessage;
+package com.appboy.ui.inappmessage.views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
@@ -9,16 +8,18 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.support.AppboyLogger;
+import com.appboy.ui.inappmessage.IInAppMessageImageView;
 
 /**
  * Extends ImageView with the ability to clip the view's corners by a defined radius on all image
  * types.
  */
-@SuppressLint("AppCompatCustomView")
-public class AppboyInAppMessageImageView extends ImageView implements IInAppMessageImageView {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageImageView.class);
+public class InAppMessageImageView extends AppCompatImageView implements IInAppMessageImageView {
+  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageImageView.class);
   /**
    * Clip path that will be set to a closed round-rectangle contour based on the radii in
    * {@link #mInAppRadii} and used to clip the image view.
@@ -37,7 +38,7 @@ public class AppboyInAppMessageImageView extends ImageView implements IInAppMess
   private float mAspectRatio = -1f;
   private boolean mSetToHalfParentHeight = false;
 
-  public AppboyInAppMessageImageView(Context context, AttributeSet attrs) {
+  public InAppMessageImageView(Context context, AttributeSet attrs) {
     super(context, attrs);
     mClipPath = new Path();
     mRect = new RectF();

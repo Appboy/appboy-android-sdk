@@ -23,7 +23,7 @@ import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
 
 public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWebViewClientListener {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageWebViewClientListener.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageWebViewClientListener.class);
   private static final String HTML_IN_APP_MESSAGE_CUSTOM_EVENT_NAME_KEY = "name";
 
   @Override

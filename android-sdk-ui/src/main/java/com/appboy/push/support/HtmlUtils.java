@@ -8,7 +8,7 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 
 public class HtmlUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(HtmlUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(HtmlUtils.class);
 
   /**
    * Returns displayable styled text from the provided HTML

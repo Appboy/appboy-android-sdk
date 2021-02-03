@@ -25,7 +25,7 @@ import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
 import com.appboy.ui.support.ViewUtils;
 
 public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout implements IInAppMessageView {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageHtmlBaseView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageHtmlBaseView.class);
   private static final String HTML_MIME_TYPE = "text/html";
   private static final String HTML_ENCODING = "utf-8";
   private static final String FILE_URI_SCHEME_PREFIX = "file://";

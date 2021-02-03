@@ -14,7 +14,6 @@ import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
-import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
 import com.appboy.ui.inappmessage.IInAppMessageImageView;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 import com.appboy.ui.support.ViewUtils;
@@ -23,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBaseView {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageModalView.class);
-  private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageModalView.class);
+  private InAppMessageImageView mInAppMessageImageView;
   private InAppMessageModal mInAppMessage;
 
   public AppboyInAppMessageModalView(Context context, AttributeSet attrs) {
@@ -33,8 +32,8 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
 
   public void applyInAppMessageParameters(Context context, InAppMessageModal inAppMessage) {
     mInAppMessage = inAppMessage;
-    mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_modal_imageview);
-    setInAppMessageImageViewAttributes(context, inAppMessage, mAppboyInAppMessageImageView);
+    mInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_modal_imageview);
+    setInAppMessageImageViewAttributes(context, inAppMessage, mInAppMessageImageView);
     resizeGraphicFrameIfAppropriate(context, inAppMessage);
   }
 
@@ -136,7 +135,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
 
   @Override
   public ImageView getMessageImageView() {
-    return mAppboyInAppMessageImageView;
+    return mInAppMessageImageView;
   }
 
   @Override

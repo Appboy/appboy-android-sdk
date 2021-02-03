@@ -49,7 +49,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(DroidBoyActivity.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(DroidBoyActivity.class);
   private EnumSet<CardCategory> mAppboyFeedCategories;
   protected Context mApplicationContext;
   protected DrawerLayout mDrawerLayout;
@@ -101,23 +101,31 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
         boolean hasFineLocationPermission = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         if (!hasFineLocationPermission) {
           // Only request fine location
-          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+          RuntimePermissionUtils.requestLocationPermissions(this,
+              new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+              RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
         } else {
-          // Request background now that fine is set
-          requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+          if (!PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+            // Request background now that fine is set
+            RuntimePermissionUtils.requestLocationPermissions(this,
+                new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+          }
         }
       } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         boolean hasAllPermissions = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             && PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         if (!hasAllPermissions) {
           // Request both BACKGROUND and FINE location permissions
-          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+          RuntimePermissionUtils.requestLocationPermissions(this,
+              new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION},
               RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
         }
       } else {
         if (!PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
           // Request only FINE location permission
-          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+          RuntimePermissionUtils.requestLocationPermissions(this,
+              new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
               RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
         }
       }
@@ -149,10 +157,12 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
 
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
-      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+      }
 
       @Override
-      public void onPageScrollStateChanged(int state) {}
+      public void onPageScrollStateChanged(int state) {
+      }
 
       @Override
       public void onPageSelected(int position) {
@@ -315,7 +325,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     bundleString.append(" ].");
     return bundleString.toString();
   }
-  
+
   @SuppressLint("RestrictedApi")
   private AppboyFeedFragment getFeedFragment() {
     List<Fragment> fragments = getSupportFragmentManager().getFragments();

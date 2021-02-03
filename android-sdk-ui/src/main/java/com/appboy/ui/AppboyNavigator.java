@@ -9,7 +9,7 @@ import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
 
 public class AppboyNavigator implements IAppboyNavigator {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNavigator.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNavigator.class);
   private static final IAppboyNavigator sDefaultAppboyNavigator = new AppboyNavigator();
   private static volatile IAppboyNavigator sCustomAppboyNavigator;
 

@@ -24,7 +24,7 @@ import com.appboy.ui.support.UriUtils;
 import java.util.List;
 
 public class UriAction implements IAction {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(UriAction.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(UriAction.class);
 
   private final Bundle mExtras;
   private final Channel mChannel;

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MessagingUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(MessagingUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(MessagingUtils.class);
 
   public static boolean sendInAppMessageReceivedMessage(String unityGameObjectName, String unityCallbackFunctionName, IInAppMessage inAppMessage) {
     if (StringUtils.isNullOrBlank(unityGameObjectName)) {

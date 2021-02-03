@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InAppMessageWebViewClient extends WebViewClient {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageWebViewClient.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageWebViewClient.class);
   private static final String APPBOY_INAPP_MESSAGE_SCHEME = "appboy";
   private static final String AUTHORITY_NAME_CLOSE = "close";
   private static final String AUTHORITY_NAME_NEWSFEED = "feed";

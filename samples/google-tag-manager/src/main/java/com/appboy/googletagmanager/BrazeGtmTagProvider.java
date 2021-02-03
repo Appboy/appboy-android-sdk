@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class BrazeGtmTagProvider implements CustomTagProvider {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(BrazeGtmTagProvider.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(BrazeGtmTagProvider.class);
   private static final String ACTION_TYPE_KEY = "actionType";
 
   // Custom Events

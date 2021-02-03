@@ -23,7 +23,7 @@ import com.appboy.support.WebContentUtils;
 import java.io.File;
 
 public class BackgroundInAppMessagePreparer {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(BackgroundInAppMessagePreparer.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(BackgroundInAppMessagePreparer.class);
 
   /**
    * @param mainLooperHandler A {@link Handler} of the main thread that will be used to
@@ -170,6 +170,9 @@ public class BackgroundInAppMessagePreparer {
         inAppMessageWithImage.setImageDownloadSuccessful(true);
         return true;
       }
+      // The local uri didn't work, unset it from the IAM
+      AppboyLogger.d(TAG, "Removing local image url from IAM since it could not be loaded. URL: " + localImageUrl);
+      inAppMessageWithImage.setLocalImageUrl(null);
     }
 
     // Try to load the remote url next

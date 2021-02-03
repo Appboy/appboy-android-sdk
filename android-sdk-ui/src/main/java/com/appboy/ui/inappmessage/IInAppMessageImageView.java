@@ -1,6 +1,7 @@
 package com.appboy.ui.inappmessage;
 
 import com.appboy.enums.inappmessage.CropType;
+import com.appboy.ui.inappmessage.views.InAppMessageImageView;
 
 /**
  * IInAppMessageImageView is a unifying interface for {@link android.view.View} implementations
@@ -8,7 +9,7 @@ import com.appboy.enums.inappmessage.CropType;
  * messages images.
  *
  * All Known Implementing Classes:
- * {@link AppboyInAppMessageImageView}
+ * {@link InAppMessageImageView}
  */
 public interface IInAppMessageImageView {
 

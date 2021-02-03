@@ -20,5 +20,6 @@ public interface IContentCardsUpdateHandler extends Parcelable {
    * @param event the {@link ContentCardsUpdatedEvent} update.
    * @return a list of cards to be rendered in the Content Cards from this {@link ContentCardsUpdatedEvent}
    */
-  @NonNull List<Card> handleCardUpdate(ContentCardsUpdatedEvent event);
+  @NonNull
+  List<Card> handleCardUpdate(ContentCardsUpdatedEvent event);
 }

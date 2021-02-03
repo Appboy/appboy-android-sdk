@@ -24,7 +24,7 @@ import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 public class InAppMessageViewUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageViewUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageViewUtils.class);
 
   public static void setImage(Bitmap bitmap, ImageView imageView) {
     if (bitmap != null) {

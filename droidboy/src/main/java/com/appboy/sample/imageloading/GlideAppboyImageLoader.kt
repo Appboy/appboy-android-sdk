@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 class GlideAppboyImageLoader : IAppboyImageLoader {
   private var mRequestOptions = RequestOptions()
   override fun renderUrlIntoCardView(context: Context, card: Card?, imageUrl: String, imageView: ImageView, viewBounds: AppboyViewBounds?) {
-    renderUrlIntoView(context, imageUrl, imageView, viewBounds)
+    renderUrlIntoView(context, imageUrl, imageView)
   }
 
   override fun renderUrlIntoInAppMessageView(context: Context,
@@ -23,25 +23,25 @@ class GlideAppboyImageLoader : IAppboyImageLoader {
                                              imageUrl: String,
                                              imageView: ImageView,
                                              viewBounds: AppboyViewBounds?) {
-    renderUrlIntoView(context, imageUrl, imageView, viewBounds)
+    renderUrlIntoView(context, imageUrl, imageView)
   }
 
   override fun getPushBitmapFromUrl(context: Context, extras: Bundle?, imageUrl: String, viewBounds: AppboyViewBounds?): Bitmap {
-    return getBitmapFromUrl(context, imageUrl, viewBounds)!!
+    return getBitmapFromUrl(context, imageUrl)!!
   }
 
   override fun getInAppMessageBitmapFromUrl(context: Context, inAppMessage: IInAppMessage, imageUrl: String, viewBounds: AppboyViewBounds?): Bitmap {
-    return getBitmapFromUrl(context, imageUrl, viewBounds)!!
+    return getBitmapFromUrl(context, imageUrl)!!
   }
 
-  private fun renderUrlIntoView(context: Context, imageUrl: String, imageView: ImageView, viewBounds: AppboyViewBounds?) {
+  private fun renderUrlIntoView(context: Context, imageUrl: String, imageView: ImageView) {
     Glide.with(context)
         .load(imageUrl)
         .apply(mRequestOptions)
         .into(imageView)
   }
 
-  private fun getBitmapFromUrl(context: Context, imageUrl: String, viewBounds: AppboyViewBounds?): Bitmap? {
+  private fun getBitmapFromUrl(context: Context, imageUrl: String): Bitmap? {
     try {
       return Glide.with(context)
           .asBitmap()

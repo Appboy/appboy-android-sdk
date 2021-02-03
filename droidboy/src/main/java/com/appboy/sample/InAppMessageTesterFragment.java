@@ -53,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InAppMessageTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-  protected static final String TAG = AppboyLogger.getAppboyLogTag(InAppMessageTesterFragment.class);
+  protected static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageTesterFragment.class);
 
   private enum HtmlMessageType {
     NO_JS("html_inapp_message_body_no_js.html",

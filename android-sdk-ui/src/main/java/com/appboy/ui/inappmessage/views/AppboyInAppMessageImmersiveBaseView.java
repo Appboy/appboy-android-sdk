@@ -23,7 +23,7 @@ import com.appboy.ui.support.ViewUtils;
 import java.util.List;
 
 public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMessageBaseView implements IInAppMessageImmersiveView {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageImmersiveBaseView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageImmersiveBaseView.class);
 
   public AppboyInAppMessageImmersiveBaseView(Context context, AttributeSet attrs) {
     super(context, attrs);

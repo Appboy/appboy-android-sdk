@@ -28,7 +28,7 @@ import java.util.Set;
 import static com.appboy.sample.R.id.map;
 
 public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMapReadyCallback {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(GeofencesMapActivity.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(GeofencesMapActivity.class);
   private static final String REGISTERED_GEOFENCE_SHARED_PREFS_LOCATION = "com.appboy.support.geofences";
 
   @Override

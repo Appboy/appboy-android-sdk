@@ -8,7 +8,7 @@ import com.appboy.ui.R;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class DefaultCardView extends BaseFeedCardView<Card> {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(DefaultCardView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(DefaultCardView.class);
 
   public DefaultCardView(Context context) {
     this(context, null);

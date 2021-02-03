@@ -14,7 +14,7 @@ import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.support.AppboyLogger;
 
 public class ViewUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(ViewUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(ViewUtils.class);
   private static final int TABLET_SMALLEST_WIDTH_DP = 600;
 
   public static void removeViewFromParent(View view) {

@@ -37,7 +37,7 @@ import com.appboy.ui.R;
 import java.util.List;
 
 public class AppboyNotificationStyleFactory {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationStyleFactory.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationStyleFactory.class);
   /**
    * BigPictureHeight is set in
    * https://android.googlesource.com/platform/frameworks/base/+/6387d2f6dae27ba6e8481883325adad96d3010f4/core/res/res/layout/notification_template_big_picture.xml.

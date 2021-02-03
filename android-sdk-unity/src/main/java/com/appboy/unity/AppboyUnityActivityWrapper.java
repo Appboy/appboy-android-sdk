@@ -14,7 +14,7 @@ import com.appboy.unity.configuration.UnityConfigurationProvider;
  * integrate Braze by calling appropriate methods during each phase of the Android {@link Activity} lifecycle.
  */
 public class AppboyUnityActivityWrapper {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityActivityWrapper.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyUnityActivityWrapper.class);
 
   private UnityConfigurationProvider mUnityConfigurationProvider;
 

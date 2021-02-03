@@ -9,7 +9,7 @@ import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.MessagingUtils;
 
 public class EventSubscriberFactory {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(EventSubscriberFactory.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(EventSubscriberFactory.class);
 
   public static IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber(final UnityConfigurationProvider unityConfigurationProvider) {
     return new IEventSubscriber<InAppMessageEvent>() {

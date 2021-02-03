@@ -28,7 +28,7 @@ import com.appboy.ui.feed.AppboyImageSwitcher;
  */
 @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
 public abstract class BaseCardView<T extends Card> extends RelativeLayout {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(BaseCardView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(BaseCardView.class);
   private static final float SQUARE_ASPECT_RATIO = 1f;
   private static final String ICON_READ_TAG = "icon_read";
   private static final String ICON_UNREAD_TAG = "icon_unread";
@@ -54,7 +54,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       sUnreadCardVisualIndicatorEnabled = mAppboyConfigurationProvider.getIsNewsfeedVisualIndicatorOn();
     }
 
-    mClassLogTag = AppboyLogger.getAppboyLogTag(this.getClass());
+    mClassLogTag = AppboyLogger.getBrazeLogTag(this.getClass());
   }
 
   /**

@@ -15,7 +15,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyFirebaseMessagingService.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyFirebaseMessagingService.class);
 
   @Override
   public void onNewToken(@NonNull String newToken) {

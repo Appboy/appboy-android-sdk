@@ -16,7 +16,6 @@ import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
-import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
 import com.appboy.ui.inappmessage.IInAppMessageImageView;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 import com.appboy.ui.support.ViewUtils;
@@ -25,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseView {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageFullView.class);
-  private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageFullView.class);
+  private InAppMessageImageView mInAppMessageImageView;
   private boolean mIsGraphic;
 
   public AppboyInAppMessageFullView(Context context, AttributeSet attrs) {
@@ -34,8 +33,8 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
   }
 
   public void createAppropriateViews(Activity activity, IInAppMessageImmersive inAppMessage, boolean isGraphic) {
-    mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_full_imageview);
-    setInAppMessageImageViewAttributes(activity, inAppMessage, mAppboyInAppMessageImageView);
+    mInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_full_imageview);
+    setInAppMessageImageViewAttributes(activity, inAppMessage, mInAppMessageImageView);
     mIsGraphic = isGraphic;
   }
 
@@ -113,7 +112,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
 
   @Override
   public ImageView getMessageImageView() {
-    return mAppboyInAppMessageImageView;
+    return mInAppMessageImageView;
   }
 
   @Override

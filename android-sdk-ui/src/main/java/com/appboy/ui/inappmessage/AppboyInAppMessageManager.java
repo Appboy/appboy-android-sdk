@@ -78,7 +78,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 // Static field leak doesn't apply to this singleton since the activity is nullified after the manager is unregistered.
 @SuppressLint("StaticFieldLeak")
 public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBase {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageManager.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageManager.class);
   private static volatile AppboyInAppMessageManager sInstance = null;
 
   private final Stack<IInAppMessage> mInAppMessageStack = new Stack<>();

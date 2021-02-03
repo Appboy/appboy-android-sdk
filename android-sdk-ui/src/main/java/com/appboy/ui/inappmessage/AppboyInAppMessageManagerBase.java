@@ -22,7 +22,7 @@ import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
 
 public class AppboyInAppMessageManagerBase {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageManagerBase.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageManagerBase.class);
 
   private boolean mClickOutsideModalDismissesInAppMessageView = false;
   private boolean mBackButtonDismissesInAppMessageView = true;

@@ -10,7 +10,7 @@ import com.appboy.support.AppboyLogger;
 
 @SuppressWarnings("PMD.DoNotCallSystemExit")
 public class LifecycleUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(LifecycleUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(LifecycleUtils.class);
 
   public static void restartApp(Context context) {
     Intent startActivity = new Intent(context, DroidBoyActivity.class);

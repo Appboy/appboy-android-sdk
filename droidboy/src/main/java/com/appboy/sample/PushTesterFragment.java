@@ -35,7 +35,7 @@ import java.util.Map;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PushTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-  protected static final String TAG = AppboyLogger.getAppboyLogTag(PushTesterFragment.class);
+  protected static final String TAG = AppboyLogger.getBrazeLogTag(PushTesterFragment.class);
   private static final String TITLE = "Title";
   private static final String CONTENT = "Content";
   private static final String BIG_TITLE = "Big Title";

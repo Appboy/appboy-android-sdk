@@ -57,7 +57,7 @@ import io.branch.referral.Branch;
 @SuppressLint({"ApplySharedPref", "ExportedPreferenceActivity"})
 @SuppressWarnings("deprecation")
 public class SettingsPreferencesActivity extends PreferenceActivity {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(SettingsPreferencesActivity.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(SettingsPreferencesActivity.class);
   private static final Map<String, String> API_KEY_TO_APP_MAP;
   private static final int REQUEST_IMAGE_CAPTURE = 271;
   private static final String BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment";

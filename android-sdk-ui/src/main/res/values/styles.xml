@@ -917,7 +917,7 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">marquee</item>
     <item name="android:fadingEdge">horizontal</item>
-    <item name="android:maxLines">1</item>
+    <item name="android:maxLines">2</item>
   </style>
   <style name="Appboy.Push.InlineImage.Image"/>
   <style name="Appboy.Push.InlineImage.Image.ImageContent">

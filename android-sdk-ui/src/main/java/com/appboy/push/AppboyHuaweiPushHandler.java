@@ -12,7 +12,7 @@ import com.appboy.support.BundleUtils;
 import java.util.Map;
 
 public class AppboyHuaweiPushHandler {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyHuaweiPushHandler.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyHuaweiPushHandler.class);
 
   /**
    * Consumes an incoming data payload via Huawei if it originated from Braze. If the data payload did

@@ -20,7 +20,7 @@ import java.util.Locale;
 
 @SuppressWarnings("PMD.FieldDeclarationsShouldBeAtStartOfClass")
 public class FeedCategoriesFragment extends DialogFragment {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(FeedCategoriesFragment.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(FeedCategoriesFragment.class);
   public static final String CATEGORIES_STRING = "categories";
 
   /**

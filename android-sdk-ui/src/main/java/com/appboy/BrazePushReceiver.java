@@ -19,7 +19,7 @@ import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
 public class BrazePushReceiver extends BroadcastReceiver {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(BrazePushReceiver.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(BrazePushReceiver.class);
   private static final String FCM_MESSAGE_TYPE_KEY = "message_type";
   private static final String FCM_DELETED_MESSAGES_KEY = "deleted_messages";
   private static final String FCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";

@@ -32,7 +32,7 @@ import java.util.EnumSet;
 
 @SuppressWarnings({"PMD.UnnecessaryConstructor", "deprecation"})
 public class AppboyXamarinFormsFeedFragment extends android.app.ListFragment implements SwipeRefreshLayout.OnRefreshListener {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyXamarinFormsFeedFragment.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyXamarinFormsFeedFragment.class);
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;
   private static final int MAX_FEED_TTL_SECONDS = 60;
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;

@@ -17,7 +17,7 @@ import com.appboy.support.AppboyLogger;
  * also open the app, which is likely not intended.
  */
 public class AppboyNotificationRoutingActivity extends Activity {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationRoutingActivity.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationRoutingActivity.class);
 
   @Override
   protected void onResume() {

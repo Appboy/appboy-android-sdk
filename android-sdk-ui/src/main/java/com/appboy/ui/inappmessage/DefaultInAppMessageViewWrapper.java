@@ -29,7 +29,7 @@ import com.appboy.ui.support.ViewUtils;
 import java.util.List;
 
 public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(DefaultInAppMessageViewWrapper.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(DefaultInAppMessageViewWrapper.class);
 
   protected final View mInAppMessageView;
   protected final IInAppMessage mInAppMessage;

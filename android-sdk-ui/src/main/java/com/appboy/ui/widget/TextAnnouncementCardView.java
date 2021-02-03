@@ -10,7 +10,7 @@ import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 
 public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementCard> {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(TextAnnouncementCardView.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(TextAnnouncementCardView.class);
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;

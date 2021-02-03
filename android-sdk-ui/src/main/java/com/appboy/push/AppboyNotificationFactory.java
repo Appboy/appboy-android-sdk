@@ -13,7 +13,7 @@ import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.support.AppboyLogger;
 
 public class AppboyNotificationFactory implements IAppboyNotificationFactory {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationFactory.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationFactory.class);
   private static volatile AppboyNotificationFactory sInstance = null;
 
   /**

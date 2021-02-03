@@ -25,7 +25,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.Arrays;
 
 public class DroidboyApplication extends Application {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(DroidboyApplication.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(DroidboyApplication.class);
   private static String sOverrideApiKeyInUse;
 
   public static final String OVERRIDE_API_KEY_PREF_KEY = "override_api_key";

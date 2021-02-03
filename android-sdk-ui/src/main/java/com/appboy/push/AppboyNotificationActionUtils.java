@@ -21,7 +21,7 @@ import com.appboy.ui.AppboyNavigator;
 import java.util.List;
 
 public class AppboyNotificationActionUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationActionUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationActionUtils.class);
 
   /**
    * @deprecated Please use {@link #addNotificationActions(NotificationCompat.Builder, BrazeNotificationPayload)}

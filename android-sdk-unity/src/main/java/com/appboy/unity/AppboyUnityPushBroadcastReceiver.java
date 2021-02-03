@@ -10,7 +10,7 @@ import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.MessagingUtils;
 
 public class AppboyUnityPushBroadcastReceiver extends BroadcastReceiver {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyUnityPushBroadcastReceiver.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyUnityPushBroadcastReceiver.class);
 
   @Override
   public void onReceive(Context context, Intent intent) {

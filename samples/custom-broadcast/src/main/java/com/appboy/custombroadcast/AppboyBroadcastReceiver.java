@@ -13,7 +13,7 @@ import com.appboy.support.AppboyLogger;
 import java.util.concurrent.TimeUnit;
 
 public class AppboyBroadcastReceiver extends BroadcastReceiver {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyBroadcastReceiver.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyBroadcastReceiver.class);
 
   @Override
   public void onReceive(Context context, Intent intent) {

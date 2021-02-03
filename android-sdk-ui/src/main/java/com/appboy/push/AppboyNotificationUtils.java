@@ -47,7 +47,7 @@ import com.appboy.ui.support.UriUtils;
 import org.json.JSONObject;
 
 public class AppboyNotificationUtils {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyNotificationUtils.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationUtils.class);
   private static final String SOURCE_KEY = "source";
 
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";

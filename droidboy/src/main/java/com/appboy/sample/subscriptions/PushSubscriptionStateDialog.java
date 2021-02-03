@@ -11,7 +11,7 @@ import com.appboy.enums.NotificationSubscriptionType;
 import com.appboy.support.AppboyLogger;
 
 public class PushSubscriptionStateDialog extends SubscriptionStateDialogBase {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(PushSubscriptionStateDialog.class);
+  private static final String TAG = AppboyLogger.getBrazeLogTag(PushSubscriptionStateDialog.class);
 
   public PushSubscriptionStateDialog(Context context, AttributeSet attrs) {
     super(context, attrs);

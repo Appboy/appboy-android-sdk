@@ -16,20 +16,19 @@ import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.models.IInAppMessage;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
-import com.appboy.ui.inappmessage.AppboyInAppMessageImageView;
 import com.appboy.ui.support.ViewUtils;
 
 public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
-  private static final String TAG = AppboyLogger.getAppboyLogTag(AppboyInAppMessageSlideupView.class);
-  private AppboyInAppMessageImageView mAppboyInAppMessageImageView;
+  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageSlideupView.class);
+  private InAppMessageImageView mInAppMessageImageView;
 
   public AppboyInAppMessageSlideupView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
   public void applyInAppMessageParameters(IInAppMessage inAppMessage) {
-    mAppboyInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_slideup_imageview);
-    mAppboyInAppMessageImageView.setInAppMessageImageCropType(inAppMessage.getCropType());
+    mInAppMessageImageView = findViewById(R.id.com_appboy_inappmessage_slideup_imageview);
+    mInAppMessageImageView.setInAppMessageImageCropType(inAppMessage.getCropType());
   }
 
   public void setMessageChevron(int color, ClickAction clickAction) {
@@ -82,7 +81,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
 
   @Override
   public ImageView getMessageImageView() {
-    return mAppboyInAppMessageImageView;
+    return mInAppMessageImageView;
   }
 
   @Override
