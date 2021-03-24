@@ -27,7 +27,9 @@ public class AppboyNotificationActionUtils {
    * @deprecated Please use {@link #addNotificationActions(NotificationCompat.Builder, BrazeNotificationPayload)}
    */
   @Deprecated
-  public static void addNotificationActions(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
+  public static void addNotificationActions(Context context,
+                                            NotificationCompat.Builder notificationBuilder,
+                                            Bundle notificationExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
     addNotificationActions(notificationBuilder, payload);
   }
@@ -35,7 +37,8 @@ public class AppboyNotificationActionUtils {
   /**
    * Add notification actions to the provided notification builder.
    */
-  public static void addNotificationActions(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
+  public static void addNotificationActions(@NonNull NotificationCompat.Builder notificationBuilder,
+                                            @NonNull BrazeNotificationPayload payload) {
     if (payload.getContext() == null) {
       AppboyLogger.d(TAG, "Context cannot be null when adding notification buttons.");
       return;
@@ -57,7 +60,6 @@ public class AppboyNotificationActionUtils {
    * receiver when an Braze notification action button is clicked. The FCM/ADM receiver passes on
    * the intent from the notification action button click intent.
    *
-   * @param context
    * @param intent the action button click intent
    */
   public static void handleNotificationActionClicked(Context context, Intent intent) {
@@ -75,7 +77,6 @@ public class AppboyNotificationActionUtils {
 
       if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI) || actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_OPEN)) {
         AppboyNotificationUtils.cancelNotification(context, notificationId);
-        context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_URI) && intent.getExtras().containsKey(Constants.APPBOY_ACTION_URI_KEY)) {
           // Set the deep link that to open to the correct action's deep link.
           intent.putExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY, intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY));
@@ -107,7 +108,10 @@ public class AppboyNotificationActionUtils {
    * @deprecated Please use {@link #addNotificationAction(BrazeNotificationPayload.ActionButton)}
    */
   @Deprecated
-  public static void addNotificationAction(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras, int actionIndex) {
+  public static void addNotificationAction(Context context,
+                                           NotificationCompat.Builder notificationBuilder,
+                                           Bundle notificationExtras,
+                                           int actionIndex) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
     final List<BrazeNotificationPayload.ActionButton> actionButtons = payload.getActionButtons();
     if (actionIndex - 1 > actionButtons.size()) {
@@ -123,8 +127,12 @@ public class AppboyNotificationActionUtils {
                                            @NonNull BrazeNotificationPayload payload,
                                            @NonNull BrazeNotificationPayload.ActionButton actionButton) {
     final Context context = payload.getContext();
-    final Bundle notificationActionExtras = new Bundle(payload.getNotificationExtras());
+    if (context == null) {
+      AppboyLogger.d(TAG, "Cannot add notification action with null context from payload");
+      return;
+    }
 
+    final Bundle notificationActionExtras = new Bundle(payload.getNotificationExtras());
     final int actionIndex = actionButton.getActionIndex();
     notificationActionExtras.putInt(Constants.APPBOY_ACTION_INDEX_KEY, actionIndex);
 
@@ -142,27 +150,28 @@ public class AppboyNotificationActionUtils {
 
     PendingIntent pendingSendIntent;
     Intent sendIntent;
+    final int pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getDefaultPendingIntentFlags();
     if (Constants.APPBOY_PUSH_ACTION_TYPE_NONE.equals(actionType)) {
       // If no action is present, then we don't need the
-      // AppboyNotificationRoutingActivity.class to route us back to an Activity.
+      // trampoline to route us back to an Activity.
       AppboyLogger.v(TAG, "Adding notification action with type: " + actionType
           + " . Setting intent class to notification receiver: "
           + AppboyNotificationUtils.getNotificationReceiverClass());
       sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
       sendIntent.putExtras(notificationActionExtras);
-      pendingSendIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+      pendingSendIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), sendIntent, pendingIntentFlags);
     } else {
       // However, if an action is present, then we need to
-      // route to the AppboyNotificationRoutingActivity to
-      // ensure the user is prompted to open the app on the lockscreen.
+      // route to the trampoline to ensure the user is
+      // prompted to open the app on the lockscreen.
       AppboyLogger.v(TAG, "Adding notification action with type: "
-          + actionType + " Setting intent class to AppboyNotificationRoutingActivity");
+          + actionType + " Setting intent class to trampoline activity");
       sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION)
-          .setClass(context, AppboyNotificationRoutingActivity.class);
+          .setClass(context, NotificationTrampolineActivity.class);
       sendIntent
           .setFlags(sendIntent.getFlags() | AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.NOTIFICATION_ACTION_WITH_DEEPLINK));
       sendIntent.putExtras(notificationActionExtras);
-      pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+      pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, pendingIntentFlags);
     }
 
     NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(0, actionButton.getText(), pendingSendIntent);
@@ -174,7 +183,6 @@ public class AppboyNotificationActionUtils {
   /**
    * Log an action button clicked event. Logging requires a valid campaign Id and action button Id.
    *
-   * @param context
    * @param intent the action button click intent
    */
   public static void logNotificationActionClicked(Context context, Intent intent, String actionType) {

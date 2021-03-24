@@ -1,0 +1,9 @@
+tasks.withType(JavaCompile) {
+  options.deprecation = true
+  options.compilerArgs += ['-Xlint:deprecation']
+
+  // Only print warnings for tests, don't break the build
+  if (!it.name.toLowerCase().contains("debug")) {
+    options.compilerArgs += ['-Werror']
+  }
+}

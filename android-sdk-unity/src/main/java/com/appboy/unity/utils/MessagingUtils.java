@@ -27,13 +27,13 @@ public class MessagingUtils {
 
   public static boolean sendInAppMessageReceivedMessage(String unityGameObjectName, String unityCallbackFunctionName, IInAppMessage inAppMessage) {
     if (StringUtils.isNullOrBlank(unityGameObjectName)) {
-      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration file to receive "
+      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the braze.xml configuration file to receive "
           + "in app messages. Not sending the message to the Unity Player.");
       return false;
     }
     if (StringUtils.isNullOrBlank(unityCallbackFunctionName)) {
       AppboyLogger.d(TAG, "There is no Unity callback method name registered to receive in app messages in "
-          + "the appboy.xml configuration file. Not sending the message to the Unity Player.");
+          + "the braze.xml configuration file. Not sending the message to the Unity Player.");
       return false;
     }
     AppboyLogger.d(TAG, "Sending a message to " + unityGameObjectName + ":" + unityCallbackFunctionName + ".");
@@ -43,13 +43,13 @@ public class MessagingUtils {
 
   public static boolean sendPushMessageToUnity(@Nullable String unityGameObjectName, @Nullable String unityCallbackFunctionName, @NonNull Intent pushIntent, @NonNull String pushAction) {
     if (StringUtils.isNullOrBlank(unityGameObjectName)) {
-      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration file to receive "
+      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the braze.xml configuration file to receive "
           + pushAction + " messages. Not sending the message to the Unity Player.");
       return false;
     }
     if (StringUtils.isNullOrBlank(unityCallbackFunctionName)) {
       AppboyLogger.d(TAG, "There is no Unity callback method name registered to receive " + pushAction + " messages in "
-          + "the appboy.xml configuration file. Not sending the message to the Unity Player.");
+          + "the braze.xml configuration file. Not sending the message to the Unity Player.");
       return false;
     }
     AppboyLogger.v(TAG, "Sending a " + pushAction + " message to " + unityGameObjectName + ":" + unityCallbackFunctionName + ".");
@@ -62,13 +62,13 @@ public class MessagingUtils {
                                                     @Nullable String unityCallbackFunctionName,
                                                     @NonNull FeedUpdatedEvent feedUpdatedEvent) {
     if (StringUtils.isNullOrBlank(unityGameObjectName)) {
-      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration "
+      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the braze.xml configuration "
           + "file to receive feed updates. Not sending the message to the Unity Player.");
       return false;
     }
     if (StringUtils.isNullOrBlank(unityCallbackFunctionName)) {
       AppboyLogger.d(TAG, "There is no Unity callback method name registered to receive feed updates in "
-          + "the appboy.xml configuration file. Not sending the message to the Unity Player.");
+          + "the braze.xml configuration file. Not sending the message to the Unity Player.");
       return false;
     }
 
@@ -93,13 +93,13 @@ public class MessagingUtils {
                                                             @Nullable String unityCallbackFunctionName,
                                                             @NonNull ContentCardsUpdatedEvent contentCardsUpdatedEvent) {
     if (StringUtils.isNullOrBlank(unityGameObjectName)) {
-      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the appboy.xml configuration file "
+      AppboyLogger.d(TAG, "There is no Unity GameObject registered in the braze.xml configuration file "
           + "to receive Content Cards updated event messages. Not sending the message to the Unity Player.");
       return false;
     }
     if (StringUtils.isNullOrBlank(unityCallbackFunctionName)) {
       AppboyLogger.d(TAG, "There is no Unity callback method name registered to receive Content "
-          + "Cards updated event messages in the appboy.xml configuration file. Not sending the message to the Unity Player.");
+          + "Cards updated event messages in the braze.xml configuration file. Not sending the message to the Unity Player.");
       return false;
     }
 

@@ -1,3 +1,16 @@
+## 13.1.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.0)
+
+##### Changed
+- All notifications now route through `NotificationTrampolineActivity` to comply with Android 12 notification trampoline restrictions.
+- Inline Image push is now compatible with the Android 12 notification area changes.
+- Automatic Firebase Messaging registration will now use `FirebaseMessaging.getInstance().getToken()` directly if available.
+- Removed usage of `Intent.ACTION_CLOSE_SYSTEM_DIALOGS` with push notifications.
+
+##### Added
+- Added `getInAppMessageStack()`, `getCarryoverInAppMessage()`, and `getUnregisteredInAppMessage()` to `AppboyInAppMessageManager`.
+
 ## 13.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.0.0)

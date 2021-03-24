@@ -5,7 +5,7 @@ android {
   buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    applicationId "com.appboy.glideimageintegration"
+    applicationId "com.braze.glideimageintegration"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1
@@ -17,7 +17,6 @@ android {
       minifyEnabled true
       signingConfig signingConfigs.debug
       debuggable true
-      useProguard true
     }
   }
 

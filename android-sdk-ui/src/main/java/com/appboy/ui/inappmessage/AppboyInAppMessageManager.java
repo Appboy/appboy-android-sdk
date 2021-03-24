@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
@@ -81,6 +82,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
   private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageManager.class);
   private static volatile AppboyInAppMessageManager sInstance = null;
 
+  @NonNull
   private final Stack<IInAppMessage> mInAppMessageStack = new Stack<>();
   private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new AppboyInAppMessageViewLifecycleListener();
   private final AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
@@ -90,7 +92,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
   @Nullable
   private IInAppMessage mCarryoverInAppMessage;
   @Nullable
-  private IInAppMessage mUnRegisteredInAppMessage;
+  private IInAppMessage mUnregisteredInAppMessage;
   @Nullable
   private Integer mOriginalOrientation;
   @Nullable
@@ -175,10 +177,10 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
       mCarryoverInAppMessage.setAnimateIn(false);
       displayInAppMessage(mCarryoverInAppMessage, true);
       mCarryoverInAppMessage = null;
-    } else if (mUnRegisteredInAppMessage != null) {
+    } else if (mUnregisteredInAppMessage != null) {
       AppboyLogger.d(TAG, "Adding previously unregistered in-app message.");
-      addInAppMessage(mUnRegisteredInAppMessage);
-      mUnRegisteredInAppMessage = null;
+      addInAppMessage(mUnregisteredInAppMessage);
+      mUnregisteredInAppMessage = null;
     }
 
     ensureSubscribedToInAppMessageEvents(mApplicationContext);
@@ -252,7 +254,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
               + "Saving in-app message as unregistered "
               + "in-app message. It will automatically be displayed when the next activity "
               + "registers to receive in-app messages.");
-          mUnRegisteredInAppMessage = mInAppMessageStack.pop();
+          mUnregisteredInAppMessage = mInAppMessageStack.pop();
         } else {
           AppboyLogger.d(TAG, "No activity is currently registered to receive in-app messages and the "
               + "in-app message stack is empty. Doing nothing.");
@@ -349,6 +351,34 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    */
   public boolean getIsCurrentlyDisplayingInAppMessage() {
     return mDisplayingInAppMessage.get();
+  }
+
+  /**
+   * The stack of In-App Messages waiting to be displayed.
+   */
+  @NonNull
+  public Stack<IInAppMessage> getInAppMessageStack() {
+    return mInAppMessageStack;
+  }
+
+  /**
+   * An In-App Message being carried over during the
+   * {@link #unregisterInAppMessageManager(Activity)}
+   * {@link #registerInAppMessageManager(Activity)} transition.
+   */
+  @Nullable
+  public IInAppMessage getCarryoverInAppMessage() {
+    return mCarryoverInAppMessage;
+  }
+
+  /**
+   * An In-App Message that could not display after a
+   * call to {@link #requestDisplayInAppMessage()} due to no
+   * {@link Activity} being registered via {@link #registerInAppMessageManager(Activity)}
+   */
+  @Nullable
+  public IInAppMessage getUnregisteredInAppMessage() {
+    return mUnregisteredInAppMessage;
   }
 
   /**

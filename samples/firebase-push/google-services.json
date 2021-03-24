@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:498092073032:android:0dec0be5e724ad84",
         "android_client_info": {
-          "package_name": "com.appboy.firebasepush"
+          "package_name": "com.braze.firebasepush"
         }
       },
       "oauth_client": [

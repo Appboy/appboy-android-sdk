@@ -7,7 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.push.AppboyNotificationRoutingActivity;
+import com.appboy.push.NotificationTrampolineActivity;
 import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 
@@ -181,8 +181,8 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    */
   private boolean shouldHandleLifecycleMethodsInActivity(Activity activity, boolean forSessionHandling) {
     Class<? extends Activity> activityClass = activity.getClass();
-    if (activityClass.equals(AppboyNotificationRoutingActivity.class)) {
-      AppboyLogger.v(TAG, "Skipping all automatic registration of notification routing activity class");
+    if (activityClass.equals(NotificationTrampolineActivity.class)) {
+      AppboyLogger.v(TAG, "Skipping all automatic registration of notification trampoline activity class");
       // Always ignore
       return false;
     }

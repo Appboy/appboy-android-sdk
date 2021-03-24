@@ -2,6 +2,7 @@ package com.appboy;
 
 import android.content.Context;
 
+import com.appboy.push.NotificationTrampolineActivity;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
@@ -17,7 +18,7 @@ public interface IAppboyNavigator {
      */
     NOTIFICATION_ACTION_WITH_DEEPLINK,
     /**
-     * Used when generating the intent to the {@link com.appboy.push.AppboyNotificationRoutingActivity}
+     * Used when generating the intent to the {@link NotificationTrampolineActivity}
      * on a Push Story page traversal.
      */
     NOTIFICATION_PUSH_STORY_PAGE_CLICK,

@@ -187,12 +187,12 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     // Only handle ADM registration events if ADM registration handling is turned on in the
     // configuration file.
     if (appConfigurationProvider.isAdmMessagingRegistrationEnabled()) {
-      AppboyLogger.d(TAG, "ADM enabled in appboy.xml. Continuing to process ADM registration intent.");
+      AppboyLogger.d(TAG, "ADM enabled in braze.xml. Continuing to process ADM registration intent.");
       handleRegistrationIntent(context, intent);
       return true;
     }
-    AppboyLogger.w(TAG, "ADM not enabled in appboy.xml. Ignoring ADM registration intent. Note: you must set "
-        + "com_appboy_push_adm_messaging_registration_enabled to true in your appboy.xml to enable ADM.");
+    AppboyLogger.w(TAG, "ADM not enabled in braze.xml. Ignoring ADM registration intent. Note: you must set "
+        + "com_appboy_push_adm_messaging_registration_enabled to true in your braze.xml to enable ADM.");
     return false;
   }
 

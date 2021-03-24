@@ -41,11 +41,11 @@ import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.feed.AppboyFeedManager;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.mlkit.vision.barcode.Barcode;
+import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.common.InputImage;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -69,8 +69,8 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
 
   static {
     Map<String, String> keyToAppMap = new HashMap<>();
-    keyToAppMap.put("da8f263e-1483-4e9f-ac0c-7b40030c8f40","App: Droidboy, App group: Stopwatch & Droidboy, Company: Braze");
-    keyToAppMap.put("ecb81855-149f-465c-bab0-0254d6512133","App: Fire OS Droidboy, App group: Stopwatch & Droidboy, Company: Braze");
+    keyToAppMap.put("da8f263e-1483-4e9f-ac0c-7b40030c8f40", "App: Droidboy, App group: Stopwatch & Droidboy, Company: Braze");
+    keyToAppMap.put("ecb81855-149f-465c-bab0-0254d6512133", "App: Fire OS Droidboy, App group: Stopwatch & Droidboy, Company: Braze");
     API_KEY_TO_APP_MAP = Collections.unmodifiableMap(keyToAppMap);
   }
 
@@ -430,22 +430,21 @@ public class SettingsPreferencesActivity extends PreferenceActivity {
 
   private void analyzeBitmapForEnvironmentBarcode(final Bitmap bitmap) {
     // Build the barcode detector
-    FirebaseVisionBarcodeDetectorOptions options =
-        new FirebaseVisionBarcodeDetectorOptions.Builder()
+    BarcodeScannerOptions options =
+        new BarcodeScannerOptions.Builder()
             .setBarcodeFormats(
-                FirebaseVisionBarcode.FORMAT_QR_CODE)
+                Barcode.FORMAT_QR_CODE)
             .build();
 
-    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-    FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
-        .getVisionBarcodeDetector(options);
+    InputImage image = InputImage.fromBitmap(bitmap, 0);
+    BarcodeScanner scanner = BarcodeScanning.getClient();
 
-    detector.detectInImage(image)
+    scanner.process(image)
         .addOnSuccessListener(barcodes -> {
           if (barcodes.isEmpty()) {
             showToast("Couldn't find barcode. Please try again!");
           } else {
-            for (FirebaseVisionBarcode barcode : barcodes) {
+            for (Barcode barcode : barcodes) {
               final String rawValue = barcode.getRawValue();
               if (rawValue.startsWith(BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH)) {
                 showToast("Found barcode: " + rawValue);

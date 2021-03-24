@@ -46,7 +46,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     super(context);
     mContext = context.getApplicationContext();
 
-    // Read the setting from the appboy.xml if we don't already have a value.
+    // Read the setting from the braze.xml if we don't already have a value.
     if (mAppboyConfigurationProvider == null) {
       mAppboyConfigurationProvider = new AppboyConfigurationProvider(context);
     }

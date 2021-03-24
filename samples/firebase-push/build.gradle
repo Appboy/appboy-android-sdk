@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply from: rootProject.file("config/quality/break-compile-on-deprecations.gradle")
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    applicationId "com.appboy.firebasepush"
+    applicationId "com.braze.firebasepush"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1

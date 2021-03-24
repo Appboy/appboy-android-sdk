@@ -10,6 +10,7 @@ dependencies {
   implementation "androidx.recyclerview:recyclerview:${ANDROIDX_RECYCLERVIEW_VERSION}"
   implementation "androidx.swiperefreshlayout:swiperefreshlayout:${ANDROIDX_SWIPE_REFRESH_LAYOUT_VERSION}"
   implementation "androidx.webkit:webkit:${ANDROIDX_WEBKIT_VERSION}"
+  implementation "androidx.appcompat:appcompat:${ANDROIDX_APPCOMPAT_VERSION}"
 
   // Required for the FirebaseMessagingService
   compileOnly "com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}"

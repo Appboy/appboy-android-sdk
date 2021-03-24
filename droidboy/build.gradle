@@ -16,7 +16,7 @@ dependencies {
 
   implementation "com.google.firebase:firebase-core:${FIREBASE_CORE_VERSION}"
   implementation "com.google.firebase:firebase-messaging:${FIREBASE_PUSH_MESSAGING_VERSION}"
-  implementation "com.google.firebase:firebase-ml-vision:${FIREBASE_ML_VISION}"
+  implementation "com.google.android.gms:play-services-mlkit-barcode-scanning:${GOOGLE_ML_VISION_BARCODE}"
   implementation "com.google.firebase:firebase-crashlytics:${FIREBASE_CRASHLYTICS_VERSION}"
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${KOTLIN_STDLIB_JDK7_VERSION}"

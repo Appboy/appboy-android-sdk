@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:170050408521:android:8a8dfe7c9b7c0bdc306f98",
         "android_client_info": {
-          "package_name": "com.appboy.googletagmanager"
+          "package_name": "com.braze.googletagmanager"
         }
       },
       "oauth_client": [

@@ -132,8 +132,9 @@ public class AppboyNotificationUtils {
       UriAction uriAction = ActionFactory.createUriActionFromUrlString(deepLink, extras, useWebView, Channel.PUSH);
       AppboyNavigator.getAppboyNavigator().gotoUri(context, uriAction);
     } else {
-      AppboyLogger.d(TAG, "Push notification had no deep link. Opening main activity.");
-      context.startActivity(UriUtils.getMainActivityIntent(context, extras));
+      final Intent mainActivityIntent = UriUtils.getMainActivityIntent(context, extras);
+      AppboyLogger.d(TAG, "Push notification had no deep link. Opening main activity: " + mainActivityIntent);
+      context.startActivity(mainActivityIntent);
     }
   }
 
@@ -228,7 +229,8 @@ public class AppboyNotificationUtils {
     cancelIntent.setAction(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION);
     cancelIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
 
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    final int flags = PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getDefaultPendingIntentFlags();
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, flags);
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     if (durationInMillis >= Constants.APPBOY_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
       AppboyLogger.d(TAG, "Setting Notification duration alarm for " + durationInMillis + " ms");
@@ -475,7 +477,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Sets the icon used in the notification bar itself.
-   * If a drawable defined in appboy.xml is found, we use that. Otherwise, fall back to the application icon.
+   * If a drawable defined in braze.xml is found, we use that. Otherwise, fall back to the application icon.
    *
    * @return the resource id of the small icon to be used.
    */
@@ -526,7 +528,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Set large icon. We use the large icon URL if it exists in the notificationExtras.
-   * Otherwise we search for a drawable defined in appboy.xml. If that doesn't exists, we do nothing.
+   * Otherwise we search for a drawable defined in braze.xml. If that doesn't exists, we do nothing.
    * <p/>
    *
    * @return whether a large icon was successfully set.
@@ -667,7 +669,7 @@ public class AppboyNotificationUtils {
 
   /**
    * Set accent color for devices on Lollipop and above. We use the push-specific accent color if it exists in the notificationExtras,
-   * otherwise we search for a default set in appboy.xml or don't set the color at all (and the system notification gray
+   * otherwise we search for a default set in braze.xml or don't set the color at all (and the system notification gray
    * default is used).
    * <p/>
    * Supported Lollipop+.
@@ -1067,7 +1069,6 @@ public class AppboyNotificationUtils {
         // Otherwise, remove any existing deep links.
         intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
       }
-      context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
       AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
 
       AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
@@ -1164,11 +1165,12 @@ public class AppboyNotificationUtils {
    * @param notificationExtras The extras to set for the {@link PendingIntent}, if not null
    */
   private static PendingIntent getPushActionPendingIntent(Context context, String action, Bundle notificationExtras) {
-    Intent pushActionIntent = new Intent(action).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
+    Intent pushActionIntent = new Intent(action).setClass(context, NotificationTrampolineActivity.class);
     if (notificationExtras != null) {
       pushActionIntent.putExtras(notificationExtras);
     }
-    return PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushActionIntent, PendingIntent.FLAG_ONE_SHOT);
+    final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getDefaultPendingIntentFlags();
+    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), pushActionIntent, flags);
   }
 
   /**

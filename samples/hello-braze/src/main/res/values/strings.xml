@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string translatable="false" name="app_name">Hello Braze</string>
+
+  <string translatable="false" name="high_score_nickname_hint">nickname</string>
+  <string translatable="false" name="high_score_hint">score</string>
+  <string translatable="false" name="high_score_submit_hint">Submit</string>
+  <string translatable="false" name="instructions_body">Submit a nickname with your high score.</string>
+  <string translatable="false" name="user_id_hint">Set a User Id</string>
+</resources>

@@ -927,4 +927,50 @@
     <item name="android:contentDescription">@null</item>
     <item name="android:scaleType">fitXY</item>
   </style>
+  <style name="Braze.PushTrampoline.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:backgroundDimEnabled">false</item>
+  </style>
+
+  <!-- Constrained Inline Image Push -->
+  <style name="Appboy.Push.InlineImageConstrained"/>
+  <style name="Appboy.Push.InlineImageConstrained.Layout">
+    <item name="android:orientation">horizontal</item>
+    <item name="android:weightSum">@dimen/com_appboy_push_inline_image_total_weight_sum</item>
+  </style>
+  <style name="Appboy.Push.InlineImageConstrained.TextArea"/>
+  <style name="Appboy.Push.InlineImageConstrained.TextArea.Layout">
+    <item name="android:layout_weight">@dimen/com_appboy_push_inline_image_total_weight_sum</item>
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:layout_marginLeft">16dp</item>
+  </style>
+  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent"/>
+  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent.Layout">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginRight">16dp</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent.TitleText" parent="@style/TextAppearance.Compat.Notification.Title">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:fadingEdge">horizontal</item>
+    <item name="android:gravity">start</item>
+    <item name="android:singleLine">true</item>
+  </style>
+  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent.ContentText" parent="@style/TextAppearance.Compat.Notification">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:ellipsize">marquee</item>
+    <item name="android:fadingEdge">horizontal</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:textSize">12sp</item>
+  </style>
 </resources>

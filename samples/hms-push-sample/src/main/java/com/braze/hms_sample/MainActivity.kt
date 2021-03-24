@@ -14,6 +14,7 @@ import com.appboy.Appboy
 import com.appboy.AppboyUser
 import com.appboy.events.SimpleValueCallback
 import com.appboy.support.AppboyLogger
+import com.appboy.support.IntentUtils
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.aaid.HmsInstanceId
 import kotlin.concurrent.thread
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
   private fun restartApp(context: Context) {
     val startActivity = Intent(this, MainActivity::class.java)
     val pendingIntentId = 109829837
-    val pendingIntent = PendingIntent.getActivity(context, pendingIntentId, startActivity, PendingIntent.FLAG_CANCEL_CURRENT)
+    val pendingIntent = PendingIntent.getActivity(context, pendingIntentId, startActivity, PendingIntent.FLAG_CANCEL_CURRENT or IntentUtils.getDefaultPendingIntentFlags())
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager[AlarmManager.RTC, System.currentTimeMillis() + 1000] = pendingIntent
     AppboyLogger.i(TAG, "Restarting application to apply new environment values")

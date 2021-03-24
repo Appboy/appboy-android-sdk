@@ -29,13 +29,11 @@ android {
       minifyEnabled false
       signingConfig signingConfigs.release
       debuggable true
-      useProguard false
     }
     release {
       minifyEnabled false
       signingConfig signingConfigs.release
       debuggable true
-      useProguard false
     }
   }
 

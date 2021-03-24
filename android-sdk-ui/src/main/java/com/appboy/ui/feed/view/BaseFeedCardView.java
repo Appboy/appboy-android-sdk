@@ -35,7 +35,7 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
       mImageSwitcher.setFactory(() -> new ImageView(mContext.getApplicationContext()));
     }
 
-    // If the visual indicator on cards shouldn't be on, due to the xml setting in appboy.xml, then set the
+    // If the visual indicator on cards shouldn't be on, due to the xml setting in braze.xml, then set the
     // imageSwitcher to GONE to hide the indicator UI.
     // If the setting is false, then hide the indicator.
     if (!isUnreadIndicatorEnabled()) {

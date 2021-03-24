@@ -12,7 +12,7 @@ Successful marketing automation is essential to the future of your mobile app. B
 
 - The Braze Android SDK supports Android 4.1+ / API 16+ (Jelly Bean and up).
 - Last Target SDK Version: 30
-- Last Compiled Firebase Cloud Messaging Version: 20.2.4
+- Last Compiled Firebase Cloud Messaging Version: +
 - Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
 - Braze requires a custom [IAppboyImageLoader](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) to display animated `gif` images.
 
@@ -36,7 +36,7 @@ repositories {
 
 ```
 dependencies {
-   implementation 'com.appboy:android-sdk-ui:13.0.+'
+   implementation 'com.appboy:android-sdk-ui:13.1.+'
    ...
 }
 ```
@@ -55,7 +55,7 @@ repositories {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:13.0.+'
+  implementation 'com.appboy:android-sdk-ui:13.1.+'
 }
 ```
 

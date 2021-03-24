@@ -225,9 +225,10 @@ public class AppboyNotificationStyleFactory {
       AppboyLogger.d(TAG, "Inline Image Push failed to get image bitmap");
       return null;
     }
-    RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.com_appboy_notification_inline_image);
+    final boolean isNotificationSpaceConstrained = isRemoteViewNotificationAvailableSpaceConstrained(context);
+    RemoteViews remoteView = new RemoteViews(context.getPackageName(),
+        isNotificationSpaceConstrained ? R.layout.com_appboy_notification_inline_image_constrained : R.layout.com_appboy_notification_inline_image);
     AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
-    remoteView.setImageViewBitmap(R.id.com_appboy_inline_image_push_side_image, largeNotificationBitmap);
 
     // Set the app icon drawable
     final Icon appIcon = Icon.createWithResource(context, configurationProvider.getSmallNotificationIconResourceId());
@@ -260,12 +261,19 @@ public class AppboyNotificationStyleFactory {
     // Set the text area content
     String content = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
     remoteView.setTextViewText(R.id.com_appboy_inline_image_push_content_text, HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, content));
-
     notificationBuilder.setCustomContentView(remoteView);
-    AppboyLogger.v(TAG, "Inline Image Push full rendering finished");
-    // Since this is entirely custom, no decorated
-    // style is returned to the system.
-    return new NoOpSentinelStyle();
+
+    if (isNotificationSpaceConstrained) {
+      // On Android 12 and above, the custom image view we had
+      // just can't render the same way so we'll fake it with a large icon
+      notificationBuilder.setLargeIcon(largeNotificationBitmap);
+      return new NotificationCompat.DecoratedCustomViewStyle();
+    } else {
+      remoteView.setImageViewBitmap(R.id.com_appboy_inline_image_push_side_image, largeNotificationBitmap);
+      // Since this is entirely custom, no decorated
+      // style is returned to the system.
+      return new NoOpSentinelStyle();
+    }
   }
 
   /**
@@ -347,14 +355,14 @@ public class AppboyNotificationStyleFactory {
   private static PendingIntent createStoryPageClickedPendingIntent(@NonNull Context context,
                                                                    @NonNull BrazeNotificationPayload.PushStoryPage pushStoryPage) {
     Intent storyClickedIntent = new Intent(Constants.APPBOY_STORY_CLICKED_ACTION)
-        .setClass(context, AppboyNotificationRoutingActivity.class);
+        .setClass(context, NotificationTrampolineActivity.class);
     storyClickedIntent
         .setFlags(storyClickedIntent.getFlags() | AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.NOTIFICATION_PUSH_STORY_PAGE_CLICK));
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_URI_KEY, pushStoryPage.getDeeplink());
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY, pushStoryPage.getUseWebview());
     storyClickedIntent.putExtra(Constants.APPBOY_STORY_PAGE_ID, pushStoryPage.getStoryPageId());
     storyClickedIntent.putExtra(Constants.APPBOY_CAMPAIGN_ID, pushStoryPage.getCampaignId());
-    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), storyClickedIntent, 0);
+    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), storyClickedIntent, IntentUtils.getDefaultPendingIntentFlags());
   }
 
   private static PendingIntent createStoryTraversedPendingIntent(Context context, Bundle notificationExtras, int pageIndex) {
@@ -364,10 +372,11 @@ public class AppboyNotificationStyleFactory {
       notificationExtras.putInt(Constants.APPBOY_STORY_INDEX_KEY, pageIndex);
       storyNextClickedIntent.putExtras(notificationExtras);
     }
+    final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getDefaultPendingIntentFlags();
     return PendingIntent.getBroadcast(context,
         IntentUtils.getRequestCode(),
         storyNextClickedIntent,
-        PendingIntent.FLAG_ONE_SHOT);
+        flags);
   }
 
   /**
@@ -469,5 +478,16 @@ public class AppboyNotificationStyleFactory {
    */
   private static class NoOpSentinelStyle extends NotificationCompat.Style {
 
+  }
+
+  /**
+   * On an Android 12 device and app targeting Android 12, the available space to
+   * a {@link RemoteViews} notification is significantly reduced.
+   */
+  private static boolean isRemoteViewNotificationAvailableSpaceConstrained(Context context) {
+    // TODO: juliancontreras 2/19/2021 Remove this codename check after Android 12 stability milestone
+    // Check that the device is on Android 12+ && the app is targeting Android 12+
+    return (Build.VERSION.CODENAME.equals("S") || Build.VERSION.SDK_INT > Build.VERSION_CODES.R)
+        && context.getApplicationContext().getApplicationInfo().targetSdkVersion > Build.VERSION_CODES.R;
   }
 }
