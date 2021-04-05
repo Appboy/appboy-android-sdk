@@ -1,3 +1,10 @@
+## 13.1.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.1)
+
+##### Fixed
+- Fixed an issue with the `NotificationTrampolineActivity` being opened on notification delete intents.
+
 ## 13.1.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.0)
