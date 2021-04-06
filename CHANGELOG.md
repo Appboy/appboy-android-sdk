@@ -1,3 +1,10 @@
+## 13.1.2
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.2)
+
+##### Changed
+- Changed the `NotificationTrampolineActivity` to always call `finish()` regardless of any eventual deeplink handling by the host app or SDK.
+
 ## 13.1.1
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.1)
