@@ -14,6 +14,9 @@
 
 ## 13.1.0
 
+##### Known Issues with version 13.1.0
+Dismissing notifications with the application open can result in the transparent `NotificationTrampolineActivity` to remain at the top of the application back-stack and appear to hang the application. It is advised to update to version 13.1.2 of the SDK instead of this version.
+
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.0)
 
 ##### Changed
