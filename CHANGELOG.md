@@ -1,13 +1,13 @@
 ## 13.1.2
 
-[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.2)
+Released on April 6th, 2021
 
 ##### Changed
 - Changed the `NotificationTrampolineActivity` to always call `finish()` regardless of any eventual deeplink handling by the host app or SDK.
 
 ## 13.1.1
 
-[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.1)
+Released on April 5th, 2021
 
 ##### Fixed
 - Fixed an issue with the `NotificationTrampolineActivity` being opened on notification delete intents.
