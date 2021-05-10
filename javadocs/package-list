@@ -10,9 +10,7 @@ com.appboy.models.outgoing
 com.appboy.models.push
 com.appboy.push
 com.appboy.push.support
-com.appboy.receivers
 com.appboy.services
-com.appboy.storage
 com.appboy.support
 com.appboy.ui
 com.appboy.ui.actions
@@ -34,3 +32,11 @@ com.appboy.ui.inappmessage.listeners
 com.appboy.ui.inappmessage.views
 com.appboy.ui.support
 com.appboy.ui.widget
+com.braze
+com.braze.configuration
+com.braze.enums
+com.braze.images
+com.braze.models
+com.braze.receivers
+com.braze.storage
+com.braze.support
