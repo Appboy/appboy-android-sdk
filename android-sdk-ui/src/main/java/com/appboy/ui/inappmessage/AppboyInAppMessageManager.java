@@ -13,21 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.Appboy;
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.inappmessage.InAppMessageFailureType;
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.events.InAppMessageEvent;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageImmersiveBase;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.JsonUtils;
 import com.appboy.ui.inappmessage.listeners.AppboyInAppMessageViewLifecycleListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlBaseView;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -79,7 +79,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 // Static field leak doesn't apply to this singleton since the activity is nullified after the manager is unregistered.
 @SuppressLint("StaticFieldLeak")
 public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBase {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageManager.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageManager.class);
   private static volatile AppboyInAppMessageManager sInstance = null;
 
   @NonNull
@@ -96,7 +96,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
   @Nullable
   private Integer mOriginalOrientation;
   @Nullable
-  private AppboyConfigurationProvider mAppboyConfigurationProvider;
+  private BrazeConfigurationProvider mConfigurationProvider;
   @Nullable
   private IInAppMessageViewWrapper mInAppMessageViewWrapper;
 
@@ -129,12 +129,12 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    */
   public void ensureSubscribedToInAppMessageEvents(Context context) {
     if (mInAppMessageEventSubscriber != null) {
-      AppboyLogger.d(TAG, "Removing existing in-app message event subscriber before subscribing new one.");
-      Appboy.getInstance(context).removeSingleSubscription(mInAppMessageEventSubscriber, InAppMessageEvent.class);
+      BrazeLogger.d(TAG, "Removing existing in-app message event subscriber before subscribing new one.");
+      Braze.getInstance(context).removeSingleSubscription(mInAppMessageEventSubscriber, InAppMessageEvent.class);
     }
-    AppboyLogger.d(TAG, "Subscribing in-app message event subscriber");
+    BrazeLogger.d(TAG, "Subscribing in-app message event subscriber");
     mInAppMessageEventSubscriber = createInAppMessageEventSubscriber();
-    Appboy.getInstance(context).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
+    Braze.getInstance(context).subscribeToNewInAppMessages(mInAppMessageEventSubscriber);
   }
 
   /**
@@ -151,10 +151,10 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    */
   public void registerInAppMessageManager(Activity activity) {
     if (activity == null) {
-      AppboyLogger.w(TAG, "Null Activity passed to registerInAppMessageManager. Doing nothing");
+      BrazeLogger.w(TAG, "Null Activity passed to registerInAppMessageManager. Doing nothing");
       return;
     } else {
-      AppboyLogger.v(TAG, "Registering InAppMessageManager with activity: " + activity.getLocalClassName());
+      BrazeLogger.v(TAG, "Registering InAppMessageManager with activity: " + activity.getLocalClassName());
     }
 
     // We need the current Activity so that we can inflate or programmatically create the in-app message
@@ -166,19 +166,19 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
       // from Braze initialization).
       mApplicationContext = mActivity.getApplicationContext();
     }
-    if (mAppboyConfigurationProvider == null) {
-      mAppboyConfigurationProvider = new AppboyConfigurationProvider(mApplicationContext);
+    if (mConfigurationProvider == null) {
+      mConfigurationProvider = new BrazeConfigurationProvider(mApplicationContext);
     }
 
     // We have a special check to see if the host app switched to a different Activity (or recreated
     // the same Activity during an orientation change) so that we can redisplay the in-app message.
     if (mCarryoverInAppMessage != null) {
-      AppboyLogger.d(TAG, "Requesting display of carryover in-app message.");
+      BrazeLogger.d(TAG, "Requesting display of carryover in-app message.");
       mCarryoverInAppMessage.setAnimateIn(false);
       displayInAppMessage(mCarryoverInAppMessage, true);
       mCarryoverInAppMessage = null;
     } else if (mUnregisteredInAppMessage != null) {
-      AppboyLogger.d(TAG, "Adding previously unregistered in-app message.");
+      BrazeLogger.d(TAG, "Adding previously unregistered in-app message.");
       addInAppMessage(mUnregisteredInAppMessage);
       mUnregisteredInAppMessage = null;
     }
@@ -194,9 +194,9 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
   public void unregisterInAppMessageManager(Activity activity) {
     if (activity == null) {
       // The activity is not needed to unregister so we can continue unregistration with it being null.
-      AppboyLogger.w(TAG, "Null Activity passed to unregisterInAppMessageManager.");
+      BrazeLogger.w(TAG, "Null Activity passed to unregisterInAppMessageManager.");
     } else {
-      AppboyLogger.v(TAG, "Unregistering InAppMessageManager from activity: " + activity.getLocalClassName());
+      BrazeLogger.v(TAG, "Unregistering InAppMessageManager from activity: " + activity.getLocalClassName());
     }
 
     // If there is an in-app message being displayed when the host app transitions to another Activity (or
@@ -205,7 +205,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
     if (mInAppMessageViewWrapper != null) {
       final View inAppMessageView = mInAppMessageViewWrapper.getInAppMessageView();
       if (inAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
-        AppboyLogger.d(TAG, "In-app message view includes HTML. Removing the page finished listener.");
+        BrazeLogger.d(TAG, "In-app message view includes HTML. Removing the page finished listener.");
         final AppboyInAppMessageHtmlBaseView appboyInAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) inAppMessageView;
         appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(null);
       }
@@ -250,23 +250,23 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
     try {
       if (mActivity == null) {
         if (!mInAppMessageStack.empty()) {
-          AppboyLogger.w(TAG, "No activity is currently registered to receive in-app messages. "
+          BrazeLogger.w(TAG, "No activity is currently registered to receive in-app messages. "
               + "Saving in-app message as unregistered "
               + "in-app message. It will automatically be displayed when the next activity "
               + "registers to receive in-app messages.");
           mUnregisteredInAppMessage = mInAppMessageStack.pop();
         } else {
-          AppboyLogger.d(TAG, "No activity is currently registered to receive in-app messages and the "
+          BrazeLogger.d(TAG, "No activity is currently registered to receive in-app messages and the "
               + "in-app message stack is empty. Doing nothing.");
         }
         return false;
       }
       if (mDisplayingInAppMessage.get()) {
-        AppboyLogger.d(TAG, "A in-app message is currently being displayed. Ignoring request to display in-app message.");
+        BrazeLogger.d(TAG, "A in-app message is currently being displayed. Ignoring request to display in-app message.");
         return false;
       }
       if (mInAppMessageStack.isEmpty()) {
-        AppboyLogger.d(TAG, "The in-app message stack is empty. No in-app message will be displayed.");
+        BrazeLogger.d(TAG, "The in-app message stack is empty. No in-app message will be displayed.");
         return false;
       }
 
@@ -276,26 +276,26 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
       if (!inAppMessage.isControl()) {
         inAppMessageOperation = getInAppMessageManagerListener().beforeInAppMessageDisplayed(inAppMessage);
       } else {
-        AppboyLogger.d(TAG, "Using the control in-app message manager listener.");
+        BrazeLogger.d(TAG, "Using the control in-app message manager listener.");
         inAppMessageOperation = getControlInAppMessageManagerListener().beforeInAppMessageDisplayed(inAppMessage);
       }
 
       switch (inAppMessageOperation) {
         case DISPLAY_NOW:
-          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_NOW. The "
+          BrazeLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_NOW. The "
               + "in-app message will be displayed.");
           break;
         case DISPLAY_LATER:
-          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_LATER. The "
+          BrazeLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISPLAY_LATER. The "
               + "in-app message will be pushed back onto the stack.");
           mInAppMessageStack.push(inAppMessage);
           return false;
         case DISCARD:
-          AppboyLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISCARD. The "
+          BrazeLogger.d(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned DISCARD. The "
               + "in-app message will not be displayed and will not be put back on the stack.");
           return false;
         default:
-          AppboyLogger.w(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a "
+          BrazeLogger.w(TAG, "The IInAppMessageManagerListener method beforeInAppMessageDisplayed returned null instead of a "
               + "InAppMessageOperation. Ignoring the in-app message. Please check the IInAppMessageStackBehaviour "
               + "implementation.");
           return false;
@@ -305,7 +305,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
       BackgroundInAppMessagePreparer.prepareInAppMessageForDisplay(mainLooperHandler, inAppMessage);
       return true;
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error running requestDisplayInAppMessage", e);
+      BrazeLogger.e(TAG, "Error running requestDisplayInAppMessage", e);
       return false;
     }
   }
@@ -336,11 +336,11 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    * orientation before the last in-app message was displayed.
    */
   public void resetAfterInAppMessageClose() {
-    AppboyLogger.v(TAG, "Resetting after in-app message close.");
+    BrazeLogger.v(TAG, "Resetting after in-app message close.");
     mInAppMessageViewWrapper = null;
     mDisplayingInAppMessage.set(false);
     if (mActivity != null && mOriginalOrientation != null) {
-      AppboyLogger.d(TAG, "Setting requested orientation to original orientation " + mOriginalOrientation);
+      BrazeLogger.d(TAG, "Setting requested orientation to original orientation " + mOriginalOrientation);
       ViewUtils.setActivityRequestedOrientation(mActivity, mOriginalOrientation);
       mOriginalOrientation = null;
     }
@@ -388,12 +388,12 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
    * @param isCarryOver If this {@link IInAppMessage} is "carried over" from an {@link Activity} transition.
    */
   void displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
-    AppboyLogger.v(TAG, "Attempting to display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()));
+    BrazeLogger.v(TAG, "Attempting to display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()));
 
     // Note: for mDisplayingInAppMessage to be accurate it requires this method does not exit anywhere but the at the end
     // of this try/catch when we know whether we are successfully displaying the in-app message or not.
     if (!mDisplayingInAppMessage.compareAndSet(false, true)) {
-      AppboyLogger.d(TAG, "A in-app message is currently being displayed. Adding in-app message back on the stack.");
+      BrazeLogger.d(TAG, "A in-app message is currently being displayed. Adding in-app message back on the stack.");
       mInAppMessageStack.push(inAppMessage);
       return;
     }
@@ -413,10 +413,10 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
                 + inAppMessageExpirationTimestamp + ". Current time: " + currentTimeMillis);
           }
         } else {
-          AppboyLogger.d(TAG, "Expiration timestamp not defined. Continuing.");
+          BrazeLogger.d(TAG, "Expiration timestamp not defined. Continuing.");
         }
       } else {
-        AppboyLogger.d(TAG, "Not checking expiration status for carry-over in-app message.");
+        BrazeLogger.d(TAG, "Not checking expiration status for carry-over in-app message.");
       }
       if (!verifyOrientationStatus(inAppMessage)) {
         // No display failure gets logged here since control in-app messages would also be affected.
@@ -426,7 +426,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
       // At this point, the only factors that would inhibit in-app message display are view creation issues.
       // Since control in-app messages have no view, this is the end of execution for control in-app messages
       if (inAppMessage.isControl()) {
-        AppboyLogger.d(TAG, "Not displaying control in-app message. Logging impression and ending display execution.");
+        BrazeLogger.d(TAG, "Not displaying control in-app message. Logging impression and ending display execution.");
         inAppMessage.logImpression();
         resetAfterInAppMessageClose();
         return;
@@ -458,7 +458,7 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
       IInAppMessageViewWrapperFactory viewWrapperFactory = getInAppMessageViewWrapperFactory();
 
       if (inAppMessageView instanceof IInAppMessageImmersiveView) {
-        AppboyLogger.d(TAG, "Creating view wrapper for immersive in-app message.");
+        BrazeLogger.d(TAG, "Creating view wrapper for immersive in-app message.");
         IInAppMessageImmersiveView inAppMessageViewImmersive = (IInAppMessageImmersiveView) inAppMessageView;
         InAppMessageImmersiveBase inAppMessageImmersiveBase = (InAppMessageImmersiveBase) inAppMessage;
 
@@ -466,28 +466,28 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
         mInAppMessageViewWrapper = viewWrapperFactory.createInAppMessageViewWrapper(inAppMessageView,
             inAppMessage,
             mInAppMessageViewLifecycleListener,
-            mAppboyConfigurationProvider,
+            mConfigurationProvider,
             openingAnimation,
             closingAnimation,
             inAppMessageViewImmersive.getMessageClickableView(),
             inAppMessageViewImmersive.getMessageButtonViews(numButtons),
             inAppMessageViewImmersive.getMessageCloseButtonView());
       } else if (inAppMessageView instanceof IInAppMessageView) {
-        AppboyLogger.d(TAG, "Creating view wrapper for base in-app message.");
+        BrazeLogger.d(TAG, "Creating view wrapper for base in-app message.");
         IInAppMessageView inAppMessageViewBase = (IInAppMessageView) inAppMessageView;
         mInAppMessageViewWrapper = viewWrapperFactory.createInAppMessageViewWrapper(inAppMessageView,
             inAppMessage,
             mInAppMessageViewLifecycleListener,
-            mAppboyConfigurationProvider,
+            mConfigurationProvider,
             openingAnimation,
             closingAnimation,
             inAppMessageViewBase.getMessageClickableView());
       } else {
-        AppboyLogger.d(TAG, "Creating view wrapper for in-app message.");
+        BrazeLogger.d(TAG, "Creating view wrapper for in-app message.");
         mInAppMessageViewWrapper = viewWrapperFactory.createInAppMessageViewWrapper(inAppMessageView,
             inAppMessage,
             mInAppMessageViewLifecycleListener,
-            mAppboyConfigurationProvider,
+            mConfigurationProvider,
             openingAnimation,
             closingAnimation,
             inAppMessageView);
@@ -495,23 +495,23 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
 
       // If this message includes HTML, delay display until the content has finished loading
       if (inAppMessageView instanceof AppboyInAppMessageHtmlBaseView) {
-        AppboyLogger.d(TAG, "In-app message view includes HTML. Delaying display until the content has finished loading.");
+        BrazeLogger.d(TAG, "In-app message view includes HTML. Delaying display until the content has finished loading.");
         final AppboyInAppMessageHtmlBaseView appboyInAppMessageHtmlBaseView = (AppboyInAppMessageHtmlBaseView) inAppMessageView;
         appboyInAppMessageHtmlBaseView.setHtmlPageFinishedListener(() -> {
           try {
             if (mInAppMessageViewWrapper != null && mActivity != null) {
-              AppboyLogger.d(TAG, "Page has finished loading. Opening in-app message view wrapper.");
+              BrazeLogger.d(TAG, "Page has finished loading. Opening in-app message view wrapper.");
               mInAppMessageViewWrapper.open(mActivity);
             }
           } catch (Exception e) {
-            AppboyLogger.e(TAG, "Failed to open view wrapper in page finished listener", e);
+            BrazeLogger.e(TAG, "Failed to open view wrapper in page finished listener", e);
           }
         });
       } else {
         mInAppMessageViewWrapper.open(mActivity);
       }
     } catch (Throwable e) {
-      AppboyLogger.e(TAG, "Could not display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()), e);
+      BrazeLogger.e(TAG, "Could not display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()), e);
       resetAfterInAppMessageClose();
     }
   }
@@ -539,26 +539,26 @@ public final class AppboyInAppMessageManager extends AppboyInAppMessageManagerBa
   @VisibleForTesting
   boolean verifyOrientationStatus(IInAppMessage inAppMessage) {
     if (mActivity == null) {
-      AppboyLogger.w(TAG, "Cannot verify orientation status with null Activity.");
+      BrazeLogger.w(TAG, "Cannot verify orientation status with null Activity.");
       return true;
     }
     if (ViewUtils.isRunningOnTablet(mActivity)) {
-      AppboyLogger.d(TAG, "Running on tablet. In-app message can be displayed in any orientation.");
+      BrazeLogger.d(TAG, "Running on tablet. In-app message can be displayed in any orientation.");
       return true;
     }
     Orientation preferredOrientation = inAppMessage.getOrientation();
     if (preferredOrientation == null) {
-      AppboyLogger.d(TAG, "No orientation specified. In-app message can be displayed in any orientation.");
+      BrazeLogger.d(TAG, "No orientation specified. In-app message can be displayed in any orientation.");
       return true;
     }
     if (preferredOrientation == Orientation.ANY) {
-      AppboyLogger.d(TAG, "Any orientation specified. In-app message can be displayed in any orientation.");
+      BrazeLogger.d(TAG, "Any orientation specified. In-app message can be displayed in any orientation.");
       return true;
     }
     int currentScreenOrientation = mActivity.getResources().getConfiguration().orientation;
     if (ViewUtils.isCurrentOrientationValid(currentScreenOrientation, preferredOrientation)) {
       if (mOriginalOrientation == null) {
-        AppboyLogger.d(TAG, "Requesting orientation lock.");
+        BrazeLogger.d(TAG, "Requesting orientation lock.");
         mOriginalOrientation = mActivity.getRequestedOrientation();
         // This constant was introduced in API 18, so for devices pre 18 this will be a no-op
         ViewUtils.setActivityRequestedOrientation(mActivity, ActivityInfo.SCREEN_ORIENTATION_LOCKED);

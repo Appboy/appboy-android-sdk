@@ -14,12 +14,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.models.IInAppMessage;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.support.BrazeLogger;
 
 public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageSlideupView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageSlideupView.class);
   private InAppMessageImageView mInAppMessageImageView;
 
   public AppboyInAppMessageSlideupView(Context context, AttributeSet attrs) {
@@ -99,7 +99,7 @@ public class AppboyInAppMessageSlideupView extends AppboyInAppMessageBaseView {
   public void applyWindowInsets(@NonNull WindowInsetsCompat windowInsets) {
     super.applyWindowInsets(windowInsets);
     if (getLayoutParams() == null || !(getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
-      AppboyLogger.d(TAG, "Close button view is null or not of the expected class. Not applying window insets.");
+      BrazeLogger.d(TAG, "Close button view is null or not of the expected class. Not applying window insets.");
       return;
     }
 

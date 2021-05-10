@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.view.View;
 import android.view.animation.Animation;
 
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.IInAppMessage;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
+import com.braze.configuration.BrazeConfigurationProvider;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface IInAppMessageViewWrapperFactory {
    * @param inAppMessageView                  In-app message top level view visible to the user.
    * @param inAppMessage                      In-app message model.
    * @param inAppMessageViewLifecycleListener In-app message lifecycle listener.
-   * @param appboyConfigurationProvider       Configuration provider.
+   * @param configurationProvider       Configuration provider.
    * @param openingAnimation                  The {@link Animation} used when opening the {@link IInAppMessage}
    *                                          and becoming visible to the user.
    *                                          Should be called during {@link IInAppMessageViewWrapper#open(Activity)}.
@@ -31,7 +31,7 @@ public interface IInAppMessageViewWrapperFactory {
   IInAppMessageViewWrapper createInAppMessageViewWrapper(View inAppMessageView,
                                                          IInAppMessage inAppMessage,
                                                          IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                                         AppboyConfigurationProvider appboyConfigurationProvider,
+                                                         BrazeConfigurationProvider configurationProvider,
                                                          Animation openingAnimation,
                                                          Animation closingAnimation,
                                                          View clickableInAppMessageView);
@@ -44,7 +44,7 @@ public interface IInAppMessageViewWrapperFactory {
    * @param inAppMessageView                  In-app message top level view visible to the user.
    * @param inAppMessage                      In-app message model.
    * @param inAppMessageViewLifecycleListener In-app message lifecycle listener.
-   * @param appboyConfigurationProvider       Configuration provider.
+   * @param configurationProvider       Configuration provider.
    * @param openingAnimation                  The {@link Animation} used when opening the {@link IInAppMessage}
    *                                          and becoming visible to the user.
    *                                          Should be called during {@link IInAppMessageViewWrapper#open(Activity)}.
@@ -59,7 +59,7 @@ public interface IInAppMessageViewWrapperFactory {
   IInAppMessageViewWrapper createInAppMessageViewWrapper(View inAppMessageView,
                                                          IInAppMessage inAppMessage,
                                                          IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                                         AppboyConfigurationProvider appboyConfigurationProvider,
+                                                         BrazeConfigurationProvider configurationProvider,
                                                          Animation openingAnimation,
                                                          Animation closingAnimation,
                                                          View clickableInAppMessageView,

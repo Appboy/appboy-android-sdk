@@ -4,17 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.appboy.Appboy;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 /**
  * This class allows UnityPlayerNativeActivity and UnityPlayerActivity instances to
  * integrate Braze by calling appropriate methods during each phase of the Android {@link Activity} lifecycle.
  */
 public class AppboyUnityActivityWrapper {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyUnityActivityWrapper.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyUnityActivityWrapper.class);
 
   private UnityConfigurationProvider mUnityConfigurationProvider;
 
@@ -23,17 +23,17 @@ public class AppboyUnityActivityWrapper {
    */
   public void onCreateCalled(Activity activity) {
     UnityConfigurationProvider unityConfigurationProvider = getUnityConfigurationProvider(activity);
-    Appboy.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(unityConfigurationProvider));
-    Appboy.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(unityConfigurationProvider));
-    Appboy.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(unityConfigurationProvider));
-    AppboyLogger.d(TAG, TAG + " finished onCreateCalled setup.");
+    Braze.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(unityConfigurationProvider));
+    Braze.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(unityConfigurationProvider));
+    Braze.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(unityConfigurationProvider));
+    BrazeLogger.d(TAG, TAG + " finished onCreateCalled setup.");
   }
 
   /**
    * Call from {@link Activity#onStart()}
    */
   public void onStartCalled(Activity activity) {
-    Appboy.getInstance(activity).openSession(activity);
+    Braze.getInstance(activity).openSession(activity);
   }
 
   /**
@@ -60,7 +60,7 @@ public class AppboyUnityActivityWrapper {
    * Call from {@link Activity#onStop()}
    */
   public void onStopCalled(Activity activity) {
-    Appboy.getInstance(activity).closeSession(activity);
+    Braze.getInstance(activity).closeSession(activity);
   }
 
   /**

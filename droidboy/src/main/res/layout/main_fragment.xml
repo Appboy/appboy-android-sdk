@@ -1,72 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fillViewport="true"
+  tools:ignore="HardcodedText">
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <EditText
-            android:id="@+id/com_appboy_sample_set_user_id_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:inputType="textEmailAddress"
-            android:hint="Enter UserId here"/>
-        <Button
-            android:id="@+id/com_appboy_sample_set_user_id_button"
-            style="@style/BaseWidget.DroidboyButton"
-            android:text="Set UserId"/>
-        <EditText
-            android:id="@+id/com_appboy_sample_custom_event_or_purchase_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:inputType="textEmailAddress"
-            android:hint="Custom event or purchase name"/>
-        <Button
-            android:id="@+id/com_appboy_sample_log_custom_event_button"
-            style="@style/BaseWidget.DroidboyButton"
-            android:text="Log Custom Event"/>
-        <Button
-            android:id="@+id/com_appboy_sample_log_purchase_button"
-            style="@style/BaseWidget.DroidboyButton"
-            android:text="Log Purchase"/>
-        <Button
-            android:id="@+id/com_appboy_sample_set_user_attributes_button"
-            style="@style/BaseWidget.DroidboyButton"
-            android:text="Set User Attributes"/>
-        <Button
-            android:id="@+id/com_appboy_sample_unset_user_attributes_button"
-            style="@style/BaseWidget.DroidboyButton"
-            android:text="Unset User Attributes"/>
-        <Button
-            android:id="@+id/com_appboy_sample_request_flush_button"
-            style="@style/BaseWidget.DroidboyButton"
-            android:text="Request Flush"/>
-        <EditText
-          android:id="@+id/com_appboy_sample_set_alias_edit_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:inputType="textEmailAddress"
-          android:hint="Enter Alias here"/>
-        <EditText
-          android:id="@+id/com_appboy_sample_set_alias_label_edit_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:inputType="textNoSuggestions"
-          android:hint="Enter Alias Label here"/>
-        <Button
-          android:id="@+id/com_appboy_sample_set_user_alias_button"
-          style="@style/BaseWidget.DroidboyButton"
-          android:text="Add User Alias"/>
-        <Button
-          android:id="@+id/com_appboy_sample_collect_and_flush_google_advertising_id_button"
-          style="@style/BaseWidget.DroidboyButton"
-          android:text="Get/Flush Google Advertising ID"/>
-    </LinearLayout>
+    android:layout_height="wrap_content"
+    android:paddingBottom="250dp"
+    android:orientation="vertical">
+    <EditText
+      android:id="@+id/com_appboy_sample_set_user_id_edit_text"
+      style="@style/BaseWidget.DroidboyTextInput"
+      android:hint="Enter UserId here"
+      android:inputType="textEmailAddress" />
+    <Button
+      android:id="@+id/com_appboy_sample_set_user_id_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Set UserId" />
+    <EditText
+      android:id="@+id/com_appboy_sample_custom_event_or_purchase_edit_text"
+      style="@style/BaseWidget.DroidboyTextInput"
+      android:hint="Custom event or purchase name"
+      android:inputType="textEmailAddress" />
+    <Button
+      android:id="@+id/com_appboy_sample_log_custom_event_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Log Custom Event" />
+    <Button
+      android:id="@+id/com_appboy_sample_log_purchase_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Log Purchase" />
+    <Button
+      android:id="@+id/com_appboy_sample_set_user_attributes_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Set User Attributes" />
+    <Button
+      android:id="@+id/com_appboy_sample_unset_user_attributes_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Unset User Attributes" />
+    <Button
+      android:id="@+id/com_appboy_sample_request_flush_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Request Flush" />
+    <EditText
+      android:id="@+id/com_appboy_sample_set_alias_edit_text"
+      style="@style/BaseWidget.DroidboyTextInput"
+      android:hint="Enter Alias here"
+      android:inputType="textEmailAddress" />
+    <EditText
+      android:id="@+id/com_appboy_sample_set_alias_label_edit_text"
+      style="@style/BaseWidget.DroidboyTextInput"
+      android:hint="Enter Alias Label here"
+      android:inputType="textNoSuggestions" />
+    <Button
+      android:id="@+id/com_appboy_sample_set_user_alias_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Add User Alias" />
+    <Button
+      android:id="@+id/com_appboy_sample_collect_and_flush_google_advertising_id_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Get/Flush Google Advertising ID" />
+    <EditText
+      android:id="@+id/com_appboy_sample_set_sdk_auth_signature_edit_text"
+      android:hint="SDK Auth Signature"
+      android:inputType="textMultiLine"
+      style="@style/BaseWidget.DroidboyTextInput" />
+    <Button
+      android:id="@+id/com_appboy_sample_set_sdk_auth_signature_button"
+      style="@style/BaseWidget.DroidboyButton"
+      android:text="Set SDK Auth Signature" />
+  </LinearLayout>
 </ScrollView>

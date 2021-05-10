@@ -22,19 +22,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.appboy.Appboy;
 import com.appboy.AppboyAdmReceiver;
 import com.appboy.AppboyInternal;
 import com.appboy.BrazePushReceiver;
 import com.appboy.Constants;
-import com.appboy.IAppboyImageLoader;
 import com.appboy.IAppboyNotificationFactory;
-import com.appboy.configuration.AppboyConfigurationProvider;
-import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
 import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.support.HtmlUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.JsonUtils;
 import com.appboy.support.PermissionUtils;
@@ -43,11 +38,17 @@ import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.support.UriUtils;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfig;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.enums.BrazeViewBounds;
+import com.braze.images.IBrazeImageLoader;
+import com.braze.support.BrazeLogger;
 
 import org.json.JSONObject;
 
 public class AppboyNotificationUtils {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationUtils.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyNotificationUtils.class);
   private static final String SOURCE_KEY = "source";
 
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";
@@ -66,14 +67,14 @@ public class AppboyNotificationUtils {
    */
   public static void handleNotificationOpened(Context context, Intent intent) {
     try {
-      Appboy.getInstance(context).logPushNotificationOpened(intent);
+      Braze.getInstance(context).logPushNotificationOpened(intent);
       sendNotificationOpenedBroadcast(context, intent);
-      AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+      BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
       if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
         routeUserWithNotificationOpenedIntent(context, intent);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Exception occurred attempting to handle notification opened intent.", e);
+      BrazeLogger.e(TAG, "Exception occurred attempting to handle notification opened intent.", e);
     }
   }
 
@@ -91,10 +92,10 @@ public class AppboyNotificationUtils {
    */
   public static void handleNotificationDeleted(Context context, Intent intent) {
     try {
-      AppboyLogger.d(TAG, "Sending notification deleted broadcast");
+      BrazeLogger.d(TAG, "Sending notification deleted broadcast");
       sendPushActionIntent(context, AppboyNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX, intent.getExtras());
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Exception occurred attempting to handle notification delete intent.", e);
+      BrazeLogger.e(TAG, "Exception occurred attempting to handle notification delete intent.", e);
     }
   }
 
@@ -121,9 +122,9 @@ public class AppboyNotificationUtils {
     // Otherwise, start the intent defined in getStartActivityIntent().
     String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
     if (!StringUtils.isNullOrBlank(deepLink)) {
-      AppboyLogger.d(TAG, "Found a deep link " + deepLink);
+      BrazeLogger.d(TAG, "Found a deep link " + deepLink);
       boolean useWebView = "true".equalsIgnoreCase(intent.getStringExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY));
-      AppboyLogger.d(TAG, "Use webview set to: " + useWebView);
+      BrazeLogger.d(TAG, "Use webview set to: " + useWebView);
 
       // pass deep link and use webview values to target activity.
       extras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, deepLink);
@@ -133,7 +134,7 @@ public class AppboyNotificationUtils {
       AppboyNavigator.getAppboyNavigator().gotoUri(context, uriAction);
     } else {
       final Intent mainActivityIntent = UriUtils.getMainActivityIntent(context, extras);
-      AppboyLogger.d(TAG, "Push notification had no deep link. Opening main activity: " + mainActivityIntent);
+      BrazeLogger.d(TAG, "Push notification had no deep link. Opening main activity: " + mainActivityIntent);
       context.startActivity(mainActivityIntent);
     }
   }
@@ -144,16 +145,6 @@ public class AppboyNotificationUtils {
   @Deprecated
   public static Bundle getAppboyExtrasWithoutPreprocessing(Bundle notificationExtras) {
     return BrazeNotificationPayload.getAttachedAppboyExtras(notificationExtras);
-  }
-
-  /**
-   * Returns the specified String if it is found in the bundle; otherwise it returns the defaultString.
-   *
-   * @Deprecated use Bundle.getString() instead.
-   */
-  @Deprecated
-  public static String bundleOptString(Bundle bundle, String key, String defaultValue) {
-    return bundle.getString(key, defaultValue);
   }
 
   /**
@@ -196,7 +187,7 @@ public class AppboyNotificationUtils {
    * message action is <host-app-package-name>.intent.APPBOY_PUSH_RECEIVED.
    */
   public static void sendPushMessageReceivedBroadcast(Context context, Bundle notificationExtras) {
-    AppboyLogger.d(TAG, "Sending push message received broadcast");
+    BrazeLogger.d(TAG, "Sending push message received broadcast");
     sendPushActionIntent(context, APPBOY_NOTIFICATION_RECEIVED_SUFFIX, notificationExtras);
   }
 
@@ -213,10 +204,10 @@ public class AppboyNotificationUtils {
         AppboyInternal.requestGeofenceRefresh(context, true);
         return true;
       } else {
-        AppboyLogger.d(TAG, "Geofence sync key was false. Not syncing geofences.");
+        BrazeLogger.d(TAG, "Geofence sync key was false. Not syncing geofences.");
       }
     } else {
-      AppboyLogger.d(TAG, "Geofence sync key not included in push payload. Not syncing geofences.");
+      BrazeLogger.d(TAG, "Geofence sync key not included in push payload. Not syncing geofences.");
     }
     return false;
   }
@@ -233,7 +224,7 @@ public class AppboyNotificationUtils {
     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, flags);
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     if (durationInMillis >= Constants.APPBOY_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
-      AppboyLogger.d(TAG, "Setting Notification duration alarm for " + durationInMillis + " ms");
+      BrazeLogger.d(TAG, "Setting Notification duration alarm for " + durationInMillis + " ms");
       alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + durationInMillis, pendingIntent);
     }
   }
@@ -255,13 +246,13 @@ public class AppboyNotificationUtils {
    */
   public static int getNotificationId(@NonNull BrazeNotificationPayload payload) {
     if (payload == null) {
-      AppboyLogger.d(TAG, "Message without extras bundle received. Using default notification id");
+      BrazeLogger.d(TAG, "Message without extras bundle received. Using default notification id");
       return Constants.APPBOY_DEFAULT_NOTIFICATION_ID;
     }
 
     if (payload.getCustomNotificationId() != null) {
       int notificationId = payload.getCustomNotificationId();
-      AppboyLogger.d(TAG, "Using notification id provided in the message's extras bundle: " + notificationId);
+      BrazeLogger.d(TAG, "Using notification id provided in the message's extras bundle: " + notificationId);
       return notificationId;
     } else {
       String messageKey = "";
@@ -273,7 +264,7 @@ public class AppboyNotificationUtils {
         messageKey += payload.getContentText();
       }
       int notificationId = messageKey.hashCode();
-      AppboyLogger.d(TAG, "Message without notification id provided in the extras "
+      BrazeLogger.d(TAG, "Message without notification id provided in the extras "
           + "bundle received. Using a hash of the message: " + notificationId);
       return notificationId;
     }
@@ -293,10 +284,10 @@ public class AppboyNotificationUtils {
         if ((notificationPriority >= Notification.PRIORITY_MIN && notificationPriority <= Notification.PRIORITY_MAX)) {
           return notificationPriority;
         } else {
-          AppboyLogger.w(TAG, "Received invalid notification priority " + notificationPriority);
+          BrazeLogger.w(TAG, "Received invalid notification priority " + notificationPriority);
         }
       } catch (NumberFormatException e) {
-        AppboyLogger.e(TAG, "Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT, e);
+        BrazeLogger.e(TAG, "Unable to parse custom priority. Returning default priority of " + Notification.PRIORITY_DEFAULT, e);
       }
     }
     return Notification.PRIORITY_DEFAULT;
@@ -311,7 +302,7 @@ public class AppboyNotificationUtils {
   @SuppressWarnings("deprecation")
   // Deprecation warning suppressed for PowerManager.FULL_WAKE_LOCK usage. Alternative requires Activity instance which is unavailable in this context.
   // Deprecation warning suppressed for Notification.PRIORITY_MIN usage.
-  public static boolean wakeScreenIfAppropriate(Context context, AppboyConfigurationProvider configurationProvider, Bundle notificationExtras) {
+  public static boolean wakeScreenIfAppropriate(Context context, BrazeConfigurationProvider configurationProvider, Bundle notificationExtras) {
     // Check for the wake lock permission.
     if (!PermissionUtils.hasPermission(context, Manifest.permission.WAKE_LOCK)) {
       return false;
@@ -327,13 +318,13 @@ public class AppboyNotificationUtils {
       NotificationChannel notificationChannel = getValidNotificationChannel(notificationManager, notificationExtras);
 
       if (notificationChannel == null) {
-        AppboyLogger.d(TAG, "Not waking screen on Android O+ device, could not find notification channel.");
+        BrazeLogger.d(TAG, "Not waking screen on Android O+ device, could not find notification channel.");
         return false;
       }
 
       int importance = getNotificationChannelImportance(notificationChannel);
       if (importance == NotificationManager.IMPORTANCE_MIN) {
-        AppboyLogger.d(TAG, "Not acquiring wake-lock for Android O+ notification with importance: " + importance);
+        BrazeLogger.d(TAG, "Not acquiring wake-lock for Android O+ notification with importance: " + importance);
         return false;
       }
     } else {
@@ -342,7 +333,7 @@ public class AppboyNotificationUtils {
       }
     }
 
-    AppboyLogger.d(TAG, "Waking screen for notification");
+    BrazeLogger.d(TAG, "Waking screen for notification");
     // Get the power manager for the wake lock.
     PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
     PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
@@ -357,7 +348,7 @@ public class AppboyNotificationUtils {
    * Returns a custom AppboyNotificationFactory if set, else the default AppboyNotificationFactory
    */
   public static IAppboyNotificationFactory getActiveNotificationFactory() {
-    IAppboyNotificationFactory customAppboyNotificationFactory = Appboy.getCustomAppboyNotificationFactory();
+    IAppboyNotificationFactory customAppboyNotificationFactory = Braze.getCustomAppboyNotificationFactory();
     if (customAppboyNotificationFactory == null) {
       return AppboyNotificationFactory.getInstance();
     } else {
@@ -381,9 +372,9 @@ public class AppboyNotificationUtils {
       int count = 0;
       String imageUrl = BrazeNotificationPayload.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
       while (!StringUtils.isNullOrBlank(imageUrl)) {
-        AppboyLogger.v(TAG, "Pre-fetching bitmap at URL: " + imageUrl);
-        IAppboyImageLoader imageLoader = Appboy.getInstance(context).getAppboyImageLoader();
-        imageLoader.getPushBitmapFromUrl(context, appboyExtras, imageUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
+        BrazeLogger.v(TAG, "Pre-fetching bitmap at URL: " + imageUrl);
+        IBrazeImageLoader imageLoader = Braze.getInstance(context).getImageLoader();
+        imageLoader.getPushBitmapFromUrl(context, appboyExtras, imageUrl, BrazeViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
         count++;
         imageUrl = BrazeNotificationPayload.getActionFieldAtIndex(count, notificationExtras, Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE);
       }
@@ -395,7 +386,7 @@ public class AppboyNotificationUtils {
    * @deprecated Please use {@link #setTitleIfPresent(NotificationCompat.Builder, BrazeNotificationPayload)} instead.
    */
   @Deprecated
-  public static void setTitleIfPresent(AppboyConfigurationProvider appboyConfigurationProvider,
+  public static void setTitleIfPresent(BrazeConfigurationProvider configurationProvider,
                                        NotificationCompat.Builder notificationBuilder,
                                        Bundle notificationExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
@@ -404,15 +395,15 @@ public class AppboyNotificationUtils {
 
   public static void setTitleIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
                                        @NonNull BrazeNotificationPayload payload) {
-    AppboyLogger.d(TAG, "Setting title for notification");
-    notificationBuilder.setContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getAppboyConfigurationProvider(), payload.getTitleText()));
+    BrazeLogger.d(TAG, "Setting title for notification");
+    notificationBuilder.setContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getConfigurationProvider(), payload.getTitleText()));
   }
 
   /**
    * @deprecated Please use {@link #setContentIfPresent(NotificationCompat.Builder, BrazeNotificationPayload)} instead.
    */
   @Deprecated
-  public static void setContentIfPresent(AppboyConfigurationProvider appboyConfigurationProvider,
+  public static void setContentIfPresent(BrazeConfigurationProvider configurationProvider,
                                          NotificationCompat.Builder notificationBuilder,
                                          Bundle notificationExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras);
@@ -424,8 +415,8 @@ public class AppboyNotificationUtils {
    */
   public static void setContentIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
                                          @NonNull BrazeNotificationPayload payload) {
-    AppboyLogger.d(TAG, "Setting content for notification");
-    notificationBuilder.setContentText(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getAppboyConfigurationProvider(), payload.getContentText()));
+    BrazeLogger.d(TAG, "Setting content for notification");
+    notificationBuilder.setContentText(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getConfigurationProvider(), payload.getContentText()));
   }
 
   /**
@@ -445,7 +436,7 @@ public class AppboyNotificationUtils {
    */
   public static void setTickerIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
                                         @NonNull BrazeNotificationPayload payload) {
-    AppboyLogger.d(TAG, "Setting ticker for notification");
+    BrazeLogger.d(TAG, "Setting ticker for notification");
     notificationBuilder.setTicker(payload.getTitleText());
   }
 
@@ -462,16 +453,21 @@ public class AppboyNotificationUtils {
       PendingIntent pushOpenedPendingIntent = getPushActionPendingIntent(context, Constants.APPBOY_PUSH_CLICKED_ACTION, notificationExtras);
       notificationBuilder.setContentIntent(pushOpenedPendingIntent);
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error setting content intent.", e);
+      BrazeLogger.e(TAG, "Error setting content intent.", e);
     }
   }
 
   public static void setDeleteIntent(Context context, NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     try {
-      PendingIntent pushDeletedPendingIntent = getPushActionPendingIntent(context, Constants.APPBOY_PUSH_DELETED_ACTION, notificationExtras);
+      Intent pushDeletedIntent = new Intent(Constants.APPBOY_PUSH_DELETED_ACTION).setClass(context, getNotificationReceiverClass());
+      if (notificationExtras != null) {
+        pushDeletedIntent.putExtras(notificationExtras);
+      }
+      final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getDefaultPendingIntentFlags();
+      PendingIntent pushDeletedPendingIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushDeletedIntent, flags);
       notificationBuilder.setDeleteIntent(pushDeletedPendingIntent);
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error setting delete intent.", e);
+      BrazeLogger.e(TAG, "Error setting delete intent.", e);
     }
   }
 
@@ -481,14 +477,14 @@ public class AppboyNotificationUtils {
    *
    * @return the resource id of the small icon to be used.
    */
-  public static int setSmallIcon(AppboyConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
+  public static int setSmallIcon(BrazeConfigurationProvider appConfigurationProvider, NotificationCompat.Builder notificationBuilder) {
     int smallNotificationIconResourceId = appConfigurationProvider.getSmallNotificationIconResourceId();
     if (smallNotificationIconResourceId == 0) {
-      AppboyLogger.d(TAG, "Small notification icon resource was not found. Will use the app icon when "
+      BrazeLogger.d(TAG, "Small notification icon resource was not found. Will use the app icon when "
           + "displaying notifications.");
       smallNotificationIconResourceId = appConfigurationProvider.getApplicationIconResourceId();
     } else {
-      AppboyLogger.d(TAG, "Setting small icon for notification via resource id");
+      BrazeLogger.d(TAG, "Setting small icon for notification via resource id");
     }
     notificationBuilder.setSmallIcon(smallNotificationIconResourceId);
     return smallNotificationIconResourceId;
@@ -509,7 +505,7 @@ public class AppboyNotificationUtils {
    */
   public static void setSetShowWhen(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
     if (payload.isPushStory()) {
-      AppboyLogger.d(TAG, "Set show when not supported in story push.");
+      BrazeLogger.d(TAG, "Set show when not supported in story push.");
       notificationBuilder.setShowWhen(false);
     }
   }
@@ -519,7 +515,7 @@ public class AppboyNotificationUtils {
    */
   @Deprecated
   public static boolean setLargeIconIfPresentAndSupported(Context context,
-                                                          AppboyConfigurationProvider appConfigurationProvider,
+                                                          BrazeConfigurationProvider appConfigurationProvider,
                                                           NotificationCompat.Builder notificationBuilder,
                                                           Bundle notificationExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
@@ -535,44 +531,44 @@ public class AppboyNotificationUtils {
    */
   public static boolean setLargeIconIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
     if (payload.isPushStory()) {
-      AppboyLogger.d(TAG, "Large icon not supported in story push.");
+      BrazeLogger.d(TAG, "Large icon not supported in story push.");
       return false;
     }
     try {
       final Context context = payload.getContext();
       if (context == null) {
-        AppboyLogger.d(TAG, "Cannot set large icon with null context");
+        BrazeLogger.d(TAG, "Cannot set large icon with null context");
         return false;
       }
 
-      AppboyLogger.d(TAG, "Setting large icon for notification");
+      BrazeLogger.d(TAG, "Setting large icon for notification");
       String bitmapUrl = payload.getLargeIcon();
       if (bitmapUrl != null) {
-        Bitmap largeNotificationBitmap = Appboy.getInstance(context)
-            .getAppboyImageLoader()
+        Bitmap largeNotificationBitmap = Braze.getInstance(context)
+            .getImageLoader()
             .getPushBitmapFromUrl(context,
                 null,
                 bitmapUrl,
-                AppboyViewBounds.NOTIFICATION_LARGE_ICON);
+                BrazeViewBounds.NOTIFICATION_LARGE_ICON);
         notificationBuilder.setLargeIcon(largeNotificationBitmap);
         return true;
       }
 
-      AppboyLogger.d(TAG, "Large icon bitmap url not present in extras. Attempting to use resource id instead.");
-      final AppboyConfigurationProvider appConfigurationProvider = payload.getAppboyConfigurationProvider();
+      BrazeLogger.d(TAG, "Large icon bitmap url not present in extras. Attempting to use resource id instead.");
+      final BrazeConfigurationProvider appConfigurationProvider = payload.getConfigurationProvider();
       int largeNotificationIconResourceId = appConfigurationProvider.getLargeNotificationIconResourceId();
       if (largeNotificationIconResourceId != 0) {
         Bitmap largeNotificationBitmap = BitmapFactory.decodeResource(context.getResources(), largeNotificationIconResourceId);
         notificationBuilder.setLargeIcon(largeNotificationBitmap);
         return true;
       } else {
-        AppboyLogger.d(TAG, "Large icon resource id not present for notification");
+        BrazeLogger.d(TAG, "Large icon resource id not present for notification");
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Error setting large notification icon", e);
+      BrazeLogger.e(TAG, "Error setting large notification icon", e);
     }
 
-    AppboyLogger.d(TAG, "Large icon not set for notification");
+    BrazeLogger.d(TAG, "Large icon not set for notification");
     return false;
   }
 
@@ -594,14 +590,14 @@ public class AppboyNotificationUtils {
     String soundUri = payload.getNotificationSound();
     if (soundUri != null) {
       if (soundUri.equals(Constants.APPBOY_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE)) {
-        AppboyLogger.d(TAG, "Setting default sound for notification.");
+        BrazeLogger.d(TAG, "Setting default sound for notification.");
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
       } else {
-        AppboyLogger.d(TAG, "Setting sound for notification via uri.");
+        BrazeLogger.d(TAG, "Setting sound for notification via uri.");
         notificationBuilder.setSound(Uri.parse(soundUri));
       }
     } else {
-      AppboyLogger.d(TAG, "Sound key not present in notification extras. Not setting sound for notification.");
+      BrazeLogger.d(TAG, "Sound key not present in notification extras. Not setting sound for notification.");
     }
   }
 
@@ -622,10 +618,10 @@ public class AppboyNotificationUtils {
   public static void setSummaryTextIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
     String summaryText = payload.getSummaryText();
     if (summaryText != null) {
-      AppboyLogger.d(TAG, "Setting summary text for notification");
+      BrazeLogger.d(TAG, "Setting summary text for notification");
       notificationBuilder.setSubText(summaryText);
     } else {
-      AppboyLogger.d(TAG, "Summary text not present. Not setting summary text for notification.");
+      BrazeLogger.d(TAG, "Summary text not present. Not setting summary text for notification.");
     }
   }
 
@@ -638,7 +634,7 @@ public class AppboyNotificationUtils {
    */
   public static void setPriorityIfPresentAndSupported(NotificationCompat.Builder notificationBuilder, Bundle notificationExtras) {
     if (notificationExtras != null) {
-      AppboyLogger.d(TAG, "Setting priority for notification");
+      BrazeLogger.d(TAG, "Setting priority for notification");
       notificationBuilder.setPriority(AppboyNotificationUtils.getNotificationPriority(notificationExtras));
     }
   }
@@ -660,7 +656,7 @@ public class AppboyNotificationUtils {
    * @deprecated Please use {@link #setAccentColorIfPresentAndSupported(NotificationCompat.Builder, BrazeNotificationPayload)}
    */
   @Deprecated
-  public static void setAccentColorIfPresentAndSupported(AppboyConfigurationProvider appConfigurationProvider,
+  public static void setAccentColorIfPresentAndSupported(BrazeConfigurationProvider appConfigurationProvider,
                                                          NotificationCompat.Builder notificationBuilder,
                                                          Bundle notificationExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(appConfigurationProvider, notificationExtras);
@@ -680,15 +676,15 @@ public class AppboyNotificationUtils {
     }
 
     if (payload.getAccentColor() != null) {
-      AppboyLogger.d(TAG, "Using accent color for notification from extras bundle");
+      BrazeLogger.d(TAG, "Using accent color for notification from extras bundle");
       notificationBuilder.setColor(payload.getAccentColor());
     } else {
-      final AppboyConfigurationProvider appboyConfigurationProvider = payload.getAppboyConfigurationProvider();
-      if (appboyConfigurationProvider != null) {
-        AppboyLogger.d(TAG, "Using default accent color for notification");
-        notificationBuilder.setColor(appboyConfigurationProvider.getDefaultNotificationAccentColor());
+      final BrazeConfigurationProvider configurationProvider = payload.getConfigurationProvider();
+      if (configurationProvider != null) {
+        BrazeLogger.d(TAG, "Using default accent color for notification");
+        notificationBuilder.setColor(configurationProvider.getDefaultNotificationAccentColor());
       } else {
-        AppboyLogger.d(TAG, "Cannot set default accent color for notification with null config provider");
+        BrazeLogger.d(TAG, "Cannot set default accent color for notification with null config provider");
       }
     }
   }
@@ -712,16 +708,16 @@ public class AppboyNotificationUtils {
   public static void setCategoryIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder,
                                                       @NonNull BrazeNotificationPayload payload) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-      AppboyLogger.d(TAG, "Notification category not supported on this android version. "
+      BrazeLogger.d(TAG, "Notification category not supported on this android version. "
           + "Not setting category for notification.");
       return;
     }
 
     if (payload.getNotificationCategory() != null) {
-      AppboyLogger.d(TAG, "Setting category for notification");
+      BrazeLogger.d(TAG, "Setting category for notification");
       notificationBuilder.setCategory(payload.getNotificationCategory());
     } else {
-      AppboyLogger.d(TAG, "Category not present in notification extras. Not setting category for notification.");
+      BrazeLogger.d(TAG, "Category not present in notification extras. Not setting category for notification.");
     }
   }
 
@@ -749,7 +745,7 @@ public class AppboyNotificationUtils {
    */
   public static void setVisibilityIfPresentAndSupported(@NonNull NotificationCompat.Builder notificationBuilder, @NonNull BrazeNotificationPayload payload) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-      AppboyLogger.d(TAG, "Notification visibility not supported on this "
+      BrazeLogger.d(TAG, "Notification visibility not supported on this "
           + "android version. Not setting visibility for notification.");
       return;
     }
@@ -757,10 +753,10 @@ public class AppboyNotificationUtils {
     if (payload.getNotificationVisibility() != null) {
       int visibility = payload.getNotificationVisibility();
       if (isValidNotificationVisibility(visibility)) {
-        AppboyLogger.d(TAG, "Setting visibility for notification");
+        BrazeLogger.d(TAG, "Setting visibility for notification");
         notificationBuilder.setVisibility(visibility);
       } else {
-        AppboyLogger.w(TAG, "Received invalid notification visibility " + visibility);
+        BrazeLogger.w(TAG, "Received invalid notification visibility " + visibility);
       }
     }
   }
@@ -770,10 +766,10 @@ public class AppboyNotificationUtils {
    */
   @Deprecated
   public static void setPublicVersionIfPresentAndSupported(Context context,
-                                                           AppboyConfigurationProvider appboyConfigurationProvider,
+                                                           BrazeConfigurationProvider configurationProvider,
                                                            NotificationCompat.Builder notificationBuilder,
                                                            Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appboyConfigurationProvider, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, configurationProvider, notificationExtras);
     setPublicVersionIfPresentAndSupported(notificationBuilder, payload);
   }
 
@@ -794,23 +790,23 @@ public class AppboyNotificationUtils {
       return;
     }
 
-    Bundle publicNotificationExtras = parseJSONStringDictionaryIntoBundle(payload.getPublicNotificationExtras());
+    Bundle publicNotificationExtras = JsonUtils.parseJsonObjectIntoBundle(payload.getPublicNotificationExtras());
     if (publicNotificationExtras == null) {
       return;
     }
     BrazeNotificationPayload publicPayload = new BrazeNotificationPayload(payload.getContext(),
-        payload.getAppboyConfigurationProvider(),
+        payload.getConfigurationProvider(),
         publicNotificationExtras);
 
-    if (publicPayload.getAppboyConfigurationProvider() == null) {
+    if (publicPayload.getConfigurationProvider() == null) {
       return;
     }
     NotificationCompat.Builder publicNotificationBuilder = new NotificationCompat.Builder(payload.getContext(), notificationChannelId);
-    AppboyLogger.d(TAG, "Setting public version of notification");
+    BrazeLogger.d(TAG, "Setting public version of notification");
     setContentIfPresent(publicNotificationBuilder, publicPayload);
     setTitleIfPresent(publicNotificationBuilder, publicPayload);
     setSummaryTextIfPresentAndSupported(publicNotificationBuilder, publicPayload);
-    setSmallIcon(publicPayload.getAppboyConfigurationProvider(), publicNotificationBuilder);
+    setSmallIcon(publicPayload.getConfigurationProvider(), publicNotificationBuilder);
     setAccentColorIfPresentAndSupported(publicNotificationBuilder, publicPayload);
     notificationBuilder.setPublicVersion(publicNotificationBuilder.build());
   }
@@ -833,7 +829,7 @@ public class AppboyNotificationUtils {
    */
   public static void logBaiduNotificationClick(Context context, String customContentString) {
     if (customContentString == null) {
-      AppboyLogger.w(TAG, "customContentString was null. Doing nothing.");
+      BrazeLogger.w(TAG, "customContentString was null. Doing nothing.");
       return;
     }
     try {
@@ -841,10 +837,10 @@ public class AppboyNotificationUtils {
       String source = jsonExtras.optString(SOURCE_KEY, null);
       String campaignId = jsonExtras.optString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY, null);
       if (source != null && source.equals(Constants.APPBOY) && campaignId != null) {
-        Appboy.getInstance(context).logPushNotificationOpened(campaignId);
+        Braze.getInstance(context).logPushNotificationOpened(campaignId);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Caught an exception processing customContentString: " + customContentString, e);
+      BrazeLogger.e(TAG, "Caught an exception processing customContentString: " + customContentString, e);
     }
   }
 
@@ -864,12 +860,12 @@ public class AppboyNotificationUtils {
     try {
       if (intent.hasExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID)) {
         int notificationId = intent.getIntExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
-        AppboyLogger.d(TAG, "Cancelling notification action with id: " + notificationId);
+        BrazeLogger.d(TAG, "Cancelling notification action with id: " + notificationId);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Exception occurred handling cancel notification intent.", e);
+      BrazeLogger.e(TAG, "Exception occurred handling cancel notification intent.", e);
     }
   }
 
@@ -886,12 +882,12 @@ public class AppboyNotificationUtils {
    */
   public static void cancelNotification(Context context, int notificationId) {
     try {
-      AppboyLogger.d(TAG, "Cancelling notification action with id: " + notificationId);
+      BrazeLogger.d(TAG, "Cancelling notification action with id: " + notificationId);
       Intent cancelNotificationIntent = new Intent(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
       cancelNotificationIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
       IntentUtils.addComponentAndSendBroadcast(context, cancelNotificationIntent);
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Exception occurred attempting to cancel notification.", e);
+      BrazeLogger.e(TAG, "Exception occurred attempting to cancel notification.", e);
     }
   }
 
@@ -927,7 +923,7 @@ public class AppboyNotificationUtils {
         }
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to determine if push is uninstall tracking. Returning false.", e);
+      BrazeLogger.e(TAG, "Failed to determine if push is uninstall tracking. Returning false.", e);
     }
     return false;
   }
@@ -935,8 +931,8 @@ public class AppboyNotificationUtils {
   /**
    * Sets a notification channel on all Android O and above notifications. If not present in the extras, then a default notification channel is used.
    * <p>
-   * To change the default notification channel name and description, please use {@link com.appboy.configuration.AppboyConfig.Builder#setDefaultNotificationChannelName(String)} and
-   * {@link com.appboy.configuration.AppboyConfig.Builder#setDefaultNotificationChannelDescription(String)}.
+   * To change the default notification channel name and description, please use {@link BrazeConfig.Builder#setDefaultNotificationChannelName(String)} and
+   * {@link BrazeConfig.Builder#setDefaultNotificationChannelDescription(String)}.
    * <p>
    * The default notification channel uses the id {@link Constants#APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID}.
    *
@@ -945,7 +941,7 @@ public class AppboyNotificationUtils {
   @Deprecated
   @SuppressLint({"InlinedApi", "NewApi"})
   public static void setNotificationChannelIfSupported(Context context,
-                                                       AppboyConfigurationProvider appConfigurationProvider,
+                                                       BrazeConfigurationProvider appConfigurationProvider,
                                                        NotificationCompat.Builder notificationBuilder,
                                                        Bundle notificationExtras) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -980,25 +976,25 @@ public class AppboyNotificationUtils {
 
     final Context context = payload.getContext();
     if (context == null) {
-      AppboyLogger.d(TAG, "BrazeNotificationPayload is missing a context");
+      BrazeLogger.d(TAG, "BrazeNotificationPayload is missing a context");
       return null;
     }
     NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     // First try to get the channel from the extras
     if (channelIdFromExtras != null) {
       if (notificationManager.getNotificationChannel(channelIdFromExtras) != null) {
-        AppboyLogger.d(TAG, "Found notification channel in extras with id: " + channelIdFromExtras);
+        BrazeLogger.d(TAG, "Found notification channel in extras with id: " + channelIdFromExtras);
         return channelIdFromExtras;
       } else {
-        AppboyLogger.d(TAG, "Notification channel from extras is invalid. No channel found with id: " + channelIdFromExtras);
+        BrazeLogger.d(TAG, "Notification channel from extras is invalid. No channel found with id: " + channelIdFromExtras);
       }
     }
 
-    final AppboyConfigurationProvider appConfigurationProvider = payload.getAppboyConfigurationProvider();
+    final BrazeConfigurationProvider appConfigurationProvider = payload.getConfigurationProvider();
     // If we get here, we need to use the default channel
     if (notificationManager.getNotificationChannel(defaultChannelId) == null) {
       // If the default doesn't exist, create it now
-      AppboyLogger.d(TAG, "Appboy default notification channel does not exist on device; creating");
+      BrazeLogger.d(TAG, "Appboy default notification channel does not exist on device; creating");
       NotificationChannel channel =
           new NotificationChannel(defaultChannelId,
               appConfigurationProvider.getDefaultNotificationChannelName(),
@@ -1016,7 +1012,7 @@ public class AppboyNotificationUtils {
   @Nullable
   @Deprecated
   public static String getOrCreateNotificationChannelId(Context context,
-                                                        AppboyConfigurationProvider appConfigurationProvider,
+                                                        BrazeConfigurationProvider appConfigurationProvider,
                                                         Bundle notificationExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
     return getOrCreateNotificationChannelId(payload);
@@ -1038,7 +1034,7 @@ public class AppboyNotificationUtils {
   public static void setNotificationBadgeNumberIfPresent(@NonNull NotificationCompat.Builder notificationBuilder,
                                                          @NonNull BrazeNotificationPayload payload) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-      AppboyLogger.d(TAG, "Notification badge number not supported on "
+      BrazeLogger.d(TAG, "Notification badge number not supported on "
           + "this android version. Not setting badge number for notification.");
       return;
     }
@@ -1056,7 +1052,7 @@ public class AppboyNotificationUtils {
    */
   public static void handlePushStoryPageClicked(Context context, Intent intent) {
     try {
-      Appboy.getInstance(context).logPushStoryPageClicked(intent.getStringExtra(Constants.APPBOY_CAMPAIGN_ID), intent.getStringExtra(Constants.APPBOY_STORY_PAGE_ID));
+      Braze.getInstance(context).logPushStoryPageClicked(intent.getStringExtra(Constants.APPBOY_CAMPAIGN_ID), intent.getStringExtra(Constants.APPBOY_STORY_PAGE_ID));
       String deepLink = intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY);
       if (!StringUtils.isNullOrBlank(deepLink)) {
         // Set the global deep link value to the correct action's deep link.
@@ -1071,12 +1067,12 @@ public class AppboyNotificationUtils {
       }
       AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
 
-      AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+      BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
       if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
         AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Caught exception while handling story click.", e);
+      BrazeLogger.e(TAG, "Caught exception while handling story click.", e);
     }
   }
 
@@ -1090,7 +1086,7 @@ public class AppboyNotificationUtils {
     String contentCardDataUserId = payload.getContentCardSyncUserId();
 
     if (contentCardData != null && payload.getContext() != null) {
-      AppboyLogger.d(TAG, "Push contains associated Content Cards card. User id: " + contentCardDataUserId + " Card data: " + contentCardData);
+      BrazeLogger.d(TAG, "Push contains associated Content Cards card. User id: " + contentCardDataUserId + " Card data: " + contentCardData);
       AppboyInternal.addSerializedContentCardToStorage(payload.getContext(), contentCardData, contentCardDataUserId);
     }
   }
@@ -1113,7 +1109,7 @@ public class AppboyNotificationUtils {
    *                {@link #setContentIntentIfPresent}
    */
   static void sendNotificationOpenedBroadcast(Context context, Intent intent) {
-    AppboyLogger.d(TAG, "Sending notification opened broadcast");
+    BrazeLogger.d(TAG, "Sending notification opened broadcast");
     sendPushActionIntent(context, AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX, intent.getExtras());
   }
 
@@ -1129,17 +1125,17 @@ public class AppboyNotificationUtils {
   @TargetApi(Build.VERSION_CODES.O)
   static NotificationChannel getValidNotificationChannel(NotificationManager notificationManager, Bundle notificationExtras) {
     if (notificationExtras == null) {
-      AppboyLogger.d(TAG, "Notification extras bundle was null. Could not find a valid notification channel");
+      BrazeLogger.d(TAG, "Notification extras bundle was null. Could not find a valid notification channel");
       return null;
     }
     String channelIdFromExtras = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, null);
     if (!StringUtils.isNullOrBlank(channelIdFromExtras)) {
       final NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelIdFromExtras);
       if (notificationChannel != null) {
-        AppboyLogger.d(TAG, "Found notification channel in extras with id: " + channelIdFromExtras);
+        BrazeLogger.d(TAG, "Found notification channel in extras with id: " + channelIdFromExtras);
         return notificationChannel;
       } else {
-        AppboyLogger.d(TAG, "Notification channel from extras is invalid, no channel found with id: " + channelIdFromExtras);
+        BrazeLogger.d(TAG, "Notification channel from extras is invalid, no channel found with id: " + channelIdFromExtras);
       }
     }
 
@@ -1147,7 +1143,7 @@ public class AppboyNotificationUtils {
     if (defaultNotificationChannel != null) {
       return defaultNotificationChannel;
     } else {
-      AppboyLogger.d(TAG, "Appboy default notification channel does not exist on device.");
+      BrazeLogger.d(TAG, "Appboy default notification channel does not exist on device.");
     }
     return null;
   }

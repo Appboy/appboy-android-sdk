@@ -4,13 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
-import com.appboy.Appboy;
-import com.appboy.IAppboyImageLoader;
-import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageModal;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
@@ -18,9 +14,13 @@ import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageBaseView;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageModalView;
 import com.appboy.ui.inappmessage.views.InAppMessageImageView;
+import com.braze.Braze;
+import com.braze.enums.BrazeViewBounds;
+import com.braze.images.IBrazeImageLoader;
+import com.braze.support.BrazeLogger;
 
 public class AppboyModalViewFactory implements IInAppMessageViewFactory {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyModalViewFactory.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyModalViewFactory.class);
   private static final float NON_GRAPHIC_ASPECT_RATIO = 290f / 100f;
 
   @Override
@@ -33,14 +33,14 @@ public class AppboyModalViewFactory implements IInAppMessageViewFactory {
 
     String imageUrl = AppboyInAppMessageBaseView.getAppropriateImageUrl(inAppMessageModal);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
-      IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-      appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.IN_APP_MESSAGE_MODAL);
+      IBrazeImageLoader appboyImageLoader = Braze.getInstance(applicationContext).getImageLoader();
+      appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), BrazeViewBounds.IN_APP_MESSAGE_MODAL);
     }
 
     // Modal frame should only dismiss the message when configured.
     view.getFrameView().setOnClickListener(view1 -> {
       if (AppboyInAppMessageManager.getInstance().getDoesClickOutsideModalViewDismissInAppMessageView()) {
-        AppboyLogger.i(TAG, "Dismissing modal after frame click");
+        BrazeLogger.i(TAG, "Dismissing modal after frame click");
         AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
       }
     });

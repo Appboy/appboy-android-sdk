@@ -8,12 +8,12 @@ import android.util.Log;
 
 import com.appboy.Constants;
 import com.appboy.push.AppboyNotificationUtils;
-import com.appboy.support.AppboyLogger;
+import com.braze.support.BrazeLogger;
 
 import java.util.concurrent.TimeUnit;
 
 public class CustomBroadcastReceiver extends BroadcastReceiver {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(CustomBroadcastReceiver.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(CustomBroadcastReceiver.class);
 
   @Override
   public void onReceive(Context context, Intent intent) {

@@ -1,46 +1,33 @@
 package com.appboy.sample.subscriptions;
 
-import android.content.Context;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import com.appboy.sample.R;
-import com.appboy.support.AppboyLogger;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-public abstract class SubscriptionStateDialogBase extends DialogPreference {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(SubscriptionStateDialogBase.class);
+import com.appboy.sample.R;
+import com.appboy.sample.dialog.CustomDialogBase;
+
+public abstract class SubscriptionStateDialogBase extends CustomDialogBase {
   protected static final int SUBSCRIBED_INDEX = 0;
   protected static final int OPTED_IN_INDEX = 1;
   protected static final int UNSUBSCRIBED_INDEX = 2;
 
   protected RadioGroup mSubscriptionState;
 
-  public SubscriptionStateDialogBase(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    setDialogLayoutResource(R.layout.subscription_state_preferences);
-    setPersistent(false);
-  }
-
-  public SubscriptionStateDialogBase(Context context, AttributeSet attrs, int defStyle) {
-    super(context, attrs, defStyle);
-    setDialogLayoutResource(R.layout.subscription_state_preferences);
-    setPersistent(false);
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.subscription_state_preferences, container, false);
   }
 
   @Override
-  public View onCreateDialogView() {
-    View view = super.onCreateDialogView();
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
     mSubscriptionState = view.findViewById(R.id.subscription_state);
-    return view;
   }
-
-  @Override
-  protected void onBindDialogView(View view) {
-    super.onBindDialogView(view);
-  }
-
-  @Override
-  protected abstract void onDialogClosed(boolean positiveResult);
 }

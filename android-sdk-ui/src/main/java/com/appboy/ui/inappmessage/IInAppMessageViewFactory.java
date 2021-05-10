@@ -3,6 +3,8 @@ package com.appboy.ui.inappmessage;
 import android.app.Activity;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.appboy.models.IInAppMessage;
 
 public interface IInAppMessageViewFactory {
@@ -20,5 +22,5 @@ public interface IInAppMessageViewFactory {
    * @param inAppMessage
    * @return View that will be used to display the in-app message.
    */
-  View createInAppMessageView(Activity activity, IInAppMessage inAppMessage);
+  View createInAppMessageView(@NonNull Activity activity, @NonNull IInAppMessage inAppMessage);
 }

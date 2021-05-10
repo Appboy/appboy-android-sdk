@@ -7,11 +7,11 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 
 import com.appboy.models.cards.Card;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.widget.BaseCardView;
+import com.braze.support.BrazeLogger;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -20,7 +20,7 @@ import java.util.Observer;
  * Base class for Appboy feed card views
  */
 public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> implements Observer {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(BaseCardView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(BaseCardView.class);
 
   public BaseFeedCardView(Context context) {
     super(context);

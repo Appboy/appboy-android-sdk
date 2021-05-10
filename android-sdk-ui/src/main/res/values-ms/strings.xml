@@ -4,4 +4,5 @@
   <string name="com_appboy_feed_empty">Tiada kemas kini. Sila periksa kemudian.</string>
   <string name="com_appboy_feed_connection_error_title">Ralat Sambungan</string>
   <string name="com_appboy_feed_connection_error_body">Tidak boleh membuat sambungan rangkaian. Sila cuba kemudian.</string>
+  <string name="com_appboy_inappmessage_close_content_description">untuk menutup</string>
 </resources>

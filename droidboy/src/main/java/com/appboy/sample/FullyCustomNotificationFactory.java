@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 
 import com.appboy.IAppboyNotificationFactory;
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.AppboyNotificationUtils;
 
@@ -26,7 +25,7 @@ public class FullyCustomNotificationFactory implements IAppboyNotificationFactor
   }
 
   @Override
-  public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
+  public Notification createNotification(com.appboy.configuration.AppboyConfigurationProvider appConfigurationProvider,
                                          Context context,
                                          Bundle notificationExtras,
                                          Bundle appboyExtras) {

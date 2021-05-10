@@ -9,9 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.appboy.IAppboyNavigator;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
+import com.braze.support.BrazeLogger;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class UriUtils {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(UriUtils.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(UriUtils.class);
 
   /**
    * Parses the query part of the uri and returns a mapping of the query keys to the
@@ -28,7 +28,7 @@ public class UriUtils {
   public static Map<String, String> getQueryParameters(Uri uri) {
     String encodedQuery = uri.getEncodedQuery();
     if (encodedQuery == null) {
-      AppboyLogger.v(TAG, "Encoded query is null for Uri: " + uri + " Returning empty map for query parameters");
+      BrazeLogger.v(TAG, "Encoded query is null for Uri: " + uri + " Returning empty map for query parameters");
       return Collections.emptyMap();
     }
 
@@ -52,7 +52,7 @@ public class UriUtils {
         }
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to map the query parameters of Uri: " + uri, e);
+      BrazeLogger.e(TAG, "Failed to map the query parameters of Uri: " + uri, e);
     }
 
     return parameterValueMap;
@@ -79,7 +79,7 @@ public class UriUtils {
       ActivityInfo activityInfo = context.getPackageManager().getActivityInfo(new ComponentName(context, className), 0);
       return activityInfo != null;
     } catch (PackageManager.NameNotFoundException e) {
-      AppboyLogger.w(TAG, "Could not find activity info for class with name: " + className, e);
+      BrazeLogger.w(TAG, "Could not find activity info for class with name: " + className, e);
       return false;
     }
   }

@@ -13,21 +13,21 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.IInAppMessage;
-import com.appboy.support.AppboyFileUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.HandlerUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
 import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
 import com.appboy.ui.support.UriUtils;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeFileUtils;
+import com.braze.support.BrazeLogger;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InAppMessageWebViewClient extends WebViewClient {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageWebViewClient.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageWebViewClient.class);
   private static final String APPBOY_INAPP_MESSAGE_SCHEME = "appboy";
   private static final String AUTHORITY_NAME_CLOSE = "close";
   private static final String AUTHORITY_NAME_NEWSFEED = "feed";
@@ -74,19 +74,19 @@ public class InAppMessageWebViewClient extends WebViewClient {
     mPostOnFinishedTimeoutRunnable = () -> {
       if (mWebViewClientStateListener != null
           && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
-        AppboyLogger.v(TAG, "Page may not have finished loading, but max wait time has expired."
+        BrazeLogger.v(TAG, "Page may not have finished loading, but max wait time has expired."
             + " Calling onPageFinished on listener.");
         mWebViewClientStateListener.onPageFinished();
       }
     };
-    mMaxOnPageFinishedWaitTimeMs = new AppboyConfigurationProvider(context).getInAppMessageWebViewClientOnPageFinishedMaxWaitMs();
+    mMaxOnPageFinishedWaitTimeMs = new BrazeConfigurationProvider(context).getInAppMessageWebViewClientOnPageFinishedMaxWaitMs();
   }
 
   @Override
   public void onPageFinished(WebView view, String url) {
     appendBridgeJavascript(view);
     if (mWebViewClientStateListener != null && mHasCalledPageFinishedOnListener.compareAndSet(false, true)) {
-      AppboyLogger.v(TAG, "Page has finished loading. Calling onPageFinished on listener");
+      BrazeLogger.v(TAG, "Page has finished loading. Calling onPageFinished on listener");
       mWebViewClientStateListener.onPageFinished();
     }
     mHasPageFinishedLoading = true;
@@ -96,12 +96,12 @@ public class InAppMessageWebViewClient extends WebViewClient {
   }
 
   private void appendBridgeJavascript(WebView view) {
-    String javascriptString = AppboyFileUtils.getAssetFileStringContents(mContext.getAssets(), "appboy-html-in-app-message-javascript-component.js");
+    String javascriptString = BrazeFileUtils.getAssetFileStringContents(mContext.getAssets(), "appboy-html-in-app-message-javascript-component.js");
     if (javascriptString == null) {
 
       // Fail instead of present a broken WebView
       AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false);
-      AppboyLogger.w(TAG, "Failed to get HTML in-app message javascript additions");
+      BrazeLogger.w(TAG, "Failed to get HTML in-app message javascript additions");
       return;
     }
 
@@ -141,14 +141,14 @@ public class InAppMessageWebViewClient extends WebViewClient {
 
   private boolean handleUrlOverride(String url) {
     if (mInAppMessageWebViewClientListener == null) {
-      AppboyLogger.i(TAG, "InAppMessageWebViewClient was given null IInAppMessageWebViewClientListener listener. Returning true.");
+      BrazeLogger.i(TAG, "InAppMessageWebViewClient was given null IInAppMessageWebViewClientListener listener. Returning true.");
       return true;
     }
 
     if (StringUtils.isNullOrBlank(url)) {
       // Null or blank urls shouldn't be passed back to the WebView. We return true here to indicate
       // to the WebView that we handled the url.
-      AppboyLogger.i(TAG, "InAppMessageWebViewClient.shouldOverrideUrlLoading was given null or blank url. Returning true.");
+      BrazeLogger.i(TAG, "InAppMessageWebViewClient.shouldOverrideUrlLoading was given null or blank url. Returning true.");
       return true;
     }
 
@@ -172,11 +172,11 @@ public class InAppMessageWebViewClient extends WebViewClient {
             // continue on
         }
       } else {
-        AppboyLogger.d(TAG, "Uri authority was null. Uri: " + uri);
+        BrazeLogger.d(TAG, "Uri authority was null. Uri: " + uri);
       }
       return true;
     } else {
-      AppboyLogger.d(TAG, "Uri scheme was null. Uri: " + uri);
+      BrazeLogger.d(TAG, "Uri scheme was null. Uri: " + uri);
     }
     mInAppMessageWebViewClientListener.onOtherUrlAction(mInAppMessage, url, queryBundle);
     return true;

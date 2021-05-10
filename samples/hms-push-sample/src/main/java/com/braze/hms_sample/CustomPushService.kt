@@ -1,8 +1,8 @@
 package com.braze.hms_sample
 
 import android.util.Log
-import com.appboy.Appboy
 import com.appboy.push.AppboyHuaweiPushHandler
+import com.braze.Braze
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.push.HmsMessageService
@@ -20,7 +20,7 @@ class CustomPushService: HmsMessageService() {
     val appId = AGConnectServicesConfig.fromContext(applicationContext).getString("client/app_id")
     val pushToken = HmsInstanceId.getInstance(applicationContext).getToken(appId, "HCM")
     Log.i(TAG, "Got Huawei push token $pushToken")
-    Appboy.getInstance(applicationContext).registerAppboyPushMessages(token!!)
+    Braze.getInstance(applicationContext).registerAppboyPushMessages(token!!)
   }
 
   override fun onMessageReceived(hmsRemoteMessage: RemoteMessage?) {

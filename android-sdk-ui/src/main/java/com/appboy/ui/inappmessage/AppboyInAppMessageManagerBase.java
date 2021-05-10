@@ -6,7 +6,6 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import com.appboy.models.IInAppMessage;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.factories.AppboyFullViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyHtmlFullViewFactory;
 import com.appboy.ui.inappmessage.factories.AppboyHtmlViewFactory;
@@ -20,9 +19,10 @@ import com.appboy.ui.inappmessage.listeners.AppboyInAppMessageWebViewClientListe
 import com.appboy.ui.inappmessage.listeners.IHtmlInAppMessageActionListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
+import com.braze.support.BrazeLogger;
 
 public class AppboyInAppMessageManagerBase {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageManagerBase.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageManagerBase.class);
 
   private boolean mClickOutsideModalDismissesInAppMessageView = false;
   private boolean mBackButtonDismissesInAppMessageView = true;
@@ -108,7 +108,7 @@ public class AppboyInAppMessageManagerBase {
       case HTML:
         return mInAppMessageHtmlViewFactory;
       default:
-        AppboyLogger.w(TAG, "Failed to find view factory for in-app message with type: " + inAppMessage.getMessageType());
+        BrazeLogger.w(TAG, "Failed to find view factory for in-app message with type: " + inAppMessage.getMessageType());
         return null;
     }
   }
@@ -153,7 +153,7 @@ public class AppboyInAppMessageManagerBase {
    * {@link Activity#onKeyDown(int, KeyEvent)} method will be called).
    */
   public void setBackButtonDismissesInAppMessageView(boolean backButtonDismissesInAppMessageView) {
-    AppboyLogger.d(TAG, "In-App Message back button dismissal set to " + backButtonDismissesInAppMessageView);
+    BrazeLogger.d(TAG, "In-App Message back button dismissal set to " + backButtonDismissesInAppMessageView);
     mBackButtonDismissesInAppMessageView = backButtonDismissesInAppMessageView;
   }
 
@@ -162,7 +162,7 @@ public class AppboyInAppMessageManagerBase {
    * message. Defaults to false.
    */
   public void setClickOutsideModalViewDismissInAppMessageView(boolean doesDismiss) {
-    AppboyLogger.d(TAG, "Modal In-App Message outside tap dismissal set to " + doesDismiss);
+    BrazeLogger.d(TAG, "Modal In-App Message outside tap dismissal set to " + doesDismiss);
     mClickOutsideModalDismissesInAppMessageView = doesDismiss;
   }
 
@@ -176,7 +176,7 @@ public class AppboyInAppMessageManagerBase {
    *                                    default {@link IInAppMessageManagerListener}).
    */
   public void setCustomInAppMessageManagerListener(IInAppMessageManagerListener inAppMessageManagerListener) {
-    AppboyLogger.d(TAG, "Custom InAppMessageManagerListener set");
+    BrazeLogger.d(TAG, "Custom InAppMessageManagerListener set");
     mCustomInAppMessageManagerListener = inAppMessageManagerListener;
   }
 
@@ -188,7 +188,7 @@ public class AppboyInAppMessageManagerBase {
    *                                    default {@link IInAppMessageManagerListener}).
    */
   public void setCustomControlInAppMessageManagerListener(IInAppMessageManagerListener inAppMessageManagerListener) {
-    AppboyLogger.d(TAG, "Custom ControlInAppMessageManagerListener set. This listener will only be used for control in-app messages.");
+    BrazeLogger.d(TAG, "Custom ControlInAppMessageManagerListener set. This listener will only be used for control in-app messages.");
     mCustomControlInAppMessageManagerListener = inAppMessageManagerListener;
   }
 
@@ -199,7 +199,7 @@ public class AppboyInAppMessageManagerBase {
    *                                       default IHtmlInAppMessageActionListener).
    */
   public void setCustomHtmlInAppMessageActionListener(IHtmlInAppMessageActionListener htmlInAppMessageActionListener) {
-    AppboyLogger.d(TAG, "Custom htmlInAppMessageActionListener set");
+    BrazeLogger.d(TAG, "Custom htmlInAppMessageActionListener set");
     mCustomHtmlInAppMessageActionListener = htmlInAppMessageActionListener;
   }
 
@@ -211,7 +211,7 @@ public class AppboyInAppMessageManagerBase {
    *                                     IInAppMessageAnimationFactory).
    */
   public void setCustomInAppMessageAnimationFactory(IInAppMessageAnimationFactory inAppMessageAnimationFactory) {
-    AppboyLogger.d(TAG, "Custom InAppMessageAnimationFactory set");
+    BrazeLogger.d(TAG, "Custom InAppMessageAnimationFactory set");
     mCustomInAppMessageAnimationFactory = inAppMessageAnimationFactory;
   }
 
@@ -223,7 +223,7 @@ public class AppboyInAppMessageManagerBase {
    *                                IInAppMessageViewFactory).
    */
   public void setCustomInAppMessageViewFactory(IInAppMessageViewFactory inAppMessageViewFactory) {
-    AppboyLogger.d(TAG, "Custom InAppMessageViewFactory set");
+    BrazeLogger.d(TAG, "Custom InAppMessageViewFactory set");
     mCustomInAppMessageViewFactory = inAppMessageViewFactory;
   }
 
@@ -232,7 +232,7 @@ public class AppboyInAppMessageManagerBase {
    * display an {@link IInAppMessage} to the user.
    */
   public void setCustomInAppMessageViewWrapperFactory(@Nullable IInAppMessageViewWrapperFactory inAppMessageViewWrapperFactory) {
-    AppboyLogger.d(TAG, "Custom IInAppMessageViewWrapperFactory set");
+    BrazeLogger.d(TAG, "Custom IInAppMessageViewWrapperFactory set");
     mCustomInAppMessageViewWrapperFactory = inAppMessageViewWrapperFactory;
   }
 }

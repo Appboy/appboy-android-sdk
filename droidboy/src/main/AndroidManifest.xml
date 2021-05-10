@@ -28,7 +28,7 @@
       </intent-filter>
     </activity>
     <activity
-      android:name=".activity.SettingsPreferencesActivity"
+      android:name=".activity.SettingsActivity"
       android:exported="true"
       android:label="Preferences"
       android:theme="@style/Theme.Droidboy">

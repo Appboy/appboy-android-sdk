@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.appboy.IAppboyNavigator;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
+import com.braze.support.BrazeLogger;
 
 public class AppboyNavigator implements IAppboyNavigator {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNavigator.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyNavigator.class);
   private static final IAppboyNavigator sDefaultAppboyNavigator = new AppboyNavigator();
   private static volatile IAppboyNavigator sCustomAppboyNavigator;
 
@@ -43,7 +43,7 @@ public class AppboyNavigator implements IAppboyNavigator {
 
   public static void executeNewsFeedAction(Context context, NewsfeedAction newsfeedAction) {
     if (newsfeedAction == null) {
-      AppboyLogger.w(TAG, "IAppboyNavigator cannot open News feed because the news feed action object was null.");
+      BrazeLogger.w(TAG, "IAppboyNavigator cannot open News feed because the news feed action object was null.");
       return;
     }
     newsfeedAction.execute(context);
@@ -51,7 +51,7 @@ public class AppboyNavigator implements IAppboyNavigator {
 
   public static void executeUriAction(Context context, UriAction uriAction) {
     if (uriAction == null) {
-      AppboyLogger.w(TAG, "IAppboyNavigator cannot open Uri because the Uri action object was null.");
+      BrazeLogger.w(TAG, "IAppboyNavigator cannot open Uri because the Uri action object was null.");
       return;
     }
     uriAction.execute(context);
@@ -79,7 +79,7 @@ public class AppboyNavigator implements IAppboyNavigator {
    *                        a URI.
    */
   public static void setAppboyNavigator(IAppboyNavigator appboyNavigator) {
-    AppboyLogger.d(TAG, "Custom IAppboyNavigator set");
+    BrazeLogger.d(TAG, "Custom IAppboyNavigator set");
     sCustomAppboyNavigator = appboyNavigator;
   }
 }

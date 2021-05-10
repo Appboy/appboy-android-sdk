@@ -14,17 +14,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.models.IInAppMessageImmersive;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageImageView;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseView {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageFullView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageFullView.class);
   private InAppMessageImageView mInAppMessageImageView;
   private boolean mIsGraphic;
 
@@ -133,7 +133,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
     // dismisses the in-app message.
     View scrollViewChild = findViewById(R.id.com_appboy_inappmessage_full_text_layout);
     scrollViewChild.setOnClickListener(scrollView -> {
-      AppboyLogger.d(TAG, "Passing scrollView click event to message clickable view.");
+      BrazeLogger.d(TAG, "Passing scrollView click event to message clickable view.");
       getMessageClickableView().performClick();
     });
   }
@@ -221,7 +221,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
    */
   private void applyDisplayCutoutMarginsToCloseButton(@NonNull WindowInsetsCompat windowInsets, @NonNull View closeButtonView) {
     if (closeButtonView.getLayoutParams() == null || !(closeButtonView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
-      AppboyLogger.d(TAG, "Close button layout params are null or not of the expected class. Not applying window insets.");
+      BrazeLogger.d(TAG, "Close button layout params are null or not of the expected class. Not applying window insets.");
       return;
     }
 
@@ -239,7 +239,7 @@ public class AppboyInAppMessageFullView extends AppboyInAppMessageImmersiveBaseV
    */
   private void applyDisplayCutoutMarginsToContentArea(@NonNull WindowInsetsCompat windowInsets, @NonNull View contentAreaView) {
     if (contentAreaView.getLayoutParams() == null || !(contentAreaView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
-      AppboyLogger.d(TAG, "Content area layout params are null or not of the expected class. Not applying window insets.");
+      BrazeLogger.d(TAG, "Content area layout params are null or not of the expected class. Not applying window insets.");
       return;
     }
 

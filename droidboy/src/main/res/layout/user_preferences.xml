@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_span="3"/>
         </TableRow>
-        
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -193,6 +193,6 @@
                 android:layout_span="3"
                 style="@style/BaseWidget.UserSingleLineText"/>
         </TableRow>
-
+      <include layout="@layout/dialog_footer_navigation" />
     </TableLayout>
 </ScrollView>

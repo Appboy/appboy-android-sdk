@@ -4,11 +4,11 @@ import android.app.Application;
 import android.content.res.Resources;
 import android.util.Log;
 
-import com.appboy.Appboy;
 import com.appboy.AppboyLifecycleCallbackListener;
-import com.appboy.configuration.AppboyConfig;
 import com.appboy.helloworld.R;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfig;
+import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class CustomApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    AppboyLogger.setLogLevel(Log.VERBOSE);
+    BrazeLogger.setLogLevel(Log.VERBOSE);
     configureAppboyAtRuntime();
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }
@@ -29,7 +29,7 @@ public class CustomApplication extends Application {
     localeToApiKeyMapping.add("fr_NC, anotherAPIKey");
 
     Resources resources = getResources();
-    AppboyConfig appboyConfig = new AppboyConfig.Builder()
+    BrazeConfig brazeConfig = new BrazeConfig.Builder()
         .setApiKey("dd162bff-b14e-4d87-9bf0-fec609a77ca4")
         .setIsFirebaseCloudMessagingRegistrationEnabled(false)
         .setAdmMessagingRegistrationEnabled(false)
@@ -46,6 +46,6 @@ public class CustomApplication extends Application {
         .setGoodNetworkDataFlushInterval(60)
         .setGreatNetworkDataFlushInterval(10)
         .build();
-    Appboy.configure(this, appboyConfig);
+    Braze.configure(this, brazeConfig);
   }
 }

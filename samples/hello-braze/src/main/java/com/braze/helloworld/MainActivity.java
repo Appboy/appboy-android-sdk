@@ -8,9 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.appboy.Appboy;
 import com.appboy.helloworld.R;
 import com.appboy.support.StringUtils;
+import com.braze.Braze;
 
 public class MainActivity extends Activity {
   private EditText mNickname;
@@ -47,14 +47,14 @@ public class MainActivity extends Activity {
         if (!StringUtils.isNullOrBlank(nickname) && !StringUtils.isNullOrBlank(highScore)) {
           // Assign the current user an userId. You can search for this user using this external user id on the
           // dashboard
-          Appboy.getInstance(mApplicationContext).changeUser(userId);
+          Braze.getInstance(mApplicationContext).changeUser(userId);
 
           // Send the custom event for the click
-          Appboy.getInstance(mApplicationContext).logCustomEvent(CUSTOM_CLICK_EVENT);
+          Braze.getInstance(mApplicationContext).logCustomEvent(CUSTOM_CLICK_EVENT);
 
           // Log the custom attribute of "nickname : highScore"
           String attributeString = String.format("%s : %s", nickname, highScore);
-          Appboy.getInstance(mApplicationContext).getCurrentUser()
+          Braze.getInstance(mApplicationContext).getCurrentUser()
               .setCustomUserAttribute(HIGH_SCORE_ATTRIBUTE_KEY, attributeString);
           displayToast("Sent off button click event and updated high score attribute for user " + userId);
         } else {

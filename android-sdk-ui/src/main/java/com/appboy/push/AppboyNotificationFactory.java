@@ -8,12 +8,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.appboy.IAppboyNotificationFactory;
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.push.BrazeNotificationPayload;
-import com.appboy.support.AppboyLogger;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
 public class AppboyNotificationFactory implements IAppboyNotificationFactory {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationFactory.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyNotificationFactory.class);
   private static volatile AppboyNotificationFactory sInstance = null;
 
   /**
@@ -30,9 +30,13 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     return sInstance;
   }
 
+  /**
+   * @deprecated Deprecated since 8/25/20
+   */
   @Override
   @Deprecated
-  public Notification createNotification(AppboyConfigurationProvider appConfigurationProvider,
+  @SuppressWarnings("deprecation")
+  public Notification createNotification(com.appboy.configuration.AppboyConfigurationProvider appConfigurationProvider,
                                          Context context,
                                          Bundle notificationExtras,
                                          Bundle appboyExtras) {
@@ -56,21 +60,39 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
     if (builder != null) {
       return builder.build();
     } else {
-      AppboyLogger.i(TAG, "Notification could not be built. Returning null as created notification");
+      BrazeLogger.i(TAG, "Notification could not be built. Returning null as created notification");
       return null;
     }
+  }
+
+  /**
+   * @deprecated Please use {@link #populateNotificationBuilder(BrazeConfigurationProvider, Context, Bundle, Bundle)}
+   * instead. Deprecated since 3/26/21
+   */
+  @Deprecated
+  @Nullable
+  @SuppressWarnings("deprecation")
+  public NotificationCompat.Builder populateNotificationBuilder(com.appboy.configuration.AppboyConfigurationProvider appboyConfigurationProvider,
+                                                                Context context,
+                                                                Bundle notificationExtras,
+                                                                Bundle appboyExtras) {
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
+        (BrazeConfigurationProvider) appboyConfigurationProvider,
+        notificationExtras,
+        appboyExtras);
+    return populateNotificationBuilder(payload);
   }
 
   /**
    * Equivalent to {@link #createNotification(BrazeNotificationPayload)}
    */
   @Nullable
-  public NotificationCompat.Builder populateNotificationBuilder(AppboyConfigurationProvider appboyConfigurationProvider,
+  public NotificationCompat.Builder populateNotificationBuilder(BrazeConfigurationProvider configurationProvider,
                                                                 Context context,
                                                                 Bundle notificationExtras,
                                                                 Bundle appboyExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
-        appboyConfigurationProvider,
+        (BrazeConfigurationProvider) configurationProvider,
         notificationExtras,
         appboyExtras);
     return populateNotificationBuilder(payload);
@@ -84,16 +106,16 @@ public class AppboyNotificationFactory implements IAppboyNotificationFactory {
    */
   @Nullable
   public static NotificationCompat.Builder populateNotificationBuilder(BrazeNotificationPayload payload) {
-    AppboyLogger.v(TAG, "Using BrazeNotificationPayload: " + payload);
+    BrazeLogger.v(TAG, "Using BrazeNotificationPayload: " + payload);
     final Context context = payload.getContext();
 
     if (context == null) {
-      AppboyLogger.d(TAG, "BrazeNotificationPayload has null context. Not creating notification");
+      BrazeLogger.d(TAG, "BrazeNotificationPayload has null context. Not creating notification");
       return null;
     }
-    final AppboyConfigurationProvider appboyConfigurationProvider = payload.getAppboyConfigurationProvider();
+    final BrazeConfigurationProvider appboyConfigurationProvider = payload.getConfigurationProvider();
     if (appboyConfigurationProvider == null) {
-      AppboyLogger.d(TAG, "BrazeNotificationPayload has null app configuration provider. Not creating notification");
+      BrazeLogger.d(TAG, "BrazeNotificationPayload has null app configuration provider. Not creating notification");
       return null;
     }
     final Bundle notificationExtras = payload.getNotificationExtras();

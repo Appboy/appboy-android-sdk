@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
   <string name="app_name">Droidboy</string>
-
   <string name="feed">News Feed</string>
   <string name="settings">Settings</string>
   <string name="network_control_title">Network Controls</string>
@@ -9,12 +8,11 @@
   <string name="location_title">Location</string>
   <string name="about_title">About</string>
   <string name="sdk_state_change_settings_title">Braze SDK State Change</string>
-
+  <string name="sdk_auth">SDK Auth</string>
   <string name="user_dialog_title">Default Attributes</string>
   <string name="user_dialog_okay">OK</string>
   <string name="user_dialog_cancel">Cancel</string>
   <string name="user_dialog_close">Close</string>
-
   <string name="user_dialog_first_name">First Name</string>
   <string name="user_dialog_last_name">Last Name</string>
   <string name="user_dialog_email_address">Email Address</string>
@@ -26,7 +24,6 @@
   <string name="user_dialog_clear">Clear All</string>
   <string name="user_dialog_birthday_button">Pick Birthday</string>
   <string name="user_dialog_done">done</string>
-
   <string name="male">Male</string>
   <string name="female">Female</string>
   <string name="other">Other</string>
@@ -34,41 +31,33 @@
   <string name="not_applicable">Not Applicable</string>
   <string name="prefer_not_to_say">Prefer not to Say</string>
   <string name="unspecified">Unspecified</string>
-
   <string name="subscribed">Subscribed</string>
   <string name="opted_in">Opted-In</string>
   <string name="unsubscribed">Unsubscribed</string>
-
   <string name="facebook_share_title">Facebook</string>
   <string name="facebook_share_summary">Share us on Facebook</string>
   <string name="facebook_share_toast">Thank you for sharing on Facebook</string>
-
   <string name="twitter_share_title">Twitter</string>
   <string name="twitter_share_summary">Share us on Twitter</string>
   <string name="twitter_share_toast">Thank you for sharing on Twitter</string>
-
   <string name="custom_logging_dialog_title">Custom Logging</string>
   <string name="custom_logging_dialog_summary">Log User Attributes, Custom Events, and Purchases</string>
   <string name="custom_logging_dialog_okay">OK</string>
   <string name="custom_logging_dialog_cancel">Cancel</string>
-
   <string name="custom_logging_category_title">Custom Logging</string>
   <string name="log_user_attributes_title">Custom Attributes</string>
   <string name="log_events_title">Custom Events</string>
   <string name="log_purchase_title">Purchases</string>
-
   <string name="storage_info_preference_category">Storage Info</string>
   <string name="file_data_title">File Data</string>
   <string name="file_data_summary">View the files stored for this app.</string>
   <string name="shared_preferences_title">SharedPreferences Data</string>
   <string name="shared_preferences_summary">View the SharedPreferences data for this app.</string>
-
   <string name="attribute_array">Array Operation:</string>
   <string name="attribute_array_set">Set</string>
   <string name="attribute_array_add">Add</string>
   <string name="attribute_array_remove">Remove</string>
   <string name="attribute_array_key">Create Attribute Array</string>
-
   <string name="custom_logging_user_attribute">User Attribute</string>
   <string name="custom_logging_user_number_attribute">User Attribute (Number)</string>
   <string name="custom_logging_user_attribute_increment">Increment Attribute</string>
@@ -76,17 +65,13 @@
   <string name="custom_logging_custom_purchase_qty">Purchase Quantity</string>
   <string name="custom_logging_custom_purchase_currency_code">Currency Code</string>
   <string name="custom_logging_custom_purchase_price_code">Price</string>
-
   <string name="data_flush_title">Request Flush</string>
   <string name="data_flush_toast">Data flush requested</string>
-
   <string name="close_session_toast">Closed existing Braze session.</string>
   <string name="enabled_outbound_network_requests_toast">Enabled Braze outbound network requests</string>
   <string name="disabled_outbound_network_requests_toast">Disabled Braze outbound network requests</string>
-
   <string name="spinner_content_description">Spinner</string>
   <string name="spin">Spin!</string>
-
   <string name="red">Red</string>
   <string name="blue">Blue</string>
   <string name="inappmessage_tester_tab_title">IAMs</string>
@@ -121,7 +106,6 @@
   <string name="story_toggle_deep_link">Toggle Story Deep Link</string>
   <string name="story_toggle_title">Toggle Story Title</string>
   <string name="story_toggle_subtitle">Toggle Story Subtitle</string>
-
   <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
   <string name="header_10">Hey there#</string>
   <string name="header_20">Hey hey from Braze!#</string>
@@ -135,18 +119,16 @@
   <string name="message_240">Welcome to Braze!!! Braze is Marketing Automation for Apps. This is an in-app message - this message is exactly two hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens#</string>
   <string name="message_640">Welcome to Braze!!! Braze is Marketing Automation for Apps. This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is an in-app message - this message is exactly six hundred and forty chars!  We don\'t recommend making in-app messages longer than 140 characters due to variations in screens.  This is a waaaay too long message#</string>
   <string name="message_2400">Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens. Welcome to Braze! Braze is Marketing Automation for Apps. This is an in-app message, this message is about two thousand four hundred chars! We don\'t recommend making in-app messages longer than 2400 characters due to variations in screens.#</string>
-
   <string name="test_push">Send Push</string>
   <string name="push_test_large_icon_label">Use Dynamic Large Icon</string>
   <string name="push_tester_big_title_label">Add Big Title</string>
-  <string translatable="false" name="push_tester_inline_image_push">Inline Image Push</string>
+  <string name="push_tester_inline_image_push" translatable="false">Inline Image Push</string>
   <string name="push_tester_big_summary_label">Add Big Summary</string>
   <string name="push_tester_summary_label">Add Summary Text</string>
   <string name="push_tester_overflow_text_label">Overflow Text</string>
   <string name="push_tester_public_version_label">Set Public Version Notification</string>
   <string name="push_tester_test_triggers">Force request triggers on click</string>
   <string name="push_tester_constant_nid">Use constant notification Id</string>
-
   <string name="disable_appboy_network_requests">Toggle Disable Braze Network Requests</string>
   <string name="disable_appboy_network_requests_summary">Disable Braze network requests for selected emulators starting next app run</string>
   <string name="push_preference_category">Push</string>
@@ -167,9 +149,7 @@
   <string name="log_attribution_summary">Log Creative, AdGroup, Network, and Campaign.</string>
   <string name="sort_feed_summary">Sort the News Feed Cards to Prefer to Display Unread Cards</string>
   <string name="custom_news_feed_card_click_action_listener_summary">toggles the use of CustomNewsFeedClickActionListener</string>
-
   <string name="notch_settings_category">Notch Settings</string>
-
   <string name="droidboy_notification_group_01_id">my_group_01</string>
   <string name="droidboy_notification_group_01_name">Group 1</string>
   <string name="droidboy_notification_channel_01_id">db_channel_01</string>
@@ -184,7 +164,6 @@
   <string name="droidboy_notification_channel_offers_desc">Droidboy offers and exciting Droidboy news</string>
   <string name="droidboy_notification_channel_recommendations_name">Recommendations</string>
   <string name="droidboy_notification_channel_recommendations_desc">Recommended suitors, hand-picked just for you</string>
-
   <string name="appboy_image_url">https://blog.appboy.com/wp-content/uploads/2014/11/Install_Attribution_Cover.png</string>
   <string name="appboy_image_url_1600w_1000h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c761151b0e4d207934d109/original.?1472684309</string>
   <string name="appboy_image_url_1000w_1000h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c760fb1b0e4d414534d0e8/original.?1472684283</string>
@@ -212,7 +191,6 @@
   <string name="play_store_uri">market://details?id=com.google.android.gm</string>
   <string name="overflow_string"> 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 201 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 202</string>
   <string name="youtube_regex">^(http\\:\\/\\/|https\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/(.+$|)</string>
-
   <string name="droidboy_close_button_text">close</string>
   <string name="droidboy_custom_action">droidboy_custom_action</string>
   <string name="droidboy_icon_name">ic_stat_notify_droidboy</string>
@@ -239,18 +217,28 @@
   <string name="set_environment_override_api_key_description">Set API Key:</string>
   <string name="set_environment_override_prev_api_key_description">Previously Used API Keys:</string>
   <string name="set_environment_override_endpoint_description">Set Endpoint:</string>
-
   <string name="shared_prefs_location">com.appboy.sample.sharedpreferences</string>
   <string name="api_key_shared_prefs_location">com.appboy.sample.sharedpreferences.api_key</string>
   <string name="mock_appboy_network_requests">mock_appboy_network_requests</string>
-
-  <string name = "source_key">source</string>
-  <string name = "destination_view">destination</string>
-  <string name = "home">home</string>
-  <string name = "feed_key">feed</string>
+  <string name="source_key">source</string>
+  <string name="destination_view">destination</string>
+  <string name="home">home</string>
+  <string name="feed_key">feed</string>
   <string name="environment_preference_category">Environment</string>
   <string name="display_message">Display Message</string>
   <string name="dummy_button">Dummy Button</string>
   <string name="droidboy_required_location_prompt_title">Please enable Droidboy location permissions</string>
   <string name="droidboy_required_location_prompt_message">Droidboy collects location data to enable Braze Geofences and session start location tracking even when the app is closed or not in use. This "prominent disclosure" is required by Google for Droidboy and does not automatically appear in our client apps as part of the SDK.</string>
+  <!-- Preference Titles -->
+  <string name="messages_header">Messages</string>
+  <string name="sync_header">Sync</string>
+  <!-- Messages Preferences -->
+  <string name="signature_title">Your signature</string>
+  <string name="reply_title">Default reply action</string>
+  <!-- Sync Preferences -->
+  <string name="sync_title">Sync email periodically</string>
+  <string name="attachment_title">Download incoming attachments</string>
+  <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+  <string name="attachment_summary_off">Only download attachments when manually requested</string>
+  <string name="settings_fragment_tab_title">Settings️</string>
 </resources>

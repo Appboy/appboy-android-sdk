@@ -1,36 +1,36 @@
-var appboyBridge = {
-  logCustomEvent: function (name, properties) { appboyInternalBridge.logCustomEventWithJSON(name, JSON.stringify(properties)); },
+var brazeBridge = {
+  logCustomEvent: function (name, properties) { brazeInternalBridge.logCustomEventWithJSON(name, JSON.stringify(properties)); },
   logPurchase: function (productId, price, currencyCode, quantity, purchaseProperties) {
-    appboyInternalBridge.logPurchaseWithJSON(productId, price, currencyCode, quantity != null ? quantity : 1, JSON.stringify(purchaseProperties));
+    brazeInternalBridge.logPurchaseWithJSON(productId, price, currencyCode, quantity != null ? quantity : 1, JSON.stringify(purchaseProperties));
   },
   closeMessage: function () { window.location = 'appboy://close'; },
-  requestImmediateDataFlush: function () { appboyInternalBridge.requestImmediateDataFlush(); },
+  requestImmediateDataFlush: function () { brazeInternalBridge.requestImmediateDataFlush(); },
   display: { showFeed: function () { window.open('appboy://feed'); } },
   logClick: function(buttonId) {
     if (buttonId != null) {
-      appboyInternalBridge.logButtonClick(buttonId);
+      brazeInternalBridge.logButtonClick(buttonId);
     } else {
-      appboyInternalBridge.logClick();
+      brazeInternalBridge.logClick();
     }
   },
-  appboyBridgeUserObject: {
-    setFirstName: function(firstName) { appboyInternalBridge.getUser().setFirstName(firstName); },
-    setLastName: function(lastName) { appboyInternalBridge.getUser().setLastName(lastName); },
-    setEmail: function(email) { appboyInternalBridge.getUser().setEmail(email); },
-    setGender: function(gender) { appboyInternalBridge.getUser().setGender(gender); },
-    setHomeCity: function(homeCity) { appboyInternalBridge.getUser().setHomeCity(homeCity); },
+  brazeBridgeUserObject: {
+    setFirstName: function(firstName) { brazeInternalBridge.getUser().setFirstName(firstName); },
+    setLastName: function(lastName) { brazeInternalBridge.getUser().setLastName(lastName); },
+    setEmail: function(email) { brazeInternalBridge.getUser().setEmail(email); },
+    setGender: function(gender) { brazeInternalBridge.getUser().setGender(gender); },
+    setHomeCity: function(homeCity) { brazeInternalBridge.getUser().setHomeCity(homeCity); },
     setEmailNotificationSubscriptionType: function(subscriptionType) {
-      appboyInternalBridge.getUser().setEmailNotificationSubscriptionType(subscriptionType);
+      brazeInternalBridge.getUser().setEmailNotificationSubscriptionType(subscriptionType);
     },
     setPushNotificationSubscriptionType: function(subscriptionType) {
-      appboyInternalBridge.getUser().setPushNotificationSubscriptionType(subscriptionType);
+      brazeInternalBridge.getUser().setPushNotificationSubscriptionType(subscriptionType);
     },
-    addToCustomAttributeArray: function(key, value) { appboyInternalBridge.getUser().addToCustomAttributeArray(key, value); },
-    removeFromCustomAttributeArray: function(key, value) { appboyInternalBridge.getUser().removeFromCustomAttributeArray(key, value); },
-    incrementCustomUserAttribute: function(key) { appboyInternalBridge.getUser().incrementCustomUserAttribute(key); },
-    setDateOfBirth: function(year, month, day) { appboyInternalBridge.getUser().setDateOfBirth(year, month, day); },
-    setCountry: function(country) { appboyInternalBridge.getUser().setCountry(country); },
-    setPhoneNumber: function(phone) { appboyInternalBridge.getUser().setPhoneNumber(phone); },
+    addToCustomAttributeArray: function(key, value) { brazeInternalBridge.getUser().addToCustomAttributeArray(key, value); },
+    removeFromCustomAttributeArray: function(key, value) { brazeInternalBridge.getUser().removeFromCustomAttributeArray(key, value); },
+    incrementCustomUserAttribute: function(key) { brazeInternalBridge.getUser().incrementCustomUserAttribute(key); },
+    setDateOfBirth: function(year, month, day) { brazeInternalBridge.getUser().setDateOfBirth(year, month, day); },
+    setCountry: function(country) { brazeInternalBridge.getUser().setCountry(country); },
+    setPhoneNumber: function(phone) { brazeInternalBridge.getUser().setPhoneNumber(phone); },
     setCustomUserAttribute: function(key, value) {
       var isArray = function(value) {
           if (Array.isArray) {
@@ -39,25 +39,26 @@ var appboyBridge = {
           return Object.prototype.toString.call(value) === '[object Array]';
       };
       if (isArray(value)) {
-        appboyInternalBridge.getUser().setCustomUserAttributeArray(key, JSON.stringify(value));
+        brazeInternalBridge.getUser().setCustomUserAttributeArray(key, JSON.stringify(value));
       } else {
-        appboyInternalBridge.getUser().setCustomUserAttributeJSON(key, JSON.stringify({"value":value}));
+        brazeInternalBridge.getUser().setCustomUserAttributeJSON(key, JSON.stringify({"value":value}));
       }
     },
     setLocationCustomUserAttribute: function(key, latitude, longitude) {
       console.log("setLocationCustomUserAttribute() is deprecated and only support on Android. Please use setCustomLocationAttribute() instead.");
-      appboyInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude);
+      brazeInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude);
     },
-    setCustomLocationAttribute: function(key, latitude, longitude) { appboyInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude); },
-    setLanguage: function(language) { appboyInternalBridge.getUser().setLanguage(language); },
-    addAlias: function(alias, label) { appboyInternalBridge.getUser().addAlias(alias, label); }
+    setCustomLocationAttribute: function(key, latitude, longitude) { brazeInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude); },
+    setLanguage: function(language) { brazeInternalBridge.getUser().setLanguage(language); },
+    addAlias: function(alias, label) { brazeInternalBridge.getUser().addAlias(alias, label); }
   },
   getUser: function() {
-    return this.appboyBridgeUserObject;
+    return this.brazeBridgeUserObject;
   },
   web: {
     registerAppboyPushMessages: function(successCallback, deniedCallback) { console.log("This method is a no-op on Android."); },
     trackLocation: function() { console.log("This method is a no-op on Android."); },
   }
 };
+var appboyBridge = brazeBridge;
 window.dispatchEvent(new Event("ab.BridgeReady"));

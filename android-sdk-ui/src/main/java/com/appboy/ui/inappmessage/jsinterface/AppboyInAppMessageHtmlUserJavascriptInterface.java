@@ -6,13 +6,13 @@ import android.webkit.JavascriptInterface;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.Appboy;
-import com.appboy.AppboyUser;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
 import com.appboy.events.SimpleValueCallback;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.BrazeUser;
+import com.braze.support.BrazeLogger;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class AppboyInAppMessageHtmlUserJavascriptInterface {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageHtmlUserJavascriptInterface.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageHtmlUserJavascriptInterface.class);
   public static final String JS_BRIDGE_UNSUBSCRIBED = "unsubscribed";
   public static final String JS_BRIDGE_SUBSCRIBED = "subscribed";
   public static final String JS_BRIDGE_OPTED_IN = "opted_in";
@@ -42,9 +42,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setFirstName(final String firstName) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setFirstName(firstName);
       }
     });
@@ -52,9 +52,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setLastName(final String lastName) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setLastName(lastName);
       }
     });
@@ -62,9 +62,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setEmail(final String email) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setEmail(email);
       }
     });
@@ -74,12 +74,12 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setGender(String genderString) {
     final Gender gender = parseGender(genderString);
     if (gender == null) {
-      AppboyLogger.w(TAG, "Failed to parse gender in Braze HTML in-app message "
+      BrazeLogger.w(TAG, "Failed to parse gender in Braze HTML in-app message "
           + "javascript interface with gender: " + genderString);
     } else {
-      Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+      Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
         @Override
-        public void onSuccess(@NonNull AppboyUser currentUser) {
+        public void onSuccess(@NonNull BrazeUser currentUser) {
           currentUser.setGender(gender);
         }
       });
@@ -90,13 +90,13 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setDateOfBirth(final int year, int monthInt, final int day) {
     final Month month = monthFromInt(monthInt);
     if (month == null) {
-      AppboyLogger.w(TAG, "Failed to parse month for value " + monthInt);
+      BrazeLogger.w(TAG, "Failed to parse month for value " + monthInt);
       return;
     }
 
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setDateOfBirth(year, month, day);
       }
     });
@@ -104,9 +104,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setCountry(final String country) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setCountry(country);
       }
     });
@@ -114,9 +114,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setLanguage(final String language) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setLanguage(language);
       }
     });
@@ -124,9 +124,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setHomeCity(final String homeCity) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setHomeCity(homeCity);
       }
     });
@@ -136,13 +136,13 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setEmailNotificationSubscriptionType(String subscriptionType) {
     final NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
     if (subscriptionTypeEnum == null) {
-      AppboyLogger.w(TAG, "Failed to parse email subscription type in Braze HTML in-app message javascript interface with subscription " + subscriptionType);
+      BrazeLogger.w(TAG, "Failed to parse email subscription type in Braze HTML in-app message javascript interface with subscription " + subscriptionType);
       return;
     }
 
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setEmailNotificationSubscriptionType(subscriptionTypeEnum);
       }
     });
@@ -152,13 +152,13 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setPushNotificationSubscriptionType(String subscriptionType) {
     final NotificationSubscriptionType subscriptionTypeEnum = subscriptionTypeFromJavascriptString(subscriptionType);
     if (subscriptionTypeEnum == null) {
-      AppboyLogger.w(TAG, "Failed to parse push subscription type in Braze HTML in-app message javascript interface with subscription: " + subscriptionType);
+      BrazeLogger.w(TAG, "Failed to parse push subscription type in Braze HTML in-app message javascript interface with subscription: " + subscriptionType);
       return;
     }
 
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setPushNotificationSubscriptionType(subscriptionTypeEnum);
       }
     });
@@ -166,9 +166,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setPhoneNumber(final String phoneNumber) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setPhoneNumber(phoneNumber);
       }
     });
@@ -176,9 +176,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setCustomUserAttributeJSON(final String key, final String jsonStringValue) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         setCustomAttribute(currentUser, key, jsonStringValue);
       }
     });
@@ -188,13 +188,13 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   public void setCustomUserAttributeArray(final String key, String jsonArrayString) {
     final String[] arrayValue = parseStringArrayFromJsonString(jsonArrayString);
     if (arrayValue == null) {
-      AppboyLogger.w(TAG, "Failed to set custom attribute array for key " + key);
+      BrazeLogger.w(TAG, "Failed to set custom attribute array for key " + key);
       return;
     }
 
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setCustomAttributeArray(key, arrayValue);
       }
     });
@@ -202,9 +202,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void addToCustomAttributeArray(final String key, final String value) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.addToCustomAttributeArray(key, value);
       }
     });
@@ -212,9 +212,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void removeFromCustomAttributeArray(final String key, final String value) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.removeFromCustomAttributeArray(key, value);
       }
     });
@@ -222,9 +222,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void incrementCustomUserAttribute(final String attribute) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.incrementCustomUserAttribute(attribute);
       }
     });
@@ -232,9 +232,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void setCustomLocationAttribute(final String attribute, final double latitude, final double longitude) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setLocationCustomAttribute(attribute, latitude, longitude);
       }
     });
@@ -242,9 +242,9 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
 
   @JavascriptInterface
   public void addAlias(final String alias, final String label) {
-    Appboy.getInstance(mContext).getCurrentUser(new SimpleValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new SimpleValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.addAlias(alias, label);
       }
     });
@@ -275,7 +275,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
   }
 
   @VisibleForTesting
-  void setCustomAttribute(AppboyUser user, String key, String jsonStringValue) {
+  void setCustomAttribute(BrazeUser user, String key, String jsonStringValue) {
     try {
       JSONObject jsonObject = new JSONObject(jsonStringValue);
       Object valueObject = jsonObject.get(JS_BRIDGE_ATTRIBUTE_VALUE);
@@ -290,11 +290,11 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
       } else if (valueObject instanceof Double) {
         user.setCustomUserAttribute(key, ((Double) valueObject));
       } else {
-        AppboyLogger.w(TAG, "Failed to parse custom attribute type for key: " + key
+        BrazeLogger.w(TAG, "Failed to parse custom attribute type for key: " + key
             + " and json string value: " + jsonStringValue);
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to parse custom attribute type for key: " + key
+      BrazeLogger.e(TAG, "Failed to parse custom attribute type for key: " + key
           + " and json string value: " + jsonStringValue, e);
     }
   }
@@ -309,7 +309,7 @@ public class AppboyInAppMessageHtmlUserJavascriptInterface {
       }
       return list.toArray(new String[0]);
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to parse custom attribute array", e);
+      BrazeLogger.e(TAG, "Failed to parse custom attribute array", e);
     }
     return null;
   }

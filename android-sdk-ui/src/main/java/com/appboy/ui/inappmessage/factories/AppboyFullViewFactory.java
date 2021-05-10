@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.appboy.Appboy;
-import com.appboy.IAppboyImageLoader;
-import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.enums.inappmessage.Orientation;
 import com.appboy.models.IInAppMessage;
@@ -21,6 +18,9 @@ import com.appboy.ui.inappmessage.views.AppboyInAppMessageBaseView;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageFullView;
 import com.appboy.ui.inappmessage.views.InAppMessageImageView;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.Braze;
+import com.braze.enums.BrazeViewBounds;
+import com.braze.images.IBrazeImageLoader;
 
 public class AppboyFullViewFactory implements IInAppMessageViewFactory {
   /**
@@ -40,8 +40,8 @@ public class AppboyFullViewFactory implements IInAppMessageViewFactory {
     // Since this image is the width of the screen, the view bounds are uncapped
     String imageUrl = AppboyInAppMessageBaseView.getAppropriateImageUrl(inAppMessageFull);
     if (!StringUtils.isNullOrEmpty(imageUrl)) {
-      IAppboyImageLoader appboyImageLoader = Appboy.getInstance(applicationContext).getAppboyImageLoader();
-      appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), AppboyViewBounds.NO_BOUNDS);
+      IBrazeImageLoader appboyImageLoader = Braze.getInstance(applicationContext).getImageLoader();
+      appboyImageLoader.renderUrlIntoInAppMessageView(applicationContext, inAppMessage, imageUrl, view.getMessageImageView(), BrazeViewBounds.NO_BOUNDS);
     }
 
     // modal frame should not be clickable.

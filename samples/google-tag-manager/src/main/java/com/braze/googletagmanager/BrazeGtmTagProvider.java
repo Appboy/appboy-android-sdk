@@ -3,17 +3,18 @@ package com.braze.googletagmanager;
 import android.app.Application;
 import android.content.Context;
 
-import com.appboy.Appboy;
-import com.appboy.AppboyUser;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.BrazeUser;
+import com.braze.support.BrazeLogger;
 import com.google.android.gms.tagmanager.CustomTagProvider;
 
 import java.util.Date;
 import java.util.Map;
 
 public class BrazeGtmTagProvider implements CustomTagProvider {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(BrazeGtmTagProvider.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(BrazeGtmTagProvider.class);
   private static final String ACTION_TYPE_KEY = "actionType";
 
   // Custom Events
@@ -45,15 +46,15 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
 
   @Override
   public void execute(Map<String, Object> map) {
-    AppboyLogger.i(TAG, "Got Google Tag Manager parameters map: " + map);
+    BrazeLogger.i(TAG, "Got Google Tag Manager parameters map: " + map);
 
     if (sApplicationContext == null) {
-      AppboyLogger.w(TAG, "No application context provided to this tag provider.");
+      BrazeLogger.w(TAG, "No application context provided to this tag provider.");
       return;
     }
 
     if (!map.containsKey(ACTION_TYPE_KEY)) {
-      AppboyLogger.w(TAG, "Map does not contain the Braze action type key: " + ACTION_TYPE_KEY);
+      BrazeLogger.w(TAG, "Map does not contain the Braze action type key: " + ACTION_TYPE_KEY);
       return;
     }
     String actionType = String.valueOf(map.remove(ACTION_TYPE_KEY));
@@ -69,14 +70,14 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
         changeUser(map);
         break;
       default:
-        AppboyLogger.w(TAG, "Got unknown action type: " + actionType);
+        BrazeLogger.w(TAG, "Got unknown action type: " + actionType);
         break;
     }
   }
 
   private void logEvent(Map<String, Object> tagParameterMap) {
     String eventName = String.valueOf(tagParameterMap.remove(EVENT_NAME_VARIABLE));
-    Appboy.getInstance(sApplicationContext).logCustomEvent(eventName, parseMapIntoProperties(tagParameterMap));
+    Braze.getInstance(sApplicationContext).logCustomEvent(eventName, parseMapIntoProperties(tagParameterMap));
   }
 
   private AppboyProperties parseMapIntoProperties(Map<String, Object> map) {
@@ -97,7 +98,7 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
       } else if (value instanceof Double) {
         appboyProperties.addProperty(key, (Double) value);
       } else {
-        AppboyLogger.w(TAG, "Failed to parse value into an AppboyProperties "
+        BrazeLogger.w(TAG, "Failed to parse value into an AppboyProperties "
             + "accepted type. Key: '" + key + "' Value: '" + value + "'");
       }
     }
@@ -106,8 +107,8 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
   }
 
   private void setCustomAttribute(Map<String, Object> tagParameterMap) {
-    AppboyUser appboyUser = Appboy.getInstance(sApplicationContext).getCurrentUser();
-    if (appboyUser == null) {
+    BrazeUser brazeUser = Braze.getInstance(sApplicationContext).getCurrentUser();
+    if (brazeUser == null) {
       AppboyLogger.w(TAG, "AppboyUser was null. Returning.");
       return;
     }
@@ -115,25 +116,25 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
     Object value = tagParameterMap.get(CUSTOM_ATTRIBUTE_VALUE_KEY);
 
     if (value instanceof Boolean) {
-      appboyUser.setCustomUserAttribute(key, (Boolean) value);
+      brazeUser.setCustomUserAttribute(key, (Boolean) value);
     } else if (value instanceof Integer) {
-      appboyUser.setCustomUserAttribute(key, (Integer) value);
+      brazeUser.setCustomUserAttribute(key, (Integer) value);
     } else if (value instanceof Long) {
-      appboyUser.setCustomUserAttribute(key, (Long) value);
+      brazeUser.setCustomUserAttribute(key, (Long) value);
     } else if (value instanceof String) {
-      appboyUser.setCustomUserAttribute(key, (String) value);
+      brazeUser.setCustomUserAttribute(key, (String) value);
     } else if (value instanceof Double) {
-      appboyUser.setCustomUserAttribute(key, (Double) value);
+      brazeUser.setCustomUserAttribute(key, (Double) value);
     } else if (value instanceof Float) {
-      appboyUser.setCustomUserAttribute(key, (Float) value);
+      brazeUser.setCustomUserAttribute(key, (Float) value);
     } else {
-      AppboyLogger.w(TAG, "Failed to parse value into a custom "
+      BrazeLogger.w(TAG, "Failed to parse value into a custom "
           + "attribute accepted type. Key: '" + key + "' Value: '" + value + "'");
     }
   }
 
   private void changeUser(Map<String, Object> tagParameterMap) {
     String userId = String.valueOf(tagParameterMap.get(CHANGE_USER_ID_VARIABLE));
-    Appboy.getInstance(sApplicationContext).changeUser(userId);
+    Braze.getInstance(sApplicationContext).changeUser(userId);
   }
 }

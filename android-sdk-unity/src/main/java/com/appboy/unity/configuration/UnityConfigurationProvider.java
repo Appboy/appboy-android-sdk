@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 
 import com.appboy.configuration.CachedConfigurationProvider;
 import com.appboy.configuration.RuntimeAppConfigurationProvider;
-import com.appboy.support.AppboyLogger;
 import com.appboy.unity.enums.UnityMessageType;
+import com.braze.support.BrazeLogger;
 
 public class UnityConfigurationProvider extends CachedConfigurationProvider {
   private static final String TAG = UnityConfigurationProvider.class.getName();
@@ -89,7 +89,7 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
   public void configureListener(int messageTypeValue, String gameObject, String methodName) {
     UnityMessageType messageType = UnityMessageType.getTypeFromValue(messageTypeValue);
     if (messageType == null) {
-      AppboyLogger.d(TAG, "Got bad message type " + messageTypeValue + ". Cannot configure a "
+      BrazeLogger.d(TAG, "Got bad message type " + messageTypeValue + ". Cannot configure a "
           + "listener on object " + gameObject + " for method " + methodName);
       return;
     }
@@ -125,7 +125,7 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
         putStringIntoRuntimeConfiguration(CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY, methodName);
         break;
       default:
-        AppboyLogger.d(TAG, "Got unhandled message type: " + messageType);
+        BrazeLogger.d(TAG, "Got unhandled message type: " + messageType);
     }
   }
 

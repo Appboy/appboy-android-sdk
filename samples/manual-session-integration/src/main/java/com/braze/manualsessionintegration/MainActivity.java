@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.appboy.Appboy;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+import com.braze.Braze;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     // Opens (or reopens) an Braze session.
     // Note: This must be called in the onStart lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
-    Appboy.getInstance(this).openSession(this);
+    Braze.getInstance(this).openSession(this);
   }
 
   @Override
@@ -45,6 +45,6 @@ public class MainActivity extends AppCompatActivity {
     // Closes the current Braze session.
     // Note: This must be called in the onStop lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
-    Appboy.getInstance(this).closeSession(this);
+    Braze.getInstance(this).closeSession(this);
   }
 }

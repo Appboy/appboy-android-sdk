@@ -17,4 +17,8 @@
     android:id="@+id/iam_sandbox"
     android:title="IAM Sandbox"
     app:showAsAction="never" />
+  <item
+    android:id="@+id/feed_activity_launch"
+    android:title="NewsFeed"
+    app:showAsAction="never" />
 </menu>

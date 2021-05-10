@@ -3,12 +3,12 @@ package com.appboy.ui.inappmessage.factories;
 import android.view.View;
 import android.view.animation.Animation;
 
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.IInAppMessage;
 import com.appboy.ui.inappmessage.DefaultInAppMessageViewWrapper;
 import com.appboy.ui.inappmessage.IInAppMessageViewWrapper;
 import com.appboy.ui.inappmessage.IInAppMessageViewWrapperFactory;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
+import com.braze.configuration.BrazeConfigurationProvider;
 
 import java.util.List;
 
@@ -21,14 +21,14 @@ public class AppboyInAppMessageViewWrapperFactory implements IInAppMessageViewWr
   public IInAppMessageViewWrapper createInAppMessageViewWrapper(View inAppMessageView,
                                                                 IInAppMessage inAppMessage,
                                                                 IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                                                AppboyConfigurationProvider appboyConfigurationProvider,
+                                                                BrazeConfigurationProvider configurationProvider,
                                                                 Animation openingAnimation,
                                                                 Animation closingAnimation,
                                                                 View clickableInAppMessageView) {
     return new DefaultInAppMessageViewWrapper(inAppMessageView,
         inAppMessage,
         inAppMessageViewLifecycleListener,
-        appboyConfigurationProvider,
+        configurationProvider,
         openingAnimation,
         closingAnimation,
         clickableInAppMessageView);
@@ -38,7 +38,7 @@ public class AppboyInAppMessageViewWrapperFactory implements IInAppMessageViewWr
   public IInAppMessageViewWrapper createInAppMessageViewWrapper(View inAppMessageView,
                                                                 IInAppMessage inAppMessage,
                                                                 IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                                                AppboyConfigurationProvider appboyConfigurationProvider,
+                                                                BrazeConfigurationProvider configurationProvider,
                                                                 Animation openingAnimation,
                                                                 Animation closingAnimation,
                                                                 View clickableInAppMessageView,
@@ -47,7 +47,7 @@ public class AppboyInAppMessageViewWrapperFactory implements IInAppMessageViewWr
     return new DefaultInAppMessageViewWrapper(inAppMessageView,
         inAppMessage,
         inAppMessageViewLifecycleListener,
-        appboyConfigurationProvider,
+        configurationProvider,
         openingAnimation,
         closingAnimation,
         clickableInAppMessageView,

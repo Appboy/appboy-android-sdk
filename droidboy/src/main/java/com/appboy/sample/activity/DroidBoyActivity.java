@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,22 +26,24 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.appboy.Appboy;
 import com.appboy.Constants;
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.CardCategory;
 import com.appboy.sample.FeedCategoriesFragment;
 import com.appboy.sample.InAppMessageTesterFragment;
 import com.appboy.sample.MainFragment;
 import com.appboy.sample.PushTesterFragment;
 import com.appboy.sample.R;
+import com.appboy.sample.activity.settings.SettingsFragment;
+import com.appboy.sample.util.EnvironmentUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.ViewUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.PermissionUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyContentCardsFragment;
 import com.appboy.ui.AppboyFeedFragment;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -49,7 +52,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(DroidBoyActivity.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(DroidBoyActivity.class);
   private EnumSet<CardCategory> mAppboyFeedCategories;
   protected Context mApplicationContext;
   protected DrawerLayout mDrawerLayout;
@@ -87,8 +90,8 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     mFloatingActionButton = findViewById(R.id.floating_action_bar);
     mFloatingActionButton.setOnClickListener(view -> {
       final Context context = view.getContext();
-      Appboy.getInstance(context).requestContentCardsRefresh(false);
-      Appboy.getInstance(context).requestImmediateDataFlush();
+      Braze.getInstance(context).requestContentCardsRefresh(false);
+      Braze.getInstance(context).requestImmediateDataFlush();
       Toast.makeText(context, "Requested data flush and content card sync.", Toast.LENGTH_SHORT).show();
     });
 
@@ -142,31 +145,24 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       }
     };
     sharedPref.registerOnSharedPreferenceChangeListener(newsfeedSortListener);
-
-    Log.i(TAG, "Braze device id is " + Appboy.getInstance(getApplicationContext()).getDeviceId());
+    Log.i(TAG, "Braze device id is " + Braze.getInstance(getApplicationContext()).getDeviceId());
   }
 
   private void setupViewPager(final ViewPager viewPager) {
     Adapter adapter = new Adapter(getSupportFragmentManager());
-    adapter.addFragment(new MainFragment(), "Events");
+    adapter.addFragment(new MainFragment(), "Main");
     adapter.addFragment(new InAppMessageTesterFragment(), getString(R.string.inappmessage_tester_tab_title));
     adapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
     adapter.addFragment(new PushTesterFragment(), "Push");
-    adapter.addFragment(new AppboyFeedFragment(), "Feed");
+    adapter.addFragment(new SettingsFragment(), getString(R.string.settings_fragment_tab_title));
     viewPager.setAdapter(adapter);
 
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-      }
-
-      @Override
-      public void onPageScrollStateChanged(int state) {
-      }
-
-      @Override
-      public void onPageSelected(int position) {
-        final boolean hideFlushButton = viewPager.getAdapter().getPageTitle(position).equals(getString(R.string.inappmessage_tester_tab_title));
+        final CharSequence pageTitle = viewPager.getAdapter().getPageTitle(position);
+        final boolean hideFlushButton = pageTitle.equals(getString(R.string.inappmessage_tester_tab_title))
+            || pageTitle.equals(getString(R.string.settings_fragment_tab_title));
         runOnUiThread(() -> {
           if (hideFlushButton) {
             mFloatingActionButton.hide();
@@ -175,6 +171,12 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
           }
         });
       }
+
+      @Override
+      public void onPageScrollStateChanged(int state) {}
+
+      @Override
+      public void onPageSelected(int position) {}
     });
   }
 
@@ -189,14 +191,14 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     super.onResume();
     processIntent();
 
-    final AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(this);
+    final BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(this);
     String endpoint = configurationProvider.getBaseUrlForRequests();
     if (!StringUtils.isNullOrEmpty(configurationProvider.getCustomEndpoint())) {
       endpoint = configurationProvider.getCustomEndpoint();
     }
     ((TextView) findViewById(R.id.toolbar_info_endpoint)).setText("endpoint: " + endpoint);
 
-    final String configuredApiKey = Appboy.getConfiguredApiKey(this);
+    final String configuredApiKey = Braze.getConfiguredApiKey(this);
     ((TextView) findViewById(R.id.toolbar_info_api_key)).setText("current api key: " + configuredApiKey);
   }
 
@@ -209,8 +211,11 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
+      case R.id.feed_activity_launch:
+        startActivity(new Intent(this, FeedFragmentActivity.class));
+        break;
       case R.id.action_settings:
-        startActivity(new Intent(this, SettingsPreferencesActivity.class));
+        startActivity(new Intent(this, SettingsActivity.class));
         break;
       case R.id.geofences_map:
         mDrawerLayout.closeDrawers();
@@ -245,6 +250,16 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(this, requestCode, grantResults);
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == SettingsFragment.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+      Bundle extras = data.getExtras();
+      Bitmap bitmap = (Bitmap) extras.get("data");
+      EnvironmentUtils.analyzeBitmapForEnvironmentBarcode(this, bitmap);
+    }
   }
 
   private void replaceCurrentFragment(Fragment newFragment) {

@@ -4,9 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.InAppMessageHtmlFull;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageViewFactory;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
@@ -14,9 +15,12 @@ import com.appboy.ui.inappmessage.jsinterface.AppboyInAppMessageHtmlJavascriptIn
 import com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlFullView;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
 public class AppboyHtmlFullViewFactory implements IInAppMessageViewFactory {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyHtmlFullViewFactory.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyHtmlFullViewFactory.class);
+
   private final IInAppMessageWebViewClientListener mInAppMessageWebViewClientListener;
 
   public AppboyHtmlFullViewFactory(IInAppMessageWebViewClientListener inAppMessageWebViewClientListener) {
@@ -25,11 +29,12 @@ public class AppboyHtmlFullViewFactory implements IInAppMessageViewFactory {
 
   @SuppressLint("AddJavascriptInterface")
   @Override
-  public AppboyInAppMessageHtmlFullView createInAppMessageView(Activity activity, IInAppMessage inAppMessage) {
+  public AppboyInAppMessageHtmlFullView createInAppMessageView(@NonNull Activity activity, @NonNull IInAppMessage inAppMessage) {
     AppboyInAppMessageHtmlFullView view = (AppboyInAppMessageHtmlFullView) activity.getLayoutInflater()
         .inflate(R.layout.com_appboy_inappmessage_html_full, null);
-    if (ViewUtils.isDeviceNotInTouchMode(view)) {
-      AppboyLogger.w(TAG, "The device is not currently in touch mode. This message requires user touch interaction to display properly.");
+    BrazeConfigurationProvider config = new BrazeConfigurationProvider(activity.getApplicationContext());
+    if (config.getIsTouchModeRequiredForHtmlInAppMessages() && ViewUtils.isDeviceNotInTouchMode(view)) {
+      BrazeLogger.w(TAG, "The device is not currently in touch mode. This message requires user touch interaction to display properly.");
       return null;
     }
     final Context context = activity.getApplicationContext();
@@ -37,7 +42,7 @@ public class AppboyHtmlFullViewFactory implements IInAppMessageViewFactory {
     final AppboyInAppMessageHtmlJavascriptInterface javascriptInterface = new AppboyInAppMessageHtmlJavascriptInterface(context, inAppMessageHtmlFull);
     view.setWebViewContent(inAppMessage.getMessage(), inAppMessageHtmlFull.getLocalAssetsDirectoryUrl());
     view.setInAppMessageWebViewClient(new InAppMessageWebViewClient(context, inAppMessage, mInAppMessageWebViewClientListener));
-    view.getMessageWebView().addJavascriptInterface(javascriptInterface, AppboyInAppMessageHtmlFullView.APPBOY_BRIDGE_PREFIX);
+    view.getMessageWebView().addJavascriptInterface(javascriptInterface, AppboyInAppMessageHtmlFullView.BRAZE_BRIDGE_PREFIX);
     return view;
   }
 }

@@ -10,11 +10,11 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.appboy.Appboy
-import com.appboy.AppboyUser
 import com.appboy.events.SimpleValueCallback
-import com.appboy.support.AppboyLogger
 import com.appboy.support.IntentUtils
+import com.braze.Braze
+import com.braze.BrazeUser
+import com.braze.support.BrazeLogger
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.aaid.HmsInstanceId
 import kotlin.concurrent.thread
@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
 
     val userIdInput = findViewById<EditText>(R.id.etUserId)
-    Appboy.getInstance(this).getCurrentUser(object : SimpleValueCallback<AppboyUser?>() {
-      override fun onSuccess(value: AppboyUser) {
+    Braze.getInstance(this).getCurrentUser(object : SimpleValueCallback<BrazeUser?>() {
+      override fun onSuccess(value: BrazeUser) {
         userIdInput.post {
           userIdInput.setText(value.userId)
         }
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     findViewById<Button>(R.id.bSubmitUserId).setOnClickListener {
       // Get the user id
       val userId: String = userIdInput.text.toString()
-      Appboy.getInstance(this).changeUser(userId)
+      Braze.getInstance(this).changeUser(userId)
     }
 
     findViewById<Button>(R.id.bGetAndSendToken).setOnClickListener {
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
       try {
         val appId = AGConnectServicesConfig.fromContext(context).getString("client/app_id")
         val pushToken = HmsInstanceId.getInstance(context).getToken(appId, "HCM")
-        Appboy.getInstance(context).registerAppboyPushMessages(pushToken!!)
+        Braze.getInstance(context).registerAppboyPushMessages(pushToken!!)
         Log.i(TAG, "Got HMS push token $pushToken")
       } catch (e: Exception) {
         Log.e(TAG, "getToken failed, $e", e)
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     val pendingIntent = PendingIntent.getActivity(context, pendingIntentId, startActivity, PendingIntent.FLAG_CANCEL_CURRENT or IntentUtils.getDefaultPendingIntentFlags())
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager[AlarmManager.RTC, System.currentTimeMillis() + 1000] = pendingIntent
-    AppboyLogger.i(TAG, "Restarting application to apply new environment values")
+    BrazeLogger.i(TAG, "Restarting application to apply new environment values")
     System.exit(0)
   }
 }

@@ -12,17 +12,17 @@ import android.widget.TextView;
 import com.appboy.enums.inappmessage.ImageStyle;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageModal;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.IInAppMessageImageView;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBaseView {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageModalView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageModalView.class);
   private InAppMessageImageView mInAppMessageImageView;
   private InAppMessageModal mInAppMessage;
 
@@ -60,7 +60,7 @@ public class AppboyInAppMessageModalView extends AppboyInAppMessageImmersiveBase
     // dismisses the in-app message.
     View scrollViewChild = findViewById(R.id.com_appboy_inappmessage_modal_text_layout);
     scrollViewChild.setOnClickListener(scrollView -> {
-      AppboyLogger.d(TAG, "Passing scrollView click event to message clickable view.");
+      BrazeLogger.d(TAG, "Passing scrollView click event to message clickable view.");
       getMessageClickableView().performClick();
     });
   }

@@ -27,7 +27,7 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
 
   public void bindViewHolder(ContentCardViewHolder viewHolder, final T card) {
     viewHolder.setPinnedIconVisible(card.getIsPinned());
-    viewHolder.setUnreadBarVisible(mAppboyConfigurationProvider.isContentCardsUnreadVisualIndicatorEnabled() && !card.isIndicatorHighlighted());
+    viewHolder.setUnreadBarVisible(mConfigurationProvider.isContentCardsUnreadVisualIndicatorEnabled() && !card.isIndicatorHighlighted());
     final UriAction mCardAction = getUriActionForCard(card);
     viewHolder.itemView.setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, getClassLogTag()));
 

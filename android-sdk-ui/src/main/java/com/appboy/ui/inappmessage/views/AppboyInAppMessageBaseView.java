@@ -13,15 +13,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.IInAppMessageWithImage;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.support.BrazeLogger;
 
 import java.io.File;
 
 public abstract class AppboyInAppMessageBaseView extends RelativeLayout implements IInAppMessageView {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageBaseView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageBaseView.class);
 
   protected boolean mHasAppliedWindowInsets = false;
 
@@ -97,7 +97,7 @@ public abstract class AppboyInAppMessageBaseView extends RelativeLayout implemen
       if (imageFile.exists()) {
         return localImagePath;
       } else {
-        AppboyLogger.d(TAG, "Local bitmap file does not exist. Using remote url instead. Local path: " + localImagePath);
+        BrazeLogger.d(TAG, "Local bitmap file does not exist. Using remote url instead. Local path: " + localImagePath);
       }
     }
 

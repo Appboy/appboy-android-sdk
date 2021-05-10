@@ -16,15 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
-import com.appboy.Appboy;
 import com.appboy.BrazePushReceiver;
 import com.appboy.Constants;
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.SpinnerUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,14 +35,14 @@ import java.util.Map;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PushTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-  protected static final String TAG = AppboyLogger.getBrazeLogTag(PushTesterFragment.class);
+  protected static final String TAG = BrazeLogger.getBrazeLogTag(PushTesterFragment.class);
   private static final String TITLE = "Title";
   private static final String CONTENT = "Content";
   private static final String BIG_TITLE = "Big Title";
   private static final String BIG_SUMMARY = "Big Summary";
   private static final String SUMMARY_TEXT = "Summary Text";
   private static final SecureRandom sSecureRandom = new SecureRandom();
-  private AppboyConfigurationProvider mAppConfigurationProvider;
+  private BrazeConfigurationProvider mAppConfigurationProvider;
   private NotificationManagerCompat mNotificationManager;
   @SuppressLint("InlinedApi")
   private String mPriority = String.valueOf(Notification.PRIORITY_DEFAULT);
@@ -86,14 +86,14 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
 
   static {
     Map<Integer, String[]> pushStoryPageValues = new HashMap<>();
-    pushStoryPageValues.put(0, new String[]{"http://appboy.com", "Twenty WWWWWWW WWWW#", "Twenty WWWWWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/09/AB17_blog_header_REVEAL.png?resize=1200%2C600&ssl=1"});
-    pushStoryPageValues.put(1, new String[]{"http://google.com", "Twenty Five WW WWWW WWWW#", "Twenty Five WW WWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/08/abcnews_blog.png?resize=1200%2C600&ssl=1"});
-    pushStoryPageValues.put(2, new String[]{"http://appboy.com", "Thirty WW WWWW WWWW WWWW WWWW#", "Thirty WW WWWW WWWW WWWW WWWW#", "https://i2.wp.com/www.appboy.com/blog/wp-content/uploads/2017/02/Man-Using_Smartphone-While-Watching-TV.jpg?resize=1200%2C600&ssl=1"});
-    pushStoryPageValues.put(3, new String[]{"http://appboy.com", "Forty WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "Forty WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2015/12/Appboy_Web_Push_Notifications_Announcement.png?resize=1200%2C600&ssl=1"});
-    pushStoryPageValues.put(4, new String[]{"http://appboy.com", "Forty Five WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "Forty Five WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2017/04/Workers-Shaking-Hands_Featured-Image.jpg?resize=1200%2C600&ssl=1"});
-    pushStoryPageValues.put(5, new String[]{"http://appboy.com", "Fifteen W WWW#", "Fifteen W WWW#", "https://i1.wp.com/www.appboy.com/blog/wp-content/uploads/2017/09/Concerned-Voter_Featured-Image.jpg?resize=1200%2C600&ssl=1"});
-    pushStoryPageValues.put(6, new String[]{"http://appboy.com", "Ten  WWWW#", "Ten  WWWW#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2017/04/Male-and-Female-Coworkers-Laptop_Featured-Image.jpg?resize=1200%2C600&ssl=1"});
-    pushStoryPageValues.put(7, new String[]{"http://appboy.com", "Five#", "Five#", "https://i0.wp.com/www.appboy.com/blog/wp-content/uploads/2016/05/Jack.jpg?resize=1200%2C600&ssl=1"});
+    pushStoryPageValues.put(0, new String[]{"http://appboy.com", "Twenty WWWWWWW WWWW#", "Twenty WWWWWWW WWWW#", "https://picsum.photos/id/692/800/800.jpg"});
+    pushStoryPageValues.put(1, new String[]{"http://google.com", "Twenty Five WW WWWW WWWW#", "Twenty Five WW WWWW WWWW#", "https://picsum.photos/id/692/800/800.jpg"});
+    pushStoryPageValues.put(2, new String[]{"http://appboy.com", "Thirty WW WWWW WWWW WWWW WWWW#", "Thirty WW WWWW WWWW WWWW WWWW#", "https://picsum.photos/id/454/800/800.jpg"});
+    pushStoryPageValues.put(3, new String[]{"http://appboy.com", "Forty WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "Forty WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "https://picsum.photos/id/1015/800/800.jpg"});
+    pushStoryPageValues.put(4, new String[]{"http://appboy.com", "Forty Five WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "Forty Five WWW WWWW WWWW WWWW WWWW WWWW WWWW#", "https://picsum.photos/id/102/800/800.jpg"});
+    pushStoryPageValues.put(5, new String[]{"http://appboy.com", "Fifteen W WWW#", "Fifteen W WWW#", "https://picsum.photos/id/1036/800/800.jpg"});
+    pushStoryPageValues.put(6, new String[]{"http://appboy.com", "Ten  WWWW#", "Ten  WWWW#", "https://picsum.photos/id/10/800/800.jpg"});
+    pushStoryPageValues.put(7, new String[]{"http://appboy.com", "Five#", "Five#", "https://picsum.photos/id/614/800/800.jpg"});
     PUSH_STORY_PAGE_VALUES = pushStoryPageValues;
   }
 
@@ -158,7 +158,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     // Creates the notification channel spinner.
     SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_channel_spinner), this, R.array.push_channel_options);
 
-    mAppConfigurationProvider = new AppboyConfigurationProvider(getContext());
+    mAppConfigurationProvider = new BrazeConfigurationProvider(getContext());
     Button pushTestButton = view.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(clickedView -> (new Thread(() -> {
       Bundle notificationExtras = new Bundle();
@@ -166,13 +166,13 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
       notificationExtras.putString(Constants.APPBOY_PUSH_APPBOY_KEY, "true");
 
-      int notificationId;
+      String notificationId;
       if (mUseConstantNotificationId) {
-        notificationId = 100;
+        notificationId = "100";
       } else {
-        notificationId = AppboyNotificationUtils.getNotificationId(notificationExtras);
+        notificationId = String.valueOf(AppboyNotificationUtils.getNotificationId(notificationExtras));
       }
-      notificationExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
+      notificationExtras.putString(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID, notificationId);
       notificationExtras = addActionButtons(notificationExtras);
 
       if (mInlineImagePushEnabled) {
@@ -450,11 +450,11 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
    */
   private void setNotificationFactory() {
     if ("DroidboyNotificationFactory".equals(mNotificationFactoryType)) {
-      Appboy.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
+      Braze.setCustomAppboyNotificationFactory(new DroidboyNotificationFactory());
     } else if ("FullyCustomNotificationFactory".equals(mNotificationFactoryType)) {
-      Appboy.setCustomAppboyNotificationFactory(new FullyCustomNotificationFactory());
+      Braze.setCustomAppboyNotificationFactory(new FullyCustomNotificationFactory());
     } else {
-      Appboy.setCustomAppboyNotificationFactory(null);
+      Braze.setCustomAppboyNotificationFactory(null);
     }
   }
 }

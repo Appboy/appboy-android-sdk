@@ -6,10 +6,10 @@ import android.webkit.JavascriptInterface;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.Appboy;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 import org.json.JSONObject;
 
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
  * Used to generate the javascript API in html in-app messages.
  */
 public class AppboyInAppMessageHtmlJavascriptInterface {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageHtmlJavascriptInterface.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageHtmlJavascriptInterface.class);
 
   private final Context mContext;
   private final AppboyInAppMessageHtmlUserJavascriptInterface mUserInterface;
@@ -33,19 +33,19 @@ public class AppboyInAppMessageHtmlJavascriptInterface {
 
   @JavascriptInterface
   public void requestImmediateDataFlush() {
-    Appboy.getInstance(mContext).requestImmediateDataFlush();
+    Braze.getInstance(mContext).requestImmediateDataFlush();
   }
 
   @JavascriptInterface
   public void logCustomEventWithJSON(String eventName, String propertiesJSON) {
     AppboyProperties appboyProperties = parseProperties(propertiesJSON);
-    Appboy.getInstance(mContext).logCustomEvent(eventName, appboyProperties);
+    Braze.getInstance(mContext).logCustomEvent(eventName, appboyProperties);
   }
 
   @JavascriptInterface
   public void logPurchaseWithJSON(String productId, double price, String currencyCode, int quantity, String propertiesJSON) {
     AppboyProperties appboyProperties = parseProperties(propertiesJSON);
-    Appboy.getInstance(mContext).logPurchase(productId, currencyCode, new BigDecimal(Double.toString(price)), quantity, appboyProperties);
+    Braze.getInstance(mContext).logPurchase(productId, currencyCode, new BigDecimal(Double.toString(price)), quantity, appboyProperties);
   }
 
   @JavascriptInterface
@@ -71,7 +71,7 @@ public class AppboyInAppMessageHtmlJavascriptInterface {
         return new AppboyProperties(new JSONObject(propertiesJSON));
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to parse properties JSON String: " + propertiesJSON, e);
+      BrazeLogger.e(TAG, "Failed to parse properties JSON String: " + propertiesJSON, e);
     }
 
     return null;

@@ -1,10 +1,10 @@
 package com.appboy.sample.util
 
 import android.content.Context
-import com.appboy.Appboy
 import com.appboy.enums.CardKey
 import com.appboy.enums.CardType
 import com.appboy.models.cards.Card
+import com.braze.Braze
 import org.json.JSONObject
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -111,7 +111,7 @@ class ContentCardsTestingUtil {
       }
 
       val json = JSONObject(defaultMapping.toMap())
-      return Appboy.getInstance(context).deserializeContentCard(json)
+      return Braze.getInstance(context).deserializeContentCard(json)
     }
 
     private fun getRandomString(): String {

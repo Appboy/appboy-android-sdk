@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appboy.models.cards.Card;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.contentcards.handlers.IContentCardsViewBindingHandler;
 import com.appboy.ui.contentcards.recycler.ItemTouchHelperAdapter;
 import com.appboy.ui.contentcards.view.ContentCardViewHolder;
+import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolder> implements ItemTouchHelperAdapter {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyCardAdapter.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyCardAdapter.class);
 
   private final Context mContext;
   private final Handler mHandler;
@@ -102,7 +102,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
     final int adapterPosition = holder.getAdapterPosition();
 
     if (adapterPosition == RecyclerView.NO_POSITION || !isAdapterPositionOnScreen(adapterPosition)) {
-      AppboyLogger.v(TAG, "The card at position " + adapterPosition
+      BrazeLogger.v(TAG, "The card at position " + adapterPosition
           + " isn't on screen or does not have a valid adapter position. Not logging impression.");
       return;
     }
@@ -131,7 +131,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
     // screen, RecyclerView could have attached views ( A B C D E ).
     // Without this check, we would mistakenly mark views D & E as read.
     if (adapterPosition == RecyclerView.NO_POSITION || !isAdapterPositionOnScreen(adapterPosition)) {
-      AppboyLogger.v(TAG, "The card at position " + adapterPosition + " isn't on screen or does not have a valid adapter position. Not marking as read.");
+      BrazeLogger.v(TAG, "The card at position " + adapterPosition + " isn't on screen or does not have a valid adapter position. Not marking as read.");
       return;
     }
 
@@ -169,7 +169,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
    */
   public void markOnScreenCardsAsRead() {
     if (mCardData.isEmpty()) {
-      AppboyLogger.d(TAG, "Card list is empty. Not marking on-screen cards as read.");
+      BrazeLogger.d(TAG, "Card list is empty. Not marking on-screen cards as read.");
       return;
     }
     final int firstVisibleIndex = mLayoutManager.findFirstVisibleItemPosition();
@@ -178,7 +178,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
     // Either case could arise if there are no items in the adapter,
     // i.e. no cards are visible since none exist
     if (firstVisibleIndex < 0 || lastVisibleIndex < 0) {
-      AppboyLogger.d(TAG, "Not marking all on-screen cards as read. "
+      BrazeLogger.d(TAG, "Not marking all on-screen cards as read. "
           + "Either the first or last index is negative. First visible: "
           + firstVisibleIndex + " . Last visible: " + lastVisibleIndex);
       return;
@@ -232,7 +232,7 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
   @VisibleForTesting
   Card getCardAtIndex(int index) {
     if (index < 0 || index >= mCardData.size()) {
-      AppboyLogger.d(TAG, "Cannot return card at index: " + index + " in cards list of size: " + mCardData.size());
+      BrazeLogger.d(TAG, "Cannot return card at index: " + index + " in cards list of size: " + mCardData.size());
       return null;
     }
     return mCardData.get(index);
@@ -268,9 +268,9 @@ public class AppboyCardAdapter extends RecyclerView.Adapter<ContentCardViewHolde
     if (!mImpressedCardIds.contains(card.getId())) {
       card.logImpression();
       mImpressedCardIds.add(card.getId());
-      AppboyLogger.v(TAG, "Logged impression for card " + card.getId());
+      BrazeLogger.v(TAG, "Logged impression for card " + card.getId());
     } else {
-      AppboyLogger.v(TAG, "Already counted impression for card " + card.getId());
+      BrazeLogger.v(TAG, "Already counted impression for card " + card.getId());
     }
     if (!card.getViewed()) {
       card.setViewed(true);

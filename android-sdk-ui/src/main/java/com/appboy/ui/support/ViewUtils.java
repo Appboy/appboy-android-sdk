@@ -11,10 +11,10 @@ import androidx.core.view.DisplayCutoutCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.appboy.enums.inappmessage.Orientation;
-import com.appboy.support.AppboyLogger;
+import com.braze.support.BrazeLogger;
 
 public class ViewUtils {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(ViewUtils.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(ViewUtils.class);
   private static final int TABLET_SMALLEST_WIDTH_DP = 600;
 
   public static void removeViewFromParent(View view) {
@@ -22,7 +22,7 @@ public class ViewUtils {
       if (view.getParent() instanceof ViewGroup) {
         final ViewGroup parent = (ViewGroup) view.getParent();
         parent.removeView(view);
-        AppboyLogger.d(TAG, "Removed view: " + view + "\nfrom parent: " + parent);
+        BrazeLogger.d(TAG, "Removed view: " + view + "\nfrom parent: " + parent);
       }
     }
   }
@@ -32,7 +32,7 @@ public class ViewUtils {
       view.setFocusableInTouchMode(true);
       view.requestFocus();
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Caught exception while setting view to focusable in touch mode and requesting focus.", e);
+      BrazeLogger.e(TAG, "Caught exception while setting view to focusable in touch mode and requesting focus.", e);
     }
   }
 
@@ -53,13 +53,13 @@ public class ViewUtils {
     try {
       activity.setRequestedOrientation(requestedOrientation);
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to set requested orientation " + requestedOrientation + " for activity class: " + activity.getLocalClassName(), e);
+      BrazeLogger.e(TAG, "Failed to set requested orientation " + requestedOrientation + " for activity class: " + activity.getLocalClassName(), e);
     }
   }
 
   public static void setHeightOnViewLayoutParams(View view, int height) {
     if (view == null) {
-      AppboyLogger.w(TAG, "Cannot set height on null view.");
+      BrazeLogger.w(TAG, "Cannot set height on null view.");
       return;
     }
     ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
@@ -83,14 +83,14 @@ public class ViewUtils {
   public static boolean isCurrentOrientationValid(int currentScreenOrientation, Orientation preferredOrientation) {
     if (currentScreenOrientation == Configuration.ORIENTATION_LANDSCAPE
         && preferredOrientation == Orientation.LANDSCAPE) {
-      AppboyLogger.d(TAG, "Current and preferred orientation are landscape.");
+      BrazeLogger.d(TAG, "Current and preferred orientation are landscape.");
       return true;
     } else if (currentScreenOrientation == Configuration.ORIENTATION_PORTRAIT
         && preferredOrientation == Orientation.PORTRAIT) {
-      AppboyLogger.d(TAG, "Current and preferred orientation are portrait.");
+      BrazeLogger.d(TAG, "Current and preferred orientation are portrait.");
       return true;
     } else {
-      AppboyLogger.d(TAG, "Current orientation " + currentScreenOrientation
+      BrazeLogger.d(TAG, "Current orientation " + currentScreenOrientation
           + " and preferred orientation " + preferredOrientation + " don't match");
       return false;
     }

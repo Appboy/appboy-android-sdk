@@ -18,26 +18,26 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 
-import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
-import com.appboy.configuration.AppboyConfigurationProvider;
-import com.appboy.enums.AppboyDateFormat;
-import com.appboy.enums.AppboyViewBounds;
 import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.support.HtmlUtils;
-import com.appboy.support.AppboyImageUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.DateTimeUtils;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.enums.BrazeDateFormat;
+import com.braze.enums.BrazeViewBounds;
+import com.braze.support.BrazeImageUtils;
+import com.braze.support.BrazeLogger;
 
 import java.util.List;
 
 public class AppboyNotificationStyleFactory {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationStyleFactory.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyNotificationStyleFactory.class);
   /**
    * BigPictureHeight is set in
    * https://android.googlesource.com/platform/frameworks/base/+/6387d2f6dae27ba6e8481883325adad96d3010f4/core/res/res/layout/notification_template_big_picture.xml.
@@ -56,7 +56,7 @@ public class AppboyNotificationStyleFactory {
    */
   public static void setStyleIfSupported(@NonNull NotificationCompat.Builder notificationBuilder,
                                          @NonNull BrazeNotificationPayload payload) {
-    AppboyLogger.d(TAG, "Setting style for notification");
+    BrazeLogger.d(TAG, "Setting style for notification");
     NotificationCompat.Style style = AppboyNotificationStyleFactory.getNotificationStyle(notificationBuilder, payload);
 
     if (style != null && !(style instanceof NoOpSentinelStyle)) {
@@ -86,24 +86,21 @@ public class AppboyNotificationStyleFactory {
     NotificationCompat.Style style = null;
 
     if (payload.isPushStory() && payload.getContext() != null) {
-      AppboyLogger.d(TAG, "Rendering push notification with DecoratedCustomViewStyle (Story)");
-      style = getStoryStyle(payload.getContext(),
-          payload.getNotificationExtras(),
-          payload.getAppboyExtras(),
-          notificationBuilder);
+      BrazeLogger.d(TAG, "Rendering push notification with DecoratedCustomViewStyle (Story)");
+      style = getStoryStyle(notificationBuilder, payload);
     } else if (payload.getBigImageUrl() != null) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && payload.isInlineImagePush()) {
-        AppboyLogger.d(TAG, "Rendering push notification with custom inline image style");
+        BrazeLogger.d(TAG, "Rendering push notification with custom inline image style");
         style = getInlineImageStyle(payload, notificationBuilder);
       } else {
-        AppboyLogger.d(TAG, "Rendering push notification with BigPictureStyle");
+        BrazeLogger.d(TAG, "Rendering push notification with BigPictureStyle");
         style = getBigPictureNotificationStyle(payload);
       }
     }
 
     // Default style is BigTextStyle.
     if (style == null) {
-      AppboyLogger.d(TAG, "Rendering push notification with BigTextStyle");
+      BrazeLogger.d(TAG, "Rendering push notification with BigTextStyle");
       style = getBigTextNotificationStyle(payload);
     }
 
@@ -114,7 +111,7 @@ public class AppboyNotificationStyleFactory {
    * @deprecated Please use {@link #getBigTextNotificationStyle(BrazeNotificationPayload)}
    */
   @Deprecated
-  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(AppboyConfigurationProvider appboyConfigurationProvider,
+  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(BrazeConfigurationProvider appboyConfigurationProvider,
                                                                             Bundle notificationExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(appboyConfigurationProvider, notificationExtras);
     return getBigTextNotificationStyle(payload);
@@ -129,7 +126,7 @@ public class AppboyNotificationStyleFactory {
    */
   public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(@NonNull BrazeNotificationPayload payload) {
     NotificationCompat.BigTextStyle bigTextNotificationStyle = new NotificationCompat.BigTextStyle();
-    final AppboyConfigurationProvider appConfigProvider = payload.getAppboyConfigurationProvider();
+    final BrazeConfigurationProvider appConfigProvider = payload.getConfigurationProvider();
 
     bigTextNotificationStyle.bigText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getContentText()));
     if (payload.getBigSummaryText() != null) {
@@ -150,7 +147,7 @@ public class AppboyNotificationStyleFactory {
                                                                           Bundle notificationExtras,
                                                                           Bundle appboyExtras,
                                                                           NotificationCompat.Builder notificationBuilder) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, new AppboyConfigurationProvider(context), notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, new BrazeConfigurationProvider(context), notificationExtras);
     return getStoryStyle(notificationBuilder, payload);
   }
 
@@ -166,7 +163,7 @@ public class AppboyNotificationStyleFactory {
                                                                           @NonNull BrazeNotificationPayload payload) {
     final Context context = payload.getContext();
     if (context == null) {
-      AppboyLogger.d(TAG, "Push story page cannot render without a context");
+      BrazeLogger.d(TAG, "Push story page cannot render without a context");
       return null;
     }
     final List<BrazeNotificationPayload.PushStoryPage> pushStoryPages = payload.getPushStoryPages();
@@ -174,7 +171,7 @@ public class AppboyNotificationStyleFactory {
     BrazeNotificationPayload.PushStoryPage pushStoryPage = pushStoryPages.get(pageIndex);
     RemoteViews storyView = new RemoteViews(context.getPackageName(), R.layout.com_appboy_notification_story_one_image);
     if (!populatePushStoryPage(storyView, payload, pushStoryPage)) {
-      AppboyLogger.w(TAG, "Push story page was not populated correctly. Not using DecoratedCustomViewStyle.");
+      BrazeLogger.w(TAG, "Push story page was not populated correctly. Not using DecoratedCustomViewStyle.");
       return null;
     }
 
@@ -207,28 +204,28 @@ public class AppboyNotificationStyleFactory {
                                                              @NonNull NotificationCompat.Builder notificationBuilder) {
     final Context context = payload.getContext();
     if (context == null) {
-      AppboyLogger.d(TAG, "Inline Image Push cannot render without a context");
+      BrazeLogger.d(TAG, "Inline Image Push cannot render without a context");
       return null;
     }
 
     final String imageUrl = payload.getBigImageUrl();
     if (StringUtils.isNullOrBlank(imageUrl)) {
-      AppboyLogger.d(TAG, "Inline Image Push image url invalid");
+      BrazeLogger.d(TAG, "Inline Image Push image url invalid");
       return null;
     }
     final Bundle notificationExtras = payload.getNotificationExtras();
 
     // Set the image
-    Bitmap largeNotificationBitmap = Appboy.getInstance(context).getAppboyImageLoader()
-        .getPushBitmapFromUrl(context, notificationExtras, imageUrl, AppboyViewBounds.NOTIFICATION_INLINE_PUSH_IMAGE);
+    Bitmap largeNotificationBitmap = Braze.getInstance(context).getImageLoader()
+        .getPushBitmapFromUrl(context, notificationExtras, imageUrl, BrazeViewBounds.NOTIFICATION_INLINE_PUSH_IMAGE);
     if (largeNotificationBitmap == null) {
-      AppboyLogger.d(TAG, "Inline Image Push failed to get image bitmap");
+      BrazeLogger.d(TAG, "Inline Image Push failed to get image bitmap");
       return null;
     }
     final boolean isNotificationSpaceConstrained = isRemoteViewNotificationAvailableSpaceConstrained(context);
     RemoteViews remoteView = new RemoteViews(context.getPackageName(),
         isNotificationSpaceConstrained ? R.layout.com_appboy_notification_inline_image_constrained : R.layout.com_appboy_notification_inline_image);
-    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(context);
+    BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(context);
 
     // Set the app icon drawable
     final Icon appIcon = Icon.createWithResource(context, configurationProvider.getSmallNotificationIconResourceId());
@@ -243,7 +240,7 @@ public class AppboyNotificationStyleFactory {
     try {
       applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
     } catch (final PackageManager.NameNotFoundException e) {
-      AppboyLogger.d(TAG, "Inline Image Push application info was null");
+      BrazeLogger.d(TAG, "Inline Image Push application info was null");
       return null;
     }
 
@@ -252,7 +249,7 @@ public class AppboyNotificationStyleFactory {
     remoteView.setTextViewText(R.id.com_appboy_inline_image_push_app_name_text, htmlSpannedAppName);
 
     // Set the current time
-    remoteView.setTextViewText(R.id.com_appboy_inline_image_push_time_text, DateTimeUtils.formatDateNow(AppboyDateFormat.CLOCK_12_HOUR));
+    remoteView.setTextViewText(R.id.com_appboy_inline_image_push_time_text, DateTimeUtils.formatDateNow(BrazeDateFormat.CLOCK_12_HOUR));
 
     // Set the text area title
     String title = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY);
@@ -306,13 +303,13 @@ public class AppboyNotificationStyleFactory {
     }
 
     final Bundle notificationExtras = payload.getNotificationExtras();
-    Bitmap imageBitmap = Appboy.getInstance(context).getAppboyImageLoader()
+    Bitmap imageBitmap = Braze.getInstance(context).getImageLoader()
         .getPushBitmapFromUrl(context,
             notificationExtras,
             imageUrl,
-            AppboyViewBounds.NOTIFICATION_EXPANDED_IMAGE);
+            BrazeViewBounds.NOTIFICATION_EXPANDED_IMAGE);
     if (imageBitmap == null) {
-      AppboyLogger.d(TAG, "Failed to download image bitmap for big picture notification style. Url: " + imageUrl);
+      BrazeLogger.d(TAG, "Failed to download image bitmap for big picture notification style. Url: " + imageUrl);
       return null;
     }
 
@@ -322,10 +319,10 @@ public class AppboyNotificationStyleFactory {
       // Note: if the height is greater than the width it's going to look poor, so we might
       // as well let the system modify it and not complicate things by trying to smoosh it here.
       if (imageBitmap.getWidth() > imageBitmap.getHeight()) {
-        int bigPictureHeightPixels = AppboyImageUtils.getPixelsFromDensityAndDp(AppboyImageUtils.getDensityDpi(context), BIG_PICTURE_STYLE_IMAGE_HEIGHT);
+        int bigPictureHeightPixels = BrazeImageUtils.getPixelsFromDensityAndDp(BrazeImageUtils.getDensityDpi(context), BIG_PICTURE_STYLE_IMAGE_HEIGHT);
         // 2:1 aspect ratio
         int bigPictureWidthPixels = 2 * bigPictureHeightPixels;
-        final int displayWidthPixels = AppboyImageUtils.getDisplayWidthPixels(context);
+        final int displayWidthPixels = BrazeImageUtils.getDisplayWidthPixels(context);
         if (bigPictureWidthPixels > displayWidthPixels) {
           bigPictureWidthPixels = displayWidthPixels;
         }
@@ -333,11 +330,11 @@ public class AppboyNotificationStyleFactory {
         try {
           imageBitmap = Bitmap.createScaledBitmap(imageBitmap, bigPictureWidthPixels, bigPictureHeightPixels, true);
         } catch (Exception e) {
-          AppboyLogger.e(TAG, "Failed to scale image bitmap, using original.", e);
+          BrazeLogger.e(TAG, "Failed to scale image bitmap, using original.", e);
         }
       }
       if (imageBitmap == null) {
-        AppboyLogger.i(TAG, "Bitmap download failed for push notification. No image will be included with the notification.");
+        BrazeLogger.i(TAG, "Bitmap download failed for push notification. No image will be included with the notification.");
         return null;
       }
 
@@ -347,7 +344,7 @@ public class AppboyNotificationStyleFactory {
 
       return bigPictureNotificationStyle;
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Failed to create Big Picture Style.", e);
+      BrazeLogger.e(TAG, "Failed to create Big Picture Style.", e);
       return null;
     }
   }
@@ -393,25 +390,25 @@ public class AppboyNotificationStyleFactory {
                                                @NonNull BrazeNotificationPayload.PushStoryPage pushStoryPage) {
     final Context context = payload.getContext();
     if (context == null) {
-      AppboyLogger.d(TAG, "Push story page cannot render without a context");
+      BrazeLogger.d(TAG, "Push story page cannot render without a context");
       return false;
     }
-    AppboyConfigurationProvider configurationProvider = payload.getAppboyConfigurationProvider();
+    BrazeConfigurationProvider configurationProvider = payload.getConfigurationProvider();
     if (configurationProvider == null) {
-      AppboyLogger.d(TAG, "Push story page cannot render without a configuration provider");
+      BrazeLogger.d(TAG, "Push story page cannot render without a configuration provider");
       return false;
     }
 
     final String bitmapUrl = pushStoryPage.getBitmapUrl();
     if (StringUtils.isNullOrBlank(bitmapUrl)) {
-      AppboyLogger.d(TAG, "Push story page image url invalid");
+      BrazeLogger.d(TAG, "Push story page image url invalid");
       return false;
     }
     final Bundle notificationExtras = payload.getNotificationExtras();
 
     // Set up bitmap url
-    Bitmap largeNotificationBitmap = Appboy.getInstance(context).getAppboyImageLoader()
-        .getPushBitmapFromUrl(context, notificationExtras, bitmapUrl, AppboyViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
+    Bitmap largeNotificationBitmap = Braze.getInstance(context).getImageLoader()
+        .getPushBitmapFromUrl(context, notificationExtras, bitmapUrl, BrazeViewBounds.NOTIFICATION_ONE_IMAGE_STORY);
     if (largeNotificationBitmap == null) {
       return false;
     }
@@ -451,7 +448,7 @@ public class AppboyNotificationStyleFactory {
 
   @VisibleForTesting
   static void setBigPictureSummaryAndTitle(NotificationCompat.BigPictureStyle bigPictureNotificationStyle, BrazeNotificationPayload payload) {
-    final AppboyConfigurationProvider appConfigProvider = payload.getAppboyConfigurationProvider();
+    final BrazeConfigurationProvider appConfigProvider = payload.getConfigurationProvider();
     if (payload.getBigSummaryText() != null) {
       bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigSummaryText()));
     }

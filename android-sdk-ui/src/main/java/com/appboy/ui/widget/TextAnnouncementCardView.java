@@ -4,13 +4,13 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.appboy.models.cards.TextAnnouncementCard;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
+import com.braze.support.BrazeLogger;
 
 public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementCard> {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(TextAnnouncementCardView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(TextAnnouncementCardView.class);
   private final TextView mTitle;
   private final TextView mDescription;
   private final TextView mDomain;

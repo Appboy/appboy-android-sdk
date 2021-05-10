@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,7 +96,7 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
       } else if (value instanceof Long) {
         appboyProperties.addProperty(key, (long) value);
       } else {
-        AppboyLogger.w(this.getClass().toString(), "invalid property type");
+        BrazeLogger.w(this.getClass().toString(), "invalid property type");
       }
     }
     return appboyProperties;

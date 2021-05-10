@@ -11,15 +11,15 @@ import android.widget.ImageView;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.appboy.enums.inappmessage.CropType;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.IInAppMessageImageView;
+import com.braze.support.BrazeLogger;
 
 /**
  * Extends ImageView with the ability to clip the view's corners by a defined radius on all image
  * types.
  */
 public class InAppMessageImageView extends AppCompatImageView implements IInAppMessageImageView {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageImageView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageImageView.class);
   /**
    * Clip path that will be set to a closed round-rectangle contour based on the radii in
    * {@link #mInAppRadii} and used to clip the image view.
@@ -129,7 +129,7 @@ public class InAppMessageImageView extends AppCompatImageView implements IInAppM
         canvas.clipPath(mClipPath);
         return true;
       } catch (Exception e) {
-        AppboyLogger.e(TAG, "Encountered exception while trying to clip in-app message image", e);
+        BrazeLogger.e(TAG, "Encountered exception while trying to clip in-app message image", e);
         return false;
       }
     }

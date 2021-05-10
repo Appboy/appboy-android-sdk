@@ -10,14 +10,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.AppboyNotificationActionUtils;
 import com.appboy.push.AppboyNotificationUtils;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
 public final class AppboyAdmReceiver extends BroadcastReceiver {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyAdmReceiver.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyAdmReceiver.class);
   private static final String ADM_RECEIVE_INTENT_ACTION = "com.amazon.device.messaging.intent.RECEIVE";
   private static final String ADM_REGISTRATION_INTENT_ACTION = "com.amazon.device.messaging.intent.REGISTRATION";
   private static final String ADM_ERROR_KEY = "error";
@@ -30,8 +31,12 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
+    handleReceivedIntent(context, intent);
+  }
+
+  public static void handleReceivedIntent(Context context, Intent intent) {
     if (intent == null) {
-      AppboyLogger.w(TAG, "Received null intent. Doing nothing.");
+      BrazeLogger.w(TAG, "Received null intent. Doing nothing.");
       return;
     }
     Context applicationContext = context.getApplicationContext();
@@ -55,16 +60,16 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       try {
         performWork();
       } catch (Exception e) {
-        AppboyLogger.e(TAG, "Caught exception while performing the push "
+        BrazeLogger.e(TAG, "Caught exception while performing the push "
             + "notification handling work. Action: " + mAction + " Intent: " + mIntent, e);
       }
     }
 
     private void performWork() {
-      AppboyLogger.i(TAG, "Received broadcast message. Message: " + mIntent.toString());
+      BrazeLogger.i(TAG, "Received broadcast message. Message: " + mIntent.toString());
       String action = mIntent.getAction();
       if (ADM_REGISTRATION_INTENT_ACTION.equals(action)) {
-        handleRegistrationEventIfEnabled(new AppboyConfigurationProvider(mApplicationContext), mApplicationContext, mIntent);
+        handleRegistrationEventIfEnabled(new BrazeConfigurationProvider(mApplicationContext), mApplicationContext, mIntent);
       } else if (ADM_RECEIVE_INTENT_ACTION.equals(action)) {
         handleAppboyAdmMessage(mApplicationContext, mIntent);
       } else if (Constants.APPBOY_CANCEL_NOTIFICATION_ACTION.equals(action)) {
@@ -76,7 +81,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       } else if (Constants.APPBOY_PUSH_DELETED_ACTION.equals(action)) {
         AppboyNotificationUtils.handleNotificationDeleted(mApplicationContext, mIntent);
       } else {
-        AppboyLogger.w(TAG, "The ADM receiver received a message not sent from Appboy. Ignoring the message.");
+        BrazeLogger.w(TAG, "The ADM receiver received a message not sent from Appboy. Ignoring the message.");
       }
     }
   }
@@ -95,14 +100,14 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     String unregistered = intent.getStringExtra(ADM_UNREGISTERED_KEY);
 
     if (error != null) {
-      AppboyLogger.w(TAG, "Error during ADM registration: " + error + " description: " + errorDescription);
+      BrazeLogger.w(TAG, "Error during ADM registration: " + error + " description: " + errorDescription);
     } else if (registrationId != null) {
-      AppboyLogger.i(TAG, "Registering for ADM messages with registrationId: " + registrationId);
-      Appboy.getInstance(context).registerAppboyPushMessages(registrationId);
+      BrazeLogger.i(TAG, "Registering for ADM messages with registrationId: " + registrationId);
+      Braze.getInstance(context).registerAppboyPushMessages(registrationId);
     } else if (unregistered != null) {
-      AppboyLogger.w(TAG, "The device was un-registered from ADM: " + unregistered);
+      BrazeLogger.w(TAG, "The device was un-registered from ADM: " + unregistered);
     } else {
-      AppboyLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration "
+      BrazeLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration "
           + "confirmation. Ignoring.");
       return false;
     }
@@ -126,18 +131,18 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
     if (ADM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(ADM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
-        AppboyLogger.w(TAG, "Unable to parse ADM message. Intent: " + intent.toString());
+        BrazeLogger.w(TAG, "Unable to parse ADM message. Intent: " + intent.toString());
       } else {
-        AppboyLogger.i(TAG, "ADM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
+        BrazeLogger.i(TAG, "ADM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
       }
       return false;
     } else {
       Bundle admExtras = intent.getExtras();
-      AppboyLogger.d(TAG, "Push message payload received: " + admExtras);
+      BrazeLogger.d(TAG, "Push message payload received: " + admExtras);
 
       if (AppboyNotificationUtils.isUninstallTrackingPush(admExtras)) {
         // Note that this re-implementation of this method does not forward the notification to receivers.
-        AppboyLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
+        BrazeLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
         return false;
       }
 
@@ -149,7 +154,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
       Bundle appboyExtras = BrazeNotificationPayload.getAttachedAppboyExtras(admExtras);
       admExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
 
-      final AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+      final BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
       final BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, admExtras);
       if (AppboyNotificationUtils.isNotificationMessage(intent)) {
         int notificationId = AppboyNotificationUtils.getNotificationId(payload);
@@ -157,7 +162,7 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
 
         Notification notification = createNotification(payload);
         if (notification == null) {
-          AppboyLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
+          BrazeLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
           return false;
         }
 
@@ -182,27 +187,27 @@ public final class AppboyAdmReceiver extends BroadcastReceiver {
   }
 
   @VisibleForTesting
-  static boolean handleRegistrationEventIfEnabled(AppboyConfigurationProvider appConfigurationProvider, Context context, Intent intent) {
-    AppboyLogger.i(TAG, "Received ADM registration. Message: " + intent.toString());
+  static boolean handleRegistrationEventIfEnabled(BrazeConfigurationProvider appConfigurationProvider, Context context, Intent intent) {
+    BrazeLogger.i(TAG, "Received ADM registration. Message: " + intent.toString());
     // Only handle ADM registration events if ADM registration handling is turned on in the
     // configuration file.
     if (appConfigurationProvider.isAdmMessagingRegistrationEnabled()) {
-      AppboyLogger.d(TAG, "ADM enabled in braze.xml. Continuing to process ADM registration intent.");
+      BrazeLogger.d(TAG, "ADM enabled in braze.xml. Continuing to process ADM registration intent.");
       handleRegistrationIntent(context, intent);
       return true;
     }
-    AppboyLogger.w(TAG, "ADM not enabled in braze.xml. Ignoring ADM registration intent. Note: you must set "
+    BrazeLogger.w(TAG, "ADM not enabled in braze.xml. Ignoring ADM registration intent. Note: you must set "
         + "com_appboy_push_adm_messaging_registration_enabled to true in your braze.xml to enable ADM.");
     return false;
   }
 
   @SuppressWarnings("deprecation") // createNotification() with old method
   private static Notification createNotification(BrazeNotificationPayload payload) {
-    AppboyLogger.v(TAG, "Creating notification with payload:\n" + payload);
+    BrazeLogger.v(TAG, "Creating notification with payload:\n" + payload);
     IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
     Notification notification = appboyNotificationFactory.createNotification(payload);
     if (notification == null) {
-      AppboyLogger.d(TAG, "Calling older notification factory method after null notification returned on newer method");
+      BrazeLogger.d(TAG, "Calling older notification factory method after null notification returned on newer method");
       // Use the older factory method on null. Potentially only the one method is implemented
       notification = appboyNotificationFactory.createNotification(payload.getAppboyConfigurationProvider(),
           payload.getContext(),

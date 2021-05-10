@@ -19,11 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.appboy.Appboy;
 import com.appboy.events.ContentCardsUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.models.cards.Card;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.contentcards.AppboyCardAdapter;
 import com.appboy.ui.contentcards.AppboyEmptyContentCardsAdapter;
 import com.appboy.ui.contentcards.handlers.DefaultContentCardsUpdateHandler;
@@ -32,6 +30,8 @@ import com.appboy.ui.contentcards.handlers.IContentCardsUpdateHandler;
 import com.appboy.ui.contentcards.handlers.IContentCardsViewBindingHandler;
 import com.appboy.ui.contentcards.recycler.ContentCardsDividerItemDecoration;
 import com.appboy.ui.contentcards.recycler.SimpleItemTouchHelperCallback;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.List;
  * A fragment to display ContentCards.
  */
 public class AppboyContentCardsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyContentCardsFragment.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyContentCardsFragment.class);
   private static final int MAX_CONTENT_CARDS_TTL_SECONDS = 60;
   private static final long NETWORK_PROBLEM_WARNING_MS = 5000L;
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;
@@ -94,7 +94,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
    */
   @Override
   public void onRefresh() {
-    Appboy.getInstance(getContext()).requestContentCardsRefresh(false);
+    Braze.getInstance(getContext()).requestContentCardsRefresh(false);
     mMainThreadLooper.postDelayed(() -> mContentCardsSwipeLayout.setRefreshing(false), AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS);
   }
 
@@ -102,20 +102,20 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
   public void onResume() {
     super.onResume();
     // Remove the previous subscriber before rebuilding a new one with our new activity.
-    Appboy.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
+    Braze.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
     if (mContentCardsUpdatedSubscriber == null) {
       mContentCardsUpdatedSubscriber = event -> mMainThreadLooper.post(getContentCardUpdateRunnable(event));
     }
-    Appboy.getInstance(getContext()).subscribeToContentCardsUpdates(mContentCardsUpdatedSubscriber);
-    Appboy.getInstance(getContext()).requestContentCardsRefresh(true);
-    Appboy.getInstance(getContext()).logContentCardsDisplayed();
+    Braze.getInstance(getContext()).subscribeToContentCardsUpdates(mContentCardsUpdatedSubscriber);
+    Braze.getInstance(getContext()).requestContentCardsRefresh(true);
+    Braze.getInstance(getContext()).logContentCardsDisplayed();
   }
 
   @Override
   public void onPause() {
     super.onPause();
     // If the view is going away, we don't care about updating it anymore. Remove the subscription immediately.
-    Appboy.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
+    Braze.getInstance(getContext()).removeSingleSubscription(mContentCardsUpdatedSubscriber, ContentCardsUpdatedEvent.class);
     mMainThreadLooper.removeCallbacks(mDefaultNetworkUnavailableRunnable);
     mCardAdapter.markOnScreenCardsAsRead();
   }
@@ -257,7 +257,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
 
     @Override
     public void run() {
-      AppboyLogger.v(TAG, "Updating Content Cards views in response to ContentCardsUpdatedEvent: " + mEvent);
+      BrazeLogger.v(TAG, "Updating Content Cards views in response to ContentCardsUpdatedEvent: " + mEvent);
       // This list of cards could undergo filtering in the card update handler
       // and be a smaller list of cards compared to the original list
       // in the update event. Thus, any "empty feed" checks should be
@@ -268,10 +268,10 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
 
       // If the update came from storage and is stale, then request a refresh.
       if (mEvent.isFromOfflineStorage() && mEvent.isTimestampOlderThan(MAX_CONTENT_CARDS_TTL_SECONDS)) {
-        AppboyLogger.i(TAG, "ContentCards received was older than the max time "
+        BrazeLogger.i(TAG, "ContentCards received was older than the max time "
             + "to live of " + MAX_CONTENT_CARDS_TTL_SECONDS + " seconds, displaying it "
             + "for now, but requesting an updated view from the server.");
-        Appboy.getInstance(getContext()).requestContentCardsRefresh(false);
+        Braze.getInstance(getContext()).requestContentCardsRefresh(false);
 
         // If we don't have any cards to display, we put up the spinner while
         // we wait for the network to return.
@@ -280,7 +280,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
           // Display a loading indicator
           mContentCardsSwipeLayout.setRefreshing(true);
 
-          AppboyLogger.d(TAG, "Old Content Cards was empty, putting up a "
+          BrazeLogger.d(TAG, "Old Content Cards was empty, putting up a "
               + "network spinner and registering the network "
               + "error message on a delay of " + NETWORK_PROBLEM_WARNING_MS + " ms.");
           mMainThreadLooper.postDelayed(getNetworkUnavailableRunnable(), NETWORK_PROBLEM_WARNING_MS);
@@ -316,7 +316,7 @@ public class AppboyContentCardsFragment extends Fragment implements SwipeRefresh
 
     @Override
     public void run() {
-      AppboyLogger.v(TAG, "Displaying network unavailable toast.");
+      BrazeLogger.v(TAG, "Displaying network unavailable toast.");
       Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.com_appboy_feed_connection_error_title), Toast.LENGTH_LONG).show();
 
       swapRecyclerViewAdapter(getEmptyCardsAdapter());

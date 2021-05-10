@@ -15,15 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.appboy.Appboy;
-import com.appboy.AppboyUser;
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.enums.NotificationSubscriptionType;
 import com.appboy.events.IValueCallback;
 import com.appboy.models.outgoing.AttributionData;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.braze.Braze;
+import com.braze.BrazeUser;
+import com.braze.support.BrazeLogger;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -31,7 +31,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class MainFragment extends Fragment {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(MainFragment.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(MainFragment.class);
   private static final String STRING_ARRAY_ATTRIBUTE_KEY = "stringArrayAttribute";
   private static final String ARRAY_ATTRIBUTE_KEY = "arrayAttribute";
   private static final String DATE_ATTRIBUTE_KEY = "dateAttribute";
@@ -56,6 +56,9 @@ public class MainFragment extends Fragment {
   private EditText mAliasLabelEditText;
   private Button mUserAliasButton;
 
+  private EditText mSdkAuthSignatureEditText;
+  private Button mSetSdkAuthSignatureButton;
+
   private Button mCustomEventButton;
   private Button mLogPurchaseButton;
   private Button mSetUserAttributesButton;
@@ -73,6 +76,8 @@ public class MainFragment extends Fragment {
     mUserIdEditText = contentView.findViewById(R.id.com_appboy_sample_set_user_id_edit_text);
     mUserIdEditText.setText(mSharedPreferences.getString(USER_ID_KEY, null));
     mUserIdButton = contentView.findViewById(R.id.com_appboy_sample_set_user_id_button);
+    mSetSdkAuthSignatureButton = contentView.findViewById(R.id.com_appboy_sample_set_sdk_auth_signature_button);
+    mSdkAuthSignatureEditText = contentView.findViewById(R.id.com_appboy_sample_set_sdk_auth_signature_edit_text);
 
     mAliasEditText = contentView.findViewById(R.id.com_appboy_sample_set_alias_edit_text);
     mAliasLabelEditText = contentView.findViewById(R.id.com_appboy_sample_set_alias_label_edit_text);
@@ -97,7 +102,8 @@ public class MainFragment extends Fragment {
     mUserIdButton.setOnClickListener(view -> {
       String userId = mUserIdEditText.getText().toString();
       if (!StringUtils.isNullOrBlank(userId)) {
-        Appboy.getInstance(getContext()).changeUser(userId);
+        Braze.getInstance(getContext()).changeUser(userId);
+        ((DroidboyApplication) getActivity().getApplicationContext()).initiateSdkAuthTokenRefresh();
         Toast.makeText(getContext(), "Set userId to: " + userId, Toast.LENGTH_SHORT).show();
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(USER_ID_KEY, userId);
@@ -110,7 +116,7 @@ public class MainFragment extends Fragment {
     mCustomEventButton.setOnClickListener(view -> {
       String customEvent = mCustomEventOrPurchaseEditText.getText().toString();
       if (!StringUtils.isNullOrBlank(customEvent)) {
-        Appboy.getInstance(mContext).logCustomEvent(customEvent);
+        Braze.getInstance(mContext).logCustomEvent(customEvent);
         Toast.makeText(getContext(), String.format("Logged custom event %s.", customEvent), Toast.LENGTH_SHORT).show();
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(LAST_CUSTOM_EVENT_PREFERENCE_KEY, customEvent);
@@ -122,15 +128,15 @@ public class MainFragment extends Fragment {
     mLogPurchaseButton.setOnClickListener(view -> {
       String purchase = mCustomEventOrPurchaseEditText.getText().toString();
       if (!StringUtils.isNullOrBlank(purchase)) {
-        Appboy.getInstance(mContext).logPurchase(purchase, "USD", BigDecimal.TEN);
+        Braze.getInstance(mContext).logPurchase(purchase, "USD", BigDecimal.TEN);
         Toast.makeText(getContext(), String.format("Logged purchase %s.", purchase), Toast.LENGTH_SHORT).show();
       } else {
         Toast.makeText(getContext(), "Please enter a purchase.", Toast.LENGTH_SHORT).show();
       }
     });
-    mSetUserAttributesButton.setOnClickListener(view -> Appboy.getInstance(mContext).getCurrentUser(new IValueCallback<AppboyUser>() {
+    mSetUserAttributesButton.setOnClickListener(view -> Braze.getInstance(mContext).getCurrentUser(new IValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         currentUser.setFirstName("first name least");
         currentUser.setLastName("lastName");
         currentUser.setEmail("email@test.com");
@@ -169,9 +175,9 @@ public class MainFragment extends Fragment {
         showToast("Failed to set user attributes.");
       }
     }));
-    mUnsetUserAttributesButton.setOnClickListener(view -> Appboy.getInstance(mContext).getCurrentUser(new IValueCallback<AppboyUser>() {
+    mUnsetUserAttributesButton.setOnClickListener(view -> Braze.getInstance(mContext).getCurrentUser(new IValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser currentUser) {
+      public void onSuccess(@NonNull BrazeUser currentUser) {
         // Unset current user default attributes
         currentUser.setFirstName(null);
         currentUser.setLastName(null);
@@ -208,19 +214,28 @@ public class MainFragment extends Fragment {
       }
     }));
     mRequestFlushButton.setOnClickListener(view -> {
-      Appboy.getInstance(mContext).requestImmediateDataFlush();
+      Braze.getInstance(mContext).requestImmediateDataFlush();
       Toast.makeText(getContext(), "Requested data flush.", Toast.LENGTH_SHORT).show();
     });
     mUserAliasButton.setOnClickListener(view -> handleAliasClick());
     mGoogleAdvertisingIdFlushButton.setOnClickListener((view) -> new CollectGoogleAdvertisingIdTask().execute());
+    mSetSdkAuthSignatureButton.setOnClickListener(view -> {
+      String signature = mSdkAuthSignatureEditText.getText().toString();
+      if (!StringUtils.isNullOrBlank(signature)) {
+        Braze.getInstance(getContext()).setSdkAuthenticationSignature(signature);
+        Toast.makeText(getContext(), "Set signature to: " + signature, Toast.LENGTH_SHORT).show();
+      } else {
+        Toast.makeText(getContext(), "Please enter a signature.", Toast.LENGTH_SHORT).show();
+      }
+    });
   }
 
   private void handleAliasClick() {
     String alias = mAliasEditText.getText().toString();
     String label = mAliasLabelEditText.getText().toString();
-    Appboy.getInstance(mContext).getCurrentUser(new IValueCallback<AppboyUser>() {
+    Braze.getInstance(mContext).getCurrentUser(new IValueCallback<BrazeUser>() {
       @Override
-      public void onSuccess(@NonNull AppboyUser value) {
+      public void onSuccess(@NonNull BrazeUser value) {
         value.addAlias(alias, label);
         Toast.makeText(getContext(), "Added alias " + alias + " with label "
             + label, Toast.LENGTH_SHORT).show();
@@ -248,10 +263,10 @@ public class MainFragment extends Fragment {
     protected Void doInBackground(Void... voids) {
       try {
         AdvertisingIdClient.Info advertisingIdInfo = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
-        Appboy.getInstance(mContext).setGoogleAdvertisingId(advertisingIdInfo.getId(), advertisingIdInfo.isLimitAdTrackingEnabled());
-        Appboy.getInstance(mContext).requestImmediateDataFlush();
+        Braze.getInstance(mContext).setGoogleAdvertisingId(advertisingIdInfo.getId(), advertisingIdInfo.isLimitAdTrackingEnabled());
+        Braze.getInstance(mContext).requestImmediateDataFlush();
       } catch (Exception e) {
-        AppboyLogger.e(TAG, "Failed to collect Google Advertising ID information.", e);
+        BrazeLogger.e(TAG, "Failed to collect Google Advertising ID information.", e);
       }
       return null;
     }

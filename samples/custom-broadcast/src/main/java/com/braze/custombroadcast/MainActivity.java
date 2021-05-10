@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.appboy.Appboy;
+import com.braze.Braze;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
         return;
       } else {
         showMessage(String.format("Changed user to %s and requested flush to Appboy", userId));
-        Appboy.getInstance(applicationContext).changeUser(userId);
+        Braze.getInstance(applicationContext).changeUser(userId);
       }
 
-      Appboy.getInstance(applicationContext).requestImmediateDataFlush();
+      Braze.getInstance(applicationContext).requestImmediateDataFlush();
     });
   }
 

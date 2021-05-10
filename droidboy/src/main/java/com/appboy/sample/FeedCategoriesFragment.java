@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.appboy.enums.CardCategory;
-import com.appboy.support.AppboyLogger;
+import com.braze.support.BrazeLogger;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -20,7 +20,7 @@ import java.util.Locale;
 
 @SuppressWarnings("PMD.FieldDeclarationsShouldBeAtStartOfClass")
 public class FeedCategoriesFragment extends DialogFragment {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(FeedCategoriesFragment.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(FeedCategoriesFragment.class);
   public static final String CATEGORIES_STRING = "categories";
 
   /**

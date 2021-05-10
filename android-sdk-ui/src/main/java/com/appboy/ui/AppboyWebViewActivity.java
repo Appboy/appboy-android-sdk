@@ -21,11 +21,11 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.appboy.Constants;
 import com.appboy.enums.Channel;
-import com.appboy.support.AppboyFileUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.support.BrazeFileUtils;
+import com.braze.support.BrazeLogger;
 
 /**
  * Note that this Activity is not and should not be exported by default in
@@ -38,7 +38,7 @@ import com.appboy.ui.support.ViewUtils;
  */
 @SuppressLint("SetJavaScriptEnabled")
 public class AppboyWebViewActivity extends FragmentActivity {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyWebViewActivity.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyWebViewActivity.class);
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class AppboyWebViewActivity extends FragmentActivity {
     webView.setWebChromeClient(new WebChromeClient() {
       @Override
       public boolean onConsoleMessage(ConsoleMessage cm) {
-        AppboyLogger.d(TAG, "Braze WebView Activity log. Line: " + cm.lineNumber()
+        BrazeLogger.d(TAG, "Braze WebView Activity log. Line: " + cm.lineNumber()
             + ". SourceId: " + cm.sourceId()
             + ". Log Level: " + cm.messageLevel()
             + ". Message: " + cm.message());
@@ -120,7 +120,7 @@ public class AppboyWebViewActivity extends FragmentActivity {
        */
       private Boolean handleUrlOverride(Context context, String url) {
         try {
-          if (AppboyFileUtils.REMOTE_SCHEMES.contains(Uri.parse(url).getScheme())) {
+          if (BrazeFileUtils.REMOTE_SCHEMES.contains(Uri.parse(url).getScheme())) {
             return null;
           }
 
@@ -136,7 +136,7 @@ public class AppboyWebViewActivity extends FragmentActivity {
             return false;
           }
         } catch (Exception e) {
-          AppboyLogger.e(TAG, "Unexpected exception while processing url " + url + ". Passing url back to WebView.", e);
+          BrazeLogger.e(TAG, "Unexpected exception while processing url " + url + ". Passing url back to WebView.", e);
         }
         return null;
       }

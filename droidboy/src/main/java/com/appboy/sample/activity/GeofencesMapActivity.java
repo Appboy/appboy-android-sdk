@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import com.appboy.models.AppboyGeofence;
 import com.appboy.sample.R;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.braze.models.BrazeGeofence;
+import com.braze.support.BrazeLogger;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,7 +28,7 @@ import java.util.Set;
 import static com.appboy.sample.R.id.map;
 
 public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMapReadyCallback {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(GeofencesMapActivity.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(GeofencesMapActivity.class);
   private static final String REGISTERED_GEOFENCE_SHARED_PREFS_LOCATION = "com.appboy.support.geofences";
 
   @Override
@@ -46,11 +46,11 @@ public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMa
     // Note that this is for testing purposes only.  This storage location and format are not a supported API.
     SharedPreferences registeredGeofencePrefs = getApplicationContext()
         .getSharedPreferences(REGISTERED_GEOFENCE_SHARED_PREFS_LOCATION, Context.MODE_PRIVATE);
-    List<AppboyGeofence> registeredGeofences = retrieveAppboyGeofencesFromLocalStorage(registeredGeofencePrefs);
+    List<BrazeGeofence> registeredGeofences = retrieveAppboyGeofencesFromLocalStorage(registeredGeofencePrefs);
 
     int color = Color.BLUE;
     if (registeredGeofences.size() > 0) {
-      for (AppboyGeofence registeredGeofence : registeredGeofences) {
+      for (BrazeGeofence registeredGeofence : registeredGeofences) {
         googleMap.addCircle(new CircleOptions()
             .center(new LatLng(registeredGeofence.getLatitude(), registeredGeofence.getLongitude()))
             .radius(registeredGeofence.getRadiusMeters())
@@ -63,18 +63,18 @@ public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMa
                 + ", radius: " + registeredGeofence.getRadiusMeters() + "m"));
       }
 
-      AppboyGeofence firstGeofence = registeredGeofences.get(0);
+      BrazeGeofence firstGeofence = registeredGeofences.get(0);
       googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(firstGeofence.getLatitude(), firstGeofence.getLongitude())));
       googleMap.animateCamera(CameraUpdateFactory.zoomTo(10), null);
     }
   }
 
   // Note that this is for testing purposes only.  This storage location and format are not a supported API.
-  private static List<AppboyGeofence> retrieveAppboyGeofencesFromLocalStorage(SharedPreferences sharedPreferences) {
-    List<AppboyGeofence> geofences = new ArrayList<>();
+  private static List<BrazeGeofence> retrieveAppboyGeofencesFromLocalStorage(SharedPreferences sharedPreferences) {
+    List<BrazeGeofence> geofences = new ArrayList<>();
     Map<String, ?> storedGeofences = sharedPreferences.getAll();
     if (storedGeofences == null || storedGeofences.size() == 0) {
-      AppboyLogger.d(TAG, "Did not find stored geofences.");
+      BrazeLogger.d(TAG, "Did not find stored geofences.");
       return geofences;
     }
     Set<String> keys = storedGeofences.keySet();
@@ -82,17 +82,17 @@ public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMa
       String geofenceString = sharedPreferences.getString(key, null);
       try {
         if (StringUtils.isNullOrBlank(geofenceString)) {
-          AppboyLogger.w(TAG, String.format("Received null or blank serialized "
+          BrazeLogger.w(TAG, String.format("Received null or blank serialized "
               + " geofence string for geofence id %s from shared preferences. Not parsing.", key));
           continue;
         }
         JSONObject geofenceJson = new JSONObject(geofenceString);
-        AppboyGeofence appboyGeofence = new AppboyGeofence(geofenceJson);
-        geofences.add(appboyGeofence);
+        BrazeGeofence brazeGeofence = new BrazeGeofence(geofenceJson);
+        geofences.add(brazeGeofence);
       } catch (JSONException e) {
-        AppboyLogger.e(TAG, "Encountered Json exception while parsing stored geofence: " + geofenceString, e);
+        BrazeLogger.e(TAG, "Encountered Json exception while parsing stored geofence: " + geofenceString, e);
       } catch (Exception e) {
-        AppboyLogger.e(TAG, "Encountered unexpected exception while parsing stored geofence: " + geofenceString, e);
+        BrazeLogger.e(TAG, "Encountered unexpected exception while parsing stored geofence: " + geofenceString, e);
       }
     }
     return geofences;

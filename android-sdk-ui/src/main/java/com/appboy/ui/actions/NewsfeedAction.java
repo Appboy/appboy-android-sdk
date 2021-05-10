@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.appboy.enums.Channel;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.activities.AppboyFeedActivity;
+import com.braze.support.BrazeLogger;
 
 import static android.content.ContentValues.TAG;
 
@@ -33,7 +33,7 @@ public class NewsfeedAction implements IAction {
       }
       context.startActivity(intent);
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "AppboyFeedActivity was not opened successfully.", e);
+      BrazeLogger.e(TAG, "AppboyFeedActivity was not opened successfully.", e);
     }
   }
 

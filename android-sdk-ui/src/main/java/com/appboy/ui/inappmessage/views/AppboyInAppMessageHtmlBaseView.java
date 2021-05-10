@@ -17,15 +17,15 @@ import androidx.annotation.Nullable;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.IInAppMessageView;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
 import com.appboy.ui.inappmessage.listeners.IWebViewClientStateListener;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.support.BrazeLogger;
 
 public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout implements IInAppMessageView {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageHtmlBaseView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageHtmlBaseView.class);
   private static final String HTML_MIME_TYPE = "text/html";
   private static final String HTML_ENCODING = "utf-8";
   private static final String FILE_URI_SCHEME_PREFIX = "file://";
@@ -34,7 +34,11 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
    */
   private static final String FINISHED_WEBVIEW_URL = "about:blank";
 
+  /**
+   * @deprecated Please use {@link #BRAZE_BRIDGE_PREFIX} instead. Deprecated since 4/27/21
+   */
   public static final String APPBOY_BRIDGE_PREFIX = "appboyInternalBridge";
+  public static final String BRAZE_BRIDGE_PREFIX = "brazeInternalBridge";
 
   protected WebView mMessageWebView;
   private InAppMessageWebViewClient mInAppMessageWebViewClient;
@@ -50,7 +54,7 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
    * {@link #getMessageWebView()} will return null afterwards.
    */
   public void finishWebViewDisplay() {
-    AppboyLogger.d(TAG, "Finishing WebView display");
+    BrazeLogger.d(TAG, "Finishing WebView display");
     // Note that WebView.destroy() is not called here since that
     // causes immense issues with the system's own closing of
     // the WebView after we're done with it.
@@ -69,12 +73,12 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
   @SuppressLint({"SetJavaScriptEnabled"})
   public WebView getMessageWebView() {
     if (mIsFinished) {
-      AppboyLogger.w(TAG, "Cannot return the WebView for an already finished message");
+      BrazeLogger.w(TAG, "Cannot return the WebView for an already finished message");
       return null;
     }
     final int webViewViewId = getWebViewViewId();
     if (webViewViewId == 0) {
-      AppboyLogger.d(TAG, "Cannot find WebView. getWebViewViewId() returned 0.");
+      BrazeLogger.d(TAG, "Cannot find WebView. getWebViewViewId() returned 0.");
       return null;
     }
     if (mMessageWebView != null) {
@@ -82,7 +86,7 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
     }
     mMessageWebView = findViewById(webViewViewId);
     if (mMessageWebView == null) {
-      AppboyLogger.d(TAG, "findViewById for " + webViewViewId + " returned null. Returning null for WebView.");
+      BrazeLogger.d(TAG, "findViewById for " + webViewViewId + " returned null. Returning null for WebView.");
       return null;
     }
     WebSettings webSettings = mMessageWebView.getSettings();
@@ -112,14 +116,14 @@ public abstract class AppboyInAppMessageHtmlBaseView extends RelativeLayout impl
             WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY);
       }
     } catch (Throwable e) {
-      AppboyLogger.e(TAG, "Failed to set dark mode WebView settings", e);
+      BrazeLogger.e(TAG, "Failed to set dark mode WebView settings", e);
     }
 
     // Set the client for console logging. See https://developer.android.com/guide/webapps/debugging.html
     mMessageWebView.setWebChromeClient(new WebChromeClient() {
       @Override
       public boolean onConsoleMessage(ConsoleMessage cm) {
-        AppboyLogger.d(TAG, "Braze HTML In-app Message log. Line: " + cm.lineNumber()
+        BrazeLogger.d(TAG, "Braze HTML In-app Message log. Line: " + cm.lineNumber()
             + ". SourceId: " + cm.sourceId()
             + ". Log Level: " + cm.messageLevel()
             + ". Message: " + cm.message());

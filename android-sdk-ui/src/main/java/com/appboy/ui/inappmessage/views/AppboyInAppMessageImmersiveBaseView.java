@@ -13,17 +13,17 @@ import androidx.annotation.NonNull;
 
 import com.appboy.enums.inappmessage.TextAlign;
 import com.appboy.models.MessageButton;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.R;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.IInAppMessageImmersiveView;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.support.BrazeLogger;
 
 import java.util.List;
 
 public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMessageBaseView implements IInAppMessageImmersiveView {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageImmersiveBaseView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageImmersiveBaseView.class);
 
   public AppboyInAppMessageImmersiveBaseView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -102,7 +102,7 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
         closeButton.setNextFocusLeftId(primaryId);
         break;
       default:
-        AppboyLogger.w(TAG, "Cannot setup directional navigation. Got unsupported number of buttons: " + numButtons);
+        BrazeLogger.w(TAG, "Cannot setup directional navigation. Got unsupported number of buttons: " + numButtons);
     }
 
     // The entire view should focus back to the close
@@ -196,7 +196,7 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
    */
   public void setLargerCloseButtonClickArea(final View closeButtonView) {
     if (closeButtonView == null || closeButtonView.getParent() == null) {
-      AppboyLogger.w(TAG, "Cannot increase click area for view if view and/or parent are null.");
+      BrazeLogger.w(TAG, "Cannot increase click area for view if view and/or parent are null.");
       return;
     }
 

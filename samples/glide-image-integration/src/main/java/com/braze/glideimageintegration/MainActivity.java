@@ -6,7 +6,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.appboy.Appboy;
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.ImageStyle;
@@ -15,6 +14,7 @@ import com.appboy.models.InAppMessageFull;
 import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+import com.braze.Braze;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     findViewById(R.id.com_appboy_flush_button).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Appboy.getInstance(context).requestImmediateDataFlush();
+        Braze.getInstance(context).requestImmediateDataFlush();
       }
     });
   }

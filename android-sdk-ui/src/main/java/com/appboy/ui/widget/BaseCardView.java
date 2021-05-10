@@ -9,12 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.appboy.Appboy;
-import com.appboy.configuration.AppboyConfigurationProvider;
-import com.appboy.enums.AppboyViewBounds;
 import com.appboy.enums.Channel;
 import com.appboy.models.cards.Card;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
@@ -22,13 +18,17 @@ import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.feed.AppboyImageSwitcher;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.enums.BrazeViewBounds;
+import com.braze.support.BrazeLogger;
 
 /**
  * Base class for Braze feed card views
  */
 @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
 public abstract class BaseCardView<T extends Card> extends RelativeLayout {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(BaseCardView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(BaseCardView.class);
   private static final float SQUARE_ASPECT_RATIO = 1f;
   private static final String ICON_READ_TAG = "icon_read";
   private static final String ICON_UNREAD_TAG = "icon_unread";
@@ -40,21 +40,21 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   @Nullable
   protected T mCard;
   protected AppboyImageSwitcher mImageSwitcher;
-  protected AppboyConfigurationProvider mAppboyConfigurationProvider;
+  protected BrazeConfigurationProvider mConfigurationProvider;
 
   public BaseCardView(Context context) {
     super(context);
     mContext = context.getApplicationContext();
 
     // Read the setting from the braze.xml if we don't already have a value.
-    if (mAppboyConfigurationProvider == null) {
-      mAppboyConfigurationProvider = new AppboyConfigurationProvider(context);
+    if (mConfigurationProvider == null) {
+      mConfigurationProvider = new BrazeConfigurationProvider(context);
     }
     if (sUnreadCardVisualIndicatorEnabled == null) {
-      sUnreadCardVisualIndicatorEnabled = mAppboyConfigurationProvider.getIsNewsfeedVisualIndicatorOn();
+      sUnreadCardVisualIndicatorEnabled = mConfigurationProvider.getIsNewsfeedVisualIndicatorOn();
     }
 
-    mClassLogTag = AppboyLogger.getBrazeLogTag(this.getClass());
+    mClassLogTag = BrazeLogger.getBrazeLogTag(this.getClass());
   }
 
   /**
@@ -83,12 +83,12 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
    */
   public void setImageViewToUrl(final ImageView imageView, final String imageUrl, final float placeholderAspectRatio, Card card) {
     if (imageUrl == null) {
-      AppboyLogger.w(TAG, "The image url to render is null. Not setting the card image.");
+      BrazeLogger.w(TAG, "The image url to render is null. Not setting the card image.");
       return;
     }
 
     if (placeholderAspectRatio == 0) {
-      AppboyLogger.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
+      BrazeLogger.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
       return;
     }
 
@@ -113,7 +113,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       }
 
       imageView.setImageResource(android.R.color.transparent);
-      Appboy.getInstance(getContext()).getAppboyImageLoader().renderUrlIntoCardView(getContext(), card, imageUrl, imageView, AppboyViewBounds.BASE_CARD_VIEW);
+      Braze.getInstance(getContext()).getImageLoader().renderUrlIntoCardView(getContext(), card, imageUrl, imageView, BrazeViewBounds.BASE_CARD_VIEW);
       imageView.setTag(R.string.com_appboy_image_resize_tag_key, imageUrl);
     }
   }
@@ -124,7 +124,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
    */
   public void setCardViewedIndicator(AppboyImageSwitcher imageSwitcher, Card card) {
     if (card == null) {
-      AppboyLogger.d(getClassLogTag(), "The card is null. Not setting read/unread indicator.");
+      BrazeLogger.d(getClassLogTag(), "The card is null. Not setting read/unread indicator.");
       return;
     }
 
@@ -175,23 +175,23 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
   }
 
   protected void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
-    AppboyLogger.v(TAG, "Handling card click for card: " + card);
+    BrazeLogger.v(TAG, "Handling card click for card: " + card);
     card.setIndicatorHighlighted(true);
     if (!isClickHandled(context, card, cardAction)) {
       if (cardAction != null) {
         card.logClick();
-        AppboyLogger.v(TAG, "Card action is non-null. Attempting to perform action on card: " + card.getId());
+        BrazeLogger.v(TAG, "Card action is non-null. Attempting to perform action on card: " + card.getId());
         if (cardAction instanceof UriAction) {
           AppboyNavigator.getAppboyNavigator().gotoUri(context, (UriAction) cardAction);
         } else {
-          AppboyLogger.d(TAG, "Executing non uri action for click on card: " + card.getId());
+          BrazeLogger.d(TAG, "Executing non uri action for click on card: " + card.getId());
           cardAction.execute(context);
         }
       } else {
-        AppboyLogger.v(TAG, "Card action is null. Not performing any click action on card: " + card.getId());
+        BrazeLogger.v(TAG, "Card action is null. Not performing any click action on card: " + card.getId());
       }
     } else {
-      AppboyLogger.d(TAG, "Card click was handled by custom listener on card: " + card.getId());
+      BrazeLogger.d(TAG, "Card click was handled by custom listener on card: " + card.getId());
       card.logClick();
     }
   }

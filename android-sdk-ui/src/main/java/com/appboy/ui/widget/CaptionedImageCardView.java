@@ -5,13 +5,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appboy.models.cards.CaptionedImageCard;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
+import com.braze.support.BrazeLogger;
 
 public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard> {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(CaptionedImageCardView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(CaptionedImageCardView.class);
   private final ImageView mImage;
   private final TextView mTitle;
   private final TextView mDescription;

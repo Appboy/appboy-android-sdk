@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.push.AppboyNotificationActionUtils;
 import com.appboy.push.AppboyNotificationUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
 public class BrazePushReceiver extends BroadcastReceiver {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(BrazePushReceiver.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(BrazePushReceiver.class);
   private static final String FCM_MESSAGE_TYPE_KEY = "message_type";
   private static final String FCM_DELETED_MESSAGES_KEY = "deleted_messages";
   private static final String FCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
@@ -39,22 +39,33 @@ public class BrazePushReceiver extends BroadcastReceiver {
   }
 
   public static void handleReceivedIntent(Context context, Intent intent) {
+    handleReceivedIntent(context, intent, true);
+  }
+
+  public static void handleReceivedIntent(Context context, Intent intent, boolean runOnThread) {
     if (intent == null) {
-      AppboyLogger.w(TAG, "Received null intent. Doing nothing.");
+      BrazeLogger.w(TAG, "Received null intent. Doing nothing.");
       return;
     }
-    Context applicationContext = context.getApplicationContext();
-    PushHandlerRunnable pushHandlerRunnable = new PushHandlerRunnable(applicationContext, intent);
-    new Thread(pushHandlerRunnable).start();
+    PushHandlerRunnable pushHandlerRunnable;
+    if (runOnThread) {
+      // Don't pass an Activity context into a background thread
+      pushHandlerRunnable = new PushHandlerRunnable(context.getApplicationContext(), intent);
+      new Thread(pushHandlerRunnable).start();
+    } else {
+      // Run on the caller thread
+      pushHandlerRunnable = new PushHandlerRunnable(context, intent);
+      pushHandlerRunnable.run();
+    }
   }
 
   private static class PushHandlerRunnable implements Runnable {
     private final String mAction;
-    private final Context mApplicationContext;
+    private final Context mContext;
     private final Intent mIntent;
 
-    PushHandlerRunnable(Context applicationContext, @NonNull Intent intent) {
-      mApplicationContext = applicationContext;
+    PushHandlerRunnable(Context context, @NonNull Intent intent) {
+      mContext = context;
       mIntent = intent;
       mAction = intent.getAction();
     }
@@ -64,41 +75,41 @@ public class BrazePushReceiver extends BroadcastReceiver {
       try {
         performWork();
       } catch (Exception e) {
-        AppboyLogger.e(TAG, "Caught exception while performing the push "
+        BrazeLogger.e(TAG, "Caught exception while performing the push "
             + "notification handling work. Action: " + mAction + " Intent: " + mIntent, e);
       }
     }
 
     private void performWork() {
-      AppboyLogger.i(TAG, "Received broadcast message. Message: " + mIntent.toString());
+      BrazeLogger.i(TAG, "Received broadcast message. Message: " + mIntent.toString());
       String action = mIntent.getAction();
       if (StringUtils.isNullOrEmpty(action)) {
-        AppboyLogger.w(TAG, "Push action is null. Not handling intent: " + mIntent);
+        BrazeLogger.w(TAG, "Push action is null. Not handling intent: " + mIntent);
         return;
       }
       switch (action) {
         case FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION:
         case Constants.APPBOY_STORY_TRAVERSE_CLICKED_ACTION:
         case HMS_PUSH_SERVICE_ROUTING_ACTION:
-          handlePushNotificationPayload(mApplicationContext, mIntent);
+          handlePushNotificationPayload(mContext, mIntent);
           break;
         case Constants.APPBOY_CANCEL_NOTIFICATION_ACTION:
-          AppboyNotificationUtils.handleCancelNotificationAction(mApplicationContext, mIntent);
+          AppboyNotificationUtils.handleCancelNotificationAction(mContext, mIntent);
           break;
         case Constants.APPBOY_ACTION_CLICKED_ACTION:
-          AppboyNotificationActionUtils.handleNotificationActionClicked(mApplicationContext, mIntent);
+          AppboyNotificationActionUtils.handleNotificationActionClicked(mContext, mIntent);
           break;
         case Constants.APPBOY_STORY_CLICKED_ACTION:
-          AppboyNotificationUtils.handlePushStoryPageClicked(mApplicationContext, mIntent);
+          AppboyNotificationUtils.handlePushStoryPageClicked(mContext, mIntent);
           break;
         case Constants.APPBOY_PUSH_CLICKED_ACTION:
-          AppboyNotificationUtils.handleNotificationOpened(mApplicationContext, mIntent);
+          AppboyNotificationUtils.handleNotificationOpened(mContext, mIntent);
           break;
         case Constants.APPBOY_PUSH_DELETED_ACTION:
-          AppboyNotificationUtils.handleNotificationDeleted(mApplicationContext, mIntent);
+          AppboyNotificationUtils.handleNotificationDeleted(mContext, mIntent);
           break;
         default:
-          AppboyLogger.w(TAG, "Received a message not sent from Braze. Ignoring the message.");
+          BrazeLogger.w(TAG, "Received a message not sent from Braze. Ignoring the message.");
           break;
       }
     }
@@ -114,15 +125,15 @@ public class BrazePushReceiver extends BroadcastReceiver {
     if (FCM_DELETED_MESSAGES_KEY.equals(messageType)) {
       int totalDeleted = intent.getIntExtra(FCM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
-        AppboyLogger.w(TAG, "Unable to parse FCM message. Intent: " + intent.toString());
+        BrazeLogger.w(TAG, "Unable to parse FCM message. Intent: " + intent.toString());
       } else {
-        AppboyLogger.i(TAG, "FCM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
+        BrazeLogger.i(TAG, "FCM deleted " + totalDeleted + " messages. Fetch them from Appboy.");
       }
       return false;
     }
 
     Bundle notificationExtras = intent.getExtras();
-    AppboyLogger.i(TAG, "Push message payload received: " + notificationExtras);
+    BrazeLogger.i(TAG, "Push message payload received: " + notificationExtras);
 
     // Convert the JSON in the extras key into a Bundle.
     Bundle appboyExtras = BrazeNotificationPayload.getAttachedAppboyExtras(notificationExtras);
@@ -136,16 +147,16 @@ public class BrazePushReceiver extends BroadcastReceiver {
     // a bundle instead of a raw JSON string for the APPBOY_PUSH_EXTRAS_KEY key
     if (AppboyNotificationUtils.isUninstallTrackingPush(notificationExtras)) {
       // Note that this re-implementation of this method does not forward the notification to receivers.
-      AppboyLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
+      BrazeLogger.i(TAG, "Push message is uninstall tracking push. Doing nothing. Not forwarding this notification to broadcast receivers.");
       return false;
     }
 
-    AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+    BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
     if (appConfigurationProvider.getIsInAppMessageTestPushEagerDisplayEnabled()
         && AppboyNotificationUtils.isInAppMessageTestPush(intent)
         && AppboyInAppMessageManager.getInstance().getActivity() != null) {
       // Pass this test in-app message along for eager display and bypass displaying a push
-      AppboyLogger.d(TAG, "Bypassing push display due to test in-app message presence and "
+      BrazeLogger.d(TAG, "Bypassing push display due to test in-app message presence and "
           + "eager test in-app message display configuration setting.");
       AppboyInternal.handleInAppMessageTestPush(context, intent);
       return false;
@@ -160,20 +171,20 @@ public class BrazePushReceiver extends BroadcastReceiver {
     AppboyNotificationUtils.handleContentCardsSerializedCardIfPresent(payload);
 
     if (AppboyNotificationUtils.isNotificationMessage(intent)) {
-      AppboyLogger.d(TAG, "Received notification push");
+      BrazeLogger.d(TAG, "Received notification push");
       int notificationId = AppboyNotificationUtils.getNotificationId(payload);
       notificationExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
 
       if (payload.isPushStory()) {
         if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
-          AppboyLogger.d(TAG, "Received the initial push story notification.");
+          BrazeLogger.d(TAG, "Received the initial push story notification.");
           notificationExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
         }
       }
 
       Notification notification = createNotification(payload);
       if (notification == null) {
-        AppboyLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
+        BrazeLogger.d(TAG, "Notification created by notification factory was null. Not displaying notification.");
         return false;
       }
 
@@ -188,7 +199,7 @@ public class BrazePushReceiver extends BroadcastReceiver {
       }
       return true;
     } else {
-      AppboyLogger.d(TAG, "Received silent push");
+      BrazeLogger.d(TAG, "Received silent push");
       AppboyNotificationUtils.sendPushMessageReceivedBroadcast(context, notificationExtras);
       AppboyNotificationUtils.requestGeofenceRefreshIfAppropriate(context, notificationExtras);
       return false;
@@ -197,11 +208,11 @@ public class BrazePushReceiver extends BroadcastReceiver {
 
   @SuppressWarnings("deprecation") // createNotification() with old method
   private static Notification createNotification(BrazeNotificationPayload payload) {
-    AppboyLogger.v(TAG, "Creating notification with payload:\n" + payload);
+    BrazeLogger.v(TAG, "Creating notification with payload:\n" + payload);
     IAppboyNotificationFactory appboyNotificationFactory = AppboyNotificationUtils.getActiveNotificationFactory();
     Notification notification = appboyNotificationFactory.createNotification(payload);
     if (notification == null) {
-      AppboyLogger.d(TAG, "Calling older notification factory method after null notification returned on newer method");
+      BrazeLogger.d(TAG, "Calling older notification factory method after null notification returned on newer method");
       // Use the older factory method on null. Potentially only the one method is implemented
       notification = appboyNotificationFactory.createNotification(payload.getAppboyConfigurationProvider(),
           payload.getContext(),

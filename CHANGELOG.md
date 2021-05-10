@@ -1,21 +1,61 @@
+## 14.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v14.0.0)
+
+##### Breaking
+- Interface `IInAppMessageViewWrapperFactory` changed to use `BrazeConfigurationProvider`.
+- Interface `IAppboyImageLoader/IBrazeImageLoader` changed to use `com.braze.enums.BrazeViewBounds`.
+- Class `com.appboy.configuration.AppboyConfig` is now `com.braze.configuration.BrazeConfig`. The original class has been removed and old usages should be updated.
+- Class `com.appboy.enums.AppboyViewBounds` is now `com.braze.enums.BrazeViewBounds`. The original class has been removed and old usages should be updated.
+- Removed `com.appboy.push.AppboyNotificationUtils#bundleOptString`.
+- `Braze.logPurchase()` and `Braze.logEvent()` now impose a 50KB limit on event properties. If the supplied properties are too large, the event is not logged.
+  - See `BrazeProperties.isInvalid()`.
+- HTML In-App Messages rendered via the default `AppboyHtmlViewFactory` now require the device to be in touch mode to display.
+  - See `getIsTouchModeRequiredForHtmlInAppMessages()` in the #added section for configuration on disabling this behavior.
+
+##### Changed
+- Several classes in the base artifact have been renamed to the Braze namespace/packages. Whenever possible, the original classes are still available. However, they will be removed in a future release so migrating early is highly recommended.
+  - `com.appboy.Appboy` -> `com.braze.Braze`
+  - `com.appboy.configuration.AppboyConfig` -> `com.braze.configuration.BrazeConfig`
+  - `com.braze.AppboyUser` -> `com.braze.BrazeUser`
+  - `com.appboy.lrucache.AppboyLruImageLoader` -> `com.braze.images.DefaultBrazeImageLoader`
+  - `com.appboy.configuration.AppboyConfigurationProvider` -> `com.braze.configuration.BrazeConfigurationProvider`
+  - `com.appboy.models.outgoing.AppboyProperties` -> `com.braze.models.outgoing.BrazeProperties`
+  - `com.appboy.support.AppboyImageUtils` -> `com.braze.support.BrazeImageUtils`
+  - `com.appboy.support.AppboyFileUtils` -> `com.braze.support.BrazeFileUtils`
+- Changed the behavior of In-App Message Accessibility Exclusive mode to save and reset the accessibility flags of views after display.
+- Changed the `AppboyInAppMessageWebViewClientListener` to use an Activity context when following a deeplink in `IInAppMessageWebViewClientListener.onOtherUrlAction`.
+- Deprecated `AppboyInAppMessageHtmlBaseView.APPBOY_BRIDGE_PREFIX`.
+
+##### Added
+- Added `Braze.registerPushToken()` and `Braze.getRegisteredPushToken()`.
+  - Note that these methods are the functional equivalents of `Appboy.registerAppboyPushMessages()` and `Appboy.getAppboyPushMessageRegistrationId()`.
+- Exposed `brazeBridge` which replaces `appboyBridge` to be used as the javascript interface for HTML In-App Messages. `appboyBridge` is deprecated and will be removed in a future version of the SDK.
+- Added `AppboyInAppMessageHtmlBaseView.BRAZE_BRIDGE_PREFIX`.
+- Added the ability to configure whether `View#isInTouchMode()` is required to show HTML In-App Messages via `BrazeConfig.setIsTouchModeRequiredForHtmlInAppMessages()`.
+  - Can also be configured via boolean `com_braze_require_touch_mode_for_html_in_app_messages` in your `braze.xml`.
+  - Defaults to true.
+- Added support for new SDK Authentication feature.
+
+##### Fixed
+- Fixed an issue with `setIsInAppMessageAccessibilityExclusiveModeEnabled()` not being respected if set via runtime configuration. Setting this value via XML was unaffected.
+- Fixed an issue with the SDK repeatedly failing to initialize when not properly setting a Braze API key.
+
 ## 13.1.2
 
-Released on April 6th, 2021
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.2)
 
 ##### Changed
 - Changed the `NotificationTrampolineActivity` to always call `finish()` regardless of any eventual deeplink handling by the host app or SDK.
 
 ## 13.1.1
 
-Released on April 5th, 2021
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.1)
 
 ##### Fixed
 - Fixed an issue with the `NotificationTrampolineActivity` being opened on notification delete intents.
 
 ## 13.1.0
-
-##### Known Issues with version 13.1.0
-Dismissing notifications with the application open can result in the transparent `NotificationTrampolineActivity` to remain at the top of the application back-stack and appear to hang the application. It is advised to update to version 13.1.2 of the SDK instead of this version.
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v13.1.0)
 

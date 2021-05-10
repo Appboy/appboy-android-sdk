@@ -10,33 +10,33 @@ import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.MessageButton;
-import com.appboy.support.AppboyFileUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
-import com.appboy.support.WebContentUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.ActionFactory;
 import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageCloser;
+import com.braze.support.BrazeFileUtils;
+import com.braze.support.BrazeLogger;
+import com.braze.support.WebContentUtils;
 
 import java.io.File;
 
 public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageViewLifecycleListener {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageViewLifecycleListener.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageViewLifecycleListener.class);
 
   @Override
   public void beforeOpened(View inAppMessageView, IInAppMessage inAppMessage) {
     // Note that the client method must be called before any default processing below
     getInAppMessageManager().getInAppMessageManagerListener().beforeInAppMessageViewOpened(inAppMessageView, inAppMessage);
-    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.beforeOpened called.");
+    BrazeLogger.d(TAG, "IInAppMessageViewLifecycleListener.beforeOpened called.");
     inAppMessage.logImpression();
   }
 
   @Override
   public void afterOpened(View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.afterOpened called.");
+    BrazeLogger.d(TAG, "IInAppMessageViewLifecycleListener.afterOpened called.");
 
     // Note that the client method must be called after any default processing above
     getInAppMessageManager().getInAppMessageManagerListener().afterInAppMessageViewOpened(inAppMessageView, inAppMessage);
@@ -46,12 +46,12 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
   public void beforeClosed(View inAppMessageView, IInAppMessage inAppMessage) {
     // Note that the client method must be called before any default processing below
     getInAppMessageManager().getInAppMessageManagerListener().beforeInAppMessageViewClosed(inAppMessageView, inAppMessage);
-    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.beforeClosed called.");
+    BrazeLogger.d(TAG, "IInAppMessageViewLifecycleListener.beforeClosed called.");
   }
 
   @Override
   public void afterClosed(IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.afterClosed called.");
+    BrazeLogger.d(TAG, "IInAppMessageViewLifecycleListener.afterClosed called.");
     getInAppMessageManager().resetAfterInAppMessageClose();
     if (inAppMessage instanceof IInAppMessageHtml) {
       startClearHtmlInAppMessageAssetsThread();
@@ -64,7 +64,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
 
   @Override
   public void onClicked(InAppMessageCloser inAppMessageCloser, View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.onClicked called.");
+    BrazeLogger.d(TAG, "IInAppMessageViewLifecycleListener.onClicked called.");
     inAppMessage.logClick();
 
     // Perform the in-app message clicked listener action from the host application first. This give
@@ -84,7 +84,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
 
   @Override
   public void onButtonClicked(InAppMessageCloser inAppMessageCloser, MessageButton messageButton, IInAppMessageImmersive inAppMessageImmersive) {
-    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.onButtonClicked called.");
+    BrazeLogger.d(TAG, "IInAppMessageViewLifecycleListener.onButtonClicked called.");
     inAppMessageImmersive.logButtonClick(messageButton);
 
     boolean handled = getInAppMessageManager().getInAppMessageManagerListener().onInAppMessageButtonClicked(inAppMessageImmersive, messageButton, inAppMessageCloser);
@@ -97,7 +97,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
 
   @Override
   public void onDismissed(View inAppMessageView, IInAppMessage inAppMessage) {
-    AppboyLogger.d(TAG, "IInAppMessageViewLifecycleListener.onDismissed called.");
+    BrazeLogger.d(TAG, "IInAppMessageViewLifecycleListener.onDismissed called.");
     getInAppMessageManager().getInAppMessageManagerListener().onInAppMessageDismissed(inAppMessage);
   }
 
@@ -111,7 +111,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
 
   private void performClickAction(ClickAction clickAction, IInAppMessage inAppMessage, InAppMessageCloser inAppMessageCloser, Uri clickUri, boolean openUriInWebview) {
     if (getInAppMessageManager().getActivity() == null) {
-      AppboyLogger.w(TAG, "Can't perform click action because the cached activity is null.");
+      BrazeLogger.w(TAG, "Can't perform click action because the cached activity is null.");
       return;
     }
     switch (clickAction) {
@@ -145,7 +145,7 @@ public class AppboyInAppMessageViewLifecycleListener implements IInAppMessageVie
       Activity inAppMessageActivity = AppboyInAppMessageManager.getInstance().getActivity();
       if (inAppMessageActivity != null) {
         File internalStorageCacheDirectory = WebContentUtils.getHtmlInAppMessageAssetCacheDirectory(inAppMessageActivity);
-        AppboyFileUtils.deleteFileOrDirectory(internalStorageCacheDirectory);
+        BrazeFileUtils.deleteFileOrDirectory(internalStorageCacheDirectory);
       }
     }).start();
   }

@@ -1,69 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+  <TableLayout
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <TableLayout
-        android:layout_width="wrap_content"
+    android:paddingLeft="4.0dp"
+    android:paddingRight="4.0dp"
+    android:stretchColumns="*">
+    <TableRow
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <Button
+        android:id="@+id/purchase_qty_button"
+        style="@style/BaseWidget.PopulateButton"
+        android:text="@string/custom_logging_custom_purchase_qty" />
+      <EditText
+        android:id="@+id/purchase_qty"
+        style="@style/BaseWidget.UserEmailAddress"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="4.0dp"
-        android:paddingRight="4.0dp"
-        android:stretchColumns="*">
-
-        <include layout="@layout/custom_name"/>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/purchase_qty_button"
-                style="@style/BaseWidget.PopulateButton"
-                android:text="@string/custom_logging_custom_purchase_qty"/>
-            <EditText
-                android:id="@+id/purchase_qty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_span="4"
-                android:inputType="number"
-                style="@style/BaseWidget.UserEmailAddress"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/custom_purchase_currency_code_button"
-                style="@style/BaseWidget.PopulateButton"
-                android:text="@string/custom_logging_custom_purchase_currency_code"/>
-            <EditText
-                android:id="@+id/custom_purchase_currency_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_span="4"
-                style="@style/BaseWidget.UserEmailAddress"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/custom_purchase_price_button"
-                style="@style/BaseWidget.PopulateButton"
-                android:text="@string/custom_logging_custom_purchase_price_code"/>
-            <EditText
-                android:id="@+id/custom_purchase_price_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_span="4"
-                android:inputType="numberDecimal|numberSigned"
-                style="@style/BaseWidget.UserEmailAddress"/>
-        </TableRow>
-
-        <include layout="@layout/custom_properties"/>
-    </TableLayout>
+        android:layout_span="4"
+        android:inputType="number" />
+    </TableRow>
+    <TableRow
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <Button
+        android:id="@+id/custom_purchase_currency_code_button"
+        style="@style/BaseWidget.PopulateButton"
+        android:text="@string/custom_logging_custom_purchase_currency_code" />
+      <EditText
+        android:id="@+id/custom_purchase_currency_code"
+        style="@style/BaseWidget.UserEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_span="4" />
+    </TableRow>
+    <TableRow
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <Button
+        android:id="@+id/custom_purchase_price_button"
+        style="@style/BaseWidget.PopulateButton"
+        android:text="@string/custom_logging_custom_purchase_price_code" />
+      <EditText
+        android:id="@+id/custom_purchase_price_code"
+        style="@style/BaseWidget.UserEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_span="4"
+        android:inputType="numberDecimal|numberSigned" />
+    </TableRow>
+    <include layout="@layout/custom_name" />
+    <include layout="@layout/custom_properties" />
+  </TableLayout>
+  <include layout="@layout/dialog_footer_navigation" />
 </LinearLayout>

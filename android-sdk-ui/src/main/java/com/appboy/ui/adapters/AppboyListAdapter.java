@@ -12,13 +12,13 @@ import com.appboy.models.cards.CaptionedImageCard;
 import com.appboy.models.cards.Card;
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.models.cards.TextAnnouncementCard;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.appboy.ui.widget.BannerImageCardView;
 import com.appboy.ui.widget.CaptionedImageCardView;
 import com.appboy.ui.widget.DefaultCardView;
 import com.appboy.ui.widget.ShortNewsCardView;
 import com.appboy.ui.widget.TextAnnouncementCardView;
+import com.braze.support.BrazeLogger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +45,7 @@ import java.util.Set;
  * {@link com.appboy.ui.adapters.AppboyListAdapter#replaceFeed(java.util.List)}
  */
 public class AppboyListAdapter extends ArrayAdapter<Card> {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyListAdapter.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyListAdapter.class);
 
   private final Context mContext;
   private final Set<String> mCardIdImpressions;
@@ -104,11 +104,11 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
         view = new DefaultCardView(mContext);
       }
     } else {
-      AppboyLogger.v(TAG, "Reusing convertView for rendering of item " + position);
+      BrazeLogger.v(TAG, "Reusing convertView for rendering of item " + position);
       view = (BaseFeedCardView) convertView;
     }
 
-    AppboyLogger.v(TAG, "Using view of type: " + view.getClass().getName() + " for card at position " + position + ": " + card.toString());
+    BrazeLogger.v(TAG, "Using view of type: " + view.getClass().getName() + " for card at position " + position + ": " + card.toString());
     view.setCard(card);
     logCardImpression(card);
     return view;
@@ -124,7 +124,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       return;
     }
 
-    AppboyLogger.d(TAG, "Replacing existing feed of " + getCount() + " cards with new feed containing " + cards.size() + " cards.");
+    BrazeLogger.d(TAG, "Replacing existing feed of " + getCount() + " cards with new feed containing " + cards.size() + " cards.");
     int i = 0;
     int j = 0;
     int newFeedSize = cards.size();
@@ -174,9 +174,9 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
     if (!mCardIdImpressions.contains(cardId)) {
       mCardIdImpressions.add(cardId);
       card.logImpression();
-      AppboyLogger.v(TAG, "Logged impression for card " + cardId);
+      BrazeLogger.v(TAG, "Logged impression for card " + cardId);
     } else {
-      AppboyLogger.v(TAG, "Already counted impression for card " + cardId);
+      BrazeLogger.v(TAG, "Already counted impression for card " + cardId);
     }
     if (!card.getViewed()) {
       card.setViewed(true);
@@ -194,7 +194,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
    */
   public void batchSetCardsToRead(int startIndex, int endIndex) {
     if (getCount() == 0) {
-      AppboyLogger.d(TAG, "mAdapter is empty in setting some cards to viewed.");
+      BrazeLogger.d(TAG, "mAdapter is empty in setting some cards to viewed.");
       return;
     }
 
@@ -206,7 +206,7 @@ public class AppboyListAdapter extends ArrayAdapter<Card> {
       // Get the card
       Card card = getItem(traversalIndex);
       if (card == null) {
-        AppboyLogger.d(TAG, "Card was null in setting some cards to viewed.");
+        BrazeLogger.d(TAG, "Card was null in setting some cards to viewed.");
         break;
       }
 

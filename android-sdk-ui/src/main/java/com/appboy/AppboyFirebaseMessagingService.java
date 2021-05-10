@@ -6,32 +6,33 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.appboy.configuration.AppboyConfigurationProvider;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
 public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyFirebaseMessagingService.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyFirebaseMessagingService.class);
 
   @Override
   public void onNewToken(@NonNull String newToken) {
     super.onNewToken(newToken);
-    if (StringUtils.isNullOrEmpty(Appboy.getConfiguredApiKey(this))) {
-      AppboyLogger.v(TAG, "No configured API key, not registering token in onNewToken. Token: " + newToken);
+    if (StringUtils.isNullOrEmpty(Braze.getConfiguredApiKey(this))) {
+      BrazeLogger.v(TAG, "No configured API key, not registering token in onNewToken. Token: " + newToken);
       return;
     }
-    AppboyConfigurationProvider configurationProvider = new AppboyConfigurationProvider(this);
+    BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(this);
     if (!configurationProvider.getIsFirebaseMessagingServiceOnNewTokenRegistrationEnabled()) {
-      AppboyLogger.v(TAG, "Automatic FirebaseMessagingService.OnNewToken() registration"
+      BrazeLogger.v(TAG, "Automatic FirebaseMessagingService.OnNewToken() registration"
           + " disabled, not registering token: " + newToken);
       return;
     }
-    AppboyLogger.v(TAG, "Registering Firebase push token in onNewToken. Token: " + newToken);
-    Appboy.getInstance(this).registerAppboyPushMessages(newToken);
+    BrazeLogger.v(TAG, "Registering Firebase push token in onNewToken. Token: " + newToken);
+    Braze.getInstance(this).registerAppboyPushMessages(newToken);
   }
 
   @Override
@@ -50,17 +51,17 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
    */
   public static boolean handleBrazeRemoteMessage(Context context, RemoteMessage remoteMessage) {
     if (remoteMessage == null) {
-      AppboyLogger.w(TAG, "Remote message from FCM was null. Remote message did not originate from Braze.");
+      BrazeLogger.w(TAG, "Remote message from FCM was null. Remote message did not originate from Braze.");
       return false;
     }
 
     if (!isBrazePushNotification(remoteMessage)) {
-      AppboyLogger.i(TAG, "Remote message did not originate from Braze. Not consuming remote message: " + remoteMessage);
+      BrazeLogger.i(TAG, "Remote message did not originate from Braze. Not consuming remote message: " + remoteMessage);
       return false;
     }
 
     Map<String, String> remoteMessageData = remoteMessage.getData();
-    AppboyLogger.i(TAG, "Got remote message from FCM: " + remoteMessageData);
+    BrazeLogger.i(TAG, "Got remote message from FCM: " + remoteMessageData);
 
     Intent pushIntent = new Intent(BrazePushReceiver.FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION);
     Bundle bundle = new Bundle();
@@ -68,7 +69,7 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
       String key = entry.getKey();
       String value = entry.getValue();
 
-      AppboyLogger.v(TAG, "Adding bundle item from FCM remote data with key: " + key + " and value: " + value);
+      BrazeLogger.v(TAG, "Adding bundle item from FCM remote data with key: " + key + " and value: " + value);
       bundle.putString(key, value);
     }
     pushIntent.putExtras(bundle);
@@ -87,7 +88,7 @@ public class AppboyFirebaseMessagingService extends FirebaseMessagingService {
   public static boolean isBrazePushNotification(@NonNull RemoteMessage remoteMessage) {
     Map<String, String> remoteMessageData = remoteMessage.getData();
     if (remoteMessageData == null) {
-      AppboyLogger.w(TAG, "Remote message data from FCM was null. Returning false for Braze push check. Remote message: " + remoteMessage);
+      BrazeLogger.w(TAG, "Remote message data from FCM was null. Returning false for Braze push check. Remote message: " + remoteMessage);
       return false;
     }
 

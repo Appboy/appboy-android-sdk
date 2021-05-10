@@ -1,22 +1,24 @@
 package com.appboy.sample.logging;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.appboy.Appboy;
-import com.appboy.AppboyUser;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.appboy.sample.R;
+import com.appboy.sample.dialog.CustomDialogBase;
 import com.appboy.sample.util.ButtonUtils;
 import com.appboy.support.StringUtils;
+import com.braze.Braze;
+import com.braze.BrazeUser;
 
-public class CustomUserAttributeDialog extends DialogPreference {
+public class CustomUserAttributeDialog extends CustomDialogBase {
   private static final String EMPTY_STRING = "";
   private static final String DEFAULT_NUMBER_VALUE = "5";
   private EditText mCustomAttributeKey;
@@ -30,22 +32,16 @@ public class CustomUserAttributeDialog extends DialogPreference {
   private EditText mCustomAttributeArrayValue;
   private RadioGroup mCustomAttributeArrayChoices;
 
-  public CustomUserAttributeDialog(Context context, AttributeSet attributeSet) {
-    super(context, attributeSet);
-    setDialogLayoutResource(R.layout.custom_attribute);
-    setPersistent(false);
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.custom_attribute, container, false);
   }
 
   @Override
-  protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-    super.onPrepareDialogBuilder(builder);
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
-    builder.setNeutralButton(R.string.user_dialog_cancel, this);
-  }
-
-  @Override
-  protected View onCreateDialogView() {
-    View view = super.onCreateDialogView();
     mCustomAttributeKey = view.findViewById(R.id.custom_attribute_key);
     mCustomAttributeValue = view.findViewById(R.id.custom_attribute_value);
     mCustomAttributeNumberKey = view.findViewById(R.id.custom_number_attribute_key);
@@ -64,29 +60,10 @@ public class CustomUserAttributeDialog extends DialogPreference {
     ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_increment_button, mCustomAttributeIncrementKey, "height", mCustomAttributeIncrementValue, "10");
     ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_unset_button, mCustomAttributeUnsetKey, "color");
     ButtonUtils.setUpPopulateButton(view, R.id.custom_attribute_array_button, mCustomAttributeArrayKey, "toys", mCustomAttributeArrayValue, "doll");
-
-    return view;
   }
 
   @Override
-  public void onClick(DialogInterface dialog, int which) {
-    super.onClick(dialog, which);
-
-    switch (which) {
-      case DialogInterface.BUTTON_NEGATIVE:
-        onDialogCloseButtonClicked(true);
-        break;
-      case DialogInterface.BUTTON_POSITIVE:
-        onDialogCloseButtonClicked(false);
-        break;
-      case DialogInterface.BUTTON_NEUTRAL:
-      default:
-        dialog.dismiss();
-        break;
-    }
-  }
-
-  private void onDialogCloseButtonClicked(boolean isImmediateFlushRequired) {
+  public void onExitButtonPressed(boolean isImmediateFlushRequired) {
     String customAttributeKeyName = mCustomAttributeKey.getText().toString();
     String customAttributeValueName = mCustomAttributeValue.getText().toString();
     String customNumberAttributeKeyName = mCustomAttributeNumberKey.getText().toString();
@@ -103,8 +80,8 @@ public class CustomUserAttributeDialog extends DialogPreference {
       if (StringUtils.isNullOrBlank(customAttributeValueName)) {
         customAttributeValueName = EMPTY_STRING;
       }
-      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
-      notifyResult(appboyUser.setCustomUserAttribute(customAttributeKeyName, customAttributeValueName),
+      BrazeUser brazeUser = Braze.getInstance(getContext()).getCurrentUser();
+      notifyResult(brazeUser.setCustomUserAttribute(customAttributeKeyName, customAttributeValueName),
           "set user attribute! key=" + customAttributeKeyName + ", value=" + customAttributeValueName);
     }
     if (!StringUtils.isNullOrBlank(customNumberAttributeKeyName)) {
@@ -114,42 +91,42 @@ public class CustomUserAttributeDialog extends DialogPreference {
       // Convert the value into an integer
       int numberValue = stringToInteger(customNumberAttributeValueName);
 
-      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
-      notifyResult(appboyUser.setCustomUserAttribute(customNumberAttributeKeyName, numberValue),
+      BrazeUser brazeUser = Braze.getInstance(getContext()).getCurrentUser();
+      notifyResult(brazeUser.setCustomUserAttribute(customNumberAttributeKeyName, numberValue),
           "set user number attribute! key=" + customAttributeKeyName + ", value=" + numberValue);
     }
     if (!StringUtils.isNullOrBlank(customAttributeIncrementKeyName)) {
-      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
+      BrazeUser brazeUser = Braze.getInstance(getContext()).getCurrentUser();
       if (!StringUtils.isNullOrBlank(customAttributeIncrementValueName)) {
         int incrementValue = Integer.parseInt(customAttributeIncrementValueName);
-        notifyResult(appboyUser.incrementCustomUserAttribute(customAttributeIncrementKeyName, incrementValue),
+        notifyResult(brazeUser.incrementCustomUserAttribute(customAttributeIncrementKeyName, incrementValue),
             "Increment user attribute! key=" + customAttributeIncrementKeyName + ", value=" + customAttributeIncrementValueName);
       } else {
-        notifyResult(appboyUser.incrementCustomUserAttribute(customAttributeIncrementKeyName),
+        notifyResult(brazeUser.incrementCustomUserAttribute(customAttributeIncrementKeyName),
             "Increment user attribute! key=" + customAttributeIncrementKeyName + ", value=1");
       }
     }
     if (!StringUtils.isNullOrBlank(customAttributeUnsetKeyName)) {
-      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
-      notifyResult(appboyUser.unsetCustomUserAttribute(customAttributeUnsetKeyName), "Unset user attribute! key=" + customAttributeUnsetKeyName);
+      BrazeUser brazeUser = Braze.getInstance(getContext()).getCurrentUser();
+      notifyResult(brazeUser.unsetCustomUserAttribute(customAttributeUnsetKeyName), "Unset user attribute! key=" + customAttributeUnsetKeyName);
     }
     if (!StringUtils.isNullOrBlank(customAttributeArrayKey)) {
       if (StringUtils.isNullOrBlank(customAttributeArrayValue)) {
         customAttributeArrayValue = EMPTY_STRING;
       }
-      AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
+      BrazeUser brazeUser = Braze.getInstance(getContext()).getCurrentUser();
       switch (attributeArrayResourceId) {
         case R.id.custom_attribute_array_set:
           String[] attributeArray = {customAttributeArrayValue};
-          notifyResult(appboyUser.setCustomAttributeArray(customAttributeArrayKey, attributeArray),
+          notifyResult(brazeUser.setCustomAttributeArray(customAttributeArrayKey, attributeArray),
               "setCustomAttributeArray! Setting new array key=" + customAttributeArrayKey + ", values={" + customAttributeArrayValue + "}");
           break;
         case R.id.custom_attribute_array_add:
-          notifyResult(appboyUser.addToCustomAttributeArray(customAttributeArrayKey, customAttributeArrayValue),
+          notifyResult(brazeUser.addToCustomAttributeArray(customAttributeArrayKey, customAttributeArrayValue),
               "addToCustomAttributeArray! Adding value=" + customAttributeArrayValue + " to array with key=" + customAttributeArrayKey + ".");
           break;
         case R.id.custom_attribute_array_remove:
-          notifyResult(appboyUser.removeFromCustomAttributeArray(customAttributeArrayKey, customAttributeArrayValue),
+          notifyResult(brazeUser.removeFromCustomAttributeArray(customAttributeArrayKey, customAttributeArrayValue),
               "removeFromCustomAttributeArray! Will remove value=" + customAttributeArrayValue + " from array with key=" + customAttributeArrayKey + ".");
           break;
         default:
@@ -161,8 +138,9 @@ public class CustomUserAttributeDialog extends DialogPreference {
     // Braze automatically flushes data to its servers periodically. This call
     // is solely for testing purposes.
     if (isImmediateFlushRequired) {
-      Appboy.getInstance(getContext()).requestImmediateDataFlush();
+      Braze.getInstance(getContext()).requestImmediateDataFlush();
     }
+    this.dismiss();
   }
 
   private void notifyResult(boolean result, String input) {

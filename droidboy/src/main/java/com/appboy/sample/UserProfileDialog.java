@@ -1,31 +1,34 @@
 package com.appboy.sample;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.appboy.Appboy;
-import com.appboy.AppboyUser;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
+import com.appboy.sample.dialog.CustomDialogBase;
 import com.appboy.sample.util.ButtonUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
+import com.braze.Braze;
+import com.braze.BrazeUser;
+import com.braze.support.BrazeLogger;
 
 import java.util.Calendar;
 
-public class UserProfileDialog extends DialogPreference implements View.OnClickListener {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(UserProfileDialog.class);
+public class UserProfileDialog extends CustomDialogBase implements View.OnClickListener {
+  private static final String TAG = BrazeLogger.getBrazeLogTag(UserProfileDialog.class);
   private static final int GENDER_UNSPECIFIED_INDEX = 0;
   private static final int GENDER_MALE_INDEX = 1;
   private static final int GENDER_FEMALE_INDEX = 2;
@@ -66,28 +69,10 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   private int mBirthDay;
   private boolean isBirthdaySet = false;
 
-  public UserProfileDialog(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    setDialogLayoutResource(R.layout.user_preferences);
-    setPersistent(false);
-  }
-
-  public UserProfileDialog(Context context, AttributeSet attrs, int defStyle) {
-    super(context, attrs, defStyle);
-    setDialogLayoutResource(R.layout.user_preferences);
-    setPersistent(false);
-  }
-
+  @Nullable
   @Override
-  protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-    super.onPrepareDialogBuilder(builder);
-
-    builder.setNeutralButton(R.string.user_dialog_cancel, this);
-  }
-
-  @Override
-  public View onCreateDialogView() {
-    View view = super.onCreateDialogView();
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    final View view = inflater.inflate(R.layout.user_preferences, container, false);
     mFirstName = view.findViewById(R.id.first_name);
     mLastName = view.findViewById(R.id.last_name);
     mEmail = view.findViewById(R.id.email);
@@ -99,8 +84,8 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
   }
 
   @Override
-  protected void onBindDialogView(View view) {
-    super.onBindDialogView(view);
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
     SharedPreferences sharedPreferences = getSharedPreferences();
     mFirstName.setText(sharedPreferences.getString(FIRST_NAME_PREFERENCE_KEY, null));
@@ -151,24 +136,6 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     }
   }
 
-  @Override
-  public void onClick(DialogInterface dialog, int which) {
-    super.onClick(dialog, which);
-
-    switch (which) {
-      case DialogInterface.BUTTON_NEGATIVE:
-        onDialogCloseButtonClicked(true);
-        break;
-      case DialogInterface.BUTTON_POSITIVE:
-        onDialogCloseButtonClicked(false);
-        break;
-      case DialogInterface.BUTTON_NEUTRAL:
-      default:
-        dialog.dismiss();
-        break;
-    }
-  }
-
   private void clear() {
     mFirstName.getText().clear();
     mLastName.getText().clear();
@@ -204,7 +171,8 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     }
   }
 
-  private void onDialogCloseButtonClicked(boolean isImmediateFlushRequired) {
+  @Override
+  public void onExitButtonPressed(boolean isPositive) {
     String firstName = mFirstName.getText().toString();
     String lastName = mLastName.getText().toString();
     String email = mEmail.getText().toString();
@@ -214,59 +182,59 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     String language = mLanguage.getText().toString();
     String avatarImageUrl = mAvatarImageUrl.getText().toString();
 
-    AppboyUser appboyUser = Appboy.getInstance(getContext()).getCurrentUser();
-    SharedPreferences.Editor editor = getEditor();
+    BrazeUser brazeUser = Braze.getInstance(getContext()).getCurrentUser();
+    SharedPreferences.Editor editor = getSharedPreferences().edit();
     if (!StringUtils.isNullOrBlank(firstName)) {
-      appboyUser.setFirstName(firstName);
+      brazeUser.setFirstName(firstName);
       editor.putString(FIRST_NAME_PREFERENCE_KEY, firstName);
     }
     if (!StringUtils.isNullOrBlank(lastName)) {
-      appboyUser.setLastName(lastName);
+      brazeUser.setLastName(lastName);
       editor.putString(LAST_NAME_PREFERENCE_KEY, lastName);
     }
     if (!StringUtils.isNullOrBlank(language)) {
-      appboyUser.setLanguage(language);
+      brazeUser.setLanguage(language);
       editor.putString(LANGUAGE_PREFERENCE_KEY, language);
     }
     if (!StringUtils.isNullOrBlank(email)) {
       editor.putString(EMAIL_PREFERENCE_KEY, email);
-      appboyUser.setEmail(email);
+      brazeUser.setEmail(email);
     }
     if (!StringUtils.isNullOrBlank(avatarImageUrl)) {
       editor.putString(AVATAR_PREFERENCE_KEY, avatarImageUrl);
-      appboyUser.setAvatarImageUrl(avatarImageUrl);
+      brazeUser.setAvatarImageUrl(avatarImageUrl);
     }
     if (isBirthdaySet) {
       editor.putString(BIRTHDAY_PREFERENCE_KEY, getBirthday());
-      appboyUser.setDateOfBirth(mBirthYear, Month.getMonth(mBirthMonth), mBirthDay);
+      brazeUser.setDateOfBirth(mBirthYear, Month.getMonth(mBirthMonth), mBirthDay);
     }
 
     switch (genderId) {
       case GENDER_UNSPECIFIED_INDEX:
-        appboyUser.setGender(null);
+        brazeUser.setGender(null);
         break;
       case GENDER_MALE_INDEX:
-        appboyUser.setGender(Gender.MALE);
+        brazeUser.setGender(Gender.MALE);
         editor.putInt(GENDER_PREFERENCE_KEY, genderId);
         break;
       case GENDER_FEMALE_INDEX:
-        appboyUser.setGender(Gender.FEMALE);
+        brazeUser.setGender(Gender.FEMALE);
         editor.putInt(GENDER_PREFERENCE_KEY, genderId);
         break;
       case GENDER_OTHER_INDEX:
-        appboyUser.setGender(Gender.OTHER);
+        brazeUser.setGender(Gender.OTHER);
         editor.putInt(GENDER_PREFERENCE_KEY, genderId);
         break;
       case GENDER_UNKNOWN_INDEX:
-        appboyUser.setGender(Gender.UNKNOWN);
+        brazeUser.setGender(Gender.UNKNOWN);
         editor.putInt(GENDER_PREFERENCE_KEY, genderId);
         break;
       case GENDER_NOT_APPLICABLE_INDEX:
-        appboyUser.setGender(Gender.NOT_APPLICABLE);
+        brazeUser.setGender(Gender.NOT_APPLICABLE);
         editor.putInt(GENDER_PREFERENCE_KEY, genderId);
         break;
       case GENDER_PREFER_NOT_TO_SAY_INDEX:
-        appboyUser.setGender(Gender.PREFER_NOT_TO_SAY);
+        brazeUser.setGender(Gender.PREFER_NOT_TO_SAY);
         editor.putInt(GENDER_PREFERENCE_KEY, genderId);
         break;
       default:
@@ -277,9 +245,10 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
     // Flushing manually is not recommended in almost all production situations as
     // Braze automatically flushes data to its servers periodically. This call
     // is solely for testing purposes.
-    if (isImmediateFlushRequired) {
-      Appboy.getInstance(getContext()).requestImmediateDataFlush();
+    if (isPositive) {
+      Braze.getInstance(getContext()).requestImmediateDataFlush();
     }
+    this.dismiss();
   }
 
   private String getBirthday() {
@@ -306,5 +275,9 @@ public class UserProfileDialog extends DialogPreference implements View.OnClickL
         Log.w(TAG, "Error parsing gender from shared preferences.");
         return R.id.unspecified;
     }
+  }
+
+  private SharedPreferences getSharedPreferences() {
+    return this.getContext().getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE);
   }
 }

@@ -5,14 +5,11 @@ import android.os.Bundle;
 
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.Appboy;
 import com.appboy.enums.Channel;
 import com.appboy.enums.inappmessage.MessageType;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageHtml;
 import com.appboy.models.outgoing.AppboyProperties;
-import com.appboy.support.AppboyFileUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.BundleUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
@@ -21,14 +18,17 @@ import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.InAppMessageWebViewClient;
+import com.braze.Braze;
+import com.braze.support.BrazeFileUtils;
+import com.braze.support.BrazeLogger;
 
 public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWebViewClientListener {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyInAppMessageWebViewClientListener.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyInAppMessageWebViewClientListener.class);
   private static final String HTML_IN_APP_MESSAGE_CUSTOM_EVENT_NAME_KEY = "name";
 
   @Override
   public void onCloseAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-    AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onCloseAction called.");
+    BrazeLogger.d(TAG, "IInAppMessageWebViewClientListener.onCloseAction called.");
 
     logHtmlInAppMessageClick(inAppMessage, queryBundle);
 
@@ -39,9 +39,9 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
   @Override
   public void onNewsfeedAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-    AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onNewsfeedAction called.");
+    BrazeLogger.d(TAG, "IInAppMessageWebViewClientListener.onNewsfeedAction called.");
     if (getInAppMessageManager().getActivity() == null) {
-      AppboyLogger.w(TAG, "Can't perform news feed action because the cached activity is null.");
+      BrazeLogger.w(TAG, "Can't perform news feed action because the cached activity is null.");
       return;
     }
     // Log a click since the user left to the newsfeed
@@ -60,9 +60,9 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
   @Override
   public void onCustomEventAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-    AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onCustomEventAction called.");
+    BrazeLogger.d(TAG, "IInAppMessageWebViewClientListener.onCustomEventAction called.");
     if (getInAppMessageManager().getActivity() == null) {
-      AppboyLogger.w(TAG, "Can't perform custom event action because the activity is null.");
+      BrazeLogger.w(TAG, "Can't perform custom event action because the activity is null.");
       return;
     }
 
@@ -73,15 +73,15 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
         return;
       }
       AppboyProperties customEventProperties = parsePropertiesFromQueryBundle(queryBundle);
-      Appboy.getInstance(getInAppMessageManager().getActivity()).logCustomEvent(customEventName, customEventProperties);
+      Braze.getInstance(getInAppMessageManager().getActivity()).logCustomEvent(customEventName, customEventProperties);
     }
   }
 
   @Override
   public void onOtherUrlAction(IInAppMessage inAppMessage, String url, Bundle queryBundle) {
-    AppboyLogger.d(TAG, "IInAppMessageWebViewClientListener.onOtherUrlAction called.");
+    BrazeLogger.d(TAG, "IInAppMessageWebViewClientListener.onOtherUrlAction called.");
     if (getInAppMessageManager().getActivity() == null) {
-      AppboyLogger.w(TAG, "Can't perform other url action because the cached activity is null. Url: " + url);
+      BrazeLogger.w(TAG, "Can't perform other url action because the cached activity is null. Url: " + url);
       return;
     }
     // Log a click since the uri link was followed
@@ -89,7 +89,7 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
 
     boolean handled = getInAppMessageManager().getHtmlInAppMessageActionListener().onOtherUrlAction(inAppMessage, url, queryBundle);
     if (handled) {
-      AppboyLogger.v(TAG, "HTML message action listener handled url in onOtherUrlAction. Doing nothing further. Url: " + url);
+      BrazeLogger.v(TAG, "HTML message action listener handled url in onOtherUrlAction. Doing nothing further. Url: " + url);
       return;
     }
 
@@ -100,14 +100,14 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
     UriAction uriAction = ActionFactory.createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
 
     if (uriAction == null) {
-      AppboyLogger.w(TAG, "UriAction is null. Not passing any URI to AppboyNavigator. Url: " + url);
+      BrazeLogger.w(TAG, "UriAction is null. Not passing any URI to AppboyNavigator. Url: " + url);
       return;
     }
 
     // If a local Uri is being handled here, then we want to keep the user in the Html in-app message and not hide the current in-app message.
     Uri uri = uriAction.getUri();
-    if (AppboyFileUtils.isLocalUri(uri)) {
-      AppboyLogger.w(TAG, "Not passing local uri to AppboyNavigator. Got local uri: " + uri + " for url: " + url);
+    if (BrazeFileUtils.isLocalUri(uri)) {
+      BrazeLogger.w(TAG, "Not passing local uri to AppboyNavigator. Got local uri: " + uri + " for url: " + url);
       return;
     }
 
@@ -115,7 +115,7 @@ public class AppboyInAppMessageWebViewClientListener implements IInAppMessageWeb
     inAppMessage.setAnimateOut(false);
     // Dismiss the in-app message since we're handling the URI outside of the in-app message webView
     getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-    AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getApplicationContext(), uriAction);
+    AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getActivity(), uriAction);
   }
 
   @VisibleForTesting

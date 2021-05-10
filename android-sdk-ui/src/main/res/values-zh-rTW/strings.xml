@@ -4,4 +4,5 @@
   <string name="com_appboy_feed_empty">暫時沒有更新。\n請稍候再試。</string>
   <string name="com_appboy_feed_connection_error_title">連線錯誤</string>
   <string name="com_appboy_feed_connection_error_body">無法建立網路連線。\n請稍候再試。</string>
+  <string name="com_appboy_inappmessage_close_content_description">接近</string>
 </resources>

@@ -2,40 +2,43 @@ package com.appboy.sample;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.appboy.sample.dialog.CustomDialogBase;
 import com.appboy.sample.util.LifecycleUtils;
 
 import java.util.Map;
 
-public class SetEnvironmentPreference extends DialogPreference implements DialogInterface.OnDismissListener {
+public class SetEnvironmentPreference extends CustomDialogBase {
   private static final String OVERRIDE_API_KEY_ALIAS_PREF_KEY = "override_api_key_alias";
 
   private TextView mApiKeyAliasTextView;
   private TextView mApiKeyTextView;
   private TextView mEndpointTextView;
-  private final Context mApplicationContext;
+  private Context mApplicationContext;
   private SharedPreferences mSharedPreferences;
   private SharedPreferences mApiKeySharedPreferences;
 
-  public SetEnvironmentPreference(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    mApplicationContext = context.getApplicationContext();
-    setDialogLayoutResource(R.layout.set_environment_preference);
-    setPersistent(false);
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    mApplicationContext = getContext().getApplicationContext();
+    return inflater.inflate(R.layout.set_environment_preference, container, false);
   }
 
   @Override
-  protected View onCreateDialogView() {
-    View view = super.onCreateDialogView();
-
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
     mSharedPreferences = mApplicationContext.getSharedPreferences(mApplicationContext.getString(R.string.shared_prefs_location), Context.MODE_PRIVATE);
     String overrideApiKeyAlias = mSharedPreferences.getString(OVERRIDE_API_KEY_ALIAS_PREF_KEY, null);
     String overrideApiKey = mSharedPreferences.getString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, null);
@@ -69,8 +72,6 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
       final String apiKey = mApiKeySharedPreferences.getString(alias, null);
       storedApiKeyLinearLayout.addView(getApiKeyButton(alias, apiKey));
     }
-
-    return view;
   }
 
   private Button getApiKeyButton(final String alias, final String apiKey) {
@@ -87,8 +88,7 @@ public class SetEnvironmentPreference extends DialogPreference implements Dialog
 
   @Override
   @SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
-  protected void onDialogClosed(boolean clickedPositiveButton) {
-    super.onDialogClosed(clickedPositiveButton);
+  public void onExitButtonPressed(boolean clickedPositiveButton) {
     if (clickedPositiveButton) {
       SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
       String apiKeyAlias = mApiKeyAliasTextView.getText().toString();

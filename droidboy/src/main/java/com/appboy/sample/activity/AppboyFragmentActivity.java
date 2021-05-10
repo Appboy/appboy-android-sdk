@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.appboy.support.AppboyLogger;
+import com.braze.support.BrazeLogger;
 
 import io.branch.referral.Branch;
 
@@ -12,11 +12,10 @@ import io.branch.referral.Branch;
  * Braze integration sample
  *
  * To start tracking analytics using the Braze Android SDK, in all activities, you must call Appboy.openSession()
- * and Appboy.closeSession() in the activity's onStart() and onStop() respectively. You can see that in this
- * activity (inherited by most other activities) and com.appboy.sample.activity.SettingsPreferencesActivity.
+ * and Appboy.closeSession() in the activity's onStart() and onStop() respectively.
  */
 public class AppboyFragmentActivity extends AppCompatActivity {
-  protected static final String TAG = AppboyLogger.getBrazeLogTag(AppboyFragmentActivity.class);
+  protected static final String TAG = BrazeLogger.getBrazeLogTag(AppboyFragmentActivity.class);
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

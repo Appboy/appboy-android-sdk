@@ -22,13 +22,13 @@ import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.ListFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.appboy.Appboy;
 import com.appboy.enums.CardCategory;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
 import com.appboy.models.cards.Card;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.adapters.AppboyListAdapter;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +36,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyFeedFragment.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyFeedFragment.class);
   private static final int NETWORK_PROBLEM_WARNING_MS = 5000;
   private static final int MAX_FEED_TTL_SECONDS = 60;
   private static final long AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS = 2500L;
@@ -124,7 +124,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
       mSkipCardImpressionsReset = false;
     } else {
       mAdapter.resetCardImpressionTracker();
-      AppboyLogger.d(TAG, "Resetting card impressions.");
+      BrazeLogger.d(TAG, "Resetting card impressions.");
     }
 
     // Applying top and bottom padding as header and footer views allows for the top and bottom padding to be scrolled
@@ -180,7 +180,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     });
 
     // Remove the previous subscriber before rebuilding a new one with our new activity.
-    Appboy.getInstance(getContext()).removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
+    Braze.getInstance(getContext()).removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
     mFeedUpdatedSubscriber = event -> {
       Activity activity = getActivity();
       // Not strictly necessary, but being defensive in the face of a lot of inconsistent behavior with
@@ -190,7 +190,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
       }
 
       activity.runOnUiThread(() -> {
-        AppboyLogger.v(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
+        BrazeLogger.v(TAG, "Updating feed views in response to FeedUpdatedEvent: " + event);
         // If a FeedUpdatedEvent comes in, we make sure that the network error isn't visible. It could become
         // visible again later if we need to request a new feed and it doesn't return in time, but we display a
         // network spinner while we wait, instead of keeping the network error up.
@@ -211,13 +211,13 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
         // If we got our feed from offline storage, and it was old, we asynchronously request a new one from the server,
         // putting up a spinner if the old feed was empty.
         if (event.isFromOfflineStorage() && (event.lastUpdatedInSecondsFromEpoch() + MAX_FEED_TTL_SECONDS) * 1000 < System.currentTimeMillis()) {
-          AppboyLogger.i(TAG, "Feed received was older than the max time to live of " + MAX_FEED_TTL_SECONDS + " seconds, displaying it "
+          BrazeLogger.i(TAG, "Feed received was older than the max time to live of " + MAX_FEED_TTL_SECONDS + " seconds, displaying it "
               + "for now, but requesting an updated view from the server.");
-          Appboy.getInstance(getContext()).requestFeedRefresh();
+          Braze.getInstance(getContext()).requestFeedRefresh();
           // If we don't have any cards to display, we put up the spinner while we wait for the network to return.
           // Eventually displaying an error message if it doesn't.
           if (event.getCardCount(mCategories) == 0) {
-            AppboyLogger.d(TAG, "Old feed was empty, putting up a network spinner and registering the network "
+            BrazeLogger.d(TAG, "Old feed was empty, putting up a network spinner and registering the network "
                 + "error message with a delay of " + NETWORK_PROBLEM_WARNING_MS + "ms.");
             mEmptyFeedLayout.setVisibility(View.GONE);
             mLoadingSpinner.setVisibility(View.VISIBLE);
@@ -246,12 +246,12 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
         mFeedSwipeLayout.setRefreshing(false);
       });
     };
-    Appboy.getInstance(getContext()).subscribeToFeedUpdates(mFeedUpdatedSubscriber);
+    Braze.getInstance(getContext()).subscribeToFeedUpdates(mFeedUpdatedSubscriber);
 
     // Once the header and footer views are set and our event handlers are ready to go, we set the adapter and hit the
     // cache for an initial feed load.
     listView.setAdapter(mAdapter);
-    Appboy.getInstance(getContext()).requestFeedRefreshFromCache();
+    Braze.getInstance(getContext()).requestFeedRefreshFromCache();
   }
 
   /**
@@ -267,14 +267,14 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
   @Override
   public void onResume() {
     super.onResume();
-    Appboy.getInstance(getContext()).logFeedDisplayed();
+    Braze.getInstance(getContext()).logFeedDisplayed();
   }
 
   @Override
   public void onDestroyView() {
     super.onDestroyView();
     // If the view is destroyed, we don't care about updating it anymore. Remove the subscription immediately.
-    Appboy.getInstance(getContext()).removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
+    Braze.getInstance(getContext()).removeSingleSubscription(mFeedUpdatedSubscriber, FeedUpdatedEvent.class);
     setOnScreenCardsToRead();
   }
 
@@ -386,18 +386,18 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
    */
   public void setCategories(EnumSet<CardCategory> categories) {
     if (categories == null) {
-      AppboyLogger.i(TAG, "The categories passed into setCategories are null, AppboyFeedFragment is going to display all the cards in cache.");
+      BrazeLogger.i(TAG, "The categories passed into setCategories are null, AppboyFeedFragment is going to display all the cards in cache.");
       mCategories = CardCategory.getAllCategories();
     } else if (categories.isEmpty()) {
-      AppboyLogger.w(TAG, "The categories set had no elements and have been ignored. Please pass a valid EnumSet of CardCategory.");
+      BrazeLogger.w(TAG, "The categories set had no elements and have been ignored. Please pass a valid EnumSet of CardCategory.");
       return;
     } else if (categories.equals(mCategories)) {
       return;
     } else {
       mCategories = categories;
     }
-    if (Appboy.getInstance(getContext()) != null) {
-      Appboy.getInstance(getContext()).requestFeedRefreshFromCache();
+    if (Braze.getInstance(getContext()) != null) {
+      Braze.getInstance(getContext()).requestFeedRefreshFromCache();
     }
   }
 
@@ -406,7 +406,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
    */
   @Override
   public void onRefresh() {
-    Appboy.getInstance(getContext()).requestFeedRefresh();
+    Braze.getInstance(getContext()).requestFeedRefresh();
     mMainThreadLooper.postDelayed(() -> mFeedSwipeLayout.setRefreshing(false), AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS);
   }
 

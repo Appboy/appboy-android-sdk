@@ -12,31 +12,33 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.enums.inappmessage.DismissType;
 import com.appboy.enums.inappmessage.SlideFrom;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
 import com.appboy.ui.inappmessage.listeners.SwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.listeners.TouchAwareSwipeDismissTouchListener;
 import com.appboy.ui.inappmessage.views.AppboyInAppMessageHtmlBaseView;
 import com.appboy.ui.support.ViewUtils;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(DefaultInAppMessageViewWrapper.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(DefaultInAppMessageViewWrapper.class);
 
   protected final View mInAppMessageView;
   protected final IInAppMessage mInAppMessage;
   protected final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener;
   protected final Animation mOpeningAnimation;
   protected final Animation mClosingAnimation;
-  protected final AppboyConfigurationProvider mAppboyConfigurationProvider;
+  protected final BrazeConfigurationProvider mConfigurationProvider;
   protected final InAppMessageCloser mInAppMessageCloser;
   protected boolean mIsAnimatingClose;
   protected Runnable mDismissRunnable;
@@ -50,6 +52,12 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
   @Nullable
   protected View mPreviouslyFocusedView = null;
   /**
+   * A mapping of the view accessibility flags of views before overriding them.
+   * Used in conjunction with {@link com.braze.configuration.BrazeConfig.Builder#setIsInAppMessageAccessibilityExclusiveModeEnabled(boolean)}
+   */
+  @NonNull
+  protected Map<Integer, Integer> mViewAccessibilityFlagMap = new HashMap<>();
+  /**
    * The {@link ViewGroup} parent of the in-app message.
    */
   private ViewGroup mContentViewGroupParentLayout;
@@ -61,20 +69,20 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
    * @param inAppMessageView                  In-app message top level view.
    * @param inAppMessage                      In-app message model.
    * @param inAppMessageViewLifecycleListener In-app message lifecycle listener.
-   * @param appboyConfigurationProvider       Configuration provider.
+   * @param configurationProvider       Configuration provider.
    * @param clickableInAppMessageView         View for which click actions apply.
    */
   public DefaultInAppMessageViewWrapper(View inAppMessageView,
                                         IInAppMessage inAppMessage,
                                         IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                        AppboyConfigurationProvider appboyConfigurationProvider,
+                                        BrazeConfigurationProvider configurationProvider,
                                         Animation openingAnimation,
                                         Animation closingAnimation,
                                         View clickableInAppMessageView) {
     mInAppMessageView = inAppMessageView;
     mInAppMessage = inAppMessage;
     mInAppMessageViewLifecycleListener = inAppMessageViewLifecycleListener;
-    mAppboyConfigurationProvider = appboyConfigurationProvider;
+    mConfigurationProvider = configurationProvider;
     mOpeningAnimation = openingAnimation;
     mClosingAnimation = closingAnimation;
     mIsAnimatingClose = false;
@@ -107,7 +115,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
    * @param inAppMessageView                  In-app message top level view.
    * @param inAppMessage                      In-app message model.
    * @param inAppMessageViewLifecycleListener In-app message lifecycle listener.
-   * @param appboyConfigurationProvider       Configuration provider.
+   * @param configurationProvider       Configuration provider.
    * @param buttonViews                       List of views corresponding to MessageButton objects stored in the in-app message model object.
    *                                          These views should map one to one with the MessageButton objects.
    * @param closeButton                       The {@link View} responsible for closing the in-app message.
@@ -115,7 +123,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
   public DefaultInAppMessageViewWrapper(View inAppMessageView,
                                         IInAppMessage inAppMessage,
                                         IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener,
-                                        AppboyConfigurationProvider appboyConfigurationProvider,
+                                        BrazeConfigurationProvider configurationProvider,
                                         Animation openingAnimation,
                                         Animation closingAnimation,
                                         View clickableInAppMessageView,
@@ -124,7 +132,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
     this(inAppMessageView,
         inAppMessage,
         inAppMessageViewLifecycleListener,
-        appboyConfigurationProvider,
+        configurationProvider,
         openingAnimation,
         closingAnimation,
         clickableInAppMessageView);
@@ -146,14 +154,15 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
 
   @Override
   public void open(final @NonNull Activity activity) {
-    AppboyLogger.v(TAG, "Opening in-app message view wrapper");
+    BrazeLogger.v(TAG, "Opening in-app message view wrapper");
     // Retrieve the ViewGroup which will display the in-app message
     final ViewGroup parentViewGroup = getParentViewGroup(activity);
     final int parentViewGroupHeight = parentViewGroup.getHeight();
 
-    if (mAppboyConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
+    if (mConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
       mContentViewGroupParentLayout = parentViewGroup;
-      setAllViewGroupChildrenAsNonAccessibilityImportant(mContentViewGroupParentLayout);
+      mViewAccessibilityFlagMap.clear();
+      setAllViewGroupChildrenAsNonAccessibilityImportant(mContentViewGroupParentLayout, mViewAccessibilityFlagMap);
     }
 
     mPreviouslyFocusedView = activity.getCurrentFocus();
@@ -167,7 +176,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
             new ViewTreeObserver.OnGlobalLayoutListener() {
               @Override
               public void onGlobalLayout() {
-                AppboyLogger.d(TAG, "Detected root view height of " + parentViewGroup.getHeight() + " in onGlobalLayout");
+                BrazeLogger.d(TAG, "Detected root view height of " + parentViewGroup.getHeight() + " in onGlobalLayout");
                 parentViewGroup.removeView(mInAppMessageView);
                 addInAppMessageViewToViewGroup(parentViewGroup, mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener);
                 parentViewGroup.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -175,15 +184,15 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
             });
       }
     } else {
-      AppboyLogger.d(TAG, "Detected root view height of " + parentViewGroupHeight);
+      BrazeLogger.d(TAG, "Detected root view height of " + parentViewGroupHeight);
       addInAppMessageViewToViewGroup(parentViewGroup, mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener);
     }
   }
 
   @Override
   public void close() {
-    if (mAppboyConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
-      setAllViewGroupChildrenAsAccessibilityAuto(mContentViewGroupParentLayout);
+    if (mConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
+      resetAllViewGroupChildrenToPreviousAccessibilityFlagOrAuto(mContentViewGroupParentLayout, mViewAccessibilityFlagMap);
     }
     mInAppMessageView.removeCallbacks(mDismissRunnable);
     mInAppMessageViewLifecycleListener.beforeClosed(mInAppMessageView, mInAppMessage);
@@ -253,7 +262,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
                                                 final View inAppMessageView,
                                                 IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener) {
     inAppMessageViewLifecycleListener.beforeOpened(inAppMessageView, inAppMessage);
-    AppboyLogger.d(TAG, "Adding In-app message view to parent view group.");
+    BrazeLogger.d(TAG, "Adding In-app message view to parent view group.");
     parentViewGroup.addView(inAppMessageView, getLayoutParams(inAppMessage));
 
     if (inAppMessageView instanceof IInAppMessageView) {
@@ -266,21 +275,21 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
 
         final IInAppMessageView castInAppMessageView = (IInAppMessageView) inAppMessageView;
         if (!castInAppMessageView.hasAppliedWindowInsets()) {
-          AppboyLogger.v(TAG, "Calling applyWindowInsets on in-app message view.");
+          BrazeLogger.v(TAG, "Calling applyWindowInsets on in-app message view.");
           castInAppMessageView.applyWindowInsets(insets);
         } else {
-          AppboyLogger.d(TAG, "Not reapplying window insets to in-app message view.");
+          BrazeLogger.d(TAG, "Not reapplying window insets to in-app message view.");
         }
         return insets;
       });
     }
 
     if (inAppMessage.getAnimateIn()) {
-      AppboyLogger.d(TAG, "In-app message view will animate into the visible area.");
+      BrazeLogger.d(TAG, "In-app message view will animate into the visible area.");
       setAndStartAnimation(true);
       // The afterOpened lifecycle method gets called when the opening animation ends.
     } else {
-      AppboyLogger.d(TAG, "In-app message view will be placed instantly into the visible area.");
+      BrazeLogger.d(TAG, "In-app message view will be placed instantly into the visible area.");
       // There is no opening animation, so we call the afterOpened lifecycle method immediately.
       if (inAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
         addDismissRunnable();
@@ -348,7 +357,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
       // The onClicked lifecycle method is called and it can be used to turn off the close animation.
       IInAppMessageImmersive inAppMessageImmersive = (IInAppMessageImmersive) mInAppMessage;
       if (inAppMessageImmersive.getMessageButtons().isEmpty()) {
-        AppboyLogger.d(TAG, "Cannot create button click listener since this in-app message does not have message buttons.");
+        BrazeLogger.d(TAG, "Cannot create button click listener since this in-app message does not have message buttons.");
         return;
       }
       for (int i = 0; i < mButtonViews.size(); i++) {
@@ -403,7 +412,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
    * </ul>
    */
   protected void closeInAppMessageView() {
-    AppboyLogger.d(TAG, "Closing in-app message view");
+    BrazeLogger.d(TAG, "Closing in-app message view");
     ViewUtils.removeViewFromParent(mInAppMessageView);
     // In the case of HTML in-app messages, we need to make sure the
     // WebView stops once the in-app message is removed.
@@ -414,7 +423,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
 
     // Return the focus before closing the message
     if (mPreviouslyFocusedView != null) {
-      AppboyLogger.d(TAG, "Returning focus to view after closing message. View: " + mPreviouslyFocusedView);
+      BrazeLogger.d(TAG, "Returning focus to view after closing message. View: " + mPreviouslyFocusedView);
       mPreviouslyFocusedView.requestFocus();
     }
     mInAppMessageViewLifecycleListener.afterClosed(mInAppMessage);
@@ -476,7 +485,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
           if (mInAppMessage.getDismissType() == DismissType.AUTO_DISMISS) {
             addDismissRunnable();
           }
-          AppboyLogger.d(TAG, "In-app message animated into view.");
+          BrazeLogger.d(TAG, "In-app message animated into view.");
           finalizeViewBeforeDisplay(mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener);
         }
 
@@ -502,33 +511,44 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
   }
 
   /**
-   * Sets all {@link View} children of the {@link ViewGroup} as {@link ViewCompat#IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS}.
+   * Sets all {@link View} children of the {@link ViewGroup}
+   * as {@link ViewCompat#IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS}.
    */
-  protected static void setAllViewGroupChildrenAsNonAccessibilityImportant(ViewGroup viewGroup) {
+  protected static void setAllViewGroupChildrenAsNonAccessibilityImportant(ViewGroup viewGroup,
+                                                                           Map<Integer, Integer> viewAccessibilityFlagMap) {
     if (viewGroup == null) {
-      AppboyLogger.w(TAG, "In-app message ViewGroup was null. Not preparing in-app message accessibility for exclusive mode.");
+      BrazeLogger.w(TAG, "In-app message ViewGroup was null. Not preparing in-app message accessibility for exclusive mode.");
       return;
     }
     for (int i = 0; i < viewGroup.getChildCount(); i++) {
       View child = viewGroup.getChildAt(i);
       if (child != null) {
+        viewAccessibilityFlagMap.put(child.getId(), child.getImportantForAccessibility());
         ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
       }
     }
   }
 
   /**
-   * Sets all {@link View} children of the {@link ViewGroup} as {@link ViewCompat#IMPORTANT_FOR_ACCESSIBILITY_AUTO}.
+   * Sets all {@link View} children of the {@link ViewGroup} as their previously
+   * mapped accessibility flag, or {@link ViewCompat#IMPORTANT_FOR_ACCESSIBILITY_AUTO} if
+   * not found in the mapping.
    */
-  protected static void setAllViewGroupChildrenAsAccessibilityAuto(ViewGroup viewGroup) {
+  protected static void resetAllViewGroupChildrenToPreviousAccessibilityFlagOrAuto(ViewGroup viewGroup,
+                                                                                   Map<Integer, Integer> viewAccessibilityFlagMap) {
     if (viewGroup == null) {
-      AppboyLogger.w(TAG, "In-app message ViewGroup was null. Not preparing in-app message accessibility for exclusive mode.");
+      BrazeLogger.w(TAG, "In-app message ViewGroup was null. Not resetting in-app message accessibility for exclusive mode.");
       return;
     }
     for (int i = 0; i < viewGroup.getChildCount(); i++) {
       View child = viewGroup.getChildAt(i);
       if (child != null) {
-        ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+        final int id = child.getId();
+        if (viewAccessibilityFlagMap.containsKey(id)) {
+          ViewCompat.setImportantForAccessibility(child, viewAccessibilityFlagMap.get(id));
+        } else {
+          ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+        }
       }
     }
   }

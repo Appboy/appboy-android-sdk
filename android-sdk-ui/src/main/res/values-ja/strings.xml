@@ -4,4 +4,5 @@
   <string name="com_appboy_feed_empty">アップデートはありません。後でもう一度確認してください。</string>
   <string name="com_appboy_feed_connection_error_title">接続エラー</string>
   <string name="com_appboy_feed_connection_error_body">ネットワークに接続できません。後でもう一度試してください。</string>
+  <string name="com_appboy_inappmessage_close_content_description">閉じる</string>
 </resources>

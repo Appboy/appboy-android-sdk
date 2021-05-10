@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.appboy.Appboy;
 import com.appboy.enums.inappmessage.ClickAction;
 import com.appboy.enums.inappmessage.CropType;
 import com.appboy.enums.inappmessage.DismissType;
@@ -39,10 +38,11 @@ import com.appboy.models.InAppMessageModal;
 import com.appboy.models.InAppMessageSlideup;
 import com.appboy.models.MessageButton;
 import com.appboy.sample.util.SpinnerUtils;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InAppMessageTesterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-  protected static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageTesterFragment.class);
+  protected static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageTesterFragment.class);
 
   private enum HtmlMessageType {
     NO_JS("html_inapp_message_body_no_js.html",
@@ -381,7 +381,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
    * Adds an {@link IInAppMessage} from its {@link IInAppMessage#forJsonPut()} form.
    */
   private void addInAppMessageFromString(String serializedInAppMessage) {
-    final IInAppMessage inAppMessage = Appboy.getInstance(getContext()).deserializeInAppMessageString(serializedInAppMessage);
+    final IInAppMessage inAppMessage = Braze.getInstance(getContext()).deserializeInAppMessageString(serializedInAppMessage);
     AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
   }
 

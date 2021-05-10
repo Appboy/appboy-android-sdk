@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import com.appboy.sample.R;
-import com.appboy.services.AppboyLocationService;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 public class RuntimePermissionUtils {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(RuntimePermissionUtils.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(RuntimePermissionUtils.class);
   public static final int DROIDBOY_PERMISSION_LOCATION = 40;
 
   public static void handleOnRequestPermissionsResult(Context context, int requestCode, int[] grantResults) {
@@ -25,7 +25,7 @@ public class RuntimePermissionUtils {
       if (areAllPermissionsGranted(grantResults)) {
         Log.i(TAG, "Required location permissions granted.");
         Toast.makeText(context, "Required location permissions granted.", Toast.LENGTH_SHORT).show();
-        AppboyLocationService.requestInitialization(context);
+        Braze.getInstance(context).requestLocationInitialization();
       } else {
         Log.i(TAG, "Required location permissions NOT granted.");
         Toast.makeText(context, "Required location permissions NOT granted.", Toast.LENGTH_SHORT).show();

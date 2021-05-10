@@ -2,8 +2,8 @@ package com.appboy.ui.activities;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.appboy.Appboy;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+import com.braze.Braze;
 
 /**
  * The AppboyBaseFragmentActivity class is a base class that includes the necessary Braze method
@@ -16,7 +16,7 @@ public class AppboyBaseFragmentActivity extends FragmentActivity {
     // Opens (or reopens) a Braze session.
     // Note: This must be called in the onStart lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
-    Appboy.getInstance(this).openSession(this);
+    Braze.getInstance(this).openSession(this);
   }
 
   @Override
@@ -40,6 +40,6 @@ public class AppboyBaseFragmentActivity extends FragmentActivity {
     // Closes the current Braze session.
     // Note: This must be called in the onStop lifecycle method of EVERY Activity. Failure to do so
     // will result in incomplete and/or erroneous analytics.
-    Appboy.getInstance(this).closeSession(this);
+    Braze.getInstance(this).closeSession(this);
   }
 }

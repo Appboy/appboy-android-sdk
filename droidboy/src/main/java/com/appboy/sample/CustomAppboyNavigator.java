@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.sample.activity.DroidBoyActivity;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
+import com.braze.support.BrazeLogger;
 
 public class CustomAppboyNavigator implements IAppboyNavigator {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(CustomAppboyNavigator.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(CustomAppboyNavigator.class);
 
   @Override
   public void gotoNewsFeed(Context context, NewsfeedAction newsfeedAction) {
@@ -58,7 +58,7 @@ public class CustomAppboyNavigator implements IAppboyNavigator {
       try {
         context.startActivity(intent);
       } catch (Exception e) {
-        AppboyLogger.e(TAG, "Failed to handle uri " + uri + " with extras: " + extras, e);
+        BrazeLogger.e(TAG, "Failed to handle uri " + uri + " with extras: " + extras, e);
       }
     }
   }

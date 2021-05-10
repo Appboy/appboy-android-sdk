@@ -20,11 +20,11 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 
 import com.appboy.enums.inappmessage.TextAlign;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+import com.braze.support.BrazeLogger;
 
 public class InAppMessageViewUtils {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageViewUtils.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageViewUtils.class);
 
   public static void setImage(Bitmap bitmap, ImageView imageView) {
     if (bitmap != null) {
@@ -38,7 +38,7 @@ public class InAppMessageViewUtils {
         Typeface fontFamily = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf");
         textView.setTypeface(fontFamily);
       } catch (Exception e) {
-        AppboyLogger.e(TAG, "Caught exception setting icon typeface. Not rendering icon.", e);
+        BrazeLogger.e(TAG, "Caught exception setting icon typeface. Not rendering icon.", e);
         return;
       }
       textView.setText(icon);
@@ -81,7 +81,7 @@ public class InAppMessageViewUtils {
         if (layerDrawable.getNumberOfLayers() > 0 && layerDrawable.getDrawable(0) instanceof GradientDrawable) {
           setDrawableColor(layerDrawable.getDrawable(0), color);
         } else {
-          AppboyLogger.d(TAG, "LayerDrawable for button background did not have the expected "
+          BrazeLogger.d(TAG, "LayerDrawable for button background did not have the expected "
               + "number of layers or the 0th layer was not a GradientDrawable.");
         }
       }
@@ -104,7 +104,7 @@ public class InAppMessageViewUtils {
   }
 
   public static void closeInAppMessageOnKeycodeBack() {
-    AppboyLogger.d(TAG, "Back button intercepted by in-app message view, closing in-app message.");
+    BrazeLogger.d(TAG, "Back button intercepted by in-app message view, closing in-app message.");
     AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true);
   }
 

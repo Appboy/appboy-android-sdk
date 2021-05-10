@@ -8,20 +8,20 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.appboy.Appboy;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
-import com.appboy.configuration.AppboyConfigurationProvider;
 import com.appboy.models.push.BrazeNotificationPayload;
-import com.appboy.support.AppboyLogger;
 import com.appboy.support.IntentUtils;
 import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfigurationProvider;
+import com.braze.support.BrazeLogger;
 
 import java.util.List;
 
 public class AppboyNotificationActionUtils {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyNotificationActionUtils.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyNotificationActionUtils.class);
 
   /**
    * @deprecated Please use {@link #addNotificationActions(NotificationCompat.Builder, BrazeNotificationPayload)}
@@ -40,17 +40,17 @@ public class AppboyNotificationActionUtils {
   public static void addNotificationActions(@NonNull NotificationCompat.Builder notificationBuilder,
                                             @NonNull BrazeNotificationPayload payload) {
     if (payload.getContext() == null) {
-      AppboyLogger.d(TAG, "Context cannot be null when adding notification buttons.");
+      BrazeLogger.d(TAG, "Context cannot be null when adding notification buttons.");
       return;
     }
     final List<BrazeNotificationPayload.ActionButton> actionButtons = payload.getActionButtons();
     if (actionButtons.isEmpty()) {
-      AppboyLogger.d(TAG, "No action buttons present. Not adding notification actions");
+      BrazeLogger.d(TAG, "No action buttons present. Not adding notification actions");
       return;
     }
 
     for (BrazeNotificationPayload.ActionButton actionButton : actionButtons) {
-      AppboyLogger.v(TAG, "Adding action button: " + actionButton);
+      BrazeLogger.v(TAG, "Adding action button: " + actionButton);
       addNotificationAction(notificationBuilder, payload, actionButton);
     }
   }
@@ -66,7 +66,7 @@ public class AppboyNotificationActionUtils {
     try {
       String actionType = intent.getStringExtra(Constants.APPBOY_ACTION_TYPE_KEY);
       if (StringUtils.isNullOrBlank(actionType)) {
-        AppboyLogger.w(TAG, "Notification action button type was blank or null. Doing nothing.");
+        BrazeLogger.w(TAG, "Notification action button type was blank or null. Doing nothing.");
         return;
       }
       int notificationId = intent.getIntExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, Constants.APPBOY_DEFAULT_NOTIFICATION_ID);
@@ -90,17 +90,17 @@ public class AppboyNotificationActionUtils {
         }
         AppboyNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
 
-        AppboyConfigurationProvider appConfigurationProvider = new AppboyConfigurationProvider(context);
+        BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
         if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
           AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
         }
       } else if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_NONE)) {
         AppboyNotificationUtils.cancelNotification(context, notificationId);
       } else {
-        AppboyLogger.w(TAG, "Unknown notification action button clicked. Doing nothing.");
+        BrazeLogger.w(TAG, "Unknown notification action button clicked. Doing nothing.");
       }
     } catch (Exception e) {
-      AppboyLogger.e(TAG, "Caught exception while handling notification action button click.", e);
+      BrazeLogger.e(TAG, "Caught exception while handling notification action button click.", e);
     }
   }
 
@@ -128,7 +128,7 @@ public class AppboyNotificationActionUtils {
                                            @NonNull BrazeNotificationPayload.ActionButton actionButton) {
     final Context context = payload.getContext();
     if (context == null) {
-      AppboyLogger.d(TAG, "Cannot add notification action with null context from payload");
+      BrazeLogger.d(TAG, "Cannot add notification action with null context from payload");
       return;
     }
 
@@ -154,7 +154,7 @@ public class AppboyNotificationActionUtils {
     if (Constants.APPBOY_PUSH_ACTION_TYPE_NONE.equals(actionType)) {
       // If no action is present, then we don't need the
       // trampoline to route us back to an Activity.
-      AppboyLogger.v(TAG, "Adding notification action with type: " + actionType
+      BrazeLogger.v(TAG, "Adding notification action with type: " + actionType
           + " . Setting intent class to notification receiver: "
           + AppboyNotificationUtils.getNotificationReceiverClass());
       sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION).setClass(context, AppboyNotificationUtils.getNotificationReceiverClass());
@@ -164,7 +164,7 @@ public class AppboyNotificationActionUtils {
       // However, if an action is present, then we need to
       // route to the trampoline to ensure the user is
       // prompted to open the app on the lockscreen.
-      AppboyLogger.v(TAG, "Adding notification action with type: "
+      BrazeLogger.v(TAG, "Adding notification action with type: "
           + actionType + " Setting intent class to trampoline activity");
       sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION)
           .setClass(context, NotificationTrampolineActivity.class);
@@ -177,7 +177,7 @@ public class AppboyNotificationActionUtils {
     NotificationCompat.Action.Builder notificationActionBuilder = new NotificationCompat.Action.Builder(0, actionButton.getText(), pendingSendIntent);
     notificationActionBuilder.addExtras(new Bundle(notificationActionExtras));
     notificationBuilder.addAction(notificationActionBuilder.build());
-    AppboyLogger.v(TAG, "Added action with bundle: " + notificationActionExtras);
+    BrazeLogger.v(TAG, "Added action with bundle: " + notificationActionExtras);
   }
 
   /**
@@ -188,6 +188,6 @@ public class AppboyNotificationActionUtils {
   public static void logNotificationActionClicked(Context context, Intent intent, String actionType) {
     String campaignId = intent.getStringExtra(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY);
     String actionButtonId = intent.getStringExtra(Constants.APPBOY_ACTION_ID_KEY);
-    Appboy.getInstance(context).logPushNotificationActionClicked(campaignId, actionButtonId, actionType);
+    Braze.getInstance(context).logPushNotificationActionClicked(campaignId, actionButtonId, actionType);
   }
 }

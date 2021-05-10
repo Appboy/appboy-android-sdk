@@ -4,17 +4,17 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.ImageView
-import com.appboy.IAppboyImageLoader
-import com.appboy.enums.AppboyViewBounds
 import com.appboy.models.IInAppMessage
 import com.appboy.models.cards.Card
-import com.appboy.support.AppboyLogger
+import com.braze.enums.BrazeViewBounds
+import com.braze.images.IBrazeImageLoader
+import com.braze.support.BrazeLogger
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class GlideAppboyImageLoader : IAppboyImageLoader {
+class GlideAppboyImageLoader : IBrazeImageLoader {
   private var mRequestOptions = RequestOptions()
-  override fun renderUrlIntoCardView(context: Context, card: Card?, imageUrl: String, imageView: ImageView, viewBounds: AppboyViewBounds?) {
+  override fun renderUrlIntoCardView(context: Context, card: Card?, imageUrl: String, imageView: ImageView, viewBounds: BrazeViewBounds?) {
     renderUrlIntoView(context, imageUrl, imageView)
   }
 
@@ -22,15 +22,15 @@ class GlideAppboyImageLoader : IAppboyImageLoader {
                                              inAppMessage: IInAppMessage,
                                              imageUrl: String,
                                              imageView: ImageView,
-                                             viewBounds: AppboyViewBounds?) {
+                                             viewBounds: BrazeViewBounds?) {
     renderUrlIntoView(context, imageUrl, imageView)
   }
 
-  override fun getPushBitmapFromUrl(context: Context, extras: Bundle?, imageUrl: String, viewBounds: AppboyViewBounds?): Bitmap {
+  override fun getPushBitmapFromUrl(context: Context, extras: Bundle?, imageUrl: String, viewBounds: BrazeViewBounds?): Bitmap {
     return getBitmapFromUrl(context, imageUrl)!!
   }
 
-  override fun getInAppMessageBitmapFromUrl(context: Context, inAppMessage: IInAppMessage, imageUrl: String, viewBounds: AppboyViewBounds?): Bitmap {
+  override fun getInAppMessageBitmapFromUrl(context: Context, inAppMessage: IInAppMessage, imageUrl: String, viewBounds: BrazeViewBounds?): Bitmap {
     return getBitmapFromUrl(context, imageUrl)!!
   }
 
@@ -48,7 +48,7 @@ class GlideAppboyImageLoader : IAppboyImageLoader {
           .apply(mRequestOptions)
           .load(imageUrl).submit().get()
     } catch (e: Exception) {
-      AppboyLogger.e(TAG, "Failed to retrieve bitmap at url: $imageUrl", e)
+      BrazeLogger.e(TAG, "Failed to retrieve bitmap at url: $imageUrl", e)
     }
     return null
   }

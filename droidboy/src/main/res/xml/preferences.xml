@@ -1,238 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-      android:title="@string/content_card_preference_category">
-        <Preference
-          android:key="content_card_populate_random_cards_setting_key"
-          android:title="Add random cards"
-          android:summary="Does not alter existing saved cards"/>
-        <Preference
-          android:key="content_card_dismiss_all_cards_setting_key"
-          android:title="Dismiss all Cached Content Cards"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-      android:title="@string/notch_settings_category">
-        <CheckBoxPreference
-          android:key="display_in_full_cutout_setting_key"
-          android:title="Enable Display in Cutout Mode"
-          android:summary="Enables Droidboy to display in the cutout"
-          android:summaryOn="Displaying content in the cutout"
-          android:summaryOff="Not displaying content in the cutout"
-          android:defaultValue="false"/>
-        <CheckBoxPreference
-          android:key="display_no_limits_setting_key"
-          android:title="Enable Display No Limits Mode"
-          android:summary="Enables Droidboy to display with transparent navigation/status bar"
-          android:summaryOn="Displaying content with no limits"
-          android:summaryOff="Not displaying content with no limits"
-          android:defaultValue="false"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/custom_logging_category_title">
-        <com.appboy.sample.UserProfileDialog
-            android:title="@string/user_dialog_title"
-            android:positiveButtonText="@string/user_dialog_close"
-            android:negativeButtonText="@string/user_dialog_flush"/>
-        <com.appboy.sample.logging.CustomUserAttributeDialog
-            android:title="@string/log_user_attributes_title"
-            android:positiveButtonText="@string/user_dialog_close"
-            android:negativeButtonText="@string/user_dialog_flush"/>
-        <com.appboy.sample.logging.CustomPurchaseDialog
-            android:title="@string/log_purchase_title"
-            android:positiveButtonText="@string/user_dialog_close"
-            android:negativeButtonText="@string/user_dialog_flush"/>
-        <com.appboy.sample.logging.CustomEventDialog
-            android:title="@string/log_events_title"
-            android:positiveButtonText="@string/user_dialog_close"
-            android:negativeButtonText="@string/user_dialog_flush"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-      android:title="@string/sdk_state_change_settings_title">
-        <Preference
-          android:key="enable_sdk_key"
-          android:title="Re-Enable SDK" />
-        <Preference
-          android:key="disable_sdk_key"
-          android:title="Disable SDK" />
-        <Preference
-          android:key="wipe_data_preference_key"
-          android:title="Wipe Data from the SDK"
-          android:summary="Wipes all data from the SDK"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/network_control_title">
-        <Preference
-            android:key="data_flush"
-            android:title="@string/data_flush_title" />
-        <Preference
-            android:key="enable_outbound_network_requests"
-            android:title="Re-Enable Outbound Network Requests" />
-        <Preference
-            android:key="disable_outbound_network_requests"
-            android:title="Disable Outbound Network Requests" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/push_preference_category">
-        <com.appboy.sample.subscriptions.PushSubscriptionStateDialog
-            android:title="@string/set_push_subscription_state_title"
-            android:summary="@string/set_push_subscription_state_summary"
-            android:positiveButtonText="@string/user_dialog_okay"
-            android:negativeButtonText="@string/user_dialog_cancel"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/image_loading_preference_category">
-        <Preference
-            android:key="glide_image_loader_enable_setting_key"
-            android:title="Enable Glide Image Library"
-            android:summary="Enables GIFs to display"/>
-        <Preference
-            android:key="glide_image_loader_disable_setting_key"
-            android:title="Disable Glide Image Library"
-            android:summary="Disables GIF display"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/environment_preference_category">
-        <com.appboy.sample.SetEnvironmentPreference
-          android:title="@string/set_environment_title"
-          android:summary="@string/set_environment_summary"
-          android:positiveButtonText="@string/user_dialog_done"
-          android:negativeButtonText="@string/user_dialog_cancel"/>
-        <Preference
-          android:key="environment_barcode_picture_intent_key"
-          android:title="Set Environment via barcode"
-          android:summary="Takes a picture of a braze environment barcode"/>
-        <Preference
-          android:key="environment_reset_key"
-          android:title="Reset environment override"/>
-        <Preference
-          android:key="environment_switch_dev"
-          android:title="❄️ Change to Dev endpoint ❄️"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/misc_preference_category">
-        <Preference
-            android:key="toggle_disable_appboy_network_requests_for_filtered_emulators"
-            android:title="@string/disable_appboy_network_requests"
-            android:summary="@string/disable_appboy_network_requests_summary"/>
-        <Preference
-            android:key="log_attribution"
-            android:title="@string/log_attribution_title"
-            android:summary="@string/log_attribution_summary"/>
-        <com.appboy.sample.subscriptions.EmailSubscriptionStateDialog
-            android:title="@string/set_email_subscription_state_title"
-            android:summary="@string/set_email_subscription_state_summary"
-            android:positiveButtonText="@string/user_dialog_okay"
-            android:negativeButtonText="@string/user_dialog_cancel"/>
-        <com.appboy.sample.LogLevelDialogPreference
-            android:title="@string/log_level_dialog_title"
-            android:summary="@string/log_level_pref_summary"
-            android:positiveButtonText="@string/user_dialog_done"
-            android:negativeButtonText=""/>
-        <Preference
-            android:key="anonymous_revert"
-            android:title="Revert to Anonymous User"
-            android:summary="Will cause an app restart."/>
-        <Preference
-            android:key="logcat_export_file_key"
-            android:title="Export Droidboy Logcat to a File"
-            android:summary="Will reset the logcat after click!"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/storage_info_preference_category">
-        <com.appboy.sample.FileDataDialog
-            android:title="@string/file_data_title"
-            android:summary="@string/file_data_summary"/>
-        <com.appboy.sample.SharedPreferencesDataDialog
-            android:title="@string/shared_preferences_title"
-            android:summary="@string/shared_preferences_summary"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/session_title">
-        <Preference
-            android:key="open_session"
-            android:title="Open Session"/>
-        <Preference
-            android:key="close_session"
-            android:title="Close Session"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/location_title">
-        <Preference
-            android:key="set_manual_location"
-            android:title="Set Manual Location"
-            android:summary="Override current location"/>
-        <Preference
-            android:key="location_runtime_permission_dialog"
-            android:title="Location Permission Dialog"
-            android:summary="Request Runtime Permission"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/about_title">
-        <Preference
-            android:key="sdk_version"
-            android:title="SDK Version"/>
-        <Preference
-            android:key="current_endpoint"
-            android:title="SDK Endpoint"/>
-        <Preference
-            android:key="api_key"
-            android:title="API Key"/>
-        <Preference
-            android:key="push_token"
-            android:title="Push Token"/>
-        <Preference
-            android:key="build_type"
-            android:title="Build Type"/>
-        <Preference
-            android:key="version_code"
-            android:title="Version Code"/>
-        <Preference
-            android:key="build_name"
-            android:title="Build Name"/>
-        <Preference
-            android:key="current_user_id"
-            android:title="Current User ID"/>
-        <Preference
-            android:key="api_key_backend"
-            android:title="API Key points to:"/>
-        <Preference
-            android:key="commit_hash"
-            android:title="Commit Hash"/>
-        <Preference
-            android:key="branch_name"
-            android:title="Branch Name"/>
-        <Preference
-            android:key="install_time"
-            android:title="Install Time"/>
-        <Preference
-            android:key="device_id"
-            android:title="Device Id"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-      android:title="@string/feed">
-        <CheckBoxPreference
-          android:key="sort_feed"
-          android:title="@string/sort_feed"
-          android:summary="@string/sort_feed_summary"
-          android:defaultValue="false"/>
-        <CheckBoxPreference
-          android:key="set_custom_news_feed_card_click_action_listener"
-          android:title="@string/custom_news_feed_card_click_action_listener"
-          android:summary="@string/custom_news_feed_card_click_action_listener_summary"
-          android:defaultValue="false"/>
-    </PreferenceCategory>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <PreferenceCategory
+    android:key="settings_about_key"
+    android:title="@string/about_title"
+    app:initialExpandedChildrenCount="5">
+    <Preference
+      android:key="current_user_id"
+      android:title="Current User ID" />
+    <Preference
+      android:key="sdk_version"
+      android:title="SDK Version" />
+    <Preference
+      android:key="push_token"
+      android:title="Push Token" />
+    <Preference
+      android:key="device_id"
+      android:title="Device Id" />
+    <Preference
+      android:key="build_type"
+      android:title="Build Type" />
+    <Preference
+      android:key="version_code"
+      android:title="Version Code" />
+    <Preference
+      android:key="build_name"
+      android:title="Build Name" />
+    <Preference
+      android:key="install_time"
+      android:title="Install Time" />
+  </PreferenceCategory>
+  <PreferenceCategory
+    android:title="@string/sdk_auth">
+    <Preference
+      android:key="enable_sdk_auth"
+      android:title="Enable SDK Auth"
+      android:summary="Will restart the app"/>
+    <Preference
+      android:key="disable_sdk_auth"
+      android:title="Disable SDK Auth"
+      android:summary="Will restart the app"/>
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/content_card_preference_category">
+    <Preference
+      android:key="content_card_populate_random_cards_setting_key"
+      android:summary="Does not alter existing saved cards"
+      android:title="Add random cards" />
+    <Preference
+      android:key="content_card_dismiss_all_cards_setting_key"
+      android:title="Dismiss all Cached Content Cards" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/custom_logging_category_title">
+    <Preference
+      android:key="show_user_dialog"
+      android:title="@string/user_dialog_title" />
+    <Preference
+      android:key="show_user_attribute_dialog"
+      android:title="@string/log_user_attributes_title" />
+    <Preference
+      android:key="show_custom_event_dialog"
+      android:title="@string/log_events_title" />
+    <Preference
+      android:key="show_log_purchase_dialog"
+      android:title="@string/log_purchase_title" />
+    <Preference
+      android:key="show_push_subscription_state_dialog"
+      android:title="@string/set_push_subscription_state_title" />
+    <Preference
+      android:key="show_email_subscription_state_dialog"
+      android:title="@string/set_email_subscription_state_title" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/sdk_state_change_settings_title">
+    <Preference
+      android:key="enable_sdk_key"
+      android:title="Re-Enable SDK" />
+    <Preference
+      android:key="disable_sdk_key"
+      android:title="Disable SDK" />
+    <Preference
+      android:key="wipe_data_preference_key"
+      android:summary="Wipes all data from the SDK"
+      android:title="Wipe Data from the SDK" />
+  </PreferenceCategory>
+  <PreferenceCategory
+    android:key="settings_network_control_key"
+    android:title="@string/network_control_title"
+    app:initialExpandedChildrenCount="0">
+    <Preference
+      android:key="data_flush"
+      android:title="@string/data_flush_title" />
+    <Preference
+      android:key="enable_outbound_network_requests"
+      android:title="Re-Enable Outbound Network Requests" />
+    <Preference
+      android:key="disable_outbound_network_requests"
+      android:title="Disable Outbound Network Requests" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/image_loading_preference_category">
+    <Preference
+      android:key="glide_image_loader_enable_setting_key"
+      android:summary="Enables GIFs to display"
+      android:title="Enable Glide Image Library" />
+    <Preference
+      android:key="glide_image_loader_disable_setting_key"
+      android:summary="Disables GIF display"
+      android:title="Disable Glide Image Library" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/environment_preference_category">
+    <Preference
+      android:key="environment_barcode_picture_intent_key"
+      android:summary="Takes a picture of a braze environment barcode"
+      android:title="Set Environment via barcode" />
+    <Preference
+      android:key="environment_reset_key"
+      android:title="Reset environment override" />
+    <Preference
+      android:key="environment_switch_dev"
+      android:title="❄️ Change to Dev endpoint ❄️" />
+    <Preference
+      android:key="show_set_environment_dialog"
+      android:title="@string/set_environment_title" />
+  </PreferenceCategory>
+  <PreferenceCategory
+    android:key="settings_misc_section_key"
+    android:title="@string/misc_preference_category"
+    app:initialExpandedChildrenCount="1">
+    <Preference
+      android:key="logcat_export_file_key"
+      android:summary="Will reset the logcat after click!"
+      android:title="Export Droidboy Logcat to a File" />
+    <Preference
+      android:key="log_attribution"
+      android:summary="@string/log_attribution_summary"
+      android:title="@string/log_attribution_title" />
+    <Preference
+      android:key="anonymous_revert"
+      android:summary="Will cause an app restart."
+      android:title="Revert to Anonymous User" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/session_title">
+    <Preference
+      android:key="open_session"
+      android:title="Open Session" />
+    <Preference
+      android:key="close_session"
+      android:title="Close Session" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/location_title">
+    <Preference
+      android:key="set_manual_location"
+      android:summary="Override current location"
+      android:title="Set Manual Location" />
+    <Preference
+      android:key="location_runtime_permission_dialog"
+      android:summary="Request Runtime Permission"
+      android:title="Location Permission Dialog" />
+  </PreferenceCategory>
+  <PreferenceCategory
+    android:key="settings_notch_section_key"
+    android:title="@string/notch_settings_category"
+    app:initialExpandedChildrenCount="0">
+    <SwitchPreferenceCompat
+      android:defaultValue="false"
+      android:key="display_in_full_cutout_setting_key"
+      android:summary="Enables Droidboy to display in the cutout"
+      android:summaryOff="Not displaying content in the cutout"
+      android:summaryOn="Displaying content in the cutout"
+      android:title="Enable Display in Cutout Mode" />
+    <SwitchPreferenceCompat
+      android:defaultValue="false"
+      android:key="display_no_limits_setting_key"
+      android:summary="Enables Droidboy to display with transparent navigation/status bar"
+      android:summaryOff="Not displaying content with no limits"
+      android:summaryOn="Displaying content with no limits"
+      android:title="Enable Display No Limits Mode" />
+  </PreferenceCategory>
+  <PreferenceCategory
+    android:key="settings_feed_section_key"
+    android:title="@string/feed"
+    app:initialExpandedChildrenCount="0">
+    <SwitchPreferenceCompat
+      android:defaultValue="false"
+      android:key="sort_feed"
+      android:summary="@string/sort_feed_summary"
+      android:title="@string/sort_feed" />
+    <SwitchPreferenceCompat
+      android:defaultValue="false"
+      android:key="set_custom_news_feed_card_click_action_listener"
+      android:summary="@string/custom_news_feed_card_click_action_listener_summary"
+      android:title="@string/custom_news_feed_card_click_action_listener" />
+  </PreferenceCategory>
 </PreferenceScreen>

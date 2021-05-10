@@ -8,8 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.appboy.push.NotificationTrampolineActivity;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 import java.util.Collections;
 import java.util.Set;
@@ -21,7 +22,7 @@ import java.util.Set;
  * be optionally called here as well.
  */
 public class AppboyLifecycleCallbackListener implements Application.ActivityLifecycleCallbacks {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyLifecycleCallbackListener.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyLifecycleCallbackListener.class);
 
   private final boolean mRegisterInAppMessageManager;
   private final boolean mSessionHandlingEnabled;
@@ -94,8 +95,8 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
     mInAppMessagingRegistrationBlocklist = inAppMessagingRegistrationBlocklist != null ? inAppMessagingRegistrationBlocklist : Collections.emptySet();
     mSessionHandlingBlocklist = sessionHandlingBlocklist != null ? sessionHandlingBlocklist : Collections.emptySet();
 
-    AppboyLogger.v(TAG, "AppboyLifecycleCallbackListener using in-app messaging blocklist: " + mInAppMessagingRegistrationBlocklist);
-    AppboyLogger.v(TAG, "AppboyLifecycleCallbackListener using session handling blocklist: " + mSessionHandlingBlocklist);
+    BrazeLogger.v(TAG, "AppboyLifecycleCallbackListener using in-app messaging blocklist: " + mInAppMessagingRegistrationBlocklist);
+    BrazeLogger.v(TAG, "AppboyLifecycleCallbackListener using session handling blocklist: " + mSessionHandlingBlocklist);
   }
 
   /**
@@ -110,7 +111,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    * Sets the {@link Activity#getClass()} blocklist for which in-app message registration will not occur.
    */
   public void setInAppMessagingRegistrationBlocklist(@NonNull Set<Class<?>> blocklist) {
-    AppboyLogger.v(TAG, "setInAppMessagingRegistrationBlocklist called with blocklist: " + blocklist);
+    BrazeLogger.v(TAG, "setInAppMessagingRegistrationBlocklist called with blocklist: " + blocklist);
     mInAppMessagingRegistrationBlocklist = blocklist;
   }
 
@@ -126,30 +127,30 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
    * Sets the {@link Activity#getClass()} blocklist for which session handling will not occur.
    */
   public void setSessionHandlingBlocklist(@NonNull Set<Class<?>> blocklist) {
-    AppboyLogger.v(TAG, "setSessionHandlingBlocklist called with blocklist: " + blocklist);
+    BrazeLogger.v(TAG, "setSessionHandlingBlocklist called with blocklist: " + blocklist);
     mSessionHandlingBlocklist = blocklist;
   }
 
   @Override
   public void onActivityStarted(@NonNull Activity activity) {
     if (mSessionHandlingEnabled && shouldHandleLifecycleMethodsInActivity(activity, true)) {
-      AppboyLogger.v(TAG, "Automatically calling lifecycle method: openSession");
-      Appboy.getInstance(activity.getApplicationContext()).openSession(activity);
+      BrazeLogger.v(TAG, "Automatically calling lifecycle method: openSession");
+      Braze.getInstance(activity.getApplicationContext()).openSession(activity);
     }
   }
 
   @Override
   public void onActivityStopped(@NonNull Activity activity) {
     if (mSessionHandlingEnabled && shouldHandleLifecycleMethodsInActivity(activity, true)) {
-      AppboyLogger.v(TAG, "Automatically calling lifecycle method: closeSession");
-      Appboy.getInstance(activity.getApplicationContext()).closeSession(activity);
+      BrazeLogger.v(TAG, "Automatically calling lifecycle method: closeSession");
+      Braze.getInstance(activity.getApplicationContext()).closeSession(activity);
     }
   }
 
   @Override
   public void onActivityResumed(@NonNull Activity activity) {
     if (mRegisterInAppMessageManager && shouldHandleLifecycleMethodsInActivity(activity, false)) {
-      AppboyLogger.v(TAG, "Automatically calling lifecycle method: registerInAppMessageManager");
+      BrazeLogger.v(TAG, "Automatically calling lifecycle method: registerInAppMessageManager");
       AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
     }
   }
@@ -157,7 +158,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   @Override
   public void onActivityPaused(@NonNull Activity activity) {
     if (mRegisterInAppMessageManager && shouldHandleLifecycleMethodsInActivity(activity, false)) {
-      AppboyLogger.v(TAG, "Automatically calling lifecycle method: unregisterInAppMessageManager");
+      BrazeLogger.v(TAG, "Automatically calling lifecycle method: unregisterInAppMessageManager");
       AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
     }
   }
@@ -165,7 +166,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   @Override
   public void onActivityCreated(@NonNull Activity activity, Bundle bundle) {
     if (mRegisterInAppMessageManager && shouldHandleLifecycleMethodsInActivity(activity, false)) {
-      AppboyLogger.v(TAG, "Automatically calling lifecycle method: ensureSubscribedToInAppMessageEvents");
+      BrazeLogger.v(TAG, "Automatically calling lifecycle method: ensureSubscribedToInAppMessageEvents");
       AppboyInAppMessageManager.getInstance().ensureSubscribedToInAppMessageEvents(activity.getApplicationContext());
     }
   }
@@ -182,7 +183,7 @@ public class AppboyLifecycleCallbackListener implements Application.ActivityLife
   private boolean shouldHandleLifecycleMethodsInActivity(Activity activity, boolean forSessionHandling) {
     Class<? extends Activity> activityClass = activity.getClass();
     if (activityClass.equals(NotificationTrampolineActivity.class)) {
-      AppboyLogger.v(TAG, "Skipping all automatic registration of notification trampoline activity class");
+      BrazeLogger.v(TAG, "Skipping all automatic registration of notification trampoline activity class");
       // Always ignore
       return false;
     }

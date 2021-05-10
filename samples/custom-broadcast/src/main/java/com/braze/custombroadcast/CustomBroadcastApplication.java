@@ -3,21 +3,21 @@ package com.braze.custombroadcast;
 import android.app.Application;
 import android.util.Log;
 
-import com.appboy.Appboy;
 import com.appboy.AppboyLifecycleCallbackListener;
-import com.appboy.configuration.AppboyConfig;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfig;
+import com.braze.support.BrazeLogger;
 
 public class CustomBroadcastApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    AppboyLogger.setLogLevel(Log.VERBOSE);
+    BrazeLogger.setLogLevel(Log.VERBOSE);
 
-    AppboyConfig.Builder appboyConfig = new AppboyConfig.Builder()
+    BrazeConfig.Builder appboyConfig = new BrazeConfig.Builder()
         .setDefaultNotificationChannelName("Appboy Push")
         .setDefaultNotificationChannelDescription("Appboy related push");
-    Appboy.configure(this, appboyConfig.build());
+    Braze.configure(this, appboyConfig.build());
 
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }

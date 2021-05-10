@@ -2,30 +2,30 @@ package com.appboy.unity.utils;
 
 import android.content.Context;
 
-import com.appboy.Appboy;
 import com.appboy.models.IInAppMessage;
 import com.appboy.models.IInAppMessageImmersive;
 import com.appboy.models.MessageButton;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
 
 public class InAppMessageUtils {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(InAppMessageUtils.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageUtils.class);
 
   public static IInAppMessage inAppMessageFromString(Context context, String messageJSONString) {
-    return Appboy.getInstance(context).deserializeInAppMessageString(messageJSONString);
+    return Braze.getInstance(context).deserializeInAppMessageString(messageJSONString);
   }
 
   public static void logInAppMessageClick(IInAppMessage inAppMessage) {
     if (inAppMessage != null) {
       inAppMessage.logClick();
     } else {
-      AppboyLogger.w(TAG, "The in-app message is null, Not logging in-app message click.");
+      BrazeLogger.w(TAG, "The in-app message is null, Not logging in-app message click.");
     }
   }
 
   public static void logInAppMessageButtonClick(IInAppMessage inAppMessage, int buttonId) {
     if (inAppMessage == null) {
-      AppboyLogger.w(TAG, "The in-app message is null. Not logging in-app message button click.");
+      BrazeLogger.w(TAG, "The in-app message is null. Not logging in-app message button click.");
       return;
     }
     if (inAppMessage instanceof IInAppMessageImmersive) {
@@ -37,7 +37,7 @@ public class InAppMessageUtils {
         }
       }
     } else {
-      AppboyLogger.w(TAG, "The in-app message %s isn't an instance of "
+      BrazeLogger.w(TAG, "The in-app message %s isn't an instance of "
           + "InAppMessageImmersive. Not logging in-app message button click.");
     }
   }
@@ -46,7 +46,7 @@ public class InAppMessageUtils {
     if (inAppMessage != null) {
       inAppMessage.logImpression();
     } else {
-      AppboyLogger.w(TAG, "The in-app message is null, Not logging in-app message impression.");
+      BrazeLogger.w(TAG, "The in-app message is null, Not logging in-app message impression.");
     }
   }
 }

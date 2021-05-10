@@ -3,18 +3,18 @@ package com.braze.googletagmanager;
 import android.app.Application;
 import android.util.Log;
 
-import com.appboy.Appboy;
 import com.appboy.AppboyLifecycleCallbackListener;
-import com.appboy.configuration.AppboyConfig;
-import com.appboy.support.AppboyLogger;
+import com.braze.Braze;
+import com.braze.configuration.BrazeConfig;
+import com.braze.support.BrazeLogger;
 
 public class GtmApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    AppboyLogger.setLogLevel(Log.VERBOSE);
+    BrazeLogger.setLogLevel(Log.VERBOSE);
     BrazeGtmTagProvider.setApplicationContext(this.getApplicationContext());
-    Appboy.configure(this.getApplicationContext(), new AppboyConfig.Builder()
+    Braze.configure(this.getApplicationContext(), new BrazeConfig.Builder()
         .setApiKey("4149fcbf-ee7a-45a8-8e89-e17e9fec1306")
         .setFirebaseCloudMessagingSenderIdKey("901477453852")
         .setIsFirebaseCloudMessagingRegistrationEnabled(true)

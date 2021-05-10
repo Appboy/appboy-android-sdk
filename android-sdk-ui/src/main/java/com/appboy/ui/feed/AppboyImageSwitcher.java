@@ -8,11 +8,11 @@ import android.widget.ImageSwitcher;
 
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
+import com.braze.support.BrazeLogger;
 
 public class AppboyImageSwitcher extends ImageSwitcher {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(AppboyImageSwitcher.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(AppboyImageSwitcher.class);
 
   private Drawable mReadIcon;
   private Drawable mUnReadIcon;
@@ -44,7 +44,7 @@ public class AppboyImageSwitcher extends ImageSwitcher {
       }
       typedArray.recycle();
     } catch (Exception e) {
-      AppboyLogger.w(TAG, "Error while checking for custom drawable.", e);
+      BrazeLogger.w(TAG, "Error while checking for custom drawable.", e);
     }
   }
 

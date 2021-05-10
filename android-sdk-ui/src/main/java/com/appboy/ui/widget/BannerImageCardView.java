@@ -4,13 +4,13 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.appboy.models.cards.BannerImageCard;
-import com.appboy.support.AppboyLogger;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
+import com.braze.support.BrazeLogger;
 
 public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
-  private static final String TAG = AppboyLogger.getBrazeLogTag(BannerImageCardView.class);
+  private static final String TAG = BrazeLogger.getBrazeLogTag(BannerImageCardView.class);
   private final ImageView mImage;
   private IAction mCardAction;
 
