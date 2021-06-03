@@ -37,6 +37,7 @@ com.braze.configuration
 com.braze.enums
 com.braze.images
 com.braze.models
+com.braze.models.outgoing
 com.braze.receivers
 com.braze.storage
 com.braze.support
