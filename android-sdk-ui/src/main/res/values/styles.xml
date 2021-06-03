@@ -102,7 +102,7 @@
     <item name="android:layout_height">20dp</item>
     <item name="android:layout_width">20dp</item>
     <item name="android:layout_alignParentRight">true</item>
-    <item name="android:background">@drawable/com_appboy_inappmessage_button_close</item>
+    <item name="android:background">@drawable/com_appboy_inappmessage_close_button_selector</item>
     <item name="android:layout_marginRight">15dp</item>
     <item name="android:layout_marginTop">15dp</item>
     <item name="android:foreground">?android:attr/selectableItemBackgroundBorderless</item>

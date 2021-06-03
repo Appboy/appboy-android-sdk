@@ -1,3 +1,14 @@
+## 14.0.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v14.0.1)
+
+##### Fixed
+- Fixed an issue with `BrazeProperties` not being kept via proguard rules.
+- Fixed an issue on TV integrations where in app messages wouldn't properly be given focus when visible.
+
+##### Added
+- Added close icon highlighting for TV integrations when selecting the close button in In App Messages.
+
 ## 14.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v14.0.0)

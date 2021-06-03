@@ -12,38 +12,29 @@ public class EventSubscriberFactory {
   private static final String TAG = BrazeLogger.getBrazeLogTag(EventSubscriberFactory.class);
 
   public static IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber(final UnityConfigurationProvider unityConfigurationProvider) {
-    return new IEventSubscriber<InAppMessageEvent>() {
-      @Override
-      public void trigger(InAppMessageEvent inAppMessageEvent) {
-        String unityGameObjectName = unityConfigurationProvider.getInAppMessageListenerGameObjectName();
-        String unityCallbackFunctionName = unityConfigurationProvider.getInAppMessageListenerCallbackMethodName();
-        boolean isInAppMessageEventSent = MessagingUtils.sendInAppMessageReceivedMessage(unityGameObjectName, unityCallbackFunctionName, inAppMessageEvent.getInAppMessage());
-        BrazeLogger.d(TAG, (isInAppMessageEventSent ? "Successfully sent" : "Failure to send") + " in-app message event to Unity Player");
-      }
+    return inAppMessageEvent -> {
+      String unityGameObjectName = unityConfigurationProvider.getInAppMessageListenerGameObjectName();
+      String unityCallbackFunctionName = unityConfigurationProvider.getInAppMessageListenerCallbackMethodName();
+      boolean isInAppMessageEventSent = MessagingUtils.sendInAppMessageReceivedMessage(unityGameObjectName, unityCallbackFunctionName, inAppMessageEvent.getInAppMessage());
+      BrazeLogger.d(TAG, (isInAppMessageEventSent ? "Successfully sent" : "Failure to send") + " in-app message event to Unity Player");
     };
   }
 
   public static IEventSubscriber<FeedUpdatedEvent> createFeedUpdatedEventSubscriber(final UnityConfigurationProvider unityConfigurationProvider) {
-    return new IEventSubscriber<FeedUpdatedEvent>() {
-      @Override
-      public void trigger(FeedUpdatedEvent feedUpdatedEvent) {
-        String unityGameObjectName = unityConfigurationProvider.getFeedListenerGameObjectName();
-        String unityCallbackFunctionName = unityConfigurationProvider.getFeedListenerCallbackMethodName();
-        boolean isFeedUpdatedEventSent = MessagingUtils.sendFeedUpdatedEventToUnity(unityGameObjectName, unityCallbackFunctionName, feedUpdatedEvent);
-        BrazeLogger.d(TAG, (isFeedUpdatedEventSent ? "Successfully sent" : "Failure to send") + " Feed updated event to Unity Player");
-      }
+    return feedUpdatedEvent -> {
+      String unityGameObjectName = unityConfigurationProvider.getFeedListenerGameObjectName();
+      String unityCallbackFunctionName = unityConfigurationProvider.getFeedListenerCallbackMethodName();
+      boolean isFeedUpdatedEventSent = MessagingUtils.sendFeedUpdatedEventToUnity(unityGameObjectName, unityCallbackFunctionName, feedUpdatedEvent);
+      BrazeLogger.d(TAG, (isFeedUpdatedEventSent ? "Successfully sent" : "Failure to send") + " Feed updated event to Unity Player");
     };
   }
 
   public static IEventSubscriber<ContentCardsUpdatedEvent> createContentCardsEventSubscriber(final UnityConfigurationProvider unityConfigurationProvider) {
-    return new IEventSubscriber<ContentCardsUpdatedEvent>() {
-      @Override
-      public void trigger(ContentCardsUpdatedEvent contentCardsUpdatedEvent) {
-        String unityGameObjectName = unityConfigurationProvider.getContentCardsUpdatedListenerGameObjectName();
-        String unityCallbackFunctionName = unityConfigurationProvider.getContentCardsUpdatedListenerCallbackMethodName();
-        boolean isContentCardsEventSent = MessagingUtils.sendContentCardsUpdatedEventToUnity(unityGameObjectName, unityCallbackFunctionName, contentCardsUpdatedEvent);
-        BrazeLogger.d(TAG, (isContentCardsEventSent ? "Successfully sent" : "Failure to send") + " Content Cards updated event to Unity Player");
-      }
+    return contentCardsUpdatedEvent -> {
+      String unityGameObjectName = unityConfigurationProvider.getContentCardsUpdatedListenerGameObjectName();
+      String unityCallbackFunctionName = unityConfigurationProvider.getContentCardsUpdatedListenerCallbackMethodName();
+      boolean isContentCardsEventSent = MessagingUtils.sendContentCardsUpdatedEventToUnity(unityGameObjectName, unityCallbackFunctionName, contentCardsUpdatedEvent);
+      BrazeLogger.d(TAG, (isContentCardsEventSent ? "Successfully sent" : "Failure to send") + " Content Cards updated event to Unity Player");
     };
   }
 }

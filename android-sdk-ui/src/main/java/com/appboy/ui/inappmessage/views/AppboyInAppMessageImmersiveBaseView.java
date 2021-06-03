@@ -101,6 +101,13 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
         closeButton.setNextFocusRightId(primaryId);
         closeButton.setNextFocusLeftId(primaryId);
         break;
+      case 0:
+        // Have the close button wrap back to itself
+        closeButton.setNextFocusUpId(closeButtonId);
+        closeButton.setNextFocusDownId(closeButtonId);
+        closeButton.setNextFocusRightId(closeButtonId);
+        closeButton.setNextFocusLeftId(closeButtonId);
+        break;
       default:
         BrazeLogger.w(TAG, "Cannot setup directional navigation. Got unsupported number of buttons: " + numButtons);
     }
@@ -113,10 +120,11 @@ public abstract class AppboyInAppMessageImmersiveBaseView extends AppboyInAppMes
     this.setNextFocusLeftId(defaultFocusId);
 
     // Request focus for the default view
-    defaultFocusView.requestFocus();
+    View finalDefaultFocusView = defaultFocusView;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      defaultFocusView.setFocusedByDefault(true);
+      finalDefaultFocusView.setFocusedByDefault(true);
     }
+    finalDefaultFocusView.post(() -> finalDefaultFocusView.requestFocus());
   }
 
   public void setMessageButtons(@NonNull List<MessageButton> messageButtons) {

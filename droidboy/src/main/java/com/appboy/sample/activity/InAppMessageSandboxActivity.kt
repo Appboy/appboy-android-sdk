@@ -10,6 +10,7 @@ import com.appboy.models.InAppMessageModal
 import com.appboy.models.MessageButton
 import com.appboy.sample.R
 import com.appboy.ui.inappmessage.AppboyInAppMessageManager
+import java.util.*
 
 /**
  * Activity whose sole purpose is to host a button that shows a basic IAM on screen.
@@ -20,17 +21,23 @@ class InAppMessageSandboxActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_in_app_message_sandbox)
 
-    findViewById<View>(R.id.bSandboxDisplayMessage).setOnClickListener { this.displayMessage() }
+    findViewById<View>(R.id.bSandboxDisplayMessage2).setOnClickListener { this.displayMessage(2) }
+    findViewById<View>(R.id.bSandboxDisplayMessage1).setOnClickListener { this.displayMessage(1) }
+    findViewById<View>(R.id.bSandboxDisplayMessage0).setOnClickListener { this.displayMessage(0) }
     findViewById<View>(R.id.bSandboxDummyButton).setOnClickListener { Toast.makeText(this, "dummy button pressed!", Toast.LENGTH_SHORT).show() }
   }
 
-  private fun displayMessage() {
+  private fun displayMessage(numButtons: Int) {
     // Create the message
     val modal = InAppMessageModal()
     modal.header = "hello"
     modal.message = "world"
     modal.imageUrl = getString(R.string.appboy_image_url_1600w_500h)
     modal.dismissType = DismissType.MANUAL
+
+    val rnd = Random()
+    val randomColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+    modal.closeButtonColor = randomColor
 
     val button1 = MessageButton()
     button1.text = "Button 1"
@@ -42,7 +49,10 @@ class InAppMessageSandboxActivity : AppCompatActivity() {
     button2.borderColor = Color.CYAN
     button2.backgroundColor = Color.BLUE
 
-    modal.messageButtons = listOf(button1, button2)
+    when (numButtons) {
+      2 -> modal.messageButtons = listOf(button1, button2)
+      1 -> modal.messageButtons = listOf(button1)
+    }
     AppboyInAppMessageManager.getInstance().addInAppMessage(modal)
     AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage()
   }

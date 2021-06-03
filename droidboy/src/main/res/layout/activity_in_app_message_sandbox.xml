@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  tools:ignore="HardcodedText" >
   <Button
-    android:id="@+id/bSandboxDisplayMessage"
+    android:id="@+id/bSandboxDisplayMessage0"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginBottom="50dp"
-    android:nextFocusRight="@id/bSandboxDisplayMessage"
-    android:text="@string/display_message" />
+    android:layout_marginBottom="32dp"
+    android:text="0 buttons"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/bSandboxDisplayMessage1"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent" />
+  <Button
+    android:id="@+id/bSandboxDisplayMessage1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="1 Button"
+    app:layout_constraintBottom_toBottomOf="@+id/bSandboxDisplayMessage0"
+    app:layout_constraintEnd_toStartOf="@+id/bSandboxDisplayMessage2"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/bSandboxDisplayMessage0" />
+  <Button
+    android:id="@+id/bSandboxDisplayMessage2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="2 Buttons"
+    app:layout_constraintBottom_toBottomOf="@+id/bSandboxDisplayMessage1"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/bSandboxDisplayMessage1"/>
   <Button
     android:id="@+id/bSandboxDummyButton"
-    android:nextFocusLeft="@id/bSandboxDummyButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_above="@+id/bSandboxDisplayMessage"
-    android:layout_marginBottom="65dp"
-    android:layout_marginLeft="50dp"
-    android:text="@string/dummy_button"
-    tools:ignore="RtlHardcoded" />
-</RelativeLayout>
+    android:layout_marginStart="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginBottom="128dp"
+    android:text="Dummy Button!"
+    app:layout_constraintBottom_toTopOf="@+id/bSandboxDisplayMessage0"
+    app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

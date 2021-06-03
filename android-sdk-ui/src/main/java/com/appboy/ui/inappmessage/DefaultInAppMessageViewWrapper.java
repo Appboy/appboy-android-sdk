@@ -436,7 +436,22 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
   protected void finalizeViewBeforeDisplay(final IInAppMessage inAppMessage,
                                            final View inAppMessageView,
                                            final IInAppMessageViewLifecycleListener inAppMessageViewLifecycleListener) {
-    ViewUtils.setFocusableInTouchModeAndRequestFocus(inAppMessageView);
+    if (ViewUtils.isDeviceNotInTouchMode(inAppMessageView)) {
+      // Special behavior usual to TV environments
+
+      // For views with defined directional
+      // behavior, don't steal focus from them
+      switch (inAppMessage.getMessageType()) {
+        case MODAL:
+        case FULL:
+          break;
+        default:
+          ViewUtils.setFocusableInTouchModeAndRequestFocus(inAppMessageView);
+      }
+    } else {
+      ViewUtils.setFocusableInTouchModeAndRequestFocus(inAppMessageView);
+    }
+
     announceForAccessibilityIfNecessary();
     inAppMessageViewLifecycleListener.afterOpened(inAppMessageView, inAppMessage);
   }

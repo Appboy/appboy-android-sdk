@@ -29,6 +29,8 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
   // Content Cards
   private static final String CONTENT_CARDS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY = "com_appboy_content_cards_updated_listener_game_object_name";
   private static final String CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_appboy_content_cards_updated_listener_callback_method_name";
+  // Pending push intents
+  private static final String DELAY_SENDING_PUSH_MESSAGES_KEY = "com_braze_delay_sending_push_intents";
 
   public UnityConfigurationProvider(Context context) {
     super(context, false);
@@ -84,6 +86,10 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
 
   public String getContentCardsUpdatedListenerCallbackMethodName() {
     return getStringValue(CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY, null);
+  }
+
+  public boolean getDelaySendingPushMessages() {
+    return getBooleanValue(DELAY_SENDING_PUSH_MESSAGES_KEY, false);
   }
 
   public void configureListener(int messageTypeValue, String gameObject, String methodName) {
