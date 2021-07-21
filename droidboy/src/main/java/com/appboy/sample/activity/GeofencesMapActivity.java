@@ -6,9 +6,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.appboy.sample.R;
-import com.appboy.support.StringUtils;
 import com.braze.models.BrazeGeofence;
 import com.braze.support.BrazeLogger;
+import com.braze.support.StringUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

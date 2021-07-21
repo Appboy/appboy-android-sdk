@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="Appboy.Push.InlineImage.TextArea.Header.AppIcon">
+  <style name="Braze.Push.InlineImage.TextArea.Header.AppIcon">
     <item name="android:layout_width">18dp</item>
     <item name="android:layout_height">18dp</item>
     <item name="android:layout_marginRight">3dp</item>

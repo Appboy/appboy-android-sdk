@@ -4,5 +4,5 @@
   <string name="com_appboy_feed_empty">ليس لدينا أي تحديث. يرجى التحقق مرة أخرى لاحقاً.</string>
   <string name="com_appboy_feed_connection_error_title">خلل في الاتصال</string>
   <string name="com_appboy_feed_connection_error_body">لا يمكن إجراء الاتصال بالشبكة. يرجى تكرار المحاولة لاحقا. </string>
-  <string name="com_appboy_inappmessage_close_content_description">لإغلاق</string>
+  <string name="com_braze_inappmessage_close_content_description">لإغلاق</string>
 </resources>

@@ -4,8 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.appboy.AppboyLifecycleCallbackListener;
 import com.braze.Braze;
+import com.braze.BrazeActivityLifecycleCallbackListener;
 import com.braze.configuration.BrazeConfig;
 import com.braze.support.BrazeLogger;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -27,7 +27,7 @@ public class FirebaseApplication extends Application {
 
     Braze.configure(this, appboyConfig.build());
 
-    registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
+    registerActivityLifecycleCallbacks(new BrazeActivityLifecycleCallbackListener());
     BrazeLogger.setLogLevel(Log.VERBOSE);
 
     // Example of how to register for Firebase Cloud Messaging manually.

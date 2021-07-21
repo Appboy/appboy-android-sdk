@@ -37,13 +37,13 @@ import com.appboy.sample.activity.settings.SettingsFragment;
 import com.appboy.sample.util.EnvironmentUtils;
 import com.appboy.sample.util.RuntimePermissionUtils;
 import com.appboy.sample.util.ViewUtils;
-import com.appboy.support.PermissionUtils;
-import com.appboy.support.StringUtils;
-import com.appboy.ui.AppboyContentCardsFragment;
 import com.appboy.ui.AppboyFeedFragment;
 import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
 import com.braze.support.BrazeLogger;
+import com.braze.support.PermissionUtils;
+import com.braze.support.StringUtils;
+import com.braze.ui.contentcards.ContentCardsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -152,7 +152,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     Adapter adapter = new Adapter(getSupportFragmentManager());
     adapter.addFragment(new MainFragment(), "Main");
     adapter.addFragment(new InAppMessageTesterFragment(), getString(R.string.inappmessage_tester_tab_title));
-    adapter.addFragment(new AppboyContentCardsFragment(), "Content Cards");
+    adapter.addFragment(new ContentCardsFragment(), "Content Cards");
     adapter.addFragment(new PushTesterFragment(), "Push");
     adapter.addFragment(new SettingsFragment(), getString(R.string.settings_fragment_tab_title));
     viewPager.setAdapter(adapter);

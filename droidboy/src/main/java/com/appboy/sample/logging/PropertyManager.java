@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
-import com.appboy.support.StringUtils;
 import com.braze.support.BrazeLogger;
+import com.braze.support.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

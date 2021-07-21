@@ -4,14 +4,14 @@
       android:id="@+id/com_appboy_captioned_image_card_imageview_stub"
       android:layout="@layout/com_appboy_stubbed_feed_image_view"
       android:inflatedId="@+id/com_appboy_captioned_image_card_image"
-      style="@style/Appboy.Cards.CaptionedImage.Image"/>
+      style="@style/Braze.Cards.CaptionedImage.Image"/>
 
     <RelativeLayout
         android:id="@+id/com_appboy_captioned_image_card_title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/com_appboy_captioned_image_card_image"
-        style="@style/Appboy.Cards.CaptionedImage.Title.Container">
+        style="@style/Braze.Cards.CaptionedImage.Title.Container">
         <include layout="@layout/com_appboy_feed_read_indicator_holder"/>
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_marginRight="10.0dp"
             android:layout_marginTop="11.0dp"
             android:layout_marginBottom="11.0dp"
-            style="@style/Appboy.Cards.CaptionedImage.Title"/>
+            style="@style/Braze.Cards.CaptionedImage.Title"/>
     </RelativeLayout>
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_marginLeft="10.0dp"
         android:layout_marginRight="10.0dp"
         android:layout_marginTop="8.0dp"
-        style="@style/Appboy.Cards.CaptionedImage.Description"/>
+        style="@style/Braze.Cards.CaptionedImage.Description"/>
 
     <!-- Optional -->
     <TextView
@@ -43,5 +43,5 @@
         android:layout_below="@id/com_appboy_captioned_image_description"
         android:layout_marginLeft="10.0dp"
         android:layout_marginRight="10.0dp"
-        style="@style/Appboy.Cards.CaptionedImage.Domain"/>
+        style="@style/Braze.Cards.CaptionedImage.Domain"/>
 </merge>

@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
+import com.appboy.unity.enums.UnityInAppMessageManagerAction;
 import com.braze.Braze;
+import com.braze.models.inappmessage.IInAppMessage;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.activities.ContentCardsActivity;
+import com.braze.ui.inappmessage.BrazeInAppMessageManager;
+import com.braze.ui.inappmessage.InAppMessageOperation;
+import com.braze.ui.inappmessage.listeners.DefaultInAppMessageManagerListener;
 
 /**
  * This class allows UnityPlayerNativeActivity and UnityPlayerActivity instances to
@@ -42,7 +47,7 @@ public class AppboyUnityActivityWrapper {
   public void onResumeCalled(Activity activity) {
     UnityConfigurationProvider unityConfigurationProvider = getUnityConfigurationProvider(activity);
     if (unityConfigurationProvider.getShowInAppMessagesAutomaticallyKey()) {
-      AppboyInAppMessageManager.getInstance().registerInAppMessageManager(activity);
+      BrazeInAppMessageManager.getInstance().registerInAppMessageManager(activity);
     }
   }
 
@@ -52,7 +57,7 @@ public class AppboyUnityActivityWrapper {
   public void onPauseCalled(Activity activity) {
     UnityConfigurationProvider unityConfigurationProvider = getUnityConfigurationProvider(activity);
     if (unityConfigurationProvider.getShowInAppMessagesAutomaticallyKey()) {
-      AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
+      BrazeInAppMessageManager.getInstance().unregisterInAppMessageManager(activity);
     }
   }
 
@@ -70,6 +75,34 @@ public class AppboyUnityActivityWrapper {
     // If the Activity is already open and we receive an intent to open the Activity again, we set
     // the new intent as the current one (which has the new intent extras).
     activity.setIntent(intent);
+  }
+
+  public void onNewUnityInAppMessageManagerAction(int actionEnumValue) {
+    UnityInAppMessageManagerAction action = UnityInAppMessageManagerAction.getTypeFromValue(actionEnumValue);
+
+    switch (action) {
+      case IAM_DISPLAY_NOW:
+      case IAM_DISPLAY_LATER:
+      case IAM_DISCARD:
+        BrazeInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new DefaultInAppMessageManagerListener() {
+          @Override
+          public InAppMessageOperation beforeInAppMessageDisplayed(IInAppMessage inAppMessage) {
+            super.beforeInAppMessageDisplayed(inAppMessage);
+            return action.getInAppMessageOperation();
+          }
+        });
+        break;
+      case REQUEST_IAM_DISPLAY:
+        BrazeInAppMessageManager.getInstance().requestDisplayInAppMessage();
+        break;
+      case UNKNOWN:
+      default:
+        // Do nothing
+    }
+  }
+
+  public void launchContentCardsActivity(Activity activity) {
+    activity.startActivity(new Intent(activity, ContentCardsActivity.class));
   }
 
   private UnityConfigurationProvider getUnityConfigurationProvider(Activity activity) {

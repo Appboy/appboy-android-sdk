@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/Braze.ContentCards.BannerImage.Root">
+    <ImageView
+      android:id="@+id/com_braze_content_cards_banner_image_card_image"
+      style="@style/Braze.ContentCards.BannerImage.Image"/>
+
+    <ImageView
+      android:id="@+id/com_braze_content_cards_pinned_icon"
+      style="@style/Braze.ContentCards.PinnedIcon.Banner"/>
+
+    <View
+      android:id="@+id/com_braze_content_cards_unread_bar"
+      style="@style/Braze.ContentCards.UnreadBar.Banner"/>
+</RelativeLayout>

@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.braze.Braze;
+import com.braze.ui.inappmessage.BrazeInAppMessageManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,16 +27,16 @@ public class MainActivity extends AppCompatActivity {
   @Override
   public void onResume() {
     super.onResume();
-    // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
+    // Registers the BrazeInAppMessageManager for the current Activity. This Activity will now listen for
     // in-app messages from Braze.
-    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
+    BrazeInAppMessageManager.getInstance().registerInAppMessageManager(this);
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    // Unregisters the AppboyInAppMessageManager.
-    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
+    // Unregisters the BrazeInAppMessageManager.
+    BrazeInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
   }
 
   @Override

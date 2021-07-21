@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/com_braze_inline_image_push_layout"
+  tools:ignore="RtlHardcoded"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  style="@style/Braze.Push.InlineImage.Layout">
+  <LinearLayout
+    android:id="@+id/com_braze_inline_image_push_text_area"
+    style="@style/Braze.Push.InlineImage.TextArea.Layout">
+    <LinearLayout
+      android:id="@+id/com_braze_inline_image_push_text_area_header_layout"
+      style="@style/Braze.Push.InlineImage.TextArea.Header.Layout">
+      <ImageView
+        android:id="@+id/com_braze_inline_image_push_app_icon"
+        style="@style/Braze.Push.InlineImage.TextArea.Header.AppIcon"
+        tools:src="@tools:sample/avatars"
+        tools:ignore="ContentDescription" />
+      <TextView
+        android:id="@+id/com_braze_inline_image_push_app_name_text"
+        style="@style/Braze.Push.InlineImage.TextArea.Header.AppNameText"
+        tools:text="Droidboy" />
+      <TextView
+        android:id="@+id/com_braze_inline_image_push_header_text_divider"
+        style="@style/Braze.Push.InlineImage.TextArea.Header.TextDivider" />
+      <TextView
+        android:id="@+id/com_braze_inline_image_push_time_text"
+        style="@style/Braze.Push.InlineImage.TextArea.Header.TimeText"
+        tools:text="11:51 PM" />
+    </LinearLayout>
+    <LinearLayout
+      android:id="@+id/com_braze_inline_image_title_content_layout"
+      style="@style/Braze.Push.InlineImage.TextArea.TitleContent.Layout">
+      <TextView
+        android:id="@+id/com_braze_inline_image_push_title_text"
+        style="@style/Braze.Push.InlineImage.TextArea.TitleContent.TitleText"
+        tools:text="Push Notification Title Goes Here" />
+      <TextView
+        android:id="@+id/com_braze_inline_image_push_content_text"
+        style="@style/Braze.Push.InlineImage.TextArea.TitleContent.ContentText"
+        tools:text="Notification Content Goes Here" />
+    </LinearLayout>
+  </LinearLayout>
+  <ImageView
+    android:id="@+id/com_braze_inline_image_push_side_image"
+    tools:src="@tools:sample/backgrounds/scenic"
+    tools:layout_width="48dp"
+    tools:layout_height="96dp"
+    style="@style/Braze.Push.InlineImage.Image.ImageContent"
+    tools:ignore="ContentDescription" />
+</LinearLayout>

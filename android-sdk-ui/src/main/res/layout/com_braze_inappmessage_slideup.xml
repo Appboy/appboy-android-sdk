@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.braze.ui.inappmessage.views.InAppMessageSlideupView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_braze_inappmessage_slideup"
+    style="@style/Braze.InAppMessage.Slideup">
+    <RelativeLayout
+      android:id="@+id/com_braze_inappmessage_slideup_container"
+      style="@style/Braze.InAppMessage.Slideup.Container">
+        <RelativeLayout
+            android:id="@+id/com_braze_inappmessage_slideup_image_layout"
+            style="@style/Braze.InAppMessage.Slideup.ImageContainer">
+            <com.braze.ui.inappmessage.views.InAppMessageImageView
+                android:id="@+id/com_braze_inappmessage_slideup_imageview"
+                style="@style/Braze.InAppMessage.Image.Slideup"/>
+            <TextView
+                android:id="@+id/com_braze_inappmessage_slideup_icon"
+                style="@style/Braze.InAppMessage.Icon.Slideup"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/com_braze_inappmessage_slideup_message"
+            style="@style/Braze.InAppMessage.Message.Slideup"/>
+        <ImageView
+            android:id="@+id/com_braze_inappmessage_slideup_chevron"
+            style="@style/Braze.InAppMessage.Chevron.Slideup"/>
+    </RelativeLayout>
+</com.braze.ui.inappmessage.views.InAppMessageSlideupView>

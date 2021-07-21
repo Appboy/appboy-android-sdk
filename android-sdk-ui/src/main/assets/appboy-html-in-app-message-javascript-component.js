@@ -50,7 +50,9 @@ var brazeBridge = {
     },
     setCustomLocationAttribute: function(key, latitude, longitude) { brazeInternalBridge.getUser().setCustomLocationAttribute(key, latitude, longitude); },
     setLanguage: function(language) { brazeInternalBridge.getUser().setLanguage(language); },
-    addAlias: function(alias, label) { brazeInternalBridge.getUser().addAlias(alias, label); }
+    addAlias: function(alias, label) { brazeInternalBridge.getUser().addAlias(alias, label); },
+    addToSubscriptionGroup: function(subscriptionGroupId) { brazeInternalBridge.getUser().addToSubscriptionGroup(subscriptionGroupId); },
+    removeFromSubscriptionGroup: function(subscriptionGroupId) { brazeInternalBridge.getUser().removeFromSubscriptionGroup(subscriptionGroupId); }
   },
   getUser: function() {
     return this.brazeBridgeUserObject;

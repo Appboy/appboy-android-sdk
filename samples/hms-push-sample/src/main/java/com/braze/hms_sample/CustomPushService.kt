@@ -1,8 +1,8 @@
 package com.braze.hms_sample
 
 import android.util.Log
-import com.appboy.push.AppboyHuaweiPushHandler
 import com.braze.Braze
+import com.braze.push.BrazeHuaweiPushHandler
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.push.HmsMessageService
@@ -26,7 +26,7 @@ class CustomPushService: HmsMessageService() {
   override fun onMessageReceived(hmsRemoteMessage: RemoteMessage?) {
     super.onMessageReceived(hmsRemoteMessage)
 
-    if (AppboyHuaweiPushHandler.handleHmsRemoteMessageData(applicationContext, hmsRemoteMessage?.dataOfMap)) {
+    if (BrazeHuaweiPushHandler.handleHmsRemoteMessageData(applicationContext, hmsRemoteMessage?.dataOfMap)) {
       Log.i(TAG, "Braze has handled Huawei push notification.")
     }
   }

@@ -20,10 +20,10 @@ import com.appboy.enums.Gender;
 import com.appboy.enums.Month;
 import com.appboy.sample.dialog.CustomDialogBase;
 import com.appboy.sample.util.ButtonUtils;
-import com.appboy.support.StringUtils;
 import com.braze.Braze;
 import com.braze.BrazeUser;
 import com.braze.support.BrazeLogger;
+import com.braze.support.StringUtils;
 
 import java.util.Calendar;
 

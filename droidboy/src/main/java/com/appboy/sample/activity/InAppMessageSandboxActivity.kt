@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.appboy.enums.inappmessage.DismissType
-import com.appboy.models.InAppMessageModal
-import com.appboy.models.MessageButton
 import com.appboy.sample.R
-import com.appboy.ui.inappmessage.AppboyInAppMessageManager
+import com.braze.enums.inappmessage.DismissType
+import com.braze.models.inappmessage.InAppMessageModal
+import com.braze.models.inappmessage.MessageButton
+import com.braze.ui.inappmessage.BrazeInAppMessageManager
 import java.util.*
 
 /**
@@ -53,7 +53,7 @@ class InAppMessageSandboxActivity : AppCompatActivity() {
       2 -> modal.messageButtons = listOf(button1, button2)
       1 -> modal.messageButtons = listOf(button1)
     }
-    AppboyInAppMessageManager.getInstance().addInAppMessage(modal)
-    AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage()
+    BrazeInAppMessageManager.getInstance().addInAppMessage(modal)
+    BrazeInAppMessageManager.getInstance().requestDisplayInAppMessage()
   }
 }

@@ -13,13 +13,13 @@ import androidx.annotation.VisibleForTesting;
 import com.appboy.Constants;
 import com.appboy.IAppboyNavigator;
 import com.appboy.enums.Channel;
-import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.AppboyWebViewActivity;
-import com.appboy.ui.support.UriUtils;
 import com.braze.configuration.BrazeConfigurationProvider;
 import com.braze.support.BrazeFileUtils;
 import com.braze.support.BrazeLogger;
+import com.braze.support.StringUtils;
+import com.braze.ui.BrazeWebViewActivity;
+import com.braze.ui.support.UriUtils;
 
 import java.util.List;
 
@@ -115,7 +115,7 @@ public class UriAction implements IAction {
   }
 
   /**
-   * Opens the remote scheme Uri in {@link AppboyWebViewActivity}.
+   * Opens the remote scheme Uri in {@link BrazeWebViewActivity}.
    */
   protected void openUriWithWebViewActivity(Context context, Uri uri, Bundle extras) {
     Intent intent = getWebViewActivityIntent(context, uri, extras);
@@ -123,7 +123,7 @@ public class UriAction implements IAction {
     try {
       context.startActivity(intent);
     } catch (Exception e) {
-      BrazeLogger.e(TAG, "Appboy AppboyWebViewActivity not opened successfully.", e);
+      BrazeLogger.e(TAG, "BrazeWebViewActivity not opened successfully.", e);
     }
   }
 
@@ -141,7 +141,7 @@ public class UriAction implements IAction {
   }
 
   /**
-   * Opens the remote scheme Uri in {@link AppboyWebViewActivity} while also populating the back stack.
+   * Opens the remote scheme Uri in {@link BrazeWebViewActivity} while also populating the back stack.
    *
    * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
    */
@@ -172,7 +172,7 @@ public class UriAction implements IAction {
   }
 
   /**
-   * Returns an intent that opens the uri inside of a {@link AppboyWebViewActivity}.
+   * Returns an intent that opens the uri inside of a {@link BrazeWebViewActivity}.
    */
   protected Intent getWebViewActivityIntent(Context context, Uri uri, Bundle extras) {
     BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(context);
@@ -186,7 +186,7 @@ public class UriAction implements IAction {
       webViewActivityIntent = new Intent()
           .setClassName(context, customWebViewActivityClassName);
     } else {
-      webViewActivityIntent = new Intent(context, AppboyWebViewActivity.class);
+      webViewActivityIntent = new Intent(context, BrazeWebViewActivity.class);
     }
 
     if (extras != null) {

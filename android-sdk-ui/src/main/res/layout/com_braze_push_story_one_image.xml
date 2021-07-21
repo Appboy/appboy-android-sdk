@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+  <LinearLayout
+      android:id="@+id/com_braze_story_full_layout"
+      style="@style/Braze.Story.FullLayout">
+    <RelativeLayout
+        android:id="@+id/com_braze_story_relative_layout"
+        style="@style/Braze.Story.OneImageLayout">
+      <ImageView
+          android:id="@+id/com_braze_story_image_view"
+          style="@style/Braze.Story.ImageView.OneImage"/>
+      <ImageButton
+          android:id="@+id/com_braze_story_button_previous"
+          style="@style/Braze.Story.ImageButton.OneImage.Left"/>
+      <ImageButton
+          android:id="@+id/com_braze_story_button_next"
+          style="@style/Braze.Story.ImageButton.OneImage.Right"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/com_braze_story_text_view_container"
+        style="@style/Braze.Story.TextViewContainer.Title.OneImage">
+      <TextView
+          android:id="@+id/com_braze_story_text_view"
+          style="@style/Braze.Story.TextView.Title.OneImage"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/com_braze_story_text_view_small_container"
+        style="@style/Braze.Story.TextViewContainer.Subtitle.OneImage">
+      <TextView
+          android:id="@+id/com_braze_story_text_view_small"
+          style="@style/Braze.Story.TextView.Subtitle.OneImage"/>
+    </LinearLayout>
+  </LinearLayout>
+</FrameLayout>

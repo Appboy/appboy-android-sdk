@@ -9,7 +9,7 @@
         <ViewStub
             android:id="@+id/com_appboy_short_news_card_imageview_stub"
             android:layout="@layout/com_appboy_stubbed_feed_image_view"
-            style="@style/Appboy.Cards.ShortNews.Image"/>
+            style="@style/Braze.Cards.ShortNews.Image"/>
     </LinearLayout>
 
     <View
@@ -25,7 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="10.0dp"
         android:layout_marginTop="8.0dp"
-        style="@style/Appboy.Cards.ShortNews.Title"
+        style="@style/Braze.Cards.ShortNews.Title"
         tools:ignore="RtlHardcoded"/>
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_below="@id/com_appboy_short_news_card_title"
         android:layout_alignLeft="@id/com_appboy_short_news_card_title"
         android:layout_marginRight="10.0dp"
-        style="@style/Appboy.Cards.ShortNews.Description"
+        style="@style/Braze.Cards.ShortNews.Description"
         tools:ignore="RtlHardcoded"/>
 
     <!-- Optional -->
@@ -46,6 +46,6 @@
         android:layout_below="@id/com_appboy_short_news_card_description"
         android:layout_alignLeft="@id/com_appboy_short_news_card_description"
         android:layout_marginRight="10.0dp"
-        style="@style/Appboy.Cards.ShortNews.Domain"
+        style="@style/Braze.Cards.ShortNews.Domain"
         tools:ignore="RtlHardcoded"/>
 </merge>

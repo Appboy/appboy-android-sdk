@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.appboy.models.outgoing.AppboyProperties;
-import com.appboy.support.AppboyLogger;
 import com.braze.Braze;
 import com.braze.BrazeUser;
 import com.braze.support.BrazeLogger;
@@ -109,7 +108,7 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
   private void setCustomAttribute(Map<String, Object> tagParameterMap) {
     BrazeUser brazeUser = Braze.getInstance(sApplicationContext).getCurrentUser();
     if (brazeUser == null) {
-      AppboyLogger.w(TAG, "AppboyUser was null. Returning.");
+      BrazeLogger.w(TAG, "BrazeUser was null. Returning.");
       return;
     }
     String key = String.valueOf(tagParameterMap.get(CUSTOM_ATTRIBUTE_KEY));

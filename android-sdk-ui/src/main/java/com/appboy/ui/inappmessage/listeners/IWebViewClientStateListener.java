@@ -1,10 +1,7 @@
 package com.appboy.ui.inappmessage.listeners;
 
-import android.webkit.WebView;
-
-public interface IWebViewClientStateListener {
-  /**
-   * Fired when {@link android.webkit.WebViewClient#onPageFinished(WebView, String)} has been called.
-   */
-  void onPageFinished();
-}
+/**
+ * @deprecated Please use {@link com.braze.ui.inappmessage.listeners.IWebViewClientStateListener} instead. Deprecated since 6/10/21
+ */
+@Deprecated
+public interface IWebViewClientStateListener extends com.braze.ui.inappmessage.listeners.IWebViewClientStateListener {}

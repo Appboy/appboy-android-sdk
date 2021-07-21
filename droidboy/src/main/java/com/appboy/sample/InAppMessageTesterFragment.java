@@ -19,30 +19,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.appboy.enums.inappmessage.ClickAction;
-import com.appboy.enums.inappmessage.CropType;
-import com.appboy.enums.inappmessage.DismissType;
-import com.appboy.enums.inappmessage.ImageStyle;
-import com.appboy.enums.inappmessage.Orientation;
-import com.appboy.enums.inappmessage.SlideFrom;
-import com.appboy.enums.inappmessage.TextAlign;
-import com.appboy.models.IInAppMessage;
-import com.appboy.models.IInAppMessageHtml;
-import com.appboy.models.IInAppMessageImmersive;
-import com.appboy.models.IInAppMessageWithImage;
-import com.appboy.models.IInAppMessageZippedAssetHtml;
-import com.appboy.models.InAppMessageFull;
-import com.appboy.models.InAppMessageHtml;
-import com.appboy.models.InAppMessageHtmlFull;
-import com.appboy.models.InAppMessageModal;
-import com.appboy.models.InAppMessageSlideup;
-import com.appboy.models.MessageButton;
 import com.appboy.sample.util.SpinnerUtils;
 import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
-import com.appboy.ui.inappmessage.config.AppboyInAppMessageParams;
 import com.braze.Braze;
+import com.braze.enums.inappmessage.ClickAction;
+import com.braze.enums.inappmessage.CropType;
+import com.braze.enums.inappmessage.DismissType;
+import com.braze.enums.inappmessage.ImageStyle;
+import com.braze.enums.inappmessage.Orientation;
+import com.braze.enums.inappmessage.SlideFrom;
+import com.braze.enums.inappmessage.TextAlign;
+import com.braze.models.inappmessage.IInAppMessage;
+import com.braze.models.inappmessage.IInAppMessageHtml;
+import com.braze.models.inappmessage.IInAppMessageImmersive;
+import com.braze.models.inappmessage.IInAppMessageWithImage;
+import com.braze.models.inappmessage.IInAppMessageZippedAssetHtml;
+import com.braze.models.inappmessage.InAppMessageFull;
+import com.braze.models.inappmessage.InAppMessageHtml;
+import com.braze.models.inappmessage.InAppMessageHtmlFull;
+import com.braze.models.inappmessage.InAppMessageModal;
+import com.braze.models.inappmessage.InAppMessageSlideup;
+import com.braze.models.inappmessage.MessageButton;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.inappmessage.BrazeInAppMessageManager;
+import com.braze.ui.inappmessage.config.BrazeInAppMessageParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -174,18 +174,18 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setupCheckbox(view.findViewById(R.id.custom_inappmessage_view_factory_checkbox),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(new CustomInAppMessageViewFactory());
+            BrazeInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(new CustomInAppMessageViewFactory());
           } else {
-            AppboyInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
+            BrazeInAppMessageManager.getInstance().setCustomInAppMessageViewFactory(null);
           }
         });
 
     setupCheckbox(view.findViewById(R.id.custom_inappmessage_manager_listener_checkbox),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(getActivity()));
+            BrazeInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(new CustomInAppMessageManagerListener(getActivity()));
           } else {
-            AppboyInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
+            BrazeInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(null);
           }
         });
 
@@ -201,56 +201,56 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setupCheckbox(view.findViewById(R.id.custom_appboy_graphic_modal_max_size_checkbox),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageParams.setGraphicModalMaxHeightDp(420);
-            AppboyInAppMessageParams.setGraphicModalMaxWidthDp(320);
+            BrazeInAppMessageParams.setGraphicModalMaxHeightDp(420);
+            BrazeInAppMessageParams.setGraphicModalMaxWidthDp(320);
           } else {
-            AppboyInAppMessageParams.setGraphicModalMaxHeightDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
-            AppboyInAppMessageParams.setGraphicModalMaxWidthDp(AppboyInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
+            BrazeInAppMessageParams.setGraphicModalMaxHeightDp(BrazeInAppMessageParams.GRAPHIC_MODAL_MAX_HEIGHT_DP);
+            BrazeInAppMessageParams.setGraphicModalMaxWidthDp(BrazeInAppMessageParams.GRAPHIC_MODAL_MAX_WIDTH_DP);
           }
         });
 
     setupCheckbox(view.findViewById(R.id.custom_appboy_image_radius_checkbox),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageParams.setModalizedImageRadiusDp(0);
+            BrazeInAppMessageParams.setModalizedImageRadiusDp(0);
           } else {
-            AppboyInAppMessageParams.setModalizedImageRadiusDp(AppboyInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
+            BrazeInAppMessageParams.setModalizedImageRadiusDp(BrazeInAppMessageParams.MODALIZED_IMAGE_RADIUS_DP);
           }
         });
 
     setupCheckbox(view.findViewById(R.id.disable_back_button_dismiss_behavior),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(false);
+            BrazeInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(false);
           } else {
-            AppboyInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(true);
+            BrazeInAppMessageManager.getInstance().setBackButtonDismissesInAppMessageView(true);
           }
         });
 
     setupCheckbox(view.findViewById(R.id.enable_tap_outside_modal_dismiss_behavior),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageManager.getInstance().setClickOutsideModalViewDismissInAppMessageView(true);
+            BrazeInAppMessageManager.getInstance().setClickOutsideModalViewDismissInAppMessageView(true);
           } else {
-            AppboyInAppMessageManager.getInstance().setClickOutsideModalViewDismissInAppMessageView(false);
+            BrazeInAppMessageManager.getInstance().setClickOutsideModalViewDismissInAppMessageView(false);
           }
         });
 
     setupCheckbox(view.findViewById(R.id.custom_appboy_animation_checkbox),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(new CustomInAppMessageAnimationFactory());
+            BrazeInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(new CustomInAppMessageAnimationFactory());
           } else {
-            AppboyInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
+            BrazeInAppMessageManager.getInstance().setCustomInAppMessageAnimationFactory(null);
           }
         });
 
     setupCheckbox(view.findViewById(R.id.custom_appboy_html_inappmessage_action_listener_checkbox),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(getContext()));
+            BrazeInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(new CustomHtmlInAppMessageActionListener(getContext()));
           } else {
-            AppboyInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
+            BrazeInAppMessageManager.getInstance().setCustomHtmlInAppMessageActionListener(null);
           }
         });
 
@@ -322,10 +322,10 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     });
 
     Button displayNextInAppMessageButton = view.findViewById(R.id.display_next_inappmessage_button);
-    displayNextInAppMessageButton.setOnClickListener(v -> AppboyInAppMessageManager.getInstance().requestDisplayInAppMessage());
+    displayNextInAppMessageButton.setOnClickListener(v -> BrazeInAppMessageManager.getInstance().requestDisplayInAppMessage());
 
     Button hideCurrentInAppMessageButton = view.findViewById(R.id.hide_current_inappmessage_button);
-    hideCurrentInAppMessageButton.setOnClickListener(v -> AppboyInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false));
+    hideCurrentInAppMessageButton.setOnClickListener(v -> BrazeInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false));
     return view;
   }
 
@@ -382,7 +382,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
    */
   private void addInAppMessageFromString(String serializedInAppMessage) {
     final IInAppMessage inAppMessage = Braze.getInstance(getContext()).deserializeInAppMessageString(serializedInAppMessage);
-    AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
+    BrazeInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
   }
 
   @SuppressWarnings("checkstyle:avoidescapedunicodecharacters")
@@ -443,7 +443,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setMessageTextAlign(inAppMessage);
     setAnimation(inAppMessage);
     setUseWebview(inAppMessage);
-    AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
+    BrazeInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
   }
 
   private void setUseWebview(IInAppMessage inAppMessage) {

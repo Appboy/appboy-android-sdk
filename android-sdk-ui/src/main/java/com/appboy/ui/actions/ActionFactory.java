@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.appboy.enums.Channel;
-import com.appboy.support.StringUtils;
+import com.braze.support.StringUtils;
 
 public class ActionFactory {
 

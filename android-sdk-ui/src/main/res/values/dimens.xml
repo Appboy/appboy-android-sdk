@@ -10,41 +10,41 @@
   <dimen name="com_appboy_card_background_corner_radius">1.0dp</dimen>
   <dimen name="com_appboy_card_background_shadow_radius">2.0dp</dimen>
 
-  <dimen name="com_appboy_content_card_background_border_left">1.0dp</dimen>
-  <dimen name="com_appboy_content_card_background_border_right">1.0dp</dimen>
-  <dimen name="com_appboy_content_card_background_border_top">0.5dp</dimen>
-  <dimen name="com_appboy_content_card_background_border_bottom">1.0dp</dimen>
-  <dimen name="com_appboy_content_card_background_shadow_bottom">1.0dp</dimen>
-  <dimen name="com_appboy_content_card_background_corner_radius">1.0dp</dimen>
-  <dimen name="com_appboy_content_card_background_shadow_radius">2.0dp</dimen>
+  <dimen name="com_braze_content_card_background_border_left">1.0dp</dimen>
+  <dimen name="com_braze_content_card_background_border_right">1.0dp</dimen>
+  <dimen name="com_braze_content_card_background_border_top">0.5dp</dimen>
+  <dimen name="com_braze_content_card_background_border_bottom">1.0dp</dimen>
+  <dimen name="com_braze_content_card_background_shadow_bottom">1.0dp</dimen>
+  <dimen name="com_braze_content_card_background_corner_radius">1.0dp</dimen>
+  <dimen name="com_braze_content_card_background_shadow_radius">2.0dp</dimen>
 
-  <dimen name="com_appboy_content_cards_max_width">380.0dp</dimen>
-  <dimen name="com_appboy_content_cards_divider_height">32dp</dimen>
-  <dimen name="com_appboy_content_cards_divider_left_margin">10dp</dimen>
-  <dimen name="com_appboy_content_cards_divider_right_margin">10dp</dimen>
+  <dimen name="com_braze_content_cards_max_width">380.0dp</dimen>
+  <dimen name="com_braze_content_cards_divider_height">32dp</dimen>
+  <dimen name="com_braze_content_cards_divider_left_margin">10dp</dimen>
+  <dimen name="com_braze_content_cards_divider_right_margin">10dp</dimen>
 
-  <dimen name="com_appboy_content_cards_unread_bar_height">4dp</dimen>
-  <dimen name="com_appboy_content_cards_image_border_radius">3dp</dimen>
+  <dimen name="com_braze_content_cards_unread_bar_height">4dp</dimen>
+  <dimen name="com_braze_content_cards_image_border_radius">3dp</dimen>
 
-  <dimen name="com_appboy_in_app_message_modal_min_width">320dp</dimen>
-  <dimen name="com_appboy_in_app_message_modal_max_width">450dp</dimen>
-  <dimen name="com_appboy_in_app_message_modal_max_height">750dp</dimen>
-  <dimen name="com_appboy_in_app_message_modal_margin">15dp</dimen>
-  <dimen name="com_appboy_in_app_message_slideup_left_message_margin_no_image">20dp</dimen>
+  <dimen name="com_braze_inappmessage_modal_min_width">320dp</dimen>
+  <dimen name="com_braze_inappmessage_modal_max_width">450dp</dimen>
+  <dimen name="com_braze_inappmessage_modal_max_height">750dp</dimen>
+  <dimen name="com_braze_inappmessage_modal_margin">15dp</dimen>
+  <dimen name="com_braze_inappmessage_slideup_left_message_margin_no_image">20dp</dimen>
   <!-- The click area target size in dp for modals and fullscreen in-app messages to ensure the click area extends beyond the drawable. -->
-  <dimen name="com_appboy_in_app_message_close_button_click_area_width">48dp</dimen>
-  <dimen name="com_appboy_in_app_message_close_button_click_area_height">48dp</dimen>
+  <dimen name="com_braze_inappmessage_close_button_click_area_width">48dp</dimen>
+  <dimen name="com_braze_inappmessage_close_button_click_area_height">48dp</dimen>
 
-  <dimen name="com_appboy_in_app_message_button_corner_radius">5dp</dimen>
+  <dimen name="com_braze_inappmessage_button_corner_radius">5dp</dimen>
   <!-- The width of the stroke used in drawing the button color -->
-  <dimen name="com_appboy_in_app_message_button_border_stroke">1dp</dimen>
-  <dimen name="com_appboy_in_app_message_button_border_stroke_focused">4dp</dimen>
+  <dimen name="com_braze_inappmessage_button_border_stroke">1dp</dimen>
+  <dimen name="com_braze_inappmessage_button_border_stroke_focused">4dp</dimen>
 
   <!-- Inline Image Push -->
   <!-- The margin before and after each of the items in the notification header. -->
-  <dimen name="com_appboy_push_inline_image_header_separating_margin">2dp</dimen>
+  <dimen name="com_braze_push_inline_image_header_separating_margin">2dp</dimen>
   <!-- Controls the ratio of image to the rest of the notification. The weights should add up to the sum. -->
-  <dimen name="com_appboy_push_inline_image_total_weight_sum">10</dimen>
-  <dimen name="com_appboy_push_inline_image_text_area_layout_weight">6</dimen>
-  <dimen name="com_appboy_push_inline_image_image_layout_weight">4</dimen>
+  <dimen name="com_braze_push_inline_image_total_weight_sum">10</dimen>
+  <dimen name="com_braze_push_inline_image_text_area_layout_weight">6</dimen>
+  <dimen name="com_braze_push_inline_image_image_layout_weight">4</dimen>
 </resources>

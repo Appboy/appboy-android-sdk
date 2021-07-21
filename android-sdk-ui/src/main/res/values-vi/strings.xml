@@ -4,5 +4,5 @@
   <string name="com_appboy_feed_empty">Chúng tôi không có cập nhật nào. Vui lòng kiểm tra lại sau.</string>
   <string name="com_appboy_feed_connection_error_title">Lỗi Kết Nối</string>
   <string name="com_appboy_feed_connection_error_body">Không thể thiết lập kết nối mạng. Vui lòng thử lại sau.</string>
-  <string name="com_appboy_inappmessage_close_content_description">đóng</string>
+  <string name="com_braze_inappmessage_close_content_description">đóng</string>
 </resources>

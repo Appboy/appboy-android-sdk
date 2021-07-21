@@ -80,7 +80,7 @@
     </provider>
 
     <receiver
-      android:name="com.appboy.AppboyAdmReceiver"
+      android:name="com.braze.push.BrazeAmazonDeviceMessagingReceiver"
       android:exported="true"
       android:permission="com.amazon.device.messaging.permission.SEND">
       <intent-filter>
@@ -105,7 +105,7 @@
       </intent-filter>
     </receiver> <!-- See https://issuetracker.google.com/issues/79478779 -->
     <service
-      android:name="com.appboy.AppboyFirebaseMessagingService"
+      android:name="com.braze.push.BrazeFirebaseMessagingService"
       android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT" />

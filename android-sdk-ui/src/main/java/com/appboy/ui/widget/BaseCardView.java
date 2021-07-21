@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 
 import com.appboy.enums.Channel;
 import com.appboy.models.cards.Card;
-import com.appboy.support.StringUtils;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
 import com.appboy.ui.actions.ActionFactory;
@@ -22,6 +21,7 @@ import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
 import com.braze.enums.BrazeViewBounds;
 import com.braze.support.BrazeLogger;
+import com.braze.support.StringUtils;
 
 /**
  * Base class for Braze feed card views
@@ -92,7 +92,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       return;
     }
 
-    if (!imageUrl.equals(imageView.getTag(R.string.com_appboy_image_resize_tag_key))) {
+    if (!imageUrl.equals(imageView.getTag(R.string.com_braze_image_resize_tag_key))) {
       if (placeholderAspectRatio != SQUARE_ASPECT_RATIO) {
         // We need to set layout params on the imageView once its layout state is visible. To do this,
         // we obtain the imageView's observer and attach a listener on it for when the view's layout
@@ -114,7 +114,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
 
       imageView.setImageResource(android.R.color.transparent);
       Braze.getInstance(getContext()).getImageLoader().renderUrlIntoCardView(getContext(), card, imageUrl, imageView, BrazeViewBounds.BASE_CARD_VIEW);
-      imageView.setTag(R.string.com_appboy_image_resize_tag_key, imageUrl);
+      imageView.setTag(R.string.com_braze_image_resize_tag_key, imageUrl);
     }
   }
 
@@ -133,7 +133,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     }
 
     // Check the tag for the image switcher so we don't have to re-draw the same indicator unnecessarily
-    String imageSwitcherTag = (String) imageSwitcher.getTag(R.string.com_appboy_image_is_read_tag_key);
+    String imageSwitcherTag = (String) imageSwitcher.getTag(R.string.com_braze_image_is_read_tag_key);
     // If the tag is null, default to the empty string
     imageSwitcherTag = imageSwitcherTag != null ? imageSwitcherTag : "";
 
@@ -142,18 +142,18 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
         if (imageSwitcher.getReadIcon() != null) {
           imageSwitcher.setImageDrawable(imageSwitcher.getReadIcon());
         } else {
-          imageSwitcher.setImageResource(R.drawable.icon_read);
+          imageSwitcher.setImageResource(R.drawable.com_braze_content_card_icon_read);
         }
-        imageSwitcher.setTag(R.string.com_appboy_image_is_read_tag_key, ICON_READ_TAG);
+        imageSwitcher.setTag(R.string.com_braze_image_is_read_tag_key, ICON_READ_TAG);
       }
     } else {
       if (!imageSwitcherTag.equals(ICON_UNREAD_TAG)) {
         if (imageSwitcher.getUnReadIcon() != null) {
           imageSwitcher.setImageDrawable(imageSwitcher.getUnReadIcon());
         } else {
-          imageSwitcher.setImageResource(R.drawable.icon_unread);
+          imageSwitcher.setImageResource(R.drawable.com_braze_content_card_icon_unread);
         }
-        imageSwitcher.setTag(R.string.com_appboy_image_is_read_tag_key, ICON_UNREAD_TAG);
+        imageSwitcher.setTag(R.string.com_braze_image_is_read_tag_key, ICON_UNREAD_TAG);
       }
     }
   }

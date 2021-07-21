@@ -71,7 +71,7 @@
     <item name="android:ellipsize">marquee</item>
   </style>
 
-  <style name="Appboy.Feed.List">
+  <style name="Braze.Feed.List">
     <item name="android:background">@color/window_background</item>
     <item name="android:cacheColorHint">@color/window_background</item>
     <item name="android:divider">@android:color/transparent</item>

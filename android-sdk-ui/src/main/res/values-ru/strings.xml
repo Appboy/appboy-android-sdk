@@ -4,5 +4,5 @@
   <string name="com_appboy_feed_empty">Обновления недоступны. Пожалуйста, проверьте снова позже.</string>
   <string name="com_appboy_feed_connection_error_title">Ошибка подключения</string>
   <string name="com_appboy_feed_connection_error_body">Невозможно установить сетевое подключение. Пожалуйста, повторите попытку позже.</string>
-  <string name="com_appboy_inappmessage_close_content_description">слишком близко</string>
+  <string name="com_braze_inappmessage_close_content_description">слишком близко</string>
 </resources>

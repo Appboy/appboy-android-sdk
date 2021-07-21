@@ -7,9 +7,9 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.push.AppboyNotificationUtils;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.MessagingUtils;
+import com.braze.push.BrazeNotificationUtils;
 import com.braze.support.BrazeLogger;
 
 import java.util.ArrayList;
@@ -30,14 +30,15 @@ public class AppboyUnityPushBroadcastReceiver extends BroadcastReceiver {
   @Nullable
   private static String sPushDeletedAction;
 
+  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-1689 to address
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!sReceiverInitialized) {
       sUnityConfigurationProvider = new UnityConfigurationProvider(context);
       String packageName = context.getPackageName();
-      sPushReceivedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_RECEIVED_SUFFIX;
-      sPushOpenedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
-      sPushDeletedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX;
+      sPushReceivedAction = packageName + BrazeNotificationUtils.APPBOY_NOTIFICATION_RECEIVED_SUFFIX;
+      sPushOpenedAction = packageName + BrazeNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
+      sPushDeletedAction = packageName + BrazeNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX;
       if (!sUnityConfigurationProvider.getDelaySendingPushMessages()) {
         // If this is false, then always send the push intents immediately
         sUnityBindingInitialized = true;

@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.appboy.AppboyInternal
+import com.appboy.BrazeInternal
 import com.appboy.Constants
 import com.appboy.events.SimpleValueCallback
 import com.appboy.models.outgoing.AttributionData
@@ -242,9 +242,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
     setClickPreference("content_card_populate_random_cards_setting_key") {
       val randomCards = createRandomCards(context, 3)
-      val userId = Braze.getInstance(context).getCurrentUser<BrazeUser>()!!.userId
+      val userId = Braze.getInstance(context).currentUser!!.userId
       for (card in randomCards) {
-        AppboyInternal.addSerializedContentCardToStorage(context, card.forJsonPut().toString(), userId)
+        BrazeInternal.addSerializedContentCardToStorage(context, card.forJsonPut().toString(), userId)
       }
     }
   }

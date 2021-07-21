@@ -4,5 +4,5 @@
   <string name="com_appboy_feed_empty">Vi har ingen oppdateringer. Vennligst sjekk igjen senere.</string>
   <string name="com_appboy_feed_connection_error_title">Tilkoblingsfeil</string>
   <string name="com_appboy_feed_connection_error_body">Kan ikke etablere nettverkstilkobling. Vennligst prøv igjen senere.</string>
-  <string name="com_appboy_inappmessage_close_content_description">å lukke</string>
+  <string name="com_braze_inappmessage_close_content_description">å lukke</string>
 </resources>

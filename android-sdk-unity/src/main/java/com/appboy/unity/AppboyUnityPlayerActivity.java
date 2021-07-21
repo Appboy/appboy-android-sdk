@@ -52,4 +52,12 @@ public class AppboyUnityPlayerActivity extends UnityPlayerActivity {
     super.onNewIntent(intent);
     mAppboyUnityActivityWrapper.onNewIntentCalled(intent, this);
   }
+
+  public void onNewUnityInAppMessageManagerAction(int actionEnumValue) {
+    mAppboyUnityActivityWrapper.onNewUnityInAppMessageManagerAction(actionEnumValue);
+  }
+
+  public void launchContentCardsActivity() {
+    mAppboyUnityActivityWrapper.launchContentCardsActivity(this);
+  }
 }

@@ -4,5 +4,5 @@
   <string name="com_appboy_feed_empty">Оновлення недоступні. Будь ласка, перевірте знову пізніше.</string>
   <string name="com_appboy_feed_connection_error_title">Помилка підключення</string>
   <string name="com_appboy_feed_connection_error_body">неможливо встановити з\'єднання з мережею. Будь ласка, спробуйте ще раз пізніше.</string>
-  <string name="com_appboy_inappmessage_close_content_description">закрити</string>
+  <string name="com_braze_inappmessage_close_content_description">закрити</string>
 </resources>

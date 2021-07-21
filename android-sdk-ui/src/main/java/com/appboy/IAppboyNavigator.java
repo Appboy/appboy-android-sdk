@@ -2,14 +2,13 @@ package com.appboy;
 
 import android.content.Context;
 
-import com.appboy.push.NotificationTrampolineActivity;
 import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.actions.NewsfeedAction;
 import com.appboy.ui.actions.UriAction;
+import com.braze.push.NotificationTrampolineActivity;
 
 /**
- * This class defines the actions that should be taken when Braze attempts to display the news
- * feed or open a URI.
+ * This class defines the actions that should be taken when Braze attempts to follow a deeplink.
  */
 public interface IAppboyNavigator {
   enum IntentFlagPurpose {

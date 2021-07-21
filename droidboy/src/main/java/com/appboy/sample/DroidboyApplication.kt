@@ -6,24 +6,31 @@ import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
 import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.net.TrafficStats
+import android.net.Uri
 import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.util.Log
 import android.webkit.WebView
-import com.appboy.AppboyLifecycleCallbackListener
+import androidx.annotation.RequiresApi
+import androidx.multidex.MultiDex
 import com.appboy.events.BrazeSdkAuthenticationErrorEvent
 import com.appboy.events.SimpleValueCallback
-import com.appboy.support.JsonUtils
 import com.appboy.support.PackageUtils
-import com.appboy.support.StringUtils
 import com.braze.Braze
+import com.braze.BrazeActivityLifecycleCallbackListener
 import com.braze.BrazeUser
 import com.braze.configuration.BrazeConfig
 import com.braze.support.BrazeLogger
+import com.braze.support.JsonUtils
+import com.braze.support.StringUtils
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.json.JSONObject
 import java.io.OutputStreamWriter
@@ -53,9 +60,13 @@ class DroidboyApplication : Application() {
     val sdkAuthEnabled = setSdkAuthIfConfigured(sharedPreferences, brazeConfigBuilder)
     Braze.configure(this, brazeConfigBuilder.build())
 
-    registerActivityLifecycleCallbacks(AppboyLifecycleCallbackListener())
+    registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
     setupNotificationChannels()
     setupFirebaseCrashlytics()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+      setupChatDynamicShortcut()
+    }
 
     if (sdkAuthEnabled) {
       Braze.getInstance(applicationContext).subscribeToSdkAuthenticationFailures { message: BrazeSdkAuthenticationErrorEvent ->
@@ -65,6 +76,29 @@ class DroidboyApplication : Application() {
       // Fire off an update to start off
       initiateSdkAuthTokenRefresh()
     }
+  }
+
+  override fun attachBaseContext(context: Context?) {
+    super.attachBaseContext(context)
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
+      MultiDex.install(this)
+    }
+  }
+
+  @RequiresApi(Build.VERSION_CODES.N_MR1)
+  private fun setupChatDynamicShortcut() {
+    val builder = ShortcutInfo.Builder(this, "droidboy_dynamic_shortcut_chat_id")
+        .setShortLabel("Braze Chat")
+        .setLongLabel("Conversational Push")
+        .setIcon(Icon.createWithResource(this, android.R.drawable.ic_menu_send))
+        .setIntent(Intent(Intent.ACTION_VIEW,
+            Uri.parse("https://www.braze.com?dynamicshortcut=true")))
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      builder.setLongLived(true)
+    }
+
+    val shortcutManager: ShortcutManager = getSystemService(ShortcutManager::class.java)
+    shortcutManager.dynamicShortcuts = listOf(builder.build())
   }
 
   fun initiateSdkAuthTokenRefresh() {

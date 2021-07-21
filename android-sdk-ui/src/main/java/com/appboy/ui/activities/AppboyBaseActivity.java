@@ -2,11 +2,12 @@ package com.appboy.ui.activities;
 
 import android.app.Activity;
 
-import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.braze.Braze;
+import com.braze.BrazeActivityLifecycleCallbackListener;
+import com.braze.ui.inappmessage.BrazeInAppMessageManager;
 
 /**
- * @deprecated Please use {@link com.appboy.AppboyLifecycleCallbackListener} to
+ * @deprecated Please use {@link BrazeActivityLifecycleCallbackListener} to
  * automatically register sessions and in-app messages.
  */
 @Deprecated
@@ -23,16 +24,16 @@ public class AppboyBaseActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    // Registers the AppboyInAppMessageManager for the current Activity. This Activity will now listen for
+    // Registers the BrazeInAppMessageManager for the current Activity. This Activity will now listen for
     // in-app messages from Braze.
-    AppboyInAppMessageManager.getInstance().registerInAppMessageManager(this);
+    BrazeInAppMessageManager.getInstance().registerInAppMessageManager(this);
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    // Unregisters the AppboyInAppMessageManager.
-    AppboyInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
+    // Unregisters the BrazeInAppMessageManager.
+    BrazeInAppMessageManager.getInstance().unregisterInAppMessageManager(this);
   }
 
   @Override

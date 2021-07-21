@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.appboy.ui.inappmessage.IInAppMessageView;
-import com.appboy.ui.inappmessage.views.InAppMessageViewUtils;
-import com.appboy.ui.support.ViewUtils;
+import com.braze.ui.inappmessage.utils.InAppMessageViewUtils;
+import com.braze.ui.inappmessage.views.IInAppMessageView;
+import com.braze.ui.support.ViewUtils;
 
 public class CustomInAppMessageView extends RelativeLayout implements IInAppMessageView {
 

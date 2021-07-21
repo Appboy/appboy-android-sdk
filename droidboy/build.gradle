@@ -22,6 +22,8 @@ dependencies {
   implementation "com.google.firebase:firebase-crashlytics:${FIREBASE_CRASHLYTICS_VERSION}"
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${KOTLIN_STDLIB_JDK7_VERSION}"
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${KOTLIN_COROUTINES_VERSION}")
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:${KOTLIN_LIFECYCLE_RUNTIME_KTX_VERSION}"
 }
 
 android {

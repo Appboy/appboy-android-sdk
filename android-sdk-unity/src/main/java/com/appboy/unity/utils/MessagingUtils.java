@@ -6,12 +6,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.events.ContentCardsUpdatedEvent;
 import com.appboy.events.FeedUpdatedEvent;
-import com.appboy.models.IInAppMessage;
 import com.appboy.models.cards.Card;
-import com.appboy.support.StringUtils;
+import com.braze.events.ContentCardsUpdatedEvent;
+import com.braze.models.inappmessage.IInAppMessage;
 import com.braze.support.BrazeLogger;
+import com.braze.support.StringUtils;
 import com.unity3d.player.UnityPlayer;
 
 import org.json.JSONArray;

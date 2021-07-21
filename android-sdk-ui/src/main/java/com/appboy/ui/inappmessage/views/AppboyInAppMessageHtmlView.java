@@ -3,30 +3,14 @@ package com.appboy.ui.inappmessage.views;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import androidx.annotation.NonNull;
-import androidx.core.view.WindowInsetsCompat;
+import com.braze.ui.inappmessage.views.InAppMessageHtmlView;
 
-import com.appboy.ui.R;
-
-public class AppboyInAppMessageHtmlView extends AppboyInAppMessageHtmlBaseView {
+/**
+ * @deprecated Please use {@link #InAppMessageHtmlView} instead. Deprecated since 6/16/21
+ */
+@Deprecated
+public class AppboyInAppMessageHtmlView extends InAppMessageHtmlView {
   public AppboyInAppMessageHtmlView(Context context, AttributeSet attrs) {
     super(context, attrs);
-  }
-
-  @Override
-  public int getWebViewViewId() {
-    return R.id.com_appboy_inappmessage_html_webview;
-  }
-
-  @Override
-  public void applyWindowInsets(@NonNull WindowInsetsCompat insets) {
-    // HTML in-app messages don't have special behavior with respect to notched devices at the View level.
-  }
-
-  @Override
-  public boolean hasAppliedWindowInsets() {
-    // HTML in-app messages don't have special behavior with respect to notched devices at the View level.
-    // Thus we return true here to short-circuit any extra inset handling behavior.
-    return true;
   }
 }

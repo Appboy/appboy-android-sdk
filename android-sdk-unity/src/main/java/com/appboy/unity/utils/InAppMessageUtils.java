@@ -2,10 +2,10 @@ package com.appboy.unity.utils;
 
 import android.content.Context;
 
-import com.appboy.models.IInAppMessage;
-import com.appboy.models.IInAppMessageImmersive;
-import com.appboy.models.MessageButton;
 import com.braze.Braze;
+import com.braze.models.inappmessage.IInAppMessage;
+import com.braze.models.inappmessage.IInAppMessageImmersive;
+import com.braze.models.inappmessage.MessageButton;
 import com.braze.support.BrazeLogger;
 
 public class InAppMessageUtils {

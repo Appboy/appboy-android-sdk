@@ -11,7 +11,7 @@
       android:layout_marginLeft="10.0dp"
       android:layout_marginRight="10.0dp"
       android:layout_marginTop="10.0dp"
-      style="@style/Appboy.Cards.TextAnnouncement.Title"
+      style="@style/Braze.Cards.TextAnnouncement.Title"
       tools:ignore="RtlHardcoded"/>
 
   <TextView
@@ -22,7 +22,7 @@
       android:layout_below="@id/com_appboy_text_announcement_card_title"
       android:layout_marginLeft="10.0dp"
       android:layout_marginRight="10.0dp"
-      style="@style/Appboy.Cards.TextAnnouncement.Description"
+      style="@style/Braze.Cards.TextAnnouncement.Description"
       tools:ignore="RtlHardcoded"/>
 
   <!-- Optional -->
@@ -34,6 +34,6 @@
       android:layout_below="@id/com_appboy_text_announcement_card_description"
       android:layout_marginLeft="10.0dp"
       android:layout_marginRight="10.0dp"
-      style="@style/Appboy.Cards.TextAnnouncement.Domain"
+      style="@style/Braze.Cards.TextAnnouncement.Domain"
       tools:ignore="RtlHardcoded"/>
 </merge>

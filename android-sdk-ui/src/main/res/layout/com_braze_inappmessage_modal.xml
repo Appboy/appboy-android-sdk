@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.braze.ui.inappmessage.views.InAppMessageModalView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/com_braze_inappmessage_modal_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0.0dp">
+    <RelativeLayout
+        android:id="@+id/com_braze_inappmessage_modal_frame"
+        style="@style/Braze.InAppMessage.Frame.Modal"/>
+    <com.braze.ui.inappmessage.views.InAppMessageBoundedLayout
+        android:id="@+id/com_braze_inappmessage_modal"
+        style="@style/Braze.InAppMessage.Modal">
+        <RelativeLayout
+            android:id="@+id/com_braze_inappmessage_modal_image_layout"
+            style="@style/Braze.InAppMessage.Layout.Image.Modal">
+            <com.braze.ui.inappmessage.views.InAppMessageImageView
+                android:id="@+id/com_braze_inappmessage_modal_imageview"
+                style="@style/Braze.InAppMessage.Image.Modal"/>
+            <TextView
+                android:id="@+id/com_braze_inappmessage_modal_icon"
+                style="@style/Braze.InAppMessage.Icon.Modal"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/com_braze_inappmessage_modal_text_and_button_layout"
+            style="@style/Braze.InAppMessage.Layout.ButtonAndText.Modal">
+            <ScrollView
+                android:id="@+id/com_braze_inappmessage_modal_scrollview"
+                style="@style/Braze.InAppMessage.ScrollView.Modal">
+                <LinearLayout
+                    android:id="@+id/com_braze_inappmessage_modal_text_layout"
+                    style="@style/Braze.InAppMessage.Layout.Text.Modal">
+                    <TextView
+                        android:id="@+id/com_braze_inappmessage_modal_header_text"
+                        style="@style/Braze.InAppMessage.Header.Modal"
+                        tools:text="In App Message Header Text"/>
+                    <TextView
+                        android:id="@+id/com_braze_inappmessage_modal_message"
+                        style="@style/Braze.InAppMessage.Message.Modal"
+                        tools:text="In App Message Message Text"/>
+                </LinearLayout>
+            </ScrollView>
+            <!-- This layout is solely for a single button being present-->
+            <LinearLayout
+                android:id="@+id/com_braze_inappmessage_modal_button_layout_single"
+                style="@style/Braze.InAppMessage.Layout.Button.Modal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:gravity="center">
+                <com.braze.ui.inappmessage.views.InAppMessageButton
+                    android:id="@+id/com_braze_inappmessage_modal_button_single_one"
+                    style="@style/Braze.InAppMessage.Button.Modal.Single"/>
+            </LinearLayout>
+            <!-- This layout is solely for two buttons being present -->
+            <LinearLayout
+                android:id="@+id/com_braze_inappmessage_modal_button_layout_dual"
+                android:visibility="gone"
+                style="@style/Braze.InAppMessage.Layout.Button.Modal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <com.braze.ui.inappmessage.views.InAppMessageButton
+                        android:id="@+id/com_braze_inappmessage_modal_button_dual_one"
+                        style="@style/Braze.InAppMessage.Button.Modal.Dual.One"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <com.braze.ui.inappmessage.views.InAppMessageButton
+                        android:id="@+id/com_braze_inappmessage_modal_button_dual_two"
+                        style="@style/Braze.InAppMessage.Button.Modal.Dual.Two"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/com_braze_inappmessage_modal_close_button"
+            style="@style/Braze.InAppMessage.CloseButton.Modal"/>
+    </com.braze.ui.inappmessage.views.InAppMessageBoundedLayout>
+</com.braze.ui.inappmessage.views.InAppMessageModalView>

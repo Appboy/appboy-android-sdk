@@ -7,15 +7,15 @@ import android.provider.Settings;
 
 import androidx.core.app.NotificationCompat;
 
-import com.appboy.IAppboyNotificationFactory;
 import com.appboy.models.push.BrazeNotificationPayload;
-import com.appboy.push.AppboyNotificationFactory;
+import com.braze.IBrazeNotificationFactory;
+import com.braze.push.BrazeNotificationFactory;
 
-public class DroidboyNotificationFactory implements IAppboyNotificationFactory {
+public class DroidboyNotificationFactory implements IBrazeNotificationFactory {
 
   @Override
   public Notification createNotification(BrazeNotificationPayload brazeNotificationPayload) {
-    NotificationCompat.Builder notificationBuilder = AppboyNotificationFactory.getInstance().populateNotificationBuilder(brazeNotificationPayload);
+    NotificationCompat.Builder notificationBuilder = BrazeNotificationFactory.getInstance().populateNotificationBuilder(brazeNotificationPayload);
     notificationBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
     return notificationBuilder.build();
   }
@@ -26,7 +26,7 @@ public class DroidboyNotificationFactory implements IAppboyNotificationFactory {
                                          Context context,
                                          Bundle notificationExtras,
                                          Bundle appboyExtras) {
-    NotificationCompat.Builder notificationBuilder = AppboyNotificationFactory.getInstance()
+    NotificationCompat.Builder notificationBuilder = BrazeNotificationFactory.getInstance()
         .populateNotificationBuilder(appConfigurationProvider, context, notificationExtras, appboyExtras);
     notificationBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
     return notificationBuilder.build();

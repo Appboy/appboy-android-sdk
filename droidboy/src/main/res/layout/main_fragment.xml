@@ -19,11 +19,11 @@
       android:id="@+id/com_appboy_sample_set_user_id_button"
       style="@style/BaseWidget.DroidboyButton"
       android:text="Set UserId" />
-    <EditText
-      android:id="@+id/com_appboy_sample_custom_event_or_purchase_edit_text"
+    <AutoCompleteTextView
+      android:id="@+id/com_appboy_sample_custom_event_or_purchase_autocomplete_text_view"
       style="@style/BaseWidget.DroidboyTextInput"
       android:hint="Custom event or purchase name"
-      android:inputType="textEmailAddress" />
+      android:completionThreshold="1"/>
     <Button
       android:id="@+id/com_appboy_sample_log_custom_event_button"
       style="@style/BaseWidget.DroidboyButton"

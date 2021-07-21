@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.ImageView
-import com.appboy.models.IInAppMessage
 import com.appboy.models.cards.Card
 import com.braze.enums.BrazeViewBounds
 import com.braze.images.IBrazeImageLoader
+import com.braze.models.inappmessage.IInAppMessage
 import com.braze.support.BrazeLogger
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions

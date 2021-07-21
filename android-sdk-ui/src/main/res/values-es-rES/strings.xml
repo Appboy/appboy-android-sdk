@@ -4,5 +4,5 @@
   <string name="com_appboy_feed_empty">No tenemos actualizaciones. Por favor compruébelo más tarde.</string>
   <string name="com_appboy_feed_connection_error_title">Error de conexión</string>
   <string name="com_appboy_feed_connection_error_body">No se puede establecer conexión de red. Por favor inténtelo más tarde.</string>
-  <string name="com_appboy_inappmessage_close_content_description">cerrar</string>
+  <string name="com_braze_inappmessage_close_content_description">cerrar</string>
 </resources>

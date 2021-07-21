@@ -11,10 +11,10 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.appboy.events.SimpleValueCallback
-import com.appboy.support.IntentUtils
 import com.braze.Braze
 import com.braze.BrazeUser
 import com.braze.support.BrazeLogger
+import com.braze.support.IntentUtils
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.aaid.HmsInstanceId
 import kotlin.concurrent.thread

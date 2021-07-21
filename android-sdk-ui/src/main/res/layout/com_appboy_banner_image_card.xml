@@ -5,5 +5,5 @@
         android:layout="@layout/com_appboy_stubbed_feed_image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Appboy.Cards.BannerImage.Image"/>
+        style="@style/Braze.Cards.BannerImage.Image"/>
 </merge>

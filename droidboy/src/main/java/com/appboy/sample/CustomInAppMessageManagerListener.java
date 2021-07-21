@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.appboy.models.IInAppMessage;
-import com.appboy.models.MessageButton;
-import com.appboy.ui.inappmessage.InAppMessageCloser;
-import com.appboy.ui.inappmessage.InAppMessageOperation;
-import com.appboy.ui.inappmessage.listeners.IInAppMessageManagerListener;
+import com.braze.models.inappmessage.IInAppMessage;
+import com.braze.models.inappmessage.MessageButton;
+import com.braze.ui.inappmessage.InAppMessageCloser;
+import com.braze.ui.inappmessage.InAppMessageOperation;
+import com.braze.ui.inappmessage.listeners.IInAppMessageManagerListener;
 
 import java.util.Map;
 
@@ -17,11 +17,6 @@ public class CustomInAppMessageManagerListener implements IInAppMessageManagerLi
 
   public CustomInAppMessageManagerListener(Activity activity) {
     mActivity = activity;
-  }
-
-  @Override
-  public boolean onInAppMessageReceived(IInAppMessage inAppMessage) {
-    return false;
   }
 
   @Override

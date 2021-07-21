@@ -1,90 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-  <style name="Appboy"/>
-
-  <style name="Appboy.Button">
-    <!-- Overriding the Holo default behavior -->
-    <item name="android:minHeight">0.0dp</item>
-    <item name="android:minWidth">0.0dp</item>
-    <item name="android:textColor">@color/com_appboy_button</item>
-  </style>
-
-  <!-- Custom Push Notification View Styles. We ensure that this is only used for
-  Ice Cream Sandwich, so we mark it with targetApi 14 for Lint purposes. -->
-  <style name="Appboy.EventContent" tools:targetApi="14">
-    <item name="android:textColor">@color/com_appboy_custom_notification_content</item>
-    <item name="android:textSize">12sp</item>
-  </style>
-  <style name="Appboy.EventContent.Title">
-    <item name="android:textColor">@color/com_appboy_custom_notification_title</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:textStyle">bold</item>
-  </style>
-  <style name="Appboy.EventContent.Time">
-    <item name="android:textSize">10sp</item>
-    <item name="android:textColor">@color/com_appboy_custom_notification_time</item>
-  </style>
+<resources>
+  <style name="Braze"/>
 
   <!-- In-app Message -->
-  <style name="Appboy.InAppMessage">
+  <style name="Braze.InAppMessage">
   </style>
-  <style name="Appboy.InAppMessage.Header">
+  <style name="Braze.InAppMessage.Header">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:background">@android:color/transparent</item>
-    <item name="android:textColor">@color/com_appboy_inappmessage_header_text</item>
+    <item name="android:textColor">@color/com_braze_inappmessage_header_text</item>
     <item name="android:textSize">20.0sp</item>
     <item name="android:lineSpacingMultiplier">1.3</item>
     <item name="android:gravity">center</item>
     <item name="android:textStyle">bold</item>
     <item name="android:layout_centerHorizontal">true</item>
   </style>
-  <style name="Appboy.InAppMessage.Message">
+  <style name="Braze.InAppMessage.Message">
     <item name="android:background">@android:color/transparent</item>
     <item name="android:textSize">14.0sp</item>
     <item name="android:lineSpacingMultiplier">1.1</item>
     <item name="android:lineSpacingExtra">0dp</item>
-    <item name="android:textColor">@color/com_appboy_inappmessage_text</item>
+    <item name="android:textColor">@color/com_braze_inappmessage_text</item>
   </style>
-  <style name="Appboy.InAppMessage.ScrollView">
+  <style name="Braze.InAppMessage.ScrollView">
     <item name="android:fillViewport">true</item>
   </style>
-  <style name="Appboy.InAppMessage.Image">
+  <style name="Braze.InAppMessage.Image">
   </style>
-  <style name="Appboy.InAppMessage.Icon">
+  <style name="Braze.InAppMessage.Icon">
     <item name="android:layout_height">50.0dp</item>
     <item name="android:layout_width">50.0dp</item>
     <item name="android:textSize">30.0sp</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:gravity">center</item>
     <item name="android:layout_gravity">center</item>
-    <item name="android:background">@drawable/com_appboy_icon_background</item>
-    <item name="android:textColor">@color/com_appboy_inappmessage_icon</item>
+    <item name="android:background">@drawable/com_braze_inappmessage_icon_background</item>
+    <item name="android:textColor">@color/com_braze_inappmessage_icon</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout">
+  <style name="Braze.InAppMessage.Layout">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:padding">0.0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Image">
+  <style name="Braze.InAppMessage.Layout.Image">
   </style>
-  <style name="Appboy.InAppMessage.Layout.ButtonAndText">
+  <style name="Braze.InAppMessage.Layout.ButtonAndText">
   </style>
-  <style name="Appboy.InAppMessage.Layout.Button">
+  <style name="Braze.InAppMessage.Layout.Button">
     <item name="android:layout_width">match_parent</item>
     <item name="android:orientation">horizontal</item>
     <item name="android:weightSum">2.0</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Text">
+  <style name="Braze.InAppMessage.Layout.Text">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_centerHorizontal">true</item>
     <item name="android:orientation">vertical</item>
   </style>
-  <style name="Appboy.InAppMessage.Button">
+  <style name="Braze.InAppMessage.Button">
     <item name="android:layout_height">44dp</item>
     <item name="android:layout_width">wrap_content</item>
-    <item name="android:textColor">@color/com_appboy_inappmessage_button_text_light</item>
-    <item name="android:background">@drawable/com_appboy_inappmessage_button_background</item>
+    <item name="android:textColor">@color/com_braze_inappmessage_button_text_light</item>
+    <item name="android:background">@drawable/com_braze_inappmessage_button_background</item>
     <item name="android:textSize">14.0sp</item>
     <item name="android:gravity">center</item>
     <item name="android:layout_gravity">center</item>
@@ -97,34 +74,34 @@
     <item name="android:layout_weight">1</item>
     <item name="android:focusable">true</item>
   </style>
-  <style name="Appboy.InAppMessage.CloseButton">
-    <item name="android:contentDescription">@string/com_appboy_inappmessage_close_content_description</item>
+  <style name="Braze.InAppMessage.CloseButton">
+    <item name="android:contentDescription">@string/com_braze_inappmessage_close_content_description</item>
     <item name="android:layout_height">20dp</item>
     <item name="android:layout_width">20dp</item>
     <item name="android:layout_alignParentRight">true</item>
-    <item name="android:background">@drawable/com_appboy_inappmessage_close_button_selector</item>
+    <item name="android:background">@drawable/com_braze_inappmessage_close_button_selector</item>
     <item name="android:layout_marginRight">15dp</item>
     <item name="android:layout_marginTop">15dp</item>
     <item name="android:foreground">?android:attr/selectableItemBackgroundBorderless</item>
     <item name="android:focusable">true</item>
   </style>
-  <style name="Appboy.InAppMessage.Chevron">
+  <style name="Braze.InAppMessage.Chevron">
     <item name="android:layout_height">20dp</item>
     <item name="android:layout_width">12dp</item>
-    <item name="android:background">@drawable/com_appboy_inappmessage_chevron</item>
+    <item name="android:background">@drawable/com_braze_inappmessage_chevron</item>
     <item name="android:layout_marginRight">20dp</item>
     <item name="android:layout_marginLeft">18dp</item>
     <item name="android:layout_alignParentRight">true</item>
     <item name="android:layout_centerVertical">true</item>
   </style>
-  <style name="Appboy.InAppMessage.Frame">
+  <style name="Braze.InAppMessage.Frame">
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">match_parent</item>
-    <item name="android:background">@color/com_appboy_inappmessage_frame_light</item>
+    <item name="android:background">@color/com_braze_inappmessage_frame_light</item>
   </style>
 
   <!-- In-App Message Slideup -->
-  <style name="Appboy.InAppMessage.Slideup">
+  <style name="Braze.InAppMessage.Slideup">
     <item name="android:layout_height">60.0dp</item>
     <item name="android:layout_width">match_parent</item>
   </style>
@@ -136,25 +113,25 @@
   that is confirmed fixed in API 19
   (https://android.googlesource.com/platform/frameworks/base/+/android-4.4_r1/core/java/android/widget/RelativeLayout.java#498)
   -->
-  <style name="Appboy.InAppMessage.Slideup.Container">
+  <style name="Braze.InAppMessage.Slideup.Container">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_marginLeft">10dp</item>
     <item name="android:layout_marginRight">10dp</item>
     <item name="android:layout_marginBottom">10dp</item>
-    <item name="android:background">@drawable/com_appboy_inappmessage_slideup_background</item>
+    <item name="android:background">@drawable/com_braze_inappmessage_slideup_background</item>
   </style>
-  <style name="Appboy.InAppMessage.Message.Slideup">
+  <style name="Braze.InAppMessage.Message.Slideup">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
-    <item name="android:textColor">@color/com_appboy_inappmessage_text_slideup</item>
+    <item name="android:textColor">@color/com_braze_inappmessage_text_slideup</item>
     <item name="android:textSize">14.0sp</item>
     <item name="android:maxLines">3</item>
     <item name="android:gravity">start</item>
     <item name="android:layout_gravity">center_vertical</item>
     <item name="android:layout_centerVertical">true</item>
-    <item name="android:layout_toRightOf">@id/com_appboy_inappmessage_slideup_image_layout</item>
-    <item name="android:layout_toLeftOf">@id/com_appboy_inappmessage_slideup_chevron</item>
+    <item name="android:layout_toRightOf">@id/com_braze_inappmessage_slideup_image_layout</item>
+    <item name="android:layout_toLeftOf">@id/com_braze_inappmessage_slideup_chevron</item>
     <item name="android:layout_marginTop">15dp</item>
     <item name="android:layout_marginBottom">15dp</item>
     <item name="android:layout_marginRight">20dp</item>
@@ -162,7 +139,7 @@
     <item name="android:padding">0.0dp</item>
     <item name="android:ellipsize">end</item>
   </style>
-  <style name="Appboy.InAppMessage.Slideup.ImageContainer">
+  <style name="Braze.InAppMessage.Slideup.ImageContainer">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_centerVertical">true</item>
@@ -172,20 +149,20 @@
     <item name="android:layout_marginTop">15dp</item>
     <item name="android:layout_marginBottom">15dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Image.Slideup">
-    <item name="android:contentDescription">@string/com_appboy_inappmessage_image_content_description</item>
+  <style name="Braze.InAppMessage.Image.Slideup">
+    <item name="android:contentDescription">@string/com_braze_inappmessage_image_content_description</item>
     <item name="android:layout_height">50.0dp</item>
     <item name="android:layout_width">50.0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Icon.Slideup">
-    <item name="android:contentDescription">@string/com_appboy_inappmessage_icon_content_description</item>
+  <style name="Braze.InAppMessage.Icon.Slideup">
+    <item name="android:contentDescription">@string/com_braze_inappmessage_icon_content_description</item>
   </style>
-  <style name="Appboy.InAppMessage.Chevron.Slideup">
+  <style name="Braze.InAppMessage.Chevron.Slideup">
     <item name="android:layout_marginLeft">0dp</item>
   </style>
 
   <!-- In-App Message Modal -->
-  <style name="Appboy.InAppMessage.Modal">
+  <style name="Braze.InAppMessage.Modal">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:paddingTop">0.0dp</item>
@@ -193,16 +170,16 @@
     <item name="android:paddingLeft">0.0dp</item>
     <item name="android:paddingBottom">20.0dp</item>
     <item name="android:layout_centerInParent">true</item>
-    <item name="android:background">@drawable/com_appboy_inappmessage_modal_background</item>
+    <item name="android:background">@drawable/com_braze_inappmessage_modal_background</item>
     <item name="android:layout_margin">15dp</item>
-    <item name="appboyBoundedLayoutMinWidth">@dimen/com_appboy_in_app_message_modal_min_width</item>
-    <item name="appboyBoundedLayoutMaxWidth">@dimen/com_appboy_in_app_message_modal_max_width</item>
-    <item name="appboyBoundedLayoutMaxHeight">@dimen/com_appboy_in_app_message_modal_max_height</item>
+    <item name="inAppMessageBoundedLayoutMinWidth">@dimen/com_braze_inappmessage_modal_min_width</item>
+    <item name="inAppMessageBoundedLayoutMaxWidth">@dimen/com_braze_inappmessage_modal_max_width</item>
+    <item name="inAppMessageBoundedLayoutMaxHeight">@dimen/com_braze_inappmessage_modal_max_height</item>
   </style>
-  <style name="Appboy.InAppMessage.Header.Modal">
+  <style name="Braze.InAppMessage.Header.Modal">
     <item name="android:layout_width">match_parent</item>
   </style>
-  <style name="Appboy.InAppMessage.Message.Modal">
+  <style name="Braze.InAppMessage.Message.Modal">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:gravity">center</item>
@@ -210,23 +187,23 @@
     <item name="android:padding">0.0dp</item>
     <item name="android:layout_marginTop">10.0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Image.Modal">
-    <item name="android:contentDescription">@string/com_appboy_inappmessage_image_content_description</item>
+  <style name="Braze.InAppMessage.Layout.Image.Modal">
+    <item name="android:contentDescription">@string/com_braze_inappmessage_image_content_description</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:layout_marginTop">20.0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Image.Modal">
+  <style name="Braze.InAppMessage.Image.Modal">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_centerInParent">true</item>
   </style>
-  <style name="Appboy.InAppMessage.Icon.Modal">
+  <style name="Braze.InAppMessage.Icon.Modal">
     <item name="android:layout_marginTop">20.0dp</item>
     <item name="android:layout_centerHorizontal">true</item>
     <item name="android:layout_gravity">center</item>
   </style>
-  <style name="Appboy.InAppMessage.ScrollView.Modal">
+  <style name="Braze.InAppMessage.ScrollView.Modal">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_weight">1.0</item>
@@ -234,8 +211,8 @@
     <item name="android:gravity">center</item>
     <item name="android:layout_gravity">center</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.ButtonAndText.Modal">
-    <item name="android:layout_below">@id/com_appboy_inappmessage_modal_image_layout</item>
+  <style name="Braze.InAppMessage.Layout.ButtonAndText.Modal">
+    <item name="android:layout_below">@id/com_braze_inappmessage_modal_image_layout</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_centerInParent">true</item>
@@ -245,172 +222,164 @@
     <item name="android:orientation">vertical</item>
     <item name="android:weightSum">1.0</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Button.Modal">
+  <style name="Braze.InAppMessage.Layout.Button.Modal">
     <item name="android:layout_marginTop">20.0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Text.Modal">
+  <style name="Braze.InAppMessage.Layout.Text.Modal">
     <item name="android:orientation">vertical</item>
   </style>
-  <style name="Appboy.InAppMessage.Button.Modal">
+  <style name="Braze.InAppMessage.Button.Modal">
   </style>
-  <style name="Appboy.InAppMessage.Button.Modal.Single">
+  <style name="Braze.InAppMessage.Button.Modal.Single">
   </style>
-  <style name="Appboy.InAppMessage.Button.Modal.Dual">
+  <style name="Braze.InAppMessage.Button.Modal.Dual">
   </style>
-  <style name="Appboy.InAppMessage.Button.Modal.Dual.One">
+  <style name="Braze.InAppMessage.Button.Modal.Dual.One">
     <item name="android:layout_marginRight">5dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Button.Modal.Dual.Two">
+  <style name="Braze.InAppMessage.Button.Modal.Dual.Two">
     <item name="android:layout_marginLeft">5dp</item>
   </style>
-  <style name="Appboy.InAppMessage.CloseButton.Modal">
+  <style name="Braze.InAppMessage.CloseButton.Modal">
   </style>
-  <style name="Appboy.InAppMessage.Frame.Modal">
+  <style name="Braze.InAppMessage.Frame.Modal">
   </style>
 
   <!-- In-App Message Graphic Modal -->
-  <style name="Appboy.InAppMessage.Modal.Graphic">
+  <style name="Braze.InAppMessage.Modal.Graphic">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:layout_margin">0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Image.Modal.Graphic">
+  <style name="Braze.InAppMessage.Image.Modal.Graphic">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">match_parent</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Button.Modal.Graphic">
-    <item name="android:layout_below">@id/com_appboy_inappmessage_modal_text_layout</item>
+  <style name="Braze.InAppMessage.Layout.Button.Modal.Graphic">
+    <item name="android:layout_below">@id/com_braze_inappmessage_modal_text_layout</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_alignParentBottom">true</item>
   </style>
 
-  <style name="Appboy.InAppMessage.Button.Modal.Single.Graphic">
+  <style name="Braze.InAppMessage.Button.Modal.Single.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Button.Modal.Dual.Graphic">
+  <style name="Braze.InAppMessage.Button.Modal.Dual.One.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Button.Modal.Dual.One.Graphic">
-  </style>
-  <style name="Appboy.InAppMessage.Button.Modal.Dual.Two.Graphic">
+  <style name="Braze.InAppMessage.Button.Modal.Dual.Two.Graphic">
   </style>
 
-  <style name="Appboy.InAppMessage.CloseButton.Modal.Graphic">
+  <style name="Braze.InAppMessage.CloseButton.Modal.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Frame.Modal.Graphic">
+  <style name="Braze.InAppMessage.Frame.Modal.Graphic">
   </style>
 
   <!-- In-App Message Full -->
-  <style name="Appboy.InAppMessage.Full">
+  <style name="Braze.InAppMessage.Full">
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_centerInParent">true</item>
-    <item name="android:background">@color/com_appboy_inappmessage_background_light</item>
+    <item name="android:background">@color/com_braze_inappmessage_background_light</item>
     <item name="android:padding">0.0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Full.TextArea">
+  <style name="Braze.InAppMessage.Full.TextArea">
     <item name="android:background">@android:color/transparent</item>
     <item name="android:orientation">vertical</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
-  <style name="Appboy.InAppMessage.Full.TextAndButtonContent">
+  <style name="Braze.InAppMessage.Full.TextAndButtonContent">
     <item name="android:layout_marginBottom">30dp</item>
     <item name="android:layout_marginTop">30dp</item>
     <item name="android:orientation">vertical</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">match_parent</item>
   </style>
-  <style name="Appboy.InAppMessage.Header.Full">
+  <style name="Braze.InAppMessage.Header.Full">
   </style>
-  <style name="Appboy.InAppMessage.Message.Full">
+  <style name="Braze.InAppMessage.Message.Full">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:gravity">center</item>
     <item name="android:padding">0.0dp</item>
     <item name="android:layout_marginTop">10dp</item>
   </style>
-  <style name="Appboy.InAppMessage.ScrollView.Full">
+  <style name="Braze.InAppMessage.ScrollView.Full">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginLeft">25dp</item>
     <item name="android:layout_marginRight">25dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Image.Full">
-    <item name="android:contentDescription">@string/com_appboy_inappmessage_image_content_description</item>
+  <style name="Braze.InAppMessage.Image.Full">
+    <item name="android:contentDescription">@string/com_braze_inappmessage_image_content_description</item>
     <item name="android:layout_centerHorizontal">true</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">0.0dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Button.Full">
+  <style name="Braze.InAppMessage.Layout.Button.Full">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_marginTop">20dp</item>
     <item name="android:layout_marginRight">25dp</item>
     <item name="android:layout_marginLeft">25dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Text.Full">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
+  <style name="Braze.InAppMessage.Button.Full">
   </style>
-  <style name="Appboy.InAppMessage.Button.Full">
+  <style name="Braze.InAppMessage.Button.Full.Single">
   </style>
-  <style name="Appboy.InAppMessage.Button.Full.Single">
+  <style name="Braze.InAppMessage.Button.Full.Dual">
   </style>
-  <style name="Appboy.InAppMessage.Button.Full.Dual">
-  </style>
-  <style name="Appboy.InAppMessage.Button.Full.Dual.One">
+  <style name="Braze.InAppMessage.Button.Full.Dual.One">
     <item name="android:layout_marginRight">5dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Button.Full.Dual.Two">
+  <style name="Braze.InAppMessage.Button.Full.Dual.Two">
     <item name="android:layout_marginLeft">5dp</item>
   </style>
-  <style name="Appboy.InAppMessage.CloseButton.Full">
+  <style name="Braze.InAppMessage.CloseButton.Full">
     <item name="android:layout_marginRight">25dp</item>
     <item name="android:layout_marginTop">25dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Frame.Full">
+  <style name="Braze.InAppMessage.Frame.Full">
   </style>
 
   <!-- In-App Message Graphic Full -->
-  <style name="Appboy.InAppMessage.Full.Graphic">
+  <style name="Braze.InAppMessage.Full.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Image.Full.Graphic">
+  <style name="Braze.InAppMessage.Image.Full.Graphic">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">match_parent</item>
   </style>
-  <style name="Appboy.InAppMessage.Layout.Button.Full.Graphic">
+  <style name="Braze.InAppMessage.Layout.Button.Full.Graphic">
     <item name="android:layout_alignParentBottom">true</item>
     <item name="android:layout_marginBottom">30dp</item>
   </style>
-  <style name="Appboy.InAppMessage.Button.Full.Single.Graphic">
+  <style name="Braze.InAppMessage.Button.Full.Single.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Button.Full.Dual.Graphic">
+  <style name="Braze.InAppMessage.Button.Full.Dual.One.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Button.Full.Dual.One.Graphic">
+  <style name="Braze.InAppMessage.Button.Full.Dual.Two.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Button.Full.Dual.Two.Graphic">
+  <style name="Braze.InAppMessage.Frame.Full.Graphic">
   </style>
-  <style name="Appboy.InAppMessage.Frame.Full.Graphic">
-  </style>
-  <style name="Appboy.InAppMessage.CloseButton.Full.Graphic">
+  <style name="Braze.InAppMessage.CloseButton.Full.Graphic">
   </style>
 
   <!-- In-App Message Html Full -->
-  <style name="Appboy.InAppMessage.Html">
+  <style name="Braze.InAppMessage.Html">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">match_parent</item>
   </style>
-  <style name="Appboy.InAppMessage.Html.Webview">
+  <style name="Braze.InAppMessage.Html.Webview">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">match_parent</item>
   </style>
 
   <!-- Feed -->
-  <style name="Appboy.Feed"/>
+  <style name="Braze.Feed"/>
   <!-- Styling the ListView background will require you to set the cacheColorHint, otherwise the
    background may appear black on older versions of Android. For more information about the issue,
    see http://android-developers.blogspot.com/2009/01/why-is-my-list-black-android.html -->
-  <style name="Appboy.Feed.List">
+  <style name="Braze.Feed.List">
     <item name="android:background">@android:color/transparent</item>
     <item name="android:divider">@android:color/transparent</item>
     <item name="android:dividerHeight">16.0dp</item>
@@ -418,20 +387,20 @@
     <item name="android:paddingRight">5.0dp</item>
     <item name="android:scrollbarStyle">outsideInset</item>
   </style>
-  <style name="Appboy.Feed.Empty">
+  <style name="Braze.Feed.Empty">
     <item name="android:lineSpacingExtra">1.5dp</item>
     <item name="android:text">@string/com_appboy_feed_empty</item>
     <item name="android:textColor">@color/com_appboy_title</item>
     <item name="android:textSize">18.0sp</item>
   </style>
-  <style name="Appboy.Feed.NetworkErrorTitle">
+  <style name="Braze.Feed.NetworkErrorTitle">
     <item name="android:gravity">center_horizontal</item>
     <item name="android:text">@string/com_appboy_feed_connection_error_title</item>
     <item name="android:textColor">@color/com_appboy_title</item>
     <item name="android:textSize">19.0sp</item>
     <item name="android:textStyle">bold</item>
   </style>
-  <style name="Appboy.Feed.NetworkErrorBody">
+  <style name="Braze.Feed.NetworkErrorBody">
     <item name="android:gravity">center_horizontal</item>
     <item name="android:text">@string/com_appboy_feed_connection_error_body</item>
     <item name="android:textColor">@color/com_appboy_title</item>
@@ -439,8 +408,8 @@
   </style>
 
   <!-- Legacy News Feed Cards -->
-  <style name="Appboy.Cards"/>
-  <style name="Appboy.Cards.ImageSwitcher">
+  <style name="Braze.Cards"/>
+  <style name="Braze.Cards.ImageSwitcher">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_alignParentRight">true</item>
@@ -448,34 +417,33 @@
   </style>
 
   <!-- Banner Card -->
-  <style name="Appboy.Cards.BannerImage"/>
-  <style name="Appboy.Cards.BannerImage.Image">
+  <style name="Braze.Cards.BannerImage"/>
+  <style name="Braze.Cards.BannerImage.Image">
   </style>
 
   <!-- Captioned Image Card -->
-  <style name="Appboy.Cards.CaptionedImage"/>
-
-  <style name="Appboy.Cards.CaptionedImage.Image">
+  <style name="Braze.Cards.CaptionedImage"/>
+  <style name="Braze.Cards.CaptionedImage.Image">
     <item name="android:layout_alignParentTop">true</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
-  <style name="Appboy.Cards.CaptionedImage.Title.Container">
+  <style name="Braze.Cards.CaptionedImage.Title.Container">
     <item name="android:background">@color/com_appboy_card_title_container</item>
   </style>
-  <style name="Appboy.Cards.CaptionedImage.Title">
+  <style name="Braze.Cards.CaptionedImage.Title">
     <item name="android:textColor">@color/com_appboy_title</item>
     <item name="android:textSize">17.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
   </style>
-  <style name="Appboy.Cards.CaptionedImage.Description">
+  <style name="Braze.Cards.CaptionedImage.Description">
     <item name="android:textColor">@color/com_appboy_description</item>
     <item name="android:textSize">15.0sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:paddingBottom">8.0dp</item>
   </style>
-  <style name="Appboy.Cards.CaptionedImage.Domain">
+  <style name="Braze.Cards.CaptionedImage.Domain">
     <item name="android:textColor">@color/com_appboy_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
@@ -484,8 +452,8 @@
   </style>
 
   <!-- Text Announcement Card -->
-  <style name="Appboy.Cards.TextAnnouncement"/>
-  <style name="Appboy.Cards.TextAnnouncement.Title">
+  <style name="Braze.Cards.TextAnnouncement"/>
+  <style name="Braze.Cards.TextAnnouncement.Title">
     <item name="android:lineSpacingExtra">1.5dp</item>
     <item name="android:textColor">@color/com_appboy_title</item>
     <item name="android:textSize">16.0sp</item>
@@ -493,14 +461,14 @@
     <item name="android:includeFontPadding">false</item>
     <item name="android:paddingBottom">8.0dp</item>
   </style>
-  <style name="Appboy.Cards.TextAnnouncement.Description">
+  <style name="Braze.Cards.TextAnnouncement.Description">
     <item name="android:lineSpacingExtra">1.5dp</item>
     <item name="android:textColor">@color/com_appboy_description</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:paddingBottom">8.0dp</item>
   </style>
-  <style name="Appboy.Cards.TextAnnouncement.Domain">
+  <style name="Braze.Cards.TextAnnouncement.Domain">
     <item name="android:textColor">@color/com_appboy_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
@@ -509,8 +477,8 @@
   </style>
 
   <!-- Short News Card -->
-  <style name="Appboy.Cards.ShortNews"/>
-  <style name="Appboy.Cards.ShortNews.Image">
+  <style name="Braze.Cards.ShortNews"/>
+  <style name="Braze.Cards.ShortNews.Image">
     <item name="android:layout_width">57.5dp</item>
     <item name="android:layout_height">57.5dp</item>
     <item name="android:layout_alignParentTop">true</item>
@@ -519,7 +487,7 @@
     <item name="android:layout_marginRight">10.0dp</item>
     <item name="android:layout_marginTop">10.0dp</item>
   </style>
-  <style name="Appboy.Cards.ShortNews.Title">
+  <style name="Braze.Cards.ShortNews.Title">
     <item name="android:lineSpacingExtra">1.5dp</item>
     <item name="android:textColor">@color/com_appboy_title</item>
     <item name="android:textSize">16.0sp</item>
@@ -527,7 +495,7 @@
     <item name="android:singleLine">true</item>
     <item name="android:includeFontPadding">false</item>
   </style>
-  <style name="Appboy.Cards.ShortNews.Description">
+  <style name="Braze.Cards.ShortNews.Description">
     <item name="android:lineSpacingExtra">1.5dp</item>
     <item name="android:textColor">@color/com_appboy_description</item>
     <item name="android:textSize">13.0sp</item>
@@ -535,7 +503,7 @@
     <item name="android:paddingTop">8.0dp</item>
     <item name="android:paddingBottom">8.0dp</item>
   </style>
-  <style name="Appboy.Cards.ShortNews.Domain">
+  <style name="Braze.Cards.ShortNews.Domain">
     <item name="android:textColor">@color/com_appboy_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
@@ -544,17 +512,17 @@
   </style>
 
   <!-- Content -->
-  <style name="Appboy.ContentCardsDisplay"/>
-  <style name="Appboy.ContentCardsDisplay.Recycler">
-    <item name="android:background">@color/com_appboy_content_cards_display_background_color</item>
+  <style name="Braze.ContentCardsDisplay"/>
+  <style name="Braze.ContentCardsDisplay.Recycler">
+    <item name="android:background">@color/com_braze_content_cards_display_background_color</item>
     <item name="android:divider">@android:color/transparent</item>
     <item name="android:scrollbarStyle">outsideInset</item>
     <item name="android:scrollbars">vertical</item>
   </style>
-  <style name="Appboy.ContentCardsDisplay.Empty">
+  <style name="Braze.ContentCardsDisplay.Empty">
     <item name="android:lineSpacingExtra">1.5dp</item>
     <item name="android:text">@string/com_appboy_feed_empty</item>
-    <item name="android:textColor">@color/com_appboy_content_card_empty_text_color</item>
+    <item name="android:textColor">@color/com_braze_content_card_empty_text_color</item>
     <item name="android:textSize">18.0sp</item>
     <item name="android:gravity">center</item>
     <item name="android:layout_height">match_parent</item>
@@ -562,54 +530,54 @@
   </style>
 
   <!-- Content Cards -->
-  <style name="Appboy.ContentCards">
+  <style name="Braze.ContentCards">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:orientation">horizontal</item>
     <item name="android:focusable">true</item>
   </style>
-  <style name="Appboy.ContentCards.EmptyContainer">
+  <style name="Braze.ContentCards.EmptyContainer">
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_centerInParent">true</item>
     <item name="android:layout_centerVertical">true</item>
     <item name="android:orientation">vertical</item>
   </style>
-  <style name="Appboy.ContentCards.UnreadBar">
+  <style name="Braze.ContentCards.UnreadBar">
     <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">@dimen/com_appboy_content_cards_unread_bar_height</item>
-    <item name="android:background">@color/com_appboy_content_cards_unread_bar_color</item>
+    <item name="android:layout_height">@dimen/com_braze_content_cards_unread_bar_height</item>
+    <item name="android:background">@color/com_braze_content_cards_unread_bar_color</item>
     <item name="android:layout_weight">1</item>
     <item name="android:layout_alignParentBottom">true</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon">
+  <style name="Braze.ContentCards.PinnedIcon">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_alignParentRight">true</item>
     <item name="android:layout_alignParentTop">true</item>
-    <item name="android:src">@drawable/icon_pinned</item>
+    <item name="android:src">@drawable/com_braze_content_card_icon_pinned</item>
     <item name="android:contentDescription">@null</item>
     <item name="android:importantForAccessibility">no</item>
   </style>
-  <style name="Appboy.ContentCards.ActionHint">
+  <style name="Braze.ContentCards.ActionHint">
     <item name="android:textSize">13sp</item>
     <item name="android:lineSpacingMultiplier">1.2</item>
-    <item name="android:textColor">@color/com_appboy_content_cards_action_hint_text_color</item>
+    <item name="android:textColor">@color/com_braze_content_cards_action_hint_text_color</item>
   </style>
 
   <!-- Captioned Image Content Card -->
-  <style name="Appboy.ContentCards.CaptionedImage">
+  <style name="Braze.ContentCards.CaptionedImage">
     <item name="android:layout_height">wrap_content</item>
   </style>
-  <style name="Appboy.ContentCards.CaptionedImage.Root">
-    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
-    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
+  <style name="Braze.ContentCards.CaptionedImage.Root">
+    <item name="android:layout_marginLeft">@dimen/com_braze_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_braze_content_cards_divider_right_margin</item>
   </style>
-  <style name="Appboy.ContentCards.CaptionedImage.ImageContainer">
+  <style name="Braze.ContentCards.CaptionedImage.ImageContainer">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_alignParentTop">true</item>
   </style>
-  <style name="Appboy.ContentCards.CaptionedImage.Image">
+  <style name="Braze.ContentCards.CaptionedImage.Image">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:scaleType">centerCrop</item>
@@ -617,61 +585,61 @@
     <item name="android:contentDescription">@null</item>
     <item name="android:importantForAccessibility">no</item>
   </style>
-  <style name="Appboy.ContentCards.CaptionedImage.Container">
+  <style name="Braze.ContentCards.CaptionedImage.Container">
     <item name="android:layout_marginLeft">25dp</item>
     <item name="android:layout_marginRight">25dp</item>
     <item name="android:layout_marginTop">20dp</item>
     <item name="android:paddingBottom">25dp</item>
-    <item name="android:layout_below">@id/com_appboy_content_cards_captioned_image_card_image_container</item>
+    <item name="android:layout_below">@id/com_braze_content_cards_captioned_image_card_image_container</item>
   </style>
-  <style name="Appboy.ContentCards.CaptionedImage.Title">
+  <style name="Braze.ContentCards.CaptionedImage.Title">
     <item name="android:layout_width">wrap_content</item>
-    <item name="android:textColor">@color/com_appboy_content_cards_title</item>
+    <item name="android:textColor">@color/com_braze_content_cards_title</item>
     <item name="android:textSize">16sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
   </style>
-  <style name="Appboy.ContentCards.CaptionedImage.Description">
-    <item name="android:textColor">@color/com_appboy_content_cards_description</item>
+  <style name="Braze.ContentCards.CaptionedImage.Description">
+    <item name="android:textColor">@color/com_braze_content_cards_description</item>
     <item name="android:textSize">13sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:layout_marginTop">10dp</item>
     <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_below">@id/com_appboy_content_cards_captioned_image_title</item>
+    <item name="android:layout_below">@id/com_braze_content_cards_captioned_image_title</item>
   </style>
-  <style name="Appboy.ContentCards.ActionHint.CaptionedImage">
+  <style name="Braze.ContentCards.ActionHint.CaptionedImage">
     <item name="android:includeFontPadding">false</item>
     <item name="android:layout_alignParentLeft">true</item>
     <item name="android:layout_marginTop">12dp</item>
-    <item name="android:layout_below">@id/com_appboy_content_cards_captioned_image_description</item>
+    <item name="android:layout_below">@id/com_braze_content_cards_captioned_image_description</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.CaptionedImage"/>
-  <style name="Appboy.ContentCards.UnreadBar.CaptionedImage"/>
+  <style name="Braze.ContentCards.PinnedIcon.CaptionedImage"/>
+  <style name="Braze.ContentCards.UnreadBar.CaptionedImage"/>
 
   <!-- Banner Content Card -->
-  <style name="Appboy.ContentCards.BannerImage"/>
-  <style name="Appboy.ContentCards.BannerImage.Root">
-    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
-    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
+  <style name="Braze.ContentCards.BannerImage"/>
+  <style name="Braze.ContentCards.BannerImage.Root">
+    <item name="android:layout_marginLeft">@dimen/com_braze_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_braze_content_cards_divider_right_margin</item>
   </style>
-  <style name="Appboy.ContentCards.BannerImage.Image">
+  <style name="Braze.ContentCards.BannerImage.Image">
     <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_height">250dp</item>
     <item name="android:scaleType">centerCrop</item>
     <item name="android:adjustViewBounds">true</item>
     <item name="android:contentDescription">@null</item>
     <item name="android:importantForAccessibility">no</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.Banner"/>
-  <style name="Appboy.ContentCards.UnreadBar.Banner"/>
+  <style name="Braze.ContentCards.PinnedIcon.Banner"/>
+  <style name="Braze.ContentCards.UnreadBar.Banner"/>
 
   <!-- Short News Content Card -->
-  <style name="Appboy.ContentCards.ShortNews"/>
-  <style name="Appboy.ContentCards.ShortNews.Root">
-    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
-    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
+  <style name="Braze.ContentCards.ShortNews"/>
+  <style name="Braze.ContentCards.ShortNews.Root">
+    <item name="android:layout_marginLeft">@dimen/com_braze_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_braze_content_cards_divider_right_margin</item>
   </style>
-  <style name="Appboy.ContentCards.ShortNews.ImageContainer">
+  <style name="Braze.ContentCards.ShortNews.ImageContainer">
     <item name="android:layout_width">57.5dp</item>
     <item name="android:layout_height">57.5dp</item>
     <item name="android:layout_alignParentTop">true</item>
@@ -680,24 +648,24 @@
     <item name="android:layout_marginTop">20dp</item>
     <item name="android:layout_marginBottom">25.0dp</item>
   </style>
-  <style name="Appboy.ContentCards.ShortNews.Image">
+  <style name="Braze.ContentCards.ShortNews.Image">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:scaleType">centerCrop</item>
     <item name="android:adjustViewBounds">true</item>
-    <item name="android:background">@drawable/com_appboy_content_cards_rounded_corner_background</item>
+    <item name="android:background">@drawable/com_braze_content_cards_rounded_corner_background</item>
     <item name="android:contentDescription">@null</item>
     <item name="android:importantForAccessibility">no</item>
   </style>
-  <style name="Appboy.ContentCards.ShortNews.Container">
+  <style name="Braze.ContentCards.ShortNews.Container">
     <item name="android:layout_marginLeft">12dp</item>
     <item name="android:layout_marginTop">20dp</item>
     <item name="android:paddingBottom">25dp</item>
     <item name="android:layout_marginRight">25dp</item>
-    <item name="android:layout_toRightOf">@id/com_appboy_content_cards_short_news_card_image_container</item>
+    <item name="android:layout_toRightOf">@id/com_braze_content_cards_short_news_card_image_container</item>
   </style>
-  <style name="Appboy.ContentCards.ShortNews.Title">
-    <item name="android:textColor">@color/com_appboy_content_cards_title</item>
+  <style name="Braze.ContentCards.ShortNews.Title">
+    <item name="android:textColor">@color/com_braze_content_cards_title</item>
     <item name="android:textSize">16.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
@@ -705,41 +673,41 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_alignParentTop">true</item>
   </style>
-  <style name="Appboy.ContentCards.ShortNews.Description">
-    <item name="android:textColor">@color/com_appboy_content_cards_description</item>
+  <style name="Braze.ContentCards.ShortNews.Description">
+    <item name="android:textColor">@color/com_braze_content_cards_description</item>
     <item name="android:textSize">13sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_below">@id/com_appboy_content_cards_short_news_card_title</item>
+    <item name="android:layout_below">@id/com_braze_content_cards_short_news_card_title</item>
     <item name="android:layout_marginTop">10.0dp</item>
   </style>
-  <style name="Appboy.ContentCards.ActionHint.ShortNews">
+  <style name="Braze.ContentCards.ActionHint.ShortNews">
     <item name="android:includeFontPadding">false</item>
     <item name="android:layout_alignParentLeft">true</item>
     <item name="android:layout_marginTop">12dp</item>
-    <item name="android:layout_below">@id/com_appboy_content_cards_short_news_card_description</item>
+    <item name="android:layout_below">@id/com_braze_content_cards_short_news_card_description</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.ShortNews"/>
-  <style name="Appboy.ContentCards.UnreadBar.ShortNews"/>
+  <style name="Braze.ContentCards.PinnedIcon.ShortNews"/>
+  <style name="Braze.ContentCards.UnreadBar.ShortNews"/>
 
   <!-- Text Announcement Content Card -->
-  <style name="Appboy.ContentCards.TextAnnouncement">
+  <style name="Braze.ContentCards.TextAnnouncement">
     <item name="android:layout_height">wrap_content</item>
   </style>
-  <style name="Appboy.ContentCards.TextAnnouncement.Root">
-    <item name="android:layout_marginLeft">@dimen/com_appboy_content_cards_divider_left_margin</item>
-    <item name="android:layout_marginRight">@dimen/com_appboy_content_cards_divider_right_margin</item>
+  <style name="Braze.ContentCards.TextAnnouncement.Root">
+    <item name="android:layout_marginLeft">@dimen/com_braze_content_cards_divider_left_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_braze_content_cards_divider_right_margin</item>
   </style>
-  <style name="Appboy.ContentCards.TextAnnouncement.Container">
+  <style name="Braze.ContentCards.TextAnnouncement.Container">
     <item name="android:layout_marginLeft">25dp</item>
     <item name="android:layout_marginRight">25dp</item>
     <item name="android:layout_marginTop">20dp</item>
     <item name="android:paddingBottom">25dp</item>
   </style>
-  <style name="Appboy.ContentCards.TextAnnouncement.Title">
+  <style name="Braze.ContentCards.TextAnnouncement.Title">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_content_cards_title</item>
+    <item name="android:textColor">@color/com_braze_content_cards_title</item>
     <item name="android:textSize">16.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
@@ -747,84 +715,84 @@
     <item name="android:layout_alignParentLeft">true</item>
     <item name="android:layout_marginBottom">10dp</item>
   </style>
-  <style name="Appboy.ContentCards.TextAnnouncement.Description">
+  <style name="Braze.ContentCards.TextAnnouncement.Description">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_content_cards_description</item>
+    <item name="android:textColor">@color/com_braze_content_cards_description</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:layout_alignParentLeft">true</item>
-    <item name="android:layout_below">@id/com_appboy_content_cards_text_announcement_card_title</item>
+    <item name="android:layout_below">@id/com_braze_content_cards_text_announcement_card_title</item>
   </style>
-  <style name="Appboy.ContentCards.ActionHint.TextAnnouncement">
+  <style name="Braze.ContentCards.ActionHint.TextAnnouncement">
     <item name="android:includeFontPadding">false</item>
     <item name="android:layout_alignParentLeft">true</item>
-    <item name="android:layout_below">@id/com_appboy_content_cards_text_announcement_card_description</item>
+    <item name="android:layout_below">@id/com_braze_content_cards_text_announcement_card_description</item>
     <item name="android:layout_marginTop">12dp</item>
   </style>
-  <style name="Appboy.ContentCards.PinnedIcon.TextAnnouncement"/>
-  <style name="Appboy.ContentCards.UnreadBar.TextAnnouncement"/>
+  <style name="Braze.ContentCards.PinnedIcon.TextAnnouncement"/>
+  <style name="Braze.ContentCards.UnreadBar.TextAnnouncement"/>
 
   <!-- Push Story -->
-  <style name="Appboy.Story"/>
-  <style name="Appboy.Story.FullLayout">
+  <style name="Braze.Story"/>
+  <style name="Braze.Story.FullLayout">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:orientation">vertical</item>
     <item name="android:weightSum">1</item>
   </style>
-  <style name="Appboy.Story.OneImageLayout">
+  <style name="Braze.Story.OneImageLayout">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:clickable">true</item>
     <item name="android:layout_weight">1</item>
     <item name="android:maxHeight">200dp</item>
   </style>
-  <style name="Appboy.Story.ImageView">
+  <style name="Braze.Story.ImageView">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
-  <style name="Appboy.Story.ImageView.OneImage">
+  <style name="Braze.Story.ImageView.OneImage">
     <item name="android:adjustViewBounds">true</item>
   </style>
-  <style name="Appboy.Story.ImageButton">
+  <style name="Braze.Story.ImageButton">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:background">#00112233</item>
     <item name="android:paddingTop">20dp</item>
     <item name="android:paddingBottom">20dp</item>
   </style>
-  <style name="Appboy.Story.ImageButton.OneImage">
-    <item name="android:layout_alignTop">@+id/com_appboy_story_image_view</item>
-    <item name="android:layout_alignBottom">@+id/com_appboy_story_image_view</item>
+  <style name="Braze.Story.ImageButton.OneImage">
+    <item name="android:layout_alignTop">@+id/com_braze_story_image_view</item>
+    <item name="android:layout_alignBottom">@+id/com_braze_story_image_view</item>
   </style>
-  <style name="Appboy.Story.ImageButton.OneImage.Left">
-    <item name="android:src">@drawable/com_appboy_ic_left_arrow</item>
-    <item name="android:layout_alignLeft">@+id/com_appboy_story_image_view</item>
+  <style name="Braze.Story.ImageButton.OneImage.Left">
+    <item name="android:src">@drawable/com_braze_push_ic_left_arrow</item>
+    <item name="android:layout_alignLeft">@+id/com_braze_story_image_view</item>
     <item name="android:paddingRight">20dp</item>
     <item name="android:paddingLeft">3dp</item>
   </style>
-  <style name="Appboy.Story.ImageButton.OneImage.Right">
-    <item name="android:src">@drawable/com_appboy_ic_right_arrow</item>
-    <item name="android:layout_alignRight">@+id/com_appboy_story_image_view</item>
+  <style name="Braze.Story.ImageButton.OneImage.Right">
+    <item name="android:src">@drawable/com_braze_push_ic_right_arrow</item>
+    <item name="android:layout_alignRight">@+id/com_braze_story_image_view</item>
     <item name="android:paddingLeft">20dp</item>
     <item name="android:paddingRight">3dp</item>
   </style>
-  <style name="Appboy.Story.TextViewContainer">
+  <style name="Braze.Story.TextViewContainer">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:padding">0dp</item>
   </style>
-  <style name="Appboy.Story.TextViewContainer.Title"/>
-  <style name="Appboy.Story.TextViewContainer.Title.OneImage">
-    <item name="android:layout_below">@+id/com_appboy_story_image_view</item>
+  <style name="Braze.Story.TextViewContainer.Title"/>
+  <style name="Braze.Story.TextViewContainer.Title.OneImage">
+    <item name="android:layout_below">@+id/com_braze_story_image_view</item>
     <item name="android:layout_weight">0</item>
   </style>
-  <style name="Appboy.Story.TextViewContainer.Subtitle"/>
-  <style name="Appboy.Story.TextViewContainer.Subtitle.OneImage">
-    <item name="android:layout_below">@+id/com_appboy_story_text_view_container</item>
+  <style name="Braze.Story.TextViewContainer.Subtitle"/>
+  <style name="Braze.Story.TextViewContainer.Subtitle.OneImage">
+    <item name="android:layout_below">@+id/com_braze_story_text_view_container</item>
     <item name="android:layout_weight">0</item>
   </style>
-  <style name="Appboy.Story.TextView">
+  <style name="Braze.Story.TextView">
     <item name="android:padding">0dp</item>
     <item name="android:layout_margin">0dp</item>
     <item name="android:layout_width">wrap_content</item>
@@ -834,35 +802,35 @@
     <item name="android:gravity">center</item>
     <item name="android:ellipsize">end</item>
   </style>
-  <style name="Appboy.Story.TextView.Title">
+  <style name="Braze.Story.TextView.Title">
     <item name="android:textStyle">normal|bold</item>
     <item name="android:paddingBottom">5dp</item>
     <item name="android:singleLine">true</item>
   </style>
-  <style name="Appboy.Story.TextView.Title.OneImage"/>
-  <style name="Appboy.Story.TextView.Subtitle">
+  <style name="Braze.Story.TextView.Title.OneImage"/>
+  <style name="Braze.Story.TextView.Subtitle">
     <item name="android:textStyle">normal</item>
     <item name="android:singleLine">true</item>
   </style>
-  <style name="Appboy.Story.TextView.Subtitle.OneImage"/>
+  <style name="Braze.Story.TextView.Subtitle.OneImage"/>
 
   <!-- Inline Image Push -->
-  <style name="Appboy.Push"/>
-  <style name="Appboy.Push.InlineImage"/>
-  <style name="Appboy.Push.InlineImage.Layout">
+  <style name="Braze.Push"/>
+  <style name="Braze.Push.InlineImage"/>
+  <style name="Braze.Push.InlineImage.Layout">
     <item name="android:orientation">horizontal</item>
-    <item name="android:weightSum">@dimen/com_appboy_push_inline_image_total_weight_sum</item>
+    <item name="android:weightSum">@dimen/com_braze_push_inline_image_total_weight_sum</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea"/>
-  <style name="Appboy.Push.InlineImage.TextArea.Layout">
-    <item name="android:layout_weight">@dimen/com_appboy_push_inline_image_text_area_layout_weight</item>
+  <style name="Braze.Push.InlineImage.TextArea"/>
+  <style name="Braze.Push.InlineImage.TextArea.Layout">
+    <item name="android:layout_weight">@dimen/com_braze_push_inline_image_text_area_layout_weight</item>
     <item name="android:layout_width">0dp</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:orientation">vertical</item>
     <item name="android:layout_marginLeft">16dp</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.Header"/>
-  <style name="Appboy.Push.InlineImage.TextArea.Header.Layout">
+  <style name="Braze.Push.InlineImage.TextArea.Header"/>
+  <style name="Braze.Push.InlineImage.TextArea.Header.Layout">
     <item name="android:paddingTop">16dp</item>
     <item name="android:paddingBottom">12dp</item>
     <item name="android:layout_marginBottom">0dp</item>
@@ -870,41 +838,41 @@
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.Header.AppIcon">
+  <style name="Braze.Push.InlineImage.TextArea.Header.AppIcon">
     <item name="android:layout_width">18dp</item>
     <item name="android:layout_height">18dp</item>
     <item name="android:layout_marginRight">3dp</item>
     <item name="android:contentDescription">@null</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.Header.AppNameText" parent="@style/TextAppearance.Compat.Notification.Info">
+  <style name="Braze.Push.InlineImage.TextArea.Header.AppNameText" parent="@style/TextAppearance.Compat.Notification.Info">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginLeft">3dp</item>
-    <item name="android:layout_marginRight">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_braze_push_inline_image_header_separating_margin</item>
     <item name="android:singleLine">true</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.Header.TextDivider" parent="@style/TextAppearance.Compat.Notification.Info">
+  <style name="Braze.Push.InlineImage.TextArea.Header.TextDivider" parent="@style/TextAppearance.Compat.Notification.Info">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginLeft">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
-    <item name="android:layout_marginRight">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
-    <item name="android:text">@string/com_appboy_inline_image_push_notification_header_divider_symbol</item>
+    <item name="android:layout_marginLeft">@dimen/com_braze_push_inline_image_header_separating_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_braze_push_inline_image_header_separating_margin</item>
+    <item name="android:text">@string/com_braze_inline_image_push_notification_header_divider_symbol</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.Header.TimeText" parent="@style/TextAppearance.Compat.Notification.Info">
+  <style name="Braze.Push.InlineImage.TextArea.Header.TimeText" parent="@style/TextAppearance.Compat.Notification.Info">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginLeft">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
-    <item name="android:layout_marginRight">@dimen/com_appboy_push_inline_image_header_separating_margin</item>
+    <item name="android:layout_marginLeft">@dimen/com_braze_push_inline_image_header_separating_margin</item>
+    <item name="android:layout_marginRight">@dimen/com_braze_push_inline_image_header_separating_margin</item>
     <item name="android:singleLine">true</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.TitleContent"/>
-  <style name="Appboy.Push.InlineImage.TextArea.TitleContent.Layout">
+  <style name="Braze.Push.InlineImage.TextArea.TitleContent"/>
+  <style name="Braze.Push.InlineImage.TextArea.TitleContent.Layout">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginRight">16dp</item>
     <item name="android:orientation">vertical</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.TitleContent.TitleText" parent="@style/TextAppearance.Compat.Notification.Title">
+  <style name="Braze.Push.InlineImage.TextArea.TitleContent.TitleText" parent="@style/TextAppearance.Compat.Notification.Title">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">marquee</item>
@@ -912,18 +880,18 @@
     <item name="android:gravity">start</item>
     <item name="android:singleLine">true</item>
   </style>
-  <style name="Appboy.Push.InlineImage.TextArea.TitleContent.ContentText" parent="@style/TextAppearance.Compat.Notification">
+  <style name="Braze.Push.InlineImage.TextArea.TitleContent.ContentText" parent="@style/TextAppearance.Compat.Notification">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">marquee</item>
     <item name="android:fadingEdge">horizontal</item>
     <item name="android:maxLines">2</item>
   </style>
-  <style name="Appboy.Push.InlineImage.Image"/>
-  <style name="Appboy.Push.InlineImage.Image.ImageContent">
+  <style name="Braze.Push.InlineImage.Image"/>
+  <style name="Braze.Push.InlineImage.Image.ImageContent">
     <item name="android:layout_width">0dp</item>
     <item name="android:layout_height">match_parent</item>
-    <item name="android:layout_weight">@dimen/com_appboy_push_inline_image_image_layout_weight</item>
+    <item name="android:layout_weight">@dimen/com_braze_push_inline_image_image_layout_weight</item>
     <item name="android:contentDescription">@null</item>
     <item name="android:scaleType">fitXY</item>
   </style>
@@ -937,27 +905,27 @@
   </style>
 
   <!-- Constrained Inline Image Push -->
-  <style name="Appboy.Push.InlineImageConstrained"/>
-  <style name="Appboy.Push.InlineImageConstrained.Layout">
+  <style name="Braze.Push.InlineImageConstrained"/>
+  <style name="Braze.Push.InlineImageConstrained.Layout">
     <item name="android:orientation">horizontal</item>
-    <item name="android:weightSum">@dimen/com_appboy_push_inline_image_total_weight_sum</item>
+    <item name="android:weightSum">@dimen/com_braze_push_inline_image_total_weight_sum</item>
   </style>
-  <style name="Appboy.Push.InlineImageConstrained.TextArea"/>
-  <style name="Appboy.Push.InlineImageConstrained.TextArea.Layout">
-    <item name="android:layout_weight">@dimen/com_appboy_push_inline_image_total_weight_sum</item>
+  <style name="Braze.Push.InlineImageConstrained.TextArea"/>
+  <style name="Braze.Push.InlineImageConstrained.TextArea.Layout">
+    <item name="android:layout_weight">@dimen/com_braze_push_inline_image_total_weight_sum</item>
     <item name="android:layout_width">0dp</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:orientation">vertical</item>
     <item name="android:layout_marginLeft">16dp</item>
   </style>
-  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent"/>
-  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent.Layout">
+  <style name="Braze.Push.InlineImageConstrained.TextArea.TitleContent"/>
+  <style name="Braze.Push.InlineImageConstrained.TextArea.TitleContent.Layout">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginRight">16dp</item>
     <item name="android:orientation">vertical</item>
   </style>
-  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent.TitleText" parent="@style/TextAppearance.Compat.Notification.Title">
+  <style name="Braze.Push.InlineImageConstrained.TextArea.TitleContent.TitleText" parent="@style/TextAppearance.Compat.Notification.Title">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">marquee</item>
@@ -965,7 +933,7 @@
     <item name="android:gravity">start</item>
     <item name="android:singleLine">true</item>
   </style>
-  <style name="Appboy.Push.InlineImageConstrained.TextArea.TitleContent.ContentText" parent="@style/TextAppearance.Compat.Notification">
+  <style name="Braze.Push.InlineImageConstrained.TextArea.TitleContent.ContentText" parent="@style/TextAppearance.Compat.Notification">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">marquee</item>

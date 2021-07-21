@@ -3,8 +3,8 @@ package com.braze.googletagmanager;
 import android.app.Application;
 import android.util.Log;
 
-import com.appboy.AppboyLifecycleCallbackListener;
 import com.braze.Braze;
+import com.braze.BrazeActivityLifecycleCallbackListener;
 import com.braze.configuration.BrazeConfig;
 import com.braze.support.BrazeLogger;
 
@@ -21,6 +21,6 @@ public class GtmApplication extends Application {
         .setHandlePushDeepLinksAutomatically(true)
         .build()
     );
-    registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
+    registerActivityLifecycleCallbacks(new BrazeActivityLifecycleCallbackListener());
   }
 }

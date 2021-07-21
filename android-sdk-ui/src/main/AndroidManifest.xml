@@ -7,18 +7,24 @@
       android:name="com.appboy.ui.AppboyWebViewActivity"
       android:exported="false" />
     <activity
+      android:name="com.braze.ui.BrazeWebViewActivity"
+      android:exported="false" />
+    <activity
       android:name="com.appboy.ui.activities.AppboyFeedActivity"
       android:exported="false" />
     <activity
       android:name="com.appboy.ui.activities.AppboyContentCardsActivity"
       android:exported="false" />
     <activity
-      android:name="com.appboy.push.NotificationTrampolineActivity"
+      android:name="com.braze.ui.activities.ContentCardsActivity"
+      android:exported="false" />
+    <activity
+      android:name="com.braze.push.NotificationTrampolineActivity"
       android:launchMode="singleInstance"
       android:exported="false"
       android:theme="@style/Braze.PushTrampoline.Transparent" />
     <receiver
-      android:name="com.appboy.BrazePushReceiver"
+      android:name="com.braze.push.BrazePushReceiver"
       android:exported="false" />
   </application>
 </manifest>

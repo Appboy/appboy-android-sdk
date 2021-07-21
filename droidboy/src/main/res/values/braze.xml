@@ -45,7 +45,7 @@
     If set to true, location data will be collected once at the start of each session.
     If not specified or set to false, all location collection will be disabled and location will
     never be set for the user unless integrating apps manually call setLastKnownLocation on the
-    AppboyUser. -->
+    BrazeUser. -->
   <bool name="com_appboy_enable_location_collection">true</bool>
 
   <!-- Triggered Action configuration -->

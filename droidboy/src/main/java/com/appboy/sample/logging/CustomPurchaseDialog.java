@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
 import com.appboy.sample.util.ButtonUtils;
-import com.appboy.support.StringUtils;
 import com.braze.Braze;
+import com.braze.support.StringUtils;
 
 import java.math.BigDecimal;
 

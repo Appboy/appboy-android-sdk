@@ -31,13 +31,13 @@
       <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/Appboy.Feed.NetworkErrorTitle"/>
+        style="@style/Braze.Feed.NetworkErrorTitle"/>
 
       <TextView
         android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/Appboy.Feed.NetworkErrorBody"/>
+        style="@style/Braze.Feed.NetworkErrorBody"/>
     </LinearLayout>
 
     <LinearLayout
@@ -53,7 +53,7 @@
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/Appboy.Feed.Empty"/>
+        style="@style/Braze.Feed.Empty"/>
     </LinearLayout>
 
     <ListView
@@ -62,7 +62,7 @@
       android:layout_width="@dimen/com_appboy_feed_max_width"
       android:layout_height="match_parent"
       android:layout_centerHorizontal="true"
-      style="@style/Appboy.Feed.List"
+      style="@style/Braze.Feed.List"
       />
 
     <View android:layout_width="match_parent"

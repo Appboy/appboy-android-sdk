@@ -4,5 +4,5 @@
   <string name="com_appboy_feed_empty">Det finns inga uppdateringar. Försök igen senare.</string>
   <string name="com_appboy_feed_connection_error_title">Anslutningsfel</string>
   <string name="com_appboy_feed_connection_error_body">Det gick inte att skapa en nätverksanslutning. Försök igen senare.</string>
-  <string name="com_appboy_inappmessage_close_content_description">för nära</string>
+  <string name="com_braze_inappmessage_close_content_description">för nära</string>
 </resources>

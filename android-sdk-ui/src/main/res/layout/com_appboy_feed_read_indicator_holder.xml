@@ -4,5 +4,5 @@
        android:layout_height="match_parent">
   <com.appboy.ui.feed.AppboyImageSwitcher
     android:id="@+id/com_appboy_newsfeed_item_read_indicator_image_switcher"
-    style="@style/Appboy.Cards.ImageSwitcher"/>
+    style="@style/Braze.Cards.ImageSwitcher"/>
 </merge>

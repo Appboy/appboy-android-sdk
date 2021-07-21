@@ -20,12 +20,12 @@
         </activity>
         <receiver android:name=".CustomBroadcastReceiver" android:exported="false" >
             <intent-filter>
-                <action android:name="${applicationId}.intent.APPBOY_PUSH_RECEIVED" />
-                <action android:name="${applicationId}.intent.APPBOY_NOTIFICATION_OPENED" />
-                <action android:name="${applicationId}.intent.APPBOY_PUSH_DELETED" />
+                <action android:name="com.braze.push.intent.NOTIFICATION_OPENED" />
+                <action android:name="com.braze.push.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="com.braze.push.intent.NOTIFICATION_DELETED" />
             </intent-filter>
         </receiver>
-        <service android:name="com.appboy.AppboyFirebaseMessagingService">
+        <service android:name="com.braze.push.BrazeFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

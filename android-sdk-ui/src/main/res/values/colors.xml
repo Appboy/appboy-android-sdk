@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="com_appboy_inappmessage_icon">@android:color/white</color>
-  <color name="com_appboy_inappmessage_icon_background">#ff0073d5</color>
-  <color name="com_appboy_inappmessage_chevron">#9B9B9B</color>
-  <color name="com_appboy_inappmessage_frame_light">#C0333333</color>
+  <color name="com_braze_inappmessage_icon">@android:color/white</color>
+  <color name="com_braze_inappmessage_icon_background">#ff0073d5</color>
+  <color name="com_braze_inappmessage_chevron">#9B9B9B</color>
+  <color name="com_braze_inappmessage_frame_light">#C0333333</color>
 
-  <color name="com_appboy_inappmessage_background_slideup">#efefef</color>
-  <color name="com_appboy_inappmessage_text_slideup">#555555</color>
+  <color name="com_braze_inappmessage_background_slideup">#efefef</color>
+  <color name="com_braze_inappmessage_text_slideup">#555555</color>
 
-  <color name="com_appboy_inappmessage_background_light">@android:color/white</color>
-  <color name="com_appboy_inappmessage_header_text">#333333</color>
-  <color name="com_appboy_inappmessage_text">#555555</color>
+  <color name="com_braze_inappmessage_background_light">@android:color/white</color>
+  <color name="com_braze_inappmessage_header_text">#333333</color>
+  <color name="com_braze_inappmessage_text">#555555</color>
 
-  <color name="com_appboy_inappmessage_button_text_light">@android:color/white</color>
-  <color name="com_appboy_inappmessage_button_bg_light">#1B78CF</color>
-  <color name="com_appboy_inappmessage_button_ripple">#5f000000</color>
+  <color name="com_braze_inappmessage_button_text_light">@android:color/white</color>
+  <color name="com_braze_inappmessage_button_bg_light">#1B78CF</color>
+  <color name="com_braze_inappmessage_button_ripple">#5f000000</color>
 
   <color name="com_appboy_title">#3F3F3F</color>
   <color name="com_appboy_description">#666565</color>
   <color name="com_appboy_domain">#3F3F3F</color>
-
-  <color name="com_appboy_button_enabled">#555555</color>
-  <color name="com_appboy_button_disabled">#BBBBBB</color>
 
   <color name="com_appboy_card_title_container">#F5F5F5</color>
 
@@ -29,33 +26,29 @@
   <color name="com_appboy_card_background_shadow">#30CCCCCC</color>
   <color name="com_appboy_card_background">@android:color/white</color>
 
-  <color name="com_appboy_custom_notification_title">#999999</color>
-  <color name="com_appboy_custom_notification_content">#FFFFFF</color>
-  <color name="com_appboy_custom_notification_time">#999999</color>
-
   <color name="com_appboy_newsfeed_swipe_refresh_color_1">#f33e3e</color>
   <color name="com_appboy_newsfeed_swipe_refresh_color_2">#1bbdf2</color>
   <color name="com_appboy_newsfeed_swipe_refresh_color_3">#2f3436</color>
   <color name="com_appboy_newsfeed_swipe_refresh_color_4">#ffffff</color>
 
-  <color name="com_appboy_content_card_empty_text_color">#3F3F3F</color>
-  <color name="com_appboy_content_card_background_border">#50CCCCCC</color>
-  <color name="com_appboy_content_card_background_shadow">#30CCCCCC</color>
-  <color name="com_appboy_content_card_background">@android:color/white</color>
+  <color name="com_braze_content_card_empty_text_color">#3F3F3F</color>
+  <color name="com_braze_content_card_background_border">#50CCCCCC</color>
+  <color name="com_braze_content_card_background_shadow">#30CCCCCC</color>
+  <color name="com_braze_content_card_background">@android:color/white</color>
 
-  <color name="com_appboy_content_cards_swipe_refresh_color_1">#f33e3e</color>
-  <color name="com_appboy_content_cards_swipe_refresh_color_2">#1bbdf2</color>
-  <color name="com_appboy_content_cards_swipe_refresh_color_3">#2f3436</color>
-  <color name="com_appboy_content_cards_swipe_refresh_color_4">#ffffff</color>
+  <color name="com_braze_content_cards_swipe_refresh_color_1">#f33e3e</color>
+  <color name="com_braze_content_cards_swipe_refresh_color_2">#1bbdf2</color>
+  <color name="com_braze_content_cards_swipe_refresh_color_3">#2f3436</color>
+  <color name="com_braze_content_cards_swipe_refresh_color_4">#ffffff</color>
 
   <!-- The color used to highlight unread Content Cards at their bottom edge -->
-  <color name="com_appboy_content_cards_unread_bar_color">#1676d0</color>
+  <color name="com_braze_content_cards_unread_bar_color">#1676d0</color>
 
   <!-- The color of the "Read More >" text when card actions are present -->
-  <color name="com_appboy_content_cards_action_hint_text_color">#1676D0</color>
+  <color name="com_braze_content_cards_action_hint_text_color">#1676D0</color>
 
-  <color name="com_appboy_content_cards_title">#3F3F3F</color>
-  <color name="com_appboy_content_cards_description">#666565</color>
+  <color name="com_braze_content_cards_title">#3F3F3F</color>
+  <color name="com_braze_content_cards_description">#666565</color>
 
-  <color name="com_appboy_content_cards_display_background_color">#EEE</color>
+  <color name="com_braze_content_cards_display_background_color">#EEE</color>
 </resources>

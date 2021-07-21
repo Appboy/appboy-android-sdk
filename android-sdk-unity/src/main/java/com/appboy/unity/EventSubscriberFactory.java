@@ -1,11 +1,11 @@
 package com.appboy.unity;
 
-import com.appboy.events.ContentCardsUpdatedEvent;
 import com.appboy.events.FeedUpdatedEvent;
 import com.appboy.events.IEventSubscriber;
-import com.appboy.events.InAppMessageEvent;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.MessagingUtils;
+import com.braze.events.ContentCardsUpdatedEvent;
+import com.braze.events.InAppMessageEvent;
 import com.braze.support.BrazeLogger;
 
 public class EventSubscriberFactory {

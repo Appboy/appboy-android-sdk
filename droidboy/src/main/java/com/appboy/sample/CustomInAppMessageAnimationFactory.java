@@ -5,8 +5,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 
-import com.appboy.models.IInAppMessage;
-import com.appboy.ui.inappmessage.IInAppMessageAnimationFactory;
+import com.braze.models.inappmessage.IInAppMessage;
+import com.braze.ui.inappmessage.IInAppMessageAnimationFactory;
 
 public class CustomInAppMessageAnimationFactory implements IInAppMessageAnimationFactory {
 

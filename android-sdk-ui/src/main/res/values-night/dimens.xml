@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="com_appboy_content_card_background_border_left">0dp</dimen>
-  <dimen name="com_appboy_content_card_background_border_right">0dp</dimen>
-  <dimen name="com_appboy_content_card_background_border_top">0dp</dimen>
-  <dimen name="com_appboy_content_card_background_border_bottom">0dp</dimen>
-  <dimen name="com_appboy_content_card_background_shadow_bottom">0dp</dimen>
+  <dimen name="com_braze_content_card_background_border_left">0dp</dimen>
+  <dimen name="com_braze_content_card_background_border_right">0dp</dimen>
+  <dimen name="com_braze_content_card_background_border_top">0dp</dimen>
+  <dimen name="com_braze_content_card_background_border_bottom">0dp</dimen>
+  <dimen name="com_braze_content_card_background_shadow_bottom">0dp</dimen>
 </resources>

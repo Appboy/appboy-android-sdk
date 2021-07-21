@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="Appboy.Cards.ImageSwitcher">
-    <item name="appboyFeedCustomReadIcon">@drawable/icon_unread</item>
-    <item name="appboyFeedCustomUnReadIcon">@drawable/icon_read</item>
+  <style name="Braze.Cards.ImageSwitcher">
+    <item name="appboyFeedCustomReadIcon">@drawable/com_braze_content_card_icon_unread</item>
+    <item name="appboyFeedCustomUnReadIcon">@drawable/com_braze_content_card_icon_read</item>
     <item name="android:layout_width">30.0dp</item>
     <item name="android:layout_height">30.0dp</item>
     <item name="android:layout_alignParentRight">true</item>

@@ -3,8 +3,8 @@ package com.braze.hms_sample
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.appboy.AppboyLifecycleCallbackListener
 import com.braze.Braze
+import com.braze.BrazeActivityLifecycleCallbackListener
 import com.braze.configuration.BrazeConfig
 import com.braze.support.BrazeLogger
 
@@ -36,7 +36,7 @@ class HmsApplication : Application() {
       )
     }
 
-    registerActivityLifecycleCallbacks(AppboyLifecycleCallbackListener())
+    registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
   }
 
   companion object {

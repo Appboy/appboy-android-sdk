@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.appboy.Constants;
-import com.appboy.push.AppboyNotificationUtils;
+import com.braze.push.BrazeNotificationUtils;
 import com.braze.support.BrazeLogger;
 
 import java.util.concurrent.TimeUnit;
@@ -17,24 +17,25 @@ public class CustomBroadcastReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    String packageName = context.getPackageName();
-    String pushReceivedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_RECEIVED_SUFFIX;
-    String notificationOpenedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
-    String notificationDeletedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX;
-
     String action = intent.getAction();
+    if (action == null) {
+      return;
+    }
     Log.d(TAG, String.format("Received intent with action %s", action));
-
     logNotificationDuration(intent);
 
-    if (pushReceivedAction.equals(action)) {
-      Log.d(TAG, "Received push notification.");
-    } else if (notificationOpenedAction.equals(action)) {
-      AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
-    } else if (notificationDeletedAction.equals(action)) {
-      Log.d(TAG, "Received push notification deleted intent.");
-    } else {
-      Log.d(TAG, String.format("Ignoring intent with unsupported action %s", action));
+    switch (action) {
+      case Constants.BRAZE_PUSH_INTENT_NOTIFICATION_RECEIVED:
+        Log.d(TAG, "Received push notification.");
+        break;
+      case Constants.BRAZE_PUSH_INTENT_NOTIFICATION_OPENED:
+        BrazeNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+        break;
+      case Constants.BRAZE_PUSH_INTENT_NOTIFICATION_DELETED:
+        Log.d(TAG, "Received push notification deleted intent.");
+        break;
+      default:
+        Log.d(TAG, String.format("Ignoring intent with unsupported action %s", action));
     }
   }
 

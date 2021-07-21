@@ -6,15 +6,15 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.appboy.enums.inappmessage.CropType;
-import com.appboy.enums.inappmessage.DismissType;
-import com.appboy.enums.inappmessage.ImageStyle;
-import com.appboy.models.InAppMessageBase;
-import com.appboy.models.InAppMessageFull;
-import com.appboy.models.InAppMessageModal;
-import com.appboy.models.InAppMessageSlideup;
-import com.appboy.ui.inappmessage.AppboyInAppMessageManager;
 import com.braze.Braze;
+import com.braze.enums.inappmessage.CropType;
+import com.braze.enums.inappmessage.DismissType;
+import com.braze.enums.inappmessage.ImageStyle;
+import com.braze.models.inappmessage.InAppMessageBase;
+import com.braze.models.inappmessage.InAppMessageFull;
+import com.braze.models.inappmessage.InAppMessageModal;
+import com.braze.models.inappmessage.InAppMessageSlideup;
+import com.braze.ui.inappmessage.BrazeInAppMessageManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
   private void showInAppMessage(InAppMessageBase inAppMessage) {
     inAppMessage.setDismissType(DismissType.MANUAL);
-    AppboyInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
+    BrazeInAppMessageManager.getInstance().addInAppMessage(inAppMessage);
   }
 }

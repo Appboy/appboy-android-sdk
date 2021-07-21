@@ -22,7 +22,7 @@ class ContentCardsTestingUtil {
           continue
         }
         for (i in 0..numCardsOfEachType) {
-          cards.add(createRandomCard(context, cardType))
+          createRandomCard(context, cardType)?.let { cards.add(it) }
         }
       }
 
@@ -30,7 +30,7 @@ class ContentCardsTestingUtil {
       return cards
     }
 
-    private fun createRandomCard(context: Context, cardType: CardType): Card {
+    private fun createRandomCard(context: Context, cardType: CardType): Card? {
       val ccp = CardKey.Provider(true)
 
       // Set the default fields

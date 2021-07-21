@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.appboy.helloworld.R;
-import com.appboy.support.StringUtils;
 import com.braze.Braze;
+import com.braze.support.StringUtils;
 
 public class MainActivity extends Activity {
   private EditText mNickname;

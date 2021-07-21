@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Handler;
 
 import com.appboy.sample.activity.DroidBoyActivity;
-import com.appboy.support.IntentUtils;
 import com.braze.support.BrazeLogger;
+import com.braze.support.IntentUtils;
 
 @SuppressWarnings("PMD.DoNotCallSystemExit")
 public class LifecycleUtils {

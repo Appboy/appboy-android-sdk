@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="com_appboy_feed_max_width">600.0dp</dimen>
-  <dimen name="com_appboy_content_cards_max_width">600.0dp</dimen>
+  <dimen name="com_braze_content_cards_max_width">600.0dp</dimen>
 </resources>

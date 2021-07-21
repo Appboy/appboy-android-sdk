@@ -1,3 +1,63 @@
+## 15.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v15.0.0)
+
+##### Important
+- It is highly recommended to do extensive QA after updating to this release, especially for clients doing any amount of Content Card or In-App Message customizations.
+
+##### Breaking
+- All Content Cards layout/drawables/colors/dimens identifiers containing `com_appboy_content_cards`/`com_appboy_content_card` were replaced with `com_braze_content_cards`/`com_braze_content_card` respectively.
+  - Content Card drawables `icon_pinned, icon_read, icon_unread` are now `com_braze_content_card_icon_pinned, com_braze_content_card_icon_read, com_braze_content_card_icon_unread`.
+- All In-App Message layout/drawables/colors/dimens identifiers containing `com_appboy_inappmessage`/`com_appboy_in_app_message` replaced with `com_braze_inappmessage`.
+- All styles under namespace `Appboy.*` moved to `Braze.*`.
+  - Any `Appboy.*` style overrides must be migrated to `Braze.*` as there is no backwards compatibility.
+  - For example, a style override for `Appboy.Cards.ImageSwitcher` must be renamed to `Braze.Cards.ImageSwitcher`.
+- Several classes/interfaces have been moved to a Braze namespace/package.
+  - In-App Messages
+    - In-App Message classes under `com.appboy.models.*` moved to `com.braze.models.inappmessage`
+    - Class `com.appboy.ui.inappmessage.InAppMessageCloser` -> `com.braze.ui.inappmessage.InAppMessageCloser`
+    - Enum `com.appboy.ui.inappmessage.InAppMessageOperation` -> `com.braze.ui.inappmessage.InAppMessageOperation`
+    - Enums in package `com.appboy.enums.inappmessage.*` moved to `com.braze.enums.inappmessage`
+  - Content Cards
+    - Interface `IContentCardsUpdateHandler` moved to `com.braze.ui.contentcards.handlers.IContentCardsUpdateHandler`
+    - Interface `IContentCardsViewBindingHandler` moved to `com.braze.ui.contentcards.handlers.IContentCardsViewBindingHandler`
+    - Interface `AppboyContentCardsActionListener` moved to `com.braze.ui.contentcards.listeners.DefaultContentCardsActionListener`
+    - Classes in package `com.appboy.ui.contentcards.view.*` moved to `com.braze.ui.contentcards.view.*`
+      - This is the package containing all Content Card default views.
+    - Class `com.appboy.events.ContentCardsUpdatedEvent` -> `com.braze.events.ContentCardsUpdatedEvent`
+  - Miscellaneous
+    - Class `AppboyBaseFragmentActivity` moved to `com.braze.ui.activities.BrazeBaseFragmentActivity`
+- Removed deprecated `IInAppMessageManagerListener#onInAppMessageReceived` from `IInAppMessageManagerListener`.
+- Removed `AppboyUser` in favor of `BrazeUser`.
+  - Note that for Kotlin consumers, `Appboy.currentUser?` and `Braze.currentUser?` are valid due to the removal of generics on the `Braze.getCurrentUser()` method.
+
+##### Added
+- Added support for Conversational Push.
+- Added the ability for custom broadcast receivers to not require the host package name as a prefix when declaring intent filters in your app manifest.
+  - `<action android:name="${applicationId}.intent.APPBOY_PUSH_RECEIVED" />` should be replaced with `<action android:name="com.braze.push.intent.NOTIFICATION_RECEIVED" />`
+  - `<action android:name="${applicationId}.intent.APPBOY_NOTIFICATION_OPENED" />` should be replaced with `<action android:name="com.braze.push.intent.NOTIFICATION_OPENED" />`
+  - `<action android:name="${applicationId}.intent.APPBOY_PUSH_DELETED" />` should be replaced with `<action android:name="com.braze.push.intent.NOTIFICATION_DELETED" />`
+  - The `appboy` intents have been deprecated but are still available. They will be removed in a future release so migrating early is highly recommended.
+  - Both the `appboy` and `braze` intents are sent for backwards compatibility so only one set should be registered at a time.
+- Added `BrazeUser.addToSubscriptionGroup()` and `BrazeUser.removeFromSubscriptionGroup()` to add or remove a user from an email or SMS subscription group.
+  - Added `brazeBridge.getUser().addToSubscriptionGroup()` and `brazeBridge.getUser().removeFromSubscriptionGroup()` to the javascript interface for HTML In-App Messages.
+
+##### Changed
+- Several classes in the android-sdk-ui artifact have been renamed to the Braze namespace/package. Whenever possible, the original classes are still available. However, they will be removed in a future release so migrating early is highly recommended.
+  - Classes in package `com.appboy.push.*` moved to `com.braze.push.*`
+  - Classes in package `com.appboy.ui.inappmessage.views` moved to `com.braze.ui.inappmessage.views`
+  - Classes in package `com.appboy.ui.inappmessage.listeners` moved to `com.braze.ui.inappmessage.listeners`
+  - Interfaces in `com.appboy.ui.inappmessage.*` moved to `com.braze.ui.inappmessage.*`
+  - Class `com.appboy.AppboyFirebaseMessagingService` -> `com.braze.push.BrazeFirebaseMessagingService`
+  - Class `com.appboy.AppboyAdmReceiver` -> `com.braze.push.BrazeAmazonDeviceMessagingReceiver`
+  - Class `com.appboy.ui.AppboyContentCardsFragment` -> `com.braze.ui.contentcards.ContentCardsFragment`
+  - Class `com.appboy.ui.activities.AppboyContentCardsActivity` -> `com.braze.ui.activities.ContentCardsActivity`
+  - Class `com.appboy.ui.AppboyWebViewActivity` -> `com.braze.ui.BrazeWebViewActivity`
+  - Class `com.appboy.ui.inappmessage.AppboyInAppMessageManager` -> `com.braze.ui.inappmessage.BrazeInAppMessageManager`
+  - Class `com.appboy.ui.inappmessage.DefaultInAppMessageViewWrapper` -> `com.braze.ui.inappmessage.DefaultInAppMessageViewWrapper`
+  - Class `com.appboy.AppboyLifecycleCallbackListener` -> `com.braze.BrazeActivityLifecycleCallbackListener`
+- Changed the `ContentCardsFragment` and `BrazeInAppMessageManager` to clear their respective caches of messages after `wipeData()` is called.
+
 ## 14.0.1
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v14.0.1)
@@ -23,6 +83,7 @@
   - See `BrazeProperties.isInvalid()`.
 - HTML In-App Messages rendered via the default `AppboyHtmlViewFactory` now require the device to be in touch mode to display.
   - See `getIsTouchModeRequiredForHtmlInAppMessages()` in the #added section for configuration on disabling this behavior.
+- For Kotlin consumers, `Appboy.currentUser?` calls must be migrated to `Braze.getCurrentUser<BrazeUser>()` due to updated generics resolution.
 
 ##### Changed
 - Several classes in the base artifact have been renamed to the Braze namespace/packages. Whenever possible, the original classes are still available. However, they will be removed in a future release so migrating early is highly recommended.
