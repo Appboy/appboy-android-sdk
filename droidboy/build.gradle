@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 dependencies {
@@ -21,7 +20,7 @@ dependencies {
   implementation "com.google.android.gms:play-services-mlkit-barcode-scanning:${GOOGLE_ML_VISION_BARCODE}"
   implementation "com.google.firebase:firebase-crashlytics:${FIREBASE_CRASHLYTICS_VERSION}"
 
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${KOTLIN_STDLIB_JDK7_VERSION}"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:${KOTLIN_VERSION}"
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${KOTLIN_COROUTINES_VERSION}")
   implementation "androidx.lifecycle:lifecycle-runtime-ktx:${KOTLIN_LIFECYCLE_RUNTIME_KTX_VERSION}"
 }
@@ -40,6 +39,7 @@ android {
 
     buildConfigField "String", "BUILD_TIME", "\"" + new Date() + "\""
     buildConfigField "boolean", "IS_DROIDBOY_RELEASE_BUILD", "false"
+    buildConfigField "String", "SDK_AUTH_ENDPOINT", "\"\""
 
     multiDexEnabled true
   }

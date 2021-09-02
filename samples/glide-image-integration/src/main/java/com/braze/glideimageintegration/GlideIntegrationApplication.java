@@ -13,6 +13,6 @@ public class GlideIntegrationApplication extends Application {
     super.onCreate();
     BrazeLogger.setLogLevel(Log.VERBOSE);
     registerActivityLifecycleCallbacks(new BrazeActivityLifecycleCallbackListener());
-    Braze.getInstance(this).setImageLoader(new GlideAppboyImageLoader());
+    Braze.getInstance(this).setImageLoader(new GlideBrazeImageLoader());
   }
 }

@@ -18,7 +18,7 @@ public class LifecycleUtils {
     new Handler(context.getMainLooper()).postDelayed(() -> {
       Intent startActivity = new Intent(context, DroidBoyActivity.class);
       int pendingIntentId = 109829837;
-      final int flags = PendingIntent.FLAG_CANCEL_CURRENT | IntentUtils.getDefaultPendingIntentFlags();
+      final int flags = PendingIntent.FLAG_CANCEL_CURRENT | IntentUtils.getImmutablePendingIntentFlags();
       PendingIntent pendingIntent = PendingIntent.getActivity(context, pendingIntentId, startActivity, flags);
       AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
       alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, pendingIntent);

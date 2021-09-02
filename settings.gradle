@@ -1,7 +1,7 @@
 include ':android-sdk-ui'
 include ':android-sdk-unity'
 include ':droidboy'
-include ':samples:hello-appboy'
+include ':samples:hello-braze'
 include ':samples:manual-session-integration'
 include ':samples:firebase-push'
 include ':samples:custom-broadcast'

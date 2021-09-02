@@ -22,10 +22,9 @@ import androidx.fragment.app.FragmentActivity;
 import com.appboy.Constants;
 import com.appboy.enums.Channel;
 import com.appboy.ui.R;
-import com.appboy.ui.actions.ActionFactory;
-import com.appboy.ui.actions.IAction;
 import com.braze.support.BrazeFileUtils;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.actions.IAction;
 import com.braze.ui.support.ViewUtils;
 
 /**
@@ -125,9 +124,9 @@ public class BrazeWebViewActivity extends FragmentActivity {
             return null;
           }
 
-          IAction action = ActionFactory.createUriActionFromUrlString(url, getIntent().getExtras(), false, Channel.UNKNOWN);
+          IAction action = BrazeDeeplinkHandler.getInstance().createUriActionFromUrlString(url, getIntent().getExtras(), false, Channel.UNKNOWN);
           if (action != null) {
-            // Instead of using AppboyNavigator, just open directly.
+            // Instead of using BrazeDeeplinkHandler, just open directly.
             action.execute(context);
 
             // Close the WebView if the action was executed successfully

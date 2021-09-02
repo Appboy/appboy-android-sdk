@@ -1,12 +1,7 @@
 package com.appboy.ui.actions;
 
-import android.content.Context;
-
-import com.appboy.enums.Channel;
-
-public interface IAction {
-
-  void execute(Context context);
-
-  Channel getChannel();
-}
+/**
+ * @deprecated Please use {@link com.braze.ui.actions.IAction} instead. Deprecated since 7/27/21
+ */
+@Deprecated
+public interface IAction extends com.braze.ui.actions.IAction {}

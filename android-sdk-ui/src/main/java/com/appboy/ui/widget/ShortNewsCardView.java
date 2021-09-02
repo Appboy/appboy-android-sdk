@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.ui.R;
-import com.appboy.ui.actions.IAction;
+import com.braze.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.braze.support.BrazeLogger;
 

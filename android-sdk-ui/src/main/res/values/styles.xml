@@ -895,7 +895,7 @@
     <item name="android:contentDescription">@null</item>
     <item name="android:scaleType">fitXY</item>
   </style>
-  <style name="Braze.PushTrampoline.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="Braze.PushTrampoline.Transparent" parent="@android:style/Theme.Translucent.NoTitleBar">
     <item name="android:windowIsTranslucent">true</item>
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:windowContentOverlay">@null</item>

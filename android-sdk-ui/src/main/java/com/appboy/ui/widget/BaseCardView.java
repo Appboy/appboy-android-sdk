@@ -11,17 +11,16 @@ import androidx.annotation.Nullable;
 
 import com.appboy.enums.Channel;
 import com.appboy.models.cards.Card;
-import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
-import com.appboy.ui.actions.ActionFactory;
-import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.UriAction;
 import com.appboy.ui.feed.AppboyImageSwitcher;
 import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
 import com.braze.enums.BrazeViewBounds;
 import com.braze.support.BrazeLogger;
 import com.braze.support.StringUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
+import com.braze.ui.actions.IAction;
+import com.braze.ui.actions.UriAction;
 
 /**
  * Base class for Braze feed card views
@@ -171,7 +170,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     for (String key : card.getExtras().keySet()) {
       extras.putString(key, card.getExtras().get(key));
     }
-    return ActionFactory.createUriActionFromUrlString(card.getUrl(), extras, card.getOpenUriInWebView(), Channel.NEWS_FEED);
+    return BrazeDeeplinkHandler.getInstance().createUriActionFromUrlString(card.getUrl(), extras, card.getOpenUriInWebView(), Channel.NEWS_FEED);
   }
 
   protected void handleCardClick(Context context, Card card, IAction cardAction, String tag) {
@@ -182,7 +181,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
         card.logClick();
         BrazeLogger.v(TAG, "Card action is non-null. Attempting to perform action on card: " + card.getId());
         if (cardAction instanceof UriAction) {
-          AppboyNavigator.getAppboyNavigator().gotoUri(context, (UriAction) cardAction);
+          BrazeDeeplinkHandler.getInstance().gotoUri(context, (UriAction) cardAction);
         } else {
           BrazeLogger.d(TAG, "Executing non uri action for click on card: " + card.getId());
           cardAction.execute(context);

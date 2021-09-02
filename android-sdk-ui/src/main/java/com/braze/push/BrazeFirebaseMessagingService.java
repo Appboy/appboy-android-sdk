@@ -33,7 +33,7 @@ public class BrazeFirebaseMessagingService extends FirebaseMessagingService {
       return;
     }
     BrazeLogger.v(TAG, "Registering Firebase push token in onNewToken. Token: " + newToken);
-    Braze.getInstance(this).registerAppboyPushMessages(newToken);
+    Braze.getInstance(this).registerPushToken(newToken);
   }
 
   @Override

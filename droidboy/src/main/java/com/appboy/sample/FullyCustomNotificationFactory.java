@@ -1,7 +1,6 @@
 package com.appboy.sample;
 
 import android.app.Notification;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
@@ -17,20 +16,11 @@ public class FullyCustomNotificationFactory implements IBrazeNotificationFactory
     String notificationChannelId = BrazeNotificationUtils.getOrCreateNotificationChannelId(payload);
     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(payload.getContext(), notificationChannelId);
     notificationBuilder.setContentTitle(payload.getTitleText());
-    notificationBuilder.setSmallIcon(R.drawable.com_appboy_push_small_notification_icon);
+    notificationBuilder.setSmallIcon(R.drawable.com_braze_push_small_notification_icon);
     BrazeNotificationUtils.setAccentColorIfPresentAndSupported(notificationBuilder, payload);
     String contentString = parseContentsFromExtras(payload.getAppboyExtras());
     notificationBuilder.setContentText(contentString);
     return notificationBuilder.build();
-  }
-
-  @Override
-  public Notification createNotification(com.appboy.configuration.AppboyConfigurationProvider appConfigurationProvider,
-                                         Context context,
-                                         Bundle notificationExtras,
-                                         Bundle appboyExtras) {
-    BrazeNotificationPayload brazeNotificationPayload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
-    return createNotification(brazeNotificationPayload);
   }
 
   private String parseContentsFromExtras(Bundle appboyExtras) {

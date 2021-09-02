@@ -1,37 +1,38 @@
 buildscript {
   repositories {
     mavenLocal()
-    jcenter()
     google()
     mavenCentral()
+    maven {
+      name = 'ajoberstar-backup'
+      url = 'https://ajoberstar.org/bintray-backup/'
+    }
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:4.0.0'
-    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+    classpath 'com.android.tools.build:gradle:4.2.0'
     classpath 'com.google.gms:google-services:4.3.4'
     classpath "org.ajoberstar.grgit:grgit-gradle:${AJOBERSTAR_GIT_GRADLE_PLUGIN_VERSION}"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${KOTLIN_STDLIB_JDK7_VERSION}"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${KOTLIN_VERSION}"
   }
 }
 
 ext {
-  compileSdkVersion = 30
+  compileSdkVersion = 31
   buildToolsVersion = '30.0.2'
   minSdkVersion = 16
-  targetSdkVersion = 30
-  appVersionName = '15.0.0'
+  targetSdkVersion = 31
+  appVersionName = '16.0.0'
 }
 
 subprojects {
   repositories {
-    maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+    maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
     mavenLocal()
-    jcenter()
     google()
     mavenCentral()
   }
 
   group = 'com.appboy'
-  version = '15.0.0'
+  version = '16.0.0'
 }

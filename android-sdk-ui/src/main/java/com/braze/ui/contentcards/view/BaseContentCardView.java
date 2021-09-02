@@ -2,6 +2,7 @@ package com.braze.ui.contentcards.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,8 +11,8 @@ import androidx.annotation.Nullable;
 
 import com.appboy.models.cards.Card;
 import com.appboy.ui.R;
-import com.appboy.ui.actions.IAction;
-import com.appboy.ui.actions.UriAction;
+import com.braze.ui.actions.IAction;
+import com.braze.ui.actions.UriAction;
 import com.appboy.ui.widget.BaseCardView;
 import com.braze.ui.contentcards.managers.BrazeContentCardsManager;
 
@@ -75,5 +76,8 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
   @SuppressWarnings("deprecation") // getDrawable() is deprecated but the alternatives are above our min SDK version
   protected void setViewBackground(View view) {
     view.setBackground(getResources().getDrawable(R.drawable.com_braze_content_card_background));
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      view.setForeground(getResources().getDrawable(R.drawable.com_braze_content_card_scrim));
+    }
   }
 }

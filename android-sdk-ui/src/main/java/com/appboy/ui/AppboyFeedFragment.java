@@ -117,8 +117,8 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
 
   @SuppressLint("InflateParams")
   @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+  public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
     loadFragmentStateFromSavedInstanceState(savedInstanceState);
     if (mSkipCardImpressionsReset) {
       mSkipCardImpressionsReset = false;
@@ -136,7 +136,7 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
     listView.addHeaderView(inflater.inflate(R.layout.com_appboy_feed_header, null));
     listView.addFooterView(inflater.inflate(R.layout.com_appboy_feed_footer, null));
 
-    mFeedRootLayout.setOnTouchListener((view, motionEvent) -> {
+    mFeedRootLayout.setOnTouchListener((currentView, motionEvent) -> {
       // Send touch events from the background view to the gesture detector to enable margin listview scrolling
       return mGestureDetector.onTouchEvent(motionEvent);
     });
@@ -174,9 +174,9 @@ public class AppboyFeedFragment extends ListFragment implements SwipeRefreshLayo
 
     // We need the transparent view to pass it's touch events to the swipe-to-refresh view. We
     // do this by consuming touch events in the transparent view.
-    mTransparentFullBoundsContainerView.setOnTouchListener((view, motionEvent) -> {
+    mTransparentFullBoundsContainerView.setOnTouchListener((currentView, motionEvent) -> {
       // Only consume events if the view is visible
-      return view.getVisibility() == View.VISIBLE;
+      return currentView.getVisibility() == View.VISIBLE;
     });
 
     // Remove the previous subscriber before rebuilding a new one with our new activity.

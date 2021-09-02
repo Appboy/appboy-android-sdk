@@ -6,18 +6,20 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.appboy.Constants;
-import com.appboy.IAppboyNavigator;
+import com.appboy.enums.Channel;
 import com.appboy.sample.activity.DroidBoyActivity;
-import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.actions.NewsfeedAction;
-import com.appboy.ui.actions.UriAction;
+import com.braze.IBrazeDeeplinkHandler;
 import com.braze.support.BrazeLogger;
 import com.braze.support.StringUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
+import com.braze.ui.actions.NewsfeedAction;
+import com.braze.ui.actions.UriAction;
 
-public class CustomAppboyNavigator implements IAppboyNavigator {
-  private static final String TAG = BrazeLogger.getBrazeLogTag(CustomAppboyNavigator.class);
+public class CustomBrazeDeeplinkHandler implements IBrazeDeeplinkHandler {
+  private static final String TAG = BrazeLogger.getBrazeLogTag(CustomBrazeDeeplinkHandler.class);
 
   @Override
   public void gotoNewsFeed(Context context, NewsfeedAction newsfeedAction) {
@@ -42,7 +44,19 @@ public class CustomAppboyNavigator implements IAppboyNavigator {
 
   @Override
   public int getIntentFlags(IntentFlagPurpose intentFlagPurpose) {
-    return new AppboyNavigator().getIntentFlags(intentFlagPurpose);
+    return new BrazeDeeplinkHandler().getInstance().getIntentFlags(intentFlagPurpose);
+  }
+
+  @Nullable
+  @Override
+  public UriAction createUriActionFromUrlString(String url, Bundle extras, boolean openInWebView, Channel channel) {
+    return BrazeDeeplinkHandler.getInstance().createUriActionFromUrlString(url, extras, openInWebView, channel);
+  }
+
+  @Nullable
+  @Override
+  public UriAction createUriActionFromUri(Uri uri, Bundle extras, boolean openInWebView, Channel channel) {
+    return BrazeDeeplinkHandler.getInstance().createUriActionFromUri(uri, extras, openInWebView, channel);
   }
 
   public static class CustomUriAction extends UriAction {

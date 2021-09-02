@@ -1,14 +1,14 @@
 package com.braze.ui.inappmessage.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 
-import androidx.appcompat.widget.AppCompatImageView;
+import android.widget.ImageView;
 
 import com.braze.enums.inappmessage.CropType;
 import com.braze.support.BrazeLogger;
@@ -17,7 +17,8 @@ import com.braze.support.BrazeLogger;
  * Extends ImageView with the ability to clip the view's corners by a defined radius on all image
  * types.
  */
-public class InAppMessageImageView extends AppCompatImageView implements IInAppMessageImageView {
+@SuppressLint("AppCompatCustomView")
+public class InAppMessageImageView extends ImageView implements IInAppMessageImageView {
   private static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageImageView.class);
   /**
    * Clip path that will be set to a closed round-rectangle contour based on the radii in

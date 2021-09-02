@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+          android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -25,7 +26,8 @@
                 <action android:name="com.braze.push.intent.NOTIFICATION_DELETED" />
             </intent-filter>
         </receiver>
-        <service android:name="com.braze.push.BrazeFirebaseMessagingService">
+        <service android:name="com.braze.push.BrazeFirebaseMessagingService"
+          android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -54,7 +54,8 @@ public class NotificationTrampolineActivity extends Activity {
 
     // Now that this Activity has been created, we are safe to finish it in accordance with
     // https://developer.android.com/guide/components/activities/background-starts#exceptions
-    new Handler(this.getMainLooper()).postDelayed(() -> finish(), 200);
+    // Guarantee that this Activity gets finished if onPause() is never called
+    new Handler(this.getMainLooper()).postDelayed(this::finish, 200L);
   }
 
   @Override

@@ -1,5 +1,7 @@
 package com.braze.push;
 
+import static com.braze.IBrazeDeeplinkHandler.IntentFlagPurpose.NOTIFICATION_PUSH_STORY_PAGE_CLICK;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +21,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 
 import com.appboy.Constants;
-import com.appboy.IAppboyNavigator;
 import com.appboy.models.push.BrazeNotificationPayload;
-import com.appboy.ui.AppboyNavigator;
 import com.appboy.ui.R;
 import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
@@ -33,6 +33,7 @@ import com.braze.support.BrazeLogger;
 import com.braze.support.DateTimeUtils;
 import com.braze.support.IntentUtils;
 import com.braze.support.StringUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -115,9 +116,9 @@ public class BrazeNotificationStyleFactory {
    * @deprecated Please use {@link #getBigTextNotificationStyle(BrazeNotificationPayload)}
    */
   @Deprecated
-  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(BrazeConfigurationProvider appboyConfigurationProvider,
+  public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(BrazeConfigurationProvider brazeConfigurationProvider,
                                                                             Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(appboyConfigurationProvider, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(brazeConfigurationProvider, notificationExtras);
     return getBigTextNotificationStyle(payload);
   }
 
@@ -386,12 +387,12 @@ public class BrazeNotificationStyleFactory {
     Intent storyClickedIntent = new Intent(Constants.APPBOY_STORY_CLICKED_ACTION)
         .setClass(context, NotificationTrampolineActivity.class);
     storyClickedIntent
-        .setFlags(storyClickedIntent.getFlags() | AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.NOTIFICATION_PUSH_STORY_PAGE_CLICK));
+        .setFlags(storyClickedIntent.getFlags() | BrazeDeeplinkHandler.getInstance().getIntentFlags(NOTIFICATION_PUSH_STORY_PAGE_CLICK));
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_URI_KEY, pushStoryPage.getDeeplink());
     storyClickedIntent.putExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY, pushStoryPage.getUseWebview());
     storyClickedIntent.putExtra(Constants.APPBOY_STORY_PAGE_ID, pushStoryPage.getStoryPageId());
     storyClickedIntent.putExtra(Constants.APPBOY_CAMPAIGN_ID, pushStoryPage.getCampaignId());
-    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), storyClickedIntent, IntentUtils.getDefaultPendingIntentFlags());
+    return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), storyClickedIntent, IntentUtils.getImmutablePendingIntentFlags());
   }
 
   private static PendingIntent createStoryTraversedPendingIntent(Context context, Bundle notificationExtras, int pageIndex) {
@@ -401,7 +402,7 @@ public class BrazeNotificationStyleFactory {
       notificationExtras.putInt(Constants.APPBOY_STORY_INDEX_KEY, pageIndex);
       storyNextClickedIntent.putExtras(notificationExtras);
     }
-    final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getDefaultPendingIntentFlags();
+    final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getImmutablePendingIntentFlags();
     return PendingIntent.getBroadcast(context,
         IntentUtils.getRequestCode(),
         storyNextClickedIntent,

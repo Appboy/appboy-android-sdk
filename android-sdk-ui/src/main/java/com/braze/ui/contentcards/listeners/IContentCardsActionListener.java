@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import com.appboy.models.cards.Card;
-import com.appboy.ui.actions.IAction;
+import com.braze.ui.actions.IAction;
 
 /**
  * The {@link IContentCardsActionListener} receives the ContentCard when a user action such as

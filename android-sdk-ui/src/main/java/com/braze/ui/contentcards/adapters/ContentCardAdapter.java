@@ -100,7 +100,7 @@ public class ContentCardAdapter extends RecyclerView.Adapter<ContentCardViewHold
       return;
     }
 
-    final int adapterPosition = holder.getAdapterPosition();
+    final int adapterPosition = holder.getBindingAdapterPosition();
 
     if (adapterPosition == RecyclerView.NO_POSITION || !isAdapterPositionOnScreen(adapterPosition)) {
       BrazeLogger.v(TAG, "The card at position " + adapterPosition
@@ -123,7 +123,7 @@ public class ContentCardAdapter extends RecyclerView.Adapter<ContentCardViewHold
       return;
     }
 
-    final int adapterPosition = holder.getAdapterPosition();
+    final int adapterPosition = holder.getBindingAdapterPosition();
 
     // RecyclerView will attach some number of views above/below the visible views on screen.
     // However, when onViewDetachedFromWindow() is called for each of those views, regardless of

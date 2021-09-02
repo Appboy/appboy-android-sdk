@@ -13,6 +13,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.appboy.BrazeInternal;
 import com.appboy.Constants;
 import com.appboy.models.push.BrazeNotificationPayload;
+import com.braze.Braze;
 import com.braze.IBrazeNotificationFactory;
 import com.braze.configuration.BrazeConfigurationProvider;
 import com.braze.support.BrazeLogger;
@@ -21,9 +22,18 @@ import com.braze.ui.inappmessage.BrazeInAppMessageManager;
 
 public class BrazePushReceiver extends BroadcastReceiver {
   private static final String TAG = BrazeLogger.getBrazeLogTag(BrazePushReceiver.class);
-  private static final String FCM_MESSAGE_TYPE_KEY = "message_type";
-  private static final String FCM_DELETED_MESSAGES_KEY = "deleted_messages";
-  private static final String FCM_NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
+
+  // ADM keys match FCM for these fields.
+  private static final String MESSAGE_TYPE_KEY = "message_type";
+  private static final String DELETED_MESSAGES_KEY = "deleted_messages";
+  private static final String NUMBER_OF_MESSAGES_DELETED_KEY = "total_deleted";
+
+  private static final String ADM_RECEIVE_INTENT_ACTION = "com.amazon.device.messaging.intent.RECEIVE";
+  private static final String ADM_REGISTRATION_INTENT_ACTION = "com.amazon.device.messaging.intent.REGISTRATION";
+  private static final String ADM_ERROR_KEY = "error";
+  private static final String ADM_ERROR_DESCRIPTION_KEY = "error_description";
+  private static final String ADM_REGISTRATION_ID_KEY = "registration_id";
+  private static final String ADM_UNREGISTERED_KEY = "unregistered";
 
   /**
    * Internal API. Do not use.
@@ -92,7 +102,11 @@ public class BrazePushReceiver extends BroadcastReceiver {
         case FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION:
         case Constants.APPBOY_STORY_TRAVERSE_CLICKED_ACTION:
         case HMS_PUSH_SERVICE_ROUTING_ACTION:
+        case ADM_RECEIVE_INTENT_ACTION:
           handlePushNotificationPayload(mContext, mIntent);
+          break;
+        case ADM_REGISTRATION_INTENT_ACTION:
+          handleAdmRegistrationEventIfEnabled(new BrazeConfigurationProvider(mContext), mContext, mIntent);
           break;
         case Constants.APPBOY_CANCEL_NOTIFICATION_ACTION:
           BrazeNotificationUtils.handleCancelNotificationAction(mContext, mIntent);
@@ -117,14 +131,57 @@ public class BrazePushReceiver extends BroadcastReceiver {
   }
 
   @VisibleForTesting
+  static boolean handleAdmRegistrationEventIfEnabled(BrazeConfigurationProvider appConfigurationProvider, Context context, Intent intent) {
+    BrazeLogger.i(TAG, "Received ADM registration. Message: " + intent.toString());
+    // Only handle ADM registration events if ADM registration handling is turned on in the
+    // configuration file.
+    if (Constants.isAmazonDevice() && appConfigurationProvider.isAdmMessagingRegistrationEnabled()) {
+      BrazeLogger.d(TAG, "ADM enabled in braze.xml. Continuing to process ADM registration intent.");
+      handleAdmRegistrationIntent(context, intent);
+      return true;
+    }
+    BrazeLogger.w(TAG, "ADM not enabled in braze.xml. Ignoring ADM registration intent. Note: you must set "
+            + "com_appboy_push_adm_messaging_registration_enabled to true in your braze.xml to enable ADM.");
+    return false;
+  }
+
+  /**
+   * Processes the registration/unregistration result returned from the ADM servers. If the
+   * registration/unregistration is successful, this will store/clear the registration ID from the
+   * device. Otherwise, it will log an error message and the device will not be able to receive ADM
+   * messages.
+   */
+  @VisibleForTesting
+  static boolean handleAdmRegistrationIntent(Context context, Intent intent) {
+    String error = intent.getStringExtra(ADM_ERROR_KEY);
+    String errorDescription = intent.getStringExtra(ADM_ERROR_DESCRIPTION_KEY);
+    String registrationId = intent.getStringExtra(ADM_REGISTRATION_ID_KEY);
+    String unregistered = intent.getStringExtra(ADM_UNREGISTERED_KEY);
+
+    if (error != null) {
+      BrazeLogger.w(TAG, "Error during ADM registration: " + error + " description: " + errorDescription);
+    } else if (registrationId != null) {
+      BrazeLogger.i(TAG, "Registering for ADM messages with registrationId: " + registrationId);
+      Braze.getInstance(context).registerAppboyPushMessages(registrationId);
+    } else if (unregistered != null) {
+      BrazeLogger.w(TAG, "The device was un-registered from ADM: " + unregistered);
+    } else {
+      BrazeLogger.w(TAG, "The ADM registration intent is missing error information, registration id, and unregistration "
+              + "confirmation. Ignoring.");
+      return false;
+    }
+    return true;
+  }
+
+  @VisibleForTesting
   static boolean handlePushNotificationPayload(Context context, Intent intent) {
     if (!BrazeNotificationUtils.isAppboyPushMessage(intent)) {
       return false;
     }
 
-    String messageType = intent.getStringExtra(FCM_MESSAGE_TYPE_KEY);
-    if (FCM_DELETED_MESSAGES_KEY.equals(messageType)) {
-      int totalDeleted = intent.getIntExtra(FCM_NUMBER_OF_MESSAGES_DELETED_KEY, -1);
+    String messageType = intent.getStringExtra(MESSAGE_TYPE_KEY);
+    if (DELETED_MESSAGES_KEY.equals(messageType)) {
+      int totalDeleted = intent.getIntExtra(NUMBER_OF_MESSAGES_DELETED_KEY, -1);
       if (totalDeleted == -1) {
         BrazeLogger.w(TAG, "Unable to parse FCM message. Intent: " + intent.toString());
       } else {
@@ -163,11 +220,8 @@ public class BrazePushReceiver extends BroadcastReceiver {
       return false;
     }
 
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
-        appConfigurationProvider,
-        notificationExtras,
-        appboyExtras
-    );
+    BrazeNotificationPayload payload = createPayload(context, appConfigurationProvider, notificationExtras, appboyExtras);
+
     // Parse the notification for any associated ContentCard
     BrazeNotificationUtils.handleContentCardsSerializedCardIfPresent(payload);
 
@@ -177,6 +231,10 @@ public class BrazePushReceiver extends BroadcastReceiver {
       notificationExtras.putInt(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
 
       if (payload.isPushStory()) {
+        if (Constants.isAmazonDevice()) {
+          // In case the backend does send these, handle them gracefully
+          return false;
+        }
         if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED)) {
           BrazeLogger.d(TAG, "Received the initial push story notification.");
           notificationExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
@@ -207,20 +265,27 @@ public class BrazePushReceiver extends BroadcastReceiver {
     }
   }
 
+  @VisibleForTesting
+  static BrazeNotificationPayload createPayload(Context context, BrazeConfigurationProvider appConfigurationProvider, Bundle notificationExtras, Bundle appboyExtras) {
+    // ADM uses a different constructor here because the data is already flattened.
+    if (Constants.isAmazonDevice()) {
+      return new BrazeNotificationPayload(context,
+               appConfigurationProvider,
+               notificationExtras
+      );
+    } else {
+      return new BrazeNotificationPayload(context,
+              appConfigurationProvider,
+              notificationExtras,
+              appboyExtras
+      );
+    }
+  }
+
   @SuppressWarnings("deprecation") // createNotification() with old method
   private static Notification createNotification(BrazeNotificationPayload payload) {
     BrazeLogger.v(TAG, "Creating notification with payload:\n" + payload);
     IBrazeNotificationFactory appboyNotificationFactory = BrazeNotificationUtils.getActiveNotificationFactory();
-    Notification notification = appboyNotificationFactory.createNotification(payload);
-    if (notification == null) {
-      BrazeLogger.d(TAG, "Calling older notification factory method after null notification returned on newer method");
-      // Use the older factory method on null. Potentially only the one method is implemented
-      notification = appboyNotificationFactory.createNotification(payload.getAppboyConfigurationProvider(),
-          payload.getContext(),
-          payload.getNotificationExtras(),
-          payload.getAppboyExtras());
-    }
-
-    return notification;
+    return appboyNotificationFactory.createNotification(payload);
   }
 }

@@ -247,6 +247,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     return true;
   }
 
+  @SuppressLint("MissingSuperCall")
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     RuntimePermissionUtils.handleOnRequestPermissionsResult(this, requestCode, grantResults);
@@ -332,8 +333,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     if (bundle == null) {
       return "Received intent with null extras Bundle from Braze.";
     }
-    StringBuilder bundleString = new StringBuilder("Received intent with extras Bundle of size " + bundle.size()
-        + " from Braze containing [");
+    StringBuilder bundleString = new StringBuilder().append("Received intent with extras Bundle of size ").append(bundle.size()).append(" from Braze containing [");
     for (String key : bundle.keySet()) {
       bundleString.append(" '").append(key).append("':'").append(bundle.get(key)).append('\'');
     }

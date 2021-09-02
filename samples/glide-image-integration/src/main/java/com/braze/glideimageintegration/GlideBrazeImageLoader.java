@@ -16,8 +16,8 @@ import com.braze.support.BrazeLogger;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-public class GlideAppboyImageLoader implements IBrazeImageLoader {
-  private static final String TAG = GlideAppboyImageLoader.class.getName();
+public class GlideBrazeImageLoader implements IBrazeImageLoader {
+  private static final String TAG = GlideBrazeImageLoader.class.getName();
 
   private RequestOptions mRequestOptions = new RequestOptions();
 

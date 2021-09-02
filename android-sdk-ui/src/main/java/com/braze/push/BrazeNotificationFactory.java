@@ -31,23 +31,6 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
   }
 
   /**
-   * @deprecated Deprecated since 8/25/20
-   */
-  @Override
-  @Deprecated
-  @SuppressWarnings("deprecation")
-  public Notification createNotification(com.appboy.configuration.AppboyConfigurationProvider appConfigurationProvider,
-                                         Context context,
-                                         Bundle notificationExtras,
-                                         Bundle appboyExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
-        appConfigurationProvider,
-        notificationExtras,
-        appboyExtras);
-    return createNotification(payload);
-  }
-
-  /**
    * Creates the rich notification. The notification content varies based on the Android version on the
    * device, but each notification can contain an icon, image, title, and content.
    *
@@ -66,21 +49,17 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
   }
 
   /**
-   * @deprecated Please use {@link #populateNotificationBuilder(BrazeConfigurationProvider, Context, Bundle, Bundle)}
-   * instead. Deprecated since 3/26/21
+   * Please use {@link #createNotification(BrazeNotificationPayload)} directly instead.
    */
-  @Deprecated
-  @Nullable
-  @SuppressWarnings("deprecation")
-  public NotificationCompat.Builder populateNotificationBuilder(com.appboy.configuration.AppboyConfigurationProvider appboyConfigurationProvider,
-                                                                Context context,
-                                                                Bundle notificationExtras,
-                                                                Bundle appboyExtras) {
+  public Notification createNotification(BrazeConfigurationProvider appConfigurationProvider,
+                                         Context context,
+                                         Bundle notificationExtras,
+                                         Bundle appboyExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
-        (BrazeConfigurationProvider) appboyConfigurationProvider,
+        appConfigurationProvider,
         notificationExtras,
         appboyExtras);
-    return populateNotificationBuilder(payload);
+    return createNotification(payload);
   }
 
   /**
@@ -92,7 +71,7 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
                                                                 Bundle notificationExtras,
                                                                 Bundle appboyExtras) {
     BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
-        (BrazeConfigurationProvider) configurationProvider,
+        configurationProvider,
         notificationExtras,
         appboyExtras);
     return populateNotificationBuilder(payload);
@@ -113,8 +92,8 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
       BrazeLogger.d(TAG, "BrazeNotificationPayload has null context. Not creating notification");
       return null;
     }
-    final BrazeConfigurationProvider appboyConfigurationProvider = payload.getConfigurationProvider();
-    if (appboyConfigurationProvider == null) {
+    final BrazeConfigurationProvider brazeConfigurationProvider = payload.getConfigurationProvider();
+    if (brazeConfigurationProvider == null) {
       BrazeLogger.d(TAG, "BrazeNotificationPayload has null app configuration provider. Not creating notification");
       return null;
     }
@@ -141,7 +120,7 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
     // Add intent to fire when the notification is opened or deleted.
     BrazeNotificationUtils.setContentIntentIfPresent(context, notificationBuilder, notificationExtras);
     BrazeNotificationUtils.setDeleteIntent(context, notificationBuilder, notificationExtras);
-    BrazeNotificationUtils.setSmallIcon(appboyConfigurationProvider, notificationBuilder);
+    BrazeNotificationUtils.setSmallIcon(brazeConfigurationProvider, notificationBuilder);
 
     BrazeNotificationUtils.setLargeIconIfPresentAndSupported(notificationBuilder, payload);
     BrazeNotificationUtils.setSoundIfPresentAndSupported(notificationBuilder, payload);

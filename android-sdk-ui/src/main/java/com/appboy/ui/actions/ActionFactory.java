@@ -8,12 +8,11 @@ import androidx.annotation.Nullable;
 import com.appboy.enums.Channel;
 import com.braze.support.StringUtils;
 
+/**
+ * @deprecated Please use {@link com.braze.IBrazeDeeplinkHandler} instead. Deprecated since 7/27/21
+ */
+@Deprecated
 public class ActionFactory {
-
-  /**
-   * Convenience method for creating {@link UriAction} instances. Returns null if the supplied url
-   * is null, blank, or can not be parsed into a valid Uri.
-   */
   @Nullable
   public static UriAction createUriActionFromUrlString(String url, Bundle extras, boolean openInWebView, Channel channel) {
     if (!StringUtils.isNullOrBlank(url)) {
@@ -23,10 +22,6 @@ public class ActionFactory {
     return null;
   }
 
-  /**
-   * Convenience method for creating {@link UriAction} instances. Returns null if the supplied uri
-   * is null.
-   */
   @Nullable
   public static UriAction createUriActionFromUri(Uri uri, Bundle extras, boolean openInWebView, Channel channel) {
     if (uri != null) {

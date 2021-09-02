@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
   private fun restartApp(context: Context) {
     val startActivity = Intent(this, MainActivity::class.java)
     val pendingIntentId = 109829837
-    val pendingIntent = PendingIntent.getActivity(context, pendingIntentId, startActivity, PendingIntent.FLAG_CANCEL_CURRENT or IntentUtils.getDefaultPendingIntentFlags())
+    val pendingIntent = PendingIntent.getActivity(context, pendingIntentId, startActivity, PendingIntent.FLAG_CANCEL_CURRENT or IntentUtils.getImmutablePendingIntentFlags())
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager[AlarmManager.RTC, System.currentTimeMillis() + 1000] = pendingIntent
     BrazeLogger.i(TAG, "Restarting application to apply new environment values")

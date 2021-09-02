@@ -20,7 +20,8 @@
     <activity
       android:name="com.braze.hms_sample.MainActivity"
       android:label="@string/app_name"
-      android:theme="@style/AppTheme.NoActionBar">
+      android:theme="@style/AppTheme.NoActionBar"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

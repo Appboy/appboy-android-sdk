@@ -1,3 +1,24 @@
+## 16.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v16.0.0)
+
+#### Breaking
+- Removed `AppboyConfigurationProvider` in favor of `BrazeConfigurationProvider`.
+  - Any deprecated usages, such as in the `IBrazeNotificationFactory` have also been removed.
+
+##### Fixed
+- Fixed an issue introduced in 13.1.0 where session start location updates would fail to update on pre API 30 devices.
+- Fixed an issue introduced in 13.1.0 where geofence update events would fail to update properly.
+
+#### Added
+- Added the ability to namespace all `braze.xml` configurations to be able to use `braze` in place of `appboy`. The Braze namespaced configuration keys will take precedence over the `appboy` keys.
+  - For example, `com_appboy_api_key` can be replaced with `com_braze_api_key`.
+  - Be sure to look for and update any API keys in your build variants as the `com_braze_api_key` from your default variant might take precedence unexpectedly.
+  - All `com_appboy_*` configuration keys in XML will be removed in a future release so it is advised to migrate these configuration keys to their `com_braze_*` counterparts.
+
+##### Changed
+- Changed target API for the SDK to 31.
+
 ## 15.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v15.0.0)

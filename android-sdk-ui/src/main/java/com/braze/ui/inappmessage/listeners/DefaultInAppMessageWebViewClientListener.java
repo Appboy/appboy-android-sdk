@@ -7,10 +7,6 @@ import androidx.annotation.VisibleForTesting;
 
 import com.appboy.enums.Channel;
 import com.appboy.models.outgoing.AppboyProperties;
-import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.actions.ActionFactory;
-import com.appboy.ui.actions.NewsfeedAction;
-import com.appboy.ui.actions.UriAction;
 import com.braze.Braze;
 import com.braze.enums.inappmessage.MessageType;
 import com.braze.models.inappmessage.IInAppMessage;
@@ -19,6 +15,9 @@ import com.braze.support.BrazeFileUtils;
 import com.braze.support.BrazeLogger;
 import com.braze.support.BundleUtils;
 import com.braze.support.StringUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
+import com.braze.ui.actions.NewsfeedAction;
+import com.braze.ui.actions.UriAction;
 import com.braze.ui.inappmessage.BrazeInAppMessageManager;
 import com.braze.ui.inappmessage.utils.InAppMessageWebViewClient;
 
@@ -54,7 +53,7 @@ public class DefaultInAppMessageWebViewClientListener implements IInAppMessageWe
       getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
       NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.mapToBundle(inAppMessage.getExtras()),
           Channel.INAPP_MESSAGE);
-      AppboyNavigator.getAppboyNavigator().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
+      BrazeDeeplinkHandler.getInstance().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
     }
   }
 
@@ -97,17 +96,17 @@ public class DefaultInAppMessageWebViewClientListener implements IInAppMessageWe
     boolean useWebViewForWebLinks = parseUseWebViewFromQueryBundle(inAppMessage, queryBundle);
     Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
     inAppMessageBundle.putAll(queryBundle);
-    UriAction uriAction = ActionFactory.createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
+    UriAction uriAction = BrazeDeeplinkHandler.getInstance().createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
 
     if (uriAction == null) {
-      BrazeLogger.w(TAG, "UriAction is null. Not passing any URI to AppboyNavigator. Url: " + url);
+      BrazeLogger.w(TAG, "UriAction is null. Not passing any URI to BrazeDeeplinkHandler. Url: " + url);
       return;
     }
 
     // If a local Uri is being handled here, then we want to keep the user in the Html in-app message and not hide the current in-app message.
     Uri uri = uriAction.getUri();
     if (BrazeFileUtils.isLocalUri(uri)) {
-      BrazeLogger.w(TAG, "Not passing local uri to AppboyNavigator. Got local uri: " + uri + " for url: " + url);
+      BrazeLogger.w(TAG, "Not passing local uri to BrazeDeeplinkHandler. Got local uri: " + uri + " for url: " + url);
       return;
     }
 
@@ -115,7 +114,7 @@ public class DefaultInAppMessageWebViewClientListener implements IInAppMessageWe
     inAppMessage.setAnimateOut(false);
     // Dismiss the in-app message since we're handling the URI outside of the in-app message webView
     getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-    AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getActivity(), uriAction);
+    BrazeDeeplinkHandler.getInstance().gotoUri(getInAppMessageManager().getActivity(), uriAction);
   }
 
   @VisibleForTesting

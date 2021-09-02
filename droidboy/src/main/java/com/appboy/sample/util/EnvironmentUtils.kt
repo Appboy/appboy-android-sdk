@@ -17,84 +17,84 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 
-class EnvironmentUtils {
-  companion object {
-    private val TAG = BrazeLogger.getBrazeLogTag(EnvironmentUtils::class.java)
+class EnvironmentUtils private constructor() {
+    companion object {
+        private val TAG = BrazeLogger.getBrazeLogTag(EnvironmentUtils::class.java)
 
-    private const val BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment"
-    private const val BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT = "endpoint"
-    private const val BRAZE_ENVIRONMENT_DEEPLINK_API_KEY = "api_key"
+        private const val BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment"
+        private const val BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT = "endpoint"
+        private const val BRAZE_ENVIRONMENT_DEEPLINK_API_KEY = "api_key"
 
-    @JvmStatic
-    fun analyzeBitmapForEnvironmentBarcode(activity: Activity, bitmap: Bitmap) {
-      // Build the barcode detector
-      val options = BarcodeScannerOptions.Builder()
-          .setBarcodeFormats(
-              Barcode.FORMAT_QR_CODE)
-          .build()
-      val image = InputImage.fromBitmap(bitmap, 0)
-      val scanner = BarcodeScanning.getClient(options)
-      scanner.process(image)
-          .addOnSuccessListener { barcodes: List<Barcode> ->
-            if (barcodes.isEmpty()) {
-              showToast(activity, "Couldn't find barcode. Please try again!")
-            } else {
-              for (barcode in barcodes) {
-                val rawValue = barcode.rawValue
-                if (rawValue.startsWith(BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH)) {
-                  showToast(activity, "Found barcode: $rawValue")
-                  setEnvironmentViaDeepLink(activity, rawValue)
+        @JvmStatic
+        fun analyzeBitmapForEnvironmentBarcode(activity: Activity, bitmap: Bitmap) {
+            // Build the barcode detector
+            val options = BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .build()
+            val image = InputImage.fromBitmap(bitmap, 0)
+            val scanner = BarcodeScanning.getClient(options)
+            scanner.process(image)
+                .addOnSuccessListener { barcodes: List<Barcode> ->
+                    if (barcodes.isEmpty()) {
+                        showToast(activity, "Couldn't find barcode. Please try again!")
+                    } else {
+                        for (barcode in barcodes) {
+                            val rawValue = barcode.rawValue
+                            if (rawValue.startsWith(BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH)) {
+                                showToast(activity, "Found barcode: $rawValue")
+                                setEnvironmentViaDeepLink(activity, rawValue)
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          }
-          .addOnFailureListener { e: Exception? -> BrazeLogger.e(TAG, "Failed to parse barcode bitmap", e) }
-          .addOnCompleteListener { bitmap.recycle() }
-    }
+                .addOnFailureListener { e: Exception? -> BrazeLogger.e(TAG, "Failed to parse barcode bitmap", e) }
+                .addOnCompleteListener { bitmap.recycle() }
+        }
 
-    /**
-     * Braze deep link in the form
-     * braze://environment?endpoint=ENDPOINT_HERE&api_key=API_KEY_HERE
-     */
-    @SuppressLint("ApplySharedPref")
-    private fun setEnvironmentViaDeepLink(context: Activity, environmentText: String) {
-      val uri = Uri.parse(environmentText)
-      val endpoint = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT)
-      val apiKey = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_API_KEY)
+        /**
+         * Braze deep link in the form
+         * braze://environment?endpoint=ENDPOINT_HERE&api_key=API_KEY_HERE
+         */
+        @SuppressLint("ApplySharedPref")
+        private fun setEnvironmentViaDeepLink(context: Activity, environmentText: String) {
+            val uri = Uri.parse(environmentText)
+            val endpoint = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT)
+            val apiKey = uri.getQueryParameter(BRAZE_ENVIRONMENT_DEEPLINK_API_KEY)
 
-      BrazeLogger.i(TAG, "Using environment endpoint: $endpoint")
-      BrazeLogger.i(TAG, "Using environment api key: $apiKey")
-      val message = StringBuilder()
-          .append("Looks correct? 👌")
-          .append("\n\n")
-          .append("New environment endpoint: ")
-          .append("\n")
-          .append(endpoint)
-          .append("\n\n")
-          .append("New environment api key: ")
-          .append("\n")
-          .append(apiKey)
-      AlertDialog.Builder(context)
-          .setTitle("Changing Droidboy environment")
-          .setMessage(message.toString())
-          .setPositiveButton(R.string.yes) { dialog: DialogInterface?, which: Int ->
-            val sharedPreferencesEditor: SharedPreferences.Editor = getPrefs(context).edit()
-            sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, apiKey)
-            sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, endpoint)
-            sharedPreferencesEditor.commit()
-            LifecycleUtils.restartApp(context)
-          } // A null listener allows the button to dismiss the dialog and take no further action.
-          .setNegativeButton(R.string.no, null)
-          .setIcon(R.drawable.ic_dialog_info)
-          .show()
-    }
+            BrazeLogger.i(TAG, "Using environment endpoint: $endpoint")
+            BrazeLogger.i(TAG, "Using environment api key: $apiKey")
+            val message = StringBuilder()
+                .append("Looks correct? 👌")
+                .append("\n\n")
+                .append("New environment endpoint: ")
+                .append("\n")
+                .append(endpoint)
+                .append("\n\n")
+                .append("New environment api key: ")
+                .append("\n")
+                .append(apiKey)
+            AlertDialog.Builder(context)
+                .setTitle("Changing Droidboy environment")
+                .setMessage(message.toString())
+                .setPositiveButton(R.string.yes) { dialog: DialogInterface?, which: Int ->
+                    val sharedPreferencesEditor: SharedPreferences.Editor = getPrefs(context).edit()
+                    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, apiKey)
+                    sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY, endpoint)
+                    sharedPreferencesEditor.commit()
+                    LifecycleUtils.restartApp(context)
+                } // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(R.string.no, null)
+                .setIcon(R.drawable.ic_dialog_info)
+                .show()
+        }
 
-    private fun getPrefs(context: Context): SharedPreferences {
-      return context.getSharedPreferences(context.getString(com.appboy.sample.R.string.shared_prefs_location), Context.MODE_PRIVATE)
-    }
+        private fun getPrefs(context: Context): SharedPreferences = context.getSharedPreferences(
+            context.getString(com.appboy.sample.R.string.shared_prefs_location),
+            Context.MODE_PRIVATE
+        )
 
-    private fun showToast(context: Context, message: String) {
-      Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        private fun showToast(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
     }
-  }
 }

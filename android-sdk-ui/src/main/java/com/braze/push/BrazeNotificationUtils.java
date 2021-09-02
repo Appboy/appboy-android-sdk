@@ -26,9 +26,6 @@ import com.appboy.BrazeInternal;
 import com.appboy.Constants;
 import com.appboy.enums.Channel;
 import com.appboy.models.push.BrazeNotificationPayload;
-import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.actions.ActionFactory;
-import com.appboy.ui.actions.UriAction;
 import com.braze.Braze;
 import com.braze.IBrazeNotificationFactory;
 import com.braze.configuration.BrazeConfig;
@@ -41,6 +38,8 @@ import com.braze.support.IntentUtils;
 import com.braze.support.JsonUtils;
 import com.braze.support.PermissionUtils;
 import com.braze.support.StringUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
+import com.braze.ui.actions.UriAction;
 import com.braze.ui.support.UriUtils;
 
 import org.json.JSONObject;
@@ -143,8 +142,8 @@ public class BrazeNotificationUtils {
       extras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, deepLink);
       extras.putBoolean(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebView);
 
-      UriAction uriAction = ActionFactory.createUriActionFromUrlString(deepLink, extras, useWebView, Channel.PUSH);
-      AppboyNavigator.getAppboyNavigator().gotoUri(context, uriAction);
+      UriAction uriAction = BrazeDeeplinkHandler.getInstance().createUriActionFromUrlString(deepLink, extras, useWebView, Channel.PUSH);
+      BrazeDeeplinkHandler.getInstance().gotoUri(context, uriAction);
     } else {
       final Intent mainActivityIntent = UriUtils.getMainActivityIntent(context, extras);
       BrazeLogger.d(TAG, "Push notification had no deep link. Opening main activity: " + mainActivityIntent);
@@ -233,7 +232,7 @@ public class BrazeNotificationUtils {
     cancelIntent.setAction(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION);
     cancelIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId);
 
-    final int flags = PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getDefaultPendingIntentFlags();
+    final int flags = PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getImmutablePendingIntentFlags();
     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, flags);
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     if (durationInMillis >= Constants.APPBOY_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
@@ -476,7 +475,7 @@ public class BrazeNotificationUtils {
       if (notificationExtras != null) {
         pushDeletedIntent.putExtras(notificationExtras);
       }
-      final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getDefaultPendingIntentFlags();
+      final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getImmutablePendingIntentFlags();
       PendingIntent pushDeletedPendingIntent = PendingIntent.getBroadcast(context, IntentUtils.getRequestCode(), pushDeletedIntent, flags);
       notificationBuilder.setDeleteIntent(pushDeletedPendingIntent);
     } catch (Exception e) {
@@ -1178,7 +1177,7 @@ public class BrazeNotificationUtils {
     if (notificationExtras != null) {
       pushActionIntent.putExtras(notificationExtras);
     }
-    final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getDefaultPendingIntentFlags();
+    final int flags = PendingIntent.FLAG_ONE_SHOT | IntentUtils.getImmutablePendingIntentFlags();
     return PendingIntent.getActivity(context, IntentUtils.getRequestCode(), pushActionIntent, flags);
   }
 

@@ -35,6 +35,7 @@
   <color name="com_braze_content_card_background_border">#50CCCCCC</color>
   <color name="com_braze_content_card_background_shadow">#30CCCCCC</color>
   <color name="com_braze_content_card_background">@android:color/white</color>
+  <color name="com_braze_content_card_focus_scrim">#30333333</color>
 
   <color name="com_braze_content_cards_swipe_refresh_color_1">#f33e3e</color>
   <color name="com_braze_content_cards_swipe_refresh_color_2">#1bbdf2</color>

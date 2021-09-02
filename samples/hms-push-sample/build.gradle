@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,7 +10,9 @@ android {
     // HMS requires a min SDK version of 17, which is
     // (as of 3/9/2020) higher than our min of 16
     minSdkVersion 17 //rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
+    // Huawei has not provided an SDK ready for
+    // API 31 so this target version is on 30
+    targetSdkVersion 30
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -52,7 +53,7 @@ dependencies {
     exclude group: 'com.google.firebase'
     exclude group: 'com.google.android.gms'
   }
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${KOTLIN_STDLIB_JDK7_VERSION}"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:${KOTLIN_VERSION}"
   implementation "androidx.appcompat:appcompat:${ANDROIDX_APPCOMPAT_VERSION}"
   implementation "androidx.constraintlayout:constraintlayout:${ANDROIDX_CONSTRAINT_LAYOUT_VERSION}"
   implementation "androidx.coordinatorlayout:coordinatorlayout:${ANDROIDX_COORDINATOR_LAYOUT_VERSION}"

@@ -3,7 +3,7 @@ package com.appboy.ui.feed.listeners;
 import android.content.Context;
 
 import com.appboy.models.cards.Card;
-import com.appboy.ui.actions.IAction;
+import com.braze.ui.actions.IAction;
 
 /**
  * The IFeedClickActionListener receives the news feed card when a

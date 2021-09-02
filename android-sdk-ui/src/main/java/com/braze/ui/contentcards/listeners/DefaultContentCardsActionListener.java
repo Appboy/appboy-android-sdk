@@ -3,7 +3,7 @@ package com.braze.ui.contentcards.listeners;
 import android.content.Context;
 
 import com.appboy.models.cards.Card;
-import com.appboy.ui.actions.IAction;
+import com.braze.ui.actions.IAction;
 
 public class DefaultContentCardsActionListener implements IContentCardsActionListener {
   @Override

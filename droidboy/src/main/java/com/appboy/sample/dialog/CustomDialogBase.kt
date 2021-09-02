@@ -12,18 +12,18 @@ import com.appboy.sample.R
  */
 abstract class CustomDialogBase : DialogFragment() {
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    view.findViewById<Button>(R.id.bDialogNegative).setOnClickListener { onExitButtonPressed(false) }
-    view.findViewById<Button>(R.id.bDialogPositive).setOnClickListener { onExitButtonPressed(true) }
-  }
+        view.findViewById<Button>(R.id.bDialogNegative).setOnClickListener { onExitButtonPressed(false) }
+        view.findViewById<Button>(R.id.bDialogPositive).setOnClickListener { onExitButtonPressed(true) }
+    }
 
-  override fun onStart() {
-    super.onStart()
-    val width = (resources.displayMetrics.widthPixels * 0.95).toInt()
-    dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
-  }
+    override fun onStart() {
+        super.onStart()
+        val width = (resources.displayMetrics.widthPixels * 0.95).toInt()
+        dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
 
-  abstract fun onExitButtonPressed(isPositive: Boolean)
+    abstract fun onExitButtonPressed(isPositive: Boolean)
 }

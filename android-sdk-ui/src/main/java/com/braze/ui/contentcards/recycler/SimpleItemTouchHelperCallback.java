@@ -26,7 +26,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     // Since dragging is disabled, mask the drag flag to 0
     int dragFlags = 0;
     // Only let the item be swiped if the item is dismissable
-    int swipeFlags = mAdapter.isItemDismissable(viewHolder.getAdapterPosition()) ? ItemTouchHelper.START : 0;
+    int swipeFlags = mAdapter.isItemDismissable(viewHolder.getBindingAdapterPosition()) ? ItemTouchHelper.START : 0;
     return makeMovementFlags(dragFlags, swipeFlags);
   }
 
@@ -40,6 +40,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
   @Override
   public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-    mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+    mAdapter.onItemDismiss(viewHolder.getBindingAdapterPosition());
   }
 }

@@ -20,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.appboy.sample.util.SpinnerUtils;
-import com.appboy.ui.AppboyNavigator;
 import com.braze.Braze;
 import com.braze.enums.inappmessage.ClickAction;
 import com.braze.enums.inappmessage.CropType;
@@ -41,6 +40,7 @@ import com.braze.models.inappmessage.InAppMessageModal;
 import com.braze.models.inappmessage.InAppMessageSlideup;
 import com.braze.models.inappmessage.MessageButton;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.BrazeDeeplinkHandler;
 import com.braze.ui.inappmessage.BrazeInAppMessageManager;
 import com.braze.ui.inappmessage.config.BrazeInAppMessageParams;
 
@@ -192,9 +192,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     setupCheckbox(view.findViewById(R.id.custom_appboy_navigator_checkbox),
         (buttonView, isChecked) -> {
           if (isChecked) {
-            AppboyNavigator.setAppboyNavigator(new CustomAppboyNavigator());
+            BrazeDeeplinkHandler.setBrazeDeeplinkHandler(new CustomBrazeDeeplinkHandler());
           } else {
-            AppboyNavigator.setAppboyNavigator(null);
+            BrazeDeeplinkHandler.setBrazeDeeplinkHandler(null);
           }
         });
 

@@ -78,7 +78,7 @@
   <string name="create_and_add_inappmessage">Create and Add In-App Message</string>
   <string name="display_next_inappmessage">Display Next In-App Message</string>
   <string name="hide_current_inappmessage">Hide Current In-App Message</string>
-  <string name="custom_iappboy_navigator">Custom IAppboyNavigator</string>
+  <string name="custom_iappboy_navigator">Custom IBrazeDeeplinkHandler</string>
   <string name="custom_iappboy_animation">Custom IInAppMessageAnimationFactory</string>
   <string name="custom_iinappmessagemanager_listener">Custom IInAppMessageManagerListener</string>
   <string name="custom_html_inappmessage_action_listener">Custom IHtmlInAppMessageActionListener</string>

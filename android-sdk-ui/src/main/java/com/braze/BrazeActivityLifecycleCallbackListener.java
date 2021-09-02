@@ -19,6 +19,8 @@ import java.util.Set;
  * Optionally, openSession() and closeSession() are called on onActivityStarted and onActivityStopped respectively.
  * The InAppMessageManager methods of registerInAppMessageManager() and unregisterInAppMessageManager() can
  * be optionally called here as well.
+ * Note: This callback should not be set in any Activity. It must be set in the Application class
+ * of your app.
  */
 public class BrazeActivityLifecycleCallbackListener implements Application.ActivityLifecycleCallbacks {
   private static final String TAG = BrazeLogger.getBrazeLogTag(BrazeActivityLifecycleCallbackListener.class);

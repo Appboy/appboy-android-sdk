@@ -1,11 +1,13 @@
 package com.braze.ui.inappmessage.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import androidx.appcompat.widget.AppCompatButton;
+import android.widget.Button;
 
-public class InAppMessageButton extends AppCompatButton {
+@SuppressLint("AppCompatCustomView")
+public class InAppMessageButton extends Button {
   public InAppMessageButton(Context context) {
     super(context);
   }

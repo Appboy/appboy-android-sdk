@@ -1,5 +1,7 @@
 package com.braze.push;
 
+import static com.braze.IBrazeDeeplinkHandler.IntentFlagPurpose.NOTIFICATION_ACTION_WITH_DEEPLINK;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,14 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.appboy.Constants;
-import com.appboy.IAppboyNavigator;
 import com.appboy.models.push.BrazeNotificationPayload;
-import com.appboy.ui.AppboyNavigator;
 import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
 import com.braze.support.BrazeLogger;
 import com.braze.support.IntentUtils;
 import com.braze.support.StringUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
 
 import java.util.List;
 
@@ -150,7 +151,7 @@ public class BrazeNotificationActionUtils {
 
     PendingIntent pendingSendIntent;
     Intent sendIntent;
-    final int pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getDefaultPendingIntentFlags();
+    final int pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getImmutablePendingIntentFlags();
     if (Constants.APPBOY_PUSH_ACTION_TYPE_NONE.equals(actionType)) {
       // If no action is present, then we don't need the
       // trampoline to route us back to an Activity.
@@ -169,7 +170,7 @@ public class BrazeNotificationActionUtils {
       sendIntent = new Intent(Constants.APPBOY_ACTION_CLICKED_ACTION)
           .setClass(context, NotificationTrampolineActivity.class);
       sendIntent
-          .setFlags(sendIntent.getFlags() | AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.NOTIFICATION_ACTION_WITH_DEEPLINK));
+          .setFlags(sendIntent.getFlags() | BrazeDeeplinkHandler.getInstance().getIntentFlags(NOTIFICATION_ACTION_WITH_DEEPLINK));
       sendIntent.putExtras(notificationActionExtras);
       pendingSendIntent = PendingIntent.getActivity(context, IntentUtils.getRequestCode(), sendIntent, pendingIntentFlags);
     }

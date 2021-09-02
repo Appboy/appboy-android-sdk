@@ -102,10 +102,10 @@ public class ViewUtils {
   public static int getMaxSafeLeftInset(@NonNull WindowInsetsCompat windowInsets) {
     if (windowInsets.getDisplayCutout() != null) {
       final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
-      return Math.max(displayCutout.getSafeInsetLeft(), windowInsets.getSystemWindowInsetLeft());
+      return Math.max(displayCutout.getSafeInsetLeft(), windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).left);
     } else {
       // The max inset is just the system value since the display cutout does not exist
-      return windowInsets.getSystemWindowInsetLeft();
+      return windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).left;
     }
   }
 
@@ -115,10 +115,10 @@ public class ViewUtils {
   public static int getMaxSafeRightInset(@NonNull WindowInsetsCompat windowInsets) {
     if (windowInsets.getDisplayCutout() != null) {
       final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
-      return Math.max(displayCutout.getSafeInsetRight(), windowInsets.getSystemWindowInsetRight());
+      return Math.max(displayCutout.getSafeInsetRight(), windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).right);
     } else {
       // The max inset is just the system value since the display cutout does not exist
-      return windowInsets.getSystemWindowInsetRight();
+      return windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).right;
     }
   }
 
@@ -128,10 +128,10 @@ public class ViewUtils {
   public static int getMaxSafeTopInset(@NonNull WindowInsetsCompat windowInsets) {
     if (windowInsets.getDisplayCutout() != null) {
       final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
-      return Math.max(displayCutout.getSafeInsetTop(), windowInsets.getSystemWindowInsetTop());
+      return Math.max(displayCutout.getSafeInsetTop(), windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top);
     } else {
       // The max inset is just the system value since the display cutout does not exist
-      return windowInsets.getSystemWindowInsetTop();
+      return windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
     }
   }
 
@@ -141,10 +141,10 @@ public class ViewUtils {
   public static int getMaxSafeBottomInset(@NonNull WindowInsetsCompat windowInsets) {
     if (windowInsets.getDisplayCutout() != null) {
       final DisplayCutoutCompat displayCutout = windowInsets.getDisplayCutout();
-      return Math.max(displayCutout.getSafeInsetBottom(), windowInsets.getSystemWindowInsetBottom());
+      return Math.max(displayCutout.getSafeInsetBottom(), windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom);
     } else {
       // The max inset is just the system value since the display cutout does not exist
-      return windowInsets.getSystemWindowInsetBottom();
+      return windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
     }
   }
 

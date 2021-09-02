@@ -8,10 +8,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.appboy.IAppboyNavigator;
-import com.appboy.ui.AppboyNavigator;
+import com.braze.IBrazeDeeplinkHandler;
 import com.braze.support.BrazeLogger;
 import com.braze.support.StringUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +60,7 @@ public class UriUtils {
 
   public static Intent getMainActivityIntent(Context context, Bundle extras) {
     Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-    startActivityIntent.setFlags(AppboyNavigator.getAppboyNavigator().getIntentFlags(IAppboyNavigator.IntentFlagPurpose.URI_UTILS_GET_MAIN_ACTIVITY_INTENT));
+    startActivityIntent.setFlags(BrazeDeeplinkHandler.getInstance().getIntentFlags(IBrazeDeeplinkHandler.IntentFlagPurpose.URI_UTILS_GET_MAIN_ACTIVITY_INTENT));
     if (extras != null) {
       startActivityIntent.putExtras(extras);
     }

@@ -3,9 +3,9 @@ package com.appboy.unity.configuration;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.appboy.configuration.CachedConfigurationProvider;
-import com.appboy.configuration.RuntimeAppConfigurationProvider;
 import com.appboy.unity.enums.UnityMessageType;
+import com.braze.configuration.CachedConfigurationProvider;
+import com.braze.configuration.RuntimeAppConfigurationProvider;
 import com.braze.support.BrazeLogger;
 
 public class UnityConfigurationProvider extends CachedConfigurationProvider {

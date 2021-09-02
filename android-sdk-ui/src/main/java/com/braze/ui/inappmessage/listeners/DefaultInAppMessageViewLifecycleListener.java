@@ -5,10 +5,6 @@ import android.net.Uri;
 import android.view.View;
 
 import com.appboy.enums.Channel;
-import com.appboy.ui.AppboyNavigator;
-import com.appboy.ui.actions.ActionFactory;
-import com.appboy.ui.actions.NewsfeedAction;
-import com.appboy.ui.actions.UriAction;
 import com.braze.enums.inappmessage.ClickAction;
 import com.braze.models.inappmessage.IInAppMessage;
 import com.braze.models.inappmessage.IInAppMessageHtml;
@@ -18,6 +14,9 @@ import com.braze.support.BrazeFileUtils;
 import com.braze.support.BrazeLogger;
 import com.braze.support.BundleUtils;
 import com.braze.support.WebContentUtils;
+import com.braze.ui.BrazeDeeplinkHandler;
+import com.braze.ui.actions.NewsfeedAction;
+import com.braze.ui.actions.UriAction;
 import com.braze.ui.inappmessage.BrazeInAppMessageManager;
 import com.braze.ui.inappmessage.InAppMessageCloser;
 
@@ -119,13 +118,13 @@ public class DefaultInAppMessageViewLifecycleListener implements IInAppMessageVi
         inAppMessageCloser.close(false);
         NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.mapToBundle(inAppMessage.getExtras()),
             Channel.INAPP_MESSAGE);
-        AppboyNavigator.getAppboyNavigator().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
+        BrazeDeeplinkHandler.getInstance().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
         break;
       case URI:
         inAppMessageCloser.close(false);
-        UriAction uriAction = ActionFactory.createUriActionFromUri(clickUri, BundleUtils.mapToBundle(inAppMessage.getExtras()),
+        UriAction uriAction = BrazeDeeplinkHandler.getInstance().createUriActionFromUri(clickUri, BundleUtils.mapToBundle(inAppMessage.getExtras()),
             openUriInWebview, Channel.INAPP_MESSAGE);
-        AppboyNavigator.getAppboyNavigator().gotoUri(getInAppMessageManager().getActivity(), uriAction);
+        BrazeDeeplinkHandler.getInstance().gotoUri(getInAppMessageManager().getActivity(), uriAction);
         break;
       case NONE:
         inAppMessageCloser.close(inAppMessage.getAnimateOut());
