@@ -1,0 +1,584 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>BrazeInAppMessageManager</title>
+<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" async="async"></script>  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn"><a href="../../../index.html">
+          <div id="logo"></div>
+        </a>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+<script type="text/javascript" src="../../../scripts/main.js"></script>        <div class="main-content" id="content" pageIds="braze-android-sdk::com.braze.ui.inappmessage/BrazeInAppMessageManager///PointingToDeclaration//-1725759721">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../../index.html">braze-android-sdk</a>/<a href="../index.html">com.braze.ui.inappmessage</a>/<a href="index.html">BrazeInAppMessageManager</a></div>
+            <div class="pull-right d-flex">
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Braze</span><wbr></wbr><span>In</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>Manager</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="index.html">BrazeInAppMessageManager</a> : <a href="../-in-app-message-manager-base/index.html">InAppMessageManagerBase</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This class is used to display in-app messages that are either sent from Braze or are created natively in the host app. It will only show one in-app message at a time and will place all other in-app messages onto a stack. The <a href="index.html">BrazeInAppMessageManager</a> will also keep track of in-app impressions and clicks, which can be viewed on the dashboard. </p> When an in-app message is received from Braze, the onInAppMessageReceived method is called (if set). If this method returns true, that signals to the BrazeInAppMessageManager that the in-app message will be handled by the host app and that it should not be displayed by the BrazeInAppMessageManager. This method should be used if you choose to display the in-app message in a custom way. If false is returned, the <a href="index.html">BrazeInAppMessageManager</a> attempts to display the in-app message.  If there is already an in-app message being displayed, the new in-app message will be put onto the top of the stack and can be displayed at a later time. If there is no in-app message being displayed, then the <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/before-in-app-message-displayed.html">beforeInAppMessageDisplayed</a> will be called. The <a href="../-in-app-message-operation/index.html">InAppMessageOperation</a> return value can be used to control when the in-app message should be displayed. A suggested usage of this method would be to delay in-app message messages in certain parts of the app by returning <span data-unresolved-link="com.braze.ui.inappmessage/InAppMessageOperation/DISPLAY_LATER/#/PointingToDeclaration/">DISPLAY_LATER</span> when in-app message would be distracting to the users app experience. If the method returns <span data-unresolved-link="com.braze.ui.inappmessage/InAppMessageOperation/DISPLAY_NOW/#/PointingToDeclaration/">DISPLAY_NOW</span> then the in-app message will be displayed immediately.  The <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/on-in-app-message-clicked.html">onInAppMessageClicked</a> and <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/on-in-app-message-dismissed.html">onInAppMessageDismissed</a> methods can be used to override the default click and dismiss behavior.  By default, in-app messages fade in and out from view. The slideup type of in-app message slides in and out of view can be dismissed by swiping the view horizontally. If the in-app message's DismissType is set to AUTO_DISMISS, then the in-app message will animate out of view once the set duration time has elapsed.  In order to use a custom view, you must create a custom view factory using the <a href="../-in-app-message-manager-base/set-custom-in-app-message-view-factory.html">setCustomInAppMessageViewFactory</a> method.  A new in-app message <a href="https://developer.android.com/reference/kotlin/android/view/View.html">android.view.View</a> object is created when a in-app message is displayed and also when the user navigates away to another <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">android.app.Activity</a>. This happens so that the Activity can be garbage collected and does not create a memory leak. For that reason, the <a href="register-in-app-message-manager.html">registerInAppMessageManager</a> and <a href="unregister-in-app-message-manager.html">unregisterInAppMessageManager</a> must be called in the <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#onResume--">onResume</a> and <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#onPause--">onPause</a> methods of every Activity.</div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button></div>
+            <div class="tabs-section-body">
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="659800859%2FFunctions%2F-1725759721" anchor-label="addInAppMessage" id="659800859%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="add-in-app-message.html">addInAppMessage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="659800859%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="add-in-app-message.html">addInAppMessage</a>(inAppMessage: <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="659800859%2FFunctions%2F-1725759721" anchor-label="addInAppMessage" id="659800859%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="659800859%2FFunctions%2F-1725759721" anchor-label="addInAppMessage" id="659800859%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Provides a in-app message that will then be handled by the in-app message manager.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1391589897%2FFunctions%2F-1725759721" anchor-label="displayInAppMessage" id="-1391589897%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="display-in-app-message.html">displayInAppMessage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1391589897%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="display-in-app-message.html">displayInAppMessage</a>(inAppMessage: <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a>, isCarryOver: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1391589897%2FFunctions%2F-1725759721" anchor-label="displayInAppMessage" id="-1391589897%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1391589897%2FFunctions%2F-1725759721" anchor-label="displayInAppMessage" id="-1391589897%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Internal method, do not call as part of an integration!</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1687639809%2FFunctions%2F-1725759721" anchor-label="ensureSubscribedToInAppMessageEvents" id="1687639809%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="ensure-subscribed-to-in-app-message-events.html">ensureSubscribedToInAppMessageEvents</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1687639809%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="ensure-subscribed-to-in-app-message-events.html">ensureSubscribedToInAppMessageEvents</a>(context: <a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1687639809%2FFunctions%2F-1725759721" anchor-label="ensureSubscribedToInAppMessageEvents" id="1687639809%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1687639809%2FFunctions%2F-1725759721" anchor-label="ensureSubscribedToInAppMessageEvents" id="1687639809%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Ensures the InAppMessageManager is subscribed in-app message events if not already subscribed.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="236885597%2FFunctions%2F-1725759721" anchor-label="getActivity" id="236885597%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-activity.html">getActivity</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="236885597%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>()</div></div>open fun <a href="../-in-app-message-manager-base/get-activity.html">getActivity</a>(): <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1528650349%2FFunctions%2F-1725759721" anchor-label="getApplicationContext" id="1528650349%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-application-context.html">getApplicationContext</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1528650349%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>()</div></div>open fun <a href="../-in-app-message-manager-base/get-application-context.html">getApplicationContext</a>(): <a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1732871673%2FFunctions%2F-1725759721" anchor-label="getCarryoverInAppMessage" id="1732871673%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-carryover-in-app-message.html">getCarryoverInAppMessage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1732871673%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>()</div></div>open fun <a href="get-carryover-in-app-message.html">getCarryoverInAppMessage</a>(): <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1732871673%2FFunctions%2F-1725759721" anchor-label="getCarryoverInAppMessage" id="1732871673%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1732871673%2FFunctions%2F-1725759721" anchor-label="getCarryoverInAppMessage" id="1732871673%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>An In-App Message being carried over during the <a href="unregister-in-app-message-manager.html">unregisterInAppMessageManager</a><a href="register-in-app-message-manager.html">registerInAppMessageManager</a> transition.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1720830669%2FFunctions%2F-1725759721" anchor-label="getControlInAppMessageManagerListener" id="-1720830669%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-control-in-app-message-manager-listener.html">getControlInAppMessageManagerListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1720830669%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-control-in-app-message-manager-listener.html">getControlInAppMessageManagerListener</a>(): <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1720830669%2FFunctions%2F-1725759721" anchor-label="getControlInAppMessageManagerListener" id="-1720830669%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1720830669%2FFunctions%2F-1725759721" anchor-label="getControlInAppMessageManagerListener" id="-1720830669%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>A <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a> to be used only for control in-app messages.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1228150919%2FFunctions%2F-1725759721" anchor-label="getDefaultInAppMessageViewFactory" id="-1228150919%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-default-in-app-message-view-factory.html">getDefaultInAppMessageViewFactory</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1228150919%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-default-in-app-message-view-factory.html">getDefaultInAppMessageViewFactory</a>(inAppMessage: <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a>): <a href="../-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1228150919%2FFunctions%2F-1725759721" anchor-label="getDefaultInAppMessageViewFactory" id="-1228150919%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1228150919%2FFunctions%2F-1725759721" anchor-label="getDefaultInAppMessageViewFactory" id="-1228150919%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Gets the default <a href="../-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a> as returned by the <a href="index.html">BrazeInAppMessageManager</a> for the given <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a>.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1258003814%2FFunctions%2F-1725759721" anchor-label="getDoesBackButtonDismissInAppMessageView" id="1258003814%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-does-back-button-dismiss-in-app-message-view.html">getDoesBackButtonDismissInAppMessageView</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1258003814%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-does-back-button-dismiss-in-app-message-view.html">getDoesBackButtonDismissInAppMessageView</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1286635214%2FFunctions%2F-1725759721" anchor-label="getDoesClickOutsideModalViewDismissInAppMessageView" id="1286635214%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-does-click-outside-modal-view-dismiss-in-app-message-view.html">getDoesClickOutsideModalViewDismissInAppMessageView</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1286635214%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-does-click-outside-modal-view-dismiss-in-app-message-view.html">getDoesClickOutsideModalViewDismissInAppMessageView</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1701919148%2FFunctions%2F-1725759721" anchor-label="getHtmlInAppMessageActionListener" id="1701919148%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-html-in-app-message-action-listener.html">getHtmlInAppMessageActionListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1701919148%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-html-in-app-message-action-listener.html">getHtmlInAppMessageActionListener</a>(): <a href="../../com.braze.ui.inappmessage.listeners/-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-82206341%2FFunctions%2F-1725759721" anchor-label="getInAppMessageAnimationFactory" id="-82206341%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-in-app-message-animation-factory.html">getInAppMessageAnimationFactory</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-82206341%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-in-app-message-animation-factory.html">getInAppMessageAnimationFactory</a>(): <a href="../-i-in-app-message-animation-factory/index.html">IInAppMessageAnimationFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1202085624%2FFunctions%2F-1725759721" anchor-label="getInAppMessageManagerListener" id="1202085624%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-in-app-message-manager-listener.html">getInAppMessageManagerListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1202085624%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-in-app-message-manager-listener.html">getInAppMessageManagerListener</a>(): <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="750867062%2FFunctions%2F-1725759721" anchor-label="getInAppMessageStack" id="750867062%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-in-app-message-stack.html">getInAppMessageStack</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="750867062%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>()</div></div>open fun <a href="get-in-app-message-stack.html">getInAppMessageStack</a>(): <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html">Stack</a>&lt;<a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="750867062%2FFunctions%2F-1725759721" anchor-label="getInAppMessageStack" id="750867062%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="750867062%2FFunctions%2F-1725759721" anchor-label="getInAppMessageStack" id="750867062%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>The stack of In-App Messages waiting to be displayed.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="788314488%2FFunctions%2F-1725759721" anchor-label="getInAppMessageViewFactory" id="788314488%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-in-app-message-view-factory.html">getInAppMessageViewFactory</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="788314488%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-in-app-message-view-factory.html">getInAppMessageViewFactory</a>(inAppMessage: <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a>): <a href="../-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1472167131%2FFunctions%2F-1725759721" anchor-label="getInAppMessageViewWrapperFactory" id="-1472167131%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/get-in-app-message-view-wrapper-factory.html">getInAppMessageViewWrapperFactory</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1472167131%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/get-in-app-message-view-wrapper-factory.html">getInAppMessageViewWrapperFactory</a>(): <a href="../-i-in-app-message-view-wrapper-factory/index.html">IInAppMessageViewWrapperFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-2061338542%2FFunctions%2F-1725759721" anchor-label="getInstance" id="-2061338542%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-instance.html">getInstance</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2061338542%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="get-instance.html">getInstance</a>(): <a href="index.html">BrazeInAppMessageManager</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="2140954060%2FFunctions%2F-1725759721" anchor-label="getIsCurrentlyDisplayingInAppMessage" id="2140954060%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-is-currently-displaying-in-app-message.html">getIsCurrentlyDisplayingInAppMessage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2140954060%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="get-is-currently-displaying-in-app-message.html">getIsCurrentlyDisplayingInAppMessage</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="2140954060%2FFunctions%2F-1725759721" anchor-label="getIsCurrentlyDisplayingInAppMessage" id="2140954060%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="2140954060%2FFunctions%2F-1725759721" anchor-label="getIsCurrentlyDisplayingInAppMessage" id="2140954060%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Gets whether an in-app message is currently displaying on the device.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1226997023%2FFunctions%2F-1725759721" anchor-label="getUnregisteredInAppMessage" id="-1226997023%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-unregistered-in-app-message.html">getUnregisteredInAppMessage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1226997023%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>()</div></div>open fun <a href="get-unregistered-in-app-message.html">getUnregisteredInAppMessage</a>(): <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1226997023%2FFunctions%2F-1725759721" anchor-label="getUnregisteredInAppMessage" id="-1226997023%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1226997023%2FFunctions%2F-1725759721" anchor-label="getUnregisteredInAppMessage" id="-1226997023%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>An In-App Message that could not display after a call to <a href="request-display-in-app-message.html">requestDisplayInAppMessage</a> due to no <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> being registered via <a href="register-in-app-message-manager.html">registerInAppMessageManager</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-594775572%2FFunctions%2F-1725759721" anchor-label="hideCurrentlyDisplayingInAppMessage" id="-594775572%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="hide-currently-displaying-in-app-message.html">hideCurrentlyDisplayingInAppMessage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-594775572%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="hide-currently-displaying-in-app-message.html">hideCurrentlyDisplayingInAppMessage</a>(dismissed: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-594775572%2FFunctions%2F-1725759721" anchor-label="hideCurrentlyDisplayingInAppMessage" id="-594775572%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-594775572%2FFunctions%2F-1725759721" anchor-label="hideCurrentlyDisplayingInAppMessage" id="-594775572%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Hides any currently displaying in-app message.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1084167331%2FFunctions%2F-1725759721" anchor-label="registerInAppMessageManager" id="1084167331%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="register-in-app-message-manager.html">registerInAppMessageManager</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1084167331%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="register-in-app-message-manager.html">registerInAppMessageManager</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1084167331%2FFunctions%2F-1725759721" anchor-label="registerInAppMessageManager" id="1084167331%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1084167331%2FFunctions%2F-1725759721" anchor-label="registerInAppMessageManager" id="1084167331%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Registers the in-app message manager, which will listen to and display incoming in-app messages.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1018977471%2FFunctions%2F-1725759721" anchor-label="requestDisplayInAppMessage" id="1018977471%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="request-display-in-app-message.html">requestDisplayInAppMessage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1018977471%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="request-display-in-app-message.html">requestDisplayInAppMessage</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1018977471%2FFunctions%2F-1725759721" anchor-label="requestDisplayInAppMessage" id="1018977471%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1018977471%2FFunctions%2F-1725759721" anchor-label="requestDisplayInAppMessage" id="1018977471%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Asks the InAppMessageManager to display the next in-app message if one is not currently being displayed.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-2046643395%2FFunctions%2F-1725759721" anchor-label="resetAfterInAppMessageClose" id="-2046643395%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="reset-after-in-app-message-close.html">resetAfterInAppMessageClose</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2046643395%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="reset-after-in-app-message-close.html">resetAfterInAppMessageClose</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-2046643395%2FFunctions%2F-1725759721" anchor-label="resetAfterInAppMessageClose" id="-2046643395%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-2046643395%2FFunctions%2F-1725759721" anchor-label="resetAfterInAppMessageClose" id="-2046643395%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Resets the <a href="index.html">BrazeInAppMessageManager</a> to its original state before the last in-app message was displayed.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1785674993%2FFunctions%2F-1725759721" anchor-label="setBackButtonDismissesInAppMessageView" id="-1785674993%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-back-button-dismisses-in-app-message-view.html">setBackButtonDismissesInAppMessageView</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1785674993%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-back-button-dismisses-in-app-message-view.html">setBackButtonDismissesInAppMessageView</a>(backButtonDismissesInAppMessageView: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1785674993%2FFunctions%2F-1725759721" anchor-label="setBackButtonDismissesInAppMessageView" id="-1785674993%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1785674993%2FFunctions%2F-1725759721" anchor-label="setBackButtonDismissesInAppMessageView" id="-1785674993%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Sets whether the hardware back button dismisses in-app messages.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-400432129%2FFunctions%2F-1725759721" anchor-label="setClickOutsideModalViewDismissInAppMessageView" id="-400432129%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-click-outside-modal-view-dismiss-in-app-message-view.html">setClickOutsideModalViewDismissInAppMessageView</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-400432129%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-click-outside-modal-view-dismiss-in-app-message-view.html">setClickOutsideModalViewDismissInAppMessageView</a>(doesDismiss: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-400432129%2FFunctions%2F-1725759721" anchor-label="setClickOutsideModalViewDismissInAppMessageView" id="-400432129%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-400432129%2FFunctions%2F-1725759721" anchor-label="setClickOutsideModalViewDismissInAppMessageView" id="-400432129%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Sets whether the tapping outside the modal in-app message content dismiss the message.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="614970450%2FFunctions%2F-1725759721" anchor-label="setCustomControlInAppMessageManagerListener" id="614970450%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-custom-control-in-app-message-manager-listener.html">setCustomControlInAppMessageManagerListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="614970450%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-custom-control-in-app-message-manager-listener.html">setCustomControlInAppMessageManagerListener</a>(inAppMessageManagerListener: <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="614970450%2FFunctions%2F-1725759721" anchor-label="setCustomControlInAppMessageManagerListener" id="614970450%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="614970450%2FFunctions%2F-1725759721" anchor-label="setCustomControlInAppMessageManagerListener" id="614970450%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Assigns a custom <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a> that will be used when displaying control in-app messages.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1527921953%2FFunctions%2F-1725759721" anchor-label="setCustomHtmlInAppMessageActionListener" id="1527921953%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-custom-html-in-app-message-action-listener.html">setCustomHtmlInAppMessageActionListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1527921953%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-custom-html-in-app-message-action-listener.html">setCustomHtmlInAppMessageActionListener</a>(htmlInAppMessageActionListener: <a href="../../com.braze.ui.inappmessage.listeners/-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1527921953%2FFunctions%2F-1725759721" anchor-label="setCustomHtmlInAppMessageActionListener" id="1527921953%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1527921953%2FFunctions%2F-1725759721" anchor-label="setCustomHtmlInAppMessageActionListener" id="1527921953%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Assigns a custom IHtmlInAppMessageActionListener that will be used during the display of Html in-app messages.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1404088242%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageAnimationFactory" id="1404088242%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-custom-in-app-message-animation-factory.html">setCustomInAppMessageAnimationFactory</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1404088242%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-custom-in-app-message-animation-factory.html">setCustomInAppMessageAnimationFactory</a>(inAppMessageAnimationFactory: <a href="../-i-in-app-message-animation-factory/index.html">IInAppMessageAnimationFactory</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1404088242%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageAnimationFactory" id="1404088242%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1404088242%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageAnimationFactory" id="1404088242%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Assigns a custom IInAppMessageAnimationFactory that will be used to animate the in-app message View.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1137191567%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageManagerListener" id="-1137191567%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-custom-in-app-message-manager-listener.html">setCustomInAppMessageManagerListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1137191567%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-custom-in-app-message-manager-listener.html">setCustomInAppMessageManagerListener</a>(inAppMessageManagerListener: <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1137191567%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageManagerListener" id="-1137191567%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1137191567%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageManagerListener" id="-1137191567%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Assigns a custom <a href="../../com.braze.ui.inappmessage.listeners/-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a> that will be used when displaying in-app messages.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1752848856%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageViewFactory" id="1752848856%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-custom-in-app-message-view-factory.html">setCustomInAppMessageViewFactory</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1752848856%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-custom-in-app-message-view-factory.html">setCustomInAppMessageViewFactory</a>(inAppMessageViewFactory: <a href="../-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1752848856%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageViewFactory" id="1752848856%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1752848856%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageViewFactory" id="1752848856%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Assigns a custom IInAppMessageViewFactory that will be used to create the in-app message View.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="120515954%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageViewWrapperFactory" id="120515954%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-in-app-message-manager-base/set-custom-in-app-message-view-wrapper-factory.html">setCustomInAppMessageViewWrapperFactory</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="120515954%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../-in-app-message-manager-base/set-custom-in-app-message-view-wrapper-factory.html">setCustomInAppMessageViewWrapperFactory</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>() </span>inAppMessageViewWrapperFactory: <a href="../-i-in-app-message-view-wrapper-factory/index.html">IInAppMessageViewWrapperFactory</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="120515954%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageViewWrapperFactory" id="120515954%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="120515954%2FFunctions%2F-1725759721" anchor-label="setCustomInAppMessageViewWrapperFactory" id="120515954%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Sets a custom <a href="../-i-in-app-message-view-wrapper-factory/index.html">IInAppMessageViewWrapperFactory</a> that will be used to display an <a href="../../com.braze.models.inappmessage/-i-in-app-message/index.html">IInAppMessage</a> to the user.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1749164604%2FFunctions%2F-1725759721" anchor-label="unregisterInAppMessageManager" id="1749164604%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="unregister-in-app-message-manager.html">unregisterInAppMessageManager</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1749164604%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="unregister-in-app-message-manager.html">unregisterInAppMessageManager</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1749164604%2FFunctions%2F-1725759721" anchor-label="unregisterInAppMessageManager" id="1749164604%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1749164604%2FFunctions%2F-1725759721" anchor-label="unregisterInAppMessageManager" id="1749164604%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Unregisters the in-app message manager.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2021 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+

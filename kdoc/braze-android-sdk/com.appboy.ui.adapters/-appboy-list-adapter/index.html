@@ -1,0 +1,633 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>AppboyListAdapter</title>
+<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" async="async"></script>  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn"><a href="../../../index.html">
+          <div id="logo"></div>
+        </a>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+<script type="text/javascript" src="../../../scripts/main.js"></script>        <div class="main-content" id="content" pageIds="braze-android-sdk::com.appboy.ui.adapters/AppboyListAdapter///PointingToDeclaration//-1725759721">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../../index.html">braze-android-sdk</a>/<a href="../index.html">com.appboy.ui.adapters</a>/<a href="index.html">AppboyListAdapter</a></div>
+            <div class="pull-right d-flex">
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Appboy</span><wbr></wbr><span>List</span><wbr></wbr><span>Adapter</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="index.html">AppboyListAdapter</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/ArrayAdapter.html">ArrayAdapter</a>&lt;<a href="../../com.appboy.models.cards/-card/index.html">Card</a>&gt; <span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Default adapter used to display cards and log card impressions for the Braze news feed. </p> This allows the stream to reuse cards when they go out of view.  IMPORTANT - When you add a new card, be sure to add the new view type and update the view count here  A card generates an impression once per viewing per open ListView. If a card is viewed more than once in a particular ListView, it generates only one impression. If closed an reopened, a card will again generate an impression. This also takes into account the case of a card being off-screen in the ListView. The card only generates an impression when it actually scrolls onto the screen.  IMPORTANT - You must call resetCardImpressionTracker() whenever the ListView is displayed. This will ensure that cards that come into view will be tracked according to the description above.  Adding and removing cards to and from the adapter should be done using the following synchronized methods: <a href="add.html">add</a>, <a href="index.html#-1074180355%2FFunctions%2F-1725759721">clear</a>clear(), <a href="replace-feed.html">replaceFeed</a></div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button></div>
+            <div class="tabs-section-body">
+              <h2 class="tabbedcontent">Constructors</h2>
+              <div class="table" data-togglable="Constructors"><a data-name="1164838388%2FConstructors%2F-1725759721" anchor-label="AppboyListAdapter" id="1164838388%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue TabbedContent">
+                    <div class=""><span class="inline-flex"><a href="-appboy-list-adapter.html">AppboyListAdapter</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1164838388%2FConstructors%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="-appboy-list-adapter.html">AppboyListAdapter</a>(context: <a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a>, layoutResourceId: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, cards: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../../com.appboy.models.cards/-card/index.html">Card</a>&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="-716021373%2FFunctions%2F-1725759721" anchor-label="add" id="-716021373%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="add.html">add</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-716021373%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="add.html">add</a>(card: <a href="../../com.appboy.models.cards/-card/index.html">Card</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-770816414%2FFunctions%2F-1725759721" anchor-label="addAll" id="-770816414%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-770816414%2FFunctions%2F-1725759721">addAll</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-770816414%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-770816414%2FFunctions%2F-1725759721">addAll</a>(collection: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html">Collection</a>&lt;out <a href="../../com.appboy.ui.feed.view/-base-feed-card-view/index.html">T</a>&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="2007958514%2FFunctions%2F-1725759721" anchor-label="areAllItemsEnabled" id="2007958514%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#2007958514%2FFunctions%2F-1725759721">areAllItemsEnabled</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2007958514%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#2007958514%2FFunctions%2F-1725759721">areAllItemsEnabled</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="903164870%2FFunctions%2F-1725759721" anchor-label="batchSetCardsToRead" id="903164870%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="batch-set-cards-to-read.html">batchSetCardsToRead</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="903164870%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="batch-set-cards-to-read.html">batchSetCardsToRead</a>(startIndex: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, endIndex: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="903164870%2FFunctions%2F-1725759721" anchor-label="batchSetCardsToRead" id="903164870%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="903164870%2FFunctions%2F-1725759721" anchor-label="batchSetCardsToRead" id="903164870%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Helper method to batch set cards to visually read after either an up or down scroll of the feed.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1074180355%2FFunctions%2F-1725759721" anchor-label="clear" id="-1074180355%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1074180355%2FFunctions%2F-1725759721">clear</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1074180355%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1074180355%2FFunctions%2F-1725759721">clear</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-977478797%2FFunctions%2F-1725759721" anchor-label="createFromResource" id="-977478797%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-977478797%2FFunctions%2F-1725759721">createFromResource</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-977478797%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-977478797%2FFunctions%2F-1725759721">createFromResource</a>(context: <a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a>, textArrayResId: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, textViewResId: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="https://developer.android.com/reference/kotlin/android/widget/ArrayAdapter.html">ArrayAdapter</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html">CharSequence</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1058457510%2FFunctions%2F-1725759721" anchor-label="getAutofillOptions" id="-1058457510%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1058457510%2FFunctions%2F-1725759721">getAutofillOptions</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1058457510%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1058457510%2FFunctions%2F-1725759721">getAutofillOptions</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html">Array</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html">CharSequence</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1101232233%2FFunctions%2F-1725759721" anchor-label="getContext" id="-1101232233%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1101232233%2FFunctions%2F-1725759721">getContext</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1101232233%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1101232233%2FFunctions%2F-1725759721">getContext</a>(): <a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="4951671%2FFunctions%2F-1725759721" anchor-label="getCount" id="4951671%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#4951671%2FFunctions%2F-1725759721">getCount</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="4951671%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#4951671%2FFunctions%2F-1725759721">getCount</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1651931898%2FFunctions%2F-1725759721" anchor-label="getDropDownView" id="-1651931898%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1651931898%2FFunctions%2F-1725759721">getDropDownView</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1651931898%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1651931898%2FFunctions%2F-1725759721">getDropDownView</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, convertView: <a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a>, parent: <a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a>): <a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1871542675%2FFunctions%2F-1725759721" anchor-label="getDropDownViewTheme" id="1871542675%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#1871542675%2FFunctions%2F-1725759721">getDropDownViewTheme</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1871542675%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#1871542675%2FFunctions%2F-1725759721">getDropDownViewTheme</a>(): <a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.Theme.html">Resources.Theme</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1957531516%2FFunctions%2F-1725759721" anchor-label="getFilter" id="1957531516%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#1957531516%2FFunctions%2F-1725759721">getFilter</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1957531516%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#1957531516%2FFunctions%2F-1725759721">getFilter</a>(): <a href="https://developer.android.com/reference/kotlin/android/widget/Filter.html">Filter</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-3997205%2FFunctions%2F-1725759721" anchor-label="getItem" id="-3997205%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-287978541%2FFunctions%2F-1725759721">getItem</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-3997205%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">abstract fun <a href="index.html#-287978541%2FFunctions%2F-1725759721">getItem</a>(p: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="symbol monospace">open fun <a href="index.html#-1932452014%2FFunctions%2F-1725759721">getItem</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="../../com.appboy.ui.feed.view/-base-feed-card-view/index.html">T</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-541428979%2FFunctions%2F-1725759721" anchor-label="getItemId" id="-541428979%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-541428979%2FFunctions%2F-1725759721">getItemId</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-541428979%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-541428979%2FFunctions%2F-1725759721">getItemId</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="797129422%2FFunctions%2F-1725759721" anchor-label="getItemViewType" id="797129422%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-item-view-type.html">getItemViewType</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="797129422%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="get-item-view-type.html">getItemViewType</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="2053065571%2FFunctions%2F-1725759721" anchor-label="getPosition" id="2053065571%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#2053065571%2FFunctions%2F-1725759721">getPosition</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2053065571%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#2053065571%2FFunctions%2F-1725759721">getPosition</a>(item: <a href="../../com.appboy.ui.feed.view/-base-feed-card-view/index.html">T</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-574902150%2FFunctions%2F-1725759721" anchor-label="getView" id="-574902150%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-view.html">getView</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-574902150%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>()</div></div>open fun <a href="get-view.html">getView</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, convertView: <a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a>, <span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>parent: <a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a>): <a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-574902150%2FFunctions%2F-1725759721" anchor-label="getView" id="-574902150%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-574902150%2FFunctions%2F-1725759721" anchor-label="getView" id="-574902150%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Always try to use a convert view if possible, otherwise create one from scratch.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-998443917%2FFunctions%2F-1725759721" anchor-label="getViewTypeCount" id="-998443917%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-view-type-count.html">getViewTypeCount</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-998443917%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="get-view-type-count.html">getViewTypeCount</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-998443917%2FFunctions%2F-1725759721" anchor-label="getViewTypeCount" id="-998443917%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-998443917%2FFunctions%2F-1725759721" anchor-label="getViewTypeCount" id="-998443917%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Be sure to keep view count in sync with the number of card types in the stream.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1828198787%2FFunctions%2F-1725759721" anchor-label="hasStableIds" id="-1828198787%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1828198787%2FFunctions%2F-1725759721">hasStableIds</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1828198787%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1828198787%2FFunctions%2F-1725759721">hasStableIds</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-588329781%2FFunctions%2F-1725759721" anchor-label="insert" id="-588329781%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-588329781%2FFunctions%2F-1725759721">insert</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-588329781%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-588329781%2FFunctions%2F-1725759721">insert</a>(object: <a href="../../com.appboy.ui.feed.view/-base-feed-card-view/index.html">T</a>, index: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1198639209%2FFunctions%2F-1725759721" anchor-label="isEmpty" id="-1198639209%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1198639209%2FFunctions%2F-1725759721">isEmpty</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1198639209%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1198639209%2FFunctions%2F-1725759721">isEmpty</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-841393232%2FFunctions%2F-1725759721" anchor-label="isEnabled" id="-841393232%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-841393232%2FFunctions%2F-1725759721">isEnabled</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-841393232%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-841393232%2FFunctions%2F-1725759721">isEnabled</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-241177621%2FFunctions%2F-1725759721" anchor-label="notifyDataSetChanged" id="-241177621%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-241177621%2FFunctions%2F-1725759721">notifyDataSetChanged</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-241177621%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-241177621%2FFunctions%2F-1725759721">notifyDataSetChanged</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1639757734%2FFunctions%2F-1725759721" anchor-label="notifyDataSetInvalidated" id="1639757734%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#1639757734%2FFunctions%2F-1725759721">notifyDataSetInvalidated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1639757734%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#1639757734%2FFunctions%2F-1725759721">notifyDataSetInvalidated</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1646533099%2FFunctions%2F-1725759721" anchor-label="registerDataSetObserver" id="-1646533099%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1646533099%2FFunctions%2F-1725759721">registerDataSetObserver</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1646533099%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1646533099%2FFunctions%2F-1725759721">registerDataSetObserver</a>(observer: <a href="https://developer.android.com/reference/kotlin/android/database/DataSetObserver.html">DataSetObserver</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="799299650%2FFunctions%2F-1725759721" anchor-label="remove" id="799299650%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#799299650%2FFunctions%2F-1725759721">remove</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="799299650%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#799299650%2FFunctions%2F-1725759721">remove</a>(object: <a href="../../com.appboy.ui.feed.view/-base-feed-card-view/index.html">T</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="354174756%2FFunctions%2F-1725759721" anchor-label="replaceFeed" id="354174756%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="replace-feed.html">replaceFeed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="354174756%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="replace-feed.html">replaceFeed</a>(cards: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../../com.appboy.models.cards/-card/index.html">Card</a>&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="502260893%2FFunctions%2F-1725759721" anchor-label="resetCardImpressionTracker" id="502260893%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="reset-card-impression-tracker.html">resetCardImpressionTracker</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="502260893%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="reset-card-impression-tracker.html">resetCardImpressionTracker</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="502260893%2FFunctions%2F-1725759721" anchor-label="resetCardImpressionTracker" id="502260893%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="502260893%2FFunctions%2F-1725759721" anchor-label="resetCardImpressionTracker" id="502260893%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Resets the list of viewed cards.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="3649033%2FFunctions%2F-1725759721" anchor-label="setAutofillOptions" id="3649033%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#3649033%2FFunctions%2F-1725759721">setAutofillOptions</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="3649033%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#3649033%2FFunctions%2F-1725759721">setAutofillOptions</a>(options: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html">Array</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html">CharSequence</a>&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="829078639%2FFunctions%2F-1725759721" anchor-label="setDropDownViewResource" id="829078639%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#829078639%2FFunctions%2F-1725759721">setDropDownViewResource</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="829078639%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#829078639%2FFunctions%2F-1725759721">setDropDownViewResource</a>(resource: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="866797765%2FFunctions%2F-1725759721" anchor-label="setDropDownViewTheme" id="866797765%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#866797765%2FFunctions%2F-1725759721">setDropDownViewTheme</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="866797765%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#866797765%2FFunctions%2F-1725759721">setDropDownViewTheme</a>(theme: <a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.Theme.html">Resources.Theme</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1836766838%2FFunctions%2F-1725759721" anchor-label="setNotifyOnChange" id="-1836766838%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1836766838%2FFunctions%2F-1725759721">setNotifyOnChange</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1836766838%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1836766838%2FFunctions%2F-1725759721">setNotifyOnChange</a>(notifyOnChange: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1845957914%2FFunctions%2F-1725759721" anchor-label="sort" id="1845957914%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#1845957914%2FFunctions%2F-1725759721">sort</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1845957914%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#1845957914%2FFunctions%2F-1725759721">sort</a>(comparator: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html">Comparator</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="504471406%2FFunctions%2F-1725759721" anchor-label="unregisterDataSetObserver" id="504471406%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#504471406%2FFunctions%2F-1725759721">unregisterDataSetObserver</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="504471406%2FFunctions%2F-1725759721"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#504471406%2FFunctions%2F-1725759721">unregisterDataSetObserver</a>(observer: <a href="https://developer.android.com/reference/kotlin/android/database/DataSetObserver.html">DataSetObserver</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2021 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+
