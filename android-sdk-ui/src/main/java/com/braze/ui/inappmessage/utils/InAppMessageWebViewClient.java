@@ -97,12 +97,13 @@ public class InAppMessageWebViewClient extends WebViewClient {
   }
 
   private void appendBridgeJavascript(WebView view) {
-    String javascriptString = BrazeFileUtils.getAssetFileStringContents(mContext.getAssets(), "appboy-html-in-app-message-javascript-component.js");
-    if (javascriptString == null) {
-
+    String javascriptString;
+    try {
+      javascriptString = BrazeFileUtils.getAssetFileStringContents(mContext.getAssets(), "appboy-html-in-app-message-javascript-component.js");
+    } catch (Exception e) {
       // Fail instead of present a broken WebView
       BrazeInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(false);
-      BrazeLogger.w(TAG, "Failed to get HTML in-app message javascript additions");
+      BrazeLogger.e(TAG, "Failed to get HTML in-app message javascript additions", e);
       return;
     }
 

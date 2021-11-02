@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,13 +15,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
@@ -51,18 +51,56 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCategoriesFragment.NoticeDialogListener {
+@SuppressWarnings("deprecation")
+public class DroidBoyActivity extends AppCompatActivity implements FeedCategoriesFragment.NoticeDialogListener {
   private static final String TAG = BrazeLogger.getBrazeLogTag(DroidBoyActivity.class);
   private EnumSet<CardCategory> mAppboyFeedCategories;
   protected Context mApplicationContext;
   protected DrawerLayout mDrawerLayout;
   private static boolean mRequestedLocationPermissions = false;
   private FloatingActionButton mFloatingActionButton;
+  private String mRequestedPermission = null;
+  private ActivityResultLauncher<String> mRequestPermissionLauncher =
+      registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+        StringBuilder stringBuilder = new StringBuilder();
+        switch (mRequestedPermission) {
+          case Manifest.permission.ACCESS_FINE_LOCATION:
+            stringBuilder.append("Location permission ");
+            break;
+          case Manifest.permission.ACCESS_BACKGROUND_LOCATION:
+            stringBuilder.append("Background location permission ");
+            break;
+          default:
+            stringBuilder.append("Unknown permission ");
+            break;
+        }
+        stringBuilder.append(result ? "granted" : "denied");
+        Toast.makeText(getApplicationContext(), stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+            && Manifest.permission.ACCESS_FINE_LOCATION.equals(mRequestedPermission)
+            && result) {
+          makePermissionRequest(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+        }
+      });
+
+  private ActivityResultLauncher<String[]> mRequestMultiplePermissionLauncher =
+      registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+        if (result.containsKey(Manifest.permission.ACCESS_FINE_LOCATION)
+            && !result.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
+          Toast.makeText(getApplicationContext(), "Location permissions denied.", Toast.LENGTH_SHORT).show();
+        } else if (result.containsKey(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            && !result.get(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+          Toast.makeText(getApplicationContext(), "Background location permissions denied.", Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getApplicationContext(), "All required location permissions granted.", Toast.LENGTH_SHORT).show();
+        }
+      });
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    SharedPreferences defaultSharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(this);
     boolean shouldDisplayInCutout = defaultSharedPreferences.getBoolean("display_in_full_cutout_setting_key", false);
     if (shouldDisplayInCutout) {
       setTheme(R.style.DisplayInNotchTheme);
@@ -103,17 +141,10 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         boolean hasFineLocationPermission = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         if (!hasFineLocationPermission) {
-          // Only request fine location
-          RuntimePermissionUtils.requestLocationPermissions(this,
-              new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-              RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
-        } else {
-          if (!PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            // Request background now that fine is set
-            RuntimePermissionUtils.requestLocationPermissions(this,
-                new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
-          }
+          makePermissionRequest(Manifest.permission.ACCESS_FINE_LOCATION);
+        } else if (!PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+          // Request background now that fine is set
+          makePermissionRequest(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         }
       } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         boolean hasAllPermissions = PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)
@@ -122,14 +153,13 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
           // Request both BACKGROUND and FINE location permissions
           RuntimePermissionUtils.requestLocationPermissions(this,
               new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-              RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+              mRequestMultiplePermissionLauncher);
         }
       } else {
+        // From M to P, FINE gives us background access
         if (!PermissionUtils.hasPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
           // Request only FINE location permission
-          RuntimePermissionUtils.requestLocationPermissions(this,
-              new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-              RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION);
+          makePermissionRequest(Manifest.permission.ACCESS_FINE_LOCATION);
         }
       }
       mRequestedLocationPermissions = true;
@@ -146,6 +176,14 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     };
     sharedPref.registerOnSharedPreferenceChangeListener(newsfeedSortListener);
     Log.i(TAG, "Braze device id is " + Braze.getInstance(getApplicationContext()).getDeviceId());
+  }
+
+  private void makePermissionRequest(String permission) {
+    // The callback for single permissions doesn't tell us what the request was, so we keep track ourselves
+    mRequestedPermission = permission;
+    RuntimePermissionUtils.requestLocationPermission(this,
+        permission,
+        mRequestPermissionLauncher);
   }
 
   private void setupViewPager(final ViewPager viewPager) {
@@ -247,12 +285,6 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     return true;
   }
 
-  @SuppressLint("MissingSuperCall")
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    RuntimePermissionUtils.handleOnRequestPermissionsResult(this, requestCode, grantResults);
-  }
-
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -352,7 +384,7 @@ public class DroidBoyActivity extends AppboyFragmentActivity implements FeedCate
     return null;
   }
 
-  static class Adapter extends FragmentPagerAdapter {
+  static class Adapter extends androidx.fragment.app.FragmentPagerAdapter {
     private final List<Fragment> mFragments = new ArrayList<>();
     private final List<String> mFragmentTitles = new ArrayList<>();
 

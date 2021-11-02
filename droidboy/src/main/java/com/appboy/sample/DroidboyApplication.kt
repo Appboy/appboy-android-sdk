@@ -28,14 +28,16 @@ import com.braze.Braze
 import com.braze.BrazeActivityLifecycleCallbackListener
 import com.braze.BrazeUser
 import com.braze.configuration.BrazeConfig
+import com.braze.enums.BrazeSdkMetadata
 import com.braze.support.BrazeLogger
-import com.braze.support.JsonUtils
-import com.braze.support.StringUtils
+import com.braze.support.BrazeLogger.brazelog
+import com.braze.support.getPrettyPrintedString
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.json.JSONObject
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
 
 class DroidboyApplication : Application() {
     override fun onCreate() {
@@ -51,14 +53,16 @@ class DroidboyApplication : Application() {
         }
         val logLevel = applicationContext.getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE)
             .getInt(getString(R.string.current_log_level), Log.VERBOSE)
-        BrazeLogger.setLogLevel(logLevel)
+        BrazeLogger.logLevel = logLevel
         val sharedPreferences = applicationContext.getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
         Braze.configure(this, null)
         val brazeConfigBuilder = BrazeConfig.Builder()
+        brazeConfigBuilder.setSdkMetadata(EnumSet.of(BrazeSdkMetadata.MANUAL))
         setOverrideApiKeyIfConfigured(sharedPreferences, brazeConfigBuilder)
         setOverrideEndpointIfConfigured(sharedPreferences, brazeConfigBuilder)
-        val sdkAuthEnabled = setSdkAuthIfConfigured(sharedPreferences, brazeConfigBuilder)
+        val isSdkAuthEnabled = setSdkAuthIfConfigured(sharedPreferences, brazeConfigBuilder)
         Braze.configure(this, brazeConfigBuilder.build())
+        Braze.addSdkMetadata(this, EnumSet.of(BrazeSdkMetadata.BRANCH))
 
         registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
         setupNotificationChannels()
@@ -68,9 +72,9 @@ class DroidboyApplication : Application() {
             setupChatDynamicShortcut()
         }
 
-        if (sdkAuthEnabled) {
+        if (isSdkAuthEnabled) {
             Braze.getInstance(applicationContext).subscribeToSdkAuthenticationFailures { message: BrazeSdkAuthenticationErrorEvent ->
-                BrazeLogger.d(TAG, "Got sdk auth error message $message")
+                brazelog { "Got sdk auth error message $message" }
                 initiateSdkAuthTokenRefresh()
             }
             // Fire off an update to start off
@@ -125,7 +129,7 @@ class DroidboyApplication : Application() {
                     OutputStreamWriter(outputStream).use { out -> out.write(payload.toString()) }
 
                     val responseJson = JSONObject(inputStream.bufferedReader().readText())
-                    BrazeLogger.d(TAG, "SDK auth callback got response: ${JsonUtils.getPrettyPrintedString(responseJson)}")
+                    brazelog { "SDK auth callback got response: ${responseJson.getPrettyPrintedString()}" }
                     responseJson.optJSONObject("data")?.optString("token")?.let {
                         Braze.getInstance(applicationContext).setSdkAuthenticationSignature(it)
                     }
@@ -218,16 +222,16 @@ class DroidboyApplication : Application() {
 
     private fun setOverrideApiKeyIfConfigured(sharedPreferences: SharedPreferences, config: BrazeConfig.Builder) {
         val overrideApiKey = sharedPreferences.getString(OVERRIDE_API_KEY_PREF_KEY, null)
-        if (!StringUtils.isNullOrBlank(overrideApiKey)) {
+        if (!overrideApiKey.isNullOrBlank()) {
             Log.i(TAG, String.format("Override API key found, configuring Braze with override key %s.", overrideApiKey))
             config.setApiKey(overrideApiKey)
-            sOverrideApiKeyInUse = overrideApiKey
+            overrideApiKeyInUse = overrideApiKey
         }
     }
 
     private fun setOverrideEndpointIfConfigured(sharedPreferences: SharedPreferences, config: BrazeConfig.Builder) {
         val overrideEndpoint = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null)
-        if (!StringUtils.isNullOrBlank(overrideEndpoint)) {
+        if (!overrideEndpoint.isNullOrBlank()) {
             Log.i(TAG, String.format("Override endpoint found, configuring Braze with override endpoint %s.", overrideEndpoint))
             config.setCustomEndpoint(overrideEndpoint)
         }
@@ -235,9 +239,9 @@ class DroidboyApplication : Application() {
 
     private fun setSdkAuthIfConfigured(sharedPreferences: SharedPreferences, config: BrazeConfig.Builder): Boolean {
         // Default to true for testing dogfood purposes
-        val overrideSdkAuth = sharedPreferences.getBoolean(ENABLE_SDK_AUTH_PREF_KEY, true)
-        config.setIsSdkAuthenticationEnabled(overrideSdkAuth)
-        return overrideSdkAuth
+        val isOverridingSdkAuth = sharedPreferences.getBoolean(ENABLE_SDK_AUTH_PREF_KEY, true)
+        config.setIsSdkAuthenticationEnabled(isOverridingSdkAuth)
+        return isOverridingSdkAuth
     }
 
     private fun setupFirebaseCrashlytics() {
@@ -251,15 +255,15 @@ class DroidboyApplication : Application() {
 
     companion object {
         private val TAG = BrazeLogger.getBrazeLogTag(DroidboyApplication::class.java)
-        private var sOverrideApiKeyInUse: String? = null
+        private var overrideApiKeyInUse: String? = null
         const val OVERRIDE_API_KEY_PREF_KEY = "override_api_key"
         const val OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url"
         const val ENABLE_SDK_AUTH_PREF_KEY = "enable_sdk_auth_if_present_pref_key"
 
         @JvmStatic
         fun getApiKeyInUse(context: Context): String? {
-            return if (!StringUtils.isNullOrBlank(sOverrideApiKeyInUse)) {
-                sOverrideApiKeyInUse
+            return if (!overrideApiKeyInUse.isNullOrBlank()) {
+                overrideApiKeyInUse
             } else {
                 // Check if the api key is in resources
                 readStringResourceValue(context, "com_appboy_api_key", "NO-API-KEY-SET")
@@ -273,21 +277,19 @@ class DroidboyApplication : Application() {
                 }
                 val resId = context.resources.getIdentifier(key, "string", PackageUtils.getResourcePackageName(context))
                 if (resId == 0) {
-                    BrazeLogger.d(
-                        TAG,
-                        "Unable to find the xml string value with key " + key + ". "
-                            + "Using default value '" + defaultValue + "'."
-                    )
+                    brazelog {
+                        "Unable to find the xml string value with key $key. " +
+                            "Using default value '$defaultValue'."
+                    }
                     defaultValue
                 } else {
                     context.resources.getString(resId)
                 }
             } catch (ignored: Exception) {
-                BrazeLogger.d(
-                    TAG,
-                    "Unexpected exception retrieving the xml string configuration"
-                        + " value with key " + key + ". Using default value " + defaultValue + "'."
-                )
+                brazelog {
+                    "Unexpected exception retrieving the xml string configuration" +
+                        " value with key $key. Using default value $defaultValue'."
+                }
                 defaultValue
             }
         }

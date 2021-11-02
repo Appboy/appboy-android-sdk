@@ -31,7 +31,7 @@ public class BrazeHuaweiPushHandler {
     }
 
     // Convert to a bundle for the intent passing
-    final Bundle bundle = BundleUtils.mapToBundle(hmsRemoteMessageData);
+    final Bundle bundle = BundleUtils.toBundle(hmsRemoteMessageData);
     if (bundle == null) {
       BrazeLogger.w(TAG, "Converted bundle data was null. Not handling as Braze push.");
       return false;

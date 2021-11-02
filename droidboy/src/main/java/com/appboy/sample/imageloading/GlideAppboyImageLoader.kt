@@ -8,12 +8,13 @@ import com.appboy.models.cards.Card
 import com.braze.enums.BrazeViewBounds
 import com.braze.images.IBrazeImageLoader
 import com.braze.models.inappmessage.IInAppMessage
-import com.braze.support.BrazeLogger
+import com.braze.support.BrazeLogger.Priority.E
+import com.braze.support.BrazeLogger.brazelog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 class GlideAppboyImageLoader : IBrazeImageLoader {
-    private var mRequestOptions = RequestOptions()
+    private var requestOptions = RequestOptions()
     override fun renderUrlIntoCardView(
         context: Context,
         card: Card?,
@@ -39,14 +40,14 @@ class GlideAppboyImageLoader : IBrazeImageLoader {
         extras: Bundle?,
         imageUrl: String,
         viewBounds: BrazeViewBounds?
-    ): Bitmap = getBitmapFromUrl(context, imageUrl)!!
+    ): Bitmap? = getBitmapFromUrl(context, imageUrl)
 
     override fun getInAppMessageBitmapFromUrl(
         context: Context,
         inAppMessage: IInAppMessage,
         imageUrl: String,
         viewBounds: BrazeViewBounds?
-    ): Bitmap = getBitmapFromUrl(context, imageUrl)!!
+    ): Bitmap? = getBitmapFromUrl(context, imageUrl)
 
     private fun renderUrlIntoView(
         context: Context,
@@ -55,7 +56,7 @@ class GlideAppboyImageLoader : IBrazeImageLoader {
     ) {
         Glide.with(context)
             .load(imageUrl)
-            .apply(mRequestOptions)
+            .apply(requestOptions)
             .into(imageView)
     }
 
@@ -63,20 +64,16 @@ class GlideAppboyImageLoader : IBrazeImageLoader {
         try {
             return Glide.with(context)
                 .asBitmap()
-                .apply(mRequestOptions)
+                .apply(requestOptions)
                 .load(imageUrl).submit().get()
         } catch (e: Exception) {
-            BrazeLogger.e(TAG, "Failed to retrieve bitmap at url: $imageUrl", e)
+            brazelog(E, e) { "Failed to retrieve bitmap at url: $imageUrl" }
         }
         return null
     }
 
     override fun setOffline(isOffline: Boolean) {
         // If the loader is offline, then we should only be retrieving from the cache
-        mRequestOptions = mRequestOptions.onlyRetrieveFromCache(isOffline)
-    }
-
-    companion object {
-        private val TAG = GlideAppboyImageLoader::class.java.name
+        requestOptions = requestOptions.onlyRetrieveFromCache(isOffline)
     }
 }

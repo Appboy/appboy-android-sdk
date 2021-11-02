@@ -3,7 +3,7 @@ package com.appboy.unity.prime31compatible;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.appboy.unity.AppboyUnityActivityWrapper;
+import com.appboy.unity.BrazeUnityActivityWrapper;
 import com.prime31.UnityPlayerActivity;
 
 /**
@@ -16,50 +16,54 @@ import com.prime31.UnityPlayerActivity;
  * the Unity application.
  */
 public class AppboyUnityPlayerActivity extends UnityPlayerActivity {
-  private AppboyUnityActivityWrapper mAppboyUnityActivityWrapper;
+  private BrazeUnityActivityWrapper mBrazeUnityActivityWrapper;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAppboyUnityActivityWrapper = new AppboyUnityActivityWrapper();
-    mAppboyUnityActivityWrapper.onCreateCalled(this);
+    mBrazeUnityActivityWrapper = new BrazeUnityActivityWrapper();
+    mBrazeUnityActivityWrapper.onCreateCalled(this);
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    mAppboyUnityActivityWrapper.onStartCalled(this);
+    mBrazeUnityActivityWrapper.onStartCalled(this);
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    mAppboyUnityActivityWrapper.onResumeCalled(this);
+    mBrazeUnityActivityWrapper.onResumeCalled(this);
   }
 
   @Override
   public void onPause() {
-    mAppboyUnityActivityWrapper.onPauseCalled(this);
+    mBrazeUnityActivityWrapper.onPauseCalled(this);
     super.onPause();
   }
 
   @Override
   protected void onStop() {
-    mAppboyUnityActivityWrapper.onStopCalled(this);
+    mBrazeUnityActivityWrapper.onStopCalled(this);
     super.onStop();
   }
 
   @Override
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-    mAppboyUnityActivityWrapper.onNewIntentCalled(intent, this);
+    mBrazeUnityActivityWrapper.onNewIntentCalled(intent, this);
   }
 
   public void onNewUnityInAppMessageManagerAction(int actionEnumValue) {
-    mAppboyUnityActivityWrapper.onNewUnityInAppMessageManagerAction(actionEnumValue);
+    mBrazeUnityActivityWrapper.onNewUnityInAppMessageManagerAction(actionEnumValue);
   }
 
   public void launchContentCardsActivity() {
-    mAppboyUnityActivityWrapper.launchContentCardsActivity(this);
+    mBrazeUnityActivityWrapper.launchContentCardsActivity(this);
+  }
+
+  public void setInAppMessageListener() {
+    mBrazeUnityActivityWrapper.setInAppMessageListener();
   }
 }

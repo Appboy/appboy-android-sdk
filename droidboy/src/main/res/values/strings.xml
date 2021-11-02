@@ -229,6 +229,8 @@
   <string name="dummy_button">Dummy Button</string>
   <string name="droidboy_required_location_prompt_title">Please enable Droidboy location permissions</string>
   <string name="droidboy_required_location_prompt_message">Droidboy collects location data to enable Braze Geofences and session start location tracking even when the app is closed or not in use. This "prominent disclosure" is required by Google for Droidboy and does not automatically appear in our client apps as part of the SDK.</string>
+  <string name="droidboy_required_bg_location_prompt_title">Please enable Droidboy background locations</string>
+  <string name="droidboy_required_bg_location_prompt_message">To enable Geofencing, please allow access all the time.</string>
   <!-- Preference Titles -->
   <string name="messages_header">Messages</string>
   <string name="sync_header">Sync</string>

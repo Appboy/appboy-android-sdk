@@ -2,6 +2,7 @@ package com.appboy.sample.activity.settings
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,6 +12,7 @@ import android.os.Handler
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -35,21 +37,30 @@ import com.braze.Braze
 import com.braze.BrazeUser
 import com.braze.images.DefaultBrazeImageLoader
 import com.braze.images.IBrazeImageLoader
-import com.braze.support.BrazeLogger
+import com.braze.support.BrazeLogger.Priority.E
+import com.braze.support.BrazeLogger.brazelog
 
 @SuppressLint("ApplySharedPref")
 class SettingsFragment : PreferenceFragmentCompat() {
-    private lateinit var mGlideAppboyImageLoader: IBrazeImageLoader
-    private lateinit var mImageLoader: IBrazeImageLoader
-    private lateinit var mSharedPreferences: SharedPreferences
+    private lateinit var glideAppboyImageLoader: IBrazeImageLoader
+    private lateinit var imageLoader: IBrazeImageLoader
+    private lateinit var sharedPreferences: SharedPreferences
+    private var requestPermissionLauncher =
+        registerForActivityResult(RequestPermission()) { result ->
+            Toast.makeText(
+                getContext(),
+                "Location permission ${if (result) "granted" else "denied"}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         val context = this.requireContext()
 
-        mGlideAppboyImageLoader = GlideAppboyImageLoader()
-        mImageLoader = DefaultBrazeImageLoader(context)
-        mSharedPreferences = context.getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
+        glideAppboyImageLoader = GlideAppboyImageLoader()
+        imageLoader = DefaultBrazeImageLoader(context)
+        sharedPreferences = context.getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
 
         setContentCardsPrefs(context)
         setSdkAuthPrefs(context)
@@ -68,13 +79,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setSdkAuthPrefs(context: Context) {
         setClickPreference("enable_sdk_auth") {
-            val sharedPreferencesEditor = mSharedPreferences.edit()
+            val sharedPreferencesEditor = sharedPreferences.edit()
             sharedPreferencesEditor.putBoolean(DroidboyApplication.ENABLE_SDK_AUTH_PREF_KEY, true)
             sharedPreferencesEditor.commit()
             LifecycleUtils.restartApp(context)
         }
         setClickPreference("disable_sdk_auth") {
-            val sharedPreferencesEditor = mSharedPreferences.edit()
+            val sharedPreferencesEditor = sharedPreferences.edit()
             sharedPreferencesEditor.putBoolean(DroidboyApplication.ENABLE_SDK_AUTH_PREF_KEY, false)
             sharedPreferencesEditor.commit()
             LifecycleUtils.restartApp(context)
@@ -110,11 +121,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             try {
                 activity?.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             } catch (e: Exception) {
-                BrazeLogger.e(TAG, "Failed to handle image capture intent", e)
+                brazelog(E, e) { "Failed to handle image capture intent" }
             }
         }
         setClickPreference("environment_reset_key") {
-            val sharedPreferencesEditor = mSharedPreferences.edit()
+            val sharedPreferencesEditor = sharedPreferences.edit()
             sharedPreferencesEditor.remove(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY)
             sharedPreferencesEditor.remove(DroidboyApplication.OVERRIDE_ENDPOINT_PREF_KEY)
 
@@ -176,7 +187,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         setClickPreference("location_runtime_permission_dialog") {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), RuntimePermissionUtils.DROIDBOY_PERMISSION_LOCATION)
+                RuntimePermissionUtils.requestLocationPermission(
+                    activity as Activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    requestPermissionLauncher
+                )
             } else {
                 showToast("Below Android M there is no need to check for runtime permissions.")
             }
@@ -205,11 +220,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setImageDisplayPrefs(context: Context) {
         setClickPreference("glide_image_loader_enable_setting_key") {
-            Braze.getInstance(context).imageLoader = mGlideAppboyImageLoader
+            Braze.getInstance(context).imageLoader = glideAppboyImageLoader
             showToast("Glide enabled")
         }
         setClickPreference("glide_image_loader_disable_setting_key") {
-            Braze.getInstance(context).imageLoader = mImageLoader
+            Braze.getInstance(context).imageLoader = imageLoader
             showToast("Glide disabled. Default Image loader in use.")
         }
     }
@@ -246,9 +261,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         setClickPreference("content_card_populate_random_cards_setting_key") {
             val randomCards = createRandomCards(context, 3)
-            val userId = Braze.getInstance(context).currentUser!!.userId
-            for (card in randomCards) {
-                BrazeInternal.addSerializedContentCardToStorage(context, card.forJsonPut().toString(), userId)
+            Braze.getInstance(context).currentUser?.userId?.let { userId ->
+                randomCards.forEach { card ->
+                    BrazeInternal.addSerializedContentCardToStorage(context, card.forJsonPut().toString(), userId)
+                }
             }
         }
     }
@@ -279,7 +295,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun changeEndpointToDevelopment() {
-        val sharedPreferencesEditor: SharedPreferences.Editor = mSharedPreferences.edit()
+        val sharedPreferencesEditor: SharedPreferences.Editor = sharedPreferences.edit()
         if (Constants.IS_AMAZON) {
             sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, DEV_FIREOS_DROIDBOY_API_KEY)
         } else {
@@ -297,8 +313,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
-        private val TAG: String = BrazeLogger.getBrazeLogTag(SettingsFragment::class.java)
-
         const val REQUEST_IMAGE_CAPTURE = 271
         private const val DEV_DROIDBOY_API_KEY = "da8f263e-1483-4e9f-ac0c-7b40030c8f40"
         private const val DEV_FIREOS_DROIDBOY_API_KEY = "ecb81855-149f-465c-bab0-0254d6512133"

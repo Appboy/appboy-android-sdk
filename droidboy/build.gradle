@@ -12,7 +12,6 @@ dependencies {
   implementation "com.google.android.gms:play-services-location:${PLAY_SERVICES_LOCATION_VERSION}"
   implementation "com.google.android.gms:play-services-maps:${PLAY_SERVICES_MAPS_VERSION}"
 
-  implementation "io.branch.sdk.android:library:${BRANCH_VERSION}"
   implementation "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
 
   implementation "com.google.firebase:firebase-core:${FIREBASE_CORE_VERSION}"

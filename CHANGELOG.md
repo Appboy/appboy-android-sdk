@@ -1,3 +1,23 @@
+## 17.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v17.0.0)
+
+#### Breaking
+- `BrazeLogger.setLogLevel()` replaced with direct property setter `BrazeLogger.logLevel` for Kotlin.
+- Removed `AppboyLogger, com.appboy.IntentUtils, com.appboy.StringUtils` class. The Braze namespaced classes remain.
+- Removed `com_braze_locale_api_key_map` as a configuration option and `BrazeConfig.setLocaleToApiMapping()`. If you need to change your API key based on locale, please use `BrazeConfig` at runtime instead.
+
+##### Added
+- Added `Braze.isDisabled()` to determine whether the SDK is disabled.
+- Added `Braze.addSdkMetadata()` to allow self reporting of SDK Metadata fields via the `BrazeSdkMetadata` enum.
+  - Fields may also be added via a `string-array` to your `braze.xml` with the key `com_braze_sdk_metadata`. The allowed items are the same as the keys found in the `BrazeSdkMetadata` enum. For example when using Branch:
+  ```xml
+    <string-array name="com_braze_sdk_metadata">
+     <item>BRANCH</item>
+    </string-array>
+  ```
+  - Fields are additive across all reporting methods.
+
 ## 16.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v16.0.0)
@@ -10,7 +30,7 @@
 - Fixed an issue introduced in 13.1.0 where session start location updates would fail to update on pre API 30 devices.
 - Fixed an issue introduced in 13.1.0 where geofence update events would fail to update properly.
 
-#### Added
+##### Added
 - Added the ability to namespace all `braze.xml` configurations to be able to use `braze` in place of `appboy`. The Braze namespaced configuration keys will take precedence over the `appboy` keys.
   - For example, `com_appboy_api_key` can be replaced with `com_braze_api_key`.
   - Be sure to look for and update any API keys in your build variants as the `com_braze_api_key` from your default variant might take precedence unexpectedly.

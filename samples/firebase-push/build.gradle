@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: rootProject.file("config/quality/break-compile-on-deprecations.gradle")
+apply from: rootProject.file("config/buildscript/break-compile-on-deprecations.gradle")
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion

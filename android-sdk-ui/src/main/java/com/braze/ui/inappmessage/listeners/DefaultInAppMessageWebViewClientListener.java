@@ -51,7 +51,7 @@ public class DefaultInAppMessageWebViewClientListener implements IInAppMessageWe
       inAppMessage.setAnimateOut(false);
       // Dismiss the in-app message since we're navigating away to the news feed
       getInAppMessageManager().hideCurrentlyDisplayingInAppMessage(false);
-      NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.mapToBundle(inAppMessage.getExtras()),
+      NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.toBundle(inAppMessage.getExtras()),
           Channel.INAPP_MESSAGE);
       BrazeDeeplinkHandler.getInstance().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
     }
@@ -94,7 +94,7 @@ public class DefaultInAppMessageWebViewClientListener implements IInAppMessageWe
 
     // Parse the action
     boolean useWebViewForWebLinks = parseUseWebViewFromQueryBundle(inAppMessage, queryBundle);
-    Bundle inAppMessageBundle = BundleUtils.mapToBundle(inAppMessage.getExtras());
+    Bundle inAppMessageBundle = BundleUtils.toBundle(inAppMessage.getExtras());
     inAppMessageBundle.putAll(queryBundle);
     UriAction uriAction = BrazeDeeplinkHandler.getInstance().createUriActionFromUrlString(url, inAppMessageBundle, useWebViewForWebLinks, Channel.INAPP_MESSAGE);
 

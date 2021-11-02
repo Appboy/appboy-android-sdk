@@ -1,19 +1,17 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 dependencies {
   compileOnly files("libs/Prime31UnityActivity-1.0.jar")
   compileOnly files("libs/unity-2019.2.12f1.jar")
   compileOnly "androidx.annotation:annotation:${ANDROIDX_ANNOTATIONS_VERSION}"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:${KOTLIN_VERSION}"
   implementation project(':android-sdk-ui')
 }
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
-
-  dexOptions {
-    preDexLibraries = true
-  }
 
   defaultConfig {
     minSdkVersion rootProject.ext.minSdkVersion

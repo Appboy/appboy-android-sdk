@@ -85,6 +85,8 @@ public class BrazeNotificationUtils {
       BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
       if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
         routeUserWithNotificationOpenedIntent(context, intent);
+      } else {
+        BrazeLogger.i(TAG, "Not handling deep links automatically, skipping deep link handling");
       }
     } catch (Exception e) {
       BrazeLogger.e(TAG, "Exception occurred attempting to handle notification opened intent.", e);
@@ -1083,6 +1085,8 @@ public class BrazeNotificationUtils {
       BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
       if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
         BrazeNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+      } else {
+        BrazeLogger.i(TAG, "Not handling deep links automatically, skipping deep link handling");
       }
     } catch (Exception e) {
       BrazeLogger.e(TAG, "Caught exception while handling story click.", e);
@@ -1186,7 +1190,6 @@ public class BrazeNotificationUtils {
    *
    * @param context            Application context.
    * @param notificationExtras The extras to attach to the intent.
-   * @param actionSuffix       The action suffix. Will be appended to the host package name to create the full intent action.
    */
   private static void sendPushActionIntent(Context context, BrazeNotificationBroadcastType broadcastType, Bundle notificationExtras) {
     // This is the original intent whose action

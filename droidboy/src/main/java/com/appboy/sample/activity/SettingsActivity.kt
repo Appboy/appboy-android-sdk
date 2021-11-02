@@ -28,9 +28,9 @@ class SettingsActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SettingsFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val extras = data?.extras
-            val bitmap = extras!!["data"] as Bitmap?
-            analyzeBitmapForEnvironmentBarcode(this, bitmap!!)
+            (data?.extras?.get("data") as Bitmap?)?.let {
+                analyzeBitmapForEnvironmentBarcode(this, it)
+            }
         }
     }
 }

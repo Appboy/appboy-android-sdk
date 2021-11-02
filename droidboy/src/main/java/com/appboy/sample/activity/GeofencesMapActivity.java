@@ -1,9 +1,13 @@
 package com.appboy.sample.activity;
 
+import static com.appboy.sample.R.id.map;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.appboy.sample.R;
 import com.braze.models.BrazeGeofence;
@@ -25,9 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.appboy.sample.R.id.map;
-
-public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMapReadyCallback {
+public class GeofencesMapActivity extends AppCompatActivity implements OnMapReadyCallback {
   private static final String TAG = BrazeLogger.getBrazeLogTag(GeofencesMapActivity.class);
   private static final String REGISTERED_GEOFENCE_SHARED_PREFS_LOCATION = "com.appboy.support.geofences";
 
@@ -46,7 +48,7 @@ public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMa
     // Note that this is for testing purposes only.  This storage location and format are not a supported API.
     SharedPreferences registeredGeofencePrefs = getApplicationContext()
         .getSharedPreferences(REGISTERED_GEOFENCE_SHARED_PREFS_LOCATION, Context.MODE_PRIVATE);
-    List<BrazeGeofence> registeredGeofences = retrieveAppboyGeofencesFromLocalStorage(registeredGeofencePrefs);
+    List<BrazeGeofence> registeredGeofences = retrieveBrazeGeofencesFromLocalStorage(registeredGeofencePrefs);
 
     int color = Color.BLUE;
     if (registeredGeofences.size() > 0) {
@@ -70,7 +72,7 @@ public class GeofencesMapActivity extends AppboyFragmentActivity implements OnMa
   }
 
   // Note that this is for testing purposes only.  This storage location and format are not a supported API.
-  private static List<BrazeGeofence> retrieveAppboyGeofencesFromLocalStorage(SharedPreferences sharedPreferences) {
+  private static List<BrazeGeofence> retrieveBrazeGeofencesFromLocalStorage(SharedPreferences sharedPreferences) {
     List<BrazeGeofence> geofences = new ArrayList<>();
     Map<String, ?> storedGeofences = sharedPreferences.getAll();
     if (storedGeofences == null || storedGeofences.size() == 0) {

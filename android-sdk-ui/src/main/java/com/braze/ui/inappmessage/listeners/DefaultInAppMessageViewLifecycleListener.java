@@ -116,13 +116,13 @@ public class DefaultInAppMessageViewLifecycleListener implements IInAppMessageVi
     switch (clickAction) {
       case NEWS_FEED:
         inAppMessageCloser.close(false);
-        NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.mapToBundle(inAppMessage.getExtras()),
+        NewsfeedAction newsfeedAction = new NewsfeedAction(BundleUtils.toBundle(inAppMessage.getExtras()),
             Channel.INAPP_MESSAGE);
         BrazeDeeplinkHandler.getInstance().gotoNewsFeed(getInAppMessageManager().getActivity(), newsfeedAction);
         break;
       case URI:
         inAppMessageCloser.close(false);
-        UriAction uriAction = BrazeDeeplinkHandler.getInstance().createUriActionFromUri(clickUri, BundleUtils.mapToBundle(inAppMessage.getExtras()),
+        UriAction uriAction = BrazeDeeplinkHandler.getInstance().createUriActionFromUri(clickUri, BundleUtils.toBundle(inAppMessage.getExtras()),
             openUriInWebview, Channel.INAPP_MESSAGE);
         BrazeDeeplinkHandler.getInstance().gotoUri(getInAppMessageManager().getActivity(), uriAction);
         break;

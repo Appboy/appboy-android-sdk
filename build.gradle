@@ -10,7 +10,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:4.2.0'
+    classpath 'com.android.tools.build:gradle:7.0.2'
     classpath 'com.google.gms:google-services:4.3.4'
     classpath "org.ajoberstar.grgit:grgit-gradle:${AJOBERSTAR_GIT_GRADLE_PLUGIN_VERSION}"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${KOTLIN_VERSION}"
@@ -19,10 +19,10 @@ buildscript {
 
 ext {
   compileSdkVersion = 31
-  buildToolsVersion = '30.0.2'
+  buildToolsVersion = '31.0.0'
   minSdkVersion = 16
   targetSdkVersion = 31
-  appVersionName = '16.0.0'
+  appVersionName = '17.0.0'
 }
 
 subprojects {
@@ -34,5 +34,5 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '16.0.0'
+  version = '17.0.0'
 }

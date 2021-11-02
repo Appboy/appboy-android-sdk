@@ -11,7 +11,7 @@ import com.braze.support.BrazeLogger
 class HmsApplication : Application() {
   override fun onCreate() {
     super.onCreate()
-    BrazeLogger.setLogLevel(Log.VERBOSE)
+    BrazeLogger.logLevel = Log.VERBOSE
 
     // Clear it out
     Braze.configure(this.applicationContext, null)
@@ -40,8 +40,8 @@ class HmsApplication : Application() {
   }
 
   companion object {
-    val CUSTOM_ENV_PREFS_NAME = "custom_env_prefs"
-    val CUSTOM_ENV_ENDPOINT_KEY = "custom_env_endpoint"
-    val CUSTOM_ENV_API_KEY_KEY = "custom_env_api_key"
+    const val CUSTOM_ENV_PREFS_NAME = "custom_env_prefs"
+    const val CUSTOM_ENV_ENDPOINT_KEY = "custom_env_endpoint"
+    const val CUSTOM_ENV_API_KEY_KEY = "custom_env_api_key"
   }
 }

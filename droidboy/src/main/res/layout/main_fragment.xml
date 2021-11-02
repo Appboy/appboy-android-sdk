@@ -1,75 +1,319 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fillViewport="true"
   tools:ignore="HardcodedText">
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="250dp"
-    android:orientation="vertical">
-    <EditText
-      android:id="@+id/com_appboy_sample_set_user_id_edit_text"
-      style="@style/BaseWidget.DroidboyTextInput"
-      android:hint="Enter UserId here"
-      android:inputType="textEmailAddress" />
-    <Button
-      android:id="@+id/com_appboy_sample_set_user_id_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Set UserId" />
-    <AutoCompleteTextView
-      android:id="@+id/com_appboy_sample_custom_event_or_purchase_autocomplete_text_view"
-      style="@style/BaseWidget.DroidboyTextInput"
-      android:hint="Custom event or purchase name"
-      android:completionThreshold="1"/>
-    <Button
-      android:id="@+id/com_appboy_sample_log_custom_event_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Log Custom Event" />
-    <Button
-      android:id="@+id/com_appboy_sample_log_purchase_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Log Purchase" />
-    <Button
-      android:id="@+id/com_appboy_sample_set_user_attributes_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Set User Attributes" />
-    <Button
-      android:id="@+id/com_appboy_sample_unset_user_attributes_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Unset User Attributes" />
-    <Button
-      android:id="@+id/com_appboy_sample_request_flush_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Request Flush" />
-    <EditText
-      android:id="@+id/com_appboy_sample_set_alias_edit_text"
-      style="@style/BaseWidget.DroidboyTextInput"
-      android:hint="Enter Alias here"
-      android:inputType="textEmailAddress" />
-    <EditText
-      android:id="@+id/com_appboy_sample_set_alias_label_edit_text"
-      style="@style/BaseWidget.DroidboyTextInput"
-      android:hint="Enter Alias Label here"
-      android:inputType="textNoSuggestions" />
-    <Button
-      android:id="@+id/com_appboy_sample_set_user_alias_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Add User Alias" />
-    <Button
-      android:id="@+id/com_appboy_sample_collect_and_flush_google_advertising_id_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Get/Flush Google Advertising ID" />
-    <EditText
-      android:id="@+id/com_appboy_sample_set_sdk_auth_signature_edit_text"
-      android:hint="SDK Auth Signature"
-      android:inputType="textMultiLine"
-      style="@style/BaseWidget.DroidboyTextInput" />
-    <Button
-      android:id="@+id/com_appboy_sample_set_sdk_auth_signature_button"
-      style="@style/BaseWidget.DroidboyButton"
-      android:text="Set SDK Auth Signature" />
-  </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingStart="20dp"
+      android:paddingTop="20dp"
+      android:paddingEnd="20dp"
+      android:paddingBottom="250dp">
+
+        <TextView
+          android:id="@+id/user_id_textview"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:fontFamily="@font/sailec_bold"
+          android:text="User ID" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:layout_marginBottom="4dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+              android:id="@+id/outlinedTextField"
+              style="@style/DroidboyOutlinedBox"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:hint="Enter UserId"
+              android:layout_marginEnd="10dp"
+              android:layout_marginRight="10dp"
+              android:paddingBottom="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                  android:id="@+id/com_appboy_sample_set_user_id_edit_text"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  style="@style/BaseWidget.DroidboyTextInput"
+                  android:paddingRight="8dp"
+                  android:paddingEnd="8dp"
+                  android:paddingLeft="8dp"
+                  android:paddingStart="8dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+              android:id="@+id/com_appboy_sample_set_user_id_button"
+              style="@style/DroidboyOutlinedButton"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="2"
+              android:insetTop="6dp"
+              android:text="Update ID" />
+        </LinearLayout>
+
+        <TextView
+          android:id="@+id/custom_event_text_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:paddingTop="10dp"
+          android:text="Custom Event"
+          android:fontFamily="@font/sailec_bold" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:layout_marginTop="4dp"
+          android:clipChildren="true"
+          android:layout_marginBottom="4dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+              android:id="@+id/com_appboy_sample_custom_event_outlined_text_box"
+              style="@style/DroidboyOutlinedBox"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_weight="1"
+              android:hint="Enter Custom Event">
+
+                <AutoCompleteTextView
+                  android:id="@+id/com_appboy_sample_custom_event_autocomplete_text_view"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  style="@style/BaseWidget.DroidboyTextInput"
+                  android:paddingTop="12dp"
+                  android:paddingBottom="12dp"
+                  android:paddingRight="8dp"
+                  android:paddingEnd="8dp"
+                  android:paddingLeft="8dp"
+                  android:paddingStart="8dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+              android:id="@+id/com_appboy_sample_log_custom_event_button"
+              style="@style/DroidboyOutlinedButton"
+              android:layout_height="match_parent"
+              android:layout_weight="2"
+              android:insetTop="6dp"
+              android:insetBottom="0dp"
+              android:text="Log Event" />
+        </LinearLayout>
+
+        <TextView
+          android:id="@+id/purchase_text_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="10dp"
+          android:text="Purchase"
+          android:fontFamily="@font/sailec_bold" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:layout_marginTop="4dp"
+          android:clipChildren="false"
+          android:layout_marginBottom="4dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+              android:id="@+id/com_appboy_sample_custom_purchase_outlined_text_box"
+              style="@style/DroidboyOutlinedBox"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginEnd="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_weight="1"
+              android:hint="Enter Purchase">
+
+                <AutoCompleteTextView
+                  android:id="@+id/com_appboy_sample_purchase_autocomplete_text_view"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:paddingTop="12dp"
+                  android:paddingBottom="12dp"
+                  style="@style/BaseWidget.DroidboyTextInput"
+                  android:paddingRight="8dp"
+                  android:paddingEnd="8dp"
+                  android:paddingLeft="8dp"
+                  android:paddingStart="8dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+              android:id="@+id/com_appboy_sample_log_purchase_button"
+              style="@style/DroidboyOutlinedButton"
+              android:layout_height="match_parent"
+              android:layout_weight="2"
+              android:insetTop="6dp"
+              android:insetBottom="0dp"
+              android:text="Log Purchase" />
+        </LinearLayout>
+
+        <View
+          android:id="@+id/divider"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginTop="15dp"
+          android:background="?android:attr/listDivider" />
+
+        <TextView
+          android:id="@+id/user_attribute_text_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="10dp"
+          android:text="User Attributes"
+          android:fontFamily="@font/sailec_bold" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal">
+
+            <Button
+              android:id="@+id/com_appboy_sample_set_user_attributes_button"
+              style="@style/DroidboyOutlinedButton"
+              android:layout_marginEnd="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_weight="1"
+              android:text="Set User Attributes" />
+
+            <Button
+              android:id="@+id/com_appboy_sample_unset_user_attributes_button"
+              style="@style/DroidboyOutlinedButton"
+              android:layout_weight="1"
+              android:text="Unset User Attributes" />
+        </LinearLayout>
+
+        <Button
+          android:id="@+id/com_appboy_sample_request_flush_button"
+          style="@style/DroidboyOutlinedButton"
+          android:layout_width="200dp"
+          android:text="Request Flush" />
+
+        <View
+          android:id="@+id/divider2"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginTop="20dp"
+          android:background="?android:attr/listDivider" />
+
+        <TextView
+          android:id="@+id/user_alias_text_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:text="User Alias"
+          android:fontFamily="@font/sailec_bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/com_appboy_sample_set_alias_outlined_box"
+          style="@style/DroidboyOutlinedBox"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:hint="Enter Alias">
+
+            <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/com_appboy_sample_set_alias_edit_text"
+              style="@style/BaseWidget.DroidboyTextInput"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+          android:id="@+id/user_alias_label_text_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:text="User Alias Label"
+          android:fontFamily="@font/sailec_bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/com_appboy_sample_set_alias_label_outlined_text_box"
+          style="@style/DroidboyOutlinedBox"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:hint="Enter Alias Label">
+
+            <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/com_appboy_sample_set_alias_label_edit_text"
+              android:layout_width="match_parent"
+              style="@style/BaseWidget.DroidboyTextInput"
+              android:layout_height="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+          android:id="@+id/com_appboy_sample_set_user_alias_button"
+          style="@style/DroidboyOutlinedButton"
+          android:layout_width="200dp"
+          android:layout_marginTop="20dp"
+          android:text="Add User Alias" />
+
+        <View
+          android:id="@+id/divider3"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginTop="15dp"
+          android:layout_marginBottom="15dp"
+          android:background="?android:attr/listDivider" />
+
+        <Button
+          android:id="@+id/com_appboy_sample_collect_and_flush_google_advertising_id_button"
+          style="@style/DroidboyOutlinedButton"
+          android:layout_width="250dp"
+          android:paddingTop="10dp"
+          android:text="Get/Flush Google Advertising ID" />
+
+        <View
+          android:id="@+id/divider4"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginTop="15dp"
+          android:layout_marginBottom="15dp"
+          android:background="?android:attr/listDivider" />
+
+        <TextView
+          android:id="@+id/sdk_auth_signature_textview"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="15dp"
+          android:ems="10"
+          android:text="SDK Authorization Signature"
+          android:fontFamily="@font/sailec_bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/com_appboy_sample_set_sdk_auth_signature_outlined_text_box"
+          style="@style/DroidboyOutlinedBox"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:hint="SDK Auth Signature">
+
+            <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/com_appboy_sample_set_sdk_auth_signature_edit_text"
+              style="@style/BaseWidget.DroidboyTextInput"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+          android:id="@+id/com_appboy_sample_set_sdk_auth_signature_button"
+          style="@style/DroidboyOutlinedButton"
+          android:layout_width="200dp"
+          android:layout_marginTop="15dp"
+          android:text="Set SDK Auth Signature" />
+    </LinearLayout>
 </ScrollView>

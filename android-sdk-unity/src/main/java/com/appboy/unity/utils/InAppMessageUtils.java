@@ -12,6 +12,9 @@ public class InAppMessageUtils {
   private static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageUtils.class);
 
   public static IInAppMessage inAppMessageFromString(Context context, String messageJSONString) {
+    if (messageJSONString == null) {
+      return null;
+    }
     return Braze.getInstance(context).deserializeInAppMessageString(messageJSONString);
   }
 

@@ -22,7 +22,7 @@ abstract class CustomDialogBase : DialogFragment() {
     override fun onStart() {
         super.onStart()
         val width = (resources.displayMetrics.widthPixels * 0.95).toInt()
-        dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     abstract fun onExitButtonPressed(isPositive: Boolean)

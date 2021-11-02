@@ -22,7 +22,7 @@ class ContentCardsTestingUtil private constructor() {
                     continue
                 }
                 repeat((0..numCardsOfEachType).count()) {
-                    createRandomCard(context, cardType)?.let { cards.add(it) }
+                    createRandomCard(context, cardType)?.let { card -> cards.add(card) }
                 }
             }
 

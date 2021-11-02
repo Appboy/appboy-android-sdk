@@ -1,7 +1,6 @@
 package com.appboy.sample;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,11 +11,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.appboy.Constants;
-import com.appboy.sample.util.RuntimePermissionUtils;
+import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.sample.util.SpinnerUtils;
 import com.braze.Braze;
 import com.braze.push.BrazeNotificationUtils;
@@ -41,7 +39,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private static final String SUMMARY_TEXT = "Summary Text";
   private static final SecureRandom sSecureRandom = new SecureRandom();
   @SuppressLint("InlinedApi")
-  private String mPriority = String.valueOf(Notification.PRIORITY_DEFAULT);
+  private String mPriority = String.valueOf(0);
   private String mImage;
   private String mClickActionUrl;
   private String mCategory;
@@ -165,7 +163,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       if (mUseConstantNotificationId) {
         notificationId = "100";
       } else {
-        notificationId = String.valueOf(BrazeNotificationUtils.getNotificationId(notificationExtras));
+        notificationId = String.valueOf(BrazeNotificationUtils.getNotificationId(new BrazeNotificationPayload(notificationExtras)));
       }
       notificationExtras.putString(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID, notificationId);
       notificationExtras = addActionButtons(notificationExtras);
@@ -342,11 +340,6 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       default:
         Log.e(TAG, "Item selected for unknown spinner");
     }
-  }
-
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    RuntimePermissionUtils.handleOnRequestPermissionsResult(getContext(), requestCode, grantResults);
   }
 
   public void onNothingSelected(AdapterView<?> parent) {

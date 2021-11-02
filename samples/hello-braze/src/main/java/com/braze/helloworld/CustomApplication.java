@@ -24,9 +24,6 @@ public class CustomApplication extends Application {
   }
 
   private void configureAppboyAtRuntime() {
-    List<String> localeToApiKeyMapping = new ArrayList<>();
-    localeToApiKeyMapping.add("customLocale, customApiKeyForThatLocale");
-    localeToApiKeyMapping.add("fr_NC, anotherAPIKey");
 
     Resources resources = getResources();
     BrazeConfig brazeConfig = new BrazeConfig.Builder()
@@ -41,7 +38,6 @@ public class CustomApplication extends Application {
         .setIsLocationCollectionEnabled(false)
         .setNewsfeedVisualIndicatorOn(true)
         .setDefaultNotificationAccentColor(0xFFf33e3e)
-        .setLocaleToApiMapping(localeToApiKeyMapping)
         .setBadNetworkDataFlushInterval(120)
         .setGoodNetworkDataFlushInterval(60)
         .setGreatNetworkDataFlushInterval(10)

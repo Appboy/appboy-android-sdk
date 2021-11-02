@@ -16,9 +16,9 @@ import com.appboy.events.IValueCallback
 import com.appboy.models.outgoing.AttributionData
 import com.braze.Braze
 import com.braze.BrazeUser
-import com.braze.support.BrazeLogger
-import com.braze.support.JsonUtils
-import com.braze.support.StringUtils
+import com.braze.support.BrazeLogger.Priority.E
+import com.braze.support.BrazeLogger.brazelog
+import com.braze.support.convertStringJsonArrayToList
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,8 @@ import java.math.BigDecimal
 import java.util.*
 
 class MainFragment : Fragment() {
-    private lateinit var customEventOrPurchaseTextView: AutoCompleteTextView
+    private lateinit var customEventTextView: AutoCompleteTextView
+    private lateinit var customPurchaseTextView: AutoCompleteTextView
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var aliasEditText: EditText
     private lateinit var aliasLabelEditText: EditText
@@ -37,42 +38,55 @@ class MainFragment : Fragment() {
     private lateinit var customEventsAndPurchasesArrayAdapter: ArrayAdapter<String?>
     private val lastSeenCustomEventsAndPurchases: Queue<String?> = LinkedList()
 
-    override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val contentView = layoutInflater.inflate(R.layout.main_fragment, container, false)
         sharedPreferences = requireActivity().getSharedPreferences("droidboy", Context.MODE_PRIVATE)
-        customEventOrPurchaseTextView = contentView.findViewById(R.id.com_appboy_sample_custom_event_or_purchase_autocomplete_text_view)
+        customEventTextView =
+            contentView.findViewById(R.id.com_appboy_sample_custom_event_autocomplete_text_view)
+        customPurchaseTextView =
+            contentView.findViewById(R.id.com_appboy_sample_purchase_autocomplete_text_view)
         customEventsAndPurchasesArrayAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_list_item_1,
             getLastSeenCustomEventsAndPurchasesFromLocalStorage()
         )
-        customEventOrPurchaseTextView.setAdapter(customEventsAndPurchasesArrayAdapter)
+        customEventTextView.setAdapter(customEventsAndPurchasesArrayAdapter)
+        customPurchaseTextView.setAdapter(customEventsAndPurchasesArrayAdapter)
 
-        val userIdEditText: EditText = contentView.findViewById(R.id.com_appboy_sample_set_user_id_edit_text)
+        val userIdEditText: EditText =
+            contentView.findViewById(R.id.com_appboy_sample_set_user_id_edit_text)
         userIdEditText.setText(sharedPreferences.getString(USER_ID_KEY, null))
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_set_user_id_button) {
             val userId = userIdEditText.text.toString()
-            if (!StringUtils.isNullOrBlank(userId)) {
+            if (userId.isNotBlank()) {
                 Braze.getInstance(requireContext()).changeUser(userId)
                 (requireActivity().applicationContext as DroidboyApplication).initiateSdkAuthTokenRefresh()
-                Toast.makeText(requireContext(), "Set userId to: $userId", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Set userId to: $userId", Toast.LENGTH_SHORT)
+                    .show()
                 val editor = sharedPreferences.edit()
                 editor.putString(USER_ID_KEY, userId)
                 editor.apply()
                 FirebaseCrashlytics.getInstance().setUserId(userId)
             } else {
-                Toast.makeText(requireContext(), "Please enter a userId.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a userId.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_set_sdk_auth_signature_button) {
             val signature = adkAuthSignatureEditText.text.toString()
-            if (!StringUtils.isNullOrBlank(signature)) {
+            if (signature.isNotBlank()) {
                 Braze.getInstance(requireContext()).setSdkAuthenticationSignature(signature)
-                Toast.makeText(requireContext(), "Set signature to: $signature", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Set signature to: $signature", Toast.LENGTH_SHORT)
+                    .show()
             } else {
-                Toast.makeText(requireContext(), "Please enter a signature.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a signature.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -80,37 +94,50 @@ class MainFragment : Fragment() {
             R.id.com_appboy_sample_set_sdk_auth_signature_button,
             R.id.com_appboy_sample_set_sdk_auth_signature_edit_text
         ) { _, signature ->
-            if (!StringUtils.isNullOrBlank(signature)) {
+            if (signature.isNotBlank()) {
                 Braze.getInstance(requireContext()).setSdkAuthenticationSignature(signature)
-                Toast.makeText(requireContext(), "Set signature to: $signature", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Set signature to: $signature", Toast.LENGTH_SHORT)
+                    .show()
             } else {
-                Toast.makeText(requireContext(), "Please enter a signature.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a signature.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
         aliasEditText = contentView.findViewById(R.id.com_appboy_sample_set_alias_edit_text)
-        aliasLabelEditText = contentView.findViewById(R.id.com_appboy_sample_set_alias_label_edit_text)
+        aliasLabelEditText =
+            contentView.findViewById(R.id.com_appboy_sample_set_alias_label_edit_text)
         contentView.setOnButtonClick(R.id.com_appboy_sample_set_user_alias_button) { handleAliasClick() }
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_log_custom_event_button) {
-            val customEvent = customEventOrPurchaseTextView.text.toString()
-            if (!StringUtils.isNullOrBlank(customEvent)) {
+            val customEvent = customEventTextView.text.toString()
+            if (customEvent.isNotBlank()) {
                 Braze.getInstance(requireContext()).logCustomEvent(customEvent)
-                Toast.makeText(requireContext(), String.format("Logged custom event %s.", customEvent), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    String.format("Logged custom event %s.", customEvent),
+                    Toast.LENGTH_SHORT
+                ).show()
                 onCustomEventOrPurchaseLogged(customEvent)
             } else {
-                Toast.makeText(requireContext(), "Please enter a custom event.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a custom event.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_log_purchase_button) {
-            val purchase = customEventOrPurchaseTextView.text.toString()
-            if (!StringUtils.isNullOrBlank(purchase)) {
+            val purchase = customPurchaseTextView.text.toString()
+            if (purchase.isNotBlank()) {
                 Braze.getInstance(requireContext()).logPurchase(purchase, "USD", BigDecimal.TEN)
-                Toast.makeText(requireContext(), String.format("Logged purchase %s.", purchase), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    String.format("Logged purchase %s.", purchase),
+                    Toast.LENGTH_SHORT
+                ).show()
                 onCustomEventOrPurchaseLogged(purchase)
             } else {
-                Toast.makeText(requireContext(), "Please enter a purchase.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a purchase.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -137,16 +164,33 @@ class MainFragment : Fragment() {
                     currentUser.setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1)
                     currentUser.setCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY, 3.1)
                     currentUser.incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4)
-                    currentUser.setCustomUserAttributeToSecondsFromEpoch(DATE_ATTRIBUTE_KEY, Date().time / 1000L)
-                    currentUser.setCustomAttributeArray(STRING_ARRAY_ATTRIBUTE_KEY, arrayOf("a", "b"))
+                    currentUser.setCustomUserAttributeToSecondsFromEpoch(
+                        DATE_ATTRIBUTE_KEY,
+                        Date().time / 1000L
+                    )
+                    currentUser.setCustomAttributeArray(
+                        STRING_ARRAY_ATTRIBUTE_KEY,
+                        arrayOf("a", "b")
+                    )
                     currentUser.addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c")
                     currentUser.removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b")
                     currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "cat")
                     currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "dog")
                     currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "bird")
                     currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "deer")
-                    currentUser.setAttributionData(AttributionData("network", "campaign", "ad group", "creative"))
-                    currentUser.setLocationCustomAttribute("Favorite Location", 33.078883, -116.603131)
+                    currentUser.setAttributionData(
+                        AttributionData(
+                            "network",
+                            "campaign",
+                            "ad group",
+                            "creative"
+                        )
+                    )
+                    currentUser.setLocationCustomAttribute(
+                        "Favorite Location",
+                        33.078883,
+                        -116.603131
+                    )
                     showToast("Set user attributes.")
                 }
 
@@ -203,11 +247,15 @@ class MainFragment : Fragment() {
         contentView.setOnButtonClick(R.id.com_appboy_sample_collect_and_flush_google_advertising_id_button) {
             this.lifecycleScope.launch(context = Dispatchers.IO) {
                 try {
-                    val advertisingIdInfo = AdvertisingIdClient.getAdvertisingIdInfo(requireContext())
-                    Braze.getInstance(requireContext()).setGoogleAdvertisingId(advertisingIdInfo.id, advertisingIdInfo.isLimitAdTrackingEnabled)
+                    val advertisingIdInfo =
+                        AdvertisingIdClient.getAdvertisingIdInfo(requireContext())
+                    Braze.getInstance(requireContext()).setGoogleAdvertisingId(
+                        advertisingIdInfo.id,
+                        advertisingIdInfo.isLimitAdTrackingEnabled
+                    )
                     Braze.getInstance(requireContext()).requestImmediateDataFlush()
                 } catch (e: Exception) {
-                    BrazeLogger.e(TAG, "Failed to collect Google Advertising ID information.", e)
+                    brazelog(E, e) { "Failed to collect Google Advertising ID information." }
                 }
             }
         }
@@ -215,13 +263,16 @@ class MainFragment : Fragment() {
     }
 
     private fun getLastSeenCustomEventsAndPurchasesFromLocalStorage(): Array<String?> {
-        val serializedEvents = sharedPreferences.getString(LAST_SEEN_CUSTOM_EVENTS_AND_PURCHASES_PREFERENCE_KEY, null)
+        val serializedEvents =
+            sharedPreferences.getString(LAST_SEEN_CUSTOM_EVENTS_AND_PURCHASES_PREFERENCE_KEY, null)
         try {
             if (serializedEvents != null) {
-                lastSeenCustomEventsAndPurchases.addAll(JsonUtils.convertStringJsonArrayToList(JSONArray(serializedEvents)))
+                lastSeenCustomEventsAndPurchases.addAll(
+                    JSONArray(serializedEvents).convertStringJsonArrayToList()
+                )
             }
         } catch (e: JSONException) {
-            BrazeLogger.e(TAG, "Failed to get recent events from storage", e)
+            brazelog(E, e) { "Failed to get recent events from storage" }
         }
         return lastSeenCustomEventsAndPurchases.toTypedArray()
     }
@@ -235,7 +286,10 @@ class MainFragment : Fragment() {
             lastSeenCustomEventsAndPurchases.remove()
         }
         val editor = sharedPreferences.edit()
-        editor.putString(LAST_SEEN_CUSTOM_EVENTS_AND_PURCHASES_PREFERENCE_KEY, JSONArray(lastSeenCustomEventsAndPurchases).toString())
+        editor.putString(
+            LAST_SEEN_CUSTOM_EVENTS_AND_PURCHASES_PREFERENCE_KEY,
+            JSONArray(lastSeenCustomEventsAndPurchases).toString()
+        )
         editor.apply()
         customEventsAndPurchasesArrayAdapter.clear()
         customEventsAndPurchasesArrayAdapter.addAll(*lastSeenCustomEventsAndPurchases.toTypedArray())
@@ -269,7 +323,6 @@ class MainFragment : Fragment() {
     }
 
     companion object {
-        private val TAG = BrazeLogger.getBrazeLogTag(MainFragment::class.java)
         private const val STRING_ARRAY_ATTRIBUTE_KEY = "stringArrayAttribute"
         private const val ARRAY_ATTRIBUTE_KEY = "arrayAttribute"
         private const val DATE_ATTRIBUTE_KEY = "dateAttribute"
@@ -282,7 +335,8 @@ class MainFragment : Fragment() {
         private const val DOUBLE_ATTRIBUTE_KEY = "doubleAttribute"
         private const val INCREMENT_ATTRIBUTE_KEY = "incrementAttribute"
         private const val ATTRIBUTION_DATA_KEY = "ab_install_attribution"
-        private const val LAST_SEEN_CUSTOM_EVENTS_AND_PURCHASES_PREFERENCE_KEY = "last_seen_custom_events_and_purchases"
+        private const val LAST_SEEN_CUSTOM_EVENTS_AND_PURCHASES_PREFERENCE_KEY =
+            "last_seen_custom_events_and_purchases"
         const val USER_ID_KEY = "user.id"
 
         fun View.setOnButtonClick(id: Int, block: (view: View) -> Unit) {
@@ -293,7 +347,11 @@ class MainFragment : Fragment() {
         /**
          * A combo of a button id and EditText id
          */
-        fun View.setOnButtonClickWithEditableText(buttonId: Int, editTextId: Int, block: (view: View, textValue: String) -> Unit) {
+        fun View.setOnButtonClickWithEditableText(
+            buttonId: Int,
+            editTextId: Int,
+            block: (view: View, textValue: String) -> Unit
+        ) {
             val editTextValue = this.findViewById<EditText>(editTextId).text.toString()
             val view = this.findViewById<Button>(buttonId)
             view.setOnClickListener { block(view, editTextValue) }

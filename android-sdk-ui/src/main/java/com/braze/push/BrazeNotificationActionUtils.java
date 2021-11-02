@@ -94,6 +94,8 @@ public class BrazeNotificationActionUtils {
         BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
         if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
           BrazeNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+        } else {
+          BrazeLogger.i(TAG, "Not handling deep links automatically, skipping deep link handling");
         }
       } else if (actionType.equals(Constants.APPBOY_PUSH_ACTION_TYPE_NONE)) {
         BrazeNotificationUtils.cancelNotification(context, notificationId);

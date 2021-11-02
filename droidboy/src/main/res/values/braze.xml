@@ -54,4 +54,12 @@
   <bool name="com_braze_handle_push_deep_links_automatically">true</bool>
 
   <bool name="com_braze_push_notification_html_rendering_enabled">true</bool>
+
+  <string-array name="com_braze_internal_sdk_metadata">
+   <item>GRADLE</item>
+  </string-array>
+
+  <string-array name="com_braze_sdk_metadata">
+   <item>UNITY_PACKAGE_MANAGER</item>
+  </string-array>
 </resources>

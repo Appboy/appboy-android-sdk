@@ -6,16 +6,16 @@ Successful marketing automation is essential to the future of your mobile app. B
 
 - [Braze User Guide](https://www.braze.com/docs/user_guide/introduction/ "Braze User Guide")
 - [Braze Developer Guide](https://www.braze.com/docs/developer_guide/platform_integration_guides/android/initial_sdk_setup/android_sdk_integration/ "Braze Developer Guide")
-- [JavaDocs](http://appboy.github.io/appboy-android-sdk/javadocs/ "Braze Android SDK Class Documentation")
+- [KDoc](https://appboy.github.io/appboy-android-sdk/kdoc/ "Braze Android SDK Class Documentation")
+- [Javadoc(old)](https://appboy.github.io/appboy-android-sdk/javadocs/ "Braze Android SDK Class Documentation"). This Javadoc is discontinued. For up-to-date documentation, please visit the Kotlin Doc (KDoc) instead.
 
 ## Version Information
 
 - The Braze Android SDK supports Android 4.1+ / API 16+ (Jelly Bean and up).
 - Last Target SDK Version: 31
-- Kotlin version: `org.jetbrains.kotlin:kotlin-stdlib:${1.5.21}`
+- Kotlin version: `org.jetbrains.kotlin:kotlin-stdlib:1.5.21`
 - Last Compiled Firebase Cloud Messaging Version: +
-- Braze uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
-- Braze requires a custom [IAppboyImageLoader](https://appboy.github.io/appboy-android-sdk/javadocs/com/appboy/IAppboyImageLoader.html) to display animated `gif` images.
+- Braze uses [Font Awesome](https://fortawesome.github.io/Font-Awesome/) 4.3.0 for in-app message icons. Check out the [cheat sheet](http://fortawesome.github.io/Font-Awesome/cheatsheet/) to browse available icons.
 
 ## Components
 
@@ -37,7 +37,7 @@ repositories {
 
 ```
 dependencies {
-   implementation 'com.appboy:android-sdk-ui:16.0.+'
+   implementation 'com.appboy:android-sdk-ui:17.0.+'
    ...
 }
 ```
@@ -56,19 +56,9 @@ repositories {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:16.0.+'
+  implementation 'com.appboy:android-sdk-ui:17.0.+'
 }
 ```
-
-## Building and Running the Sample Applications
-
-1. Make sure the ANDROID_HOME environment variable is set to the location of your installed SDK or you have a
-   local.properties file which defines the sdk.dir property. You can check this by running `echo $ANDROID_HOME`, or
-   `echo %ANDROID_HOME%` in Windows.
-2. To assemble the UI library and the Droidboy APK, run `./gradlew assemble` (use gradlew.bat on Windows). You can find
-   assembled files in the `build/` subdirectories of the `android-sdk-ui` and `droidboy` projects. You can also
-   use the `installDebug` task if you have a device or emulator connected to adb and want to run Droidboy or Hello-Appboy.
-   You can see other available tasks by running `./gradlew tasks`.
 
 ## Questions?
 

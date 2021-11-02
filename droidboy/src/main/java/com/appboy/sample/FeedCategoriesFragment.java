@@ -18,7 +18,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("PMD.FieldDeclarationsShouldBeAtStartOfClass")
+@SuppressWarnings({"PMD.FieldDeclarationsShouldBeAtStartOfClass", "deprecation"})
 public class FeedCategoriesFragment extends DialogFragment {
   private static final String TAG = BrazeLogger.getBrazeLogTag(FeedCategoriesFragment.class);
   public static final String CATEGORIES_STRING = "categories";
