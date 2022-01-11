@@ -1,11 +1,9 @@
 package com.appboy.unity.configuration;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.appboy.unity.enums.UnityMessageType;
 import com.braze.configuration.CachedConfigurationProvider;
-import com.braze.configuration.RuntimeAppConfigurationProvider;
 import com.braze.support.BrazeLogger;
 
 public class UnityConfigurationProvider extends CachedConfigurationProvider {
@@ -136,8 +134,8 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
   }
 
   private void putStringIntoRuntimeConfiguration(String key, String value) {
-    final SharedPreferences.Editor editor = mRuntimeAppConfigurationProvider.getStorageMap().edit();
-    RuntimeAppConfigurationProvider.putStringIntoEditor(editor, key, value);
-    editor.apply();
+    getRuntimeAppConfigurationProvider().startEdit();
+    getRuntimeAppConfigurationProvider().putString(key, value);
+    getRuntimeAppConfigurationProvider().applyEdit();
   }
 }

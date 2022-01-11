@@ -4,12 +4,12 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import com.appboy.IAppboyEndpointProvider;
+import com.appboy.IBrazeEndpointProvider;
 
 /**
- * An {@link IAppboyEndpointProvider} that sets an override endpoint if given.
+ * An {@link IBrazeEndpointProvider} that sets an override endpoint if given.
  */
-public class DroidboyEndpointProvider implements IAppboyEndpointProvider {
+public class DroidboyEndpointProvider implements IBrazeEndpointProvider {
   private final Uri mEndpointUri;
   private final String mEndpoint;
 

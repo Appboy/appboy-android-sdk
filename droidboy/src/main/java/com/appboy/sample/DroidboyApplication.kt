@@ -22,17 +22,18 @@ import android.webkit.WebView
 import androidx.annotation.RequiresApi
 import androidx.multidex.MultiDex
 import com.appboy.events.BrazeSdkAuthenticationErrorEvent
-import com.appboy.events.SimpleValueCallback
 import com.appboy.support.PackageUtils
 import com.braze.Braze
 import com.braze.BrazeActivityLifecycleCallbackListener
-import com.braze.BrazeUser
 import com.braze.configuration.BrazeConfig
 import com.braze.enums.BrazeSdkMetadata
 import com.braze.support.BrazeLogger
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.getPrettyPrintedString
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
@@ -40,13 +41,12 @@ import java.net.URL
 import java.util.*
 
 class DroidboyApplication : Application() {
+    private var isSdkAuthEnabled: Boolean = false
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
             activateStrictMode()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                WebView.setWebContentsDebuggingEnabled(true)
-            }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true)
@@ -60,7 +60,7 @@ class DroidboyApplication : Application() {
         brazeConfigBuilder.setSdkMetadata(EnumSet.of(BrazeSdkMetadata.MANUAL))
         setOverrideApiKeyIfConfigured(sharedPreferences, brazeConfigBuilder)
         setOverrideEndpointIfConfigured(sharedPreferences, brazeConfigBuilder)
-        val isSdkAuthEnabled = setSdkAuthIfConfigured(sharedPreferences, brazeConfigBuilder)
+        isSdkAuthEnabled = setSdkAuthIfConfigured(sharedPreferences, brazeConfigBuilder)
         Braze.configure(this, brazeConfigBuilder.build())
         Braze.addSdkMetadata(this, EnumSet.of(BrazeSdkMetadata.BRANCH))
 
@@ -74,11 +74,11 @@ class DroidboyApplication : Application() {
 
         if (isSdkAuthEnabled) {
             Braze.getInstance(applicationContext).subscribeToSdkAuthenticationFailures { message: BrazeSdkAuthenticationErrorEvent ->
-                brazelog { "Got sdk auth error message $message" }
-                initiateSdkAuthTokenRefresh()
+                brazelog(TAG) { "Got sdk auth error message $message" }
+                message.userId?.let { setNewSdkAuthToken(it) }
             }
             // Fire off an update to start off
-            initiateSdkAuthTokenRefresh()
+            Braze.getInstance(applicationContext).currentUser?.userId?.let { setNewSdkAuthToken(it) }
         }
     }
 
@@ -86,6 +86,57 @@ class DroidboyApplication : Application() {
         super.attachBaseContext(context)
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
             MultiDex.install(this)
+        }
+    }
+
+    /**
+     * Calls [Braze.changeUser] with a new SDK Auth token, if available. If no
+     * token is available, just calls [Braze.changeUser] without a new SDK Auth token.
+     */
+    fun changeUserWithNewSdkAuthToken(userId: String) {
+        runBlocking(Dispatchers.IO) {
+            val token = getSdkAuthToken(userId)
+            if (token != null) {
+                Braze.getInstance(applicationContext).changeUser(userId, token)
+            } else {
+                Braze.getInstance(applicationContext).changeUser(userId)
+            }
+        }
+    }
+
+    private fun setNewSdkAuthToken(userId: String) {
+        runBlocking(Dispatchers.IO) {
+            val token = getSdkAuthToken(userId) ?: return@runBlocking
+            Braze.getInstance(applicationContext).setSdkAuthenticationSignature(token)
+        }
+    }
+
+    private suspend fun getSdkAuthToken(userId: String): String? {
+        if (!isSdkAuthEnabled) return null
+
+        return withContext(Dispatchers.IO) {
+            brazelog(TAG) { "Making new SDK Auth token request for user: '$userId'" }
+
+            val url = URL(BuildConfig.SDK_AUTH_ENDPOINT)
+            val payload = JSONObject()
+                .put(
+                    "data",
+                    JSONObject()
+                        .put("user_id", userId)
+                )
+
+            with(url.openConnection() as HttpURLConnection) {
+                TrafficStats.setThreadStatsTag(1337)
+                requestMethod = "POST"
+                addRequestProperty("Content-Type", "application/json")
+                addRequestProperty("Accept", "application/json")
+
+                OutputStreamWriter(outputStream).use { out -> out.write(payload.toString()) }
+
+                val responseJson = JSONObject(inputStream.bufferedReader().readText())
+                brazelog(TAG) { "SDK auth callback got response: ${responseJson.getPrettyPrintedString()}" }
+                return@withContext responseJson.optJSONObject("data")?.optString("token")
+            }
         }
     }
 
@@ -107,35 +158,6 @@ class DroidboyApplication : Application() {
 
         val shortcutManager: ShortcutManager = getSystemService(ShortcutManager::class.java)
         shortcutManager.dynamicShortcuts = listOf(builder.build())
-    }
-
-    fun initiateSdkAuthTokenRefresh() {
-        Braze.getInstance(applicationContext).getCurrentUser(object : SimpleValueCallback<BrazeUser>() {
-            override fun onSuccess(currentUser: BrazeUser) {
-                val url = URL(BuildConfig.SDK_AUTH_ENDPOINT)
-                val payload = JSONObject()
-                    .put(
-                        "data",
-                        JSONObject()
-                            .put("user_id", currentUser.userId)
-                    )
-
-                with(url.openConnection() as HttpURLConnection) {
-                    TrafficStats.setThreadStatsTag(1337)
-                    requestMethod = "POST"
-                    addRequestProperty("Content-Type", "application/json")
-                    addRequestProperty("Accept", "application/json")
-
-                    OutputStreamWriter(outputStream).use { out -> out.write(payload.toString()) }
-
-                    val responseJson = JSONObject(inputStream.bufferedReader().readText())
-                    brazelog { "SDK auth callback got response: ${responseJson.getPrettyPrintedString()}" }
-                    responseJson.optJSONObject("data")?.optString("token")?.let {
-                        Braze.getInstance(applicationContext).setSdkAuthenticationSignature(it)
-                    }
-                }
-            }
-        })
     }
 
     private fun setupNotificationChannels() {

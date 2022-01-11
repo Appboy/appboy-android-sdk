@@ -9,10 +9,10 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
 import com.appboy.sample.util.ButtonUtils;
 import com.braze.Braze;
+import com.braze.models.outgoing.BrazeProperties;
 import com.braze.support.StringUtils;
 
 import java.math.BigDecimal;
@@ -39,7 +39,7 @@ public class CustomPurchaseDialog extends CustomLogger {
   }
 
   @Override
-  protected void customLog(String name, AppboyProperties properties) {
+  protected void customLog(String name, BrazeProperties properties) {
     String currencyCode = mCustomPurchaseCurrencyCodeName.getText().toString();
     String quantity = mCustomPurchaseQuantity.getText().toString();
     String price = mCustomPurchasePrice.getText().toString();

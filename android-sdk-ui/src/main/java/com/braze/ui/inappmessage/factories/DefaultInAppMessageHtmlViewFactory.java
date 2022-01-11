@@ -39,7 +39,7 @@ public class DefaultInAppMessageHtmlViewFactory implements IInAppMessageViewFact
         .inflate(R.layout.com_braze_inappmessage_html, null);
 
     BrazeConfigurationProvider config = new BrazeConfigurationProvider(context);
-    if (config.getIsTouchModeRequiredForHtmlInAppMessages() && ViewUtils.isDeviceNotInTouchMode(view)) {
+    if (config.isTouchModeRequiredForHtmlInAppMessages() && ViewUtils.isDeviceNotInTouchMode(view)) {
       BrazeLogger.w(TAG, "The device is not currently in touch mode. This message requires user touch interaction to display properly.");
       return null;
     }

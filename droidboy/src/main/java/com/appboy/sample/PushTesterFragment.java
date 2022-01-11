@@ -234,7 +234,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
           pushImageUrl = "https://picsum.photos/seed/" + System.nanoTime() + "/750/500";
         }
 
-        if (Constants.IS_AMAZON) {
+        if (Constants.isAmazonDevice()) {
           // Amazon flattens the extras bundle so we have to put it in the regular notification
           // extras to imitate that functionality.
           notificationExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, pushImageUrl.replaceAll("&amp;", "&"));

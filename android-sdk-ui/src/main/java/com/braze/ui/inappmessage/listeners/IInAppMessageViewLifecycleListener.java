@@ -5,12 +5,12 @@ import android.view.View;
 import com.braze.models.inappmessage.IInAppMessage;
 import com.braze.models.inappmessage.IInAppMessageImmersive;
 import com.braze.models.inappmessage.MessageButton;
-import com.braze.ui.inappmessage.InAppMessageCloser;
 
 /**
  * IInAppMessageViewLifecycleListener returns the in-app message at specific events
  * in its display lifecycle for potential further processing, modification, and logging.
  */
+@SuppressWarnings("deprecation")
 public interface IInAppMessageViewLifecycleListener {
 
   /**
@@ -49,7 +49,7 @@ public interface IInAppMessageViewLifecycleListener {
    * @param inAppMessageView
    * @param inAppMessage
    */
-  void onClicked(InAppMessageCloser inAppMessageCloser, View inAppMessageView, IInAppMessage inAppMessage);
+  void onClicked(com.braze.ui.inappmessage.InAppMessageCloser inAppMessageCloser, View inAppMessageView, IInAppMessage inAppMessage);
 
   /**
    * Called when an in-app message Button is clicked.
@@ -57,7 +57,7 @@ public interface IInAppMessageViewLifecycleListener {
    * @param messageButton
    * @param inAppMessageImmersive
    */
-  void onButtonClicked(InAppMessageCloser inAppMessageCloser, MessageButton messageButton, IInAppMessageImmersive inAppMessageImmersive);
+  void onButtonClicked(com.braze.ui.inappmessage.InAppMessageCloser inAppMessageCloser, MessageButton messageButton, IInAppMessageImmersive inAppMessageImmersive);
 
   /**
    * Called when the in-app message View is dismissed.

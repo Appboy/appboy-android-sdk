@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.VisibleForTesting;
 
 import com.appboy.enums.Channel;
-import com.appboy.models.outgoing.AppboyProperties;
 import com.braze.Braze;
 import com.braze.enums.inappmessage.MessageType;
 import com.braze.models.inappmessage.IInAppMessage;
 import com.braze.models.inappmessage.IInAppMessageHtml;
+import com.braze.models.outgoing.BrazeProperties;
 import com.braze.support.BrazeFileUtils;
 import com.braze.support.BrazeLogger;
 import com.braze.support.BundleUtils;
@@ -71,7 +71,7 @@ public class DefaultInAppMessageWebViewClientListener implements IInAppMessageWe
       if (StringUtils.isNullOrBlank(customEventName)) {
         return;
       }
-      AppboyProperties customEventProperties = parsePropertiesFromQueryBundle(queryBundle);
+      BrazeProperties customEventProperties = parsePropertiesFromQueryBundle(queryBundle);
       Braze.getInstance(getInAppMessageManager().getActivity()).logCustomEvent(customEventName, customEventProperties);
     }
   }
@@ -160,8 +160,8 @@ public class DefaultInAppMessageWebViewClientListener implements IInAppMessageWe
   }
 
   @VisibleForTesting
-  static AppboyProperties parsePropertiesFromQueryBundle(Bundle queryBundle) {
-    AppboyProperties customEventProperties = new AppboyProperties();
+  static BrazeProperties parsePropertiesFromQueryBundle(Bundle queryBundle) {
+    BrazeProperties customEventProperties = new BrazeProperties();
     for (String key: queryBundle.keySet()) {
       if (!key.equals(HTML_IN_APP_MESSAGE_CUSTOM_EVENT_NAME_KEY)) {
         String propertyValue = queryBundle.getString(key, null);

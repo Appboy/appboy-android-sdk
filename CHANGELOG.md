@@ -1,3 +1,32 @@
+## 18.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v18.0.0)
+ 
+#### Breaking
+- Removed `AppboyLruImageLoader` in favor of `DefaultBrazeImageLoader`
+  - `com.appboy.lrucache.AppboyLruImageLoader` -> `com.braze.images.DefaultBrazeImageLoader`
+  - `com.appboy.Appboy.getAppboyImageLoader` -> `com.appboy.Appboy.getImageLoader`
+  - `com.appboy.Appboy.setAppboyImageLoader` -> `com.appboy.Appboy.setImageLoader`
+- Removed `IAppboyEndpointProvider` in favor of `IBrazeEndpointProvider`.
+    - If using `Braze.setAppboyEndpointProvider()` please use `Braze.setEndpointProvider()`
+   
+##### Fixed
+- Fixed an issue introduced in 15.0.0 where Full in-app messages on tablets may have had an incorrect background color.
+
+##### Added
+- Added the ability to change SDK authentication signature with `Braze.changeUser()` when the current user id and a new signature is passed in.
+    - Previously, `Braze.changeUser()` would not change the SDK authentication signature if the current user id was used.
+
+##### Changed
+- `InAppMessageCloser` is deprecated.
+  - Use `BrazeInAppMessageManager.hideCurrentlyDisplayingInAppMessage()` to hide currently displayed in-app messages.
+  - Use `IInAppMessage.setAnimateOut()` to set whether your in-app message should animate on close.
+  - New version of `IInAppMessageManagerListener.onInAppMessageClicked()` and `IInAppMessageManagerListener.onInAppMessageButtonClicked()` that don't use `InAppMessageCloser` have been added.
+    - If you override the deprecated functions that use `InAppMessageCloser`, those will be called
+    - If you override the new functions and don't override the deprecated functions, the new functions will be called
+- Deprecated `ContentCardsUpdatedEvent.getLastUpdatedInSecondsFromEpoch`.
+    - Use `getTimestampSeconds()` (Java) or `timestampSeconds` (Kotlin)
+
 ## 17.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v17.0.0)

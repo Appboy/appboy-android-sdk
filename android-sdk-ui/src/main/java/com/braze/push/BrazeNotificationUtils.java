@@ -58,7 +58,7 @@ public class BrazeNotificationUtils {
   @Deprecated
   public static final String APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED";
   /**
-   * @deprecated Please {@link Constants#BRAZE_PUSH_INTENT_NOTIFICATION_OPENED}. Deprecated since 6/25/21
+   * @deprecated Please {@link Constants#BRAZE_PUSH_INTENT_NOTIFICATION_RECEIVED}. Deprecated since 6/25/21
    */
   @Deprecated
   public static final String APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED";
@@ -83,7 +83,7 @@ public class BrazeNotificationUtils {
       Braze.getInstance(context).logPushNotificationOpened(intent);
       sendNotificationOpenedBroadcast(context, intent);
       BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
-      if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+      if (appConfigurationProvider.getDoesHandlePushDeepLinksAutomatically()) {
         routeUserWithNotificationOpenedIntent(context, intent);
       } else {
         BrazeLogger.i(TAG, "Not handling deep links automatically, skipping deep link handling");
@@ -321,7 +321,7 @@ public class BrazeNotificationUtils {
     if (!PermissionUtils.hasPermission(context, Manifest.permission.WAKE_LOCK)) {
       return false;
     }
-    if (!configurationProvider.getIsPushWakeScreenForNotificationEnabled()) {
+    if (!configurationProvider.isPushWakeScreenForNotificationEnabled()) {
       return false;
     }
 
@@ -532,7 +532,7 @@ public class BrazeNotificationUtils {
                                                           BrazeConfigurationProvider appConfigurationProvider,
                                                           NotificationCompat.Builder notificationBuilder,
                                                           Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context, appConfigurationProvider);
     return setLargeIconIfPresentAndSupported(notificationBuilder, payload);
   }
 
@@ -662,7 +662,7 @@ public class BrazeNotificationUtils {
                                          NotificationCompat.Builder notificationBuilder,
                                          Bundle notificationExtras,
                                          Bundle appboyExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context);
     BrazeNotificationStyleFactory.setStyleIfSupported(notificationBuilder, payload);
   }
 
@@ -673,7 +673,7 @@ public class BrazeNotificationUtils {
   public static void setAccentColorIfPresentAndSupported(BrazeConfigurationProvider appConfigurationProvider,
                                                          NotificationCompat.Builder notificationBuilder,
                                                          Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(appConfigurationProvider, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, null, appConfigurationProvider);
     setAccentColorIfPresentAndSupported(notificationBuilder, payload);
   }
 
@@ -783,7 +783,7 @@ public class BrazeNotificationUtils {
                                                            BrazeConfigurationProvider configurationProvider,
                                                            NotificationCompat.Builder notificationBuilder,
                                                            Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, configurationProvider, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context, configurationProvider);
     setPublicVersionIfPresentAndSupported(notificationBuilder, payload);
   }
 
@@ -808,9 +808,11 @@ public class BrazeNotificationUtils {
     if (publicNotificationExtras == null) {
       return;
     }
-    BrazeNotificationPayload publicPayload = new BrazeNotificationPayload(payload.getContext(),
-        payload.getConfigurationProvider(),
-        publicNotificationExtras);
+    BrazeNotificationPayload publicPayload = new BrazeNotificationPayload(publicNotificationExtras,
+        null,
+        payload.getContext(),
+        payload.getConfigurationProvider()
+        );
 
     if (publicPayload.getConfigurationProvider() == null) {
       return;
@@ -910,7 +912,7 @@ public class BrazeNotificationUtils {
    * @return the Class of the notification receiver used by this application.
    */
   public static Class<?> getNotificationReceiverClass() {
-    if (Constants.IS_AMAZON) {
+    if (Constants.isAmazonDevice()) {
       return BrazeAmazonDeviceMessagingReceiver.class;
     } else {
       return BrazePushReceiver.class;
@@ -1029,7 +1031,7 @@ public class BrazeNotificationUtils {
   public static String getOrCreateNotificationChannelId(Context context,
                                                         BrazeConfigurationProvider appConfigurationProvider,
                                                         Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, appConfigurationProvider, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context, appConfigurationProvider);
     return getOrCreateNotificationChannelId(payload);
   }
 
@@ -1083,7 +1085,7 @@ public class BrazeNotificationUtils {
       BrazeNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
 
       BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
-      if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+      if (appConfigurationProvider.getDoesHandlePushDeepLinksAutomatically()) {
         BrazeNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
       } else {
         BrazeLogger.i(TAG, "Not handling deep links automatically, skipping deep link handling");

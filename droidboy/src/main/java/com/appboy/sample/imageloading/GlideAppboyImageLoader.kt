@@ -17,7 +17,7 @@ class GlideAppboyImageLoader : IBrazeImageLoader {
     private var requestOptions = RequestOptions()
     override fun renderUrlIntoCardView(
         context: Context,
-        card: Card?,
+        card: Card,
         imageUrl: String,
         imageView: ImageView,
         viewBounds: BrazeViewBounds?

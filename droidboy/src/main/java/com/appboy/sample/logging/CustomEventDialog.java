@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
 import com.braze.Braze;
+import com.braze.models.outgoing.BrazeProperties;
 
 public class CustomEventDialog extends CustomLogger {
 
@@ -21,7 +21,7 @@ public class CustomEventDialog extends CustomLogger {
   }
 
   @Override
-  protected void customLog(String name, AppboyProperties properties) {
+  protected void customLog(String name, BrazeProperties properties) {
     Braze.getInstance(getContext()).logCustomEvent(name, properties);
   }
 }

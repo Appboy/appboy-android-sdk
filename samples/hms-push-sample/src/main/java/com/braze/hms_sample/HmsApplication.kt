@@ -23,8 +23,8 @@ class HmsApplication : Application() {
       val endpoint = prefs.getString(CUSTOM_ENV_ENDPOINT_KEY, "")
 
       Braze.configure(this.applicationContext, BrazeConfig.Builder()
-          .setApiKey(apiKey)
-          .setCustomEndpoint(endpoint)
+          .setApiKey(apiKey!!)
+          .setCustomEndpoint(endpoint!!)
           .setHandlePushDeepLinksAutomatically(true)
           .build()
       )

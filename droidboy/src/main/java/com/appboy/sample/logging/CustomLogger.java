@@ -12,11 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
 import com.appboy.sample.dialog.CustomDialogBase;
 import com.appboy.sample.util.ButtonUtils;
 import com.braze.Braze;
+import com.braze.models.outgoing.BrazeProperties;
 import com.braze.support.StringUtils;
 
 public abstract class CustomLogger extends CustomDialogBase {
@@ -44,7 +44,7 @@ public abstract class CustomLogger extends CustomDialogBase {
   public void onExitButtonPressed(boolean isImmediateFlushRequired) {
     String customName = mName.getText().toString();
     if (!StringUtils.isNullOrBlank(customName)) {
-      customLog(customName, mPropertyManager.getAppboyProperties());
+      customLog(customName, mPropertyManager.getBrazeProperties());
       notifyResult(customName);
     } else {
       Toast.makeText(mContext, "Must input a name", Toast.LENGTH_LONG).show();
@@ -63,5 +63,5 @@ public abstract class CustomLogger extends CustomDialogBase {
     Toast.makeText(mContext, "Successfully submitted " + input + ".", Toast.LENGTH_LONG).show();
   }
 
-  protected abstract void customLog(String name, AppboyProperties properties);
+  protected abstract void customLog(String name, BrazeProperties properties);
 }

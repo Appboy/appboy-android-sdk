@@ -31,7 +31,7 @@ public class BrazeNotificationActionUtils {
   public static void addNotificationActions(Context context,
                                             NotificationCompat.Builder notificationBuilder,
                                             Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context);
     addNotificationActions(notificationBuilder, payload);
   }
 
@@ -92,7 +92,7 @@ public class BrazeNotificationActionUtils {
         BrazeNotificationUtils.sendNotificationOpenedBroadcast(context, intent);
 
         BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
-        if (appConfigurationProvider.getHandlePushDeepLinksAutomatically()) {
+        if (appConfigurationProvider.getDoesHandlePushDeepLinksAutomatically()) {
           BrazeNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
         } else {
           BrazeLogger.i(TAG, "Not handling deep links automatically, skipping deep link handling");
@@ -115,7 +115,7 @@ public class BrazeNotificationActionUtils {
                                            NotificationCompat.Builder notificationBuilder,
                                            Bundle notificationExtras,
                                            int actionIndex) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context);
     final List<BrazeNotificationPayload.ActionButton> actionButtons = payload.getActionButtons();
     if (actionIndex - 1 > actionButtons.size()) {
       return;

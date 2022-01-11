@@ -67,14 +67,14 @@ public class BrazeNotificationStyleFactory {
   }
 
   /**
-   * @deprecated Please use {@link #getNotificationStyle(BrazeNotificationPayload)}
+   * @deprecated Please use {@link #getNotificationStyle(NotificationCompat.Builder, BrazeNotificationPayload)}
    */
   @Deprecated
   public static NotificationCompat.Style getBigNotificationStyle(Context context,
                                                                  Bundle notificationExtras,
                                                                  Bundle appboyExtras,
                                                                  NotificationCompat.Builder notificationBuilder) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context, null);
     return getNotificationStyle(notificationBuilder, payload);
   }
 
@@ -118,7 +118,7 @@ public class BrazeNotificationStyleFactory {
   @Deprecated
   public static NotificationCompat.BigTextStyle getBigTextNotificationStyle(BrazeConfigurationProvider brazeConfigurationProvider,
                                                                             Bundle notificationExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(brazeConfigurationProvider, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, null, brazeConfigurationProvider);
     return getBigTextNotificationStyle(payload);
   }
 
@@ -145,23 +145,22 @@ public class BrazeNotificationStyleFactory {
   }
 
   /**
-   * @deprecated Please use {@link #getStoryStyle(BrazeNotificationPayload)}
+   * @deprecated Please use {@link #getStoryStyle(NotificationCompat.Builder, BrazeNotificationPayload)}
    */
   @Deprecated
   public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(Context context,
                                                                           Bundle notificationExtras,
                                                                           Bundle appboyExtras,
                                                                           NotificationCompat.Builder notificationBuilder) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, new BrazeConfigurationProvider(context), notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context, new BrazeConfigurationProvider(context));
     return getStoryStyle(notificationBuilder, payload);
   }
 
   /**
    * Returns a {@link androidx.core.app.NotificationCompat.DecoratedCustomViewStyle} for push story.
    *
-   * @param context             Current context.
-   * @param notificationExtras  Notification extras for the current page of the push story.
    * @param notificationBuilder Notification builder.
+   * @param payload BrazeNotificationPayload
    * @return a {@link androidx.core.app.NotificationCompat.DecoratedCustomViewStyle} that describes the appearance of the push story.
    */
   public static NotificationCompat.DecoratedCustomViewStyle getStoryStyle(@NonNull NotificationCompat.Builder notificationBuilder,
@@ -285,7 +284,7 @@ public class BrazeNotificationStyleFactory {
   public static NotificationCompat.BigPictureStyle getBigPictureNotificationStyle(Context context,
                                                                                   Bundle notificationExtras,
                                                                                   Bundle appboyExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context, notificationExtras);
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(notificationExtras, null, context, null);
     return getBigPictureNotificationStyle(payload);
   }
 
@@ -413,9 +412,8 @@ public class BrazeNotificationStyleFactory {
    * Adds the appropriate image, title/subtitle, and PendingIntents to the story page.
    *
    * @param view               The push story remoteView, as instantiated in the getStoryStyle method.
-   * @param context            Current context.
-   * @param notificationExtras Notification extras as provided by FCM/ADM.
-   * @param index              The index of the story page.
+   * @param payload            BrazeNotificationPayload.
+   * @param pushStoryPage      PushStoryPage
    * @return True if the push story page was populated correctly.
    */
   private static boolean populatePushStoryPage(@NonNull RemoteViews view,
@@ -515,9 +513,8 @@ public class BrazeNotificationStyleFactory {
    * a {@link RemoteViews} notification is significantly reduced.
    */
   private static boolean isRemoteViewNotificationAvailableSpaceConstrained(Context context) {
-    // TODO: juliancontreras 2/19/2021 Remove this codename check after Android 12 stability milestone
     // Check that the device is on Android 12+ && the app is targeting Android 12+
-    return (Build.VERSION.CODENAME.equals("S") || Build.VERSION.SDK_INT > Build.VERSION_CODES.R)
-        && context.getApplicationContext().getApplicationInfo().targetSdkVersion > Build.VERSION_CODES.R;
+    return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        && context.getApplicationContext().getApplicationInfo().targetSdkVersion >= Build.VERSION_CODES.S;
   }
 }

@@ -55,10 +55,12 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
                                          Context context,
                                          Bundle notificationExtras,
                                          Bundle appboyExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
-        appConfigurationProvider,
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(
         notificationExtras,
-        appboyExtras);
+        appboyExtras,
+        context,
+        appConfigurationProvider
+       );
     return createNotification(payload);
   }
 
@@ -70,10 +72,12 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
                                                                 Context context,
                                                                 Bundle notificationExtras,
                                                                 Bundle appboyExtras) {
-    BrazeNotificationPayload payload = new BrazeNotificationPayload(context,
-        configurationProvider,
+    BrazeNotificationPayload payload = new BrazeNotificationPayload(
         notificationExtras,
-        appboyExtras);
+        appboyExtras,
+        context,
+        configurationProvider
+      );
     return populateNotificationBuilder(payload);
   }
 
@@ -106,7 +110,7 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
 
     // If this notification is a push story,
     // make a best effort to preload bitmap images into the cache.
-    BrazeNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras, payload.getAppboyExtras());
+    BrazeNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras, payload.getBrazeExtras());
 
     String notificationChannelId = BrazeNotificationUtils.getOrCreateNotificationChannelId(payload);
     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, notificationChannelId)

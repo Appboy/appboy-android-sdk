@@ -1,5 +1,7 @@
 package com.braze.push;
 
+import static com.appboy.models.push.BrazeNotificationPayload.getAttachedBrazeExtras;
+
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -194,8 +196,8 @@ public class BrazePushReceiver extends BroadcastReceiver {
     BrazeLogger.i(TAG, "Push message payload received: " + notificationExtras);
 
     // Convert the JSON in the extras key into a Bundle.
-    Bundle appboyExtras = BrazeNotificationPayload.getAttachedAppboyExtras(notificationExtras);
-    notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
+    Bundle brazeExtras = getAttachedBrazeExtras(notificationExtras);
+    notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, brazeExtras);
 
     if (!notificationExtras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
       notificationExtras.putLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS, System.currentTimeMillis());
@@ -210,7 +212,7 @@ public class BrazePushReceiver extends BroadcastReceiver {
     }
 
     BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
-    if (appConfigurationProvider.getIsInAppMessageTestPushEagerDisplayEnabled()
+    if (appConfigurationProvider.isInAppMessageTestPushEagerDisplayEnabled()
         && BrazeNotificationUtils.isInAppMessageTestPush(intent)
         && BrazeInAppMessageManager.getInstance().getActivity() != null) {
       // Pass this test in-app message along for eager display and bypass displaying a push
@@ -220,7 +222,7 @@ public class BrazePushReceiver extends BroadcastReceiver {
       return false;
     }
 
-    BrazeNotificationPayload payload = createPayload(context, appConfigurationProvider, notificationExtras, appboyExtras);
+    BrazeNotificationPayload payload = createPayload(context, appConfigurationProvider, notificationExtras, brazeExtras);
 
     // Parse the notification for any associated ContentCard
     BrazeNotificationUtils.handleContentCardsSerializedCardIfPresent(payload);
@@ -266,19 +268,14 @@ public class BrazePushReceiver extends BroadcastReceiver {
   }
 
   @VisibleForTesting
-  static BrazeNotificationPayload createPayload(Context context, BrazeConfigurationProvider appConfigurationProvider, Bundle notificationExtras, Bundle appboyExtras) {
+  static BrazeNotificationPayload createPayload(Context context, BrazeConfigurationProvider appConfigurationProvider, Bundle notificationExtras, Bundle brazeExtras) {
     // ADM uses a different constructor here because the data is already flattened.
     if (Constants.isAmazonDevice()) {
-      return new BrazeNotificationPayload(context,
-               appConfigurationProvider,
-               notificationExtras
-      );
+      return new BrazeNotificationPayload(notificationExtras, getAttachedBrazeExtras(
+          notificationExtras
+      ), context, appConfigurationProvider);
     } else {
-      return new BrazeNotificationPayload(context,
-              appConfigurationProvider,
-              notificationExtras,
-              appboyExtras
-      );
+      return new BrazeNotificationPayload(notificationExtras, brazeExtras, context, appConfigurationProvider);
     }
   }
 

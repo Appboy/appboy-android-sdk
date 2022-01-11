@@ -6,9 +6,9 @@ import android.webkit.JavascriptInterface;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.models.outgoing.AppboyProperties;
 import com.braze.Braze;
 import com.braze.models.inappmessage.IInAppMessageHtml;
+import com.braze.models.outgoing.BrazeProperties;
 import com.braze.support.BrazeLogger;
 
 import org.json.JSONObject;
@@ -38,14 +38,14 @@ public class InAppMessageJavascriptInterface {
 
   @JavascriptInterface
   public void logCustomEventWithJSON(String eventName, String propertiesJSON) {
-    AppboyProperties appboyProperties = parseProperties(propertiesJSON);
-    Braze.getInstance(mContext).logCustomEvent(eventName, appboyProperties);
+    BrazeProperties brazeProperties = parseProperties(propertiesJSON);
+    Braze.getInstance(mContext).logCustomEvent(eventName, brazeProperties);
   }
 
   @JavascriptInterface
   public void logPurchaseWithJSON(String productId, double price, String currencyCode, int quantity, String propertiesJSON) {
-    AppboyProperties appboyProperties = parseProperties(propertiesJSON);
-    Braze.getInstance(mContext).logPurchase(productId, currencyCode, new BigDecimal(Double.toString(price)), quantity, appboyProperties);
+    BrazeProperties brazeProperties = parseProperties(propertiesJSON);
+    Braze.getInstance(mContext).logPurchase(productId, currencyCode, new BigDecimal(Double.toString(price)), quantity, brazeProperties);
   }
 
   @JavascriptInterface
@@ -64,11 +64,11 @@ public class InAppMessageJavascriptInterface {
   }
 
   @VisibleForTesting
-  AppboyProperties parseProperties(String propertiesJSON) {
+  BrazeProperties parseProperties(String propertiesJSON) {
     try {
       if (propertiesJSON != null && !propertiesJSON.equals("undefined")
           && !propertiesJSON.equals("null")) {
-        return new AppboyProperties(new JSONObject(propertiesJSON));
+        return new BrazeProperties(new JSONObject(propertiesJSON));
       }
     } catch (Exception e) {
       BrazeLogger.e(TAG, "Failed to parse properties JSON String: " + propertiesJSON, e);

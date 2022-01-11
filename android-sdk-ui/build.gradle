@@ -5,6 +5,7 @@ dependencies {
   api "com.appboy:android-sdk-base:${BRAZE_SDK_VERSION}"
   compileOnly "com.google.android.material:material:${GOOGLE_MATERIAL_VERSION}"
 
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${KOTLIN_COROUTINES_VERSION}"
   implementation "androidx.core:core:${ANDROIDX_CORE_VERSION}"
   implementation "androidx.fragment:fragment:${ANDROIDX_FRAGMENT_VERSION}"
   implementation "androidx.recyclerview:recyclerview:${ANDROIDX_RECYCLERVIEW_VERSION}"
@@ -23,6 +24,11 @@ android {
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
     consumerProguardFiles 'braze-consumer-proguard-rules.pro'
+  }
+
+  kotlinOptions {
+    freeCompilerArgs = ['-Xjvm-default=all']
+    jvmTarget = "1.8"
   }
 
   compileOptions {

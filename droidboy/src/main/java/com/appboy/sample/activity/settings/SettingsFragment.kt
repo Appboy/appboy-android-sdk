@@ -296,7 +296,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun changeEndpointToDevelopment() {
         val sharedPreferencesEditor: SharedPreferences.Editor = sharedPreferences.edit()
-        if (Constants.IS_AMAZON) {
+        if (Constants.isAmazonDevice) {
             sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, DEV_FIREOS_DROIDBOY_API_KEY)
         } else {
             sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, DEV_DROIDBOY_API_KEY)

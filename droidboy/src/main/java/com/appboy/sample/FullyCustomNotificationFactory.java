@@ -18,7 +18,7 @@ public class FullyCustomNotificationFactory implements IBrazeNotificationFactory
     notificationBuilder.setContentTitle(payload.getTitleText());
     notificationBuilder.setSmallIcon(R.drawable.com_braze_push_small_notification_icon);
     BrazeNotificationUtils.setAccentColorIfPresentAndSupported(notificationBuilder, payload);
-    String contentString = parseContentsFromExtras(payload.getAppboyExtras());
+    String contentString = parseContentsFromExtras(payload.getBrazeExtras());
     notificationBuilder.setContentText(contentString);
     return notificationBuilder.build();
   }

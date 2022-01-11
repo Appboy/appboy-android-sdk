@@ -14,7 +14,6 @@ import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.BrazeLogger.getBrazeLogTag
 import com.braze.ui.activities.ContentCardsActivity
 import com.braze.ui.inappmessage.BrazeInAppMessageManager
-import com.braze.ui.inappmessage.InAppMessageCloser
 import com.braze.ui.inappmessage.InAppMessageOperation
 import com.braze.ui.inappmessage.listeners.DefaultHtmlInAppMessageActionListener
 import com.braze.ui.inappmessage.listeners.DefaultInAppMessageManagerListener
@@ -118,19 +117,17 @@ class BrazeUnityActivityWrapper {
 
                 override fun onInAppMessageClicked(
                     inAppMessage: IInAppMessage,
-                    inAppMessageCloser: InAppMessageCloser?
                 ): Boolean {
                     MessagingUtils.sendToBrazeInternalComponent(
                         BrazeInternalComponentMethod.ON_IAM_CLICKED,
                         inAppMessage.forJsonPut().toString()
                     )
-                    return super.onInAppMessageClicked(inAppMessage, inAppMessageCloser)
+                    return super.onInAppMessageClicked(inAppMessage)
                 }
 
                 override fun onInAppMessageButtonClicked(
                     inAppMessage: IInAppMessage,
-                    button: MessageButton,
-                    inAppMessageCloser: InAppMessageCloser?
+                    button: MessageButton
                 ): Boolean {
                     val jsonArray = JSONArray()
                         .put(inAppMessage.forJsonPut())
@@ -139,7 +136,7 @@ class BrazeUnityActivityWrapper {
                         BrazeInternalComponentMethod.ON_IAM_BUTTON_CLICKED,
                         jsonArray.toString()
                     )
-                    return super.onInAppMessageButtonClicked(inAppMessage, button, inAppMessageCloser)
+                    return super.onInAppMessageButtonClicked(inAppMessage, button)
                 }
             }
         )

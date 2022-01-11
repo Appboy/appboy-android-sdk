@@ -22,7 +22,7 @@ public class HtmlUtils {
       BrazeLogger.d(TAG, "Cannot create html spanned text on null or empty text. Returning blank string.");
       return text;
     }
-    if (configurationProvider.getIsPushNotificationHtmlRenderingEnabled()) {
+    if (configurationProvider.isPushNotificationHtmlRenderingEnabled()) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         return Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
       } else {

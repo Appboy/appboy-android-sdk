@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper {
   private static final String TAG = BrazeLogger.getBrazeLogTag(DefaultInAppMessageViewWrapper.class);
 
@@ -160,7 +161,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
     final ViewGroup parentViewGroup = getParentViewGroup(activity);
     final int parentViewGroupHeight = parentViewGroup.getHeight();
 
-    if (mConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
+    if (mConfigurationProvider.isInAppMessageAccessibilityExclusiveModeEnabled()) {
       mContentViewGroupParentLayout = parentViewGroup;
       mViewAccessibilityFlagMap.clear();
       setAllViewGroupChildrenAsNonAccessibilityImportant(mContentViewGroupParentLayout, mViewAccessibilityFlagMap);
@@ -189,7 +190,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
 
   @Override
   public void close() {
-    if (mConfigurationProvider.getIsInAppMessageAccessibilityExclusiveModeEnabled()) {
+    if (mConfigurationProvider.isInAppMessageAccessibilityExclusiveModeEnabled()) {
       resetAllViewGroupChildrenToPreviousAccessibilityFlagOrAuto(mContentViewGroupParentLayout, mViewAccessibilityFlagMap);
     }
     mInAppMessageView.removeCallbacks(mDismissRunnable);

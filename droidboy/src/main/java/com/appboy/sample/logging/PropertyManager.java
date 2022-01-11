@@ -12,8 +12,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.appboy.models.outgoing.AppboyProperties;
 import com.appboy.sample.R;
+import com.braze.models.outgoing.BrazeProperties;
 import com.braze.support.BrazeLogger;
 import com.braze.support.StringUtils;
 
@@ -79,27 +79,27 @@ public class PropertyManager implements AdapterView.OnItemSelectedListener {
     });
   }
 
-  public AppboyProperties getAppboyProperties() {
-    AppboyProperties appboyProperties = new AppboyProperties();
+  public BrazeProperties getBrazeProperties() {
+    BrazeProperties brazeProperties = new BrazeProperties();
     for (String key : mKeys) {
       Object value = mProperties.get(key);
       if (value instanceof Integer) {
-        appboyProperties.addProperty(key, (int) value);
+        brazeProperties.addProperty(key, (int) value);
       } else if (value instanceof Double) {
-        appboyProperties.addProperty(key, (double) value);
+        brazeProperties.addProperty(key, (double) value);
       } else if (value instanceof Boolean) {
-        appboyProperties.addProperty(key, (boolean) value);
+        brazeProperties.addProperty(key, (boolean) value);
       } else if (value instanceof String) {
-        appboyProperties.addProperty(key, (String) value);
+        brazeProperties.addProperty(key, (String) value);
       } else if (value instanceof Date) {
-        appboyProperties.addProperty(key, (Date) value);
+        brazeProperties.addProperty(key, (Date) value);
       } else if (value instanceof Long) {
-        appboyProperties.addProperty(key, (long) value);
+        brazeProperties.addProperty(key, (long) value);
       } else {
         BrazeLogger.w(this.getClass().toString(), "invalid property type");
       }
     }
-    return appboyProperties;
+    return brazeProperties;
   }
 
   private void addPropertyView(String key, Object value) {

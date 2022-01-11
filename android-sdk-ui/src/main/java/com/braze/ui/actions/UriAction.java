@@ -143,7 +143,7 @@ public class UriAction implements IAction {
   /**
    * Opens the remote scheme Uri in {@link BrazeWebViewActivity} while also populating the back stack.
    *
-   * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
+   * @see UriAction#getIntentArrayWithConfiguredBackStack
    */
   protected void openUriWithWebViewActivityFromPush(Context context, Uri uri, Bundle extras) {
     BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(context);
@@ -159,7 +159,7 @@ public class UriAction implements IAction {
    * Uses an {@link Intent#ACTION_VIEW} intent to open the {@link Uri} and places the main activity of the
    * activity on the back stack.
    *
-   * @see UriAction#getIntentArrayWithConfiguredBackStack(Context, Bundle, Intent)
+   * @see UriAction#getIntentArrayWithConfiguredBackStack
    */
   protected void openUriWithActionViewFromPush(Context context, Uri uri, Bundle extras) {
     BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(context);
@@ -223,7 +223,7 @@ public class UriAction implements IAction {
    * Gets an {@link Intent} array that has the configured back stack functionality.
    *
    * @param targetIntent The ultimate intent to be followed. For example, the main/launcher intent would be the penultimate {@link Intent}.
-   * @see BrazeConfigurationProvider#getIsPushDeepLinkBackStackActivityEnabled()
+   * @see BrazeConfigurationProvider#isPushDeepLinkBackStackActivityEnabled()
    * @see BrazeConfigurationProvider#getPushDeepLinkBackStackActivityClassName()
    */
   @VisibleForTesting
@@ -235,32 +235,37 @@ public class UriAction implements IAction {
     // some custom activity, or nothing if the back-stack is disabled.
     Intent rootIntent = null;
 
-    if (configurationProvider.getIsPushDeepLinkBackStackActivityEnabled()) {
+    if (configurationProvider.isPushDeepLinkBackStackActivityEnabled()) {
       // If a custom back stack class is defined, then set it
-      final String pushDeepLinkBackStackActivityClassName = configurationProvider.getPushDeepLinkBackStackActivityClassName();
-      if (StringUtils.isNullOrBlank(pushDeepLinkBackStackActivityClassName)) {
+      final String activityClass = configurationProvider.getPushDeepLinkBackStackActivityClassName();
+      if (StringUtils.isNullOrBlank(activityClass)) {
         BrazeLogger.i(TAG, "Adding main activity intent to back stack while opening uri from push");
         rootIntent = UriUtils.getMainActivityIntent(context, extras);
       } else {
         // Check if the activity is registered in the manifest. If not, then add nothing to the back stack
-        if (UriUtils.isActivityRegisteredInManifest(context, pushDeepLinkBackStackActivityClassName)) {
-          BrazeLogger.i(TAG, "Adding custom back stack activity while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
+        if (UriUtils.isActivityRegisteredInManifest(context, activityClass)) {
+          BrazeLogger.i(TAG, "Adding custom back stack activity "
+              + "while opening uri from push: " + activityClass);
           rootIntent = new Intent()
-                  .setClassName(context, pushDeepLinkBackStackActivityClassName)
-                  .setFlags(BrazeDeeplinkHandler.getInstance().getIntentFlags(IBrazeDeeplinkHandler.IntentFlagPurpose.URI_ACTION_BACK_STACK_GET_ROOT_INTENT))
+                  .setClassName(context, activityClass)
+                  .setFlags(BrazeDeeplinkHandler.getInstance()
+                      .getIntentFlags(IBrazeDeeplinkHandler.IntentFlagPurpose.URI_ACTION_BACK_STACK_GET_ROOT_INTENT))
                   .putExtras(extras);
         } else {
-          BrazeLogger.i(TAG, "Not adding unregistered activity to the back stack while opening uri from push: " + pushDeepLinkBackStackActivityClassName);
+          BrazeLogger.i(TAG, "Not adding unregistered activity to the "
+              + "back stack while opening uri from push: " + activityClass);
         }
       }
     } else {
-      BrazeLogger.i(TAG, "Not adding back stack activity while opening uri from push due to disabled configuration setting.");
+      BrazeLogger.i(TAG, "Not adding back stack activity while opening "
+          + "uri from push due to disabled configuration setting.");
     }
 
     if (rootIntent == null) {
       // Calling startActivities() from outside of an Activity
       // context requires the FLAG_ACTIVITY_NEW_TASK flag on the first Intent
-      targetIntent.setFlags(BrazeDeeplinkHandler.getInstance().getIntentFlags(IBrazeDeeplinkHandler.IntentFlagPurpose.URI_ACTION_BACK_STACK_ONLY_GET_TARGET_INTENT));
+      targetIntent.setFlags(BrazeDeeplinkHandler.getInstance()
+          .getIntentFlags(IBrazeDeeplinkHandler.IntentFlagPurpose.URI_ACTION_BACK_STACK_ONLY_GET_TARGET_INTENT));
 
       // Just return the target intent by itself
       return new Intent[]{targetIntent};

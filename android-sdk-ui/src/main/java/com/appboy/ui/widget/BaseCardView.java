@@ -50,7 +50,7 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       mConfigurationProvider = new BrazeConfigurationProvider(context);
     }
     if (sUnreadCardVisualIndicatorEnabled == null) {
-      sUnreadCardVisualIndicatorEnabled = mConfigurationProvider.getIsNewsfeedVisualIndicatorOn();
+      sUnreadCardVisualIndicatorEnabled = mConfigurationProvider.isNewsfeedVisualIndicatorOn();
     }
 
     mClassLogTag = BrazeLogger.getBrazeLogTag(this.getClass());

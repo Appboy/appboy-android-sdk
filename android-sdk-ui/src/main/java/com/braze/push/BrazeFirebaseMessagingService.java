@@ -27,7 +27,7 @@ public class BrazeFirebaseMessagingService extends FirebaseMessagingService {
       return;
     }
     BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(this);
-    if (!configurationProvider.getIsFirebaseMessagingServiceOnNewTokenRegistrationEnabled()) {
+    if (!configurationProvider.isFirebaseMessagingServiceOnNewTokenRegistrationEnabled()) {
       BrazeLogger.v(TAG, "Automatic FirebaseMessagingService.OnNewToken() registration"
           + " disabled, not registering token: " + newToken);
       return;

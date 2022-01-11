@@ -43,7 +43,7 @@ public class NotificationTrampolineActivity extends Activity {
       if (receivedIntent.getExtras() != null) {
         sendIntent.putExtras(receivedIntent.getExtras());
       }
-      if (Constants.IS_AMAZON) {
+      if (Constants.isAmazonDevice()) {
         BrazeAmazonDeviceMessagingReceiver.handleReceivedIntent(this, sendIntent);
       } else {
         BrazePushReceiver.handleReceivedIntent(this, sendIntent, false);

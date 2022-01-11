@@ -6,7 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.appboy.enums.Gender
@@ -64,8 +68,7 @@ class MainFragment : Fragment() {
         contentView.setOnButtonClick(R.id.com_appboy_sample_set_user_id_button) {
             val userId = userIdEditText.text.toString()
             if (userId.isNotBlank()) {
-                Braze.getInstance(requireContext()).changeUser(userId)
-                (requireActivity().applicationContext as DroidboyApplication).initiateSdkAuthTokenRefresh()
+                (requireActivity().applicationContext as DroidboyApplication).changeUserWithNewSdkAuthToken(userId)
                 Toast.makeText(requireContext(), "Set userId to: $userId", Toast.LENGTH_SHORT)
                     .show()
                 val editor = sharedPreferences.edit()

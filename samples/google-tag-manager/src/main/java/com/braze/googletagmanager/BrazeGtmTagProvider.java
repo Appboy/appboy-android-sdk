@@ -3,9 +3,9 @@ package com.braze.googletagmanager;
 import android.app.Application;
 import android.content.Context;
 
-import com.appboy.models.outgoing.AppboyProperties;
 import com.braze.Braze;
 import com.braze.BrazeUser;
+import com.braze.models.outgoing.BrazeProperties;
 import com.braze.support.BrazeLogger;
 import com.google.android.gms.tagmanager.CustomTagProvider;
 
@@ -79,30 +79,30 @@ public class BrazeGtmTagProvider implements CustomTagProvider {
     Braze.getInstance(sApplicationContext).logCustomEvent(eventName, parseMapIntoProperties(tagParameterMap));
   }
 
-  private AppboyProperties parseMapIntoProperties(Map<String, Object> map) {
-    AppboyProperties appboyProperties = new AppboyProperties();
+  private BrazeProperties parseMapIntoProperties(Map<String, Object> map) {
+    BrazeProperties brazeProperties = new BrazeProperties();
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       final Object value = entry.getValue();
       final String key = entry.getKey();
       if (value instanceof Boolean) {
-        appboyProperties.addProperty(key, (Boolean) value);
+        brazeProperties.addProperty(key, (Boolean) value);
       } else if (value instanceof Integer) {
-        appboyProperties.addProperty(key, (Integer) value);
+        brazeProperties.addProperty(key, (Integer) value);
       } else if (value instanceof Date) {
-        appboyProperties.addProperty(key, (Date) value);
+        brazeProperties.addProperty(key, (Date) value);
       } else if (value instanceof Long) {
-        appboyProperties.addProperty(key, (Long) value);
+        brazeProperties.addProperty(key, (Long) value);
       } else if (value instanceof String) {
-        appboyProperties.addProperty(key, (String) value);
+        brazeProperties.addProperty(key, (String) value);
       } else if (value instanceof Double) {
-        appboyProperties.addProperty(key, (Double) value);
+        brazeProperties.addProperty(key, (Double) value);
       } else {
-        BrazeLogger.w(TAG, "Failed to parse value into an AppboyProperties "
+        BrazeLogger.w(TAG, "Failed to parse value into a BrazeProperties "
             + "accepted type. Key: '" + key + "' Value: '" + value + "'");
       }
     }
 
-    return appboyProperties;
+    return brazeProperties;
   }
 
   private void setCustomAttribute(Map<String, Object> tagParameterMap) {
