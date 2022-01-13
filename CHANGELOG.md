@@ -1,3 +1,10 @@
+## 18.0.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v18.0.1)
+
+##### Fixed
+- Fixed an issue introduced in 17.0.0 where some HTML In-App Message zip asset files containing hidden `__MACOSX` folders without a corresponding entry for that folder would cause the in-app message to fail to display.
+
 ## 18.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v18.0.0)
