@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -205,5 +207,13 @@ public class InAppMessageWebViewClient extends WebViewClient {
       queryBundle.putString(queryKeyName, queryValue);
     }
     return queryBundle;
+  }
+
+  @Override
+  public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+      Log.e(TAG, "The webview rendering process crashed");
+
+      //The app crashes after detecting the renderer crashed.Returning true to avoid app crash
+      return true;
   }
 }
