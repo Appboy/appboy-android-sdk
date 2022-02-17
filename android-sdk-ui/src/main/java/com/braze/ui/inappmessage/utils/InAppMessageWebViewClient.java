@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -28,6 +27,10 @@ import com.braze.ui.support.UriUtils;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.VisibleForTesting;
 
 public class InAppMessageWebViewClient extends WebViewClient {
   private static final String TAG = BrazeLogger.getBrazeLogTag(InAppMessageWebViewClient.class);
@@ -211,7 +214,8 @@ public class InAppMessageWebViewClient extends WebViewClient {
 
   @Override
   public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
-      Log.e(TAG, "The webview rendering process crashed");
+
+      BrazeLogger.i(TAG, "The webview rendering process crashed, returning true" );
 
       //The app crashes after detecting the renderer crashed.Returning true to avoid app crash
       return true;
