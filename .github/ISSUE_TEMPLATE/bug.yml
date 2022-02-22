@@ -1,0 +1,55 @@
+name: 🐞 Bug report
+description: File a Bug Report for unexpected or incorrect SDK Behavior
+title: '[Bug]: '
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! 
+        
+        :warning: Please consider contacting [Braze Support](https://www.braze.com/docs/support_contact) for in-depth troubleshooting and to avoid leaking private information to our public Github issues.
+  - type: input
+    id: sdk_version
+    attributes:
+      label: Braze Android SDK Version
+      placeholder: ex. 15.0.1
+    validations:
+      required: true
+  - type: textarea
+    id: repro_steps
+    attributes:
+      label: Steps To Reproduce
+      description: Please provide a [minimal reproducible example](https://stackoverflow.com/help/minimal-reproducible-example)
+      placeholder: |
+        Example:
+          ```
+          
+          ```
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: Actual Incorrect Behavior
+      description: What incorrect behavior happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: verbose_logs
+    attributes:
+      label: Verbose Logs
+      description: Enable [Verbose Logging](https://www.braze.com/docs/developer_guide/platform_integration_guides/android/initial_sdk_setup/additional_customization_and_configuration/#android-verbose-logging). This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: textarea
+    id: other_info
+    attributes:
+      label: Additional Information
+      description: Anything else you'd like to share?
