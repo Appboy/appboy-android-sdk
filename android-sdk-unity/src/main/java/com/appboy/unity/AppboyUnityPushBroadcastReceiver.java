@@ -7,6 +7,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.appboy.Constants;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.MessagingUtils;
 import com.braze.push.BrazeNotificationUtils;
@@ -23,22 +24,11 @@ public class AppboyUnityPushBroadcastReceiver extends BroadcastReceiver {
   private static boolean sReceiverInitialized = false;
   @Nullable
   private static UnityConfigurationProvider sUnityConfigurationProvider;
-  @Nullable
-  private static String sPushReceivedAction;
-  @Nullable
-  private static String sPushOpenedAction;
-  @Nullable
-  private static String sPushDeletedAction;
 
-  @SuppressWarnings("deprecation") // https://jira.braze.com/browse/SDK-1689 to address
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!sReceiverInitialized) {
       sUnityConfigurationProvider = new UnityConfigurationProvider(context);
-      String packageName = context.getPackageName();
-      sPushReceivedAction = packageName + BrazeNotificationUtils.APPBOY_NOTIFICATION_RECEIVED_SUFFIX;
-      sPushOpenedAction = packageName + BrazeNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
-      sPushDeletedAction = packageName + BrazeNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX;
       if (!sUnityConfigurationProvider.getDelaySendingPushMessages()) {
         // If this is false, then always send the push intents immediately
         sUnityBindingInitialized = true;
@@ -69,20 +59,24 @@ public class AppboyUnityPushBroadcastReceiver extends BroadcastReceiver {
     }
   }
 
+  @SuppressWarnings("deprecation")
   public static void handleIntent(Intent intent, @NonNull UnityConfigurationProvider unityConfigurationProvider) {
     String action = intent.getAction();
+    if (action == null) {
+      return;
+    }
     BrazeLogger.i(TAG, "Received a push broadcast intent with action: " + action);
-    if (sPushReceivedAction.equals(action)) {
+    if (action.contains(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_RECEIVED) || action.contains(BrazeNotificationUtils.getAPPBOY_NOTIFICATION_RECEIVED_SUFFIX())) {
       String unityGameObjectName = unityConfigurationProvider.getPushReceivedGameObjectName();
       String unityCallbackFunctionName = unityConfigurationProvider.getPushReceivedCallbackMethodName();
       boolean isPushMessageSent = MessagingUtils.sendPushMessageToUnity(unityGameObjectName, unityCallbackFunctionName, intent, "push received");
       BrazeLogger.d(TAG, (isPushMessageSent ? "Successfully sent" : "Failure to send") + " push received message to Unity Player");
-    } else if (sPushOpenedAction.equals(action)) {
+    } else if (action.contains(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_OPENED) || action.contains(BrazeNotificationUtils.getAPPBOY_NOTIFICATION_OPENED_SUFFIX())) {
       String unityGameObjectName = unityConfigurationProvider.getPushOpenedGameObjectName();
       String unityCallbackFunctionName = unityConfigurationProvider.getPushOpenedCallbackMethodName();
       boolean isPushMessageSent = MessagingUtils.sendPushMessageToUnity(unityGameObjectName, unityCallbackFunctionName, intent, "push opened");
       BrazeLogger.d(TAG, (isPushMessageSent ? "Successfully sent" : "Failure to send") + " push opened message to Unity Player");
-    } else if (sPushDeletedAction.equals(action)) {
+    } else if (action.contains(Constants.APPBOY_PUSH_DELETED_ACTION) || action.contains(BrazeNotificationUtils.getAPPBOY_NOTIFICATION_DELETED_SUFFIX())) {
       String unityGameObjectName = unityConfigurationProvider.getPushDeletedGameObjectName();
       String unityCallbackFunctionName = unityConfigurationProvider.getPushDeletedCallbackMethodName();
       boolean isPushMessageSent = MessagingUtils.sendPushMessageToUnity(unityGameObjectName, unityCallbackFunctionName, intent, "push deleted");

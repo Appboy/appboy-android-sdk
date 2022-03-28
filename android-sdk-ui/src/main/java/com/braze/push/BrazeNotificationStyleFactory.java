@@ -133,12 +133,12 @@ public class BrazeNotificationStyleFactory {
     NotificationCompat.BigTextStyle bigTextNotificationStyle = new NotificationCompat.BigTextStyle();
     final BrazeConfigurationProvider appConfigProvider = payload.getConfigurationProvider();
 
-    bigTextNotificationStyle.bigText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getContentText()));
+    bigTextNotificationStyle.bigText(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getContentText(), appConfigProvider));
     if (payload.getBigSummaryText() != null) {
-      bigTextNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigSummaryText()));
+      bigTextNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getBigSummaryText(), appConfigProvider));
     }
     if (payload.getBigTitleText() != null) {
-      bigTextNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigTitleText()));
+      bigTextNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getBigTitleText(), appConfigProvider));
     }
 
     return bigTextNotificationStyle;
@@ -249,7 +249,7 @@ public class BrazeNotificationStyleFactory {
     }
 
     final String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
-    final CharSequence htmlSpannedAppName = HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, applicationName);
+    final CharSequence htmlSpannedAppName = HtmlUtils.getHtmlSpannedTextIfEnabled(applicationName, configurationProvider);
     remoteView.setTextViewText(R.id.com_braze_inline_image_push_app_name_text, htmlSpannedAppName);
 
     // Set the current time
@@ -257,11 +257,11 @@ public class BrazeNotificationStyleFactory {
 
     // Set the text area title
     String title = notificationExtras.getString(Constants.APPBOY_PUSH_TITLE_KEY);
-    remoteView.setTextViewText(R.id.com_braze_inline_image_push_title_text, HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, title));
+    remoteView.setTextViewText(R.id.com_braze_inline_image_push_title_text, HtmlUtils.getHtmlSpannedTextIfEnabled(title, configurationProvider));
 
     // Set the text area content
     String content = notificationExtras.getString(Constants.APPBOY_PUSH_CONTENT_KEY);
-    remoteView.setTextViewText(R.id.com_braze_inline_image_push_content_text, HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, content));
+    remoteView.setTextViewText(R.id.com_braze_inline_image_push_content_text, HtmlUtils.getHtmlSpannedTextIfEnabled(content, configurationProvider));
     notificationBuilder.setCustomContentView(remoteView);
 
     if (isNotificationSpaceConstrained) {
@@ -450,7 +450,7 @@ public class BrazeNotificationStyleFactory {
 
     // If the title is null or blank, the visibility of the container becomes GONE.
     if (!StringUtils.isNullOrBlank(pageTitle)) {
-      final CharSequence pageTitleText = HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, pageTitle);
+      final CharSequence pageTitleText = HtmlUtils.getHtmlSpannedTextIfEnabled(pageTitle, configurationProvider);
       view.setTextViewText(R.id.com_braze_story_text_view, pageTitleText);
       int titleGravity = pushStoryPage.getTitleGravity();
       view.setInt(R.id.com_braze_story_text_view_container, STORY_SET_GRAVITY, titleGravity);
@@ -463,7 +463,7 @@ public class BrazeNotificationStyleFactory {
 
     // If the subtitle is null or blank, the visibility of the container becomes GONE.
     if (!StringUtils.isNullOrBlank(pageSubtitle)) {
-      final CharSequence pageSubtitleText = HtmlUtils.getHtmlSpannedTextIfEnabled(configurationProvider, pageSubtitle);
+      final CharSequence pageSubtitleText = HtmlUtils.getHtmlSpannedTextIfEnabled(pageSubtitle, configurationProvider);
       view.setTextViewText(R.id.com_braze_story_text_view_small, pageSubtitleText);
       int subtitleGravity = pushStoryPage.getSubtitleGravity();
       view.setInt(R.id.com_braze_story_text_view_small_container, STORY_SET_GRAVITY, subtitleGravity);
@@ -481,16 +481,16 @@ public class BrazeNotificationStyleFactory {
   static void setBigPictureSummaryAndTitle(NotificationCompat.BigPictureStyle bigPictureNotificationStyle, BrazeNotificationPayload payload) {
     final BrazeConfigurationProvider appConfigProvider = payload.getConfigurationProvider();
     if (payload.getBigSummaryText() != null) {
-      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigSummaryText()));
+      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getBigSummaryText(), appConfigProvider));
     }
     if (payload.getBigTitleText() != null) {
-      bigPictureNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getBigTitleText()));
+      bigPictureNotificationStyle.setBigContentTitle(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getBigTitleText(), appConfigProvider));
     }
 
     // If summary is null (which we set to the subtext in setSummaryTextIfPresentAndSupported in BrazeNotificationUtils)
     // and bigSummary is null, set the summary to the message. Without this, the message would be blank in expanded mode.
     if (payload.getSummaryText() == null && payload.getBigSummaryText() == null) {
-      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(appConfigProvider, payload.getContentText()));
+      bigPictureNotificationStyle.setSummaryText(HtmlUtils.getHtmlSpannedTextIfEnabled(payload.getContentText(), appConfigProvider));
     }
   }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
 import com.braze.models.inappmessage.IInAppMessage;
 import com.braze.support.BrazeLogger;
@@ -234,5 +235,10 @@ public class InAppMessageManagerBase {
   public void setCustomInAppMessageViewWrapperFactory(@Nullable IInAppMessageViewWrapperFactory inAppMessageViewWrapperFactory) {
     BrazeLogger.d(TAG, "Custom IInAppMessageViewWrapperFactory set");
     mCustomInAppMessageViewWrapperFactory = inAppMessageViewWrapperFactory;
+  }
+
+  @RestrictTo(RestrictTo.Scope.TESTS)
+  public Boolean isActivitySet() {
+    return mActivity != null;
   }
 }

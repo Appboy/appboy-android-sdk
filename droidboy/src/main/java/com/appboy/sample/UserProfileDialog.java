@@ -44,7 +44,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
   private static final String LANGUAGE_PREFERENCE_KEY = "user.language";
   private static final String EMAIL_PREFERENCE_KEY = "user.email";
   private static final String GENDER_PREFERENCE_KEY = "user.gender_resource_id";
-  private static final String AVATAR_PREFERENCE_KEY = "user.avatar_image_url";
   private static final String BIRTHDAY_PREFERENCE_KEY = "user.birthday";
 
   private static final String SAMPLE_FIRST_NAME = "Jane";
@@ -52,7 +51,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
   private static final String SAMPLE_LANGUAGE = "hi";
   private static final String SAMPLE_EMAIL = "jane@appboy.com";
   private static final int SAMPLE_GENDER = R.id.female;
-  private static final String SAMPLE_AVATAR_URL = "https://s3.amazonaws.com/appboy-dashboard-uploads/news/default-news-image.png";
   private static final String SAMPLE_BIRTHDAY = (mCalendar.get(Calendar.MONTH) + 1) + "/" + mCalendar.get(Calendar.DAY_OF_MONTH) + "/" + mCalendar.get(Calendar.YEAR);
 
   private EditText mFirstName;
@@ -60,7 +58,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
   private EditText mEmail;
   private RadioGroup mGender;
   private EditText mLanguage;
-  private EditText mAvatarImageUrl;
   private TextView mBirthday;
 
   private DatePickerDialog mDatePickerDialog;
@@ -78,7 +75,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
     mEmail = view.findViewById(R.id.email);
     mGender = view.findViewById(R.id.gender);
     mLanguage = view.findViewById(R.id.language);
-    mAvatarImageUrl = view.findViewById(R.id.avatar_image_url);
     mBirthday = view.findViewById(R.id.birthday);
     return view;
   }
@@ -93,14 +89,12 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
     mEmail.setText(sharedPreferences.getString(EMAIL_PREFERENCE_KEY, null));
     mGender.check(parseGenderFromSharedPreferences());
     mLanguage.setText(sharedPreferences.getString(LANGUAGE_PREFERENCE_KEY, null));
-    mAvatarImageUrl.setText(sharedPreferences.getString(AVATAR_PREFERENCE_KEY, null));
     mBirthday.setText(sharedPreferences.getString(BIRTHDAY_PREFERENCE_KEY, null));
 
     ButtonUtils.setUpPopulateButton(view, R.id.first_name_button, mFirstName, getSharedPreferences().getString(FIRST_NAME_PREFERENCE_KEY, SAMPLE_FIRST_NAME));
     ButtonUtils.setUpPopulateButton(view, R.id.last_name_button, mLastName, getSharedPreferences().getString(LAST_NAME_PREFERENCE_KEY, SAMPLE_LAST_NAME));
     ButtonUtils.setUpPopulateButton(view, R.id.email_button, mEmail, getSharedPreferences().getString(EMAIL_PREFERENCE_KEY, SAMPLE_EMAIL));
     ButtonUtils.setUpPopulateButton(view, R.id.language_button, mLanguage, getSharedPreferences().getString(LANGUAGE_PREFERENCE_KEY, SAMPLE_LANGUAGE));
-    ButtonUtils.setUpPopulateButton(view, R.id.avatar_image_url_button, mAvatarImageUrl, getSharedPreferences().getString(AVATAR_PREFERENCE_KEY, SAMPLE_AVATAR_URL));
 
     final Button populateButton = view.findViewById(R.id.user_dialog_button_populate);
     final Button clearButton = view.findViewById(R.id.user_dialog_button_clear);
@@ -141,7 +135,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
     mLastName.getText().clear();
     mEmail.getText().clear();
     mGender.check(R.id.unspecified);
-    mAvatarImageUrl.getText().clear();
     mBirthday.setText("");
     isBirthdaySet = false;
   }
@@ -162,9 +155,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
     if (mGender.getCheckedRadioButtonId() == R.id.unspecified) {
       mGender.check(SAMPLE_GENDER);
     }
-    if (mAvatarImageUrl.getText().length() == 0) {
-      mAvatarImageUrl.setText(getSharedPreferences().getString(AVATAR_PREFERENCE_KEY, SAMPLE_AVATAR_URL));
-    }
     if (mBirthday.getText().length() == 0) {
       mBirthday.setText(getSharedPreferences().getString(BIRTHDAY_PREFERENCE_KEY, SAMPLE_BIRTHDAY));
       isBirthdaySet = true;
@@ -180,7 +170,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
     View genderRadioButton = mGender.findViewById(genderResourceId);
     int genderId = mGender.indexOfChild(genderRadioButton);
     String language = mLanguage.getText().toString();
-    String avatarImageUrl = mAvatarImageUrl.getText().toString();
 
     BrazeUser brazeUser = Braze.getInstance(getContext()).getCurrentUser();
     SharedPreferences.Editor editor = getSharedPreferences().edit();
@@ -199,10 +188,6 @@ public class UserProfileDialog extends CustomDialogBase implements View.OnClickL
     if (!StringUtils.isNullOrBlank(email)) {
       editor.putString(EMAIL_PREFERENCE_KEY, email);
       brazeUser.setEmail(email);
-    }
-    if (!StringUtils.isNullOrBlank(avatarImageUrl)) {
-      editor.putString(AVATAR_PREFERENCE_KEY, avatarImageUrl);
-      brazeUser.setAvatarImageUrl(avatarImageUrl);
     }
     if (isBirthdaySet) {
       editor.putString(BIRTHDAY_PREFERENCE_KEY, getBirthday());

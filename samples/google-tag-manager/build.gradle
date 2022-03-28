@@ -10,6 +10,7 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1
     versionName "1.0"
+    multiDexEnabled true
   }
   buildTypes {
     release {
@@ -36,6 +37,7 @@ dependencies {
   }
   implementation "androidx.appcompat:appcompat:${ANDROIDX_APPCOMPAT_VERSION}"
   implementation "com.google.android.gms:play-services-tagmanager:${PLAY_SERVICES_TAG_MANAGER}"
+  implementation "androidx.multidex:multidex:${ANDROIDX_MULTIDEX_VERSION}"
 }
 
 apply plugin: 'com.google.gms.google-services'

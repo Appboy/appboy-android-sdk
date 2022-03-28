@@ -11,7 +11,6 @@ import com.braze.Braze
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.models.inappmessage.MessageButton
 import com.braze.support.BrazeLogger.brazelog
-import com.braze.support.BrazeLogger.getBrazeLogTag
 import com.braze.ui.activities.ContentCardsActivity
 import com.braze.ui.inappmessage.BrazeInAppMessageManager
 import com.braze.ui.inappmessage.InAppMessageOperation
@@ -35,7 +34,7 @@ class BrazeUnityActivityWrapper {
         Braze.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(unityConfigurationProvider))
         Braze.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(unityConfigurationProvider))
         Braze.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(unityConfigurationProvider))
-        brazelog(TAG) { "Finished onCreateCalled setup" }
+        brazelog { "Finished onCreateCalled setup" }
     }
 
     /**
@@ -166,9 +165,5 @@ class BrazeUnityActivityWrapper {
             unityConfigurationProvider = UnityConfigurationProvider(activity.applicationContext)
         }
         return unityConfigurationProvider
-    }
-
-    companion object {
-        private val TAG = getBrazeLogTag(BrazeUnityActivityWrapper::class.java)
     }
 }

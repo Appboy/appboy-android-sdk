@@ -110,7 +110,7 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
 
     // If this notification is a push story,
     // make a best effort to preload bitmap images into the cache.
-    BrazeNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(context, notificationExtras, payload.getBrazeExtras());
+    BrazeNotificationUtils.prefetchBitmapsIfNewlyReceivedStoryPush(payload);
 
     String notificationChannelId = BrazeNotificationUtils.getOrCreateNotificationChannelId(payload);
     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, notificationChannelId)
@@ -131,7 +131,7 @@ public class BrazeNotificationFactory implements IBrazeNotificationFactory {
 
     // Subtext, priority, notification actions, and styles were added in JellyBean.
     BrazeNotificationUtils.setSummaryTextIfPresentAndSupported(notificationBuilder, payload);
-    BrazeNotificationUtils.setPriorityIfPresentAndSupported(notificationBuilder, notificationExtras);
+    BrazeNotificationUtils.setPriorityIfPresentAndSupported(notificationBuilder, payload);
     BrazeNotificationStyleFactory.setStyleIfSupported(notificationBuilder, payload);
     BrazeNotificationActionUtils.addNotificationActions(notificationBuilder, payload);
 

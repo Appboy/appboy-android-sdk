@@ -14,7 +14,7 @@ import com.braze.support.StringUtils;
 
 public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard> {
   // This value will be the aspect ratio of the card on render.
-  private static final float DEFAULT_ASPECT_RATIO = 1f;
+  private static final float ASPECT_RATIO = 1f;
 
   public ShortNewsContentCardView(Context context) {
     super(context);
@@ -63,8 +63,7 @@ public class ShortNewsContentCardView extends BaseContentCardView<ShortNewsCard>
     setOptionalTextView(shortNewsCardViewHolder.getDescription(), card.getDescription());
     shortNewsCardViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
-    // Using the default aspect ratio here since the card doesn't specify an aspect ratio
-    setOptionalCardImage(shortNewsCardViewHolder.getImageView(), DEFAULT_ASPECT_RATIO, card.getImageUrl(), DEFAULT_ASPECT_RATIO, card);
+    setOptionalCardImage(shortNewsCardViewHolder.getImageView(), ASPECT_RATIO, card.getImageUrl(), card);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       safeSetClipToOutline(shortNewsCardViewHolder.getImageView());

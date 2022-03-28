@@ -22,7 +22,7 @@ import com.appboy.Constants
 import com.appboy.events.SimpleValueCallback
 import com.appboy.models.outgoing.AttributionData
 import com.appboy.sample.*
-import com.appboy.sample.imageloading.GlideAppboyImageLoader
+import com.appboy.sample.imageloading.GlideImageLoader
 import com.appboy.sample.logging.CustomEventDialog
 import com.appboy.sample.logging.CustomPurchaseDialog
 import com.appboy.sample.logging.CustomUserAttributeDialog
@@ -42,7 +42,7 @@ import com.braze.support.BrazeLogger.brazelog
 
 @SuppressLint("ApplySharedPref")
 class SettingsFragment : PreferenceFragmentCompat() {
-    private lateinit var glideAppboyImageLoader: IBrazeImageLoader
+    private lateinit var glideImageLoader: IBrazeImageLoader
     private lateinit var imageLoader: IBrazeImageLoader
     private lateinit var sharedPreferences: SharedPreferences
     private var requestPermissionLauncher =
@@ -58,7 +58,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         val context = this.requireContext()
 
-        glideAppboyImageLoader = GlideAppboyImageLoader()
+        glideImageLoader = GlideImageLoader()
         imageLoader = DefaultBrazeImageLoader(context)
         sharedPreferences = context.getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
 
@@ -220,7 +220,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setImageDisplayPrefs(context: Context) {
         setClickPreference("glide_image_loader_enable_setting_key") {
-            Braze.getInstance(context).imageLoader = glideAppboyImageLoader
+            Braze.getInstance(context).imageLoader = glideImageLoader
             showToast("Glide enabled")
         }
         setClickPreference("glide_image_loader_disable_setting_key") {
@@ -255,7 +255,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val cachedContentCards = Braze.getInstance(context).cachedContentCards
             if (cachedContentCards != null) {
                 for (card in cachedContentCards) {
-                    card.setIsDismissed(true)
+                    card.isDismissed = true
                 }
             }
         }

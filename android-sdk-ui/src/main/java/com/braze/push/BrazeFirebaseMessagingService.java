@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.appboy.BrazeInternal;
 import com.appboy.Constants;
 import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
@@ -22,11 +23,12 @@ public class BrazeFirebaseMessagingService extends FirebaseMessagingService {
   @Override
   public void onNewToken(@NonNull String newToken) {
     super.onNewToken(newToken);
-    if (StringUtils.isNullOrEmpty(Braze.getConfiguredApiKey(this))) {
+    BrazeInternal.applyPendingRuntimeConfiguration(this);
+    final BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(this);
+    if (StringUtils.isNullOrEmpty(Braze.getConfiguredApiKey(configurationProvider))) {
       BrazeLogger.v(TAG, "No configured API key, not registering token in onNewToken. Token: " + newToken);
       return;
     }
-    BrazeConfigurationProvider configurationProvider = new BrazeConfigurationProvider(this);
     if (!configurationProvider.isFirebaseMessagingServiceOnNewTokenRegistrationEnabled()) {
       BrazeLogger.v(TAG, "Automatic FirebaseMessagingService.OnNewToken() registration"
           + " disabled, not registering token: " + newToken);

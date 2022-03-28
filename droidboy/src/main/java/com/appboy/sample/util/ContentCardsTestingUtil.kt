@@ -36,17 +36,17 @@ class ContentCardsTestingUtil private constructor() {
 
             // Set the default fields
             val defaultMapping = mutableMapOf<String, Any>(
-                ccp.getKey(CardKey.ID)!! to getRandomString(),
-                ccp.getKey(CardKey.TYPE)!! to ccp.getServerKeyFromCardType(cardType)!!,
-                ccp.getKey(CardKey.VIEWED)!! to getRandomBoolean(),
-                ccp.getKey(CardKey.CREATED)!! to getNow(),
-                ccp.getKey(CardKey.EXPIRES_AT)!! to getNowPlusDelta(TimeUnit.DAYS, 30),
-                ccp.getKey(CardKey.OPEN_URI_IN_WEBVIEW)!! to getRandomBoolean(),
-                ccp.getKey(CardKey.DISMISSED)!! to false,
-                ccp.getKey(CardKey.REMOVED)!! to false,
-                ccp.getKey(CardKey.PINNED)!! to getRandomBoolean(),
-                ccp.getKey(CardKey.DISMISSIBLE)!! to getRandomBoolean(),
-                ccp.getKey(CardKey.IS_TEST)!! to true
+                ccp.getKey(CardKey.ID) to getRandomString(),
+                ccp.getKey(CardKey.TYPE) to ccp.getServerKeyFromCardType(cardType)!!,
+                ccp.getKey(CardKey.VIEWED) to getRandomBoolean(),
+                ccp.getKey(CardKey.CREATED) to getNow(),
+                ccp.getKey(CardKey.EXPIRES_AT) to getNowPlusDelta(TimeUnit.DAYS, 30),
+                ccp.getKey(CardKey.OPEN_URI_IN_WEBVIEW) to getRandomBoolean(),
+                ccp.getKey(CardKey.DISMISSED) to false,
+                ccp.getKey(CardKey.REMOVED) to false,
+                ccp.getKey(CardKey.PINNED) to getRandomBoolean(),
+                ccp.getKey(CardKey.DISMISSIBLE) to getRandomBoolean(),
+                ccp.getKey(CardKey.IS_TEST) to true
             )
 
             // Based on the card type, add new fields
@@ -58,25 +58,25 @@ class ContentCardsTestingUtil private constructor() {
                 CardType.BANNER -> {
                     defaultMapping.mergeWith(
                         mapOf(
-                            ccp.getKey(CardKey.BANNER_IMAGE_IMAGE)!! to randomImage.first,
-                            ccp.getKey(CardKey.BANNER_IMAGE_ASPECT_RATIO)!! to randomImage.second,
-                            ccp.getKey(CardKey.BANNER_IMAGE_URL)!! to CARD_URL
+                            ccp.getKey(CardKey.BANNER_IMAGE_IMAGE) to randomImage.first,
+                            ccp.getKey(CardKey.BANNER_IMAGE_ASPECT_RATIO) to randomImage.second,
+                            ccp.getKey(CardKey.BANNER_IMAGE_URL) to CARD_URL
                         )
                     )
                 }
                 CardType.CAPTIONED_IMAGE -> {
                     defaultMapping.mergeWith(
                         mapOf(
-                            ccp.getKey(CardKey.CAPTIONED_IMAGE_IMAGE)!! to randomImage.first,
-                            ccp.getKey(CardKey.CAPTIONED_IMAGE_ASPECT_RATIO)!! to randomImage.second,
-                            ccp.getKey(CardKey.CAPTIONED_IMAGE_TITLE)!! to title,
-                            ccp.getKey(CardKey.CAPTIONED_IMAGE_DESCRIPTION)!! to description
+                            ccp.getKey(CardKey.CAPTIONED_IMAGE_IMAGE) to randomImage.first,
+                            ccp.getKey(CardKey.CAPTIONED_IMAGE_ASPECT_RATIO) to randomImage.second,
+                            ccp.getKey(CardKey.CAPTIONED_IMAGE_TITLE) to title,
+                            ccp.getKey(CardKey.CAPTIONED_IMAGE_DESCRIPTION) to description
                         )
                     )
                     if (random.nextBoolean()) {
                         defaultMapping.mergeWith(
                             mapOf(
-                                ccp.getKey(CardKey.CAPTIONED_IMAGE_URL)!! to CARD_URL
+                                ccp.getKey(CardKey.CAPTIONED_IMAGE_URL) to CARD_URL
                             )
                         )
                     }
@@ -84,15 +84,15 @@ class ContentCardsTestingUtil private constructor() {
                 CardType.SHORT_NEWS -> {
                     defaultMapping.mergeWith(
                         mapOf(
-                            ccp.getKey(CardKey.SHORT_NEWS_IMAGE)!! to randomImage.first,
-                            ccp.getKey(CardKey.SHORT_NEWS_TITLE)!! to title,
-                            ccp.getKey(CardKey.SHORT_NEWS_DESCRIPTION)!! to description
+                            ccp.getKey(CardKey.SHORT_NEWS_IMAGE) to randomImage.first,
+                            ccp.getKey(CardKey.SHORT_NEWS_TITLE) to title,
+                            ccp.getKey(CardKey.SHORT_NEWS_DESCRIPTION) to description
                         )
                     )
                     if (random.nextBoolean()) {
                         defaultMapping.mergeWith(
                             mapOf(
-                                ccp.getKey(CardKey.SHORT_NEWS_URL)!! to CARD_URL
+                                ccp.getKey(CardKey.SHORT_NEWS_URL) to CARD_URL
                             )
                         )
                     }
@@ -100,14 +100,14 @@ class ContentCardsTestingUtil private constructor() {
                 CardType.TEXT_ANNOUNCEMENT -> {
                     defaultMapping.mergeWith(
                         mapOf(
-                            ccp.getKey(CardKey.TEXT_ANNOUNCEMENT_DESCRIPTION)!! to description,
-                            ccp.getKey(CardKey.TEXT_ANNOUNCEMENT_TITLE)!! to title
+                            ccp.getKey(CardKey.TEXT_ANNOUNCEMENT_DESCRIPTION) to description,
+                            ccp.getKey(CardKey.TEXT_ANNOUNCEMENT_TITLE) to title
                         )
                     )
                     if (random.nextBoolean()) {
                         defaultMapping.mergeWith(
                             mapOf(
-                                ccp.getKey(CardKey.TEXT_ANNOUNCEMENT_URL)!! to CARD_URL
+                                ccp.getKey(CardKey.TEXT_ANNOUNCEMENT_URL) to CARD_URL
                             )
                         )
                     }

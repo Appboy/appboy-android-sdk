@@ -100,6 +100,7 @@ public class BrazePushReceiver extends BroadcastReceiver {
         BrazeLogger.w(TAG, "Push action is null. Not handling intent: " + mIntent);
         return;
       }
+      BrazeInternal.applyPendingRuntimeConfiguration(mContext);
       switch (action) {
         case FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION:
         case Constants.APPBOY_STORY_TRAVERSE_CLICKED_ACTION:
@@ -177,7 +178,7 @@ public class BrazePushReceiver extends BroadcastReceiver {
 
   @VisibleForTesting
   static boolean handlePushNotificationPayload(Context context, Intent intent) {
-    if (!BrazeNotificationUtils.isAppboyPushMessage(intent)) {
+    if (!BrazeNotificationUtils.isBrazePushMessage(intent)) {
       return false;
     }
 
@@ -212,8 +213,9 @@ public class BrazePushReceiver extends BroadcastReceiver {
     }
 
     BrazeConfigurationProvider appConfigurationProvider = new BrazeConfigurationProvider(context);
+    BrazeNotificationPayload payload = createPayload(context, appConfigurationProvider, notificationExtras, brazeExtras);
     if (appConfigurationProvider.isInAppMessageTestPushEagerDisplayEnabled()
-        && BrazeNotificationUtils.isInAppMessageTestPush(intent)
+        && payload.getShouldFetchTestTriggers()
         && BrazeInAppMessageManager.getInstance().getActivity() != null) {
       // Pass this test in-app message along for eager display and bypass displaying a push
       BrazeLogger.d(TAG, "Bypassing push display due to test in-app message presence and "
@@ -222,7 +224,6 @@ public class BrazePushReceiver extends BroadcastReceiver {
       return false;
     }
 
-    BrazeNotificationPayload payload = createPayload(context, appConfigurationProvider, notificationExtras, brazeExtras);
 
     // Parse the notification for any associated ContentCard
     BrazeNotificationUtils.handleContentCardsSerializedCardIfPresent(payload);
@@ -262,7 +263,7 @@ public class BrazePushReceiver extends BroadcastReceiver {
     } else {
       BrazeLogger.d(TAG, "Received silent push");
       BrazeNotificationUtils.sendPushMessageReceivedBroadcast(context, notificationExtras);
-      BrazeNotificationUtils.requestGeofenceRefreshIfAppropriate(context, notificationExtras);
+      BrazeNotificationUtils.requestGeofenceRefreshIfAppropriate(payload);
       return false;
     }
   }

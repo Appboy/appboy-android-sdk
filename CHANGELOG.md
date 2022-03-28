@@ -1,3 +1,53 @@
+## 19.0.0
+
+##### Important
+- It is highly recommended to include the compiler flag `-Xjvm-default=all` in your Gradle build options due to the new use of default arguments in the SDK. Without this flag, you may see a compiler warning about "Inheritance from an interface with '@JvmDefault' members". An example is included below:
+
+```groovy
+  android {
+    kotlinOptions {
+      freeCompilerArgs = ['-Xjvm-default=all']
+      jvmTarget = "1.8"
+    }
+  }
+```
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v19.0.0)
+
+##### ⚠ Breaking
+- Modified behavior of `BrazeProperties(JSONObject)` when `Date` is part of JSONObject.
+  - Previously, Date objects in the JSONObject would be converted with the `Date.toString()` (e.g. "Thu Jan 01 03:15:33 CST 1970").
+  - Date objects in the JSONObject are now converted to `BrazeDateFormat.LONG` (e.g. "1970-01-01 09:15:33"). This behavior is consistent with `BrazeProperties.addProperty(Date)`.
+- Converted `IInAppMessage` to Kotlin and changed several methods to no longer allow for null inputs or return boolean statuses on field setters.
+  - `IInAppMessage.setClickAction()` is renamed to `setClickBehavior()` and now returns void.
+  - `MessageButton.setClickAction()` is renamed to `setClickBehavior()` and now returns void.
+  - `InAppMessageImmersiveBase.setMessageButtons()` no longer accepts null. Pass in an empty list to clear.
+- Converted `Card` to Kotlin, so JVM signatures may have changed.
+  - Removed `Card.isEqualToCard()`. Please use `card.equals(otherCard)` instead.
+  - Removed `Card.isRead()` and `Card.setIsRead()`. Please use `Card.isIndicatorHighlighted` (Kotlin) or `Card.isIndicatorHighlighted()` and `Card.setIndicatorHighlighted()` (Java).
+- Removed `com.appboy.AnimationUtils`, `com.appboy.ViewUtils`, `com.appboy.UriUtils`, `com.appboy.IAction`, `com.appboy.NewsfeedAction` and `com.appboy.UriAction` classes. The Braze namespaced classes remain.
+- `BrazeDeeplinkHandler.createUriActionFromUrlString()` and `BrazeDeeplinkHandler.createUriActionFromUri()` now require non-null values for uri/url and channel.
+  - `AppboyNavigator` has been removed in favor of `BrazeDeeplinkHandler`.
+- Removed `AppboyNotificationUtils` in favor of `BrazeNotificationUtils`.
+- Removed `AppboyLifecycleCallbackListener`. Please use `BrazeActivityLifecycleCallbackListener`.
+  - Removed `BrazeLifecycleCallbackListener.setInAppMessagingRegistrationBlacklist()` in favor of `BrazeLifecycleCallbackListener.setInAppMessagingRegistrationBlocklist()`. Removed `BrazeLifecycleCallbackListener.setSessionHandlingBlacklist()` in favor of `BrazeLifecycleCallbackListener.setSessionHandlingBlocklist()`.
+- Removed `AppboyContentCardsManager`. Please use `BrazeContentCardsManager` instead.
+- Removed `AppboyEmptyContentCardsAdapter`. Please use `EmptyContentCardsAdapter` instead.
+- Removed `BrazeUser.setAvatarImageUrl(String)`.
+
+##### Fixed
+- Fixed the startup behavior of the SDK to not perform caller thread blocking operations when setting up SharedPreferences and other disk reading I/O.
+- Fixed a potential issue where the default implementation of `Webview.onRenderProcessGone()` could lead to app crashes. Thanks to @ankitsingh08 for finding the issue.
+
+##### Changed
+- Added `BrazeProperties(Map<String, *>)` constructor.
+- Changed `Appboy.getConfiguredApiKey()` to accept a `BrazeConfigurationProvider` instead of a `Context` object.
+- Deprecated `AppboyBootReceiver`. Please use `BrazeBootReceiver` instead.
+- Deprecated `APPBOY_WEBVIEW_URL_EXTRA`. Please use `BRAZE_WEBVIEW_URL_EXTRA` instead.
+- Changed the SDK to not wake the screens of `Configuration.UI_MODE_TYPE_TELEVISION` devices when receiving push notifications.
+  - These screen types will not be awoken even if `isPushWakeScreenForNotificationEnabled()` is true and the permission `Manifest.permission.WAKE_LOCK` is granted.
+  - Special thanks to @IanGClifton for https://github.com/Appboy/appboy-android-sdk/pull/213.
+
 ## 18.0.1
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v18.0.1)
@@ -7,15 +57,29 @@
 
 ## 18.0.0
 
+##### Important
+- It is highly recommended to include the compiler flag `-Xjvm-default=all` in your Gradle build options due to the new use of default arguments in the SDK. Without this flag, you may see a compiler warning about "Inheritance from an interface with '@JvmDefault' members". An example is included below:
+
+```groovy
+  android {
+    kotlinOptions {
+      freeCompilerArgs = ['-Xjvm-default=all']
+      jvmTarget = "1.8"
+    }
+  }
+```
+
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v18.0.0)
+
+> This version has a known issue with HTML In-App Message which was fixed in v18.0.1
  
-#### Breaking
-- Removed `AppboyLruImageLoader` in favor of `DefaultBrazeImageLoader`
-  - `com.appboy.lrucache.AppboyLruImageLoader` -> `com.braze.images.DefaultBrazeImageLoader`
-  - `com.appboy.Appboy.getAppboyImageLoader` -> `com.appboy.Appboy.getImageLoader`
-  - `com.appboy.Appboy.setAppboyImageLoader` -> `com.appboy.Appboy.setImageLoader`
+##### ⚠ Breaking
+- Removed `AppboyLruImageLoader` in favor of `DefaultBrazeImageLoader`.
+  - `com.appboy.lrucache.AppboyLruImageLoader` -> `com.braze.images.DefaultBrazeImageLoader`.
+  - `com.appboy.Appboy.getAppboyImageLoader` -> `com.appboy.Appboy.getImageLoader`.
+  - `com.appboy.Appboy.setAppboyImageLoader` -> `com.appboy.Appboy.setImageLoader`.
 - Removed `IAppboyEndpointProvider` in favor of `IBrazeEndpointProvider`.
-    - If using `Braze.setAppboyEndpointProvider()` please use `Braze.setEndpointProvider()`
+    - If using `Braze.setAppboyEndpointProvider()` please use `Braze.setEndpointProvider()`.
    
 ##### Fixed
 - Fixed an issue introduced in 15.0.0 where Full in-app messages on tablets may have had an incorrect background color.
@@ -29,16 +93,18 @@
   - Use `BrazeInAppMessageManager.hideCurrentlyDisplayingInAppMessage()` to hide currently displayed in-app messages.
   - Use `IInAppMessage.setAnimateOut()` to set whether your in-app message should animate on close.
   - New version of `IInAppMessageManagerListener.onInAppMessageClicked()` and `IInAppMessageManagerListener.onInAppMessageButtonClicked()` that don't use `InAppMessageCloser` have been added.
-    - If you override the deprecated functions that use `InAppMessageCloser`, those will be called
-    - If you override the new functions and don't override the deprecated functions, the new functions will be called
+    - If you override the deprecated functions that use `InAppMessageCloser`, those will be called.
+    - If you override the new functions and don't override the deprecated functions, the new functions will be called.
 - Deprecated `ContentCardsUpdatedEvent.getLastUpdatedInSecondsFromEpoch`.
-    - Use `getTimestampSeconds()` (Java) or `timestampSeconds` (Kotlin)
+    - Use `getTimestampSeconds()` (Java) or `timestampSeconds` (Kotlin).
 
 ## 17.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v17.0.0)
 
-#### Breaking
+> This version has a known issue with HTML In-App Message which was fixed in v18.0.1
+
+##### ⚠ Breaking
 - `BrazeLogger.setLogLevel()` replaced with direct property setter `BrazeLogger.logLevel` for Kotlin.
 - Removed `AppboyLogger, com.appboy.IntentUtils, com.appboy.StringUtils` class. The Braze namespaced classes remain.
 - Removed `com_braze_locale_api_key_map` as a configuration option and `BrazeConfig.setLocaleToApiMapping()`. If you need to change your API key based on locale, please use `BrazeConfig` at runtime instead.
@@ -58,7 +124,7 @@
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v16.0.0)
 
-#### Breaking
+##### ⚠ Breaking
 - Removed `AppboyConfigurationProvider` in favor of `BrazeConfigurationProvider`.
   - Any deprecated usages, such as in the `IBrazeNotificationFactory` have also been removed.
 
@@ -82,7 +148,7 @@
 ##### Important
 - It is highly recommended to do extensive QA after updating to this release, especially for clients doing any amount of Content Card or In-App Message customizations.
 
-##### Breaking
+##### ⚠ Breaking
 - All Content Cards layout/drawables/colors/dimens identifiers containing `com_appboy_content_cards`/`com_appboy_content_card` were replaced with `com_braze_content_cards`/`com_braze_content_card` respectively.
   - Content Card drawables `icon_pinned, icon_read, icon_unread` are now `com_braze_content_card_icon_pinned, com_braze_content_card_icon_read, com_braze_content_card_icon_unread`.
 - All In-App Message layout/drawables/colors/dimens identifiers containing `com_appboy_inappmessage`/`com_appboy_in_app_message` replaced with `com_braze_inappmessage`.
@@ -150,7 +216,7 @@
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v14.0.0)
 
-##### Breaking
+##### ⚠ Breaking
 - Interface `IInAppMessageViewWrapperFactory` changed to use `BrazeConfigurationProvider`.
 - Interface `IAppboyImageLoader/IBrazeImageLoader` changed to use `com.braze.enums.BrazeViewBounds`.
 - Class `com.appboy.configuration.AppboyConfig` is now `com.braze.configuration.BrazeConfig`. The original class has been removed and old usages should be updated.

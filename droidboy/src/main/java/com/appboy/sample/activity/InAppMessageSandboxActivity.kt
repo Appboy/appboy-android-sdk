@@ -32,7 +32,7 @@ class InAppMessageSandboxActivity : AppCompatActivity() {
         val modal = InAppMessageModal()
         modal.header = "hello"
         modal.message = "world"
-        modal.imageUrl = getString(R.string.appboy_image_url_1600w_500h)
+        modal.remoteImageUrl = getString(R.string.appboy_image_url_1600w_500h)
         modal.dismissType = DismissType.MANUAL
 
         val rnd = Random()

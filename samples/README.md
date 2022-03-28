@@ -2,7 +2,7 @@
 
 # Samples
 
-To run a sample app, replace the placeholder value for `com_appboy_api_key` in the `src/main/res/values/braze.xml` file of the sample app you wish to run with your API key.
+To run a sample app, replace the placeholder value for `com_braze_api_key` in the `src/main/res/values/braze.xml` file of the sample app you wish to run with your API key.
 
 Next, run `./gradlew :samples:<sample-app-name>:installDebug` from the root directory of this repo, replacing `<sample-app-name>` with the project name of the app you'd like to run.
 

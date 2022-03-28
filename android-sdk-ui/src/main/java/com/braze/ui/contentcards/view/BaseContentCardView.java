@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 
 import com.appboy.models.cards.Card;
 import com.appboy.ui.R;
+import com.appboy.ui.widget.BaseCardView;
 import com.braze.ui.actions.IAction;
 import com.braze.ui.actions.UriAction;
-import com.appboy.ui.widget.BaseCardView;
 import com.braze.ui.contentcards.managers.BrazeContentCardsManager;
 
 /**
@@ -27,7 +27,7 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
   public abstract ContentCardViewHolder createViewHolder(ViewGroup viewGroup);
 
   public void bindViewHolder(ContentCardViewHolder viewHolder, final T card) {
-    viewHolder.setPinnedIconVisible(card.getIsPinned());
+    viewHolder.setPinnedIconVisible(card.isPinned());
     viewHolder.setUnreadBarVisible(mConfigurationProvider.isContentCardsUnreadVisualIndicatorEnabled() && !card.isIndicatorHighlighted());
     final UriAction mCardAction = getUriActionForCard(card);
     viewHolder.itemView.setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, getClassLogTag()));
@@ -42,19 +42,13 @@ public abstract class BaseContentCardView<T extends Card> extends BaseCardView<T
    * @param imageView          The ImageView
    * @param cardAspectRatio    The aspect ratio as set by the card itself
    * @param cardImageUrl       The image url
-   * @param defaultAspectRatio The default aspect ratio if the cardAspectRatio is 0
    * @param card               The card being rendered
    */
   public void setOptionalCardImage(@Nullable ImageView imageView,
                                    float cardAspectRatio,
                                    String cardImageUrl,
-                                   float defaultAspectRatio,
                                    Card card) {
-    float aspectRatio = defaultAspectRatio;
-
-    if (cardAspectRatio != 0f) {
-      aspectRatio = cardAspectRatio;
-    }
+    float aspectRatio = cardAspectRatio;
 
     if (imageView != null) {
       setImageViewToUrl(imageView, cardImageUrl, aspectRatio, card);

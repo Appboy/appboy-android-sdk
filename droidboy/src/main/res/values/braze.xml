@@ -2,8 +2,8 @@
 <resources>
   <!-- General configuration -->
   <!-- The API key is not shown to the user and thus we don't require that it be translated. -->
-  <string translatable="false" name="com_braze_api_key">da8f263e-1483-4e9f-ac0c-7b40030c8f40</string>
-  <string translatable="false" name="com_braze_server_target">STAGING</string>
+  <string translatable="false" name="com_braze_api_key">braze-sample-android</string>
+
   <!-- On GPRS and EDGE, allow a flush request up to every 30 seconds. (default is 60)  -->
   <integer name="com_braze_data_flush_interval_bad_network">30</integer>
   <!-- With a 3G connection, allow a flush request up to every 15 seconds. (default is 30) -->

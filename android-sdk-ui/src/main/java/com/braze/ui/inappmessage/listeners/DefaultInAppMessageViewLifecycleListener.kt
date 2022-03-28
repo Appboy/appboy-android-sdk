@@ -3,7 +3,6 @@ package com.braze.ui.inappmessage.listeners
 import android.net.Uri
 import android.view.View
 import com.appboy.enums.Channel
-import com.braze.IBrazeDeeplinkHandler
 import com.braze.coroutine.BrazeCoroutineScope
 import com.braze.enums.inappmessage.ClickAction
 import com.braze.models.inappmessage.IInAppMessage
@@ -155,7 +154,8 @@ open class DefaultInAppMessageViewLifecycleListener : IInAppMessageViewLifecycle
         clickUri: Uri?,
         openUriInWebview: Boolean
     ) {
-        if (inAppMessageManager.activity == null) {
+        val activity = inAppMessageManager.activity
+        if (activity == null) {
             brazelog(W) { "Can't perform click action because the cached activity is null." }
             return
         }
@@ -166,17 +166,27 @@ open class DefaultInAppMessageViewLifecycleListener : IInAppMessageViewLifecycle
                     inAppMessage.extras.toBundle(),
                     Channel.INAPP_MESSAGE
                 )
-                BrazeDeeplinkHandler.getInstance<IBrazeDeeplinkHandler>()
-                    .gotoNewsFeed(inAppMessageManager.activity, newsfeedAction)
+                BrazeDeeplinkHandler.getInstance()
+                    .gotoNewsFeed(activity, newsfeedAction)
             }
             ClickAction.URI -> {
                 inAppMessageCloser.close(false)
-                val uriAction = BrazeDeeplinkHandler.getInstance<IBrazeDeeplinkHandler>().createUriActionFromUri(
+                if (clickUri == null) {
+                    brazelog { "clickUri is null, not performing click action" }
+                    return
+                }
+                val uriAction = BrazeDeeplinkHandler.getInstance().createUriActionFromUri(
                     clickUri, inAppMessage.extras.toBundle(),
                     openUriInWebview, Channel.INAPP_MESSAGE
                 )
-                BrazeDeeplinkHandler.getInstance<IBrazeDeeplinkHandler>()
-                    .gotoUri(inAppMessageManager.activity, uriAction)
+
+                val appContext = inAppMessageManager.applicationContext
+                if (appContext == null) {
+                    brazelog { "appContext is null, not performing click action" }
+                    return
+                } else {
+                    BrazeDeeplinkHandler.getInstance().gotoUri(appContext, uriAction)
+                }
             }
             ClickAction.NONE -> inAppMessageCloser.close(inAppMessage.animateOut)
             else -> inAppMessageCloser.close(false)

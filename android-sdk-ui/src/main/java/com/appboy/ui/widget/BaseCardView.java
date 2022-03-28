@@ -86,13 +86,9 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
       return;
     }
 
-    if (placeholderAspectRatio == 0) {
-      BrazeLogger.w(TAG, "The image aspect ratio is 0. Not setting the card image.");
-      return;
-    }
-
     if (!imageUrl.equals(imageView.getTag(R.string.com_braze_image_resize_tag_key))) {
-      if (placeholderAspectRatio != SQUARE_ASPECT_RATIO) {
+      // If the campaign is using liquid, the aspect ratio could be unknown (0)
+      if (placeholderAspectRatio != SQUARE_ASPECT_RATIO && placeholderAspectRatio != 0) {
         // We need to set layout params on the imageView once its layout state is visible. To do this,
         // we obtain the imageView's observer and attach a listener on it for when the view's layout
         // occurs. At layout time, we set the imageView's size params based on the aspect ratio
@@ -169,6 +165,10 @@ public abstract class BaseCardView<T extends Card> extends RelativeLayout {
     Bundle extras = new Bundle();
     for (String key : card.getExtras().keySet()) {
       extras.putString(key, card.getExtras().get(key));
+    }
+    if (card.getUrl() == null) {
+      BrazeLogger.v(TAG, "Card URL is null, returning null for getUriActionForCard");
+      return null;
     }
     return BrazeDeeplinkHandler.getInstance().createUriActionFromUrlString(card.getUrl(), extras, card.getOpenUriInWebView(), Channel.NEWS_FEED);
   }

@@ -13,8 +13,9 @@ import com.braze.support.BrazeLogger.brazelog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class GlideAppboyImageLoader : IBrazeImageLoader {
+class GlideImageLoader : IBrazeImageLoader {
     private var requestOptions = RequestOptions()
+
     override fun renderUrlIntoCardView(
         context: Context,
         card: Card,

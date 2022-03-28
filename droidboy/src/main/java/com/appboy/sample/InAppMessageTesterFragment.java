@@ -367,7 +367,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
     ArrayList<MessageButton> messageButtons = new ArrayList<>();
     MessageButton buttonOne = new MessageButton();
     buttonOne.setText("NewsFeed");
-    buttonOne.setClickAction(ClickAction.NEWS_FEED);
+    buttonOne.setClickBehavior(ClickAction.NEWS_FEED);
     messageButtons.add(buttonOne);
     inAppMessage.setMessageButtons(messageButtons);
     addMessageButtons(inAppMessage);
@@ -389,7 +389,7 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private void addInAppMessageSlideup(InAppMessageSlideup inAppMessage) {
     inAppMessage.setMessage("Welcome to Braze! This is a slideup in-app message.");
     inAppMessage.setIcon("\uf091");
-    inAppMessage.setClickAction(ClickAction.NEWS_FEED);
+    inAppMessage.setClickBehavior(ClickAction.NEWS_FEED);
     setSlideFrom(inAppMessage);
     setChevronColor(inAppMessage);
   }
@@ -573,16 +573,16 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
   private boolean addClickAction(IInAppMessage inAppMessage) {
     // set click action if defined
     if ("newsfeed".equals(mClickAction)) {
-      inAppMessage.setClickAction(ClickAction.NEWS_FEED);
+      inAppMessage.setClickBehavior(ClickAction.NEWS_FEED);
     } else if ("uri".equals(mClickAction)) {
       if (SpinnerUtils.spinnerItemNotSet(mUri)) {
         Toast.makeText(getContext(), "Please choose a URI.", Toast.LENGTH_LONG).show();
         return false;
       } else {
-        inAppMessage.setClickAction(ClickAction.URI, Uri.parse(mUri));
+        inAppMessage.setClickBehavior(ClickAction.URI, Uri.parse(mUri));
       }
     } else if (getString(R.string.none).equals(mClickAction)) {
-      inAppMessage.setClickAction(ClickAction.NONE);
+      inAppMessage.setClickBehavior(ClickAction.NONE);
     }
     return true;
   }
@@ -655,12 +655,12 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
       // Add the first button
       switch (mButtons) {
         case "one":
-          buttonOne.setClickAction(ClickAction.NEWS_FEED);
+          buttonOne.setClickBehavior(ClickAction.NEWS_FEED);
           buttonOne.setText("News Feed");
           messageButtons.add(buttonOne);
           break;
         case "one_long":
-          buttonOne.setClickAction(ClickAction.NEWS_FEED);
+          buttonOne.setClickBehavior(ClickAction.NEWS_FEED);
           buttonOne.setText(getString(R.string.message_2400));
           messageButtons.add(buttonOne);
           break;
@@ -671,9 +671,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
         case "two":
         case "long":
           buttonOne.setText("No Webview");
-          buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
+          buttonOne.setClickBehavior(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
           buttonTwo.setText("Webview");
-          buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
+          buttonTwo.setClickBehavior(ClickAction.URI, Uri.parse(getResources().getString(R.string.braze_homepage_url)));
           buttonTwo.setOpenUriInWebview(true);
           if ("long".equals(mButtons)) {
             buttonOne.setText("No Webview WITH A VERY LONG TITLE");
@@ -684,9 +684,9 @@ public class InAppMessageTesterFragment extends Fragment implements AdapterView.
           break;
         case "deeplink":
           buttonOne.setText("TELEPHONE");
-          buttonOne.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.telephone_uri)));
+          buttonOne.setClickBehavior(ClickAction.URI, Uri.parse(getResources().getString(R.string.telephone_uri)));
           buttonTwo.setText("PLAY STORE");
-          buttonTwo.setClickAction(ClickAction.URI, Uri.parse(getResources().getString(R.string.play_store_uri)));
+          buttonTwo.setClickBehavior(ClickAction.URI, Uri.parse(getResources().getString(R.string.play_store_uri)));
           messageButtons.add(buttonOne);
           messageButtons.add(buttonTwo);
           break;

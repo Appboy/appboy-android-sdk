@@ -21,13 +21,14 @@ import android.util.Log
 import android.webkit.WebView
 import androidx.annotation.RequiresApi
 import androidx.multidex.MultiDex
-import com.appboy.events.BrazeSdkAuthenticationErrorEvent
 import com.appboy.support.PackageUtils
 import com.braze.Braze
 import com.braze.BrazeActivityLifecycleCallbackListener
 import com.braze.configuration.BrazeConfig
 import com.braze.enums.BrazeSdkMetadata
+import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.support.BrazeLogger
+import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.getPrettyPrintedString
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -45,16 +46,23 @@ class DroidboyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
-            activateStrictMode()
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true)
         }
-        val logLevel = applicationContext.getSharedPreferences(getString(R.string.log_level_dialog_title), Context.MODE_PRIVATE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            setupChatDynamicShortcut()
+        }
+
+        registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
+        setupNotificationChannels()
+        setupFirebaseCrashlytics()
+        BrazeLogger.logLevel = applicationContext.getSharedPreferences(getString(R.string.log_level_dialog_title), MODE_PRIVATE)
             .getInt(getString(R.string.current_log_level), Log.VERBOSE)
-        BrazeLogger.logLevel = logLevel
         val sharedPreferences = applicationContext.getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
+
+        if (BuildConfig.DEBUG) {
+            activateStrictMode()
+        }
         Braze.configure(this, null)
         val brazeConfigBuilder = BrazeConfig.Builder()
         brazeConfigBuilder.setSdkMetadata(EnumSet.of(BrazeSdkMetadata.MANUAL))
@@ -64,17 +72,9 @@ class DroidboyApplication : Application() {
         Braze.configure(this, brazeConfigBuilder.build())
         Braze.addSdkMetadata(this, EnumSet.of(BrazeSdkMetadata.BRANCH))
 
-        registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
-        setupNotificationChannels()
-        setupFirebaseCrashlytics()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            setupChatDynamicShortcut()
-        }
-
         if (isSdkAuthEnabled) {
             Braze.getInstance(applicationContext).subscribeToSdkAuthenticationFailures { message: BrazeSdkAuthenticationErrorEvent ->
-                brazelog(TAG) { "Got sdk auth error message $message" }
+                brazelog { "Got sdk auth error message $message" }
                 message.userId?.let { setNewSdkAuthToken(it) }
             }
             // Fire off an update to start off
@@ -114,29 +114,34 @@ class DroidboyApplication : Application() {
     private suspend fun getSdkAuthToken(userId: String): String? {
         if (!isSdkAuthEnabled) return null
 
-        return withContext(Dispatchers.IO) {
-            brazelog(TAG) { "Making new SDK Auth token request for user: '$userId'" }
+        try {
+            return withContext(Dispatchers.IO) {
+                brazelog(TAG) { "Making new SDK Auth token request for user: '$userId'" }
 
-            val url = URL(BuildConfig.SDK_AUTH_ENDPOINT)
-            val payload = JSONObject()
-                .put(
-                    "data",
-                    JSONObject()
-                        .put("user_id", userId)
-                )
+                val url = URL(BuildConfig.SDK_AUTH_ENDPOINT)
+                val payload = JSONObject()
+                    .put(
+                        "data",
+                        JSONObject()
+                            .put("user_id", userId)
+                    )
 
-            with(url.openConnection() as HttpURLConnection) {
-                TrafficStats.setThreadStatsTag(1337)
-                requestMethod = "POST"
-                addRequestProperty("Content-Type", "application/json")
-                addRequestProperty("Accept", "application/json")
+                with(url.openConnection() as HttpURLConnection) {
+                    TrafficStats.setThreadStatsTag(1337)
+                    requestMethod = "POST"
+                    addRequestProperty("Content-Type", "application/json")
+                    addRequestProperty("Accept", "application/json")
 
-                OutputStreamWriter(outputStream).use { out -> out.write(payload.toString()) }
+                    OutputStreamWriter(outputStream).use { out -> out.write(payload.toString()) }
 
-                val responseJson = JSONObject(inputStream.bufferedReader().readText())
-                brazelog(TAG) { "SDK auth callback got response: ${responseJson.getPrettyPrintedString()}" }
-                return@withContext responseJson.optJSONObject("data")?.optString("token")
+                    val responseJson = JSONObject(inputStream.bufferedReader().readText())
+                    brazelog(TAG) { "SDK auth callback got response: ${responseJson.getPrettyPrintedString()}" }
+                    return@withContext responseJson.optJSONObject("data")?.optString("token")
+                }
             }
+        } catch (e: Exception) {
+            brazelog(TAG, E, e) { "Failed to get SDK Auth token" }
+            return null
         }
     }
 
@@ -238,8 +243,6 @@ class DroidboyApplication : Application() {
         }
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
         StrictMode.setVmPolicy(vmPolicyBuilder.build())
-        StrictMode.allowThreadDiskReads()
-        StrictMode.allowThreadDiskWrites()
     }
 
     private fun setOverrideApiKeyIfConfigured(sharedPreferences: SharedPreferences, config: BrazeConfig.Builder) {
@@ -288,7 +291,7 @@ class DroidboyApplication : Application() {
                 overrideApiKeyInUse
             } else {
                 // Check if the api key is in resources
-                readStringResourceValue(context, "com_appboy_api_key", "NO-API-KEY-SET")
+                readStringResourceValue(context, "com_braze_api_key", "NO-API-KEY-SET")
             }
         }
 

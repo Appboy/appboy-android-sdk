@@ -86,24 +86,6 @@
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/avatar_image_url_button"
-                style="@style/BaseWidget.PopulateButton"
-                android:text="@string/user_dialog_avatar_image_url"/>
-
-            <EditText
-                android:id="@+id/avatar_image_url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_span="3"
-                android:singleLine="true"
-                android:inputType="textUri"/>
-        </TableRow>
-
-        <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

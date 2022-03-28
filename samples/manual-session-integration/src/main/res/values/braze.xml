@@ -2,6 +2,6 @@
 <resources>
   <!-- General configuration -->
   <!-- The API key is not shown to the user and thus we don't require that it be translated. -->
-  <string translatable="false" name="com_appboy_api_key">YOUR-APPBOY-API-KEY-HERE</string>
+  <string translatable="false" name="com_braze_api_key">YOUR-BRAZE-API-KEY-HERE</string>
 
 </resources>

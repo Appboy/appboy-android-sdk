@@ -12,10 +12,6 @@ import com.appboy.ui.R;
 import com.braze.support.StringUtils;
 
 public class CaptionedImageContentCardView extends BaseContentCardView<CaptionedImageCard> {
-  // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
-  // aspect ratio, then this value will be the aspect ratio of the card on render.
-  private static final float DEFAULT_ASPECT_RATIO = 4f / 3f;
-
   public CaptionedImageContentCardView(Context context) {
     super(context);
   }
@@ -62,7 +58,7 @@ public class CaptionedImageContentCardView extends BaseContentCardView<Captioned
     setOptionalTextView(captionedImageViewHolder.getDescription(), card.getDescription());
     captionedImageViewHolder.setActionHintText(StringUtils.isNullOrBlank(card.getDomain()) ? card.getUrl() : card.getDomain());
 
-    setOptionalCardImage(captionedImageViewHolder.getImageView(), card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO, card);
+    setOptionalCardImage(captionedImageViewHolder.getImageView(), card.getAspectRatio(), card.getImageUrl(), card);
     viewHolder.itemView.setContentDescription(card.getTitle() + " . " + card.getDescription());
   }
 }

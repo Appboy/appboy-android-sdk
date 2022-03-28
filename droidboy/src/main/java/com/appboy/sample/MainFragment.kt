@@ -145,7 +145,7 @@ class MainFragment : Fragment() {
         }
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_set_user_attributes_button) {
-            Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser?> {
+            Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser> {
                 override fun onSuccess(currentUser: BrazeUser) {
                     currentUser.setFirstName("first name least")
                     currentUser.setLastName("lastName")
@@ -156,7 +156,6 @@ class MainFragment : Fragment() {
                     currentUser.setHomeCity("New York")
                     currentUser.setPhoneNumber("1234567890")
                     currentUser.setDateOfBirth(1984, Month.AUGUST, 18)
-                    currentUser.setAvatarImageUrl("https://raw.githubusercontent.com/Appboy/appboy-android-sdk/master/braze-logo.png")
                     currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN)
                     currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN)
                     currentUser.setCustomUserAttribute(STRING_ATTRIBUTE_KEY, "stringValue")
@@ -204,7 +203,7 @@ class MainFragment : Fragment() {
         }
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_unset_user_attributes_button) {
-            Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser?> {
+            Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser> {
                 override fun onSuccess(currentUser: BrazeUser) {
                     // Unset current user default attributes
                     currentUser.setFirstName(null)
@@ -216,7 +215,6 @@ class MainFragment : Fragment() {
                     currentUser.setHomeCity(null)
                     currentUser.setPhoneNumber(null)
                     currentUser.setDateOfBirth(1970, Month.JANUARY, 1)
-                    currentUser.setAvatarImageUrl(null)
                     currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED)
                     currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED)
                     // Unset current user custom attributes
@@ -301,7 +299,7 @@ class MainFragment : Fragment() {
     private fun handleAliasClick() {
         val alias = aliasEditText.text.toString()
         val label = aliasLabelEditText.text.toString()
-        Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser?> {
+        Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser> {
             override fun onSuccess(value: BrazeUser) {
                 value.addAlias(alias, label)
                 Toast.makeText(

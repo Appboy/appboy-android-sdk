@@ -8,18 +8,15 @@ import android.widget.ImageView;
 
 import com.appboy.models.cards.Card;
 import com.appboy.ui.R;
-import com.braze.ui.actions.IAction;
 import com.appboy.ui.feed.AppboyFeedManager;
 import com.appboy.ui.widget.BaseCardView;
 import com.braze.support.BrazeLogger;
-
-import java.util.Observable;
-import java.util.Observer;
+import com.braze.ui.actions.IAction;
 
 /**
  * Base class for Appboy feed card views
  */
-public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> implements Observer {
+public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> {
   private static final String TAG = BrazeLogger.getBrazeLogTag(BaseCardView.class);
 
   public BaseFeedCardView(Context context) {
@@ -61,16 +58,11 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> i
   /**
    * This method is called when the setRead() method is called on the internal Card object.
    */
-  @Override
-  public void update(Observable observable, Object data) {
-    setCardViewedIndicator(mImageSwitcher, getCard());
-  }
 
   public void setCard(final T card) {
     mCard = card;
     onSetCard(card);
-    // Register as an observer to the card class
-    card.addObserver(this);
+    card.setListener(() -> setCardViewedIndicator(mImageSwitcher, getCard()));
     setCardViewedIndicator(mImageSwitcher, getCard());
   }
 

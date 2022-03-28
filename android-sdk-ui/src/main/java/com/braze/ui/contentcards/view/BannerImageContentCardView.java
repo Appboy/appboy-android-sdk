@@ -10,10 +10,6 @@ import com.appboy.models.cards.BannerImageCard;
 import com.appboy.ui.R;
 
 public class BannerImageContentCardView extends BaseContentCardView<BannerImageCard> {
-  // We set this card's aspect ratio here as a first guess. If the server doesn't send down an
-  // aspect ratio, then this value will be the aspect ratio of the card on render.
-  private static final float DEFAULT_ASPECT_RATIO = 6f;
-
   public BannerImageContentCardView(Context context) {
     super(context);
   }
@@ -43,6 +39,6 @@ public class BannerImageContentCardView extends BaseContentCardView<BannerImageC
   public void bindViewHolder(ContentCardViewHolder viewHolder, BannerImageCard card) {
     super.bindViewHolder(viewHolder, card);
     ViewHolder bannerImageViewHolder = (ViewHolder) viewHolder;
-    setOptionalCardImage(bannerImageViewHolder.getImageView(), card.getAspectRatio(), card.getImageUrl(), DEFAULT_ASPECT_RATIO, card);
+    setOptionalCardImage(bannerImageViewHolder.getImageView(), card.getAspectRatio(), card.getImageUrl(), card);
   }
 }

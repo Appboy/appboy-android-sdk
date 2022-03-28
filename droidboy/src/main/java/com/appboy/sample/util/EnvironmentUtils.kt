@@ -13,7 +13,6 @@ import com.braze.support.BrazeLogger.Priority.I
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.appboy.sample.DroidboyApplication
-import com.braze.support.BrazeLogger
 import com.braze.support.BrazeLogger.brazelog
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -22,8 +21,6 @@ import com.google.mlkit.vision.common.InputImage
 
 class EnvironmentUtils private constructor() {
     companion object {
-        private val TAG = BrazeLogger.getBrazeLogTag(EnvironmentUtils::class.java)
-
         private const val BRAZE_ENVIRONMENT_DEEPLINK_SCHEME_PATH = "braze://environment"
         private const val BRAZE_ENVIRONMENT_DEEPLINK_ENDPOINT = "endpoint"
         private const val BRAZE_ENVIRONMENT_DEEPLINK_API_KEY = "api_key"
@@ -50,7 +47,7 @@ class EnvironmentUtils private constructor() {
                         }
                     }
                 }
-                .addOnFailureListener { e: Exception -> brazelog(TAG, E, e) { "Failed to parse barcode bitmap" } }
+                .addOnFailureListener { e: Exception -> brazelog(E, e) { "Failed to parse barcode bitmap" } }
                 .addOnCompleteListener { bitmap.recycle() }
         }
 

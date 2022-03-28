@@ -22,6 +22,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:${KOTLIN_VERSION}"
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${KOTLIN_COROUTINES_VERSION}")
   implementation "androidx.lifecycle:lifecycle-runtime-ktx:${KOTLIN_LIFECYCLE_RUNTIME_KTX_VERSION}"
+  implementation "androidx.multidex:multidex:${ANDROIDX_MULTIDEX_VERSION}"
 }
 
 android {
@@ -50,5 +51,10 @@ android {
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    freeCompilerArgs = ['-Xjvm-default=all']
+    jvmTarget = "1.8"
   }
 }

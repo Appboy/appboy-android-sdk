@@ -236,7 +236,7 @@ public class DroidBoyActivity extends AppCompatActivity implements FeedCategorie
     }
     ((TextView) findViewById(R.id.toolbar_info_endpoint)).setText("endpoint: " + endpoint);
 
-    final String configuredApiKey = Braze.getConfiguredApiKey(this);
+    final String configuredApiKey = Braze.getConfiguredApiKey(configurationProvider);
     ((TextView) findViewById(R.id.toolbar_info_api_key)).setText("current api key: " + configuredApiKey);
   }
 

@@ -56,10 +56,7 @@ public class CaptionedImageCardView extends BaseFeedCardView<CaptionedImageCard>
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = getUriActionForCard(card);
     setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
-
-    if (card.getAspectRatio() != 0f) {
-      mAspectRatio = card.getAspectRatio();
-    }
+    mAspectRatio = card.getAspectRatio();
     setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, mCard);
   }
 }

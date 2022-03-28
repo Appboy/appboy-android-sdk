@@ -31,9 +31,9 @@ import java.util.Set;
  * <p/>
  * IMPORTANT - When you add a new card, be sure to add the new view type and update the view count here
  * <p/>
- * A card generates an impression once per viewing per open ListView. If a card is viewed more than once
- * in a particular ListView, it generates only one impression. If closed an reopened, a card will again
- * generate an impression. This also takes into account the case of a card being off-screen in the ListView.
+ * A card generates an impression once per viewing per open ListView. If a card is viewed more than once
+ * in a particular ListView, it generates only one impression. If closed an reopened, a card will again
+ * generate an impression. This also takes into account the case of a card being off-screen in the ListView.
  * The card only generates an impression when it actually scrolls onto the screen.
  * <p/>
  * IMPORTANT - You must call resetCardImpressionTracker() whenever the ListView is displayed. This will ensure
