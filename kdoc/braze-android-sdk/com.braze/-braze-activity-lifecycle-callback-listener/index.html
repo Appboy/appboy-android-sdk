@@ -22,90 +22,55 @@
           </div>
           <div class="cover ">
             <h1 class="cover"><span>Braze</span><wbr></wbr><span>Activity</span><wbr></wbr><span>Lifecycle</span><wbr></wbr><span>Callback</span><wbr></wbr><span>Listener</span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="index.html">BrazeActivityLifecycleCallbackListener</a> : <a href="https://developer.android.com/reference/kotlin/android/app/Application.ActivityLifecycleCallbacks.html">Application.ActivityLifecycleCallbacks</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Can be used to automatically handle Braze lifecycle methods. Optionally, openSession() and closeSession() are called on onActivityStarted and onActivityStopped respectively. The InAppMessageManager methods of registerInAppMessageManager() and unregisterInAppMessageManager() can be optionally called here as well. Note: This callback should not be set in any Activity. It must be set in the Application class of your app.</p></div></div>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="index.html">BrazeActivityLifecycleCallbackListener</a> <span>@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a>() </span>constructor(sessionHandlingEnabled: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>, registerInAppMessageManager: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>, inAppMessagingRegistrationBlocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;?, sessionHandlingBlocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;?) : <a href="https://developer.android.com/reference/kotlin/android/app/Application.ActivityLifecycleCallbacks.html">Application.ActivityLifecycleCallbacks</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Can be used to automatically handle Braze lifecycle methods. Optionally, openSession() and closeSession() are called on onActivityStarted and onActivityStopped respectively. The InAppMessageManager methods of registerInAppMessageManager() and unregisterInAppMessageManager() can be optionally called here as well. Note: This callback should not be set in any Activity. It must be set in the Application class of your app.</p></div></div>
           </div>
           <div class="tabbedcontent">
-            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Parameters">Parameters</button></div>
             <div class="tabs-section-body">
+              <h2 class="">Parameters</h2>
+              <div data-togglable="Parameters">
+                <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">sessionHandlingEnabled</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">When true, handles calling openSession and closeSession in onActivityStarted and onActivityStopped respectively.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">registerInAppMessageManager</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">When true, registers and unregisters the <a href="../../com.braze.ui.inappmessage/-braze-in-app-message-manager/index.html">BrazeInAppMessageManager</a> in <a href="https://developer.android.com/reference/kotlin/android/app/Application.ActivityLifecycleCallbacks.html#onactivityresumed">Application.ActivityLifecycleCallbacks.onActivityResumed</a> and <a href="https://developer.android.com/reference/kotlin/android/app/Application.ActivityLifecycleCallbacks.html#onactivitypaused">Application.ActivityLifecycleCallbacks.onActivityPaused</a> respectively.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">inAppMessagingRegistrationBlocklist</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">A set of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>s for which in-app message registration will not occur. Each class should be retrieved via Activity.getClass. If null, an empty set is used instead.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">sessionHandlingBlocklist</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">A set of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>s for which session handling will not occur. Each class should be retrieved via Activity.getClass. If null, an empty set is used instead.</p></div></div></div></div></div></div></div></div></div>
+              </div>
               <h2 class="tabbedcontent">Constructors</h2>
-              <div class="table" data-togglable="Constructors"><a data-name="-1682145170%2FConstructors%2F-1725759721" anchor-label="BrazeActivityLifecycleCallbackListener" id="-1682145170%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+              <div class="table" data-togglable="Constructors"><a data-name="-411407279%2FConstructors%2F-1725759721" anchor-label="BrazeActivityLifecycleCallbackListener" id="-411407279%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1682145170%2FConstructors%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-411407279%2FConstructors%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">A default constructor equivalent to calling BrazeActivityLifecycleCallbackListener(true, true, Collections.</div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a>()</div></div>fun <a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a>(inAppMessagingRegistrationBlocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;?, sessionHandlingBlocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;? = emptySet&lt;Class&lt;*&gt;&gt;())<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Constructor that sets a blocklist for session handling and <a href="../../com.braze.ui.inappmessage/-braze-in-app-message-manager/index.html">BrazeInAppMessageManager</a> registration while also enabling both features.</div></div></div>
                       </div>
                     </div>
                   </div>
                 </div>
-<a data-name="1373888679%2FConstructors%2F-1725759721" anchor-label="BrazeActivityLifecycleCallbackListener" id="1373888679%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+<a data-name="434673681%2FConstructors%2F-1725759721" anchor-label="BrazeActivityLifecycleCallbackListener" id="434673681%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1373888679%2FConstructors%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="434673681%2FConstructors%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a>(sessionHandlingEnabled: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>, registerInAppMessageManager: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">When true, handles calling openSession and closeSession in <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#846716992%2FFunctions%2F-1725759721">onActivityStarted</a> (Activity)} and <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-2088682892%2FFunctions%2F-1725759721">onActivityStopped</a> (Activity)} respectively.</div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1544168035%2FConstructors%2F-1725759721" anchor-label="BrazeActivityLifecycleCallbackListener" id="-1544168035%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1544168035%2FConstructors%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>() </span>inAppMessagingRegistrationBlocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;, <span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>() </span>sessionHandlingBlocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Constructor that sets a blocklist for session handling and <a href="../../com.braze.ui.inappmessage/-braze-in-app-message-manager/index.html">BrazeInAppMessageManager</a> registration while also enabling both features.</div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-443884633%2FConstructors%2F-1725759721" anchor-label="BrazeActivityLifecycleCallbackListener" id="-443884633%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-443884633%2FConstructors%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>() </span>inAppMessagingRegistrationBlocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Constructor that only sets a blocklist for <a href="../../com.braze.ui.inappmessage/-braze-in-app-message-manager/index.html">BrazeInAppMessageManager</a> registration and enables <a href="../../com.braze.ui.inappmessage/-braze-in-app-message-manager/index.html">BrazeInAppMessageManager</a> registration.</div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1672517869%2FConstructors%2F-1725759721" anchor-label="BrazeActivityLifecycleCallbackListener" id="-1672517869%2FConstructors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1672517869%2FConstructors%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a>(sessionHandlingEnabled: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>, registerInAppMessageManager: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>, <span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>() </span>inAppMessagingRegistrationBlocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;, <span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html">Nullable</a>() </span>sessionHandlingBlocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">When true, handles calling openSession and closeSession in onActivityStarted and onActivityStopped respectively.</div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a>()</div></div>fun <a href="-braze-activity-lifecycle-callback-listener.html">BrazeActivityLifecycleCallbackListener</a>(sessionHandlingEnabled: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a> = true, registerInAppMessageManager: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a> = true, inAppMessagingRegistrationBlocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;? = emptySet&lt;Class&lt;*&gt;&gt;(), sessionHandlingBlocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;? = emptySet&lt;Class&lt;*&gt;&gt;())<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">When true, handles calling openSession and closeSession in onActivityStarted and onActivityStopped respectively.</div></div></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="2073076309%2FFunctions%2F-1725759721" anchor-label="onActivityCreated" id="2073076309%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+              <div class="table" data-togglable="Functions"><a data-name="873250606%2FFunctions%2F-1725759721" anchor-label="onActivityCreated" id="873250606%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="on-activity-created.html">onActivityCreated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2073076309%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="on-activity-created.html">onActivityCreated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="873250606%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="on-activity-created.html">onActivityCreated</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, bundle: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="on-activity-created.html">onActivityCreated</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, bundle: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>?)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -122,7 +87,7 @@
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="on-activity-destroyed.html">onActivityDestroyed</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="on-activity-destroyed.html">onActivityDestroyed</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -139,24 +104,24 @@
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="on-activity-paused.html">onActivityPaused</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="on-activity-paused.html">onActivityPaused</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
                     </div>
                   </div>
                 </div>
-<a data-name="-857890865%2FFunctions%2F-1725759721" anchor-label="onActivityPostCreated" id="-857890865%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+<a data-name="207581428%2FFunctions%2F-1725759721" anchor-label="onActivityPostCreated" id="207581428%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-857890865%2FFunctions%2F-1725759721">onActivityPostCreated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-857890865%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#207581428%2FFunctions%2F-1725759721">onActivityPostCreated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="207581428%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-857890865%2FFunctions%2F-1725759721">onActivityPostCreated</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, savedInstanceState: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#207581428%2FFunctions%2F-1725759721">onActivityPostCreated</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, p1: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>?)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -166,14 +131,14 @@
 <a data-name="-889937112%2FFunctions%2F-1725759721" anchor-label="onActivityPostDestroyed" id="-889937112%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-889937112%2FFunctions%2F-1725759721">onActivityPostDestroyed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-889937112%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-889937112%2FFunctions%2F-1725759721">onActivityPostDestroyed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-889937112%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-889937112%2FFunctions%2F-1725759721">onActivityPostDestroyed</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-889937112%2FFunctions%2F-1725759721">onActivityPostDestroyed</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -183,14 +148,14 @@
 <a data-name="45748501%2FFunctions%2F-1725759721" anchor-label="onActivityPostPaused" id="45748501%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#45748501%2FFunctions%2F-1725759721">onActivityPostPaused</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="45748501%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#45748501%2FFunctions%2F-1725759721">onActivityPostPaused</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="45748501%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#45748501%2FFunctions%2F-1725759721">onActivityPostPaused</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#45748501%2FFunctions%2F-1725759721">onActivityPostPaused</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -200,14 +165,14 @@
 <a data-name="-1071244310%2FFunctions%2F-1725759721" anchor-label="onActivityPostResumed" id="-1071244310%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-1071244310%2FFunctions%2F-1725759721">onActivityPostResumed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1071244310%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-1071244310%2FFunctions%2F-1725759721">onActivityPostResumed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1071244310%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-1071244310%2FFunctions%2F-1725759721">onActivityPostResumed</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1071244310%2FFunctions%2F-1725759721">onActivityPostResumed</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -217,14 +182,14 @@
 <a data-name="2121633432%2FFunctions%2F-1725759721" anchor-label="onActivityPostSaveInstanceState" id="2121633432%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#2121633432%2FFunctions%2F-1725759721">onActivityPostSaveInstanceState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2121633432%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#2121633432%2FFunctions%2F-1725759721">onActivityPostSaveInstanceState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2121633432%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#2121633432%2FFunctions%2F-1725759721">onActivityPostSaveInstanceState</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, outState: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#2121633432%2FFunctions%2F-1725759721">onActivityPostSaveInstanceState</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, p1: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -234,14 +199,14 @@
 <a data-name="2066048384%2FFunctions%2F-1725759721" anchor-label="onActivityPostStarted" id="2066048384%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#2066048384%2FFunctions%2F-1725759721">onActivityPostStarted</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2066048384%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#2066048384%2FFunctions%2F-1725759721">onActivityPostStarted</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2066048384%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#2066048384%2FFunctions%2F-1725759721">onActivityPostStarted</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#2066048384%2FFunctions%2F-1725759721">onActivityPostStarted</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -251,31 +216,31 @@
 <a data-name="-869351500%2FFunctions%2F-1725759721" anchor-label="onActivityPostStopped" id="-869351500%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-869351500%2FFunctions%2F-1725759721">onActivityPostStopped</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-869351500%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-869351500%2FFunctions%2F-1725759721">onActivityPostStopped</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-869351500%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-869351500%2FFunctions%2F-1725759721">onActivityPostStopped</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-869351500%2FFunctions%2F-1725759721">onActivityPostStopped</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
                     </div>
                   </div>
                 </div>
-<a data-name="651923380%2FFunctions%2F-1725759721" anchor-label="onActivityPreCreated" id="651923380%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+<a data-name="-232817233%2FFunctions%2F-1725759721" anchor-label="onActivityPreCreated" id="-232817233%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#651923380%2FFunctions%2F-1725759721">onActivityPreCreated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="651923380%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-232817233%2FFunctions%2F-1725759721">onActivityPreCreated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-232817233%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#651923380%2FFunctions%2F-1725759721">onActivityPreCreated</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, savedInstanceState: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-232817233%2FFunctions%2F-1725759721">onActivityPreCreated</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, p1: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>?)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -285,14 +250,14 @@
 <a data-name="651230477%2FFunctions%2F-1725759721" anchor-label="onActivityPreDestroyed" id="651230477%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#651230477%2FFunctions%2F-1725759721">onActivityPreDestroyed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="651230477%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#651230477%2FFunctions%2F-1725759721">onActivityPreDestroyed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="651230477%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#651230477%2FFunctions%2F-1725759721">onActivityPreDestroyed</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#651230477%2FFunctions%2F-1725759721">onActivityPreDestroyed</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -302,14 +267,14 @@
 <a data-name="-240809648%2FFunctions%2F-1725759721" anchor-label="onActivityPrePaused" id="-240809648%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-240809648%2FFunctions%2F-1725759721">onActivityPrePaused</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-240809648%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-240809648%2FFunctions%2F-1725759721">onActivityPrePaused</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-240809648%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-240809648%2FFunctions%2F-1725759721">onActivityPrePaused</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-240809648%2FFunctions%2F-1725759721">onActivityPrePaused</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -319,14 +284,14 @@
 <a data-name="-1364612337%2FFunctions%2F-1725759721" anchor-label="onActivityPreResumed" id="-1364612337%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-1364612337%2FFunctions%2F-1725759721">onActivityPreResumed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1364612337%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-1364612337%2FFunctions%2F-1725759721">onActivityPreResumed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1364612337%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-1364612337%2FFunctions%2F-1725759721">onActivityPreResumed</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1364612337%2FFunctions%2F-1725759721">onActivityPreResumed</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -336,14 +301,14 @@
 <a data-name="-207051715%2FFunctions%2F-1725759721" anchor-label="onActivityPreSaveInstanceState" id="-207051715%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-207051715%2FFunctions%2F-1725759721">onActivityPreSaveInstanceState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-207051715%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-207051715%2FFunctions%2F-1725759721">onActivityPreSaveInstanceState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-207051715%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-207051715%2FFunctions%2F-1725759721">onActivityPreSaveInstanceState</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, outState: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-207051715%2FFunctions%2F-1725759721">onActivityPreSaveInstanceState</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, p1: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -353,14 +318,14 @@
 <a data-name="1772680357%2FFunctions%2F-1725759721" anchor-label="onActivityPreStarted" id="1772680357%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#1772680357%2FFunctions%2F-1725759721">onActivityPreStarted</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1772680357%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#1772680357%2FFunctions%2F-1725759721">onActivityPreStarted</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1772680357%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#1772680357%2FFunctions%2F-1725759721">onActivityPreStarted</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#1772680357%2FFunctions%2F-1725759721">onActivityPreStarted</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -370,14 +335,14 @@
 <a data-name="-1162719527%2FFunctions%2F-1725759721" anchor-label="onActivityPreStopped" id="-1162719527%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-1162719527%2FFunctions%2F-1725759721">onActivityPreStopped</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1162719527%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="index.html#-1162719527%2FFunctions%2F-1725759721">onActivityPreStopped</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1162719527%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html#-1162719527%2FFunctions%2F-1725759721">onActivityPreStopped</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#-1162719527%2FFunctions%2F-1725759721">onActivityPreStopped</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -394,7 +359,7 @@
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="on-activity-resumed.html">onActivityResumed</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="on-activity-resumed.html">onActivityResumed</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -411,7 +376,7 @@
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="on-activity-save-instance-state.html">onActivitySaveInstanceState</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, <span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>bundle: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="on-activity-save-instance-state.html">onActivitySaveInstanceState</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, bundle: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -428,7 +393,7 @@
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="on-activity-started.html">onActivityStarted</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="on-activity-started.html">onActivityStarted</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
@@ -445,90 +410,62 @@
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="on-activity-stopped.html">onActivityStopped</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="on-activity-stopped.html">onActivityStopped</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
 </div>
 </div>
                     </div>
                   </div>
                 </div>
-<a data-name="-143330007%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlacklist" id="-143330007%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+<a data-name="-310660355%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlocklist" id="-310660355%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="set-in-app-messaging-registration-blacklist.html">setInAppMessagingRegistrationBlacklist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-143330007%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="set-in-app-messaging-registration-blocklist.html">setInAppMessagingRegistrationBlocklist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-310660355%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace strikethrough"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/java/lang/Deprecated.html">Deprecated</a>()</div></div>open fun <a href="set-in-app-messaging-registration-blacklist.html">setInAppMessagingRegistrationBlacklist</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>blocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">fun <a href="set-in-app-messaging-registration-blocklist.html">setInAppMessagingRegistrationBlocklist</a>(blocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
-<a data-name="-143330007%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlacklist" id="-143330007%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-143330007%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlacklist" id="-143330007%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Please use <a href="set-in-app-messaging-registration-blocklist.html">setInAppMessagingRegistrationBlocklist</a></div></div>
+<a data-name="-310660355%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlocklist" id="-310660355%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-310660355%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlocklist" id="-310660355%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Sets the Activity.</div></div>
 </div>
                     </div>
                   </div>
                 </div>
-<a data-name="938313015%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlocklist" id="938313015%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+<a data-name="-1849409767%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlocklist" id="-1849409767%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="set-in-app-messaging-registration-blocklist.html">setInAppMessagingRegistrationBlocklist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="938313015%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="set-session-handling-blocklist.html">setSessionHandlingBlocklist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1849409767%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="set-in-app-messaging-registration-blocklist.html">setInAppMessagingRegistrationBlocklist</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>blocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">fun <a href="set-session-handling-blocklist.html">setSessionHandlingBlocklist</a>(blocklist: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;*&gt;?&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
-<a data-name="938313015%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlocklist" id="938313015%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="938313015%2FFunctions%2F-1725759721" anchor-label="setInAppMessagingRegistrationBlocklist" id="938313015%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Sets the <a href="https://developer.android.com/reference/kotlin/java/lang/Object.html#getclass">getClass</a> blocklist for which in-app message registration will not occur.</div></div>
+<a data-name="-1849409767%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlocklist" id="-1849409767%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1849409767%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlocklist" id="-1849409767%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Sets the Activity.</div></div>
 </div>
                     </div>
                   </div>
                 </div>
-<a data-name="-1776503739%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlacklist" id="-1776503739%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+<a data-name="-1627630288%2FFunctions%2F-1725759721" anchor-label="shouldHandleLifecycleMethodsInActivity" id="-1627630288%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="set-session-handling-blacklist.html">setSessionHandlingBlacklist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1776503739%2FFunctions%2F-1725759721"></span>
+                    <div class=""><span class="inline-flex"><a href="should-handle-lifecycle-methods-in-activity.html">shouldHandleLifecycleMethodsInActivity</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1627630288%2FFunctions%2F-1725759721"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
 
   <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace strikethrough"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/java/lang/Deprecated.html">Deprecated</a>()</div></div>open fun <a href="set-session-handling-blacklist.html">setSessionHandlingBlacklist</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>blocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">fun <a href="should-handle-lifecycle-methods-in-activity.html">shouldHandleLifecycleMethodsInActivity</a>(activity: <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>, forSessionHandling: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
-<a data-name="-1776503739%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlacklist" id="-1776503739%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1776503739%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlacklist" id="-1776503739%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Please use <a href="set-session-handling-blocklist.html">setSessionHandlingBlocklist</a></div></div>
+<a data-name="-1627630288%2FFunctions%2F-1725759721" anchor-label="shouldHandleLifecycleMethodsInActivity" id="-1627630288%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1627630288%2FFunctions%2F-1725759721" anchor-label="shouldHandleLifecycleMethodsInActivity" id="-1627630288%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Determines if this <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> should be ignored for the purposes of session tracking or in-app message registration.</div></div>
 </div>
                     </div>
-                  </div>
-                </div>
-<a data-name="-694860717%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlocklist" id="-694860717%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="set-session-handling-blocklist.html">setSessionHandlingBlocklist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-694860717%2FFunctions%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open fun <a href="set-session-handling-blocklist.html">setSessionHandlingBlocklist</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>() </span>blocklist: <a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a>&lt;<a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a>&lt;out <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="-694860717%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlocklist" id="-694860717%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-694860717%2FFunctions%2F-1725759721" anchor-label="setSessionHandlingBlocklist" id="-694860717%2FFunctions%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Sets the <a href="https://developer.android.com/reference/kotlin/java/lang/Object.html#getclass">getClass</a> blocklist for which session handling will not occur.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Inheritors</h2>
-              <div class="table" data-togglable="Inheritors"><a data-name="-296726384%2FInheritors%2F-1725759721" anchor-label="AppboyLifecycleCallbackListener" id="-296726384%2FInheritors%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.appboy/-appboy-lifecycle-callback-listener/index.html">AppboyLifecycleCallbackListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-296726384%2FInheritors%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div></div>
                   </div>
                 </div>
               </div>
