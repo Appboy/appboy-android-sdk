@@ -2,10 +2,10 @@
 <metadata>
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-unity</artifactId>
-  <version>18.0.1</version>
+  <version>19.0.0</version>
   <versioning>
-    <latest>18.0.1</latest>
-    <release>18.0.1</release>
+    <latest>19.0.0</latest>
+    <release>19.0.0</release>
     <versions>
       <version>6.0.0</version>
       <version>7.0.0</version>
@@ -28,7 +28,8 @@
       <version>17.0.0</version>
       <version>18.0.0</version>
       <version>18.0.1</version>
+      <version>19.0.0</version>
     </versions>
-    <lastUpdated>20220113223735</lastUpdated>
+    <lastUpdated>20220328180040</lastUpdated>
   </versioning>
 </metadata>
