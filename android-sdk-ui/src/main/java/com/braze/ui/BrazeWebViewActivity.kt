@@ -17,7 +17,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
-import com.appboy.Constants
+import com.braze.Constants
 import com.appboy.enums.Channel
 import com.appboy.ui.R
 import com.braze.support.BrazeLogger.Priority.E

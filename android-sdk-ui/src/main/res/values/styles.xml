@@ -104,6 +104,7 @@
   <style name="Braze.InAppMessage.Slideup">
     <item name="android:layout_height">60.0dp</item>
     <item name="android:layout_width">match_parent</item>
+      <item name="android:gravity">center</item>
   </style>
   <!--
   On pre API 19 devices, the slideup won't have the proper bottom
@@ -115,7 +116,7 @@
   -->
   <style name="Braze.InAppMessage.Slideup.Container">
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_width">@dimen/com_braze_inappmessage_slideup_max_width</item>
     <item name="android:layout_marginLeft">10dp</item>
     <item name="android:layout_marginRight">10dp</item>
     <item name="android:layout_marginBottom">10dp</item>

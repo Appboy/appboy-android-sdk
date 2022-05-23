@@ -21,8 +21,8 @@ import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import com.appboy.BrazeInternal.addSerializedContentCardToStorage
 import com.appboy.BrazeInternal.requestGeofenceRefresh
-import com.appboy.Constants
-import com.appboy.Constants.isAmazonDevice
+import com.braze.Constants
+import com.braze.Constants.isAmazonDevice
 import com.appboy.enums.Channel
 import com.appboy.models.push.BrazeNotificationPayload
 import com.braze.Braze
@@ -144,27 +144,27 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun routeUserWithNotificationOpenedIntent(context: Context, intent: Intent) {
         // get extras bundle.
-        var extras = intent.getBundleExtra(Constants.APPBOY_PUSH_EXTRAS_KEY)
+        var extras = intent.getBundleExtra(Constants.BRAZE_PUSH_EXTRAS_KEY)
         if (extras == null) {
             extras = Bundle()
         }
         extras.putString(
-            Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY,
-            intent.getStringExtra(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY)
+            Constants.BRAZE_PUSH_CAMPAIGN_ID_KEY,
+            intent.getStringExtra(Constants.BRAZE_PUSH_CAMPAIGN_ID_KEY)
         )
         extras.putString(SOURCE_KEY, Constants.APPBOY)
 
         // If a deep link exists, start an ACTION_VIEW intent pointing at the deep link.
         // The intent returned from getStartActivityIntent() is placed on the back stack.
         // Otherwise, start the intent defined in getStartActivityIntent().
-        val deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)
+        val deepLink = intent.getStringExtra(Constants.BRAZE_PUSH_DEEP_LINK_KEY)
         if (!deepLink.isNullOrBlank()) {
-            val useWebView = "true".equals(intent.getStringExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY), ignoreCase = true)
+            val useWebView = "true".equals(intent.getStringExtra(Constants.BRAZE_PUSH_OPEN_URI_IN_WEBVIEW_KEY), ignoreCase = true)
             brazelog { "Found a deep link: $deepLink. Use webview set to: $useWebView" }
 
             // Pass deeplink and use webview values to target activity.
-            extras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, deepLink)
-            extras.putBoolean(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebView)
+            extras.putString(Constants.BRAZE_PUSH_DEEP_LINK_KEY, deepLink)
+            extras.putBoolean(Constants.BRAZE_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebView)
             getInstance().createUriActionFromUrlString(deepLink, extras, useWebView, Channel.PUSH)?.let {
                 getInstance().gotoUri(context, it)
             }
@@ -182,12 +182,12 @@ object BrazeNotificationUtils {
     /**
      * Checks the incoming notification intent to determine whether it is a Braze push message.
      *
-     * All Braze push messages must contain an extras entry with key set to [Constants.APPBOY_PUSH_APPBOY_KEY] and value set to "true".
+     * All Braze push messages must contain an extras entry with key set to [Constants.BRAZE_PUSH_APPBOY_KEY] and value set to "true".
      */
     @JvmStatic
     fun Intent.isBrazePushMessage(): Boolean {
         val extras = this.extras ?: return false
-        return "true".equals(extras.getString(Constants.APPBOY_PUSH_APPBOY_KEY), ignoreCase = true)
+        return "true".equals(extras.getString(Constants.BRAZE_PUSH_BRAZE_KEY), ignoreCase = true)
     }
 
     /**
@@ -204,7 +204,7 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun isNotificationMessage(intent: Intent): Boolean {
         val extras = intent.extras ?: return false
-        return extras.containsKey(Constants.APPBOY_PUSH_TITLE_KEY) && extras.containsKey(Constants.APPBOY_PUSH_CONTENT_KEY)
+        return extras.containsKey(Constants.BRAZE_PUSH_TITLE_KEY) && extras.containsKey(Constants.BRAZE_PUSH_CONTENT_KEY)
     }
 
     /**
@@ -242,12 +242,12 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun setNotificationDurationAlarm(context: Context, thisClass: Class<*>?, notificationId: Int, durationInMillis: Int) {
         val cancelIntent = Intent(context, thisClass)
-        cancelIntent.action = Constants.APPBOY_CANCEL_NOTIFICATION_ACTION
-        cancelIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId)
+        cancelIntent.action = Constants.BRAZE_CANCEL_NOTIFICATION_ACTION
+        cancelIntent.putExtra(Constants.BRAZE_PUSH_NOTIFICATION_ID, notificationId)
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or getImmutablePendingIntentFlags()
         val pendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, flags)
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if (durationInMillis >= Constants.APPBOY_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
+        if (durationInMillis >= Constants.BRAZE_MINIMUM_NOTIFICATION_DURATION_MILLIS) {
             brazelog { "Setting Notification duration alarm for $durationInMillis ms" }
             alarmManager[AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + durationInMillis] = pendingIntent
         }
@@ -439,7 +439,7 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun setContentIntentIfPresent(context: Context, notificationBuilder: NotificationCompat.Builder, notificationExtras: Bundle?) {
         try {
-            val pushOpenedPendingIntent = getPushActionPendingIntent(context, Constants.APPBOY_PUSH_CLICKED_ACTION, notificationExtras)
+            val pushOpenedPendingIntent = getPushActionPendingIntent(context, Constants.BRAZE_PUSH_CLICKED_ACTION, notificationExtras)
             notificationBuilder.setContentIntent(pushOpenedPendingIntent)
         } catch (e: Exception) {
             brazelog(E, e) { "Error setting content intent." }
@@ -449,7 +449,7 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun setDeleteIntent(context: Context, notificationBuilder: NotificationCompat.Builder, notificationExtras: Bundle?) {
         try {
-            val pushDeletedIntent = Intent(Constants.APPBOY_PUSH_DELETED_ACTION).setClass(context, notificationReceiverClass)
+            val pushDeletedIntent = Intent(Constants.BRAZE_PUSH_DELETED_ACTION).setClass(context, notificationReceiverClass)
             if (notificationExtras != null) {
                 pushDeletedIntent.putExtras(notificationExtras)
             }
@@ -550,7 +550,7 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun setSoundIfPresentAndSupported(notificationBuilder: NotificationCompat.Builder, payload: BrazeNotificationPayload) {
         val soundUri = payload.notificationSound ?: return
-        if (soundUri == Constants.APPBOY_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE) {
+        if (soundUri == Constants.BRAZE_PUSH_NOTIFICATION_SOUND_DEFAULT_VALUE) {
             brazelog { "Setting default sound for notification." }
             notificationBuilder.setDefaults(Notification.DEFAULT_SOUND)
         } else {
@@ -733,7 +733,7 @@ object BrazeNotificationUtils {
         try {
             val jsonExtras = JSONObject(customContentString)
             val source = jsonExtras.getOptionalString(SOURCE_KEY)
-            val campaignId = jsonExtras.getOptionalString(Constants.APPBOY_PUSH_CAMPAIGN_ID_KEY)
+            val campaignId = jsonExtras.getOptionalString(Constants.BRAZE_PUSH_CAMPAIGN_ID_KEY)
             if (source != null && source == Constants.APPBOY && campaignId != null) {
                 Braze.getInstance(context).logPushNotificationOpened(campaignId)
             }
@@ -757,11 +757,11 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun handleCancelNotificationAction(context: Context, intent: Intent) {
         try {
-            if (intent.hasExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID)) {
-                val notificationId = intent.getIntExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, Constants.APPBOY_DEFAULT_NOTIFICATION_ID)
+            if (intent.hasExtra(Constants.BRAZE_PUSH_NOTIFICATION_ID)) {
+                val notificationId = intent.getIntExtra(Constants.BRAZE_PUSH_NOTIFICATION_ID, Constants.BRAZE_DEFAULT_NOTIFICATION_ID)
                 brazelog { "Cancelling notification action with id: $notificationId" }
                 val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.cancel(Constants.APPBOY_PUSH_NOTIFICATION_TAG, notificationId)
+                notificationManager.cancel(Constants.BRAZE_PUSH_NOTIFICATION_TAG, notificationId)
             }
         } catch (e: Exception) {
             brazelog(E, e) { "Exception occurred handling cancel notification intent." }
@@ -780,9 +780,9 @@ object BrazeNotificationUtils {
     fun cancelNotification(context: Context, notificationId: Int) {
         try {
             brazelog { "Cancelling notification action with id: $notificationId" }
-            val cancelNotificationIntent = Intent(Constants.APPBOY_CANCEL_NOTIFICATION_ACTION).setClass(context, notificationReceiverClass)
+            val cancelNotificationIntent = Intent(Constants.BRAZE_CANCEL_NOTIFICATION_ACTION).setClass(context, notificationReceiverClass)
             cancelNotificationIntent.setPackage(context.packageName)
-            cancelNotificationIntent.putExtra(Constants.APPBOY_PUSH_NOTIFICATION_ID, notificationId)
+            cancelNotificationIntent.putExtra(Constants.BRAZE_PUSH_NOTIFICATION_ID, notificationId)
             addComponentAndSendBroadcast(context, cancelNotificationIntent)
         } catch (e: Exception) {
             brazelog(E, e) { "Exception occurred attempting to cancel notification." }
@@ -801,13 +801,13 @@ object BrazeNotificationUtils {
     fun isUninstallTrackingPush(notificationExtras: Bundle): Boolean {
         try {
             // The ADM case where extras are flattened
-            if (notificationExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY)) {
+            if (notificationExtras.containsKey(Constants.BRAZE_PUSH_UNINSTALL_TRACKING_KEY)) {
                 return true
             }
             // The FCM case where extras are in a separate bundle
-            val fcmExtras = notificationExtras.getBundle(Constants.APPBOY_PUSH_EXTRAS_KEY)
+            val fcmExtras = notificationExtras.getBundle(Constants.BRAZE_PUSH_EXTRAS_KEY)
             if (fcmExtras != null) {
-                return fcmExtras.containsKey(Constants.APPBOY_PUSH_UNINSTALL_TRACKING_KEY)
+                return fcmExtras.containsKey(Constants.BRAZE_PUSH_UNINSTALL_TRACKING_KEY)
             }
         } catch (e: Exception) {
             brazelog(E, e) { "Failed to determine if push is uninstall tracking. Returning false." }
@@ -818,21 +818,21 @@ object BrazeNotificationUtils {
     /**
      * Returns the channel id for a valid [NotificationChannel], creating one if necessary.
      *
-     * First, if [Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY] key is present in
+     * First, if [Constants.BRAZE_PUSH_NOTIFICATION_CHANNEL_ID_KEY] key is present in
      * notificationExtras's and is the id of a valid NotificationChannel, this id will
      * be returned.
      *
-     * Next, if the channel with id [Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID] exists,
-     * then [Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID] will be returned.
+     * Next, if the channel with id [Constants.BRAZE_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID] exists,
+     * then [Constants.BRAZE_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID] will be returned.
      *
-     * Finally, if neither of the cases above is true, a channel with id [Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID]
-     * will be created and [Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID] will be
+     * Finally, if neither of the cases above is true, a channel with id [Constants.BRAZE_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID]
+     * will be created and [Constants.BRAZE_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID] will be
      * returned.
      */
     @JvmStatic
     fun getOrCreateNotificationChannelId(payload: BrazeNotificationPayload): String? {
         val channelIdFromExtras = payload.notificationChannelId
-        val defaultChannelId = Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID
+        val defaultChannelId = Constants.BRAZE_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             // If on Android < O, the channel does not really need to exist
             return channelIdFromExtras ?: defaultChannelId
@@ -904,20 +904,20 @@ object BrazeNotificationUtils {
         try {
             Braze.getInstance(context)
                 .logPushStoryPageClicked(
-                    intent.getStringExtra(Constants.APPBOY_CAMPAIGN_ID),
-                    intent.getStringExtra(Constants.APPBOY_STORY_PAGE_ID)
+                    intent.getStringExtra(Constants.BRAZE_CAMPAIGN_ID),
+                    intent.getStringExtra(Constants.BRAZE_STORY_PAGE_ID)
                 )
-            val deepLink = intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY)
+            val deepLink = intent.getStringExtra(Constants.BRAZE_ACTION_URI_KEY)
             if (!deepLink.isNullOrBlank()) {
                 // Set the global deep link value to the correct action's deep link.
-                intent.putExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY, intent.getStringExtra(Constants.APPBOY_ACTION_URI_KEY))
-                val useWebviewString = intent.getStringExtra(Constants.APPBOY_ACTION_USE_WEBVIEW_KEY)
+                intent.putExtra(Constants.BRAZE_PUSH_DEEP_LINK_KEY, intent.getStringExtra(Constants.BRAZE_ACTION_URI_KEY))
+                val useWebviewString = intent.getStringExtra(Constants.BRAZE_ACTION_USE_WEBVIEW_KEY)
                 if (!useWebviewString.isNullOrBlank()) {
-                    intent.putExtra(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebviewString)
+                    intent.putExtra(Constants.BRAZE_PUSH_OPEN_URI_IN_WEBVIEW_KEY, useWebviewString)
                 }
             } else {
                 // Otherwise, remove any existing deep links.
-                intent.removeExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY)
+                intent.removeExtra(Constants.BRAZE_PUSH_DEEP_LINK_KEY)
             }
             sendNotificationOpenedBroadcast(context, intent)
             val appConfigurationProvider = BrazeConfigurationProvider(context)
@@ -978,7 +978,7 @@ object BrazeNotificationUtils {
             brazelog { "Notification extras bundle was null. Could not find a valid notification channel" }
             return null
         }
-        val channelIdFromExtras = notificationExtras.getString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, null)
+        val channelIdFromExtras = notificationExtras.getString(Constants.BRAZE_PUSH_NOTIFICATION_CHANNEL_ID_KEY, null)
         if (!channelIdFromExtras.isNullOrBlank()) {
             val notificationChannel = notificationManager.getNotificationChannel(channelIdFromExtras)
             if (notificationChannel != null) {
@@ -988,7 +988,7 @@ object BrazeNotificationUtils {
                 brazelog { "Notification channel from extras is invalid, no channel found with id: $channelIdFromExtras" }
             }
         }
-        val defaultNotificationChannel = notificationManager.getNotificationChannel(Constants.APPBOY_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID)
+        val defaultNotificationChannel = notificationManager.getNotificationChannel(Constants.BRAZE_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID)
         if (defaultNotificationChannel != null) {
             return defaultNotificationChannel
         } else {

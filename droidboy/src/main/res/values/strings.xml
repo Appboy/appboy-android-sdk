@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
   <string name="app_name">Droidboy</string>
   <string name="feed">News Feed</string>
+  <string name="inappmessage">In-App Messages</string>
   <string name="settings">Settings</string>
   <string name="network_control_title">Network Controls</string>
   <string name="session_title">Sessions</string>
@@ -140,6 +141,7 @@
   <string name="set_email_subscription_state_title">Set Email Subscription State</string>
   <string name="set_push_subscription_state_title">Set Push Subscription State</string>
   <string name="sort_feed">Sort News Feed</string>
+  <string name="min_trigger_interval">Trigger Action Minimum Time Interval (s)</string>
   <string name="custom_news_feed_card_click_action_listener">Custom INewsFeedClickActionListener</string>
   <string name="get_registration_id_summary">Retrieve the Registration Id used for push on this device.</string>
   <string name="set_push_subscription_state_summary">Subscribe, opt-in, or opt-out for push.</string>

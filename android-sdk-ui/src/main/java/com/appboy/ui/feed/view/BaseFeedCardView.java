@@ -27,17 +27,17 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> {
     // All implementing views of BaseCardView must include this switcher view in order to have the
     // read/unread functionality. Views that don't have the indicator (like banner views) won't have the image switcher
     // in them and thus we do the null-check below.
-    mImageSwitcher = findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
-    if (mImageSwitcher != null) {
-      mImageSwitcher.setFactory(() -> new ImageView(mContext.getApplicationContext()));
+    imageSwitcher = findViewById(R.id.com_appboy_newsfeed_item_read_indicator_image_switcher);
+    if (imageSwitcher != null) {
+      imageSwitcher.setFactory(() -> new ImageView(applicationContext));
     }
 
     // If the visual indicator on cards shouldn't be on, due to the xml setting in braze.xml, then set the
     // imageSwitcher to GONE to hide the indicator UI.
     // If the setting is false, then hide the indicator.
     if (!isUnreadIndicatorEnabled()) {
-      if (mImageSwitcher != null) {
-        mImageSwitcher.setVisibility(GONE);
+      if (imageSwitcher != null) {
+        imageSwitcher.setVisibility(GONE);
       }
     }
   }
@@ -59,15 +59,15 @@ public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> {
    * This method is called when the setRead() method is called on the internal Card object.
    */
 
-  public void setCard(final T card) {
-    mCard = card;
+  public void setCard(final T newCard) {
+    card = newCard;
     onSetCard(card);
-    card.setListener(() -> setCardViewedIndicator(mImageSwitcher, getCard()));
-    setCardViewedIndicator(mImageSwitcher, getCard());
+    card.setListener(() -> setCardViewedIndicator(imageSwitcher, getCard()));
+    setCardViewedIndicator(imageSwitcher, getCard());
   }
 
   public Card getCard() {
-    return mCard;
+    return card;
   }
 
   @Override

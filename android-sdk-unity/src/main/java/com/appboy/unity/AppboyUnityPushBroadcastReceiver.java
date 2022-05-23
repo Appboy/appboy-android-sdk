@@ -7,7 +7,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.Constants;
+import com.braze.Constants;
 import com.appboy.unity.configuration.UnityConfigurationProvider;
 import com.appboy.unity.utils.MessagingUtils;
 import com.braze.push.BrazeNotificationUtils;
@@ -76,7 +76,7 @@ public class AppboyUnityPushBroadcastReceiver extends BroadcastReceiver {
       String unityCallbackFunctionName = unityConfigurationProvider.getPushOpenedCallbackMethodName();
       boolean isPushMessageSent = MessagingUtils.sendPushMessageToUnity(unityGameObjectName, unityCallbackFunctionName, intent, "push opened");
       BrazeLogger.d(TAG, (isPushMessageSent ? "Successfully sent" : "Failure to send") + " push opened message to Unity Player");
-    } else if (action.contains(Constants.APPBOY_PUSH_DELETED_ACTION) || action.contains(BrazeNotificationUtils.getAPPBOY_NOTIFICATION_DELETED_SUFFIX())) {
+    } else if (action.contains(Constants.BRAZE_PUSH_DELETED_ACTION) || action.contains(BrazeNotificationUtils.getAPPBOY_NOTIFICATION_DELETED_SUFFIX())) {
       String unityGameObjectName = unityConfigurationProvider.getPushDeletedGameObjectName();
       String unityCallbackFunctionName = unityConfigurationProvider.getPushDeletedCallbackMethodName();
       boolean isPushMessageSent = MessagingUtils.sendPushMessageToUnity(unityGameObjectName, unityCallbackFunctionName, intent, "push deleted");

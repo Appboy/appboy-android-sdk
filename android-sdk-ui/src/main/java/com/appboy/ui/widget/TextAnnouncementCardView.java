@@ -5,9 +5,9 @@ import android.widget.TextView;
 
 import com.appboy.models.cards.TextAnnouncementCard;
 import com.appboy.ui.R;
-import com.braze.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.actions.IAction;
 
 public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementCard> {
   private static final String TAG = BrazeLogger.getBrazeLogTag(TextAnnouncementCardView.class);
@@ -46,6 +46,6 @@ public class TextAnnouncementCardView extends BaseFeedCardView<TextAnnouncementC
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = getUriActionForCard(card);
 
-    setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
+    setOnClickListener(view -> handleCardClick(applicationContext, card, mCardAction));
   }
 }

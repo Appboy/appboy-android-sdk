@@ -6,22 +6,35 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
 import android.provider.MediaStore
+import android.text.InputType
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.appboy.BrazeInternal
-import com.appboy.Constants
+import com.braze.Constants
 import com.appboy.events.SimpleValueCallback
 import com.appboy.models.outgoing.AttributionData
-import com.appboy.sample.*
+import com.appboy.sample.BuildConfig
+import com.appboy.sample.CustomFeedClickActionListener
+import com.appboy.sample.DroidboyApplication
+import com.appboy.sample.MainFragment
+import com.appboy.sample.R
+import com.appboy.sample.SetEnvironmentPreference
+import com.appboy.sample.UserProfileDialog
 import com.appboy.sample.imageloading.GlideImageLoader
 import com.appboy.sample.logging.CustomEventDialog
 import com.appboy.sample.logging.CustomPurchaseDialog
@@ -29,6 +42,7 @@ import com.appboy.sample.logging.CustomUserAttributeDialog
 import com.appboy.sample.subscriptions.EmailSubscriptionStateDialog
 import com.appboy.sample.subscriptions.PushSubscriptionStateDialog
 import com.appboy.sample.util.ContentCardsTestingUtil.Companion.createRandomCards
+import com.appboy.sample.util.EnvironmentUtils
 import com.appboy.sample.util.LifecycleUtils
 import com.appboy.sample.util.LogcatExportUtil.Companion.exportLogcatToFile
 import com.appboy.sample.util.RuntimePermissionUtils
@@ -39,6 +53,7 @@ import com.braze.images.DefaultBrazeImageLoader
 import com.braze.images.IBrazeImageLoader
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.brazelog
+import java.io.File
 
 @SuppressLint("ApplySharedPref")
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -48,10 +63,38 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var requestPermissionLauncher =
         registerForActivityResult(RequestPermission()) { result ->
             Toast.makeText(
-                getContext(),
+                context,
                 "Location permission ${if (result) "granted" else "denied"}",
                 Toast.LENGTH_SHORT
             ).show()
+        }
+
+    private var environmentQrPhotoUri: Uri? = null
+
+    private val cameraActivityLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                environmentQrPhotoUri?.let { uri ->
+                    try {
+                        val contentResolver = requireActivity().contentResolver
+                        val bitmap: Bitmap = if (Build.VERSION.SDK_INT < 28) {
+                            @Suppress("DEPRECATION")
+                            MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                        } else {
+                            val source: ImageDecoder.Source = ImageDecoder.createSource(contentResolver, uri)
+                            // The copy() removes HARDWARE from the Bitmap.config, which prevents processing
+                            ImageDecoder.decodeBitmap(source).copy(Bitmap.Config.ARGB_8888, true)
+                        }
+
+                        EnvironmentUtils.analyzeBitmapForEnvironmentBarcode(
+                            this.requireActivity(),
+                            bitmap
+                        )
+                    } catch (e: Exception) {
+                        brazelog(E, e) { "Error getting image" }
+                    }
+                }
+            }
         }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -75,6 +118,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setEnvironmentPrefs(context)
         setAboutInfo(context)
         setCustomLoggingSection()
+        setInAppMessagePrefs(context)
     }
 
     private fun setSdkAuthPrefs(context: Context) {
@@ -102,7 +146,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setAboutInfo(context: Context) {
-        setSummary("sdk_version", Constants.APPBOY_SDK_VERSION)
+        setSummary("sdk_version", Constants.BRAZE_SDK_VERSION)
         DroidboyApplication.getApiKeyInUse(context)?.let { setSummary("api_key", it) }
         setSummary("push_token", Braze.getInstance(context).registeredPushToken ?: "No push token registered")
         setSummary("build_type", BuildConfig.BUILD_TYPE)
@@ -114,15 +158,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setSummary("device_id", Braze.getInstance(context).deviceId)
     }
 
+    /**
+     * Provides the URI of a temporary file.
+     *
+     * NOTE: Calling this multiple times will return different URI's by the FileProvider, so call
+     * once and reuse the returned value
+     */
+    private fun getTmpFileUri(): Uri {
+        val context = requireContext()
+        val tmpFile = File.createTempFile("tmp_image_file", ".jpg", context.cacheDir).apply {
+            createNewFile()
+            deleteOnExit()
+        }
+
+        return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", tmpFile)
+    }
+
     private fun setEnvironmentPrefs(context: Context) {
         setClickPreference("environment_barcode_picture_intent_key") {
-            // Take a picture via intent
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            try {
-                activity?.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            } catch (e: Exception) {
-                brazelog(E, e) { "Failed to handle image capture intent" }
-            }
+            // Set this here because we'll have context now
+            environmentQrPhotoUri = getTmpFileUri()
+            cameraActivityLauncher.launch(environmentQrPhotoUri)
         }
         setClickPreference("environment_reset_key") {
             val sharedPreferencesEditor = sharedPreferences.edit()
@@ -207,6 +263,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         setSwitchPreference("set_custom_news_feed_card_click_action_listener") { newValue: Boolean ->
             AppboyFeedManager.getInstance().feedCardClickActionListener = if (newValue) CustomFeedClickActionListener() else null
+        }
+    }
+
+    private fun setInAppMessagePrefs(context: Context) {
+        setEditTextPreference("min_trigger_interval", true) { newValue: String ->
+            if (newValue.isEmpty()) {
+                showToast("Clearing setting. Restart for new value to take effect")
+                sharedPreferences.edit().remove("min_trigger_interval").apply()
+                return@setEditTextPreference
+            }
+
+            newValue.toIntOrNull() ?: run {
+                Toast.makeText(context, "Interval must be only digits", Toast.LENGTH_LONG).show()
+                sharedPreferences.edit().remove("min_trigger_interval").apply()
+                return@setEditTextPreference
+            }
+
+            sharedPreferences.edit().putString("min_trigger_interval", newValue).apply()
+            Toast.makeText(context, "Restart for new value to take effect", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -313,7 +388,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
-        const val REQUEST_IMAGE_CAPTURE = 271
         private const val DEV_DROIDBOY_API_KEY = "da8f263e-1483-4e9f-ac0c-7b40030c8f40"
         private const val DEV_FIREOS_DROIDBOY_API_KEY = "ecb81855-149f-465c-bab0-0254d6512133"
         private const val DEV_SDK_ENDPOINT = "https://elsa.braze.com/"
@@ -332,6 +406,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
             this.findPreference<Preference>(key)?.setOnPreferenceChangeListener { _, newValue ->
                 block.invoke(newValue as @kotlin.ParameterName(name = "newValue") Boolean)
                 return@setOnPreferenceChangeListener true
+            }
+        }
+
+        fun PreferenceFragmentCompat.setEditTextPreference(key: String, numberOnly: Boolean = false, block: (newValue: String) -> Unit) {
+            this.findPreference<Preference>(key)?.setOnPreferenceChangeListener { _, newValue ->
+                block.invoke(newValue as @kotlin.ParameterName(name = "newValue") String)
+                return@setOnPreferenceChangeListener true
+            }
+
+            if (numberOnly) {
+                (this.findPreference<Preference>(key) as EditTextPreference?)?.setOnBindEditTextListener {
+                    it.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED
+                }
             }
         }
 

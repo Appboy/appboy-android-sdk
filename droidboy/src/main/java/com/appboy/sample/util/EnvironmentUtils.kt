@@ -8,11 +8,11 @@ import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
-import com.braze.support.BrazeLogger.Priority.E
-import com.braze.support.BrazeLogger.Priority.I
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.appboy.sample.DroidboyApplication
+import com.braze.support.BrazeLogger.Priority.E
+import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions

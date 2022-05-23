@@ -8,7 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.Constants;
+import com.braze.Constants;
 import com.appboy.enums.Channel;
 import com.appboy.sample.activity.DroidBoyActivity;
 import com.braze.IBrazeDeeplinkHandler;

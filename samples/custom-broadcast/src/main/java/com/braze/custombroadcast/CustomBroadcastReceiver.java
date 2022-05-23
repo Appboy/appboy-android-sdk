@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.appboy.Constants;
+import com.braze.Constants;
 import com.braze.push.BrazeNotificationUtils;
 import com.braze.support.BrazeLogger;
 
@@ -45,8 +45,8 @@ public class CustomBroadcastReceiver extends BroadcastReceiver {
   private void logNotificationDuration(Intent intent) {
     // Log the duration of the push notification
     Bundle extras = intent.getExtras();
-    if (extras != null && extras.containsKey(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
-      long createdAt = extras.getLong(Constants.APPBOY_PUSH_RECEIVED_TIMESTAMP_MILLIS);
+    if (extras != null && extras.containsKey(Constants.BRAZE_PUSH_RECEIVED_TIMESTAMP_MILLIS)) {
+      long createdAt = extras.getLong(Constants.BRAZE_PUSH_RECEIVED_TIMESTAMP_MILLIS);
       long durationMillis = System.currentTimeMillis() - createdAt;
       long durationSeconds = TimeUnit.MILLISECONDS.toSeconds(durationMillis);
       Log.i(TAG, "Notification active for " + durationSeconds + " seconds.");

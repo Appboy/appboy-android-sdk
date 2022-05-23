@@ -6,18 +6,21 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
-import com.appboy.Constants
+import com.braze.Constants
 import com.appboy.enums.Channel
 import com.braze.IBrazeDeeplinkHandler
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
+import com.braze.support.BrazeLogger.Priority.V
 import com.braze.support.BrazeLogger.Priority.W
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.REMOTE_SCHEMES
 import com.braze.support.isLocalUri
 import com.braze.ui.BrazeDeeplinkHandler
 import com.braze.ui.BrazeWebViewActivity
+import com.braze.ui.actions.brazeactions.BrazeActionParser
+import com.braze.ui.actions.brazeactions.BrazeActionParser.isBrazeActionUri
 import com.braze.ui.support.getMainActivityIntent
 import com.braze.ui.support.isActivityRegisteredInManifest
 
@@ -68,19 +71,24 @@ open class UriAction : IAction {
             brazelog { "Not executing local Uri: $uri" }
             return
         }
-        brazelog { "Executing Uri action from channel $channel: $uri. UseWebView: $useWebView. Extras: $extras" }
-        if (useWebView && REMOTE_SCHEMES.contains(uri.scheme)) {
-            // If the scheme is not a remote scheme, we open it using an ACTION_VIEW intent.
-            if (channel == Channel.PUSH) {
-                openUriWithWebViewActivityFromPush(context, uri, extras)
-            } else {
-                openUriWithWebViewActivity(context, uri, extras)
-            }
+        if (uri.isBrazeActionUri()) {
+            brazelog(V) { "Executing BrazeActions uri:\n'$uri'" }
+            BrazeActionParser.execute(context, uri, channel)
         } else {
-            if (channel == Channel.PUSH) {
-                openUriWithActionViewFromPush(context, uri, extras)
+            brazelog { "Executing Uri action from channel $channel: $uri. UseWebView: $useWebView. Extras: $extras" }
+            if (useWebView && REMOTE_SCHEMES.contains(uri.scheme)) {
+                // If the scheme is not a remote scheme, we open it using an ACTION_VIEW intent.
+                if (channel == Channel.PUSH) {
+                    openUriWithWebViewActivityFromPush(context, uri, extras)
+                } else {
+                    openUriWithWebViewActivity(context, uri, extras)
+                }
             } else {
-                openUriWithActionView(context, uri, extras)
+                if (channel == Channel.PUSH) {
+                    openUriWithActionViewFromPush(context, uri, extras)
+                } else {
+                    openUriWithActionView(context, uri, extras)
+                }
             }
         }
     }

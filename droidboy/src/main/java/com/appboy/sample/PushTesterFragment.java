@@ -13,7 +13,7 @@ import android.widget.CheckBox;
 
 import androidx.fragment.app.Fragment;
 
-import com.appboy.Constants;
+import com.braze.Constants;
 import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.sample.util.SpinnerUtils;
 import com.braze.Braze;
@@ -155,9 +155,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     Button pushTestButton = view.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(clickedView -> (new Thread(() -> {
       Bundle notificationExtras = new Bundle();
-      notificationExtras.putString(Constants.APPBOY_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
-      notificationExtras.putString(Constants.APPBOY_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
-      notificationExtras.putString(Constants.APPBOY_PUSH_APPBOY_KEY, "true");
+      notificationExtras.putString(Constants.BRAZE_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
+      notificationExtras.putString(Constants.BRAZE_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
+      notificationExtras.putString(Constants.BRAZE_PUSH_BRAZE_KEY, "true");
 
       String notificationId;
       if (mUseConstantNotificationId) {
@@ -165,58 +165,58 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       } else {
         notificationId = String.valueOf(BrazeNotificationUtils.getNotificationId(new BrazeNotificationPayload(notificationExtras)));
       }
-      notificationExtras.putString(Constants.APPBOY_PUSH_CUSTOM_NOTIFICATION_ID, notificationId);
+      notificationExtras.putString(Constants.BRAZE_PUSH_CUSTOM_NOTIFICATION_ID, notificationId);
       notificationExtras = addActionButtons(notificationExtras);
 
       if (mInlineImagePushEnabled) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_INLINE_IMAGE_STYLE_KEY, "true");
+        notificationExtras.putString(Constants.BRAZE_PUSH_INLINE_IMAGE_STYLE_KEY, "true");
       }
       if (mUseSummary) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(SUMMARY_TEXT));
+        notificationExtras.putString(Constants.BRAZE_PUSH_SUMMARY_TEXT_KEY, generateDisplayValue(SUMMARY_TEXT));
       }
       if (mUseClickAction) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_DEEP_LINK_KEY, mClickActionUrl);
+        notificationExtras.putString(Constants.BRAZE_PUSH_DEEP_LINK_KEY, mClickActionUrl);
       }
-      notificationExtras.putString(Constants.APPBOY_PUSH_PRIORITY_KEY, mPriority);
+      notificationExtras.putString(Constants.BRAZE_PUSH_PRIORITY_KEY, mPriority);
       if (mUseBigTitle) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_BIG_TITLE_TEXT_KEY, generateDisplayValue(BIG_TITLE));
+        notificationExtras.putString(Constants.BRAZE_PUSH_BIG_TITLE_TEXT_KEY, generateDisplayValue(BIG_TITLE));
       }
       if (mUseBigSummary) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_BIG_SUMMARY_TEXT_KEY, generateDisplayValue(BIG_SUMMARY));
+        notificationExtras.putString(Constants.BRAZE_PUSH_BIG_SUMMARY_TEXT_KEY, generateDisplayValue(BIG_SUMMARY));
       }
       if (mUseCategory) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_CATEGORY_KEY, mCategory);
+        notificationExtras.putString(Constants.BRAZE_PUSH_CATEGORY_KEY, mCategory);
       }
       if (mUseVisibility) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_VISIBILITY_KEY, mVisibility);
+        notificationExtras.putString(Constants.BRAZE_PUSH_VISIBILITY_KEY, mVisibility);
       }
       if (mOpenInWebview) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_OPEN_URI_IN_WEBVIEW_KEY, "true");
+        notificationExtras.putString(Constants.BRAZE_PUSH_OPEN_URI_IN_WEBVIEW_KEY, "true");
       }
       if (mSetPublicVersion) {
         try {
-          notificationExtras.putString(Constants.APPBOY_PUSH_PUBLIC_NOTIFICATION_KEY, getPublicVersionNotificationString());
+          notificationExtras.putString(Constants.BRAZE_PUSH_PUBLIC_NOTIFICATION_KEY, getPublicVersionNotificationString());
         } catch (JSONException jsonException) {
           Log.e(TAG, "Failed to created public version notification JSON string", jsonException);
         }
       }
       if (mTestTriggerFetch) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_FETCH_TEST_TRIGGERS_KEY, "true");
+        notificationExtras.putString(Constants.BRAZE_PUSH_FETCH_TEST_TRIGGERS_KEY, "true");
       }
       if (mSetAccentColor) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACCENT_KEY, mAccentColorString);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACCENT_KEY, mAccentColorString);
       }
       if (mSetLargeIcon) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_LARGE_ICON_KEY, mLargeIconString);
+        notificationExtras.putString(Constants.BRAZE_PUSH_LARGE_ICON_KEY, mLargeIconString);
       }
       if (mSetChannel) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_NOTIFICATION_CHANNEL_ID_KEY, mChannel);
+        notificationExtras.putString(Constants.BRAZE_PUSH_NOTIFICATION_CHANNEL_ID_KEY, mChannel);
       }
       setNotificationFactory();
 
       if (mPushStoryType != 0) {
         addPushStoryPages(notificationExtras);
-        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_KEY, Integer.toString(mPushStoryType));
+        notificationExtras.putString(Constants.BRAZE_PUSH_STORY_KEY, Integer.toString(mPushStoryType));
       }
       if (mConversationPushEnabled) {
         notificationExtras.putString(Constants.BRAZE_CONVERSATIONAL_PUSH_STYLE_KEY, "1");
@@ -237,16 +237,16 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         if (Constants.isAmazonDevice()) {
           // Amazon flattens the extras bundle so we have to put it in the regular notification
           // extras to imitate that functionality.
-          notificationExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, pushImageUrl.replaceAll("&amp;", "&"));
+          notificationExtras.putString(Constants.BRAZE_PUSH_BIG_IMAGE_URL_KEY, pushImageUrl.replaceAll("&amp;", "&"));
           appboyExtras = new Bundle(notificationExtras);
         } else {
-          appboyExtras.putString(Constants.APPBOY_PUSH_BIG_IMAGE_URL_KEY, pushImageUrl.replaceAll("&amp;", "&"));
+          appboyExtras.putString(Constants.BRAZE_PUSH_BIG_IMAGE_URL_KEY, pushImageUrl.replaceAll("&amp;", "&"));
         }
       }
       appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_1, "Hamburger");
       appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_2, "Fries");
       appboyExtras.putString(EXAMPLE_APPBOY_EXTRA_KEY_3, "Lemonade");
-      notificationExtras.putBundle(Constants.APPBOY_PUSH_EXTRAS_KEY, appboyExtras);
+      notificationExtras.putBundle(Constants.BRAZE_PUSH_EXTRAS_KEY, appboyExtras);
 
       Intent pushIntent = new Intent(BrazePushReceiver.FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION);
       pushIntent.putExtras(notificationExtras);
@@ -348,9 +348,9 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
 
   private String getPublicVersionNotificationString() throws JSONException {
     JSONObject publicVersionJSON = new JSONObject();
-    publicVersionJSON.put(Constants.APPBOY_PUSH_TITLE_KEY, "Don't open in public (title)");
-    publicVersionJSON.put(Constants.APPBOY_PUSH_CONTENT_KEY, "Please (content)");
-    publicVersionJSON.put(Constants.APPBOY_PUSH_SUMMARY_TEXT_KEY, "Summary");
+    publicVersionJSON.put(Constants.BRAZE_PUSH_TITLE_KEY, "Don't open in public (title)");
+    publicVersionJSON.put(Constants.BRAZE_PUSH_CONTENT_KEY, "Please (content)");
+    publicVersionJSON.put(Constants.BRAZE_PUSH_SUMMARY_TEXT_KEY, "Summary");
     return publicVersionJSON.toString();
   }
 
@@ -363,26 +363,26 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private Bundle addPushStoryPages(Bundle notificationExtras) {
     for (int i = 0; i < mPushStoryNumPages; i++) {
       if (mStoryDeepLink) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_DEEP_LINK_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[0]);
+        notificationExtras.putString(Constants.BRAZE_PUSH_STORY_DEEP_LINK_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[0]);
       }
       if (mStoryTitles) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_TITLE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[1]);
+        notificationExtras.putString(Constants.BRAZE_PUSH_STORY_TITLE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[1]);
       }
       if (mStorySubtitles) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_SUBTITLE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[2]);
+        notificationExtras.putString(Constants.BRAZE_PUSH_STORY_SUBTITLE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[2]);
       }
-      notificationExtras.putString(Constants.APPBOY_PUSH_STORY_IMAGE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[3]);
+      notificationExtras.putString(Constants.BRAZE_PUSH_STORY_IMAGE_KEY_TEMPLATE.replace("*", Integer.toString(i)), PUSH_STORY_PAGE_VALUES.get(i)[3]);
       if (!StringUtils.isNullOrBlank(mPushStoryTitleGravity)) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_TITLE_JUSTIFICATION_KEY_TEMPLATE.replace("*", Integer.toString(i)), mPushStoryTitleGravity);
+        notificationExtras.putString(Constants.BRAZE_PUSH_STORY_TITLE_JUSTIFICATION_KEY_TEMPLATE.replace("*", Integer.toString(i)), mPushStoryTitleGravity);
       }
       if (!StringUtils.isNullOrBlank(mPushStorySubtitleGravity)) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_SUBTITLE_JUSTIFICATION_KEY_TEMPLATE.replace("*", Integer.toString(i)), mPushStorySubtitleGravity);
+        notificationExtras.putString(Constants.BRAZE_PUSH_STORY_SUBTITLE_JUSTIFICATION_KEY_TEMPLATE.replace("*", Integer.toString(i)), mPushStorySubtitleGravity);
       }
       if (mOpenInWebview) {
-        notificationExtras.putString(Constants.APPBOY_PUSH_STORY_USE_WEBVIEW_KEY_TEMPLATE.replace("*", Integer.toString(i)), "true");
+        notificationExtras.putString(Constants.BRAZE_PUSH_STORY_USE_WEBVIEW_KEY_TEMPLATE.replace("*", Integer.toString(i)), "true");
       }
     }
-    notificationExtras.putBoolean(Constants.APPBOY_PUSH_STORY_IS_NEWLY_RECEIVED, true);
+    notificationExtras.putBoolean(Constants.BRAZE_PUSH_STORY_IS_NEWLY_RECEIVED, true);
     return notificationExtras;
   }
 
@@ -391,37 +391,37 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
       return notificationExtras;
     }
     switch (mActionType) {
-      case Constants.APPBOY_PUSH_ACTION_TYPE_OPEN:
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_OPEN);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Open app");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
+      case Constants.BRAZE_PUSH_ACTION_TYPE_OPEN:
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.BRAZE_PUSH_ACTION_TYPE_OPEN);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Open app");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.BRAZE_PUSH_ACTION_TYPE_NONE);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), getString(R.string.droidboy_close_button_text));
         break;
-      case Constants.APPBOY_PUSH_ACTION_TYPE_URI:
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy (webview)");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.braze_homepage_url));
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Google");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.google_url));
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "false");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
+      case Constants.BRAZE_PUSH_ACTION_TYPE_URI:
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.BRAZE_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy (webview)");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.braze_homepage_url));
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.BRAZE_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Google");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.google_url));
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "false");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.BRAZE_PUSH_ACTION_TYPE_NONE);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
         if (mOpenInWebview) {
-          notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
-          notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "true");
+          notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
+          notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "1"), "true");
         }
         break;
       case "deep_link":
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Preferences");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.droidboy_deep_link));
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.APPBOY_PUSH_ACTION_TYPE_URI);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Telephone");
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.telephone_uri));
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.APPBOY_PUSH_ACTION_TYPE_NONE);
-        notificationExtras.putString(Constants.APPBOY_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.BRAZE_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Preferences");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.droidboy_deep_link));
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.BRAZE_PUSH_ACTION_TYPE_URI);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "1"), "Telephone");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "1"), getString(R.string.telephone_uri));
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "2"), Constants.BRAZE_PUSH_ACTION_TYPE_NONE);
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "2"), getString(R.string.droidboy_close_button_text));
         break;
       default:
     }

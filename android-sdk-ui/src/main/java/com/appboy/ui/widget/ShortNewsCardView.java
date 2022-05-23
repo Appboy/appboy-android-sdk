@@ -6,9 +6,9 @@ import android.widget.TextView;
 
 import com.appboy.models.cards.ShortNewsCard;
 import com.appboy.ui.R;
-import com.braze.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.actions.IAction;
 
 public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
   private static final String TAG = BrazeLogger.getBrazeLogTag(ShortNewsCardView.class);
@@ -53,8 +53,8 @@ public class ShortNewsCardView extends BaseFeedCardView<ShortNewsCard> {
     setOptionalTextView(mDomain, card.getDomain());
     mCardAction = getUriActionForCard(card);
 
-    setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
+    setOnClickListener(view -> handleCardClick(applicationContext, card, mCardAction));
 
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, mCard);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, card);
   }
 }

@@ -1,4 +1,7 @@
-![Braze Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png)
+<p align="center">
+  <img width="480" alt="Braze Logo" src=".github/assets/logo-light.png#gh-light-mode-only" />
+  <img width="480" alt="Braze Logo" src=".github/assets/logo-dark.png#gh-dark-mode-only" />
+</p>
 
 # Android SDK
 
@@ -29,16 +32,18 @@ Successful marketing automation is essential to the future of your mobile app. B
 The version should match the git version tag, or the most recent version noted in the changelog. An example dependency declaration is:
 
 ```
-repositories {
-   maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
-   ...
+allprojects {
+  repositories {
+    maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
+    ...
+  }
 }
 ```
 
 ```
 dependencies {
-   implementation 'com.appboy:android-sdk-ui:19.0.+'
-   ...
+  implementation 'com.appboy:android-sdk-ui:20.0.+'
+  ...
 }
 ```
 
@@ -49,14 +54,14 @@ match the git version tag, or the most recent version noted in the changelog. An
 
 ```
 repositories {
-   mavenLocal()
-   ...
+  mavenLocal()
+  ...
 }
 ```
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:19.0.+'
+  implementation 'com.appboy:android-sdk-ui:20.0.+'
 }
 ```
 

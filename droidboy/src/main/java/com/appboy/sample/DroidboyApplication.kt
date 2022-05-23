@@ -29,6 +29,7 @@ import com.braze.enums.BrazeSdkMetadata
 import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.support.BrazeLogger
 import com.braze.support.BrazeLogger.Priority.E
+import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.getPrettyPrintedString
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -68,6 +69,7 @@ class DroidboyApplication : Application() {
         brazeConfigBuilder.setSdkMetadata(EnumSet.of(BrazeSdkMetadata.MANUAL))
         setOverrideApiKeyIfConfigured(sharedPreferences, brazeConfigBuilder)
         setOverrideEndpointIfConfigured(sharedPreferences, brazeConfigBuilder)
+        setMinTriggerIntervalIfConfigured(sharedPreferences, brazeConfigBuilder)
         isSdkAuthEnabled = setSdkAuthIfConfigured(sharedPreferences, brazeConfigBuilder)
         Braze.configure(this, brazeConfigBuilder.build())
         Braze.addSdkMetadata(this, EnumSet.of(BrazeSdkMetadata.BRANCH))
@@ -248,7 +250,7 @@ class DroidboyApplication : Application() {
     private fun setOverrideApiKeyIfConfigured(sharedPreferences: SharedPreferences, config: BrazeConfig.Builder) {
         val overrideApiKey = sharedPreferences.getString(OVERRIDE_API_KEY_PREF_KEY, null)
         if (!overrideApiKey.isNullOrBlank()) {
-            Log.i(TAG, String.format("Override API key found, configuring Braze with override key %s.", overrideApiKey))
+            brazelog(I) { "Override API key found, configuring Braze with override key $overrideApiKey." }
             config.setApiKey(overrideApiKey)
             overrideApiKeyInUse = overrideApiKey
         }
@@ -257,8 +259,17 @@ class DroidboyApplication : Application() {
     private fun setOverrideEndpointIfConfigured(sharedPreferences: SharedPreferences, config: BrazeConfig.Builder) {
         val overrideEndpoint = sharedPreferences.getString(OVERRIDE_ENDPOINT_PREF_KEY, null)
         if (!overrideEndpoint.isNullOrBlank()) {
-            Log.i(TAG, String.format("Override endpoint found, configuring Braze with override endpoint %s.", overrideEndpoint))
+            brazelog(I) { "Override endpoint found, configuring Braze with override endpoint $overrideEndpoint." }
             config.setCustomEndpoint(overrideEndpoint)
+        }
+    }
+
+    private fun setMinTriggerIntervalIfConfigured(sharedPreferences: SharedPreferences, config: BrazeConfig.Builder) {
+        val minIntervalString = sharedPreferences.getString(MIN_TRIGGER_INTERVAL_KEY, null)
+        if (!minIntervalString.isNullOrBlank()) {
+            val minTriggerInterval = minIntervalString.toIntOrNull() ?: return
+            brazelog(I) { "Min trigger interval found, configuring Braze with minimum interval $minTriggerInterval seconds." }
+            config.setTriggerActionMinimumTimeIntervalSeconds(minTriggerInterval)
         }
     }
 
@@ -284,6 +295,7 @@ class DroidboyApplication : Application() {
         const val OVERRIDE_API_KEY_PREF_KEY = "override_api_key"
         const val OVERRIDE_ENDPOINT_PREF_KEY = "override_endpoint_url"
         const val ENABLE_SDK_AUTH_PREF_KEY = "enable_sdk_auth_if_present_pref_key"
+        const val MIN_TRIGGER_INTERVAL_KEY = "min_trigger_interval"
 
         @JvmStatic
         fun getApiKeyInUse(context: Context): String? {

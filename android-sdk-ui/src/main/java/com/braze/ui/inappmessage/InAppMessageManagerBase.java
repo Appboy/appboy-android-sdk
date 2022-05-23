@@ -2,6 +2,7 @@ package com.braze.ui.inappmessage;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.KeyEvent;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;

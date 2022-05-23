@@ -31,6 +31,7 @@
   <dimen name="com_braze_inappmessage_modal_max_height">750dp</dimen>
   <dimen name="com_braze_inappmessage_modal_margin">15dp</dimen>
   <dimen name="com_braze_inappmessage_slideup_left_message_margin_no_image">20dp</dimen>
+  <dimen name="com_braze_inappmessage_slideup_max_width">450dp</dimen>
   <!-- The click area target size in dp for modals and fullscreen in-app messages to ensure the click area extends beyond the drawable. -->
   <dimen name="com_braze_inappmessage_close_button_click_area_width">48dp</dimen>
   <dimen name="com_braze_inappmessage_close_button_click_area_height">48dp</dimen>

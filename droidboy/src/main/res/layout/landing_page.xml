@@ -45,17 +45,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
       android:id="@+id/viewpager"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/floating_action_bar"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="end|bottom"
-      android:layout_margin="16dp"
-      android:src="@drawable/notification_small_icon" />
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

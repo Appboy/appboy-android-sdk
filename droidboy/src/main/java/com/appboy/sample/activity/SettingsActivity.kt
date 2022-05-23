@@ -1,15 +1,11 @@
 package com.appboy.sample.activity
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import com.appboy.sample.R
 import com.appboy.sample.activity.settings.SettingsFragment
-import com.appboy.sample.util.EnvironmentUtils.Companion.analyzeBitmapForEnvironmentBarcode
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,14 +19,5 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.settingsFragmentContainer, SettingsFragment())
             .commit()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SettingsFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            (data?.extras?.get("data") as Bitmap?)?.let {
-                analyzeBitmapForEnvironmentBarcode(this, it)
-            }
-        }
     }
 }

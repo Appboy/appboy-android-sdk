@@ -1,3 +1,33 @@
+## 20.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v20.0.0)
+
+#### Breaking
+- Changed `BrazeNotificationStyleFactory` to remove deprecated functions.
+  - Removed `BrazeNotificationStyleFactory.getBigNotificationStyle(Context, Bundle, Bundle, NotificationCompat.Builder)`. Use `BrazeNotificationStyleFactory.getNotificationStyle(NotificationCompat.Builder, BrazeNotificationPayload)` instead.
+  - Removed `BrazeNotificationStyleFactory.getBigTextNotificationStyle(BrazeConfigurationProvider, Bundle)`. Use `BrazeNotificationStyleFactory.getBigTextNotificationStyle(BrazeNotificationPayload)` instead.
+  - Removed `BrazeNotificationStyleFactory.getStoryStyle(Context, Bundle, Bundle, NotificationCompat.Builder)`. Use `BrazeNotificationStyleFactory.getStoryStyle(NotificationCompat.Builder, BrazeNotificationPayload)` instead.
+- Changed `BrazeNotificationActionUtils` to remove deprecated functions.
+  - Removed `BrazeNotificationActionUtils.addNotificationActions(Context, NotificationCompat.Builder, Bundle)`. Use `BrazeNotificationActionUtils.addNotificationActions(NotificationCompat.Builder, BrazeNotificationPayload)` instead.
+  - Removed `BrazeNotificationActionUtils.addNotificationAction(Context, NotificationCompat.Builder, Bundle, Int)`. Use `BrazeNotificationActionUtils.addNotificationAction(BrazeNotificationPayload.ActionButton)` instead.
+  - Removed `AppboyNotificationActionUtils`. Use `BrazeNotificationActionUtils` instead.
+- Removed `AppboyHuaweiPushHandler`. Use `BrazeHuaweiPushHandler` instead.
+- Removed `AppboyFirebaseMessagingService`. Use `BrazeFirebaseMessagingService` instead.
+- Removed `AppboyAdmReceiver`. Use `BrazeAmazonDeviceMessagingReceiver` instead.
+- `BrazeFirebaseMessagingService.handleBrazeRemoteMessage()` and `BrazeFirebaseMessagingService.isBrazePushNotification()` now require non-null parameters.
+- `UriAction.channel` is now `Channel.CONTENT_CARD` for actions that originate from a Content Card instead of `Channel.NEWS_FEED`.
+
+##### Fixed
+-  Fixed an issue that would prevent SDK Authentication errors from being retried.
+
+##### Added
+- Modified `BrazeProperties.addProperties()` to allow adding nested properties via `JSONObject` or `Map<String, *>`.
+- Added support for Braze Action Deeplink Click Actions.
+
+##### Changed
+- Slideup messages now have a maximum width of 450dp. This can be adjusted by modifying `@dimen/com_braze_inappmessage_slideup_max_width`.
+- Added `com.braze.Constants` with constants starting with "BRAZE_" that replace the corresponding "APPBOY_" constants in `com.appboy.Constants`. The "APPBOY_" constants are deprecated and will be removed in a future release.
+
 ## 19.0.0
 
 ##### Important

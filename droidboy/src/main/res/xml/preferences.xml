@@ -190,4 +190,15 @@
       android:summary="@string/custom_news_feed_card_click_action_listener_summary"
       android:title="@string/custom_news_feed_card_click_action_listener" />
   </PreferenceCategory>
+  <PreferenceCategory
+    android:key="settings_inappmessage_section_key"
+    android:title="@string/inappmessage">
+      <EditTextPreference
+        android:defaultValue=""
+        android:inputType="numberDecimal"
+        android:digits="0123456789"
+        android:key="min_trigger_interval"
+        app:useSimpleSummaryProvider="true"
+        android:title="@string/min_trigger_interval" />
+  </PreferenceCategory>
 </PreferenceScreen>

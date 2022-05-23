@@ -5,9 +5,9 @@ import android.widget.ImageView;
 
 import com.appboy.models.cards.BannerImageCard;
 import com.appboy.ui.R;
-import com.braze.ui.actions.IAction;
 import com.appboy.ui.feed.view.BaseFeedCardView;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.actions.IAction;
 
 public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
   private static final String TAG = BrazeLogger.getBrazeLogTag(BannerImageCardView.class);
@@ -46,9 +46,9 @@ public class BannerImageCardView extends BaseFeedCardView<BannerImageCard> {
     if (card.getAspectRatio() != 0f) {
       mAspectRatio = card.getAspectRatio();
     }
-    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, mCard);
+    setImageViewToUrl(mImage, card.getImageUrl(), mAspectRatio, card);
 
     mCardAction = getUriActionForCard(card);
-    setOnClickListener(view -> handleCardClick(mContext, card, mCardAction, TAG));
+    setOnClickListener(view -> handleCardClick(applicationContext, card, mCardAction));
   }
 }

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 
@@ -320,8 +319,7 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
           return false;
       }
 
-      Handler mainLooperHandler = new Handler(mActivity.getMainLooper());
-      BackgroundInAppMessagePreparer.prepareInAppMessageForDisplay(mainLooperHandler, inAppMessage);
+      BackgroundInAppMessagePreparer.prepareInAppMessageForDisplay(inAppMessage);
       return true;
     } catch (Exception e) {
       BrazeLogger.e(TAG, "Error running requestDisplayInAppMessage", e);

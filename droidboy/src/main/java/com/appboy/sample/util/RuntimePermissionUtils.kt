@@ -2,11 +2,11 @@ package com.appboy.sample.util
 
 import android.Manifest
 import android.app.Activity
-import androidx.activity.result.ActivityResultLauncher
-import com.appboy.sample.R
 import android.content.DialogInterface
 import android.os.Build
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
+import com.appboy.sample.R
 
 object RuntimePermissionUtils {
     /**
