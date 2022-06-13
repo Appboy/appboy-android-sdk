@@ -1,5 +1,6 @@
 package com.appboy.sample
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
 import android.app.NotificationChannel
@@ -21,10 +22,12 @@ import android.util.Log
 import android.webkit.WebView
 import androidx.annotation.RequiresApi
 import androidx.multidex.MultiDex
+import com.appboy.sample.util.BrazeActionTestingUtil
 import com.appboy.support.PackageUtils
 import com.braze.Braze
 import com.braze.BrazeActivityLifecycleCallbackListener
 import com.braze.configuration.BrazeConfig
+import com.braze.coroutine.BrazeCoroutineScope
 import com.braze.enums.BrazeSdkMetadata
 import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.support.BrazeLogger
@@ -32,9 +35,10 @@ import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.getPrettyPrintedString
+import com.braze.support.hasPermission
+import com.braze.ui.inappmessage.BrazeInAppMessageManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.OutputStreamWriter
@@ -55,7 +59,20 @@ class DroidboyApplication : Application() {
         }
 
         registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
-        setupNotificationChannels()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (this.hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
+                setupNotificationChannels()
+            } else {
+                // Ask for the push prompt via a Braze Action #dogfooding
+                brazelog { "BrazeInApp adding push prompt" }
+                val brazeInAppMessageManager = BrazeInAppMessageManager.getInstance()
+                brazeInAppMessageManager
+                    .addInAppMessage(BrazeActionTestingUtil.getPushPromptInAppMessageModal(this.applicationContext))
+                brazeInAppMessageManager.requestDisplayInAppMessage()
+            }
+        } else {
+            setupNotificationChannels()
+        }
         setupFirebaseCrashlytics()
         BrazeLogger.logLevel = applicationContext.getSharedPreferences(getString(R.string.log_level_dialog_title), MODE_PRIVATE)
             .getInt(getString(R.string.current_log_level), Log.VERBOSE)
@@ -96,7 +113,7 @@ class DroidboyApplication : Application() {
      * token is available, just calls [Braze.changeUser] without a new SDK Auth token.
      */
     fun changeUserWithNewSdkAuthToken(userId: String) {
-        runBlocking(Dispatchers.IO) {
+        BrazeCoroutineScope.launch {
             val token = getSdkAuthToken(userId)
             if (token != null) {
                 Braze.getInstance(applicationContext).changeUser(userId, token)
@@ -107,8 +124,8 @@ class DroidboyApplication : Application() {
     }
 
     private fun setNewSdkAuthToken(userId: String) {
-        runBlocking(Dispatchers.IO) {
-            val token = getSdkAuthToken(userId) ?: return@runBlocking
+        BrazeCoroutineScope.launch {
+            val token = getSdkAuthToken(userId) ?: return@launch
             Braze.getInstance(applicationContext).setSdkAuthenticationSignature(token)
         }
     }
@@ -117,7 +134,7 @@ class DroidboyApplication : Application() {
         if (!isSdkAuthEnabled) return null
 
         try {
-            return withContext(Dispatchers.IO) {
+            return withContext(BrazeCoroutineScope.coroutineContext) {
                 brazelog(TAG) { "Making new SDK Auth token request for user: '$userId'" }
 
                 val url = URL(BuildConfig.SDK_AUTH_ENDPOINT)

@@ -6,6 +6,8 @@ import com.appboy.unity.configuration.UnityConfigurationProvider
 import com.appboy.unity.utils.MessagingUtils.sendContentCardsUpdatedEventToUnity
 import com.appboy.unity.utils.MessagingUtils.sendFeedUpdatedEventToUnity
 import com.appboy.unity.utils.MessagingUtils.sendInAppMessageReceivedMessage
+import com.appboy.unity.utils.MessagingUtils.sendSdkAuthErrorEventToUnity
+import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.events.ContentCardsUpdatedEvent
 import com.braze.events.InAppMessageEvent
 import com.braze.support.BrazeLogger.brazelog
@@ -46,6 +48,18 @@ object EventSubscriberFactory {
                     contentCardsUpdatedEvent
                 )
             brazelog(TAG) { "Did send Content Cards updated event to Unity Player?: $isContentCardsEventSent" }
+        }
+    }
+
+    fun createSdkAuthenticationFailureSubscriber(config: UnityConfigurationProvider): IEventSubscriber<BrazeSdkAuthenticationErrorEvent> {
+        return IEventSubscriber { sdkAuthErrorEvent: BrazeSdkAuthenticationErrorEvent ->
+            val isSdkAuthErrorSent =
+                sendSdkAuthErrorEventToUnity(
+                    config.sdkAuthenticationFailureListenerGameObjectName,
+                    config.sdkAuthenticationFailureListenerCallbackMethodName,
+                    sdkAuthErrorEvent
+                )
+            brazelog { "Did send SDK Authentication failure event to Unity Player?: $isSdkAuthErrorSent" }
         }
     }
 }

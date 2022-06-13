@@ -21,11 +21,11 @@ import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import com.appboy.BrazeInternal.addSerializedContentCardToStorage
 import com.appboy.BrazeInternal.requestGeofenceRefresh
-import com.braze.Constants
-import com.braze.Constants.isAmazonDevice
 import com.appboy.enums.Channel
 import com.appboy.models.push.BrazeNotificationPayload
 import com.braze.Braze
+import com.braze.Constants
+import com.braze.Constants.isAmazonDevice
 import com.braze.IBrazeNotificationFactory
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.enums.BrazeViewBounds
@@ -74,7 +74,7 @@ object BrazeNotificationUtils {
     val activeNotificationFactory: IBrazeNotificationFactory
         get() {
             val customBrazeNotificationFactory = Braze.getCustomBrazeNotificationFactory()
-            return customBrazeNotificationFactory ?: BrazeNotificationFactory.getInstance()
+            return customBrazeNotificationFactory ?: BrazeNotificationFactory.instance
         }
 
     /**
@@ -688,7 +688,7 @@ object BrazeNotificationUtils {
         ) {
             return
         }
-        val notificationChannelId = getOrCreateNotificationChannelId(payload) ?: return
+        val notificationChannelId = getOrCreateNotificationChannelId(payload)
         val publicNotificationExtras = payload.publicNotificationExtras.parseJsonObjectIntoBundle()
         if (publicNotificationExtras.isEmpty) return
 
@@ -830,7 +830,7 @@ object BrazeNotificationUtils {
      * returned.
      */
     @JvmStatic
-    fun getOrCreateNotificationChannelId(payload: BrazeNotificationPayload): String? {
+    fun getOrCreateNotificationChannelId(payload: BrazeNotificationPayload): String {
         val channelIdFromExtras = payload.notificationChannelId
         val defaultChannelId = Constants.BRAZE_PUSH_DEFAULT_NOTIFICATION_CHANNEL_ID
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -839,11 +839,7 @@ object BrazeNotificationUtils {
         }
         val context = payload.context
         val config = payload.configurationProvider
-        if (context == null || config == null) {
-            brazelog { "BrazeNotificationPayload is missing a context and/or configuration provider" }
-            return null
-        }
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // First try to get the channel from the extras
         if (channelIdFromExtras != null) {
@@ -861,10 +857,10 @@ object BrazeNotificationUtils {
             brazelog { "Braze default notification channel does not exist on device. Creating default channel." }
             val channel = NotificationChannel(
                 defaultChannelId,
-                config.defaultNotificationChannelName,
+                config?.defaultNotificationChannelName,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            channel.description = config.defaultNotificationChannelDescription
+            channel.description = config?.defaultNotificationChannelDescription
             notificationManager.createNotificationChannel(channel)
         }
         return defaultChannelId

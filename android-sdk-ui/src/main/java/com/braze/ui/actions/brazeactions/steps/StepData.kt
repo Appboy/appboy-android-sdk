@@ -18,9 +18,9 @@ internal data class StepData(
 ) {
     private val args: List<Any> by lazy {
         srcJson.optJSONArray(ARGS)
-            ?.iterator<Any>()
-            ?.asSequence()
-            ?.toList().orEmpty()
+            .iterator<Any>()
+            .asSequence()
+            .toList()
     }
 
     val firstArg by lazy { getArg(0) }

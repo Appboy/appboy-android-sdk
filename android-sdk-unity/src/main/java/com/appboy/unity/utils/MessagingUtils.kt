@@ -3,6 +3,7 @@ package com.appboy.unity.utils
 import android.content.Intent
 import android.os.Bundle
 import com.appboy.events.FeedUpdatedEvent
+import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.events.ContentCardsUpdatedEvent
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.support.BrazeLogger.brazelog
@@ -131,6 +132,36 @@ object MessagingUtils {
         return true
     }
 
+    fun sendSdkAuthErrorEventToUnity(
+        unityGameObjectName: String?,
+        unityCallbackFunctionName: String?,
+        sdkAuthError: BrazeSdkAuthenticationErrorEvent
+    ): Boolean {
+        if (unityGameObjectName.isNullOrBlank()) {
+            brazelog(TAG) {
+                "There is no Unity GameObject registered in the braze.xml configuration file " +
+                    "to receive SDK Authentication Failure event messages. Not sending the message to the Unity Player."
+            }
+            return false
+        }
+        if (unityCallbackFunctionName.isNullOrBlank()) {
+            brazelog(TAG) {
+                "There is no Unity callback method name registered to receive " +
+                    "SDK Authentication Failure event messages in the braze.xml configuration file. Not sending the message to the Unity Player."
+            }
+            return false
+        }
+        val json = JSONObject()
+            .put("code", sdkAuthError.errorCode)
+            .put("reason", sdkAuthError.errorReason)
+            .put("userId", sdkAuthError.userId)
+            .put("signature", sdkAuthError.signature)
+
+        brazelog(TAG) { "Sending an SDK Authentication Failure message to $unityGameObjectName:$unityCallbackFunctionName." }
+        UnityPlayer.UnitySendMessage(unityGameObjectName, unityCallbackFunctionName, json.toString())
+        return true
+    }
+
     /**
      * Sends some structured data to the BrazeInternalComponent in C# in the Unity binding.
      */
@@ -151,6 +182,7 @@ object MessagingUtils {
             return json
         }
         for (key in pushExtras.keySet()) {
+            @Suppress("DEPRECATION")
             pushExtras[key]?.let {
                 if (it is Bundle) {
                     json.put(key, getPushBundleExtras(it).toString())

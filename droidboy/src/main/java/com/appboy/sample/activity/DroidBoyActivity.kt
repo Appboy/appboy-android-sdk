@@ -24,7 +24,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.braze.Constants
 import com.appboy.enums.CardCategory
 import com.appboy.sample.FeedCategoriesFragment
 import com.appboy.sample.FeedCategoriesFragment.NoticeDialogListener
@@ -38,6 +37,7 @@ import com.appboy.sample.util.RuntimePermissionUtils.requestLocationPermissions
 import com.appboy.sample.util.ViewUtils
 import com.appboy.ui.AppboyFeedFragment
 import com.braze.Braze
+import com.braze.Constants
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
@@ -51,21 +51,6 @@ import java.util.*
 class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
     private var feedCategories: EnumSet<CardCategory>? = null
     private var drawerLayout: DrawerLayout? = null
-    private var requestedPermission: String? = null
-
-    private val requestPermissionLauncher = registerForActivityResult(RequestPermission()) { result: Boolean ->
-        val stringBuilder = StringBuilder()
-        when (requestedPermission) {
-            Manifest.permission.ACCESS_FINE_LOCATION -> stringBuilder.append("Location permission ")
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION -> stringBuilder.append("Background location permission ")
-            else -> stringBuilder.append("Unknown permission ")
-        }
-        stringBuilder.append(if (result) "granted" else "denied")
-        showToast(stringBuilder.toString())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && Manifest.permission.ACCESS_FINE_LOCATION == requestedPermission && result) {
-            makePermissionRequest(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-        }
-    }
 
     private val requestMultiplePermissionLauncher = registerForActivityResult(RequestMultiplePermissions()) { result: Map<String, Boolean> ->
         if (result.containsKey(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -118,7 +103,7 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
             tab.text = (viewPager.adapter as Adapter).getTitle(position)
         }.attach()
         drawerLayout = findViewById(R.id.root)
-        checkLocationPermissions()
+        checkPermissions()
         setupNewsFeedListener()
         brazelog(I) { "Braze device id is ${Braze.getInstance(applicationContext).deviceId}" }
     }
@@ -136,16 +121,19 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
         newsFeedSharedPrefs.registerOnSharedPreferenceChangeListener(newsfeedSortListener)
     }
 
-    private fun checkLocationPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !didRequestLocationPermission) {
+    private fun checkPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+
+        val permissionsToRequest = mutableListOf<String>()
+        if (didRequestLocationPermission) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val hasFineLocationPermission =
                     applicationContext.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 if (!hasFineLocationPermission) {
-                    makePermissionRequest(Manifest.permission.ACCESS_FINE_LOCATION)
+                    permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
                 } else if (!applicationContext.hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-                    // Request background now that FINE is set
-                    makePermissionRequest(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                    // Request background now that fine is set
+                    permissionsToRequest.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val hasAllPermissions = (
@@ -154,33 +142,44 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
                     )
                 if (!hasAllPermissions) {
                     // Request both BACKGROUND and FINE location permissions
-                    requestLocationPermissions(
-                        this,
-                        arrayOf(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                        ),
-                        requestMultiplePermissionLauncher
-                    )
+                    permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                    permissionsToRequest.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                 }
             } else {
                 // From M to P, FINE gives us BACKGROUND access
                 if (!applicationContext.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     // Request only FINE location permission
-                    makePermissionRequest(Manifest.permission.ACCESS_FINE_LOCATION)
+                    permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             }
             didRequestLocationPermission = true
         }
+
+        if (permissionsToRequest.size > 1) {
+            requestLocationPermissions(
+                this,
+                permissionsToRequest.toTypedArray(),
+                requestMultiplePermissionLauncher
+            )
+        } else if (permissionsToRequest.size == 1) {
+            makePermissionRequest(permissionsToRequest[0])
+        }
     }
 
     private fun makePermissionRequest(permission: String) {
-        // The callback for single permissions doesn't tell us what the request was, so we keep track ourselves
-        requestedPermission = permission
+        val singlePermissionLauncher = registerForActivityResult(RequestPermission()) { result ->
+            showToast("$permission${if (result) " granted" else " denied"}")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+                && Manifest.permission.ACCESS_FINE_LOCATION == permission
+                && result
+            ) {
+                makePermissionRequest(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            }
+        }
         requestLocationPermission(
             this,
             permission,
-            requestPermissionLauncher
+            singlePermissionLauncher
         )
     }
 
@@ -358,6 +357,7 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
 
     companion object {
         private var didRequestLocationPermission = false
+
         private fun bundleToLogString(bundle: Bundle): String {
             val bundleString = StringBuilder()
             bundleString.append("Received intent with extras Bundle of size ${bundle.size()} from Braze containing [")

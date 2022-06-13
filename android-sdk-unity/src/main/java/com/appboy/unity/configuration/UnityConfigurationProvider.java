@@ -8,27 +8,30 @@ import com.braze.support.BrazeLogger;
 
 public class UnityConfigurationProvider extends CachedConfigurationProvider {
   private static final String TAG = UnityConfigurationProvider.class.getName();
-  private static final String INAPP_SHOW_INAPP_MESSAGES_AUTOMATICALLY_KEY = "com_appboy_inapp_show_inapp_messages_automatically";
+  private static final String INAPP_SHOW_INAPP_MESSAGES_AUTOMATICALLY_KEY = "com_braze_inapp_show_inapp_messages_automatically";
   // In App Message listener
-  private static final String INAPP_LISTENER_GAME_OBJECT_NAME_KEY = "com_appboy_inapp_listener_game_object_name";
-  private static final String INAPP_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_appboy_inapp_listener_callback_method_name";
+  private static final String INAPP_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_inapp_listener_game_object_name";
+  private static final String INAPP_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_inapp_listener_callback_method_name";
   // News Feed listener
-  private static final String FEED_LISTENER_GAME_OBJECT_NAME_KEY = "com_appboy_feed_listener_game_object_name";
-  private static final String FEED_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_appboy_feed_listener_callback_method_name";
+  private static final String FEED_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_feed_listener_game_object_name";
+  private static final String FEED_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_feed_listener_callback_method_name";
   // Push received
-  private static final String PUSH_RECEIVED_GAME_OBJECT_NAME_KEY = "com_appboy_push_received_game_object_name";
-  private static final String PUSH_RECEIVED_CALLBACK_METHOD_NAME_KEY = "com_appboy_push_received_callback_method_name";
+  private static final String PUSH_RECEIVED_GAME_OBJECT_NAME_KEY = "com_braze_push_received_game_object_name";
+  private static final String PUSH_RECEIVED_CALLBACK_METHOD_NAME_KEY = "com_braze_push_received_callback_method_name";
   // Push opened
-  private static final String PUSH_OPENED_GAME_OBJECT_NAME_KEY = "com_appboy_push_opened_game_object_name";
-  private static final String PUSH_OPENED_CALLBACK_METHOD_NAME_KEY = "com_appboy_push_opened_callback_method_name";
+  private static final String PUSH_OPENED_GAME_OBJECT_NAME_KEY = "com_braze_push_opened_game_object_name";
+  private static final String PUSH_OPENED_CALLBACK_METHOD_NAME_KEY = "com_braze_push_opened_callback_method_name";
   // Push deleted
-  private static final String PUSH_DELETED_GAME_OBJECT_NAME_KEY = "com_appboy_push_deleted_game_object_name";
-  private static final String PUSH_DELETED_CALLBACK_METHOD_NAME_KEY = "com_appboy_push_deleted_callback_method_name";
+  private static final String PUSH_DELETED_GAME_OBJECT_NAME_KEY = "com_braze_push_deleted_game_object_name";
+  private static final String PUSH_DELETED_CALLBACK_METHOD_NAME_KEY = "com_braze_push_deleted_callback_method_name";
   // Content Cards
-  private static final String CONTENT_CARDS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY = "com_appboy_content_cards_updated_listener_game_object_name";
-  private static final String CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_appboy_content_cards_updated_listener_callback_method_name";
+  private static final String CONTENT_CARDS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_content_cards_updated_listener_game_object_name";
+  private static final String CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_content_cards_updated_listener_callback_method_name";
   // Pending push intents
   private static final String DELAY_SENDING_PUSH_MESSAGES_KEY = "com_braze_delay_sending_push_intents";
+  // SDK Authentication Failure
+  private static final String SDK_AUTHENTICATION_FAILURE_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_sdk_authentication_failure_listener_game_object_name";
+  private static final String SDK_AUTHENTICATION_FAILURE_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_sdk_authentication_failure_listener_callback_method_name";
 
   public UnityConfigurationProvider(Context context) {
     super(context, false);
@@ -90,6 +93,14 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
     return getBooleanValue(DELAY_SENDING_PUSH_MESSAGES_KEY, false);
   }
 
+  public String getSdkAuthenticationFailureListenerGameObjectName() {
+    return getStringValue(SDK_AUTHENTICATION_FAILURE_LISTENER_GAME_OBJECT_NAME_KEY, null);
+  }
+
+  public String getSdkAuthenticationFailureListenerCallbackMethodName() {
+    return getStringValue(SDK_AUTHENTICATION_FAILURE_LISTENER_CALLBACK_METHOD_NAME_KEY, null);
+  }
+
   public void configureListener(int messageTypeValue, String gameObject, String methodName) {
     UnityMessageType messageType = UnityMessageType.getTypeFromValue(messageTypeValue);
     if (messageType == null) {
@@ -127,6 +138,10 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
       case CONTENT_CARDS_UPDATED:
         putStringIntoRuntimeConfiguration(CONTENT_CARDS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY, gameObject);
         putStringIntoRuntimeConfiguration(CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY, methodName);
+        break;
+      case SDK_AUTHENTICATION_FAILURE:
+        putStringIntoRuntimeConfiguration(SDK_AUTHENTICATION_FAILURE_LISTENER_GAME_OBJECT_NAME_KEY, gameObject);
+        putStringIntoRuntimeConfiguration(SDK_AUTHENTICATION_FAILURE_LISTENER_CALLBACK_METHOD_NAME_KEY, methodName);
         break;
       default:
         BrazeLogger.d(TAG, "Got unhandled message type: " + messageType);

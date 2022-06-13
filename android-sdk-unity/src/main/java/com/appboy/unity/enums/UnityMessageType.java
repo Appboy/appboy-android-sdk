@@ -17,6 +17,7 @@ public enum UnityMessageType {
   IN_APP_MESSAGE(5),
   NEWS_FEED(6),
   CONTENT_CARDS_UPDATED(7),
+  SDK_AUTHENTICATION_FAILURE(8)
   ;
 
   private static final Map<Integer, UnityMessageType> sTypeLookup = new HashMap<>();

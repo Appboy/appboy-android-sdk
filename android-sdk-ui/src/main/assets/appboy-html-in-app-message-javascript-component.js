@@ -13,6 +13,7 @@ var brazeBridge = {
       brazeInternalBridge.logClick();
     }
   },
+  requestPushPermission: function () { brazeInternalBridge.requestPushPermission() },
   brazeBridgeUserObject: {
     setFirstName: function(firstName) { brazeInternalBridge.getUser().setFirstName(firstName); },
     setLastName: function(lastName) { brazeInternalBridge.getUser().setLastName(lastName); },

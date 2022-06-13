@@ -1,5 +1,6 @@
 package com.braze.ui.contentcards
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -141,7 +142,6 @@ open class ContentCardsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         }
         Braze.getInstance(context).subscribeToContentCardsUpdates(contentCardsUpdatedSubscriber)
         Braze.getInstance(context).requestContentCardsRefresh(true)
-        Braze.getInstance(context).logContentCardsDisplayed()
         Braze.getInstance(context).removeSingleSubscription(sdkDataWipeEventSubscriber, SdkDataWipeEvent::class.java)
         if (sdkDataWipeEventSubscriber == null) {
             // If the SDK data is wiped, then we want to clear any cached Content Cards
@@ -179,16 +179,34 @@ open class ContentCardsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
-            val updateHandlerParcelable: IContentCardsUpdateHandler? = savedInstanceState.getParcelable(UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY)
+            val updateHandlerParcelable: IContentCardsUpdateHandler? =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    savedInstanceState.getParcelable(UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY, IContentCardsUpdateHandler::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    savedInstanceState.getParcelable(UPDATE_HANDLER_SAVED_INSTANCE_STATE_KEY)
+                }
             if (updateHandlerParcelable != null) {
                 setContentCardUpdateHandler(updateHandlerParcelable)
             }
-            val viewBindingHandlerParcelable: IContentCardsViewBindingHandler? = savedInstanceState.getParcelable(VIEW_BINDING_HANDLER_SAVED_INSTANCE_STATE_KEY)
+            val viewBindingHandlerParcelable: IContentCardsViewBindingHandler? =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    savedInstanceState.getParcelable(VIEW_BINDING_HANDLER_SAVED_INSTANCE_STATE_KEY, IContentCardsViewBindingHandler::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    savedInstanceState.getParcelable(VIEW_BINDING_HANDLER_SAVED_INSTANCE_STATE_KEY)
+                }
             if (viewBindingHandlerParcelable != null) {
                 setContentCardsViewBindingHandler(viewBindingHandlerParcelable)
             }
             BrazeCoroutineScope.launch(Dispatchers.Main) {
-                val layoutManagerState = savedInstanceState.getParcelable<Parcelable>(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY)
+                val layoutManagerState =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY, Parcelable::class.java)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        savedInstanceState.getParcelable(LAYOUT_MANAGER_SAVED_INSTANCE_STATE_KEY)
+                    }
                 contentCardsRecyclerView?.let {
                     val layoutManager = it.layoutManager
                     if (layoutManagerState != null && layoutManager != null) {

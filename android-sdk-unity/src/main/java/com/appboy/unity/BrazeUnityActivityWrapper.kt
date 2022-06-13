@@ -34,6 +34,9 @@ class BrazeUnityActivityWrapper {
         Braze.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(unityConfigurationProvider))
         Braze.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(unityConfigurationProvider))
         Braze.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(unityConfigurationProvider))
+        Braze.getInstance(activity).subscribeToSdkAuthenticationFailures(
+            EventSubscriberFactory.createSdkAuthenticationFailureSubscriber(unityConfigurationProvider)
+        )
         brazelog { "Finished onCreateCalled setup" }
     }
 

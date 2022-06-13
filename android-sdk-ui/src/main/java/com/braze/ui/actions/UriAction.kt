@@ -1,9 +1,12 @@
 package com.braze.ui.actions
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import com.braze.Constants
@@ -193,6 +196,7 @@ open class UriAction : IAction {
         return webViewActivityIntent
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     protected fun getActionViewIntent(context: Context, uri: Uri, extras: Bundle?): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = uri
@@ -201,7 +205,12 @@ open class UriAction : IAction {
         }
 
         // If the current app can already handle the intent, default to using it
-        val resolveInfos = context.packageManager.queryIntentActivities(intent, 0)
+        val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(0))
+        } else {
+            @Suppress("DEPRECATION")
+            context.packageManager.queryIntentActivities(intent, 0)
+        }
         if (resolveInfos.size > 1) {
             for (resolveInfo in resolveInfos) {
                 if (resolveInfo.activityInfo.packageName == context.packageName) {

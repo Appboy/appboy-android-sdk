@@ -8,6 +8,8 @@ import com.braze.models.inappmessage.IInAppMessageHtml
 import com.braze.models.outgoing.BrazeProperties
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.brazelog
+import com.braze.support.requestPushPermissionPrompt
+import com.braze.ui.inappmessage.BrazeInAppMessageManager
 import org.json.JSONObject
 import java.math.BigDecimal
 
@@ -58,6 +60,11 @@ class InAppMessageJavascriptInterface(
     @JavascriptInterface
     fun logClick() {
         inAppMessage.logClick()
+    }
+
+    @JavascriptInterface
+    fun requestPushPermission() {
+        BrazeInAppMessageManager.getInstance().activity.requestPushPermissionPrompt()
     }
 
     @VisibleForTesting

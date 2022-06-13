@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import com.appboy.BrazeInternal;
 import com.appboy.events.IEventSubscriber;
 import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
@@ -23,6 +24,8 @@ import com.braze.models.inappmessage.IInAppMessage;
 import com.braze.models.inappmessage.InAppMessageImmersiveBase;
 import com.braze.support.BrazeLogger;
 import com.braze.support.JsonUtils;
+import com.braze.support.PermissionUtils;
+import com.braze.ui.actions.brazeactions.BrazeActionUtils;
 import com.braze.ui.inappmessage.listeners.DefaultInAppMessageViewLifecycleListener;
 import com.braze.ui.inappmessage.listeners.IInAppMessageManagerListener;
 import com.braze.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener;
@@ -32,6 +35,8 @@ import com.braze.ui.inappmessage.views.IInAppMessageView;
 import com.braze.ui.inappmessage.views.InAppMessageHtmlBaseView;
 import com.braze.ui.support.ViewUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -40,13 +45,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * or are created natively in the host app. It will only show one in-app message at a time and will
  * place all other in-app messages onto a stack. The {@link BrazeInAppMessageManager} will also keep track of in-app
  * impressions and clicks, which can be viewed on the dashboard.
- * <p/>
- * When an in-app message is received from Braze, the
- * {@link IInAppMessageManagerListener#onInAppMessageReceived(IInAppMessage)}
- * method is called (if set). If this method returns true, that signals to the BrazeInAppMessageManager that
- * the in-app message will be handled by the host app and that it should not be displayed by the
- * BrazeInAppMessageManager. This method should be used if you choose to display the in-app message in a custom
- * way. If false is returned, the {@link BrazeInAppMessageManager} attempts to display the in-app message.
  * <p/>
  * If there is already an in-app message being displayed, the new in-app message will be put onto the top of the
  * stack and can be displayed at a later time. If there is no in-app message being displayed, then the
@@ -74,7 +72,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Activity can be garbage collected and does not create a memory leak. For that reason, the
  * {@link BrazeInAppMessageManager#registerInAppMessageManager(android.app.Activity)}
  * and {@link BrazeInAppMessageManager#unregisterInAppMessageManager(android.app.Activity)}
- * must be called in the {@link android.app.Activity#onResume()} and {@link android.app.Activity#onPause()}
+ * must be called in the Activity.onResume() and Activity.onPause()
  * methods of every Activity.
  */
 // Static field leak doesn't apply to this singleton since the activity is nullified after the manager is unregistered.
@@ -88,7 +86,8 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
   @VisibleForTesting
   @NonNull
   final Stack<IInAppMessage> mInAppMessageStack = new Stack<>();
-
+  @NonNull
+  final Map<IInAppMessage, InAppMessageEvent> mInAppMessageEventMap = new HashMap<>();
   @Nullable
   private IEventSubscriber<InAppMessageEvent> mInAppMessageEventSubscriber;
   @Nullable
@@ -165,6 +164,7 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
    * This method also calls {@link BrazeInAppMessageManager#ensureSubscribedToInAppMessageEvents(Context)}.
    * To be sure that no in-app messages are lost, you should call {@link BrazeInAppMessageManager#ensureSubscribedToInAppMessageEvents(Context)} as early
    * as possible in your app, preferably in your {@link Application#onCreate()}.
+   *
    * @param activity The current Activity.
    */
   public void registerInAppMessageManager(Activity activity) {
@@ -405,7 +405,7 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
    * Attempts to display an {@link IInAppMessage} to the user.
    *
    * @param inAppMessage The {@link IInAppMessage}.
-   * @param isCarryOver If this {@link IInAppMessage} is "carried over" from an {@link Activity} transition.
+   * @param isCarryOver  If this {@link IInAppMessage} is "carried over" from an {@link Activity} transition.
    */
   public void displayInAppMessage(IInAppMessage inAppMessage, boolean isCarryOver) {
     BrazeLogger.v(TAG, "Attempting to display in-app message with payload: " + JsonUtils.getPrettyPrintedString(inAppMessage.forJsonPut()));
@@ -448,6 +448,19 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
       if (inAppMessage.isControl()) {
         BrazeLogger.d(TAG, "Not displaying control in-app message. Logging impression and ending display execution.");
         inAppMessage.logImpression();
+        resetAfterInAppMessageClose();
+        return;
+      }
+
+      if (BrazeActionUtils.containsAnyPushPermissionBrazeActions(inAppMessage)
+          && !PermissionUtils.wouldPushPermissionPromptDisplay(mActivity)) {
+        final InAppMessageEvent inAppMessageEvent = mInAppMessageEventMap.get(inAppMessage);
+        BrazeLogger.i(TAG, "Cannot show message containing a Braze Actions Push "
+            + "Prompt due to existing push prompt status.");
+        if (inAppMessageEvent != null) {
+          BrazeLogger.i(TAG, "Will attempt to perform any fallback actions.");
+          BrazeInternal.retryInAppMessage(mActivity.getApplicationContext(), inAppMessageEvent);
+        }
         resetAfterInAppMessageClose();
         return;
       }
@@ -537,16 +550,20 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
   }
 
   private IEventSubscriber<InAppMessageEvent> createInAppMessageEventSubscriber() {
-    return event -> addInAppMessage(event.getInAppMessage());
+    return event -> {
+      final IInAppMessage inAppMessage = event.getInAppMessage();
+      mInAppMessageEventMap.put(inAppMessage, event);
+      addInAppMessage(inAppMessage);
+    };
   }
 
   /**
    * For in-app messages that have a preferred orientation, locks the screen orientation and
    * returns true if the screen is currently in the preferred orientation. If the screen is not
    * currently in the preferred orientation, returns false.
-   *
+   * <p>
    * Always returns true for tablets, regardless of current orientation.
-   *
+   * <p>
    * Always returns true if the in-app message doesn't have a preferred orientation.
    */
   @SuppressLint("InlinedApi")

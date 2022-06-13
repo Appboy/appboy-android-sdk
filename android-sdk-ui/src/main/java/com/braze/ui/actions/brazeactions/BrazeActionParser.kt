@@ -18,6 +18,7 @@ import com.braze.ui.actions.brazeactions.steps.NoOpStep
 import com.braze.ui.actions.brazeactions.steps.OpenLinkExternallyStep
 import com.braze.ui.actions.brazeactions.steps.OpenLinkInWebViewStep
 import com.braze.ui.actions.brazeactions.steps.RemoveFromCustomAttributeArrayStep
+import com.braze.ui.actions.brazeactions.steps.RequestPushPermissionStep
 import com.braze.ui.actions.brazeactions.steps.SetCustomUserAttributeStep
 import com.braze.ui.actions.brazeactions.steps.SetEmailSubscriptionStep
 import com.braze.ui.actions.brazeactions.steps.SetPushNotificationSubscriptionStep
@@ -33,11 +34,7 @@ object BrazeActionParser {
         CONTAINER("container", ContainerStep),
         LOG_CUSTOM_EVENT("logCustomEvent", LogCustomEventStep),
         SET_CUSTOM_ATTRIBUTE("setCustomUserAttribute", SetCustomUserAttributeStep),
-
-        /**
-         * As of now, this method is a no-op below Android API 13.
-         */
-        REQUEST_PUSH_PERMISSION("requestPushPermission", NoOpStep),
+        REQUEST_PUSH_PERMISSION("requestPushPermission", RequestPushPermissionStep),
         ADD_TO_SUBSCRIPTION_GROUP("addToSubscriptionGroup", AddToSubscriptionGroupStep),
         REMOVE_FROM_SUBSCRIPTION_GROUP("removeFromSubscriptionGroup", AddToSubscriptionGroupStep),
         ADD_TO_CUSTOM_ATTRIBUTE_ARRAY("addToCustomAttributeArray", AddToCustomAttributeArrayStep),
@@ -92,6 +89,7 @@ object BrazeActionParser {
     /**
      * Evaluates the Braze Action json for validity before running it.
      */
+    @JvmSynthetic
     internal fun parse(
         context: Context,
         data: StepData
@@ -115,6 +113,7 @@ object BrazeActionParser {
      * that the base64 input is skip encoded into 8 bits due to
      * fit Base64 (UTF-8).
      */
+    @JvmSynthetic
     internal fun parseEncodedActionToJson(action: String): JSONObject {
         // Convert the base64 input into an array of 8-bit words
         val bytes8: ByteArray = Base64.decode(action, Base64.URL_SAFE)
@@ -147,6 +146,7 @@ object BrazeActionParser {
      *
      * @see isBrazeActionUri
      */
+    @JvmSynthetic
     internal fun Uri.getBrazeActionVersionAndJson(): Pair<String, JSONObject>? {
         // Extract the version and encoded action
         val version = this.host
@@ -173,7 +173,8 @@ object BrazeActionParser {
      * @return The parsed [ActionType] or [ActionType.INVALID]
      * if the [IBrazeActionStep.isValid] returns false.
      */
-    private fun getActionType(data: StepData): ActionType {
+    @JvmSynthetic
+    internal fun getActionType(data: StepData): ActionType {
         val type = ActionType.fromValue(data.srcJson.getOptionalString(TYPE))
         val isValid = type.impl.isValid(data)
         if (!isValid) {

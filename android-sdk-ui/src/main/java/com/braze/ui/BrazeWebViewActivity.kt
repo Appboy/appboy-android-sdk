@@ -60,8 +60,13 @@ open class BrazeWebViewActivity : FragmentActivity() {
         webSettings.loadWithOverviewMode = true
         webSettings.displayZoomControls = false
         webSettings.domStorageEnabled = true
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && isDeviceInNightMode(this.applicationContext)) {
-            webSettings.forceDark = WebSettings.FORCE_DARK_ON
+        if (isDeviceInNightMode(this.applicationContext)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                webSettings.isAlgorithmicDarkeningAllowed = true
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                @Suppress("DEPRECATION")
+                webSettings.forceDark = WebSettings.FORCE_DARK_ON
+            }
         }
         webView.webChromeClient = createWebChromeClient()
         webView.webViewClient = createWebViewClient()

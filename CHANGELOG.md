@@ -1,3 +1,16 @@
+## 21.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v21.0.0)
+
+##### Important
+- This release includes support for Android 13 (Tiramisu / API 33).
+
+#### Breaking
+- Removed `IAppboy.logContentCardsDisplayed`. This method was not part of the recommended Content Cards integration and can be safely removed.
+
+##### Changed
+- Changed target API for the SDK to 33.
+
 ## 20.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v20.0.0)

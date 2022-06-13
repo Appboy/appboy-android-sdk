@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import com.braze.IBrazeDeeplinkHandler
 import com.braze.support.BrazeLogger.Priority.E
@@ -71,7 +72,12 @@ fun isActivityRegisteredInManifest(context: Context, className: String): Boolean
     return try {
         // If the activity is registered, then a non-null ActivityInfo is returned by the package manager.
         // If unregistered, then an exception is thrown by the package manager.
-        context.packageManager.getActivityInfo(ComponentName(context, className), 0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.getActivityInfo(ComponentName(context, className), PackageManager.ComponentInfoFlags.of(0))
+        } else {
+            @Suppress("DEPRECATION")
+            context.packageManager.getActivityInfo(ComponentName(context, className), 0)
+        }
         true
     } catch (e: PackageManager.NameNotFoundException) {
         brazelog(TAG, W, e) { "Could not find activity info for class with name: $className" }

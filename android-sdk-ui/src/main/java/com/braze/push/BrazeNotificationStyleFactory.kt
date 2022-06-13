@@ -255,7 +255,11 @@ open class BrazeNotificationStyleFactory {
             // Set the app name
             val packageManager = context.packageManager
             val applicationInfo: ApplicationInfo = try {
-                packageManager.getApplicationInfo(context.packageName, 0)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    packageManager.getApplicationInfo(context.packageName, PackageManager.ApplicationInfoFlags.of(0))
+                } else {
+                    @Suppress("DEPRECATION") packageManager.getApplicationInfo(context.packageName, 0)
+                }
             } catch (e: PackageManager.NameNotFoundException) {
                 brazelog(E, e) { "Inline Image Push application info was null" }
                 return null

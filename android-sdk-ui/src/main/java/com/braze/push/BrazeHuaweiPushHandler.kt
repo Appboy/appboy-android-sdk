@@ -35,7 +35,7 @@ object BrazeHuaweiPushHandler {
 
         // Convert to a bundle for the intent passing
         val bundle: Bundle = hmsRemoteMessageData.toBundle()
-        if (!bundle.containsKey(Constants.BRAZE_PUSH_BRAZE_KEY) || "true" != bundle[Constants.BRAZE_PUSH_BRAZE_KEY]) {
+        if (!bundle.containsKey(Constants.BRAZE_PUSH_BRAZE_KEY) || "true" != bundle.getString(Constants.BRAZE_PUSH_BRAZE_KEY)) {
             brazelog(I) { "Remote message did not originate from Braze. Not consuming remote message" }
             return false
         }

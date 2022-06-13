@@ -38,7 +38,6 @@ class MainFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var aliasEditText: EditText
     private lateinit var aliasLabelEditText: EditText
-    private lateinit var adkAuthSignatureEditText: EditText
     private lateinit var customEventsAndPurchasesArrayAdapter: ArrayAdapter<String?>
     private val lastSeenCustomEventsAndPurchases: Queue<String?> = LinkedList()
 
@@ -77,18 +76,6 @@ class MainFragment : Fragment() {
                 FirebaseCrashlytics.getInstance().setUserId(userId)
             } else {
                 Toast.makeText(requireContext(), "Please enter a userId.", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        contentView.setOnButtonClick(R.id.com_appboy_sample_set_sdk_auth_signature_button) {
-            val signature = adkAuthSignatureEditText.text.toString()
-            if (signature.isNotBlank()) {
-                Braze.getInstance(requireContext()).setSdkAuthenticationSignature(signature)
-                Toast.makeText(requireContext(), "Set signature to: $signature", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(requireContext(), "Please enter a signature.", Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -353,9 +340,11 @@ class MainFragment : Fragment() {
             editTextId: Int,
             block: (view: View, textValue: String) -> Unit
         ) {
-            val editTextValue = this.findViewById<EditText>(editTextId).text.toString()
             val view = this.findViewById<Button>(buttonId)
-            view.setOnClickListener { block(view, editTextValue) }
+            view.setOnClickListener {
+                val editTextValue = this.findViewById<EditText>(editTextId).text.toString()
+                block(view, editTextValue)
+            }
         }
     }
 }
