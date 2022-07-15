@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.appboy.events.IEventSubscriber
 import com.appboy.ui.R
 import com.braze.Braze
 import com.braze.coroutine.BrazeCoroutineScope
 import com.braze.events.ContentCardsUpdatedEvent
 import com.braze.events.ContentCardsUpdatedEvent.Companion.emptyUpdate
+import com.braze.events.IEventSubscriber
 import com.braze.events.SdkDataWipeEvent
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.Priority.V
@@ -129,32 +129,36 @@ open class ContentCardsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
      * Called when the user swipes down and requests a feed refresh.
      */
     override fun onRefresh() {
-        Braze.getInstance(context).requestContentCardsRefresh(false)
+        Braze.getInstance(requireContext()).requestContentCardsRefresh(false)
         BrazeCoroutineScope.launchDelayed(AUTO_HIDE_REFRESH_INDICATOR_DELAY_MS) { contentCardsSwipeLayout?.isRefreshing = false }
     }
 
     override fun onResume() {
         super.onResume()
         // Remove the previous subscriber before rebuilding a new one with our new activity.
-        Braze.getInstance(context).removeSingleSubscription(contentCardsUpdatedSubscriber, ContentCardsUpdatedEvent::class.java)
+        Braze.getInstance(requireContext()).removeSingleSubscription(contentCardsUpdatedSubscriber, ContentCardsUpdatedEvent::class.java)
         if (contentCardsUpdatedSubscriber == null) {
             contentCardsUpdatedSubscriber = IEventSubscriber { event: ContentCardsUpdatedEvent -> handleContentCardsUpdatedEvent(event) }
         }
-        Braze.getInstance(context).subscribeToContentCardsUpdates(contentCardsUpdatedSubscriber)
-        Braze.getInstance(context).requestContentCardsRefresh(true)
-        Braze.getInstance(context).removeSingleSubscription(sdkDataWipeEventSubscriber, SdkDataWipeEvent::class.java)
+        contentCardsUpdatedSubscriber?.let {
+            Braze.getInstance(requireContext()).subscribeToContentCardsUpdates(it)
+        }
+        Braze.getInstance(requireContext()).requestContentCardsRefresh(true)
+        Braze.getInstance(requireContext()).removeSingleSubscription(sdkDataWipeEventSubscriber, SdkDataWipeEvent::class.java)
         if (sdkDataWipeEventSubscriber == null) {
             // If the SDK data is wiped, then we want to clear any cached Content Cards
-            sdkDataWipeEventSubscriber = IEventSubscriber { _: SdkDataWipeEvent? -> handleContentCardsUpdatedEvent(emptyUpdate) }
+            sdkDataWipeEventSubscriber = IEventSubscriber { handleContentCardsUpdatedEvent(emptyUpdate) }
         }
-        Braze.getInstance(context).addSingleSynchronousSubscription(sdkDataWipeEventSubscriber, SdkDataWipeEvent::class.java)
+        sdkDataWipeEventSubscriber?.let {
+            Braze.getInstance(requireContext()).addSingleSynchronousSubscription(it, SdkDataWipeEvent::class.java)
+        }
     }
 
     override fun onPause() {
         super.onPause()
         // If the view is going away, we don't care about updating it anymore. Remove the subscription immediately.
-        Braze.getInstance(context).removeSingleSubscription(contentCardsUpdatedSubscriber, ContentCardsUpdatedEvent::class.java)
-        Braze.getInstance(context).removeSingleSubscription(sdkDataWipeEventSubscriber, SdkDataWipeEvent::class.java)
+        Braze.getInstance(requireContext()).removeSingleSubscription(contentCardsUpdatedSubscriber, ContentCardsUpdatedEvent::class.java)
+        Braze.getInstance(requireContext()).removeSingleSubscription(sdkDataWipeEventSubscriber, SdkDataWipeEvent::class.java)
         networkUnavailableJob?.cancel()
         networkUnavailableJob = null
         cardAdapter?.markOnScreenCardsAsRead()
@@ -285,7 +289,7 @@ open class ContentCardsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
                     "$MAX_CONTENT_CARDS_TTL_SECONDS seconds, displaying it for now, but " +
                     "requesting an updated view from the server."
             }
-            Braze.getInstance(context).requestContentCardsRefresh(false)
+            Braze.getInstance(requireContext()).requestContentCardsRefresh(false)
 
             // If we don't have any cards to display, we put up the spinner while
             // we wait for the network to return.

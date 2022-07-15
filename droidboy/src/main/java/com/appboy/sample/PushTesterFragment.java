@@ -13,10 +13,10 @@ import android.widget.CheckBox;
 
 import androidx.fragment.app.Fragment;
 
-import com.braze.Constants;
+import com.braze.Braze;
 import com.appboy.models.push.BrazeNotificationPayload;
 import com.appboy.sample.util.SpinnerUtils;
-import com.braze.Braze;
+import com.braze.Constants;
 import com.braze.push.BrazeNotificationUtils;
 import com.braze.push.BrazePushReceiver;
 import com.braze.support.BrazeLogger;
@@ -315,7 +315,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         String pushAccentColorString = getResources().getStringArray(R.array.push_accent_color_values)[parent.getSelectedItemPosition()];
         if (!StringUtils.isNullOrBlank(pushAccentColorString)) {
           mSetAccentColor = true;
-          // Convert our hexadecimal string to the decimal expected by Appboy
+          // Convert our hexadecimal string to the decimal expected by Braze
           mAccentColorString = Long.decode(pushAccentColorString).toString();
         } else {
           mSetAccentColor = false;
@@ -399,7 +399,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
         break;
       case Constants.BRAZE_PUSH_ACTION_TYPE_URI:
         notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "0"), Constants.BRAZE_PUSH_ACTION_TYPE_URI);
-        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Appboy (webview)");
+        notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TEXT_KEY_TEMPLATE.replace("*", "0"), "Braze (webview)");
         notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_URI_KEY_TEMPLATE.replace("*", "0"), getString(R.string.braze_homepage_url));
         notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_USE_WEBVIEW_KEY_TEMPLATE.replace("*", "0"), "true");
         notificationExtras.putString(Constants.BRAZE_PUSH_ACTION_TYPE_KEY_TEMPLATE.replace("*", "1"), Constants.BRAZE_PUSH_ACTION_TYPE_URI);

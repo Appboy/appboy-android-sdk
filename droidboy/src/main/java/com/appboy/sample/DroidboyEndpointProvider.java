@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import com.appboy.IBrazeEndpointProvider;
+import com.braze.IBrazeEndpointProvider;
 
 /**
  * An {@link IBrazeEndpointProvider} that sets an override endpoint if given.
@@ -18,8 +18,8 @@ public class DroidboyEndpointProvider implements IBrazeEndpointProvider {
     mEndpointUri = Uri.parse(endpoint);
   }
 
-  public Uri getApiEndpoint(Uri appboyEndpoint) {
-    final Uri.Builder builder = appboyEndpoint.buildUpon();
+  public Uri getApiEndpoint(Uri brazeEndpoint) {
+    final Uri.Builder builder = brazeEndpoint.buildUpon();
 
     if (mEndpointUri.getScheme().equals("http")) {
       builder.scheme("http");

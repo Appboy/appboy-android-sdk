@@ -8,7 +8,7 @@ import com.appboy.enums.Month
 import com.appboy.enums.Month.Companion.getMonth
 import com.appboy.enums.NotificationSubscriptionType
 import com.appboy.enums.NotificationSubscriptionType.Companion.fromValue
-import com.appboy.events.SimpleValueCallback
+import com.braze.events.SimpleValueCallback
 import com.braze.Braze
 import com.braze.BrazeUser
 import com.braze.support.BrazeLogger.Priority.E

@@ -1,3 +1,34 @@
+## 22.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v22.0.0)
+
+#### Breaking
+- `Appboy.java` is now `Braze.kt`. Kotlin clients will need to update their code to support the use of Kotlin properties on the Braze singleton where needed.
+  - `Braze.registerPushToken()`/`Braze.getRegisteredPushToken()` is now `Braze.setRegisteredPushToken()`/`Braze.getRegisteredPushToken()`. If using Kotlin, use the property `Braze.registeredPushToken`.
+  - `Braze.getDeviceId` is now just `Braze.deviceId` for Kotlin.
+  - `Braze.enableMockNetworkAppboyRequestsAndDropEventsMode` is now `Braze.enableMockNetworkRequestsAndDropEventsMode()`.
+  - `Appboy.java` has been removed. For example, calls like `Appboy.getInstance()` will need to be `Braze.getInstance()` moving forward.
+  - Replaced `setCustomAppboyNotificationFactory()` with `setCustomBrazeNotificationFactory() / customBrazeNotificationFactory`.
+  - Renamed `enableMockAppboyNetworkRequestsAndDropEventsMode` to `enableMockNetworkRequestsAndDropEventsMode`.
+- Moved `com.appboy.IBrazeEndpointProvider` to `com.braze.IBrazeEndpointProvider`.
+- Renamed `com.appboy.events.IEventSubscriber` to `com.braze.events.IEventSubscriber`.
+- Removed `Appboy.registerAppboyPushMessages() / Appboy.getAppboyPushMessageRegistrationId()`. Replaced with `getRegisteredPushToken() / setRegisteredPushToken()`.
+- Replaced `IAppboyNotificationFactory` with `IBrazeNotificationFactory`.
+- Removed `com.appboy.ui.inappmessage.listeners.IHtmlInAppMessageActionListener`. Use `com.braze.ui.inappmessage.listeners.IHtmlInAppMessageActionListener` instead.
+
+##### Fixed
+- Fixed an issue in `BrazePushReceiver` where eager In-App Message test displays and Content Card serializations from push notifications wouldn't work unless notifications were enabled on the device.
+- Fixed an issue where devices between the API 19 up to API 29 would not perform automatic data syncs in some cases.
+- Fixed an issue where carryover in-app messages wouldn't display on subsequent Views on new Activities.
+- Fixed an issue where some long running In-App Message HTML WebViews would call View methods on non UI threads.
+
+##### Added
+- Added `IBraze.subscribeToPushNotificationEvents()` to allow for subscriptions to push notification events without the use of a `BroadcastReceiver`.
+  - Recommended to be placed in your `Application.onCreate()`.
+
+##### Changed
+- Changed `com.braze.models.outgoing.BrazeProperties.clone()` to return `BrazeProperties?`.
+
 ## 21.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v21.0.0)

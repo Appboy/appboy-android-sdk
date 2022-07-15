@@ -44,7 +44,7 @@ public class FirebaseApplication extends Application {
       Log.i(TAG, "Registering firebase token in Application class: " + token);
       Log.i(TAG, "================");
       Log.i(TAG, "================");
-      Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
+      Braze.getInstance(applicationContext).setRegisteredPushToken(token);
     });
   }
 }

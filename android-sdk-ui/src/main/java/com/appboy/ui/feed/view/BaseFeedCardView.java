@@ -14,7 +14,7 @@ import com.braze.support.BrazeLogger;
 import com.braze.ui.actions.IAction;
 
 /**
- * Base class for Appboy feed card views
+ * Base class for Braze feed card views
  */
 public abstract class BaseFeedCardView<T extends Card> extends BaseCardView<T> {
   private static final String TAG = BrazeLogger.getBrazeLogTag(BaseCardView.class);

@@ -7,26 +7,24 @@ import android.os.Build
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationManagerCompat
-import com.appboy.BrazeInternal.applyPendingRuntimeConfiguration
-import com.appboy.BrazeInternal.handleInAppMessageTestPush
-import com.braze.Constants
-import com.braze.Constants.isAmazonDevice
 import com.appboy.models.push.BrazeNotificationPayload
 import com.appboy.models.push.BrazeNotificationPayload.Companion.getAttachedBrazeExtras
 import com.braze.Braze
+import com.braze.BrazeInternal.applyPendingRuntimeConfiguration
+import com.braze.BrazeInternal.handleInAppMessageTestPush
+import com.braze.Constants
+import com.braze.Constants.isAmazonDevice
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.coroutine.BrazeCoroutineScope
 import com.braze.push.BrazeNotificationActionUtils.handleNotificationActionClicked
 import com.braze.push.BrazeNotificationUtils.activeNotificationFactory
 import com.braze.push.BrazeNotificationUtils.getNotificationId
 import com.braze.push.BrazeNotificationUtils.handleCancelNotificationAction
-import com.braze.push.BrazeNotificationUtils.handleContentCardsSerializedCardIfPresent
 import com.braze.push.BrazeNotificationUtils.handleNotificationDeleted
 import com.braze.push.BrazeNotificationUtils.handleNotificationOpened
 import com.braze.push.BrazeNotificationUtils.handlePushStoryPageClicked
 import com.braze.push.BrazeNotificationUtils.isBrazePushMessage
 import com.braze.push.BrazeNotificationUtils.isNotificationMessage
-import com.braze.push.BrazeNotificationUtils.isUninstallTrackingPush
 import com.braze.push.BrazeNotificationUtils.requestGeofenceRefreshIfAppropriate
 import com.braze.push.BrazeNotificationUtils.sendPushMessageReceivedBroadcast
 import com.braze.push.BrazeNotificationUtils.setNotificationDurationAlarm
@@ -183,7 +181,7 @@ open class BrazePushReceiver : BroadcastReceiver() {
                 }
                 registrationId != null -> {
                     brazelog(I) { "Registering for ADM messages with registrationId: $registrationId" }
-                    Braze.getInstance(context).registerPushToken(registrationId)
+                    Braze.getInstance(context).registeredPushToken = registrationId
                 }
                 unregistered != null -> {
                     brazelog(W) { "The device was un-registered from ADM: $unregistered" }
@@ -204,59 +202,21 @@ open class BrazePushReceiver : BroadcastReceiver() {
         @Suppress("LongMethod", "ComplexMethod", "ReturnCount")
         fun handlePushNotificationPayload(context: Context, intent: Intent): Boolean {
             val notificationManager = NotificationManagerCompat.from(context)
+            brazelog { "Value of notificationManager.areNotificationsEnabled() = ${notificationManager.areNotificationsEnabled()}" }
 
-            if (notificationManager.areNotificationsEnabled()) {
-                brazelog(I) { "Notifications enabled" }
-            } else {
-                brazelog(I) { "Notifications disabled" }
-            }
-
-            fun handleDeletedMessage() {
-                val totalDeleted = intent.getIntExtra(NUMBER_OF_MESSAGES_DELETED_KEY, -1)
-                if (totalDeleted == -1) {
-                    brazelog(W) { "Unable to parse FCM message. Intent: $intent" }
-                } else {
-                    brazelog(I) { "FCM deleted $totalDeleted messages. Fetch them from Braze." }
+            when {
+                !intent.isBrazePushMessage() -> {
+                    brazelog { "Not handling non-Braze push message." }
+                    return false
+                }
+                DELETED_MESSAGES_KEY == intent.getStringExtra(MESSAGE_TYPE_KEY) -> {
+                    val totalDeleted = intent.getIntExtra(NUMBER_OF_MESSAGES_DELETED_KEY, -1)
+                    brazelog(I) { "Firebase messaging '$NUMBER_OF_MESSAGES_DELETED_KEY' reports $totalDeleted messages." }
+                    return false
                 }
             }
 
-            val isNotificationMessage = isNotificationMessage(intent)
-
-            /**
-             * Determine if the intent should be handled. It must meet the following criteria:
-             * 1. It's a Braze push message
-             * 2. If we're on Android N or higher, push is enabled or it's a silent push message
-             * 3. It's not a deletion message
-             */
-            fun isValid(): Boolean {
-                return when {
-                    !intent.isBrazePushMessage() -> {
-                        brazelog { "Not handling non-Braze push message." }
-                        false
-                    }
-
-                    // If we're on N or above, notifications are disabled, and it's a notification
-                    // message (as opposed to a silent push)
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-                        !notificationManager.areNotificationsEnabled() &&
-                        isNotificationMessage -> {
-                        brazelog(I) { "Push notifications are not enabled. Cannot display push notification." }
-                        false
-                    }
-                    DELETED_MESSAGES_KEY == intent.getStringExtra(MESSAGE_TYPE_KEY) -> {
-                        handleDeletedMessage()
-                        false
-                    }
-                    else -> true
-                }
-            }
-
-            if (!isValid()) {
-                brazelog { "Notification isn't valid. Skipping." }
-                return false
-            }
-
-            // Since isBrazePushMessage returned true, extras is there. This just keeps the compiler happy.
+            // Since isBrazePushMessage returned true, extras is non-null. This just keeps the compiler happy.
             val notificationExtras = intent.extras ?: return false
 
             brazelog(I) { "Push message payload received: $notificationExtras" }
@@ -271,10 +231,12 @@ open class BrazePushReceiver : BroadcastReceiver() {
                 )
             }
 
-            // This call must occur after the "extras" parsing above since we're expecting
-            // a bundle instead of a raw JSON string for the APPBOY_PUSH_EXTRAS_KEY key
-            if (isUninstallTrackingPush(notificationExtras)) {
-                // Note that this re-implementation of this method does not forward the notification to receivers.
+            val appConfigurationProvider = BrazeConfigurationProvider(context)
+            val payload = createPayload(context, appConfigurationProvider, notificationExtras, brazeExtras)
+
+            if (payload.isUninstallTrackingPush) {
+                // Note that this re-implementation of uninstall tracking
+                // does not forward the notification to receivers.
                 brazelog(I) {
                     "Push message is uninstall tracking push. Doing nothing. Not forwarding this " +
                         "notification to broadcast receivers."
@@ -282,13 +244,15 @@ open class BrazePushReceiver : BroadcastReceiver() {
                 return false
             }
 
-            val appConfigurationProvider = BrazeConfigurationProvider(context)
-            val payload = createPayload(context, appConfigurationProvider, notificationExtras, brazeExtras)
-            if (appConfigurationProvider.isInAppMessageTestPushEagerDisplayEnabled
-                && payload.shouldFetchTestTriggers
+            // Parse the notification for any associated ContentCard
+            BrazeNotificationUtils.handleContentCardsSerializedCardIfPresent(payload)
+
+            if (payload.shouldFetchTestTriggers
+                && appConfigurationProvider.isInAppMessageTestPushEagerDisplayEnabled
                 && BrazeInAppMessageManager.getInstance().activity != null
             ) {
-                // Pass this test in-app message along for eager display and bypass displaying a push
+                // Pass this test in-app message along for
+                // eager display and bypass displaying a push
                 brazelog {
                     "Bypassing push display due to test in-app message presence and eager test " +
                         "in-app message display configuration setting."
@@ -297,10 +261,15 @@ open class BrazePushReceiver : BroadcastReceiver() {
                 return false
             }
 
-            // Parse the notification for any associated ContentCard
-            handleContentCardsSerializedCardIfPresent(payload)
-            if (isNotificationMessage) {
-                brazelog { "Received notification push" }
+            if (isNotificationMessage(intent)) {
+                brazelog { "Received visible push notification" }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+                    !notificationManager.areNotificationsEnabled()
+                ) {
+                    brazelog(I) { "Push notifications are not enabled. Cannot display push notification." }
+                    return false
+                }
+
                 val notificationId = getNotificationId(payload)
                 notificationExtras.putInt(Constants.BRAZE_PUSH_NOTIFICATION_ID, notificationId)
                 if (payload.isPushStory) {
@@ -329,7 +298,7 @@ open class BrazePushReceiver : BroadcastReceiver() {
                     notificationId,
                     notification
                 )
-                sendPushMessageReceivedBroadcast(context, notificationExtras)
+                sendPushMessageReceivedBroadcast(context, notificationExtras, payload)
                 wakeScreenIfAppropriate(context, appConfigurationProvider, notificationExtras)
 
                 // Set a custom duration for this notification.
@@ -343,8 +312,8 @@ open class BrazePushReceiver : BroadcastReceiver() {
                 }
                 return true
             } else {
-                brazelog { "Received silent push" }
-                sendPushMessageReceivedBroadcast(context, notificationExtras)
+                brazelog { "Received silent push notification" }
+                sendPushMessageReceivedBroadcast(context, notificationExtras, payload)
                 requestGeofenceRefreshIfAppropriate(payload)
                 return false
             }

@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
-import com.appboy.BrazeInternal;
-import com.appboy.events.IEventSubscriber;
+import com.braze.events.IEventSubscriber;
+import com.braze.BrazeInternal;
 import com.braze.Braze;
 import com.braze.configuration.BrazeConfigurationProvider;
 import com.braze.enums.inappmessage.InAppMessageFailureType;

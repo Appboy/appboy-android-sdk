@@ -178,7 +178,7 @@ public class DefaultInAppMessageViewWrapper implements IInAppMessageViewWrapper 
           parentViewGroup.removeOnLayoutChangeListener(this);
           BrazeLogger.d(TAG, "Detected (bottom - top) of " + (bottom - top) + " in OnLayoutChangeListener");
           parentViewGroup.removeView(mInAppMessageView);
-          addInAppMessageViewToViewGroup(parentViewGroup, mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener);
+          parentViewGroup.post(() -> addInAppMessageViewToViewGroup(parentViewGroup, mInAppMessage, mInAppMessageView, mInAppMessageViewLifecycleListener));
         }
       });
 

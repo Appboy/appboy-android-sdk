@@ -1,6 +1,6 @@
 package com.braze.ui.actions.brazeactions.steps
 
-import com.appboy.events.SimpleValueCallback
+import com.braze.events.SimpleValueCallback
 import com.braze.Braze
 import com.braze.BrazeUser
 import com.braze.support.BrazeLogger.brazelog

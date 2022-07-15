@@ -8,7 +8,7 @@ import com.braze.ui.actions.IAction;
 /**
  * The IFeedClickActionListener receives the news feed card when a
  * news feed click action is performed and gives the host app the ability to
- * override Appboy's default procedure when handling news feed card clicks.
+ * override Braze's default procedure when handling news feed card clicks.
  *
  * See {@link com.appboy.ui.feed.AppboyFeedManager} and {@link com.appboy.ui.widget.BaseCardView}
  */

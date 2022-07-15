@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         showMessage("User Id should not be null or empty. Doing nothing.");
         return;
       } else {
-        showMessage(String.format("Changed user to %s and requested flush to Appboy", userId));
+        showMessage(String.format("Changed user to %s and requested flush to Braze", userId));
         Braze.getInstance(applicationContext).changeUser(userId);
       }
 

@@ -22,7 +22,9 @@ import com.braze.ui.inappmessage.BrazeInAppMessageManager
 import com.braze.ui.inappmessage.listeners.IInAppMessageWebViewClientListener
 import com.braze.ui.inappmessage.listeners.IWebViewClientStateListener
 import com.braze.ui.support.getQueryParameters
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 
 open class InAppMessageWebViewClient(
@@ -101,7 +103,9 @@ open class InAppMessageWebViewClient(
             listener.onPageFinished()
         } else {
             markPageFinishedJob = BrazeCoroutineScope.launchDelayed(maxOnPageFinishedWaitTimeMs) {
-                markPageFinished()
+                withContext(Dispatchers.Main) {
+                    markPageFinished()
+                }
             }
         }
         webViewClientStateListener = listener

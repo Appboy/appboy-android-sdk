@@ -22,7 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.appboy.enums.CardCategory;
 import com.appboy.events.FeedUpdatedEvent;
-import com.appboy.events.IEventSubscriber;
+import com.braze.events.IEventSubscriber;
 import com.appboy.ui.adapters.AppboyListAdapter;
 import com.braze.Braze;
 import com.braze.IBraze;

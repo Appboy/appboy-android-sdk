@@ -16,7 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.appboy.enums.Gender
 import com.appboy.enums.Month
 import com.appboy.enums.NotificationSubscriptionType
-import com.appboy.events.IValueCallback
+import com.braze.events.IValueCallback
 import com.appboy.models.outgoing.AttributionData
 import com.braze.Braze
 import com.braze.BrazeUser

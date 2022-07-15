@@ -355,7 +355,7 @@ class InAppMessageTesterFragment : Fragment(), AdapterView.OnItemSelectedListene
      */
     private fun addInAppMessageFromString(serializedInAppMessage: String) {
         val inAppMessage =
-            Braze.getInstance(context).deserializeInAppMessageString(serializedInAppMessage)
+            Braze.getInstance(requireContext()).deserializeInAppMessageString(serializedInAppMessage)
         BrazeInAppMessageManager.getInstance().addInAppMessage(inAppMessage)
     }
 
@@ -685,7 +685,7 @@ class InAppMessageTesterFragment : Fragment(), AdapterView.OnItemSelectedListene
     }
 
     @Suppress("ComplexMethod")
-    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         when (parent.id) {
             R.id.inapp_set_message_type_spinner ->
                 messageType =

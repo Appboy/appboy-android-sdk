@@ -60,7 +60,7 @@ public class GeofencesMapActivity extends AppCompatActivity implements OnMapRead
             .fillColor(Color.argb((int) Math.round(Color.alpha(color) * .20), Color.red(color), Color.green(color), Color.blue(color))));
         googleMap.addMarker(new MarkerOptions()
             .position(new LatLng(registeredGeofence.getLatitude(), registeredGeofence.getLongitude()))
-            .title("Appboy Geofence")
+            .title("Braze Geofence")
             .snippet(registeredGeofence.getLatitude() + ", " + registeredGeofence.getLongitude()
                 + ", radius: " + registeredGeofence.getRadiusMeters() + "m"));
       }

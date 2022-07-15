@@ -40,6 +40,7 @@ android {
     buildConfigField "String", "BUILD_TIME", "\"" + new Date() + "\""
     buildConfigField "boolean", "IS_DROIDBOY_RELEASE_BUILD", "false"
     buildConfigField "String", "SDK_AUTH_ENDPOINT", "\"\""
+    buildConfigField "boolean", "STRICTMODE_ENABLED", "false"
 
     multiDexEnabled true
   }

@@ -3,9 +3,9 @@ package com.braze.push
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.appboy.BrazeInternal.applyPendingRuntimeConfiguration
-import com.braze.Constants
 import com.braze.Braze
+import com.braze.BrazeInternal.applyPendingRuntimeConfiguration
+import com.braze.Constants
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.Priority.V
@@ -31,7 +31,7 @@ open class BrazeFirebaseMessagingService : FirebaseMessagingService() {
             return
         }
         brazelog(V) { "Registering Firebase push token in onNewToken. Token: $newToken" }
-        Braze.getInstance(this).registerPushToken(newToken)
+        Braze.getInstance(this).registeredPushToken = newToken
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

@@ -23,7 +23,7 @@ class CustomPushService : HmsMessageService() {
             .getString("client/app_id")
         val pushToken = HmsInstanceId.getInstance(applicationContext).getToken(appId, "HCM")
         Log.i(TAG, "Got Huawei push token $pushToken")
-        Braze.getInstance(applicationContext).registerAppboyPushMessages(token!!)
+        Braze.getInstance(applicationContext).registeredPushToken = token
     }
 
     override fun onMessageReceived(hmsRemoteMessage: RemoteMessage?) {

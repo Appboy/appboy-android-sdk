@@ -19,15 +19,20 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.os.SystemClock
 import androidx.core.app.NotificationCompat
-import com.appboy.BrazeInternal.addSerializedContentCardToStorage
-import com.appboy.BrazeInternal.requestGeofenceRefresh
 import com.appboy.enums.Channel
 import com.appboy.models.push.BrazeNotificationPayload
 import com.braze.Braze
+import com.braze.BrazeInternal
+import com.braze.BrazeInternal.addSerializedContentCardToStorage
+import com.braze.BrazeInternal.requestGeofenceRefresh
 import com.braze.Constants
 import com.braze.Constants.isAmazonDevice
 import com.braze.IBrazeNotificationFactory
 import com.braze.configuration.BrazeConfigurationProvider
+import com.braze.enums.BrazePushEventType
+import com.braze.enums.BrazePushEventType.NOTIFICATION_DELETED
+import com.braze.enums.BrazePushEventType.NOTIFICATION_OPENED
+import com.braze.enums.BrazePushEventType.NOTIFICATION_RECEIVED
 import com.braze.enums.BrazeViewBounds
 import com.braze.push.support.getHtmlSpannedTextIfEnabled
 import com.braze.support.BrazeLogger.Priority.E
@@ -48,8 +53,10 @@ import org.json.JSONObject
 
 @Suppress("LargeClass", "TooManyFunctions")
 object BrazeNotificationUtils {
-    private enum class BrazeNotificationBroadcastType {
-        OPENED, RECEIVED, DELETED
+    private enum class BrazeNotificationBroadcastType(val brazePushEventType: BrazePushEventType) {
+        OPENED(NOTIFICATION_OPENED),
+        RECEIVED(NOTIFICATION_RECEIVED),
+        DELETED(NOTIFICATION_DELETED)
     }
 
     private val TAG = getBrazeLogTag(BrazeNotificationUtils::class.java)
@@ -73,8 +80,7 @@ object BrazeNotificationUtils {
     @get:JvmStatic
     val activeNotificationFactory: IBrazeNotificationFactory
         get() {
-            val customBrazeNotificationFactory = Braze.getCustomBrazeNotificationFactory()
-            return customBrazeNotificationFactory ?: BrazeNotificationFactory.instance
+            return Braze.customBrazeNotificationFactory ?: BrazeNotificationFactory.instance
         }
 
     /**
@@ -127,7 +133,13 @@ object BrazeNotificationUtils {
     fun handleNotificationDeleted(context: Context, intent: Intent) {
         try {
             brazelog { "Sending notification deleted broadcast" }
-            sendPushActionIntent(context, BrazeNotificationBroadcastType.DELETED, intent.extras)
+            val notificationExtras = intent.extras
+            if (notificationExtras != null) {
+                val notificationPayload = BrazeNotificationPayload(notificationExtras, context = context)
+                sendPushActionIntent(context, BrazeNotificationBroadcastType.DELETED, notificationExtras, notificationPayload)
+            } else {
+                sendPushActionIntent(context, BrazeNotificationBroadcastType.DELETED, notificationExtras)
+            }
         } catch (e: Exception) {
             brazelog(E, e) { "Exception occurred attempting to handle notification delete intent." }
         }
@@ -212,9 +224,13 @@ object BrazeNotificationUtils {
      * message intent contains all of the data sent as part of the Braze push message.
      */
     @JvmStatic
-    fun sendPushMessageReceivedBroadcast(context: Context, notificationExtras: Bundle) {
+    fun sendPushMessageReceivedBroadcast(
+        context: Context,
+        notificationExtras: Bundle,
+        payload: BrazeNotificationPayload
+    ) {
         brazelog { "Sending push message received broadcast" }
-        sendPushActionIntent(context, BrazeNotificationBroadcastType.RECEIVED, notificationExtras)
+        sendPushActionIntent(context, BrazeNotificationBroadcastType.RECEIVED, notificationExtras, payload)
     }
 
     /**
@@ -730,6 +746,10 @@ object BrazeNotificationUtils {
             brazelog(W) { "customContentString was null. Doing nothing." }
             return
         }
+        if (context == null) {
+            brazelog(W) { "Cannot log baidu click with null context. Doing nothing." }
+            return
+        }
         try {
             val jsonExtras = JSONObject(customContentString)
             val source = jsonExtras.getOptionalString(SOURCE_KEY)
@@ -798,6 +818,7 @@ object BrazeNotificationUtils {
      * received, and that Braze passes in the intent to registered receivers.
      */
     @JvmStatic
+    @Deprecated("Please use BrazeNotificationPayload().isUninstallTracking instead")
     fun isUninstallTrackingPush(notificationExtras: Bundle): Boolean {
         try {
             // The ADM case where extras are flattened
@@ -953,7 +974,13 @@ object BrazeNotificationUtils {
     @JvmStatic
     fun sendNotificationOpenedBroadcast(context: Context, intent: Intent) {
         brazelog { "Sending notification opened broadcast" }
-        sendPushActionIntent(context, BrazeNotificationBroadcastType.OPENED, intent.extras)
+        val notificationExtras = intent.extras
+        if (notificationExtras != null) {
+            val notificationPayload = BrazeNotificationPayload(notificationExtras, context = context)
+            sendPushActionIntent(context, BrazeNotificationBroadcastType.OPENED, notificationExtras, notificationPayload)
+        } else {
+            sendPushActionIntent(context, BrazeNotificationBroadcastType.OPENED, notificationExtras)
+        }
     }
 
     /**
@@ -1018,8 +1045,14 @@ object BrazeNotificationUtils {
      *
      * @param context            Application context.
      * @param notificationExtras The extras to attach to the intent.
+     * @param payload The notification payload, may be null. If present, will lead to a callback firing for [IBraze.subscribeToPushNotificationEvents]
      */
-    private fun sendPushActionIntent(context: Context, broadcastType: BrazeNotificationBroadcastType, notificationExtras: Bundle?) {
+    private fun sendPushActionIntent(
+        context: Context,
+        broadcastType: BrazeNotificationBroadcastType,
+        notificationExtras: Bundle?,
+        payload: BrazeNotificationPayload? = null
+    ) {
         // This is the original intent whose action
         // required a prefix of the app package name
         val appboySuffixedPushIntent: Intent
@@ -1047,6 +1080,11 @@ object BrazeNotificationUtils {
         sendPushActionIntent(context, appboySuffixedPushIntent, notificationExtras)
         brazelog(V) { "Sending Braze broadcast receiver intent for $broadcastType" }
         sendPushActionIntent(context, brazePushIntent, notificationExtras)
+
+        if (payload != null) {
+            // Send this event to the SDK for publishing
+            BrazeInternal.publishBrazePushAction(context, broadcastType.brazePushEventType, payload)
+        }
     }
 
     private fun sendPushActionIntent(context: Context, pushIntent: Intent, notificationExtras: Bundle?) {

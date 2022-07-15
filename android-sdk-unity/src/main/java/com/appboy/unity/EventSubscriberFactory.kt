@@ -1,7 +1,7 @@
 package com.appboy.unity
 
 import com.appboy.events.FeedUpdatedEvent
-import com.appboy.events.IEventSubscriber
+import com.braze.events.IEventSubscriber
 import com.appboy.unity.configuration.UnityConfigurationProvider
 import com.appboy.unity.utils.MessagingUtils.sendContentCardsUpdatedEventToUnity
 import com.appboy.unity.utils.MessagingUtils.sendFeedUpdatedEventToUnity

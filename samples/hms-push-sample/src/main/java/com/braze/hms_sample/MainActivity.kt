@@ -10,9 +10,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.appboy.events.SimpleValueCallback
 import com.braze.Braze
 import com.braze.BrazeUser
+import com.braze.events.SimpleValueCallback
 import com.braze.support.BrazeLogger
 import com.braze.support.IntentUtils
 import com.huawei.agconnect.AGConnectOptionsBuilder
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
 
     val userIdInput = findViewById<EditText>(R.id.etUserId)
-    Braze.getInstance(this).getCurrentUser(object : SimpleValueCallback<BrazeUser?>() {
+    Braze.getInstance(this).getCurrentUser(object : SimpleValueCallback<BrazeUser>() {
       override fun onSuccess(value: BrazeUser) {
         userIdInput.post {
           userIdInput.setText(value.userId)
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
       try {
         val appId = AGConnectOptionsBuilder().build(context).getString("client/app_id")
         val pushToken = HmsInstanceId.getInstance(context).getToken(appId, "HCM")
-        Braze.getInstance(context).registerAppboyPushMessages(pushToken!!)
+        Braze.getInstance(context).registeredPushToken = pushToken!!
         Log.i(TAG, "Got HMS push token $pushToken")
       } catch (e: Exception) {
         Log.e(TAG, "getToken failed, $e", e)

@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
-import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -32,7 +31,6 @@ import com.appboy.sample.MainFragment
 import com.appboy.sample.PushTesterFragment
 import com.appboy.sample.R
 import com.appboy.sample.activity.settings.SettingsFragment
-import com.appboy.sample.util.RuntimePermissionUtils.requestLocationPermission
 import com.appboy.sample.util.RuntimePermissionUtils.requestLocationPermissions
 import com.appboy.sample.util.ViewUtils
 import com.appboy.ui.AppboyFeedFragment
@@ -79,6 +77,7 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkPermissions()
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         if (defaultSharedPreferences.getBoolean("display_in_full_cutout_setting_key", false)) {
@@ -103,7 +102,6 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
             tab.text = (viewPager.adapter as Adapter).getTitle(position)
         }.attach()
         drawerLayout = findViewById(R.id.root)
-        checkPermissions()
         setupNewsFeedListener()
         brazelog(I) { "Braze device id is ${Braze.getInstance(applicationContext).deviceId}" }
     }
@@ -124,8 +122,8 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
     private fun checkPermissions() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
 
-        val permissionsToRequest = mutableListOf<String>()
-        if (didRequestLocationPermission) {
+        val permissionsToRequest = mutableListOf(Manifest.permission.INTERNET)
+        if (!didRequestLocationPermission) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val hasFineLocationPermission =
                     applicationContext.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -154,33 +152,11 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
             }
             didRequestLocationPermission = true
         }
-
-        if (permissionsToRequest.size > 1) {
-            requestLocationPermissions(
+        requestLocationPermissions(
                 this,
                 permissionsToRequest.toTypedArray(),
                 requestMultiplePermissionLauncher
             )
-        } else if (permissionsToRequest.size == 1) {
-            makePermissionRequest(permissionsToRequest[0])
-        }
-    }
-
-    private fun makePermissionRequest(permission: String) {
-        val singlePermissionLauncher = registerForActivityResult(RequestPermission()) { result ->
-            showToast("$permission${if (result) " granted" else " denied"}")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                && Manifest.permission.ACCESS_FINE_LOCATION == permission
-                && result
-            ) {
-                makePermissionRequest(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-            }
-        }
-        requestLocationPermission(
-            this,
-            permission,
-            singlePermissionLauncher
-        )
     }
 
     private fun setupViewPager(viewPager: ViewPager2) {

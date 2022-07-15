@@ -44,7 +44,9 @@ class BrazeUnityActivityWrapper {
      * Call from [Activity.onStart]
      */
     fun onStartCalled(activity: Activity?) {
-        Braze.getInstance(activity).openSession(activity)
+        if (activity != null) {
+            Braze.getInstance(activity).openSession(activity)
+        }
     }
 
     /**
@@ -69,7 +71,9 @@ class BrazeUnityActivityWrapper {
      * Call from [Activity.onStop]
      */
     fun onStopCalled(activity: Activity?) {
-        Braze.getInstance(activity).closeSession(activity)
+        if (activity != null) {
+            Braze.getInstance(activity).closeSession(activity)
+        }
     }
 
     /**
@@ -148,7 +152,7 @@ class BrazeUnityActivityWrapper {
                 override fun onOtherUrlAction(
                     inAppMessage: IInAppMessage,
                     url: String,
-                    queryBundle: Bundle?
+                    queryBundle: Bundle
                 ): Boolean {
                     val jsonArray = JSONArray()
                         .put(inAppMessage.forJsonPut())

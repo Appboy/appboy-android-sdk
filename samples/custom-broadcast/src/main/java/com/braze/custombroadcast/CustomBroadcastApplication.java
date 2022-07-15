@@ -15,8 +15,8 @@ public class CustomBroadcastApplication extends Application {
     BrazeLogger.setLogLevel(Log.VERBOSE);
 
     BrazeConfig.Builder appboyConfig = new BrazeConfig.Builder()
-        .setDefaultNotificationChannelName("Appboy Push")
-        .setDefaultNotificationChannelDescription("Appboy related push");
+        .setDefaultNotificationChannelName("Braze Push")
+        .setDefaultNotificationChannelDescription("Braze related push");
     Braze.configure(this, appboyConfig.build());
 
     registerActivityLifecycleCallbacks(new BrazeActivityLifecycleCallbackListener());

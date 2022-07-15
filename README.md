@@ -1,7 +1,4 @@
-<p align="center">
-  <img width="480" alt="Braze Logo" src=".github/assets/logo-light.png#gh-light-mode-only" />
-  <img width="480" alt="Braze Logo" src=".github/assets/logo-dark.png#gh-dark-mode-only" />
-</p>
+![Braze Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png)
 
 # Android SDK
 
@@ -42,7 +39,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:21.0.+'
+  implementation 'com.appboy:android-sdk-ui:22.0.+'
   ...
 }
 ```
@@ -61,7 +58,7 @@ repositories {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:21.0.+'
+  implementation 'com.appboy:android-sdk-ui:22.0.+'
 }
 ```
 

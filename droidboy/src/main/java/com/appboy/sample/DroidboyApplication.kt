@@ -78,7 +78,7 @@ class DroidboyApplication : Application() {
             .getInt(getString(R.string.current_log_level), Log.VERBOSE)
         val sharedPreferences = applicationContext.getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG && BuildConfig.STRICTMODE_ENABLED) {
             activateStrictMode()
         }
         Braze.configure(this, null)
@@ -98,6 +98,13 @@ class DroidboyApplication : Application() {
             }
             // Fire off an update to start off
             Braze.getInstance(applicationContext).currentUser?.userId?.let { setNewSdkAuthToken(it) }
+        }
+
+        Braze.getInstance(applicationContext).subscribeToPushNotificationEvents { event ->
+            brazelog {
+                "Got braze push notification event $event " +
+                    "with title '${event.notificationPayload.titleText}'"
+            }
         }
     }
 

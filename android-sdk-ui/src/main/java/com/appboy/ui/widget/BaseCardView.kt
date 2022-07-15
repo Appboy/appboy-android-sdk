@@ -13,6 +13,7 @@ import com.braze.Braze
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.enums.BrazeViewBounds
 import com.braze.support.BrazeLogger.Priority.V
+import com.braze.support.BrazeLogger.Priority.W
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.BrazeLogger.getBrazeLogTag
 import com.braze.ui.BrazeDeeplinkHandler.Companion.getInstance
@@ -106,7 +107,11 @@ abstract class BaseCardView<T : Card>(context: Context) : RelativeLayout(context
      * Checks to see if the card object is viewed and if so, sets the read/unread status
      * indicator image. If the card is null, does nothing.
      */
-    fun setCardViewedIndicator(imageSwitcher: AppboyImageSwitcher, card: Card) {
+    fun setCardViewedIndicator(imageSwitcher: AppboyImageSwitcher?, card: Card) {
+        if (imageSwitcher == null) {
+            brazelog(W) { "imageSwitcher is null. Can't set card viewed indicator." }
+            return
+        }
         // Check the tag for the image switcher so we don't have to re-draw the same indicator unnecessarily
         var imageSwitcherTag =
             imageSwitcher.getTag(R.string.com_braze_image_is_read_tag_key)

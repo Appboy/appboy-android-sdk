@@ -24,9 +24,9 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.appboy.BrazeInternal
+import com.braze.BrazeInternal
 import com.braze.Constants
-import com.appboy.events.SimpleValueCallback
+import com.braze.events.SimpleValueCallback
 import com.appboy.models.outgoing.AttributionData
 import com.appboy.sample.BuildConfig
 import com.appboy.sample.CustomFeedClickActionListener
@@ -306,11 +306,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setNetworkPrefs(context: Context) {
         setClickPreference("disable_outbound_network_requests") {
-            Braze.setOutboundNetworkRequestsOffline(true)
+            Braze.outboundNetworkRequestsOffline = true
             showToast(getString(R.string.disabled_outbound_network_requests_toast))
         }
         setClickPreference("enable_outbound_network_requests") {
-            Braze.setOutboundNetworkRequestsOffline(false)
+            Braze.outboundNetworkRequestsOffline = false
             showToast(getString(R.string.enabled_outbound_network_requests_toast))
         }
         setClickPreference("data_flush") {
@@ -327,7 +327,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setContentCardsPrefs(context: Context) {
         setClickPreference("content_card_dismiss_all_cards_setting_key") {
-            val cachedContentCards = Braze.getInstance(context).cachedContentCards
+            val cachedContentCards = Braze.getInstance(context).getCachedContentCards()
             if (cachedContentCards != null) {
                 for (card in cachedContentCards) {
                     card.isDismissed = true
