@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.appboy.models.cards.CaptionedImageCard
+import com.appboy.models.cards.Card
 import com.appboy.ui.R
 
 open class CaptionedImageContentCardView(context: Context) : BaseContentCardView<CaptionedImageCard>(
@@ -26,17 +27,24 @@ open class CaptionedImageContentCardView(context: Context) : BaseContentCardView
         return ViewHolder(view)
     }
 
-    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: CaptionedImageCard) {
-        super.bindViewHolder(viewHolder, card)
-        val captionedImageViewHolder = viewHolder as ViewHolder
-        captionedImageViewHolder.title?.let { setOptionalTextView(it, card.title) }
-        captionedImageViewHolder.description?.let { setOptionalTextView(it, card.description) }
-        (if (card.domain.isNullOrBlank()) card.url else card.domain)?.let {
-            captionedImageViewHolder.setActionHintText(
-                it
+    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: Card) {
+        if (card is CaptionedImageCard) {
+            super.bindViewHolder(viewHolder, card)
+            val captionedImageViewHolder = viewHolder as ViewHolder
+            captionedImageViewHolder.title?.let { setOptionalTextView(it, card.title) }
+            captionedImageViewHolder.description?.let { setOptionalTextView(it, card.description) }
+            (if (card.domain.isNullOrBlank()) card.url else card.domain)?.let {
+                captionedImageViewHolder.setActionHintText(
+                    it
+                )
+            }
+            setOptionalCardImage(
+                captionedImageViewHolder.imageView,
+                card.aspectRatio,
+                card.imageUrl,
+                card
             )
+            viewHolder.itemView.contentDescription = "${card.title} .  ${card.description}"
         }
-        setOptionalCardImage(captionedImageViewHolder.imageView, card.aspectRatio, card.imageUrl, card)
-        viewHolder.itemView.contentDescription = "${card.title} .  ${card.description}"
     }
 }

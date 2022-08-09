@@ -153,10 +153,10 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
             didRequestLocationPermission = true
         }
         requestLocationPermissions(
-                this,
-                permissionsToRequest.toTypedArray(),
-                requestMultiplePermissionLauncher
-            )
+            this,
+            permissionsToRequest.toTypedArray(),
+            requestMultiplePermissionLauncher
+        )
     }
 
     private fun setupViewPager(viewPager: ViewPager2) {

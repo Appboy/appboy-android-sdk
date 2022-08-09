@@ -3,7 +3,6 @@ package com.braze.push
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationManagerCompat
@@ -201,9 +200,6 @@ open class BrazePushReceiver : BroadcastReceiver() {
         @VisibleForTesting
         @Suppress("LongMethod", "ComplexMethod", "ReturnCount")
         fun handlePushNotificationPayload(context: Context, intent: Intent): Boolean {
-            val notificationManager = NotificationManagerCompat.from(context)
-            brazelog { "Value of notificationManager.areNotificationsEnabled() = ${notificationManager.areNotificationsEnabled()}" }
-
             when {
                 !intent.isBrazePushMessage() -> {
                     brazelog { "Not handling non-Braze push message." }
@@ -263,12 +259,6 @@ open class BrazePushReceiver : BroadcastReceiver() {
 
             if (isNotificationMessage(intent)) {
                 brazelog { "Received visible push notification" }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-                    !notificationManager.areNotificationsEnabled()
-                ) {
-                    brazelog(I) { "Push notifications are not enabled. Cannot display push notification." }
-                    return false
-                }
 
                 val notificationId = getNotificationId(payload)
                 notificationExtras.putInt(Constants.BRAZE_PUSH_NOTIFICATION_ID, notificationId)
@@ -292,6 +282,10 @@ open class BrazePushReceiver : BroadcastReceiver() {
                 if (notification == null) {
                     brazelog { "Notification created by notification factory was null. Not displaying notification." }
                     return false
+                }
+                val notificationManager = NotificationManagerCompat.from(context)
+                brazelog {
+                    "Value of notificationManager.areNotificationsEnabled() = ${notificationManager.areNotificationsEnabled()}"
                 }
                 notificationManager.notify(
                     Constants.BRAZE_PUSH_NOTIFICATION_TAG,

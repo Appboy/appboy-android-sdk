@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.appboy.models.cards.BannerImageCard
+import com.appboy.models.cards.Card
 import com.appboy.ui.R
 
 open class BannerImageContentCardView(context: Context) : BaseContentCardView<BannerImageCard>(
@@ -23,9 +24,16 @@ open class BannerImageContentCardView(context: Context) : BaseContentCardView<Ba
         return ViewHolder(view)
     }
 
-    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: BannerImageCard) {
-        super.bindViewHolder(viewHolder, card)
-        val bannerImageViewHolder = viewHolder as ViewHolder
-        setOptionalCardImage(bannerImageViewHolder.imageView, card.aspectRatio, card.imageUrl, card)
+    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: Card) {
+        if (card is BannerImageCard) {
+            super.bindViewHolder(viewHolder, card)
+            val bannerImageViewHolder = viewHolder as ViewHolder
+            setOptionalCardImage(
+                bannerImageViewHolder.imageView,
+                card.aspectRatio,
+                card.imageUrl,
+                card
+            )
+        }
     }
 }

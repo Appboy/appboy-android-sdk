@@ -82,7 +82,8 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
   private static volatile BrazeInAppMessageManager sInstance = null;
 
   private final IInAppMessageViewLifecycleListener mInAppMessageViewLifecycleListener = new DefaultInAppMessageViewLifecycleListener();
-  private final AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
+  @VisibleForTesting
+  final AtomicBoolean mDisplayingInAppMessage = new AtomicBoolean(false);
   @VisibleForTesting
   @NonNull
   final Stack<IInAppMessage> mInAppMessageStack = new Stack<>();
@@ -452,13 +453,24 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
         return;
       }
 
+      if (BrazeActionUtils.containsInvalidBrazeAction(inAppMessage)) {
+        final InAppMessageEvent inAppMessageEvent = mInAppMessageEventMap.get(inAppMessage);
+        BrazeLogger.i(TAG, "Cannot show message containing an invalid Braze Action.");
+        if (inAppMessageEvent != null) {
+          BrazeLogger.i(TAG, "Attempting to perform any fallback actions.");
+          BrazeInternal.retryInAppMessage(mActivity.getApplicationContext(), inAppMessageEvent);
+        }
+        resetAfterInAppMessageClose();
+        return;
+      }
+
       if (BrazeActionUtils.containsAnyPushPermissionBrazeActions(inAppMessage)
           && !PermissionUtils.wouldPushPermissionPromptDisplay(mActivity)) {
         final InAppMessageEvent inAppMessageEvent = mInAppMessageEventMap.get(inAppMessage);
         BrazeLogger.i(TAG, "Cannot show message containing a Braze Actions Push "
             + "Prompt due to existing push prompt status.");
         if (inAppMessageEvent != null) {
-          BrazeLogger.i(TAG, "Will attempt to perform any fallback actions.");
+          BrazeLogger.i(TAG, "Attempting to perform any fallback actions.");
           BrazeInternal.retryInAppMessage(mActivity.getApplicationContext(), inAppMessageEvent);
         }
         resetAfterInAppMessageClose();

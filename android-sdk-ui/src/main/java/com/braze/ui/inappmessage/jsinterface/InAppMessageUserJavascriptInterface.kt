@@ -8,7 +8,6 @@ import com.appboy.enums.Month
 import com.appboy.enums.Month.Companion.getMonth
 import com.appboy.enums.NotificationSubscriptionType
 import com.appboy.enums.NotificationSubscriptionType.Companion.fromValue
-import com.braze.events.SimpleValueCallback
 import com.braze.Braze
 import com.braze.BrazeUser
 import com.braze.support.BrazeLogger.Priority.E
@@ -281,12 +280,9 @@ class InAppMessageUserJavascriptInterface(private val context: Context) {
         const val JS_BRIDGE_ATTRIBUTE_VALUE = "value"
 
         private fun Braze.runOnUser(block: (user: BrazeUser) -> Unit) {
-            this.getCurrentUser(object : SimpleValueCallback<BrazeUser>() {
-                override fun onSuccess(user: BrazeUser) {
-                    super.onSuccess(user)
-                    block(user)
-                }
-            })
+            this.getCurrentUser {
+                block(it)
+            }
         }
     }
 }

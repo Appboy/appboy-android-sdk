@@ -102,8 +102,11 @@ class DroidboyApplication : Application() {
 
         Braze.getInstance(applicationContext).subscribeToPushNotificationEvents { event ->
             brazelog {
-                "Got braze push notification event $event " +
-                    "with title '${event.notificationPayload.titleText}'"
+                """
+                    Got braze push notification event $event 
+                    with title '${event.notificationPayload.titleText}'
+                    and deeplink '${event.notificationPayload.deeplink}'
+                """.trimIndent()
             }
         }
     }

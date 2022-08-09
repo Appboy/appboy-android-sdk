@@ -1,3 +1,16 @@
+## 23.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.0.0)
+
+#### Breaking
+- `BaseContentCardView.bindViewHolder()` now takes `Card` instead of generic type.
+
+##### Fixed
+- Fixed an issue where apps with a target of Android 12 running on Android 13 devices would not automatically create a default notification channel upon a push notification being received.
+
+##### Added
+- Added ability to retrieve deeplinks from `BrazeNotificationPayload` objects via `BrazeNotificationPayload().deeplink`.
+
 ## 22.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v22.0.0)
@@ -14,7 +27,6 @@
 - Renamed `com.appboy.events.IEventSubscriber` to `com.braze.events.IEventSubscriber`.
 - Removed `Appboy.registerAppboyPushMessages() / Appboy.getAppboyPushMessageRegistrationId()`. Replaced with `getRegisteredPushToken() / setRegisteredPushToken()`.
 - Replaced `IAppboyNotificationFactory` with `IBrazeNotificationFactory`.
-- Removed `com.appboy.ui.inappmessage.listeners.IHtmlInAppMessageActionListener`. Use `com.braze.ui.inappmessage.listeners.IHtmlInAppMessageActionListener` instead.
 
 ##### Fixed
 - Fixed an issue in `BrazePushReceiver` where eager In-App Message test displays and Content Card serializations from push notifications wouldn't work unless notifications were enabled on the device.

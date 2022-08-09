@@ -24,9 +24,6 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.braze.BrazeInternal
-import com.braze.Constants
-import com.braze.events.SimpleValueCallback
 import com.appboy.models.outgoing.AttributionData
 import com.appboy.sample.BuildConfig
 import com.appboy.sample.CustomFeedClickActionListener
@@ -48,7 +45,9 @@ import com.appboy.sample.util.LogcatExportUtil.Companion.exportLogcatToFile
 import com.appboy.sample.util.RuntimePermissionUtils
 import com.appboy.ui.feed.AppboyFeedManager
 import com.braze.Braze
+import com.braze.BrazeInternal
 import com.braze.BrazeUser
+import com.braze.Constants
 import com.braze.images.DefaultBrazeImageLoader
 import com.braze.images.IBrazeImageLoader
 import com.braze.support.BrazeLogger.Priority.E
@@ -427,12 +426,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         fun Braze.runOnUser(block: (user: BrazeUser) -> Unit) {
-            this.getCurrentUser(object : SimpleValueCallback<BrazeUser>() {
-                override fun onSuccess(user: BrazeUser) {
-                    super.onSuccess(user)
-                    block(user)
-                }
-            })
+            this.getCurrentUser { user ->
+                block(user)
+            }
         }
     }
 }

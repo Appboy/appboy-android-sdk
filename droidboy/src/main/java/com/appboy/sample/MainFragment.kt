@@ -133,41 +133,41 @@ class MainFragment : Fragment() {
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_set_user_attributes_button) {
             Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser> {
-                override fun onSuccess(currentUser: BrazeUser) {
-                    currentUser.setFirstName("first name least")
-                    currentUser.setLastName("lastName")
-                    currentUser.setEmail("email@test.com")
-                    currentUser.setGender(Gender.FEMALE)
-                    currentUser.setCountry("USA")
-                    currentUser.setLanguage("cs")
-                    currentUser.setHomeCity("New York")
-                    currentUser.setPhoneNumber("1234567890")
-                    currentUser.setDateOfBirth(1984, Month.AUGUST, 18)
-                    currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN)
-                    currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN)
-                    currentUser.setCustomUserAttribute(STRING_ATTRIBUTE_KEY, "stringValue")
-                    currentUser.setCustomUserAttribute(FLOAT_ATTRIBUTE_KEY, 1.5f)
-                    currentUser.setCustomUserAttribute(INT_ATTRIBUTE_KEY, 100)
-                    currentUser.setCustomUserAttribute(BOOL_ATTRIBUTE_KEY, true)
-                    currentUser.setCustomUserAttribute(LONG_ATTRIBUTE_KEY, 10L)
-                    currentUser.setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1)
-                    currentUser.setCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY, 3.1)
-                    currentUser.incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4)
-                    currentUser.setCustomUserAttributeToSecondsFromEpoch(
+                override fun onSuccess(value: BrazeUser) {
+                    value.setFirstName("first name least")
+                    value.setLastName("lastName")
+                    value.setEmail("email@test.com")
+                    value.setGender(Gender.FEMALE)
+                    value.setCountry("USA")
+                    value.setLanguage("cs")
+                    value.setHomeCity("New York")
+                    value.setPhoneNumber("1234567890")
+                    value.setDateOfBirth(1984, Month.AUGUST, 18)
+                    value.setPushNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN)
+                    value.setEmailNotificationSubscriptionType(NotificationSubscriptionType.OPTED_IN)
+                    value.setCustomUserAttribute(STRING_ATTRIBUTE_KEY, "stringValue")
+                    value.setCustomUserAttribute(FLOAT_ATTRIBUTE_KEY, 1.5f)
+                    value.setCustomUserAttribute(INT_ATTRIBUTE_KEY, 100)
+                    value.setCustomUserAttribute(BOOL_ATTRIBUTE_KEY, true)
+                    value.setCustomUserAttribute(LONG_ATTRIBUTE_KEY, 10L)
+                    value.setCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 1)
+                    value.setCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY, 3.1)
+                    value.incrementCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY, 4)
+                    value.setCustomUserAttributeToSecondsFromEpoch(
                         DATE_ATTRIBUTE_KEY,
                         Date().time / 1000L
                     )
-                    currentUser.setCustomAttributeArray(
+                    value.setCustomAttributeArray(
                         STRING_ARRAY_ATTRIBUTE_KEY,
                         arrayOf("a", "b")
                     )
-                    currentUser.addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c")
-                    currentUser.removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b")
-                    currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "cat")
-                    currentUser.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "dog")
-                    currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "bird")
-                    currentUser.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "deer")
-                    currentUser.setAttributionData(
+                    value.addToCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "c")
+                    value.removeFromCustomAttributeArray(ARRAY_ATTRIBUTE_KEY, "b")
+                    value.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "cat")
+                    value.addToCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "dog")
+                    value.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "bird")
+                    value.removeFromCustomAttributeArray(PETS_ARRAY_ATTRIBUTE_KEY, "deer")
+                    value.setAttributionData(
                         AttributionData(
                             "network",
                             "campaign",
@@ -175,7 +175,7 @@ class MainFragment : Fragment() {
                             "creative"
                         )
                     )
-                    currentUser.setLocationCustomAttribute(
+                    value.setLocationCustomAttribute(
                         "Favorite Location",
                         33.078883,
                         -116.603131
@@ -191,33 +191,33 @@ class MainFragment : Fragment() {
 
         contentView.setOnButtonClick(R.id.com_appboy_sample_unset_user_attributes_button) {
             Braze.getInstance(requireContext()).getCurrentUser(object : IValueCallback<BrazeUser> {
-                override fun onSuccess(currentUser: BrazeUser) {
+                override fun onSuccess(value: BrazeUser) {
                     // Unset current user default attributes
-                    currentUser.setFirstName(null)
-                    currentUser.setLastName(null)
-                    currentUser.setEmail(null)
-                    currentUser.setGender(Gender.UNKNOWN)
-                    currentUser.setCountry(null)
-                    currentUser.setLanguage(null)
-                    currentUser.setHomeCity(null)
-                    currentUser.setPhoneNumber(null)
-                    currentUser.setDateOfBirth(1970, Month.JANUARY, 1)
-                    currentUser.setPushNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED)
-                    currentUser.setEmailNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED)
+                    value.setFirstName(null)
+                    value.setLastName(null)
+                    value.setEmail(null)
+                    value.setGender(Gender.UNKNOWN)
+                    value.setCountry(null)
+                    value.setLanguage(null)
+                    value.setHomeCity(null)
+                    value.setPhoneNumber(null)
+                    value.setDateOfBirth(1970, Month.JANUARY, 1)
+                    value.setPushNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED)
+                    value.setEmailNotificationSubscriptionType(NotificationSubscriptionType.UNSUBSCRIBED)
                     // Unset current user custom attributes
-                    currentUser.unsetCustomUserAttribute(STRING_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(FLOAT_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(INT_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(BOOL_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(LONG_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(DATE_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(ARRAY_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(STRING_ARRAY_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(PETS_ARRAY_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY)
-                    currentUser.unsetCustomUserAttribute(ATTRIBUTION_DATA_KEY)
-                    currentUser.unsetLocationCustomAttribute("Mediocre Location")
+                    value.unsetCustomUserAttribute(STRING_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(FLOAT_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(INT_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(BOOL_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(LONG_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(DATE_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(ARRAY_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(STRING_ARRAY_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(PETS_ARRAY_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(INCREMENT_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(DOUBLE_ATTRIBUTE_KEY)
+                    value.unsetCustomUserAttribute(ATTRIBUTION_DATA_KEY)
+                    value.unsetLocationCustomAttribute("Mediocre Location")
                     showToast("Unset user attributes.")
                 }
 

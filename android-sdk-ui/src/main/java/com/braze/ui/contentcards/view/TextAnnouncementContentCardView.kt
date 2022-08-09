@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.appboy.models.cards.Card
 import com.appboy.models.cards.TextAnnouncementCard
 import com.appboy.ui.R
 
@@ -25,13 +26,20 @@ open class TextAnnouncementContentCardView(context: Context) :
         return ViewHolder(view)
     }
 
-    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: TextAnnouncementCard) {
-        super.bindViewHolder(viewHolder, card)
-        val textAnnouncementViewHolder = viewHolder as ViewHolder
-        textAnnouncementViewHolder.title?.let { setOptionalTextView(it, card.title) }
-        textAnnouncementViewHolder.description?.let { setOptionalTextView(it, card.description) }
-        val actionHintText = if (card.domain.isNullOrBlank()) card.url else card.domain
-        actionHintText?.let { textAnnouncementViewHolder.setActionHintText(it) }
-        viewHolder.itemView.contentDescription = "${card.title} . ${card.description}"
+    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: Card) {
+        if (card is TextAnnouncementCard) {
+            super.bindViewHolder(viewHolder, card)
+            val textAnnouncementViewHolder = viewHolder as ViewHolder
+            textAnnouncementViewHolder.title?.let { setOptionalTextView(it, card.title) }
+            textAnnouncementViewHolder.description?.let {
+                setOptionalTextView(
+                    it,
+                    card.description
+                )
+            }
+            val actionHintText = if (card.domain.isNullOrBlank()) card.url else card.domain
+            actionHintText?.let { textAnnouncementViewHolder.setActionHintText(it) }
+            viewHolder.itemView.contentDescription = "${card.title} . ${card.description}"
+        }
     }
 }

@@ -11,8 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.braze.Braze
-import com.braze.BrazeUser
-import com.braze.events.SimpleValueCallback
 import com.braze.support.BrazeLogger
 import com.braze.support.IntentUtils
 import com.huawei.agconnect.AGConnectOptionsBuilder
@@ -30,13 +28,11 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
 
     val userIdInput = findViewById<EditText>(R.id.etUserId)
-    Braze.getInstance(this).getCurrentUser(object : SimpleValueCallback<BrazeUser>() {
-      override fun onSuccess(value: BrazeUser) {
-        userIdInput.post {
-          userIdInput.setText(value.userId)
-        }
+      Braze.getInstance(this).getCurrentUser {
+          userIdInput.post {
+              userIdInput.setText(it.userId)
+          }
       }
-    })
     findViewById<Button>(R.id.bSubmitUserId).setOnClickListener {
       // Get the user id
       val userId: String = userIdInput.text.toString()

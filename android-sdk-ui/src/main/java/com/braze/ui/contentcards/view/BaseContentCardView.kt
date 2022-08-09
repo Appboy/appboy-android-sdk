@@ -20,7 +20,7 @@ abstract class BaseContentCardView<T : Card>(context: Context) : BaseCardView<T>
 ) {
     abstract fun createViewHolder(viewGroup: ViewGroup): ContentCardViewHolder
 
-    open fun bindViewHolder(viewHolder: ContentCardViewHolder, card: T) {
+    open fun bindViewHolder(viewHolder: ContentCardViewHolder, card: Card) {
         viewHolder.setPinnedIconVisible(card.isPinned)
         viewHolder.setUnreadBarVisible(
             configurationProvider.isContentCardsUnreadVisualIndicatorEnabled

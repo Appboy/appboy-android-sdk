@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.appboy.models.cards.Card
 import com.appboy.models.cards.ShortNewsCard
 import com.appboy.ui.R
 
@@ -27,19 +28,26 @@ open class ShortNewsContentCardView(context: Context) : BaseContentCardView<Shor
         return ViewHolder(view)
     }
 
-    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: ShortNewsCard) {
-        super.bindViewHolder(viewHolder, card)
-        val shortNewsCardViewHolder = viewHolder as ViewHolder
-        shortNewsCardViewHolder.title?.let { setOptionalTextView(it, card.title) }
-        shortNewsCardViewHolder.description?.let { setOptionalTextView(it, card.description) }
-        val actionHintText = if (card.domain.isNullOrBlank()) card.url else card.domain
-        actionHintText?.let { shortNewsCardViewHolder.setActionHintText(it) }
+    override fun bindViewHolder(viewHolder: ContentCardViewHolder, card: Card) {
+        if (card is ShortNewsCard) {
+            super.bindViewHolder(viewHolder, card)
+            val shortNewsCardViewHolder = viewHolder as ViewHolder
+            shortNewsCardViewHolder.title?.let { setOptionalTextView(it, card.title) }
+            shortNewsCardViewHolder.description?.let { setOptionalTextView(it, card.description) }
+            val actionHintText = if (card.domain.isNullOrBlank()) card.url else card.domain
+            actionHintText?.let { shortNewsCardViewHolder.setActionHintText(it) }
 
-        setOptionalCardImage(shortNewsCardViewHolder.imageView, ASPECT_RATIO, card.imageUrl, card)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            safeSetClipToOutline(shortNewsCardViewHolder.imageView)
+            setOptionalCardImage(
+                shortNewsCardViewHolder.imageView,
+                ASPECT_RATIO,
+                card.imageUrl,
+                card
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                safeSetClipToOutline(shortNewsCardViewHolder.imageView)
+            }
+            viewHolder.itemView.contentDescription = "${card.title} . ${card.description}"
         }
-        viewHolder.itemView.contentDescription = "${card.title} . ${card.description}"
     }
 
     companion object {

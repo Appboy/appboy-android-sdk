@@ -43,9 +43,6 @@ import com.braze.ui.inappmessage.config.BrazeInAppMessageParams
 import com.braze.ui.inappmessage.config.BrazeInAppMessageParams.graphicModalMaxHeightDp
 import com.braze.ui.inappmessage.config.BrazeInAppMessageParams.graphicModalMaxWidthDp
 import com.braze.ui.inappmessage.config.BrazeInAppMessageParams.modalizedImageRadiusDp
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import java.util.*
 
 @Suppress("LargeClass")
@@ -815,7 +812,6 @@ class InAppMessageTesterFragment : Fragment(), AdapterView.OnItemSelectedListene
     companion object {
         private const val CUSTOM_INAPPMESSAGE_VIEW_KEY = "inapmessages_custom_inappmessage_view"
 
-        // color reference: http://www.google.com/design/spec/style/color.html
         private const val BRAZE_RED = -0xcc1c2
         private const val GOOGLE_ORANGE = -0xa8de
         private const val GOOGLE_YELLOW = -0x14c5
@@ -860,25 +856,9 @@ class InAppMessageTesterFragment : Fragment(), AdapterView.OnItemSelectedListene
             spinnerOptionMap = Collections.unmodifiableMap(spinnerMap)
         }
 
-        private fun getStringFromAssets(context: Context, filename: String): String? {
-            // Get the text of the html from the assets folder
-            try {
-                val reader = BufferedReader(
-                    InputStreamReader(
-                        context.assets.open(filename), "UTF-8"
-                    )
-                )
-                var line: String?
-                val stringBuilder = StringBuilder()
-                while (reader.readLine().also { line = it } != null) {
-                    stringBuilder.append(line)
-                }
-                reader.close()
-                return stringBuilder.toString()
-            } catch (e: IOException) {
-                brazelog(E, e) { "Error while reading html body from assets." }
+        private fun getStringFromAssets(context: Context, filename: String): String =
+            context.assets.open(filename).bufferedReader().use {
+                it.readText()
             }
-            return null
-        }
     }
 }
