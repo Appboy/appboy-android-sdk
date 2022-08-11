@@ -1,3 +1,13 @@
+## 23.0.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.0.1)
+
+##### Fixed
+- Fixed an issue where `BaseCardView` would sometimes have the wrong size for a given image.
+
+##### Changed
+- Added proguard rules to keep `enum.values()` and `enum.valueOf(String)` for users who don't use the default Android proguard rules.
+
 ## 23.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.0.0)

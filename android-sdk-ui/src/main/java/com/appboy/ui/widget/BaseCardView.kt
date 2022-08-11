@@ -2,7 +2,7 @@ package com.appboy.ui.widget
 
 import android.content.Context
 import android.os.Bundle
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -71,7 +71,7 @@ abstract class BaseCardView<T : Card>(context: Context) : RelativeLayout(context
     ) {
         if (imageUrl != imageView.getTag(R.string.com_braze_image_resize_tag_key)) {
             // If the campaign is using liquid, the aspect ratio could be unknown (0)
-            if (placeholderAspectRatio != SQUARE_ASPECT_RATIO && placeholderAspectRatio != 0f) {
+            if (placeholderAspectRatio != 0f) {
                 // We need to set layout params on the imageView once its layout state is visible. To do this,
                 // we obtain the imageView's observer and attach a listener on it for when the view's layout
                 // occurs. At layout time, we set the imageView's size params based on the aspect ratio
@@ -79,12 +79,13 @@ abstract class BaseCardView<T : Card>(context: Context) : RelativeLayout(context
                 // so we remove our listener after the resizing.
                 val viewTreeObserver = imageView.viewTreeObserver
                 if (viewTreeObserver.isAlive) {
-                    viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                        override fun onGlobalLayout() {
+                    viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                        override fun onPreDraw(): Boolean {
+                            imageView.viewTreeObserver.removeOnPreDrawListener(this)
                             val width = imageView.width
                             imageView.layoutParams =
                                 LayoutParams(width, (width / placeholderAspectRatio).toInt())
-                            imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                            return true
                         }
                     })
                 }
@@ -171,7 +172,6 @@ abstract class BaseCardView<T : Card>(context: Context) : RelativeLayout(context
     ): Boolean
 
     companion object {
-        private const val SQUARE_ASPECT_RATIO = 1f
         private const val ICON_READ_TAG = "icon_read"
         private const val ICON_UNREAD_TAG = "icon_unread"
 
