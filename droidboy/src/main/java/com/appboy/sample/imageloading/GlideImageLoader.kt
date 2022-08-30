@@ -12,9 +12,18 @@ import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.brazelog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 
 class GlideImageLoader : IBrazeImageLoader {
-    private var requestOptions = RequestOptions()
+    private val requestOptions: RequestOptions
+        get() {
+            // Create default options where images are only cached for 1 minute
+            return RequestOptions()
+                .onlyRetrieveFromCache(isOffline)
+                .signature(ObjectKey(System.currentTimeMillis() / (1000 * 60 * 1)))
+        }
+
+    private var isOffline = false
 
     override fun renderUrlIntoCardView(
         context: Context,
@@ -75,6 +84,6 @@ class GlideImageLoader : IBrazeImageLoader {
 
     override fun setOffline(isOffline: Boolean) {
         // If the loader is offline, then we should only be retrieving from the cache
-        requestOptions = requestOptions.onlyRetrieveFromCache(isOffline)
+        this.isOffline = isOffline
     }
 }

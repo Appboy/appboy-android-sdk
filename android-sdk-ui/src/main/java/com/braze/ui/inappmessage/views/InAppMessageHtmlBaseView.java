@@ -194,6 +194,7 @@ public abstract class InAppMessageHtmlBaseView extends RelativeLayout implements
       InAppMessageViewUtils.closeInAppMessageOnKeycodeBack();
       return true;
     }
+    ViewUtils.setFocusableInTouchModeAndRequestFocus(mMessageWebView);
     return super.onKeyDown(keyCode, event);
   }
 

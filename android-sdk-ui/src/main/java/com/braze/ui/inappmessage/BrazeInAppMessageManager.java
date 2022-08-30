@@ -231,7 +231,7 @@ public class BrazeInAppMessageManager extends InAppMessageManagerBase {
       ViewUtils.removeViewFromParent(inAppMessageView);
 
       // Only continue if we're not animating a close
-      if (mInAppMessageViewWrapper.getIsAnimatingClose()) {
+      if (mInAppMessageViewWrapper.isAnimatingClose()) {
         // Note that mInAppMessageViewWrapper may be null after this call
         mInAppMessageViewLifecycleListener.afterClosed(mInAppMessageViewWrapper.getInAppMessage());
         mCarryoverInAppMessage = null;

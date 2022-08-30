@@ -58,6 +58,9 @@ var brazeBridge = {
   getUser: function() {
     return this.brazeBridgeUserObject;
   },
+  changeUser: function(userId, sdkAuth = null) {
+      brazeInternalBridge.changeUser(userId, sdkAuth);
+  },
   web: {
     registerAppboyPushMessages: function(successCallback, deniedCallback) { console.log("This method is a no-op on Android."); },
     trackLocation: function() { console.log("This method is a no-op on Android."); },

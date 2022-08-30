@@ -1,20 +1,20 @@
 package com.braze.ui.inappmessage.factories
 
 import android.content.res.Resources
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import com.braze.enums.inappmessage.SlideFrom
+import com.braze.models.inappmessage.IInAppMessage
+import com.braze.models.inappmessage.InAppMessageSlideup
+import com.braze.ui.inappmessage.IInAppMessageAnimationFactory
 import com.braze.ui.support.createVerticalAnimation
 import com.braze.ui.support.setAnimationParams
-import com.braze.models.inappmessage.IInAppMessage
-import android.view.animation.Animation
-import com.braze.models.inappmessage.InAppMessageSlideup
-import com.braze.enums.inappmessage.SlideFrom
-import android.view.animation.AlphaAnimation
-import com.braze.ui.inappmessage.IInAppMessageAnimationFactory
 
 open class DefaultInAppMessageAnimationFactory : IInAppMessageAnimationFactory {
     private val shortAnimationDurationMs =
         Resources.getSystem().getInteger(android.R.integer.config_shortAnimTime).toLong()
 
-    override fun getOpeningAnimation(inAppMessage: IInAppMessage): Animation {
+    override fun getOpeningAnimation(inAppMessage: IInAppMessage): Animation? {
         return if (inAppMessage is InAppMessageSlideup) {
             if (inAppMessage.slideFrom === SlideFrom.TOP) {
                 createVerticalAnimation(-1f, 0f, shortAnimationDurationMs, false)
@@ -26,7 +26,7 @@ open class DefaultInAppMessageAnimationFactory : IInAppMessageAnimationFactory {
         }
     }
 
-    override fun getClosingAnimation(inAppMessage: IInAppMessage): Animation {
+    override fun getClosingAnimation(inAppMessage: IInAppMessage): Animation? {
         return if (inAppMessage is InAppMessageSlideup) {
             if (inAppMessage.slideFrom === SlideFrom.TOP) {
                 createVerticalAnimation(0f, -1f, shortAnimationDurationMs, false)

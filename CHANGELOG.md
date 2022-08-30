@@ -1,3 +1,12 @@
+## 23.1.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.1.0)
+
+##### Added
+- Added more reliable HTML In-App Message focusing specifically for TV environments. To use this behavior please set `com.braze.configuration.BrazeConfig.Builder.setIsTouchModeRequiredForHtmlInAppMessages` to `false`.
+- Added `BrazeNotificationPayload.extras` as a `Map<String, String>` to easily retrieve dashboard provided KVPs for push notification data.
+- Added support for Content Cards to evaluate Retry-After headers.
+
 ## 23.0.1
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.0.1)

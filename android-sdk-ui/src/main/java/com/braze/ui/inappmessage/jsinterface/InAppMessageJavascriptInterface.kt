@@ -24,6 +24,11 @@ class InAppMessageJavascriptInterface(
     val user: InAppMessageUserJavascriptInterface = InAppMessageUserJavascriptInterface(context)
 
     @JavascriptInterface
+    fun changeUser(userId: String, sdkAuthSignature: String?) {
+        Braze.getInstance(context).changeUser(userId, sdkAuthSignature)
+    }
+
+    @JavascriptInterface
     fun requestImmediateDataFlush() {
         Braze.getInstance(context).requestImmediateDataFlush()
     }

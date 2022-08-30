@@ -26,7 +26,11 @@ class DefaultInAppMessageHtmlFullViewFactory(private val inAppMessageWebViewClie
             .inflate(R.layout.com_braze_inappmessage_html_full, null) as InAppMessageHtmlFullView
         val config = BrazeConfigurationProvider(activity.applicationContext)
         if (config.isTouchModeRequiredForHtmlInAppMessages && isDeviceNotInTouchMode(view)) {
-            brazelog(W) { "The device is not currently in touch mode. This message requires user touch interaction to display properly." }
+            brazelog(W) {
+                "The device is not currently in touch mode. " +
+                    "This message requires user touch interaction to display properly. Please set " +
+                    "setIsTouchModeRequiredForHtmlInAppMessages to false to change this behavior."
+            }
             return null
         }
         val context = activity.applicationContext
