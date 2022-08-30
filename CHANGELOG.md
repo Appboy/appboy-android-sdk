@@ -5,7 +5,6 @@
 ##### Added
 - Added more reliable HTML In-App Message focusing specifically for TV environments. To use this behavior please set `com.braze.configuration.BrazeConfig.Builder.setIsTouchModeRequiredForHtmlInAppMessages` to `false`.
 - Added `BrazeNotificationPayload.extras` as a `Map<String, String>` to easily retrieve dashboard provided KVPs for push notification data.
-- Added support for Content Cards to evaluate Retry-After headers.
 
 ## 23.0.1
 
@@ -29,6 +28,7 @@
 
 ##### Added
 - Added ability to retrieve deeplinks from `BrazeNotificationPayload` objects via `BrazeNotificationPayload().deeplink`.
+- Added support for Content Cards to evaluate Retry-After headers.
 
 ## 22.0.0
 
