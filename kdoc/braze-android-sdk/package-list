@@ -2388,7 +2388,7 @@ $dokka.location:com.braze.support/BrazeLogger/brazeLogTag/kotlin.Any#/PointingTo
 $dokka.location:com.braze.support/BrazeLogger/brazelog/#kotlin.String#com.braze.support.BrazeLogger.Priority#kotlin.Throwable?#kotlin.Boolean#kotlin.Function0[kotlin.String]/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/brazelog.html
 $dokka.location:com.braze.support/BrazeLogger/brazelog/kotlin.Any#com.braze.support.BrazeLogger.Priority#kotlin.Throwable?#kotlin.Boolean#kotlin.Function0[kotlin.String]/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/brazelog.html
 $dokka.location:com.braze.support/BrazeLogger/canAppendToTestUserLog/#/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/can-append-to-test-user-log.html
-$dokka.location:com.braze.support/BrazeLogger/checkForSystemLogLevelProperty/#/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/check-for-system-log-level-property.html
+$dokka.location:com.braze.support/BrazeLogger/checkForSystemLogLevelProperty/#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/check-for-system-log-level-property.html
 $dokka.location:com.braze.support/BrazeLogger/d/#kotlin.String#kotlin.String#kotlin.Throwable?#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/d.html
 $dokka.location:com.braze.support/BrazeLogger/e/#kotlin.String#kotlin.String#kotlin.Throwable/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/e.html
 $dokka.location:com.braze.support/BrazeLogger/getBrazeLogTag/#java.lang.Class[*]/PointingToDeclaration/braze-android-sdk/com.braze.support/-braze-logger/get-braze-log-tag.html
