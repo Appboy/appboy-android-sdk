@@ -13,7 +13,7 @@ import com.braze.ui.inappmessage.listeners.IInAppMessageViewLifecycleListener
  * The default [IInAppMessageViewWrapperFactory] that returns
  * an instance of [DefaultInAppMessageViewWrapper].
  */
-class DefaultInAppMessageViewWrapperFactory : IInAppMessageViewWrapperFactory {
+open class DefaultInAppMessageViewWrapperFactory : IInAppMessageViewWrapperFactory {
     override fun createInAppMessageViewWrapper(
         inAppMessageView: View,
         inAppMessage: IInAppMessage,

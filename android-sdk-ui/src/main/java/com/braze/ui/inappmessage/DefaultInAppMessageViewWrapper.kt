@@ -1,6 +1,5 @@
 package com.braze.ui.inappmessage
 
-import android.R
 import android.app.Activity
 import android.view.Gravity
 import android.view.View
@@ -44,7 +43,7 @@ import com.braze.ui.support.setFocusableInTouchModeAndRequestFocus
  * These views should map one to one with the MessageButton objects.
  * @param closeButton                       The [View] responsible for closing the in-app message.
  */
-class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
+open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
     override val inAppMessageView: View,
     override val inAppMessage: IInAppMessage,
     private val inAppMessageViewLifecycleListener: IInAppMessageViewLifecycleListener,
@@ -58,7 +57,6 @@ class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
     @Suppress("deprecation")
     private val inAppMessageCloser: InAppMessageCloser
     override var isAnimatingClose = false
-        private set
     private var dismissRunnable: Runnable? = null
 
     /**
@@ -183,7 +181,7 @@ class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
     private fun getParentViewGroup(activity: Activity): ViewGroup =
         // The android.R.id.content {@link FrameLayout} contains the
         // {@link Activity}'s top-level layout as its first child.
-        activity.window.decorView.findViewById(R.id.content)
+        activity.window.decorView.findViewById(android.R.id.content)
 
     /**
      * Creates the [ViewGroup.LayoutParams] used for adding the
@@ -261,7 +259,7 @@ class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
             val message = inAppMessage.message
             if (inAppMessage is IInAppMessageImmersive) {
                 // Announce the header and message together with a brief pause between them
-                val header = inAppMessage.header
+                val header = (inAppMessage as IInAppMessageImmersive).header
                 inAppMessageView.announceForAccessibility("$header . $message")
             } else {
                 inAppMessageView.announceForAccessibility(message)
@@ -282,11 +280,8 @@ class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      */
     private fun createClickListener(): View.OnClickListener {
         return View.OnClickListener {
-            if ((
-                inAppMessage is IInAppMessageImmersive
-                    && inAppMessage.messageButtons.isEmpty()
-                ) ||
-                inAppMessage !is IInAppMessageImmersive
+            if ((inAppMessage as? IInAppMessageImmersive)?.messageButtons?.isEmpty() == true
+                || inAppMessage !is IInAppMessageImmersive
             ) {
                 inAppMessageViewLifecycleListener.onClicked(
                     inAppMessageCloser,
@@ -379,9 +374,7 @@ class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
         inAppMessageView.removeViewFromParent()
         // In the case of HTML in-app messages, we need to make sure the
         // WebView stops once the in-app message is removed.
-        if (inAppMessageView is InAppMessageHtmlBaseView) {
-            inAppMessageView.finishWebViewDisplay()
-        }
+        (inAppMessageView as? InAppMessageHtmlBaseView)?.finishWebViewDisplay()
 
         // Return the focus before closing the message
         if (previouslyFocusedView != null) {

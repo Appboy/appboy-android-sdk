@@ -15,7 +15,7 @@ import com.braze.ui.inappmessage.utils.InAppMessageWebViewClient
 import com.braze.ui.inappmessage.views.InAppMessageHtmlFullView
 import com.braze.ui.support.isDeviceNotInTouchMode
 
-class DefaultInAppMessageHtmlFullViewFactory(private val inAppMessageWebViewClientListener: IInAppMessageWebViewClientListener) :
+open class DefaultInAppMessageHtmlFullViewFactory(private val inAppMessageWebViewClientListener: IInAppMessageWebViewClientListener) :
     IInAppMessageViewFactory {
     @SuppressLint("AddJavascriptInterface")
     override fun createInAppMessageView(

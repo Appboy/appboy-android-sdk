@@ -21,7 +21,7 @@ import com.braze.ui.support.isRunningOnTablet
 import com.braze.ui.support.setHeightOnViewLayoutParams
 import kotlin.math.min
 
-class DefaultInAppMessageFullViewFactory : IInAppMessageViewFactory {
+open class DefaultInAppMessageFullViewFactory : IInAppMessageViewFactory {
     override fun createInAppMessageView(
         activity: Activity,
         inAppMessage: IInAppMessage

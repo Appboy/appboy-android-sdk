@@ -13,7 +13,7 @@ import com.braze.ui.inappmessage.views.InAppMessageBaseView
 import com.braze.ui.inappmessage.views.InAppMessageSlideupView
 import com.braze.ui.support.isDeviceNotInTouchMode
 
-class DefaultInAppMessageSlideupViewFactory : IInAppMessageViewFactory {
+open class DefaultInAppMessageSlideupViewFactory : IInAppMessageViewFactory {
     override fun createInAppMessageView(
         activity: Activity,
         inAppMessage: IInAppMessage

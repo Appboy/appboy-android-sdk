@@ -16,7 +16,7 @@ import com.braze.ui.inappmessage.views.InAppMessageBaseView
 import com.braze.ui.inappmessage.views.InAppMessageImageView
 import com.braze.ui.inappmessage.views.InAppMessageModalView
 
-class DefaultInAppMessageModalViewFactory : IInAppMessageViewFactory {
+open class DefaultInAppMessageModalViewFactory : IInAppMessageViewFactory {
     override fun createInAppMessageView(
         activity: Activity,
         inAppMessage: IInAppMessage
