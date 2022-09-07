@@ -1,3 +1,10 @@
+## 23.1.2
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.1.2)
+
+##### Changed
+- Removed the use of the Kotlin Coroutines method `limitedParallelism()`.
+
 ## 23.1.1
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.1.1)

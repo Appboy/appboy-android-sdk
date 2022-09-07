@@ -24,9 +24,14 @@ public class InAppMessageHtmlFullView extends InAppMessageHtmlBaseView {
   }
 
   @Override
-  public boolean hasAppliedWindowInsets() {
+  public boolean getHasAppliedWindowInsets() {
     // HTML in-app messages don't have special behavior with respect to notched devices at the View level.
     // Thus we return true here to short-circuit any extra inset handling behavior.
     return true;
+  }
+
+  @Override
+  public void setHasAppliedWindowInsets(boolean hasAppliedWindowInsets) {
+
   }
 }

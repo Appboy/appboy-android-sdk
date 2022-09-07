@@ -29,36 +29,40 @@ open class DefaultInAppMessageModalViewFactory : IInAppMessageViewFactory {
         val imageUrl = InAppMessageBaseView.getAppropriateImageUrl(inAppMessageModal)
         if (!imageUrl.isNullOrEmpty()) {
             val brazeImageLoader = Braze.getInstance(applicationContext).imageLoader
-            brazeImageLoader.renderUrlIntoInAppMessageView(
-                applicationContext,
-                inAppMessage,
-                imageUrl,
-                view.messageImageView,
-                BrazeViewBounds.IN_APP_MESSAGE_MODAL
-            )
+            view.messageImageView?.let {
+                brazeImageLoader.renderUrlIntoInAppMessageView(
+                    applicationContext,
+                    inAppMessage,
+                    imageUrl,
+                    it,
+                    BrazeViewBounds.IN_APP_MESSAGE_MODAL
+                )
+            }
         }
 
         // Modal frame should only dismiss the message when configured.
-        view.frameView.setOnClickListener {
+        view.frameView?.setOnClickListener {
             if (BrazeInAppMessageManager.getInstance().doesClickOutsideModalViewDismissInAppMessageView) {
                 brazelog(I) { "Dismissing modal after frame click" }
                 BrazeInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true)
             }
         }
         view.setMessageBackgroundColor(inAppMessage.backgroundColor)
-        view.setFrameColor(inAppMessageModal.frameColor)
+        inAppMessageModal.frameColor?.let { view.setFrameColor(it) }
         view.setMessageButtons(inAppMessageModal.messageButtons)
         view.setMessageCloseButtonColor(inAppMessageModal.closeButtonColor)
         if (!isGraphic) {
-            view.setMessage(inAppMessage.message)
+            inAppMessage.message?.let { view.setMessage(it) }
             view.setMessageTextColor(inAppMessage.messageTextColor)
-            view.setMessageHeaderText(inAppMessageModal.header)
+            inAppMessageModal.header?.let { view.setMessageHeaderText(it) }
             view.setMessageHeaderTextColor(inAppMessageModal.headerTextColor)
-            view.setMessageIcon(
-                inAppMessage.icon,
-                inAppMessage.iconColor,
-                inAppMessage.iconBackgroundColor
-            )
+            inAppMessage.icon?.let {
+                view.setMessageIcon(
+                    it,
+                    inAppMessage.iconColor,
+                    inAppMessage.iconBackgroundColor
+                )
+            }
             view.setMessageHeaderTextAlignment(inAppMessageModal.headerTextAlign)
             view.setMessageTextAlign(inAppMessageModal.messageTextAlign)
             view.resetMessageMargins(inAppMessageModal.imageDownloadSuccessful)

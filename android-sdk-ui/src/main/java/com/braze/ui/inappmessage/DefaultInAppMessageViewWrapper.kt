@@ -226,7 +226,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
                     return@setOnApplyWindowInsetsListener insets
                 }
                 val castInAppMessageView = inAppMessageView as IInAppMessageView
-                if (!castInAppMessageView.hasAppliedWindowInsets()) {
+                if (!castInAppMessageView.hasAppliedWindowInsets) {
                     brazelog(V) { "Calling applyWindowInsets on in-app message view." }
                     castInAppMessageView.applyWindowInsets(insets)
                 } else {

@@ -22,6 +22,7 @@ import com.braze.ui.support.setHeightOnViewLayoutParams
 import kotlin.math.min
 
 open class DefaultInAppMessageFullViewFactory : IInAppMessageViewFactory {
+    @Suppress("LongMethod")
     override fun createInAppMessageView(
         activity: Activity,
         inAppMessage: IInAppMessage
@@ -36,25 +37,27 @@ open class DefaultInAppMessageFullViewFactory : IInAppMessageViewFactory {
         val imageUrl = InAppMessageBaseView.getAppropriateImageUrl(inAppMessageFull)
         if (!imageUrl.isNullOrEmpty()) {
             val brazeImageLoader = Braze.getInstance(applicationContext).imageLoader
-            brazeImageLoader.renderUrlIntoInAppMessageView(
-                applicationContext,
-                inAppMessage,
-                imageUrl,
-                view.messageImageView,
-                BrazeViewBounds.NO_BOUNDS
-            )
+            view.messageImageView?.let {
+                brazeImageLoader.renderUrlIntoInAppMessageView(
+                    applicationContext,
+                    inAppMessage,
+                    imageUrl,
+                    it,
+                    BrazeViewBounds.NO_BOUNDS
+                )
+            }
         }
 
         // modal frame should not be clickable.
-        view.frameView.setOnClickListener(null)
+        view.frameView?.setOnClickListener(null)
         view.setMessageBackgroundColor(inAppMessageFull.backgroundColor)
-        view.setFrameColor(inAppMessageFull.frameColor)
+        inAppMessageFull.frameColor?.let { view.setFrameColor(it) }
         view.setMessageButtons(inAppMessageFull.messageButtons)
         view.setMessageCloseButtonColor(inAppMessageFull.closeButtonColor)
         if (!isGraphic) {
-            view.setMessage(inAppMessageFull.message)
+            inAppMessageFull.message?.let { view.setMessage(it) }
             view.setMessageTextColor(inAppMessageFull.messageTextColor)
-            view.setMessageHeaderText(inAppMessageFull.header)
+            inAppMessageFull.header?.let { view.setMessageHeaderText(it) }
             view.setMessageHeaderTextColor(inAppMessageFull.headerTextColor)
             view.setMessageHeaderTextAlignment(inAppMessageFull.headerTextAlign)
             view.setMessageTextAlign(inAppMessageFull.messageTextAlign)
@@ -100,7 +103,7 @@ open class DefaultInAppMessageFullViewFactory : IInAppMessageViewFactory {
 
                 // Request another layout since we changed bounds for everything
                 scrollView.requestLayout()
-                view.messageImageView.requestLayout()
+                view.messageImageView?.requestLayout()
             }
         }
         return view
@@ -136,7 +139,7 @@ open class DefaultInAppMessageFullViewFactory : IInAppMessageViewFactory {
                 RelativeLayout.LayoutParams(shortEdge, longEdge)
             }
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
-            view.messageBackgroundObject.layoutParams = layoutParams
+            view.messageBackgroundObject?.layoutParams = layoutParams
             return true
         }
         return false

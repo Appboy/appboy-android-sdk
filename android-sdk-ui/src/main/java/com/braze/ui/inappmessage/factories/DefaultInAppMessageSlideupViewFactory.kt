@@ -32,23 +32,27 @@ open class DefaultInAppMessageSlideupViewFactory : IInAppMessageViewFactory {
         val imageUrl = InAppMessageBaseView.getAppropriateImageUrl(inAppMessageSlideup)
         if (!imageUrl.isNullOrEmpty()) {
             val brazeImageLoader = Braze.getInstance(applicationContext).imageLoader
-            brazeImageLoader.renderUrlIntoInAppMessageView(
-                applicationContext,
-                inAppMessage,
-                imageUrl,
-                view.messageImageView,
-                BrazeViewBounds.IN_APP_MESSAGE_SLIDEUP
-            )
+            view.messageImageView?.let {
+                brazeImageLoader.renderUrlIntoInAppMessageView(
+                    applicationContext,
+                    inAppMessage,
+                    imageUrl,
+                    it,
+                    BrazeViewBounds.IN_APP_MESSAGE_SLIDEUP
+                )
+            }
         }
         view.setMessageBackgroundColor(inAppMessageSlideup.backgroundColor)
-        view.setMessage(inAppMessageSlideup.message)
+        inAppMessageSlideup.message?.let { view.setMessage(it) }
         view.setMessageTextColor(inAppMessageSlideup.messageTextColor)
         view.setMessageTextAlign(inAppMessageSlideup.messageTextAlign)
-        view.setMessageIcon(
-            inAppMessageSlideup.icon,
-            inAppMessageSlideup.iconColor,
-            inAppMessageSlideup.iconBackgroundColor
-        )
+        inAppMessageSlideup.icon?.let {
+            view.setMessageIcon(
+                it,
+                inAppMessageSlideup.iconColor,
+                inAppMessageSlideup.iconBackgroundColor
+            )
+        }
         view.setMessageChevron(inAppMessageSlideup.chevronColor, inAppMessageSlideup.clickAction)
         view.resetMessageMargins(inAppMessageSlideup.imageDownloadSuccessful)
         return view
