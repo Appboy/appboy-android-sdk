@@ -1,3 +1,19 @@
+## 23.2.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.2.0)
+
+##### Fixed
+- Fixed the fields of `DefaultInAppMessageViewWrapper` to be `protected`, allowing them to be subclassed.
+- Fixed `BrazeNotificationPayload` and `BrazePushReceiver` to not hold onto an Activity context for longer than needed.
+
+##### Added
+- Added a config field `BrazeConfig.setIsHtmlInAppMessageApplyWindowInsetsEnabled()` to configure the SDK to automatically apply window insets to HTML In-App messages.
+  - By default, this value is false.
+
+##### Changed
+- Removed `com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener`. Please use `com.braze.ui.inappmessage.listeners.IInAppMessageWebViewClientListener`.
+- Removed `AppboyInAppMessageHtmlBaseView.APPBOY_BRIDGE_PREFIX`. Please use `InAppMessageHtmlBaseView.BRAZE_BRIDGE_PREFIX`.
+
 ## 23.1.2
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.1.2)

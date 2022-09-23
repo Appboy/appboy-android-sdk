@@ -1,7 +1,7 @@
 package com.braze.ui.inappmessage.listeners
 
-import com.braze.models.inappmessage.IInAppMessage
 import android.os.Bundle
+import com.braze.models.inappmessage.IInAppMessage
 import com.braze.ui.inappmessage.utils.InAppMessageWebViewClient
 
 /**
@@ -14,7 +14,7 @@ import com.braze.ui.inappmessage.utils.InAppMessageWebViewClient
  */
 interface IInAppMessageWebViewClientListener {
     /**
-     * Called when a close URL (appboy://close) is followed in an HTML In App Message
+     * Called when a close URL (appboy://close) is followed in an HTML In App Message.
      *
      * @param inAppMessage the inAppMessage
      * @param url          the url that triggered the close
@@ -23,7 +23,7 @@ interface IInAppMessageWebViewClientListener {
     fun onCloseAction(inAppMessage: IInAppMessage, url: String, queryBundle: Bundle)
 
     /**
-     * Called when a Newsfeed URL (appboy://newsfeed) is followed in an HTML In App Message
+     * Called when a Newsfeed URL (appboy://newsfeed) is followed in an HTML In App Message.
      *
      * @param inAppMessage the inAppMessage
      * @param url          the url that triggered the action
@@ -32,7 +32,7 @@ interface IInAppMessageWebViewClientListener {
     fun onNewsfeedAction(inAppMessage: IInAppMessage, url: String, queryBundle: Bundle)
 
     /**
-     * Called when the window location is set to a Custom Event URL (appboy://customEvent) in an HTML In App Message
+     * Called when the window location is set to a Custom Event URL (appboy://customEvent) in an HTML In App Message.
      *
      * @param inAppMessage the inAppMessage
      * @param url          the url that triggered the action

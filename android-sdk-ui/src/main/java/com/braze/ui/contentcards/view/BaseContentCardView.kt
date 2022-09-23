@@ -13,7 +13,7 @@ import com.braze.ui.actions.IAction
 import com.braze.ui.contentcards.managers.BrazeContentCardsManager.Companion.instance
 
 /**
- * Base class for ContentCard views
+ * Base class for ContentCard views.
  */
 abstract class BaseContentCardView<T : Card>(context: Context) : BaseCardView<T>(
     context

@@ -162,8 +162,8 @@ open class DefaultInAppMessageFullViewFactory : IInAppMessageViewFactory {
 
     companion object {
         /**
-         * 20dp margin between button / bottom of scrollview
-         * 44dp height for buttons
+         * 20dp margin between button / bottom of scrollview.
+         * 44dp height for buttons.
          */
         private const val BUTTONS_PRESENT_SCROLLVIEW_EXCESS_HEIGHT_VALUE_IN_DP = 64
     }

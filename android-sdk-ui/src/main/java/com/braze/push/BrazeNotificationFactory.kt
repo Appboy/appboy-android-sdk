@@ -68,7 +68,7 @@ open class BrazeNotificationFactory : IBrazeNotificationFactory {
     }
 
     /**
-     * Equivalent to [createNotification]
+     * Equivalent to [createNotification].
      */
     fun populateNotificationBuilder(
         configurationProvider: BrazeConfigurationProvider?,

@@ -19,7 +19,7 @@ interface IInAppMessageView {
      * Variable to prevent [WindowInsetsCompat] from getting applied
      * multiple times on the same in-app message view.
      *
-     * @see .applyWindowInsets
+     * @see [applyWindowInsets]
      * @return Whether [WindowInsetsCompat] has been applied to this in-app message.
      */
     var hasAppliedWindowInsets: Boolean

@@ -238,7 +238,7 @@ object BackgroundInAppMessagePreparer {
 
     /**
      * Prepares the in-app message for display by substituting locally
-     * cached assets into the message of the [InAppMessageHtml]
+     * cached assets into the message of the [InAppMessageHtml].
      */
     @VisibleForTesting
     fun prepareInAppMessageWithHtml(inAppMessage: InAppMessageHtml) {

@@ -12,7 +12,7 @@ import com.braze.ui.inappmessage.IInAppMessageViewFactory
 import com.braze.ui.inappmessage.jsinterface.InAppMessageJavascriptInterface
 import com.braze.ui.inappmessage.listeners.IInAppMessageWebViewClientListener
 import com.braze.ui.inappmessage.utils.InAppMessageWebViewClient
-import com.braze.ui.inappmessage.views.InAppMessageHtmlFullView
+import com.braze.ui.inappmessage.views.InAppMessageHtmlBaseView
 import com.braze.ui.inappmessage.views.InAppMessageHtmlView
 import com.braze.ui.support.isDeviceNotInTouchMode
 
@@ -48,9 +48,9 @@ open class DefaultInAppMessageHtmlViewFactory(private val inAppMessageWebViewCli
                 inAppMessageWebViewClientListener
             )
         )
-        view.messageWebView.addJavascriptInterface(
+        view.messageWebView?.addJavascriptInterface(
             javascriptInterface,
-            InAppMessageHtmlFullView.BRAZE_BRIDGE_PREFIX
+            InAppMessageHtmlBaseView.BRAZE_BRIDGE_PREFIX
         )
         return view
     }

@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -37,6 +38,8 @@ import com.appboy.ui.AppboyFeedFragment
 import com.braze.Braze
 import com.braze.Constants
 import com.braze.configuration.BrazeConfigurationProvider
+import com.braze.events.IEventSubscriber
+import com.braze.events.NoMatchingTriggerEvent
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
@@ -49,6 +52,8 @@ import java.util.*
 class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
     private var feedCategories: EnumSet<CardCategory>? = null
     private var drawerLayout: DrawerLayout? = null
+    private var noMatchingTriggerEventSubscriber: IEventSubscriber<NoMatchingTriggerEvent>? = null
+    private var noInAppMessageTriggeredPrefListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
 
     private val requestMultiplePermissionLauncher = registerForActivityResult(RequestMultiplePermissions()) { result: Map<String, Boolean> ->
         if (result.containsKey(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -103,6 +108,7 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
         }.attach()
         drawerLayout = findViewById(R.id.root)
         setupNewsFeedListener()
+        setupNoInAppMessageTriggeredListener()
         brazelog(I) { "Braze device id is ${Braze.getInstance(applicationContext).deviceId}" }
     }
 
@@ -117,6 +123,59 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
                 }
             }
         newsFeedSharedPrefs.registerOnSharedPreferenceChangeListener(newsfeedSortListener)
+    }
+
+    private fun setupNoInAppMessageTriggeredListener() {
+        fun handlePref(value: Boolean) {
+            if (value) {
+                if (noMatchingTriggerEventSubscriber == null) {
+                    noMatchingTriggerEventSubscriber = IEventSubscriber { message ->
+                        runOnUiThread {
+                            // A simple non-Braze created message that we do on our own
+                            val dialog = AlertDialog.Builder(this)
+                                .setMessage("Received no trigger for ${message.sourceEventType}")
+                                .setTitle("Non-Braze Message")
+                                .setPositiveButton(R.string.user_dialog_okay) { _, _ -> }
+                                .create()
+                            dialog.show()
+                        }
+                    }
+                    noMatchingTriggerEventSubscriber?.let {
+                        Braze.getInstance(this)
+                            .subscribeToNoMatchingTriggerForEvent(it)
+                    }
+                }
+            } else if (noMatchingTriggerEventSubscriber != null) {
+                noMatchingTriggerEventSubscriber?.let {
+                    Braze.getInstance(this).removeSingleSubscription(it, NoMatchingTriggerEvent::class.java)
+                }
+                noMatchingTriggerEventSubscriber = null
+            }
+        }
+
+        val inAppMessagesSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        noInAppMessageTriggeredPrefListener =
+            SharedPreferences.OnSharedPreferenceChangeListener { sharedPrefs: SharedPreferences, prefName: String? ->
+                if (prefName != "show_own_message_when_inapp_msg_not_triggered") {
+                    return@OnSharedPreferenceChangeListener
+                }
+                handlePref(
+                    sharedPrefs.getBoolean(
+                        "show_own_message_when_inapp_msg_not_triggered",
+                        false
+                    )
+                )
+            }
+        inAppMessagesSharedPrefs.registerOnSharedPreferenceChangeListener(
+            noInAppMessageTriggeredPrefListener
+        )
+        handlePref(
+            inAppMessagesSharedPrefs.getBoolean(
+                "show_own_message_when_inapp_msg_not_triggered",
+                false
+            )
+        )
     }
 
     private fun checkPermissions() {

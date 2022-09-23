@@ -43,38 +43,39 @@ import com.braze.ui.support.setFocusableInTouchModeAndRequestFocus
  * These views should map one to one with the MessageButton objects.
  * @param closeButton                       The [View] responsible for closing the in-app message.
  */
+@Suppress("TooManyFunctions")
 open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
     override val inAppMessageView: View,
     override val inAppMessage: IInAppMessage,
-    private val inAppMessageViewLifecycleListener: IInAppMessageViewLifecycleListener,
-    private val configurationProvider: BrazeConfigurationProvider,
-    private val openingAnimation: Animation?,
-    private val closingAnimation: Animation?,
-    private var clickableInAppMessageView: View?,
-    private var buttonViews: List<View>? = null,
-    private var closeButton: View? = null
+    protected val inAppMessageViewLifecycleListener: IInAppMessageViewLifecycleListener,
+    protected val configurationProvider: BrazeConfigurationProvider,
+    protected val openingAnimation: Animation?,
+    protected val closingAnimation: Animation?,
+    protected var clickableInAppMessageView: View?,
+    protected var buttonViews: List<View>? = null,
+    protected var closeButton: View? = null
 ) : IInAppMessageViewWrapper {
     @Suppress("deprecation")
-    private val inAppMessageCloser: InAppMessageCloser
+    protected val inAppMessageCloser: InAppMessageCloser
     override var isAnimatingClose = false
-    private var dismissRunnable: Runnable? = null
+    protected var dismissRunnable: Runnable? = null
 
     /**
      * The [View] that previously held focus before a message is displayed as
      * given via [Activity.getCurrentFocus].
      */
-    private var previouslyFocusedView: View? = null
+    protected var previouslyFocusedView: View? = null
 
     /**
      * A mapping of the view accessibility flags of views before overriding them.
      * Used in conjunction with [com.braze.configuration.BrazeConfig.Builder.setIsInAppMessageAccessibilityExclusiveModeEnabled]
      */
-    private var viewAccessibilityFlagMap = HashMap<Int, Int>()
+    protected var viewAccessibilityFlagMap = HashMap<Int, Int>()
 
     /**
      * The [ViewGroup] parent of the in-app message.
      */
-    private var contentViewGroupParentLayout: ViewGroup? = null
+    protected var contentViewGroupParentLayout: ViewGroup? = null
 
     init {
         clickableInAppMessageView = clickableInAppMessageView ?: inAppMessageView
@@ -178,7 +179,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * also most likely be overridden to match the [ViewGroup] subclass
      * returned here.
      */
-    private fun getParentViewGroup(activity: Activity): ViewGroup =
+    protected fun getParentViewGroup(activity: Activity): ViewGroup =
         // The android.R.id.content {@link FrameLayout} contains the
         // {@link Activity}'s top-level layout as its first child.
         activity.window.decorView.findViewById(android.R.id.content)
@@ -192,7 +193,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * match that of the [ViewGroup] returned by
      * [DefaultInAppMessageViewWrapper.getParentViewGroup].
      */
-    private fun getLayoutParams(inAppMessage: IInAppMessage?): ViewGroup.LayoutParams {
+    protected fun getLayoutParams(inAppMessage: IInAppMessage?): ViewGroup.LayoutParams {
         val layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
@@ -209,7 +210,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * calls [IInAppMessageViewLifecycleListener.beforeOpened] and
      * [IInAppMessageViewLifecycleListener.afterOpened].
      */
-    private fun addInAppMessageViewToViewGroup(
+    protected fun addInAppMessageViewToViewGroup(
         parentViewGroup: ViewGroup,
         inAppMessage: IInAppMessage,
         inAppMessageView: View,
@@ -254,7 +255,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * if the [IInAppMessageView] is [IInAppMessageImmersiveView] or the fallback message
      * [IInAppMessageView] is a [InAppMessageHtmlBaseView].
      */
-    private fun announceForAccessibilityIfNecessary(fallbackAccessibilityMessage: String? = "In app message displayed.") {
+    protected fun announceForAccessibilityIfNecessary(fallbackAccessibilityMessage: String? = "In app message displayed.") {
         if (inAppMessageView is IInAppMessageImmersiveView) {
             val message = inAppMessage.message
             if (inAppMessage is IInAppMessageImmersive) {
@@ -278,7 +279,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * only be clicked directly when they do not contain buttons.
      * Slideup in-app messages are always clickable.
      */
-    private fun createClickListener(): View.OnClickListener {
+    protected fun createClickListener(): View.OnClickListener {
         return View.OnClickListener {
             if ((inAppMessage as? IInAppMessageImmersive)?.messageButtons?.isEmpty() == true
                 || inAppMessage !is IInAppMessageImmersive
@@ -296,7 +297,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * @return A click listener that calls [IInAppMessageViewLifecycleListener.onButtonClicked]
      * if the clicked [View.getId] matches that of a [MessageButton]'s [View].
      */
-    private fun createButtonClickListener(): View.OnClickListener {
+    protected fun createButtonClickListener(): View.OnClickListener {
         return View.OnClickListener { view: View ->
             // The onClicked lifecycle method is called and it can be used to turn off the close animation.
             val inAppMessageImmersive = inAppMessage as IInAppMessageImmersive
@@ -324,13 +325,13 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
         }
     }
 
-    private fun createCloseInAppMessageClickListener(): View.OnClickListener {
+    protected fun createCloseInAppMessageClickListener(): View.OnClickListener {
         return View.OnClickListener {
             BrazeInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true)
         }
     }
 
-    private fun addDismissRunnable() {
+    protected fun addDismissRunnable() {
         if (dismissRunnable == null) {
             dismissRunnable = Runnable {
                 BrazeInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true)
@@ -348,7 +349,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * and out of view.
      *
      */
-    private fun setAndStartAnimation(opening: Boolean) {
+    protected fun setAndStartAnimation(opening: Boolean) {
         val animation: Animation? = if (opening) {
             openingAnimation
         } else {
@@ -369,7 +370,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * Any WebViews are explicitly paused or frame execution finished in some way.
      * [IInAppMessageViewLifecycleListener.afterClosed] is called.
      */
-    private fun closeInAppMessageView() {
+    protected fun closeInAppMessageView() {
         brazelog { "Closing in-app message view" }
         inAppMessageView.removeViewFromParent()
         // In the case of HTML in-app messages, we need to make sure the
@@ -388,7 +389,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
      * Performs any last actions before calling
      * [IInAppMessageViewLifecycleListener.beforeOpened].
      */
-    private fun finalizeViewBeforeDisplay(
+    protected fun finalizeViewBeforeDisplay(
         inAppMessage: IInAppMessage,
         inAppMessageView: View,
         inAppMessageViewLifecycleListener: IInAppMessageViewLifecycleListener
@@ -409,7 +410,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
         inAppMessageViewLifecycleListener.afterOpened(inAppMessageView, inAppMessage)
     }
 
-    private fun createDismissCallbacks(): DismissCallbacks {
+    protected fun createDismissCallbacks(): DismissCallbacks {
         return object : DismissCallbacks {
             override fun canDismiss(token: Any?): Boolean = true
 
@@ -420,7 +421,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
         }
     }
 
-    private fun createTouchAwareListener(): ITouchListener {
+    protected fun createTouchAwareListener(): ITouchListener {
         return object : ITouchListener {
             override fun onTouchStartedOrContinued() {
                 inAppMessageView.removeCallbacks(dismissRunnable)
@@ -434,7 +435,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
         }
     }
 
-    private fun createAnimationListener(opening: Boolean): Animation.AnimationListener {
+    protected fun createAnimationListener(opening: Boolean): Animation.AnimationListener {
         return if (opening) {
             object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {}
@@ -474,7 +475,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
          * Sets all [View] children of the [ViewGroup]
          * as [ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS].
          */
-        private fun setAllViewGroupChildrenAsNonAccessibilityImportant(
+        protected fun setAllViewGroupChildrenAsNonAccessibilityImportant(
             viewGroup: ViewGroup?,
             viewAccessibilityFlagMap: MutableMap<Int, Int>
         ) {
@@ -502,7 +503,7 @@ open class DefaultInAppMessageViewWrapper @JvmOverloads constructor(
          * not found in the mapping.
          */
         @Suppress("NestedBlockDepth", "FunctionMaxLength")
-        private fun resetAllViewGroupChildrenToPreviousAccessibilityFlagOrAuto(
+        protected fun resetAllViewGroupChildrenToPreviousAccessibilityFlagOrAuto(
             viewGroup: ViewGroup?,
             viewAccessibilityFlagMap: Map<Int, Int>
         ) {

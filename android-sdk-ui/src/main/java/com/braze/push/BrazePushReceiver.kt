@@ -69,6 +69,7 @@ open class BrazePushReceiver : BroadcastReceiver() {
             context: Context,
             intent: Intent
         ) {
+            val applicationContext = context.applicationContext
             val action: String? = intent.action
 
             fun performWork() {
@@ -77,21 +78,35 @@ open class BrazePushReceiver : BroadcastReceiver() {
                     brazelog(W) { "Push action is null. Not handling intent: $intent" }
                     return
                 }
-                applyPendingRuntimeConfiguration(context)
+                applyPendingRuntimeConfiguration(applicationContext)
+                // The Activity context (if provided) should be passed to the methods
+                // fired after the user has clicked the push so that deeplink handling
+                // can work effectively.
                 when (action) {
                     FIREBASE_MESSAGING_SERVICE_ROUTING_ACTION,
                     Constants.BRAZE_STORY_TRAVERSE_CLICKED_ACTION,
                     HMS_PUSH_SERVICE_ROUTING_ACTION,
                     ADM_RECEIVE_INTENT_ACTION -> handlePushNotificationPayload(
-                        context,
+                        applicationContext,
                         intent
                     )
                     ADM_REGISTRATION_INTENT_ACTION -> handleAdmRegistrationEventIfEnabled(
-                        BrazeConfigurationProvider(context),
-                        context,
+                        BrazeConfigurationProvider(applicationContext),
+                        applicationContext,
                         intent
                     )
                     Constants.BRAZE_CANCEL_NOTIFICATION_ACTION -> handleCancelNotificationAction(
+                        applicationContext,
+                        intent
+                    )
+                    Constants.BRAZE_PUSH_DELETED_ACTION -> handleNotificationDeleted(
+                        applicationContext,
+                        intent
+                    )
+
+                    // Methods that later call "routeUserWithNotificationOpenedIntent"
+                    // or equivalent and need the Activity context.
+                    Constants.BRAZE_STORY_CLICKED_ACTION -> handlePushStoryPageClicked(
                         context,
                         intent
                     )
@@ -99,15 +114,7 @@ open class BrazePushReceiver : BroadcastReceiver() {
                         context,
                         intent
                     )
-                    Constants.BRAZE_STORY_CLICKED_ACTION -> handlePushStoryPageClicked(
-                        context,
-                        intent
-                    )
                     Constants.BRAZE_PUSH_CLICKED_ACTION -> handleNotificationOpened(
-                        context,
-                        intent
-                    )
-                    Constants.BRAZE_PUSH_DELETED_ACTION -> handleNotificationDeleted(
                         context,
                         intent
                     )

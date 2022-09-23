@@ -27,7 +27,7 @@ class BrazeUnityActivityWrapper {
     private var nextInAppMessageDisplayOperation = InAppMessageOperation.DISPLAY_NOW
 
     /**
-     * Call from [Activity.onCreate]
+     * Call from [Activity.onCreate].
      */
     fun onCreateCalled(activity: Activity) {
         val unityConfigurationProvider = getUnityConfigurationProvider(activity)
@@ -41,7 +41,7 @@ class BrazeUnityActivityWrapper {
     }
 
     /**
-     * Call from [Activity.onStart]
+     * Call from [Activity.onStart].
      */
     fun onStartCalled(activity: Activity?) {
         if (activity != null) {
@@ -50,7 +50,7 @@ class BrazeUnityActivityWrapper {
     }
 
     /**
-     * Call from [Activity.onResume]
+     * Call from [Activity.onResume].
      */
     fun onResumeCalled(activity: Activity) {
         if (getUnityConfigurationProvider(activity).showInAppMessagesAutomaticallyKey) {
@@ -59,7 +59,7 @@ class BrazeUnityActivityWrapper {
     }
 
     /**
-     * Call from [Activity.onPause]
+     * Call from [Activity.onPause].
      */
     fun onPauseCalled(activity: Activity) {
         if (getUnityConfigurationProvider(activity).showInAppMessagesAutomaticallyKey) {
@@ -68,7 +68,7 @@ class BrazeUnityActivityWrapper {
     }
 
     /**
-     * Call from [Activity.onStop]
+     * Call from [Activity.onStop].
      */
     fun onStopCalled(activity: Activity?) {
         if (activity != null) {
@@ -77,7 +77,7 @@ class BrazeUnityActivityWrapper {
     }
 
     /**
-     * Call from [Activity.onNewIntent]
+     * Call from [Activity.onNewIntent].
      */
     fun onNewIntentCalled(intent: Intent?, activity: Activity) {
         // If the Activity is already open and we receive an intent to open the Activity again, we set

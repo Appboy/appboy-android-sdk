@@ -36,23 +36,23 @@ abstract class InAppMessageBaseView(context: Context?, attrs: AttributeSet?) :
         setViewBackgroundColor(messageBackgroundObject as View, color)
     }
 
-    fun setMessageTextColor(color: Int) {
+    open fun setMessageTextColor(color: Int) {
         messageTextView?.let { setTextViewColor(it, color) }
     }
 
-    fun setMessageTextAlign(textAlign: TextAlign) {
+    open fun setMessageTextAlign(textAlign: TextAlign) {
         messageTextView?.let { setTextAlignment(it, textAlign) }
     }
 
-    fun setMessage(text: String) {
+    open fun setMessage(text: String) {
         messageTextView?.text = text
     }
 
-    fun setMessageImageView(bitmap: Bitmap) {
+    open fun setMessageImageView(bitmap: Bitmap) {
         messageImageView?.let { setImage(bitmap, it) }
     }
 
-    fun setMessageIcon(icon: String, iconColor: Int, iconBackgroundColor: Int) {
+    open fun setMessageIcon(icon: String, iconColor: Int, iconBackgroundColor: Int) {
         messageIconView?.let { setIcon(context, icon, iconColor, iconBackgroundColor, it) }
     }
 

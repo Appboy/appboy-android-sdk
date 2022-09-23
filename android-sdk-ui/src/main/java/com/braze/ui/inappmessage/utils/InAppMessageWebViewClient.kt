@@ -168,7 +168,7 @@ open class InAppMessageWebViewClient(
         private const val AUTHORITY_NAME_CUSTOM_EVENT = "customEvent"
 
         /**
-         * The query key for the button id for tracking
+         * The query key for the button id for tracking.
          */
         const val QUERY_NAME_BUTTON_ID = "abButtonId"
 

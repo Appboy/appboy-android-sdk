@@ -75,7 +75,7 @@ object BrazeNotificationUtils {
     val APPBOY_NOTIFICATION_DELETED_SUFFIX = ".intent.APPBOY_PUSH_DELETED"
 
     /**
-     * Returns a custom [IBrazeNotificationFactory] if set, else the default [IBrazeNotificationFactory]
+     * Returns a custom [IBrazeNotificationFactory] if set, else the default [IBrazeNotificationFactory].
      */
     @get:JvmStatic
     val activeNotificationFactory: IBrazeNotificationFactory

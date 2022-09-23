@@ -113,7 +113,7 @@ class InAppMessageImageView(context: Context?, attrs: AttributeSet?) :
 
     /**
      * Clips the input canvas to a rounded rectangle of the specified width and height, using the
-     * radii set in [.setCornersRadiiPx]
+     * radii set in [setCornersRadiiPx].
      *
      * @param canvas the canvas to be clipped
      * @param widthPx

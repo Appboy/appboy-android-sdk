@@ -54,7 +54,7 @@ fun Activity.isRunningOnTablet(): Boolean {
 }
 
 /**
- * Safely calls [Activity.setRequestedOrientation]
+ * Safely calls [Activity.setRequestedOrientation].
  */
 fun Activity.setActivityRequestedOrientation(requestedOrientation: Int) {
     try {

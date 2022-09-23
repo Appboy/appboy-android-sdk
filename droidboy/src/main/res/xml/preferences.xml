@@ -200,5 +200,12 @@
         android:key="min_trigger_interval"
         app:useSimpleSummaryProvider="true"
         android:title="@string/min_trigger_interval" />
+      <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="show_own_message_when_inapp_msg_not_triggered"
+        android:summary="Shows our own message when an open, custom event, or purchase does not trigger an in-app message"
+        android:summaryOff="Will not display our own message"
+        android:summaryOn="Will display our own message"
+        android:title="In-App Message Not Triggered Handler" />
   </PreferenceCategory>
 </PreferenceScreen>

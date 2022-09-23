@@ -12,6 +12,7 @@ import com.braze.ui.inappmessage.IInAppMessageViewFactory
 import com.braze.ui.inappmessage.jsinterface.InAppMessageJavascriptInterface
 import com.braze.ui.inappmessage.listeners.IInAppMessageWebViewClientListener
 import com.braze.ui.inappmessage.utils.InAppMessageWebViewClient
+import com.braze.ui.inappmessage.views.InAppMessageHtmlBaseView
 import com.braze.ui.inappmessage.views.InAppMessageHtmlFullView
 import com.braze.ui.support.isDeviceNotInTouchMode
 
@@ -36,7 +37,10 @@ open class DefaultInAppMessageHtmlFullViewFactory(private val inAppMessageWebVie
         val context = activity.applicationContext
         val inAppMessageHtmlFull = inAppMessage as InAppMessageHtmlFull
         val javascriptInterface = InAppMessageJavascriptInterface(context, inAppMessageHtmlFull)
-        view.setWebViewContent(inAppMessage.message, inAppMessageHtmlFull.localAssetsDirectoryUrl)
+        view.setWebViewContent(
+            inAppMessage.message,
+            inAppMessageHtmlFull.localAssetsDirectoryUrl
+        )
         view.setInAppMessageWebViewClient(
             InAppMessageWebViewClient(
                 context,
@@ -44,9 +48,9 @@ open class DefaultInAppMessageHtmlFullViewFactory(private val inAppMessageWebVie
                 inAppMessageWebViewClientListener
             )
         )
-        view.messageWebView.addJavascriptInterface(
+        view.messageWebView?.addJavascriptInterface(
             javascriptInterface,
-            InAppMessageHtmlFullView.BRAZE_BRIDGE_PREFIX
+            InAppMessageHtmlBaseView.BRAZE_BRIDGE_PREFIX
         )
         return view
     }

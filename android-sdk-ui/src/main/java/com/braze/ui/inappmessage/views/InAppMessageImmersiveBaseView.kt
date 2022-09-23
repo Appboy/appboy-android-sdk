@@ -27,15 +27,15 @@ import com.braze.ui.support.removeViewFromParent
 abstract class InAppMessageImmersiveBaseView(context: Context?, attrs: AttributeSet?) :
     InAppMessageBaseView(context, attrs), IInAppMessageImmersiveView {
     abstract val frameView: View?
-    abstract override val messageTextView: TextView
-    abstract val messageHeaderTextView: TextView
+    abstract override val messageTextView: TextView?
+    abstract val messageHeaderTextView: TextView?
 
     override fun resetMessageMargins(imageRetrievalSuccessful: Boolean) {
         super.resetMessageMargins(imageRetrievalSuccessful)
-        if (messageTextView.text.toString().isBlank()) {
+        if (messageTextView?.text.toString().isBlank()) {
             messageTextView.removeViewFromParent()
         }
-        if (messageHeaderTextView.text.toString().isBlank()) {
+        if (messageHeaderTextView?.text.toString().isBlank()) {
             messageHeaderTextView.removeViewFromParent()
         }
         resetMessageMarginsIfNecessary(messageTextView, messageHeaderTextView)
@@ -133,27 +133,31 @@ abstract class InAppMessageImmersiveBaseView(context: Context?, attrs: Attribute
         finalDefaultFocusView?.post { finalDefaultFocusView.requestFocus() }
     }
 
-    fun setMessageButtons(messageButtons: List<MessageButton>) {
+    open fun setMessageButtons(messageButtons: List<MessageButton>) {
         setButtons(getMessageButtonViews(messageButtons.size), messageButtons)
     }
 
-    fun setMessageCloseButtonColor(color: Int) {
+    open fun setMessageCloseButtonColor(color: Int) {
         messageCloseButtonView?.let { setViewBackgroundColorFilter(it, color) }
     }
 
-    fun setMessageHeaderTextColor(color: Int) {
-        setTextViewColor(messageHeaderTextView, color)
+    open fun setMessageHeaderTextColor(color: Int) {
+        messageHeaderTextView?.let {
+            setTextViewColor(it, color)
+        }
     }
 
-    fun setMessageHeaderText(text: String) {
-        messageHeaderTextView.text = text
+    open fun setMessageHeaderText(text: String) {
+        messageHeaderTextView?.text = text
     }
 
-    fun setMessageHeaderTextAlignment(textAlign: TextAlign) {
-        setTextAlignment(messageHeaderTextView, textAlign)
+    open fun setMessageHeaderTextAlignment(textAlign: TextAlign) {
+        messageHeaderTextView?.let {
+            setTextAlignment(it, textAlign)
+        }
     }
 
-    fun setFrameColor(color: Int) {
+    open fun setFrameColor(color: Int) {
         frameView?.let { setFrameColor(it, color) }
     }
 
@@ -200,7 +204,7 @@ abstract class InAppMessageImmersiveBaseView(context: Context?, attrs: Attribute
      *
      * @param closeButtonView The close button view.
      */
-    fun setLargerCloseButtonClickArea(closeButtonView: View?) {
+    open fun setLargerCloseButtonClickArea(closeButtonView: View?) {
         if (closeButtonView == null || closeButtonView.parent == null) {
             brazelog(W) { "Cannot increase click area for view if view and/or parent are null." }
             return

@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
-import com.braze.Constants
 import com.appboy.models.push.BrazeNotificationPayload
 import com.appboy.models.push.BrazeNotificationPayload.ActionButton
 import com.braze.Braze
+import com.braze.Constants
 import com.braze.IBrazeDeeplinkHandler.IntentFlagPurpose
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.push.BrazeNotificationUtils.cancelNotification
@@ -26,7 +26,7 @@ import com.braze.ui.BrazeDeeplinkHandler.Companion.getInstance
 
 object BrazeNotificationActionUtils {
     /**
-     * Add notification actions to the provided notification builder
+     * Add notification actions to the provided notification builder.
      */
     @JvmStatic
     fun addNotificationActions(

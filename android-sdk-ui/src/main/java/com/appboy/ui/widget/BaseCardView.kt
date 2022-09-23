@@ -21,7 +21,7 @@ import com.braze.ui.actions.IAction
 import com.braze.ui.actions.UriAction
 
 /**
- * Base class for Braze feed card views
+ * Base class for Braze feed card views.
  */
 abstract class BaseCardView<T : Card>(context: Context) : RelativeLayout(context) {
     @JvmField

@@ -78,7 +78,7 @@ internal fun getAllBrazeActionStepTypes(json: JSONObject): List<ActionType> {
 }
 
 /**
- * Determines if any of the [Uri] in the list contain the given [ActionType]
+ * Determines if any of the [Uri] in the list contain the given [ActionType].
  */
 internal fun doAnyTypesMatch(actionType: ActionType, uriList: List<Uri>): Boolean =
     uriList
