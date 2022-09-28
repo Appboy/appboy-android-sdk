@@ -1,3 +1,10 @@
+## 23.2.1
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.2.1)
+
+##### Fixed
+- Fixed the fields of `DefaultInAppMessageViewWrapper` to be `open`, allowing them to be subclassed in Kotlin properly.
+
 ## 23.2.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.2.0)
@@ -9,6 +16,7 @@
 ##### Added
 - Added a config field `BrazeConfig.setIsHtmlInAppMessageApplyWindowInsetsEnabled()` to configure the SDK to automatically apply window insets to HTML In-App messages.
   - By default, this value is false.
+- Added [`subscribeToNoMatchingTriggerForEvent`](https://appboy.github.io/appboy-android-sdk/kdoc/braze-android-sdk/com.braze/-braze/subscribe-to-no-matching-trigger-for-event.html) which is called if no Braze in-app message was triggered for a given event.
 
 ##### Changed
 - Removed `com.appboy.ui.inappmessage.listeners.IInAppMessageWebViewClientListener`. Please use `com.braze.ui.inappmessage.listeners.IInAppMessageWebViewClientListener`.
