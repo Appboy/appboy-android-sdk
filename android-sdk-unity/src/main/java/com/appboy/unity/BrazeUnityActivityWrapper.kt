@@ -1,6 +1,7 @@
 package com.appboy.unity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.appboy.unity.configuration.UnityConfigurationProvider
@@ -10,6 +11,7 @@ import com.appboy.unity.utils.MessagingUtils.BrazeInternalComponentMethod
 import com.braze.Braze
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.models.inappmessage.MessageButton
+import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.ui.activities.ContentCardsActivity
 import com.braze.ui.inappmessage.BrazeInAppMessageManager
@@ -25,19 +27,28 @@ import org.json.JSONArray
 class BrazeUnityActivityWrapper {
     private lateinit var unityConfigurationProvider: UnityConfigurationProvider
     private var nextInAppMessageDisplayOperation = InAppMessageOperation.DISPLAY_NOW
+    private var wasInAppMessageDisplayRequested = false
 
     /**
      * Call from [Activity.onCreate].
      */
     fun onCreateCalled(activity: Activity) {
-        val unityConfigurationProvider = getUnityConfigurationProvider(activity)
-        Braze.getInstance(activity).subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(unityConfigurationProvider))
-        Braze.getInstance(activity).subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(unityConfigurationProvider))
-        Braze.getInstance(activity).subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(unityConfigurationProvider))
-        Braze.getInstance(activity).subscribeToSdkAuthenticationFailures(
-            EventSubscriberFactory.createSdkAuthenticationFailureSubscriber(unityConfigurationProvider)
+        val applicationContext = activity.applicationContext
+        val braze = Braze.getInstance(applicationContext)
+        val config = getUnityConfigurationProvider(applicationContext)
+        braze.subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(config))
+        braze.subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(config))
+        braze.subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(config))
+        braze.subscribeToPushNotificationEvents(EventSubscriberFactory.createPushEventSubscriber(config))
+        braze.subscribeToSdkAuthenticationFailures(
+            EventSubscriberFactory.createSdkAuthenticationFailureSubscriber(config)
         )
-        brazelog { "Finished onCreateCalled setup" }
+        if (config.autoSetInAppMessageManagerListener) {
+            brazelog(I) { "Automatically setting In App Message Manager listener in BrazeUnityActivityWrapper." }
+            setInAppMessageListener()
+        }
+        nextInAppMessageDisplayOperation = config.initialInAppMessageDisplayOperation
+        brazelog(I) { "Finished onCreateCalled setup" }
     }
 
     /**
@@ -89,12 +100,17 @@ class BrazeUnityActivityWrapper {
         when (val action = UnityInAppMessageManagerAction.getTypeFromValue(actionEnumValue)) {
             UnityInAppMessageManagerAction.IAM_DISPLAY_NOW,
             UnityInAppMessageManagerAction.IAM_DISPLAY_LATER,
-            UnityInAppMessageManagerAction.IAM_DISCARD -> action.inAppMessageOperation?.let { nextInAppMessageDisplayOperation = it }
-            UnityInAppMessageManagerAction.REQUEST_IAM_DISPLAY -> BrazeInAppMessageManager.getInstance().requestDisplayInAppMessage()
+            UnityInAppMessageManagerAction.IAM_DISCARD ->
+                action.inAppMessageOperation?.let { nextInAppMessageDisplayOperation = it }
             else -> {
                 // Do nothing
             }
         }
+    }
+
+    fun requestInAppMessageDisplay() {
+        wasInAppMessageDisplayRequested = true
+        BrazeInAppMessageManager.getInstance().requestDisplayInAppMessage()
     }
 
     fun launchContentCardsActivity(activity: Activity) {
@@ -102,6 +118,7 @@ class BrazeUnityActivityWrapper {
     }
 
     fun setInAppMessageListener() {
+        brazelog(I) { "Setting in app message manager custom listener." }
         BrazeInAppMessageManager.getInstance().setCustomInAppMessageManagerListener(
             object : DefaultInAppMessageManagerListener() {
                 override fun beforeInAppMessageDisplayed(inAppMessage: IInAppMessage): InAppMessageOperation {
@@ -110,7 +127,17 @@ class BrazeUnityActivityWrapper {
                         BrazeInternalComponentMethod.BEFORE_IAM_DISPLAYED,
                         inAppMessage.forJsonPut().toString()
                     )
-                    return nextInAppMessageDisplayOperation
+                    // If this was requested, override whatever was set previously
+                    return if (wasInAppMessageDisplayRequested) {
+                        brazelog {
+                            "In App Message display requested, not using " +
+                                "previously set value of $nextInAppMessageDisplayOperation"
+                        }
+                        wasInAppMessageDisplayRequested = false
+                        InAppMessageOperation.DISPLAY_NOW
+                    } else {
+                        nextInAppMessageDisplayOperation
+                    }
                 }
 
                 override fun onInAppMessageDismissed(inAppMessage: IInAppMessage) {
@@ -167,9 +194,9 @@ class BrazeUnityActivityWrapper {
         )
     }
 
-    private fun getUnityConfigurationProvider(activity: Activity): UnityConfigurationProvider {
+    private fun getUnityConfigurationProvider(context: Context): UnityConfigurationProvider {
         if (!this::unityConfigurationProvider.isInitialized) {
-            unityConfigurationProvider = UnityConfigurationProvider(activity.applicationContext)
+            unityConfigurationProvider = UnityConfigurationProvider(context.applicationContext)
         }
         return unityConfigurationProvider
     }

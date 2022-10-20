@@ -1,17 +1,20 @@
 package com.appboy.unity
 
 import com.appboy.events.FeedUpdatedEvent
-import com.braze.events.IEventSubscriber
 import com.appboy.unity.configuration.UnityConfigurationProvider
-import com.appboy.unity.utils.MessagingUtils.sendContentCardsUpdatedEventToUnity
-import com.appboy.unity.utils.MessagingUtils.sendFeedUpdatedEventToUnity
-import com.appboy.unity.utils.MessagingUtils.sendInAppMessageReceivedMessage
-import com.appboy.unity.utils.MessagingUtils.sendSdkAuthErrorEventToUnity
+import com.braze.enums.BrazePushEventType
+import com.braze.events.BrazePushEvent
 import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.events.ContentCardsUpdatedEvent
+import com.braze.events.IEventSubscriber
 import com.braze.events.InAppMessageEvent
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.BrazeLogger.getBrazeLogTag
+import com.appboy.unity.utils.MessagingUtils.sendContentCardsUpdatedEventToUnity
+import com.appboy.unity.utils.MessagingUtils.sendFeedUpdatedEventToUnity
+import com.appboy.unity.utils.MessagingUtils.sendInAppMessageReceivedMessage
+import com.appboy.unity.utils.MessagingUtils.sendPushEventToUnity
+import com.appboy.unity.utils.MessagingUtils.sendSdkAuthErrorEventToUnity
 
 object EventSubscriberFactory {
     private val TAG = getBrazeLogTag(EventSubscriberFactory::class.java)
@@ -60,6 +63,19 @@ object EventSubscriberFactory {
                     sdkAuthErrorEvent
                 )
             brazelog { "Did send SDK Authentication failure event to Unity Player?: $isSdkAuthErrorSent" }
+        }
+    }
+
+    fun createPushEventSubscriber(config: UnityConfigurationProvider): IEventSubscriber<BrazePushEvent> {
+        return IEventSubscriber { event: BrazePushEvent ->
+            val (callback, gameObject) = when (event.eventType) {
+                BrazePushEventType.NOTIFICATION_RECEIVED -> Pair(config.pushReceivedCallbackMethodName, config.pushReceivedGameObjectName)
+                BrazePushEventType.NOTIFICATION_DELETED -> Pair(config.pushDeletedCallbackMethodName, config.pushDeletedGameObjectName)
+                BrazePushEventType.NOTIFICATION_OPENED -> Pair(config.pushOpenedCallbackMethodName, config.pushOpenedGameObjectName)
+                else -> return@IEventSubscriber
+            }
+            val wasMessageSent = sendPushEventToUnity(gameObject, callback, event)
+            brazelog { "Did send Braze Push event to Unity Player?: $wasMessageSent \nEvent: $event" }
         }
     }
 }

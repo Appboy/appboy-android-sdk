@@ -5,13 +5,17 @@ import android.content.Context;
 import com.appboy.unity.enums.UnityMessageType;
 import com.braze.configuration.CachedConfigurationProvider;
 import com.braze.support.BrazeLogger;
+import com.braze.ui.inappmessage.InAppMessageOperation;
 
 public class UnityConfigurationProvider extends CachedConfigurationProvider {
   private static final String TAG = UnityConfigurationProvider.class.getName();
   private static final String INAPP_SHOW_INAPP_MESSAGES_AUTOMATICALLY_KEY = "com_braze_inapp_show_inapp_messages_automatically";
-  // In App Message listener
+  // In App Messages
   private static final String INAPP_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_inapp_listener_game_object_name";
   private static final String INAPP_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_inapp_listener_callback_method_name";
+  private static final String INAPP_AUTO_SET_MANAGER_LISTENER_KEY = "com_braze_inapp_auto_set_manager_listener_key";
+  private static final String INAPP_INITIAL_DISPLAY_OPERATION_KEY = "com_braze_inapp_initial_display_operation_key";
+
   // News Feed listener
   private static final String FEED_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_feed_listener_game_object_name";
   private static final String FEED_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_feed_listener_callback_method_name";
@@ -27,8 +31,6 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
   // Content Cards
   private static final String CONTENT_CARDS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_content_cards_updated_listener_game_object_name";
   private static final String CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_content_cards_updated_listener_callback_method_name";
-  // Pending push intents
-  private static final String DELAY_SENDING_PUSH_MESSAGES_KEY = "com_braze_delay_sending_push_intents";
   // SDK Authentication Failure
   private static final String SDK_AUTHENTICATION_FAILURE_LISTENER_GAME_OBJECT_NAME_KEY = "com_braze_sdk_authentication_failure_listener_game_object_name";
   private static final String SDK_AUTHENTICATION_FAILURE_LISTENER_CALLBACK_METHOD_NAME_KEY = "com_braze_sdk_authentication_failure_listener_callback_method_name";
@@ -89,16 +91,22 @@ public class UnityConfigurationProvider extends CachedConfigurationProvider {
     return getStringValue(CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY, null);
   }
 
-  public boolean getDelaySendingPushMessages() {
-    return getBooleanValue(DELAY_SENDING_PUSH_MESSAGES_KEY, false);
-  }
-
   public String getSdkAuthenticationFailureListenerGameObjectName() {
     return getStringValue(SDK_AUTHENTICATION_FAILURE_LISTENER_GAME_OBJECT_NAME_KEY, null);
   }
 
   public String getSdkAuthenticationFailureListenerCallbackMethodName() {
     return getStringValue(SDK_AUTHENTICATION_FAILURE_LISTENER_CALLBACK_METHOD_NAME_KEY, null);
+  }
+
+  public boolean getAutoSetInAppMessageManagerListener() {
+    return getBooleanValue(INAPP_AUTO_SET_MANAGER_LISTENER_KEY, true);
+  }
+
+  public InAppMessageOperation getInitialInAppMessageDisplayOperation() {
+    String rawValue = getStringValue(INAPP_INITIAL_DISPLAY_OPERATION_KEY, null);
+    InAppMessageOperation operation = InAppMessageOperation.fromValue(rawValue);
+    return operation == null ? InAppMessageOperation.DISPLAY_NOW : operation;
   }
 
   public void configureListener(int messageTypeValue, String gameObject, String methodName) {

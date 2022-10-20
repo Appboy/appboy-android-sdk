@@ -69,6 +69,7 @@ class InAppMessageJavascriptInterface(
 
     @JavascriptInterface
     fun requestPushPermission() {
+        BrazeInAppMessageManager.getInstance().shouldNextUnregisterBeSkipped = true
         BrazeInAppMessageManager.getInstance().activity.requestPushPermissionPrompt()
     }
 

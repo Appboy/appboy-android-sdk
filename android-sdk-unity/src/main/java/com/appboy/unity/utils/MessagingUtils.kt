@@ -1,8 +1,8 @@
 package com.appboy.unity.utils
 
-import android.content.Intent
 import android.os.Bundle
 import com.appboy.events.FeedUpdatedEvent
+import com.braze.events.BrazePushEvent
 import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.events.ContentCardsUpdatedEvent
 import com.braze.models.inappmessage.IInAppMessage
@@ -31,15 +31,15 @@ object MessagingUtils {
     ): Boolean {
         if (unityGameObjectName.isBlank()) {
             brazelog(TAG) {
-                "There is no Unity GameObject registered in the braze.xml configuration file to receive" +
-                    " in app messages. Not sending the message to the Unity Player."
+                "There is no Unity GameObject configured to receive" +
+                    " in app messages. Not sending the message to Unity."
             }
             return false
         }
         if (unityCallbackFunctionName.isBlank()) {
             brazelog(TAG) {
                 "There is no Unity callback method name registered to receive in app messages in " +
-                    "the braze.xml configuration file. Not sending the message to the Unity Player."
+                    "the braze.xml configuration file. Not sending the message to Unity."
             }
             return false
         }
@@ -48,32 +48,30 @@ object MessagingUtils {
         return true
     }
 
-    @JvmStatic
-    fun sendPushMessageToUnity(
+    fun sendPushEventToUnity(
         unityGameObjectName: String?,
         unityCallbackFunctionName: String?,
-        pushIntent: Intent,
-        pushAction: String
+        event: BrazePushEvent
     ): Boolean {
         if (unityGameObjectName.isNullOrBlank()) {
             brazelog(TAG) {
-                "There is no Unity GameObject registered in the braze.xml configuration file to " +
-                    "receive $pushAction messages. Not sending the message to the Unity Player."
+                "No Unity game object configured to " +
+                    "receive ${event.eventType} messages. Not sending the message to Unity."
             }
             return false
         }
         if (unityCallbackFunctionName.isNullOrBlank()) {
             brazelog(TAG) {
-                "There is no Unity callback method name registered to receive $pushAction messages " +
-                    "in the braze.xml configuration file. Not sending the message to the Unity Player."
+                "There is no Unity callback method name registered to receive ${event.eventType} messages " +
+                    "in the braze.xml configuration file. Not sending the message to Unity."
             }
             return false
         }
-        brazelog(TAG) { "Sending a $pushAction message to $unityGameObjectName:$unityCallbackFunctionName." }
+        brazelog(TAG) { "Sending a ${event.eventType} message to $unityGameObjectName:$unityCallbackFunctionName." }
         UnityPlayer.UnitySendMessage(
             unityGameObjectName,
             unityCallbackFunctionName,
-            getPushBundleExtras(pushIntent.extras).toString()
+            getPushBundleExtras(event.notificationPayload.notificationExtras).toString()
         )
         return true
     }
@@ -86,14 +84,14 @@ object MessagingUtils {
         if (unityGameObjectName.isNullOrBlank()) {
             brazelog(TAG) {
                 "There is no Unity GameObject registered in the braze.xml configuration " +
-                    "file to receive feed updates. Not sending the message to the Unity Player."
+                    "file to receive feed updates. Not sending the message to Unity."
             }
             return false
         }
         if (unityCallbackFunctionName.isNullOrBlank()) {
             brazelog(TAG) {
                 "There is no Unity callback method name registered to receive feed updates in " +
-                    "the braze.xml configuration file. Not sending the message to the Unity Player."
+                    "the braze.xml configuration file. Not sending the message to Unity."
             }
             return false
         }
@@ -112,15 +110,15 @@ object MessagingUtils {
     ): Boolean {
         if (unityGameObjectName.isNullOrBlank()) {
             brazelog(TAG) {
-                "There is no Unity GameObject registered in the braze.xml configuration file " +
-                    "to receive Content Cards updated event messages. Not sending the message to the Unity Player."
+                "There is no Unity GameObject configured " +
+                    "to receive Content Cards updated event messages. Not sending the message to Unity."
             }
             return false
         }
         if (unityCallbackFunctionName.isNullOrBlank()) {
             brazelog(TAG) {
                 "There is no Unity callback method name registered to receive Content " +
-                    "Cards updated event messages in the braze.xml configuration file. Not sending the message to the Unity Player."
+                    "Cards updated event messages in the braze.xml configuration file. Not sending the message to Unity."
             }
             return false
         }
@@ -139,15 +137,15 @@ object MessagingUtils {
     ): Boolean {
         if (unityGameObjectName.isNullOrBlank()) {
             brazelog(TAG) {
-                "There is no Unity GameObject registered in the braze.xml configuration file " +
-                    "to receive SDK Authentication Failure event messages. Not sending the message to the Unity Player."
+                "There is no Unity GameObject configured " +
+                    "to receive SDK Authentication Failure event messages. Not sending the message to Unity."
             }
             return false
         }
         if (unityCallbackFunctionName.isNullOrBlank()) {
             brazelog(TAG) {
                 "There is no Unity callback method name registered to receive " +
-                    "SDK Authentication Failure event messages in the braze.xml configuration file. Not sending the message to the Unity Player."
+                    "SDK Authentication Failure event messages in the braze.xml configuration file. Not sending the message to Unity."
             }
             return false
         }
@@ -176,7 +174,7 @@ object MessagingUtils {
      * @param pushExtras The bundle received whenever a push notification is received, opened or deleted.
      * @return A [JSONObject] that represents this bundle in string format.
      */
-    private fun getPushBundleExtras(pushExtras: Bundle?): JSONObject {
+    internal fun getPushBundleExtras(pushExtras: Bundle?): JSONObject {
         val json = JSONObject()
         if (pushExtras == null) {
             return json

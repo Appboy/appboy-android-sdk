@@ -24,6 +24,7 @@ import com.appboy.models.push.BrazeNotificationPayload
 import com.braze.Braze
 import com.braze.BrazeInternal
 import com.braze.BrazeInternal.addSerializedContentCardToStorage
+import com.braze.BrazeInternal.refreshFeatureFlags
 import com.braze.BrazeInternal.requestGeofenceRefresh
 import com.braze.Constants
 import com.braze.Constants.isAmazonDevice
@@ -247,6 +248,25 @@ object BrazeNotificationUtils {
             true
         } else {
             brazelog { "Geofence sync key not included in push payload or false. Not syncing geofences." }
+            false
+        }
+    }
+
+    /**
+     * Refreshes a feature flags refresh from Braze if appropriate based on the payload of the push notification.
+     * The SDK will respect the rate limit for feature flag refreshes.
+     *
+     * @return True iff a feature flags refresh was requested from Braze.
+     */
+    @JvmStatic
+    fun refreshFeatureFlagsIfAppropriate(payload: BrazeNotificationPayload): Boolean {
+        val context = payload.context
+        return if (payload.shouldRefreshFeatureFlags && context != null) {
+            brazelog { "Feature flag refresh key was true. Refreshing feature flags." }
+            refreshFeatureFlags(context)
+            true
+        } else {
+            brazelog(V) { "Feature flag refresh key not included in push payload or false. Not refreshing feature flags." }
             false
         }
     }

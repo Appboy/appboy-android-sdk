@@ -25,6 +25,7 @@ import com.braze.push.BrazeNotificationUtils.handlePushStoryPageClicked
 import com.braze.push.BrazeNotificationUtils.isBrazePushMessage
 import com.braze.push.BrazeNotificationUtils.isNotificationMessage
 import com.braze.push.BrazeNotificationUtils.requestGeofenceRefreshIfAppropriate
+import com.braze.push.BrazeNotificationUtils.refreshFeatureFlagsIfAppropriate
 import com.braze.push.BrazeNotificationUtils.sendPushMessageReceivedBroadcast
 import com.braze.push.BrazeNotificationUtils.setNotificationDurationAlarm
 import com.braze.push.BrazeNotificationUtils.wakeScreenIfAppropriate
@@ -316,6 +317,7 @@ open class BrazePushReceiver : BroadcastReceiver() {
                 brazelog { "Received silent push notification" }
                 sendPushMessageReceivedBroadcast(context, notificationExtras, payload)
                 requestGeofenceRefreshIfAppropriate(payload)
+                refreshFeatureFlagsIfAppropriate(payload)
                 return false
             }
         }

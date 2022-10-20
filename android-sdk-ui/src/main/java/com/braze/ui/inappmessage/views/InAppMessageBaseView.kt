@@ -22,7 +22,7 @@ import java.io.File
 
 abstract class InAppMessageBaseView(context: Context?, attrs: AttributeSet?) :
     RelativeLayout(context, attrs), IInAppMessageView {
-    override val messageClickableView: View
+    override val messageClickableView: View?
         get() = this
 
     override var hasAppliedWindowInsets: Boolean = false

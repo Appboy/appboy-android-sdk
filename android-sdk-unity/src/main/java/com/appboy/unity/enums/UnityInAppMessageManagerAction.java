@@ -21,8 +21,7 @@ public enum UnityInAppMessageManagerAction {
   /**
    * Maps to {@link InAppMessageOperation#DISCARD}
    */
-  IAM_DISCARD(2, InAppMessageOperation.DISCARD),
-  REQUEST_IAM_DISPLAY(3, null)
+  IAM_DISCARD(2, InAppMessageOperation.DISCARD)
   ;
 
   private static final String TAG = BrazeLogger.getBrazeLogTag(UnityInAppMessageManagerAction.class);
@@ -38,7 +37,7 @@ public enum UnityInAppMessageManagerAction {
   @Nullable
   private final InAppMessageOperation mInAppMessageOperation;
 
-  UnityInAppMessageManagerAction(int keyArgument, @Nullable InAppMessageOperation matchingOperation) {
+  UnityInAppMessageManagerAction(int keyArgument, InAppMessageOperation matchingOperation) {
     mValue = keyArgument;
     mInAppMessageOperation = matchingOperation;
   }

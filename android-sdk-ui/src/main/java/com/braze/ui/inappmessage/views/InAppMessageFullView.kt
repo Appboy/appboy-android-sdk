@@ -35,7 +35,7 @@ open class InAppMessageFullView(context: Context?, attrs: AttributeSet?) :
         get() = findViewById(R.id.com_braze_inappmessage_full_frame)
     override val messageCloseButtonView: View?
         get() = findViewById(R.id.com_braze_inappmessage_full_close_button)
-    override val messageClickableView: View
+    override val messageClickableView: View?
         get() = findViewById(R.id.com_braze_inappmessage_full)
     override val messageImageView: ImageView?
         get() = inAppMessageImageView
@@ -132,12 +132,14 @@ open class InAppMessageFullView(context: Context?, attrs: AttributeSet?) :
     override fun resetMessageMargins(imageRetrievalSuccessful: Boolean) {
         super.resetMessageMargins(imageRetrievalSuccessful)
 
-        // Make scrollView pass click events to message clickable view, so that clicking on the scrollView
-        // dismisses the in-app message.
-        val scrollViewChild = findViewById<View>(R.id.com_braze_inappmessage_full_text_layout)
-        scrollViewChild.setOnClickListener { _: View? ->
-            brazelog { "Passing scrollView click event to message clickable view." }
-            messageClickableView.performClick()
+        messageClickableView?.let { msgClickableView: View ->
+            // Make scrollView pass click events to message clickable view, so that clicking on the scrollView
+            // dismisses the in-app message.
+            val scrollViewChild = findViewById<View>(R.id.com_braze_inappmessage_full_text_layout)
+            scrollViewChild.setOnClickListener {
+                brazelog { "Passing scrollView click event to message clickable view." }
+                msgClickableView.performClick()
+            }
         }
     }
 

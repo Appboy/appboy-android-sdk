@@ -160,7 +160,7 @@ open class InAppMessageWebViewClient(
     }
 
     companion object {
-        private const val BRIDGE_JS_FILE = "appboy-html-in-app-message-javascript-component.js"
+        private const val BRIDGE_JS_FILE = "braze-html-in-app-message-bridge.js"
 
         private const val APPBOY_INAPP_MESSAGE_SCHEME = "appboy"
         private const val AUTHORITY_NAME_CLOSE = "close"

@@ -60,4 +60,9 @@ open class AppboyUnityPlayerActivity : UnityPlayerActivity() {
     fun setInAppMessageListener() {
         unityActivityWrapper.setInAppMessageListener()
     }
+
+    @JvmName("requestDisplayInAppMessage")
+    fun requestDisplayInAppMessage() {
+        unityActivityWrapper.requestInAppMessageDisplay()
+    }
 }

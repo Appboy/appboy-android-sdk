@@ -27,7 +27,7 @@ interface IInAppMessageImmersiveView : IInAppMessageView {
      * be returned in the same order as the List<MessageButton> on the in-app message
      * object so that listeners are set correctly.
      */
-    fun getMessageButtonViews(numButtons: Int): List<View?>
+    fun getMessageButtonViews(numButtons: Int): List<View>
 
     /**
      * Sets up the directional navigation pointers needed to support d-pad/TV-remote

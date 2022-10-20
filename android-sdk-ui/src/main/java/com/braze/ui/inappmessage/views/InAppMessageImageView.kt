@@ -121,6 +121,10 @@ class InAppMessageImageView(context: Context?, attrs: AttributeSet?) :
      * @return whether the canvas was successfully clipped
      */
     fun clipCanvasToPath(canvas: Canvas, widthPx: Int, heightPx: Int): Boolean {
+        if (!this::inAppRadii.isInitialized) {
+            brazelog { "In-app message radii is uninitialized, not clipping path." }
+            return false
+        }
         return try {
             clipPath.reset()
             rectf[0.0f, 0.0f, widthPx.toFloat()] = heightPx.toFloat()
