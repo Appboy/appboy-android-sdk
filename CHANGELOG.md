@@ -1,14 +1,10 @@
-## 23.2.2
+## 23.3.0
 
-[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.2.2)
-
-#### Breaking
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.3.0)
 
 ##### Fixed
 - Fixed the behavior of the Braze HTML In-App Message bridge method `requestPushPermission()` to not cause the in-app message to reload.
 - Fixed `com.braze.ui.inappmessage.views.InAppMessageImageView` to guard against null values of `InAppMessageImageView.inAppRadii`.
-
-##### Added
 
 ##### Changed
 - Removed `com.appboy.ui.inappmessage.IInAppMessageViewWrapperFactory`. Please use `com.braze.ui.inappmessage.IInAppMessageViewWrapperFactory`.
