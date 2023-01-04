@@ -1,226 +1,231 @@
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>com.braze.ui.inappmessage.listeners</title>
-<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script><script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../styles/style.css" rel="Stylesheet"><link href="../../styles/logo-styles.css" rel="Stylesheet"><link href="../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../scripts/main.js" async="async"></script>  </head>
-  <body>
-    <div id="container">
-      <div id="leftColumn"><a href="../../index.html">
-          <div id="logo"></div>
-        </a>
-        <div id="paneSearch"></div>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../index.html">
+                    <span>braze-android-sdk</span>
+            </a>
+    </div>
+    <div>
+24.0.0    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
         <div id="sideMenu"></div>
-      </div>
-      <div id="main">
-        <div id="leftToggler"><span class="icon-toggler"></span></div>
-<script type="text/javascript" src="../../scripts/main.js"></script>        <div class="main-content" id="content" pageIds="braze-android-sdk::com.braze.ui.inappmessage.listeners////PointingToDeclaration//-1725759721">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../index.html">braze-android-sdk</a>/<a href="index.html">com.braze.ui.inappmessage.listeners</a></div>
-            <div class="pull-right d-flex">
-              <div id="searchBar"></div>
-            </div>
-          </div>
-          <div class="cover ">
-            <h1 class="cover"><span>Package com.</span><wbr></wbr><span>braze.</span><wbr></wbr><span>ui.</span><wbr></wbr><span>inappmessage.</span><wbr></wbr><span>listeners</span></h1>
-          </div>
-          <div class="tabbedcontent">
-            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
-            <div class="tabs-section-body">
-              <h2 class="">Types</h2>
-              <div class="table" data-togglable="Types"><a data-name="1803330760%2FClasslikes%2F-1725759721" anchor-label="DefaultHtmlInAppMessageActionListener" id="1803330760%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-default-html-in-app-message-action-listener/index.html">DefaultHtmlInAppMessageActionListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1803330760%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="-default-html-in-app-message-action-listener/index.html">DefaultHtmlInAppMessageActionListener</a> : <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="braze-android-sdk::com.braze.ui.inappmessage.listeners////PointingToDeclaration//-1725759721">
+  <div class="breadcrumbs"><a href="../../index.html">braze-android-sdk</a><span class="delimiter">/</span><a href="index.html">com.braze.ui.inappmessage.listeners</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package</span></span> <span>com.</span><wbr></wbr><span>braze.</span><wbr></wbr><span>ui.</span><wbr></wbr><span>inappmessage.</span><wbr></wbr><span>listeners</span></h1>
   </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="174283204%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageManagerListener" id="174283204%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-default-in-app-message-manager-listener/index.html">DefaultInAppMessageManagerListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="174283204%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="-default-in-app-message-manager-listener/index.html">DefaultInAppMessageManagerListener</a> : <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="174283204%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageManagerListener" id="174283204%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="174283204%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageManagerListener" id="174283204%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Default implementation of <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a>This only overrides the <a href="-default-in-app-message-manager-listener/before-in-app-message-displayed.html">beforeInAppMessageDisplayed</a>.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1029234476%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageViewLifecycleListener" id="1029234476%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-default-in-app-message-view-lifecycle-listener/index.html">DefaultInAppMessageViewLifecycleListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1029234476%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="-default-in-app-message-view-lifecycle-listener/index.html">DefaultInAppMessageViewLifecycleListener</a> : <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-312338419%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageWebViewClientListener" id="-312338419%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-default-in-app-message-web-view-client-listener/index.html">DefaultInAppMessageWebViewClientListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-312338419%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="-default-in-app-message-web-view-client-listener/index.html">DefaultInAppMessageWebViewClientListener</a> : <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1614489696%2FClasslikes%2F-1725759721" anchor-label="IHtmlInAppMessageActionListener" id="-1614489696%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1614489696%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">interface <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="-1614489696%2FClasslikes%2F-1725759721" anchor-label="IHtmlInAppMessageActionListener" id="-1614489696%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1614489696%2FClasslikes%2F-1725759721" anchor-label="IHtmlInAppMessageActionListener" id="-1614489696%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>The <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a> allows for the overriding of the default Braze display handling and setting custom behavior during the display of HTML In-App Messages.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1569445356%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageManagerListener" id="1569445356%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1569445356%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">interface <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="1569445356%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageManagerListener" id="1569445356%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1569445356%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageManagerListener" id="1569445356%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>The IInAppMessageManagerListener returns the in-app message at specific events in its control flow and gives the host app the option of overriding Braze's default display handling and implementing its own custom behavior.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1529716052%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageViewLifecycleListener" id="1529716052%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1529716052%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">interface <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="1529716052%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageViewLifecycleListener" id="1529716052%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1529716052%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageViewLifecycleListener" id="1529716052%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a> returns the in-app message view at specific events in its display lifecycle for potential further processing and modification.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="188143157%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageWebViewClientListener" id="188143157%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="188143157%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">interface <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="188143157%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageWebViewClientListener" id="188143157%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="188143157%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageWebViewClientListener" id="188143157%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>The <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a> is called at specific events during the display of an Html In-App Message.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1686215585%2FClasslikes%2F-1725759721" anchor-label="IWebViewClientStateListener" id="-1686215585%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-i-web-view-client-state-listener/index.html">IWebViewClientStateListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1686215585%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">fun fun interface <a href="-i-web-view-client-state-listener/index.html">IWebViewClientStateListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1014687814%2FClasslikes%2F-1725759721" anchor-label="SwipeDismissTouchListener" id="1014687814%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1014687814%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">open class <a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="1014687814%2FClasslikes%2F-1725759721" anchor-label="SwipeDismissTouchListener" id="1014687814%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="1014687814%2FClasslikes%2F-1725759721" anchor-label="SwipeDismissTouchListener" id="1014687814%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>A <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">android.view.View.OnTouchListener</a> that makes any <a href="https://developer.android.com/reference/kotlin/android/view/View.html">android.view.View</a> dismissable when the user swipes (drags her finger) horizontally across the view.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1714142459%2FClasslikes%2F-1725759721" anchor-label="TouchAwareSwipeDismissTouchListener" id="-1714142459%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-touch-aware-swipe-dismiss-touch-listener/index.html">TouchAwareSwipeDismissTouchListener</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1714142459%2FClasslikes%2F-1725759721"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace">class <a href="-touch-aware-swipe-dismiss-touch-listener/index.html">TouchAwareSwipeDismissTouchListener</a>(view: <a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a>, token: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>?, callbacks: <a href="-swipe-dismiss-touch-listener/-dismiss-callbacks/index.html">SwipeDismissTouchListener.DismissCallbacks</a>?) : <a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="-1714142459%2FClasslikes%2F-1725759721" anchor-label="TouchAwareSwipeDismissTouchListener" id="-1714142459%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a><div class="brief "><a data-name="-1714142459%2FClasslikes%2F-1725759721" anchor-label="TouchAwareSwipeDismissTouchListener" id="-1714142459%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>Adds touch events to the SwipeDismissTouchListener.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="1803330760%2FClasslikes%2F-1725759721" anchor-label="DefaultHtmlInAppMessageActionListener" id="1803330760%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-default-html-in-app-message-action-listener/index.html"><span>Default</span><wbr></wbr><span>Html</span><wbr></wbr><span>In</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1803330760%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-html-in-app-message-action-listener/index.html">DefaultHtmlInAppMessageActionListener</a> : <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+<a data-name="174283204%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageManagerListener" id="174283204%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-default-in-app-message-manager-listener/index.html"><span>Default</span><wbr></wbr><span>In</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>Manager</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="174283204%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-manager-listener/index.html">DefaultInAppMessageManagerListener</a> : <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Default implementation of <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a></p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1029234476%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageViewLifecycleListener" id="1029234476%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-default-in-app-message-view-lifecycle-listener/index.html"><span>Default</span><wbr></wbr><span>In</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>View</span><wbr></wbr><span>Lifecycle</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1029234476%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-view-lifecycle-listener/index.html">DefaultInAppMessageViewLifecycleListener</a> : <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-312338419%2FClasslikes%2F-1725759721" anchor-label="DefaultInAppMessageWebViewClientListener" id="-312338419%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-default-in-app-message-web-view-client-listener/index.html"><span>Default</span><wbr></wbr><span>In</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>Web</span><wbr></wbr><span>View</span><wbr></wbr><span>Client</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-312338419%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-web-view-client-listener/index.html">DefaultInAppMessageWebViewClientListener</a> : <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1614489696%2FClasslikes%2F-1725759721" anchor-label="IHtmlInAppMessageActionListener" id="-1614489696%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-i-html-in-app-message-action-listener/index.html"><span>IHtml</span><wbr></wbr><span>In</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1614489696%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a> allows for the overriding of the default Braze display handling and setting custom behavior during the display of HTML In-App Messages.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1569445356%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageManagerListener" id="1569445356%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-i-in-app-message-manager-listener/index.html"><span>IIn</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>Manager</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1569445356%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The IInAppMessageManagerListener returns the in-app message at specific events in its control flow and gives the host app the option of overriding Braze's default display handling and implementing its own custom behavior.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1529716052%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageViewLifecycleListener" id="1529716052%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-i-in-app-message-view-lifecycle-listener/index.html"><span>IIn</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>View</span><wbr></wbr><span>Lifecycle</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1529716052%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph"><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a> returns the in-app message view at specific events in its display lifecycle for potential further processing and modification.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="188143157%2FClasslikes%2F-1725759721" anchor-label="IInAppMessageWebViewClientListener" id="188143157%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-i-in-app-message-web-view-client-listener/index.html"><span>IIn</span><wbr></wbr><span>App</span><wbr></wbr><span>Message</span><wbr></wbr><span>Web</span><wbr></wbr><span>View</span><wbr></wbr><span>Client</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="188143157%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a> is called at specific events during the display of an Html In-App Message. Button clicks that occur inside an HTML In-App Message are routed to this listener and not the <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a>. However, the display lifecycle of the HTML In-App Message is still handled by the <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1686215585%2FClasslikes%2F-1725759721" anchor-label="IWebViewClientStateListener" id="-1686215585%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-i-web-view-client-state-listener/index.html"><span>IWeb</span><wbr></wbr><span>View</span><wbr></wbr><span>Client</span><wbr></wbr><span>State</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1686215585%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-i-web-view-client-state-listener/index.html">IWebViewClientStateListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1014687814%2FClasslikes%2F-1725759721" anchor-label="SwipeDismissTouchListener" id="1014687814%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-swipe-dismiss-touch-listener/index.html"><span>Swipe</span><wbr></wbr><span>Dismiss</span><wbr></wbr><span>Touch</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1014687814%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">A <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">android.view.View.OnTouchListener</a> that makes any <a href="https://developer.android.com/reference/kotlin/android/view/View.html">android.view.View</a> dismissable when the user swipes (drags her finger) horizontally across the view.</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1714142459%2FClasslikes%2F-1725759721" anchor-label="TouchAwareSwipeDismissTouchListener" id="-1714142459%2FClasslikes%2F-1725759721" data-filterable-set=":android-sdk-ui:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":android-sdk-ui:dokkaHtml/release" data-filterable-set=":android-sdk-ui:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-touch-aware-swipe-dismiss-touch-listener/index.html"><span>Touch</span><wbr></wbr><span>Aware</span><wbr></wbr><span>Swipe</span><wbr></wbr><span>Dismiss</span><wbr></wbr><span>Touch</span><wbr></wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1714142459%2FClasslikes%2F-1725759721"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-touch-aware-swipe-dismiss-touch-listener/index.html">TouchAwareSwipeDismissTouchListener</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;token<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;callbacks<span class="token operator">: </span><a href="-swipe-dismiss-touch-listener/-dismiss-callbacks/index.html">SwipeDismissTouchListener.DismissCallbacks</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Adds touch events to the SwipeDismissTouchListener.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </body>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
 </html>
-
