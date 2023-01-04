@@ -93,6 +93,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/story_toggle_subtitle"/>
+        <CheckBox
+            android:id="@+id/push_tester_html"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_html_push_text"/>
         <Spinner
           android:id="@+id/push_image_spinner"
           android:layout_width="fill_parent"

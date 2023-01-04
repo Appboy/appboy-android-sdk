@@ -5,8 +5,8 @@
     <shape>
       <solid android:color="@color/com_braze_content_cards_unread_bar_color"/>
       <corners
-        android:bottomLeftRadius="@dimen/com_appboy_card_background_corner_radius"
-        android:bottomRightRadius="@dimen/com_appboy_card_background_corner_radius"/>
+        android:bottomLeftRadius="@dimen/com_braze_card_background_corner_radius"
+        android:bottomRightRadius="@dimen/com_braze_card_background_corner_radius"/>
     </shape>
   </item>
 </layer-list>

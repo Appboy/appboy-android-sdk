@@ -1,7 +1,7 @@
 package com.braze.ui.activities
 
 import android.os.Bundle
-import com.appboy.ui.R
+import com.braze.ui.R
 
 /**
  * The [ContentCardsActivity] in an Activity class that displays the Braze Content Cards

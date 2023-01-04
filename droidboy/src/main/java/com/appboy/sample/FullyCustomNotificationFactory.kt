@@ -2,7 +2,7 @@ package com.appboy.sample
 
 import android.app.Notification
 import androidx.core.app.NotificationCompat
-import com.appboy.models.push.BrazeNotificationPayload
+import com.braze.models.push.BrazeNotificationPayload
 import com.braze.IBrazeNotificationFactory
 import com.braze.push.BrazeNotificationUtils.getOrCreateNotificationChannelId
 import com.braze.push.BrazeNotificationUtils.setAccentColorIfPresentAndSupported

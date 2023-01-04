@@ -14,7 +14,7 @@ import com.braze.ui.inappmessage.InAppMessageOperation
  * overriding Braze's default display handling and implementing its own custom behavior.
  *
  *
- * If you are implementing Unity, you must use IAppboyUnityInAppMessageListener instead.
+ * If you are implementing Unity, you must use IBrazeUnityInAppMessageListener instead.
  *
  *
  * See [BrazeInAppMessageManager]

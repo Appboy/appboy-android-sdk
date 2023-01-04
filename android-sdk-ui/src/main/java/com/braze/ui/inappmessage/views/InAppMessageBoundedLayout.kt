@@ -3,7 +3,7 @@ package com.braze.ui.inappmessage.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import com.appboy.ui.R
+import com.braze.ui.R
 
 /**
  * A [RelativeLayout] that respects maximum/minimum dimension bounds.

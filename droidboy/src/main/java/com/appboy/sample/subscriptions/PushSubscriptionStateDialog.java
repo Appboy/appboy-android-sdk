@@ -4,7 +4,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.appboy.enums.NotificationSubscriptionType;
+import com.braze.enums.NotificationSubscriptionType;
 import com.braze.Braze;
 import com.braze.support.BrazeLogger;
 

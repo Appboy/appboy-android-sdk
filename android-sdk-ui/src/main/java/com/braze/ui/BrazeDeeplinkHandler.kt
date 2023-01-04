@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 import com.braze.IBrazeDeeplinkHandler
 import com.braze.IBrazeDeeplinkHandler.IntentFlagPurpose
 import com.braze.support.BrazeLogger.Priority.E

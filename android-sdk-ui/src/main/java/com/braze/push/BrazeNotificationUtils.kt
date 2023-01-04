@@ -19,8 +19,6 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.os.SystemClock
 import androidx.core.app.NotificationCompat
-import com.appboy.enums.Channel
-import com.appboy.models.push.BrazeNotificationPayload
 import com.braze.Braze
 import com.braze.BrazeInternal
 import com.braze.BrazeInternal.addSerializedContentCardToStorage
@@ -35,6 +33,8 @@ import com.braze.enums.BrazePushEventType.NOTIFICATION_DELETED
 import com.braze.enums.BrazePushEventType.NOTIFICATION_OPENED
 import com.braze.enums.BrazePushEventType.NOTIFICATION_RECEIVED
 import com.braze.enums.BrazeViewBounds
+import com.braze.enums.Channel
+import com.braze.models.push.BrazeNotificationPayload
 import com.braze.push.support.getHtmlSpannedTextIfEnabled
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
@@ -62,18 +62,6 @@ object BrazeNotificationUtils {
 
     private val TAG = getBrazeLogTag(BrazeNotificationUtils::class.java)
     private const val SOURCE_KEY = "source"
-
-    @Deprecated("Please see {@link Constants#BRAZE_PUSH_INTENT_NOTIFICATION_OPENED}. Deprecated since 6/25/21")
-    @JvmStatic
-    val APPBOY_NOTIFICATION_OPENED_SUFFIX = ".intent.APPBOY_NOTIFICATION_OPENED"
-
-    @Deprecated("Please {@link Constants#BRAZE_PUSH_INTENT_NOTIFICATION_RECEIVED}. Deprecated since 6/25/21")
-    @JvmStatic
-    val APPBOY_NOTIFICATION_RECEIVED_SUFFIX = ".intent.APPBOY_PUSH_RECEIVED"
-
-    @Deprecated("Please {@link Constants#BRAZE_PUSH_INTENT_NOTIFICATION_DELETED}. Deprecated since 6/25/21")
-    @JvmStatic
-    val APPBOY_NOTIFICATION_DELETED_SUFFIX = ".intent.APPBOY_PUSH_DELETED"
 
     /**
      * Returns a custom [IBrazeNotificationFactory] if set, else the default [IBrazeNotificationFactory].
@@ -165,7 +153,7 @@ object BrazeNotificationUtils {
             Constants.BRAZE_PUSH_CAMPAIGN_ID_KEY,
             intent.getStringExtra(Constants.BRAZE_PUSH_CAMPAIGN_ID_KEY)
         )
-        extras.putString(SOURCE_KEY, Constants.APPBOY)
+        extras.putString(SOURCE_KEY, Constants.BRAZE)
 
         // If a deep link exists, start an ACTION_VIEW intent pointing at the deep link.
         // The intent returned from getStartActivityIntent() is placed on the back stack.
@@ -188,14 +176,10 @@ object BrazeNotificationUtils {
         }
     }
 
-    @Deprecated("Please use isBrazePushMessage() instead. Deprecated since 3/2022", ReplaceWith("isBrazePushMessage(intent)"))
-    @JvmStatic
-    fun isAppboyPushMessage(intent: Intent): Boolean = intent.isBrazePushMessage()
-
     /**
      * Checks the incoming notification intent to determine whether it is a Braze push message.
      *
-     * All Braze push messages must contain an extras entry with key set to [Constants.BRAZE_PUSH_APPBOY_KEY] and value set to "true".
+     * All Braze push messages must contain an extras entry with key set to [Constants.BRAZE_PUSH_BRAZE_KEY] and value set to "true".
      */
     @JvmStatic
     fun Intent.isBrazePushMessage(): Boolean {
@@ -774,7 +758,7 @@ object BrazeNotificationUtils {
             val jsonExtras = JSONObject(customContentString)
             val source = jsonExtras.getOptionalString(SOURCE_KEY)
             val campaignId = jsonExtras.getOptionalString(Constants.BRAZE_PUSH_CAMPAIGN_ID_KEY)
-            if (source != null && source == Constants.APPBOY && campaignId != null) {
+            if (source != null && source == Constants.BRAZE && campaignId != null) {
                 Braze.getInstance(context).logPushNotificationOpened(campaignId)
             }
         } catch (e: Exception) {
@@ -1073,31 +1057,19 @@ object BrazeNotificationUtils {
         notificationExtras: Bundle?,
         payload: BrazeNotificationPayload? = null
     ) {
-        // This is the original intent whose action
-        // required a prefix of the app package name
-        val appboySuffixedPushIntent: Intent
         // This is the current intent whose action does
         // not require a prefix of the app package name
-        val brazePushIntent: Intent
-        when (broadcastType) {
+        val brazePushIntent: Intent = when (broadcastType) {
             BrazeNotificationBroadcastType.OPENED -> {
-                @Suppress("DEPRECATION")
-                appboySuffixedPushIntent = Intent(context.packageName + APPBOY_NOTIFICATION_OPENED_SUFFIX)
-                brazePushIntent = Intent(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_OPENED).setPackage(context.packageName)
+                Intent(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_OPENED).setPackage(context.packageName)
             }
             BrazeNotificationBroadcastType.RECEIVED -> {
-                @Suppress("DEPRECATION")
-                appboySuffixedPushIntent = Intent(context.packageName + APPBOY_NOTIFICATION_RECEIVED_SUFFIX)
-                brazePushIntent = Intent(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_RECEIVED).setPackage(context.packageName)
+                Intent(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_RECEIVED).setPackage(context.packageName)
             }
             BrazeNotificationBroadcastType.DELETED -> {
-                @Suppress("DEPRECATION")
-                appboySuffixedPushIntent = Intent(context.packageName + APPBOY_NOTIFICATION_DELETED_SUFFIX)
-                brazePushIntent = Intent(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_DELETED).setPackage(context.packageName)
+                Intent(Constants.BRAZE_PUSH_INTENT_NOTIFICATION_DELETED).setPackage(context.packageName)
             }
         }
-        brazelog(V) { "Sending original Appboy broadcast receiver intent for $broadcastType" }
-        sendPushActionIntent(context, appboySuffixedPushIntent, notificationExtras)
         brazelog(V) { "Sending Braze broadcast receiver intent for $broadcastType" }
         sendPushActionIntent(context, brazePushIntent, notificationExtras)
 

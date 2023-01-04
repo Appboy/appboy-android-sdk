@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.Braze
 import com.braze.coroutine.BrazeCoroutineScope
 import com.braze.events.ContentCardsUpdatedEvent
@@ -114,7 +114,7 @@ open class ContentCardsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     ): View? {
         val rootView = inflater.inflate(R.layout.com_braze_content_cards, container, false)
         contentCardsRecyclerView = rootView.findViewById(R.id.com_braze_content_cards_recycler)
-        contentCardsSwipeLayout = rootView.findViewById(R.id.appboy_content_cards_swipe_container)
+        contentCardsSwipeLayout = rootView.findViewById(R.id.braze_content_cards_swipe_container)
         contentCardsSwipeLayout?.setOnRefreshListener(this)
         contentCardsSwipeLayout?.setColorSchemeResources(
             R.color.com_braze_content_cards_swipe_refresh_color_1,
@@ -337,7 +337,7 @@ open class ContentCardsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         context?.applicationContext?.let { applicationContext ->
             Toast.makeText(
                 applicationContext,
-                applicationContext.getString(R.string.com_appboy_feed_connection_error_title),
+                applicationContext.getString(R.string.com_braze_feed_connection_error_title),
                 Toast.LENGTH_LONG
             ).show()
         }

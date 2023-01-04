@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/braze_feed_swipe_container"
+  android:layout_width="fill_parent"
+  android:layout_height="match_parent">
+  <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_braze_feed_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+      android:id="@+id/com_braze_feed_loading_spinner"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout_marginBottom="15.0sp">
+    </ProgressBar>
+
+    <LinearLayout
+      android:id="@+id/com_braze_feed_network_error"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout_marginBottom="15.0sp"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Braze.Feed.NetworkErrorTitle"/>
+
+      <TextView
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Braze.Feed.NetworkErrorBody"/>
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/com_braze_feed_empty_feed"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout_marginBottom="15.0sp"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+      <TextView
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Braze.Feed.Empty"/>
+    </LinearLayout>
+
+    <ListView
+      android:id="@android:id/list"
+      android:visibility="gone"
+      android:layout_width="@dimen/com_braze_feed_max_width"
+      android:layout_height="match_parent"
+      android:layout_centerHorizontal="true"
+      style="@style/Braze.Feed.List"
+      />
+
+    <View android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:id="@+id/com_braze_feed_transparent_full_bounds_container_view"/>
+  </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

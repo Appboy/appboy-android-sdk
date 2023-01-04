@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- News feed -->
-  <string name="com_appboy_feed_empty">Päivityksiä ei ole saatavilla. Tarkista myöhemmin uudelleen.</string>
-  <string name="com_appboy_feed_connection_error_title">Yhteysvirhe</string>
-  <string name="com_appboy_feed_connection_error_body">Verkkoyhteyttä ei voida luoda. Yritä myöhemmin uudelleen.</string>
+  <string name="com_braze_feed_empty">Päivityksiä ei ole saatavilla. Tarkista myöhemmin uudelleen.</string>
+  <string name="com_braze_feed_connection_error_title">Yhteysvirhe</string>
+  <string name="com_braze_feed_connection_error_body">Verkkoyhteyttä ei voida luoda. Yritä myöhemmin uudelleen.</string>
   <string name="com_braze_inappmessage_close_content_description">sulkea</string>
 </resources>

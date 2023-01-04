@@ -3,11 +3,11 @@ package com.braze.ui.inappmessage.jsinterface
 import android.content.Context
 import android.webkit.JavascriptInterface
 import androidx.annotation.VisibleForTesting
-import com.appboy.enums.Gender
-import com.appboy.enums.Month
-import com.appboy.enums.Month.Companion.getMonth
-import com.appboy.enums.NotificationSubscriptionType
-import com.appboy.enums.NotificationSubscriptionType.Companion.fromValue
+import com.braze.enums.Gender
+import com.braze.enums.Month
+import com.braze.enums.Month.Companion.getMonth
+import com.braze.enums.NotificationSubscriptionType
+import com.braze.enums.NotificationSubscriptionType.Companion.fromValue
 import com.braze.Braze
 import com.braze.BrazeUser
 import com.braze.support.BrazeLogger.Priority.E

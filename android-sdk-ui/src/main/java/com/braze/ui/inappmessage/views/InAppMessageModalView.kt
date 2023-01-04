@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.enums.inappmessage.ImageStyle
 import com.braze.models.inappmessage.IInAppMessageImmersive
 import com.braze.models.inappmessage.InAppMessageModal

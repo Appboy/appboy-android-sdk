@@ -12,6 +12,7 @@ import com.braze.Braze
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.models.inappmessage.MessageButton
 import com.braze.support.BrazeLogger.Priority.I
+import com.braze.support.BrazeLogger.Priority.V
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.ui.activities.ContentCardsActivity
 import com.braze.ui.inappmessage.BrazeInAppMessageManager
@@ -103,6 +104,7 @@ class BrazeUnityActivityWrapper {
             UnityInAppMessageManagerAction.IAM_DISCARD ->
                 action.inAppMessageOperation?.let { nextInAppMessageDisplayOperation = it }
             else -> {
+                brazelog(V) { "Failed to map unity IAM manager action value: $action" }
                 // Do nothing
             }
         }

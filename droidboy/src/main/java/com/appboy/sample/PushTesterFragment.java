@@ -14,7 +14,7 @@ import android.widget.CheckBox;
 import androidx.fragment.app.Fragment;
 
 import com.braze.Braze;
-import com.appboy.models.push.BrazeNotificationPayload;
+import com.braze.models.push.BrazeNotificationPayload;
 import com.appboy.sample.util.SpinnerUtils;
 import com.braze.Constants;
 import com.braze.push.BrazeNotificationUtils;
@@ -74,6 +74,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   private boolean mStorySubtitles = true;
   private boolean mInlineImagePushEnabled = false;
   private boolean mConversationPushEnabled = false;
+  private boolean mSetHtmlText = false;
   static final String EXAMPLE_APPBOY_EXTRA_KEY_1 = "Entree";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_2 = "Side";
   static final String EXAMPLE_APPBOY_EXTRA_KEY_3 = "Drink";
@@ -109,6 +110,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     ((CheckBox) view.findViewById(R.id.push_tester_story_subtitle)).setOnCheckedChangeListener((buttonView, isChecked) -> mStorySubtitles = !isChecked);
     ((CheckBox) view.findViewById(R.id.push_tester_inline_image_push_enabled)).setOnCheckedChangeListener((buttonView, isChecked) -> mInlineImagePushEnabled = isChecked);
     ((CheckBox) view.findViewById(R.id.push_tester_conversational_push_enabled)).setOnCheckedChangeListener((buttonView, isChecked) -> mConversationPushEnabled = isChecked);
+    ((CheckBox) view.findViewById(R.id.push_tester_html)).setOnCheckedChangeListener((buttonView, isChecked) -> mSetHtmlText = isChecked);
 
     // Creates the push image spinner.
     SpinnerUtils.setUpSpinner(view.findViewById(R.id.push_image_spinner), this, R.array.push_image_options);
@@ -155,8 +157,14 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
     Button pushTestButton = view.findViewById(R.id.test_push_button);
     pushTestButton.setOnClickListener(clickedView -> (new Thread(() -> {
       Bundle notificationExtras = new Bundle();
-      notificationExtras.putString(Constants.BRAZE_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
-      notificationExtras.putString(Constants.BRAZE_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
+      if (mSetHtmlText) {
+        notificationExtras.putString(Constants.BRAZE_PUSH_TITLE_KEY, getString(R.string.html_push_title_text));
+        notificationExtras.putString(Constants.BRAZE_PUSH_CONTENT_KEY, getString(R.string.html_push_body_text));
+      }
+      else {
+        notificationExtras.putString(Constants.BRAZE_PUSH_TITLE_KEY, generateDisplayValue(TITLE));
+        notificationExtras.putString(Constants.BRAZE_PUSH_CONTENT_KEY, generateDisplayValue(CONTENT + sSecureRandom.nextInt()));
+      }
       notificationExtras.putString(Constants.BRAZE_PUSH_BRAZE_KEY, "true");
 
       String notificationId;
@@ -452,7 +460,7 @@ public class PushTesterFragment extends Fragment implements AdapterView.OnItemSe
   }
 
   // If shouldOverflowText is specified we concatenate an append string
-  // This is to test big text and ellipsis cutoff in varying screen sizes
+  // This is to test big te8xt and ellipsis cutoff in varying screen sizes
   private String generateDisplayValue(String field) {
     if (mShouldOverflowText) {
       return field + getString(R.string.overflow_string);

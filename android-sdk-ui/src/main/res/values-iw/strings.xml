@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- News feed -->
-  <string name="com_appboy_feed_empty">אין לנו עדכונים. בבקשה בדוק שוב בקרוב.</string>
-  <string name="com_appboy_feed_connection_error_title">שגיאת חיבור רשת</string>
-  <string name="com_appboy_feed_connection_error_body">לא ניתן לקבוע חיבור רשת. בבקשה נסה שוב בקרוב.</string>
+  <string name="com_braze_feed_empty">אין לנו עדכונים. בבקשה בדוק שוב בקרוב.</string>
+  <string name="com_braze_feed_connection_error_title">שגיאת חיבור רשת</string>
+  <string name="com_braze_feed_connection_error_body">לא ניתן לקבוע חיבור רשת. בבקשה נסה שוב בקרוב.</string>
   <string name="com_braze_inappmessage_close_content_description">לסגור</string>
 </resources>

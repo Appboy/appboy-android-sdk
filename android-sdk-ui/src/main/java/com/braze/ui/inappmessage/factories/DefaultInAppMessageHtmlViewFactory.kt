@@ -2,7 +2,7 @@ package com.braze.ui.inappmessage.factories
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.models.inappmessage.InAppMessageHtml

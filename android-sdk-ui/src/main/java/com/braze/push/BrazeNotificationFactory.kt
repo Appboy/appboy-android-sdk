@@ -4,7 +4,7 @@ import android.app.Notification
 import android.content.Context
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
-import com.appboy.models.push.BrazeNotificationPayload
+import com.braze.models.push.BrazeNotificationPayload
 import com.braze.IBrazeNotificationFactory
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.push.BrazeNotificationActionUtils.addNotificationActions
@@ -86,8 +86,7 @@ open class BrazeNotificationFactory : IBrazeNotificationFactory {
     }
 
     companion object {
-        @Volatile
-        private var internalInstance: BrazeNotificationFactory = BrazeNotificationFactory()
+        private val internalInstance: BrazeNotificationFactory = BrazeNotificationFactory()
 
         /**
          * Returns the singleton [BrazeNotificationFactory] instance.

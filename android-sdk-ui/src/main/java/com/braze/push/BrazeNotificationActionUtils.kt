@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
-import com.appboy.models.push.BrazeNotificationPayload
-import com.appboy.models.push.BrazeNotificationPayload.ActionButton
+import com.braze.models.push.BrazeNotificationPayload
+import com.braze.models.push.BrazeNotificationPayload.ActionButton
 import com.braze.Braze
 import com.braze.Constants
 import com.braze.IBrazeDeeplinkHandler.IntentFlagPurpose

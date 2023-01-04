@@ -8,7 +8,7 @@ import android.view.KeyEvent
 import android.view.TouchDelegate
 import android.view.View
 import android.widget.TextView
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.enums.inappmessage.TextAlign
 import com.braze.models.inappmessage.MessageButton
 import com.braze.support.BrazeLogger.Priority.W

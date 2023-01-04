@@ -3,7 +3,7 @@ package com.braze.ui.actions.brazeactions
 import android.content.Context
 import android.net.Uri
 import android.util.Base64
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.Priority.V

@@ -10,7 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import com.braze.Constants
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 import com.braze.IBrazeDeeplinkHandler
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.support.BrazeLogger.Priority.E

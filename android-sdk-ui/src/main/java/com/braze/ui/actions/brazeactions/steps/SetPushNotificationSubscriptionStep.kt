@@ -1,7 +1,7 @@
 package com.braze.ui.actions.brazeactions.steps
 
 import android.content.Context
-import com.appboy.enums.NotificationSubscriptionType
+import com.braze.enums.NotificationSubscriptionType
 import com.braze.Braze
 import com.braze.support.BrazeLogger.brazeLogTag
 import com.braze.support.BrazeLogger.brazelog

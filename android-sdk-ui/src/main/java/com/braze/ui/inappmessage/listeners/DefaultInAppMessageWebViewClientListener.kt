@@ -2,7 +2,7 @@ package com.braze.ui.inappmessage.listeners
 
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 import com.braze.Braze.Companion.getInstance
 import com.braze.enums.inappmessage.MessageType
 import com.braze.models.inappmessage.IInAppMessage

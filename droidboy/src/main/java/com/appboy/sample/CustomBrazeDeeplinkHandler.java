@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.braze.Constants;
-import com.appboy.enums.Channel;
+import com.braze.enums.Channel;
 import com.appboy.sample.activity.DroidBoyActivity;
 import com.braze.IBrazeDeeplinkHandler;
 import com.braze.support.BrazeLogger;
@@ -26,7 +26,7 @@ public class CustomBrazeDeeplinkHandler implements IBrazeDeeplinkHandler {
     Intent intent = new Intent(context, DroidBoyActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     intent.putExtras(newsfeedAction.getExtras());
-    intent.putExtra(context.getResources().getString(R.string.source_key), Constants.APPBOY);
+    intent.putExtra(context.getResources().getString(R.string.source_key), Constants.BRAZE);
     intent.putExtra(context.getResources().getString(R.string.destination_view), context.getResources().getString(R.string.feed_key));
     context.startActivity(intent);
   }
@@ -77,4 +77,3 @@ public class CustomBrazeDeeplinkHandler implements IBrazeDeeplinkHandler {
     }
   }
 }
-

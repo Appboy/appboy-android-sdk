@@ -10,7 +10,7 @@ public class FeedFragmentActivity extends AppCompatActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.com_appboy_feed_activity);
+    setContentView(R.layout.com_braze_feed_activity);
     setTitle("DroidGirl");
   }
 }

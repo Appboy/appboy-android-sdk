@@ -1,7 +1,7 @@
 package com.braze.ui.actions
 
 import android.content.Context
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 
 interface IAction {
     val channel: Channel

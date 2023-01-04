@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.appboy.models.cards.BannerImageCard
-import com.appboy.models.cards.Card
-import com.appboy.ui.R
+import com.braze.models.cards.BannerImageCard
+import com.braze.models.cards.Card
+import com.braze.ui.R
 
 open class BannerImageContentCardView(context: Context) : BaseContentCardView<BannerImageCard>(
     context

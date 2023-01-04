@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.WindowInsetsCompat
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.enums.inappmessage.ClickAction
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.support.BrazeLogger.brazelog

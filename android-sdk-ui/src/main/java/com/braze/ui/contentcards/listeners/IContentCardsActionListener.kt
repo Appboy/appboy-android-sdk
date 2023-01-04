@@ -1,7 +1,7 @@
 package com.braze.ui.contentcards.listeners
 
 import android.content.Context
-import com.appboy.models.cards.Card
+import com.braze.models.cards.Card
 import com.braze.ui.actions.IAction
 
 /**

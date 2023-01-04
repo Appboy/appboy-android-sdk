@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- News feed -->
-  <string name="com_appboy_feed_empty">Обновления недоступны. Пожалуйста, проверьте снова позже.</string>
-  <string name="com_appboy_feed_connection_error_title">Ошибка подключения</string>
-  <string name="com_appboy_feed_connection_error_body">Невозможно установить сетевое подключение. Пожалуйста, повторите попытку позже.</string>
+  <string name="com_braze_feed_empty">Обновления недоступны. Пожалуйста, проверьте снова позже.</string>
+  <string name="com_braze_feed_connection_error_title">Ошибка подключения</string>
+  <string name="com_braze_feed_connection_error_body">Невозможно установить сетевое подключение. Пожалуйста, повторите попытку позже.</string>
   <string name="com_braze_inappmessage_close_content_description">слишком близко</string>
 </resources>

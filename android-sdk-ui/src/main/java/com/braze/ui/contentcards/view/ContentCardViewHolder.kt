@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.appboy.ui.R
+import com.braze.ui.R
 
 open class ContentCardViewHolder(view: View, showUnreadIndicator: Boolean) :
     RecyclerView.ViewHolder(view) {

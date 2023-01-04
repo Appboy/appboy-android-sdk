@@ -5,7 +5,7 @@ import android.provider.Settings;
 
 import androidx.core.app.NotificationCompat;
 
-import com.appboy.models.push.BrazeNotificationPayload;
+import com.braze.models.push.BrazeNotificationPayload;
 import com.braze.IBrazeNotificationFactory;
 import com.braze.push.BrazeNotificationFactory;
 

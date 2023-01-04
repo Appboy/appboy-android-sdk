@@ -1,7 +1,7 @@
 package com.braze.ui.inappmessage.factories
 
 import android.app.Activity
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.Braze
 import com.braze.enums.BrazeViewBounds
 import com.braze.models.inappmessage.IInAppMessage

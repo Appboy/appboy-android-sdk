@@ -1,9 +1,9 @@
 package com.appboy.sample.util
 
 import android.content.Context
-import com.appboy.enums.CardKey
-import com.appboy.enums.CardType
-import com.appboy.models.cards.Card
+import com.braze.enums.CardKey
+import com.braze.enums.CardType
+import com.braze.models.cards.Card
 import com.braze.Braze
 import org.json.JSONObject
 import java.util.*

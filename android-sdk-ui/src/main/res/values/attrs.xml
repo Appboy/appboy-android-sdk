@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <declare-styleable name="com.appboy.ui.feed.AppboyImageSwitcher">
-    <attr name="appboyFeedCustomReadIcon" format="integer"/>
-    <attr name="appboyFeedCustomUnReadIcon" format="integer"/>
+  <declare-styleable name="com.braze.ui.feed.BrazeImageSwitcher">
+    <attr name="brazeFeedCustomReadIcon" format="integer"/>
+    <attr name="brazeFeedCustomUnReadIcon" format="integer"/>
   </declare-styleable>
   <declare-styleable name="InAppMessageBoundedLayout">
     <attr name="inAppMessageBoundedLayoutMaxWidth" format="dimension"/>

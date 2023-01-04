@@ -3,7 +3,7 @@ package com.braze
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 import com.braze.push.NotificationTrampolineActivity
 import com.braze.ui.actions.NewsfeedAction
 import com.braze.ui.actions.UriAction

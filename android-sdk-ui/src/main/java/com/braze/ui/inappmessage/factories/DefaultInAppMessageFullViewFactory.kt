@@ -5,7 +5,7 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.RelativeLayout
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.Braze
 import com.braze.enums.BrazeViewBounds
 import com.braze.enums.inappmessage.ImageStyle

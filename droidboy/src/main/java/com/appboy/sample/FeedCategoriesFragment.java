@@ -10,7 +10,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-import com.appboy.enums.CardCategory;
+import com.braze.enums.CardCategory;
 import com.braze.support.BrazeLogger;
 
 import java.util.Arrays;

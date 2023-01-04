@@ -11,8 +11,8 @@
     <item>Image: [png] Grid 1600x1000 (graphic full - landscape)</item>
     <item>Image: [png] s3</item>
     <item>Image: [jpg] Blue</item>
-    <item>Image: [gif] Appboy</item>
-    <item>Image: [gif] Appboy Siege</item>
+    <item>Image: [gif] Computer Cat</item>
+    <item>Image: [gif] Curious Cat</item>
     <item>Image: [gif] s3</item>
   </string-array>
   <string-array name="inapp_image_values">
@@ -26,8 +26,8 @@
     <item>@string/appboy_image_url_1600w_1000h</item>
     <item>@string/appboy_image_url_s3</item>
     <item>@string/blue_url</item>
-    <item>@string/appboy_gif_url</item>
-    <item>@string/appboy_siege_gif_url</item>
+    <item>@string/cat_computer_gif_url</item>
+    <item>@string/cat_scanning_gif_url</item>
     <item>@string/appboy_gif_url_s3</item>
   </string-array>
 </resources>

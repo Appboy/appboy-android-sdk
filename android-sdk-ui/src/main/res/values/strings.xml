@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- News feed -->
-  <string name="com_appboy_feed_empty">We have no updates.\nPlease check again later.</string>
-  <string name="com_appboy_feed_connection_error_title">Connection Error</string>
-  <string name="com_appboy_feed_connection_error_body">Cannot establish network connection.\nPlease try again later.</string>
+  <string name="com_braze_feed_empty">We have no updates.\nPlease check again later.</string>
+  <string name="com_braze_feed_connection_error_title">Connection Error</string>
+  <string name="com_braze_feed_connection_error_body">Cannot establish network connection.\nPlease try again later.</string>
 
   <!-- Content descriptions -->
   <string name="com_braze_inappmessage_close_content_description">Close</string>

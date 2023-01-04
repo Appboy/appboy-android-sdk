@@ -16,8 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.appboy.enums.Gender;
-import com.appboy.enums.Month;
+import com.braze.enums.Gender;
+import com.braze.enums.Month;
 import com.appboy.sample.dialog.CustomDialogBase;
 import com.appboy.sample.util.ButtonUtils;
 import com.braze.Braze;

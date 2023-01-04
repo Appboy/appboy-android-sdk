@@ -1,7 +1,7 @@
 package com.braze.ui.actions.brazeactions.steps
 
 import androidx.annotation.VisibleForTesting
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 import com.braze.models.outgoing.BrazeProperties
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.getPrettyPrintedString

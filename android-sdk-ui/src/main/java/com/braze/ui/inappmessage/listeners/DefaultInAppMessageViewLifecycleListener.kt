@@ -2,7 +2,7 @@ package com.braze.ui.inappmessage.listeners
 
 import android.net.Uri
 import android.view.View
-import com.appboy.enums.Channel
+import com.braze.enums.Channel
 import com.braze.coroutine.BrazeCoroutineScope
 import com.braze.enums.inappmessage.ClickAction
 import com.braze.models.inappmessage.IInAppMessage

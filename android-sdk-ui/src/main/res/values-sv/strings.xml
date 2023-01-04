@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- News feed -->
-  <string name="com_appboy_feed_empty">Det finns inga uppdateringar. Försök igen senare.</string>
-  <string name="com_appboy_feed_connection_error_title">Anslutningsfel</string>
-  <string name="com_appboy_feed_connection_error_body">Det gick inte att skapa en nätverksanslutning. Försök igen senare.</string>
+  <string name="com_braze_feed_empty">Det finns inga uppdateringar. Försök igen senare.</string>
+  <string name="com_braze_feed_connection_error_title">Anslutningsfel</string>
+  <string name="com_braze_feed_connection_error_body">Det gick inte att skapa en nätverksanslutning. Försök igen senare.</string>
   <string name="com_braze_inappmessage_close_content_description">för nära</string>
 </resources>

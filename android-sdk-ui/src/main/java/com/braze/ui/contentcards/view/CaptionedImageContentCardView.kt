@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.appboy.models.cards.CaptionedImageCard
-import com.appboy.models.cards.Card
-import com.appboy.ui.R
+import com.braze.models.cards.CaptionedImageCard
+import com.braze.models.cards.Card
+import com.braze.ui.R
 
 open class CaptionedImageContentCardView(context: Context) : BaseContentCardView<CaptionedImageCard>(
     context

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- News feed -->
-  <string name="com_appboy_feed_empty">No tenemos ninguna actualización. Vuelva a verificar más tarde.</string>
-  <string name="com_appboy_feed_connection_error_title">Error de conexión</string>
-  <string name="com_appboy_feed_connection_error_body">No se puede establecer conexión con la red. Por favor, vuelva a intentarlo más tarde.</string>
+  <string name="com_braze_feed_empty">No tenemos ninguna actualización. Vuelva a verificar más tarde.</string>
+  <string name="com_braze_feed_connection_error_title">Error de conexión</string>
+  <string name="com_braze_feed_connection_error_body">No se puede establecer conexión con la red. Por favor, vuelva a intentarlo más tarde.</string>
   <string name="com_braze_inappmessage_close_content_description">cerrar</string>
 </resources>

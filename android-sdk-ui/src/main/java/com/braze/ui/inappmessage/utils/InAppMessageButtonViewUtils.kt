@@ -8,7 +8,7 @@ import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.view.View
 import android.widget.Button
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.models.inappmessage.MessageButton
 
 object InAppMessageButtonViewUtils {

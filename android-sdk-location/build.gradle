@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+dependencies {
+    api "com.appboy:android-sdk-base:${BRAZE_SDK_VERSION}"
+    compileOnly "androidx.annotation:annotation:${ANDROIDX_ANNOTATIONS_VERSION}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${KOTLIN_VERSION}"
+    implementation "com.google.android.gms:play-services-location:${PLAY_SERVICES_LOCATION_VERSION}"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${KOTLIN_COROUTINES_VERSION}")
+    implementation "androidx.core:core:${ANDROIDX_CORE_VERSION}"
+}
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+  }
+
+  kotlinOptions {
+    freeCompilerArgs = ['-Xjvm-default=all', '-Xopt-in=kotlin.RequiresOptIn']
+    jvmTarget = "1.8"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}

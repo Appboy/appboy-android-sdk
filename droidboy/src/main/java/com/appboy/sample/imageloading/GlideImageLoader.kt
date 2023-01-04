@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.ImageView
-import com.appboy.models.cards.Card
+import com.braze.models.cards.Card
 import com.braze.enums.BrazeViewBounds
 import com.braze.images.IBrazeImageLoader
 import com.braze.models.inappmessage.IInAppMessage

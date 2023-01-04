@@ -8,11 +8,11 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 #
 # See https://github.com/Appboy/appboy-android-sdk/issues/49
--keepnames class com.appboy.ui.** { *; }
--keepnames class com.appboy.** { *; }
+-keepnames class com.braze.ui.** { *; }
+-keepnames class com.braze.** { *; }
 -keepnames class bo.app.** { *; }
 
--dontwarn com.appboy.ui.**
+-dontwarn com.braze.ui.**
 -dontwarn com.google.firebase.messaging.**
 
 -keepclassmembers class * {

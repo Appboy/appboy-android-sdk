@@ -8,7 +8,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.appboy.models.cards.Card
+import com.braze.models.cards.Card
 import com.braze.support.BrazeLogger.Priority.V
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.ui.contentcards.handlers.IContentCardsViewBindingHandler

@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.appboy.ui">
+  package="com.braze.ui">
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
   <application>
-    <activity
-      android:name="com.appboy.ui.AppboyWebViewActivity"
-      android:exported="false" />
     <activity
       android:name="com.braze.ui.BrazeWebViewActivity"
       android:exported="false" />
     <activity
-      android:name="com.appboy.ui.activities.AppboyFeedActivity"
-      android:exported="false" />
-    <activity
-      android:name="com.appboy.ui.activities.AppboyContentCardsActivity"
+      android:name=".activities.BrazeFeedActivity"
       android:exported="false" />
     <activity
       android:name="com.braze.ui.activities.ContentCardsActivity"

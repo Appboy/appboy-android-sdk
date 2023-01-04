@@ -106,6 +106,7 @@
   <string name="story_toggle_deep_link">Toggle Story Deep Link</string>
   <string name="story_toggle_title">Toggle Story Title</string>
   <string name="story_toggle_subtitle">Toggle Story Subtitle</string>
+  <string name="set_html_push_text">Test HTML Push</string>
   <!--'#' characters at the end of headers and messages are used to verify that the entire message was displayed.-->
   <string name="header_10">Hey there#</string>
   <string name="header_20">Hey hey from Braze!#</string>
@@ -174,8 +175,8 @@
   <string name="appboy_image_url_1160w_400h">https://appboy-images.com/appboy/communication/assets/image_assets/images/57c7610856ec31384ef556bf/original.?1472684296</string>
   <string name="appboy_image_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/569934e8bf5cea1409000027/639cf60262df21a9d190c659e2fc36823fa2dc94/original.?1452881133</string>
   <string name="blue_url">https://s3.amazonaws.com/appboy-staging-test/android-sdk-image-push-integration-test3.jpg</string>
-  <string name="appboy_gif_url">https://blog.appboy.com/wp-content/uploads/2014/10/HappyHalloween.gif</string>
-  <string name="appboy_siege_gif_url">https://blog.appboy.com/wp-content/uploads/2015/03/BrowserPreview_tmp-1.gif</string>
+  <string name="cat_computer_gif_url">https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif</string>
+  <string name="cat_scanning_gif_url">https://media.giphy.com/media/ODy29v7YAJrck/giphy.gif</string>
   <string name="appboy_gif_url_s3">https://s3.amazonaws.com/appboy-staging-dashboard-uploads/appboy/communication/marketing/slide_up/slide_up_message_parameters/images/564cfde56461737ff4080000/0283e284156a896114fc231e918551b959e87a4e/original.?1452806650</string>
   <string name="braze_homepage_url">https://www.braze.com</string>
   <string name="google_url">http://www.google.com</string>
@@ -232,6 +233,8 @@
   <string name="droidboy_required_location_prompt_message">Droidboy collects location data to enable Braze Geofences and session start location tracking even when the app is closed or not in use. This "prominent disclosure" is required by Google for Droidboy and does not automatically appear in our client apps as part of the SDK.</string>
   <string name="droidboy_required_bg_location_prompt_title">Please enable Droidboy background locations</string>
   <string name="droidboy_required_bg_location_prompt_message">To enable Geofencing, please allow access all the time.</string>
+  <string name="html_push_title_text">&lt;p&gt;&lt;span style=\"color: #99cc00;\"&gt;M&lt;/span&gt;u&lt;span style=\"color: #008080;\"&gt;lti&lt;/span&gt;Colo&lt;span style=\"color: #ff6600;\"&gt;r&lt;/span&gt; &lt;span style=\"color: #000080;\"&gt;P&lt;/span&gt;&lt;span style=\"color: #00ccff;\"&gt;u&lt;/span&gt;&lt;span style=\"color: #ff0000;\"&gt;s&lt;/span&gt;&lt;span style=\"color: #808080;\"&gt;h&lt;/span&gt;&lt;/p&gt;</string>
+  <string name="html_push_body_text">&lt;p&gt;&lt;em&gt;test&lt;/em&gt; &lt;span style=\"text-decoration: underline; background-color: #ff6600;\"&gt;&lt;strong&gt;message&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</string>
   <!-- Preference Titles -->
   <string name="messages_header">Messages</string>
   <string name="sync_header">Sync</string>

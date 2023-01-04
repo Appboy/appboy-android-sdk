@@ -5,9 +5,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
-import com.appboy.enums.CardType
-import com.appboy.enums.CardType.Companion.fromValue
-import com.appboy.models.cards.Card
+import com.braze.enums.CardType
+import com.braze.enums.CardType.Companion.fromValue
+import com.braze.models.cards.Card
 import com.braze.ui.contentcards.view.BannerImageContentCardView
 import com.braze.ui.contentcards.view.BaseContentCardView
 import com.braze.ui.contentcards.view.CaptionedImageContentCardView

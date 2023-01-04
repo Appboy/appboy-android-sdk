@@ -18,8 +18,7 @@ import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.braze.Constants
-import com.appboy.enums.Channel
-import com.appboy.ui.R
+import com.braze.enums.Channel
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
@@ -103,6 +102,7 @@ open class BrazeWebViewActivity : FragmentActivity() {
                 return didHandleUrl ?: super.shouldOverrideUrlLoading(view, request)
             }
 
+            @Deprecated("Deprecated in Java")
             @Suppress("deprecation")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 val didHandleUrl = handleUrlOverride(view.context, url)

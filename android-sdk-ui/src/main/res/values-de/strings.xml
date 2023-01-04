@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- News feed -->
-  <string name="com_appboy_feed_empty">Derzeit sind keine Updates verfügbar. Bitte später noch einmal versuchen.</string>
-  <string name="com_appboy_feed_connection_error_title">Verbindungsfehler</string>
-  <string name="com_appboy_feed_connection_error_body">Netzwerkverbindung kann nicht aufgebaut werden. Bitte später noch einmal versuchen.</string>
+  <string name="com_braze_feed_empty">Derzeit sind keine Updates verfügbar. Bitte später noch einmal versuchen.</string>
+  <string name="com_braze_feed_connection_error_title">Verbindungsfehler</string>
+  <string name="com_braze_feed_connection_error_body">Netzwerkverbindung kann nicht aufgebaut werden. Bitte später noch einmal versuchen.</string>
   <string name="com_braze_inappmessage_close_content_description">schließen</string>
 </resources>

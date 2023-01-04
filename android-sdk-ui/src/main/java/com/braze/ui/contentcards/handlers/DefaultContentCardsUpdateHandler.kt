@@ -2,10 +2,9 @@ package com.braze.ui.contentcards.handlers
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.appboy.models.cards.Card
 import com.braze.events.ContentCardsUpdatedEvent
+import com.braze.models.cards.Card
 import com.braze.ui.actions.brazeactions.containsInvalidBrazeAction
-import java.util.*
 
 class DefaultContentCardsUpdateHandler : IContentCardsUpdateHandler {
     override fun handleCardUpdate(event: ContentCardsUpdatedEvent): List<Card> {
@@ -19,9 +18,9 @@ class DefaultContentCardsUpdateHandler : IContentCardsUpdateHandler {
                 !cardA.isPinned && cardB.isPinned -> 1
                 // At this point, both A & B are pinned or both A & B are non-pinned
                 // A displays above B if A is newer
-                cardA.updated > cardB.updated -> -1
+                cardA.created > cardB.created -> -1
                 // B displays above A if B is newer
-                cardA.updated < cardB.updated -> 1
+                cardA.created < cardB.created -> 1
                 // They're considered equal at this point
                 else -> 0
             }

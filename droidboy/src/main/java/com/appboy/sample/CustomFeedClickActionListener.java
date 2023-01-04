@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.appboy.models.cards.Card;
-import com.appboy.ui.feed.listeners.IFeedClickActionListener;
+import com.braze.models.cards.Card;
+import com.braze.ui.feed.listeners.IFeedClickActionListener;
 import com.braze.support.StringUtils;
 import com.braze.ui.actions.IAction;
 

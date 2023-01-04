@@ -1,3 +1,37 @@
+## 24.0.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.0.0)
+
+#### Breaking
+- Location and geofence functionality has moved to a new module called `com.braze:android-sdk-location`. Add this module to your `build.gradle` if you are using Braze location functionality.
+- Deprecated classes starting with `Appboy` have now been removed.
+- Moved `com.appboy` packages to `com.braze`.
+- All xml classes and values in them have been changed from `appboy` to `braze`. All custom code should be updated accordingly.
+- `BrazeNotificationUtils.isAppboyPushMessage()` removed. Please use instead:
+  - Java: `BrazeNotificationUtils.isBrazePushMessage(Intent)`
+  - Kotlin: `Intent.isBrazePushMessage()`
+- `APPBOY_NOTIFICATION_OPENED_SUFFIX`, `APPBOY_NOTIFICATION_RECEIVED_SUFFIX`, and `APPBOY_NOTIFICATION_DELETED_SUFFIX` are removed.
+  - Instead, please use `Braze.getInstance(context).subscribeToPushNotificationEvents()`
+- Updated the minimum version of `com.google.android.gms:play-services-location` required for Braze Geofences to `20.0.0`.
+
+##### Added
+- Added the ability to optionally pipe Braze logcat from `BrazeLogger` to a custom callback via `BrazeLogger.onLoggedCallback`.
+  ```kotlin
+    BrazeLogger.onLoggedCallback = fun(priority: BrazeLogger.Priority, message: String, throwable: Throwable?) {
+      // Custom callback logic here
+    }
+  ```
+  ```java
+    BrazeLogger.setOnLoggedCallback((priority, s, throwable) -> {
+      // Custom logic here
+      return null;
+    });
+  ```
+
+##### Changed
+- Removed `BrazeUser.setFacebookData()` and `BrazeUser.setTwitterData()`.
+- Changed the default behavior of `DefaultContentCardsUpdateHandler` to use the creation time vs last update time when sorting Content Cards.
+
 ## 23.3.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v23.3.0)

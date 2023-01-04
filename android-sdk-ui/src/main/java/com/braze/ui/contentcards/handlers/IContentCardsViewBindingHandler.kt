@@ -3,7 +3,7 @@ package com.braze.ui.contentcards.handlers
 import android.content.Context
 import android.os.Parcelable
 import android.view.ViewGroup
-import com.appboy.models.cards.Card
+import com.braze.models.cards.Card
 import com.braze.ui.contentcards.view.ContentCardViewHolder
 
 /**

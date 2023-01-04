@@ -3,7 +3,7 @@
 package com.braze.ui.actions.brazeactions
 
 import android.net.Uri
-import com.appboy.models.cards.Card
+import com.braze.models.cards.Card
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.models.inappmessage.IInAppMessageImmersive
 import com.braze.models.inappmessage.MessageButton

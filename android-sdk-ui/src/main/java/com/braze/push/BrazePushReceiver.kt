@@ -6,8 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationManagerCompat
-import com.appboy.models.push.BrazeNotificationPayload
-import com.appboy.models.push.BrazeNotificationPayload.Companion.getAttachedBrazeExtras
+import com.braze.models.push.BrazeNotificationPayload
+import com.braze.models.push.BrazeNotificationPayload.Companion.getAttachedBrazeExtras
 import com.braze.Braze
 import com.braze.BrazeInternal.applyPendingRuntimeConfiguration
 import com.braze.BrazeInternal.handleInAppMessageTestPush

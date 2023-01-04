@@ -3,8 +3,8 @@ package com.braze.ui.contentcards.view
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.appboy.models.cards.Card
-import com.appboy.ui.R
+import com.braze.models.cards.Card
+import com.braze.ui.R
 
 /**
  * A view for when the card type is unknown or otherwise can't be rendered.

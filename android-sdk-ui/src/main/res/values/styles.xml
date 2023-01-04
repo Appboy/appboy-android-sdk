@@ -390,21 +390,21 @@
   </style>
   <style name="Braze.Feed.Empty">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:text">@string/com_appboy_feed_empty</item>
-    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:text">@string/com_braze_feed_empty</item>
+    <item name="android:textColor">@color/com_braze_title</item>
     <item name="android:textSize">18.0sp</item>
   </style>
   <style name="Braze.Feed.NetworkErrorTitle">
     <item name="android:gravity">center_horizontal</item>
-    <item name="android:text">@string/com_appboy_feed_connection_error_title</item>
-    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:text">@string/com_braze_feed_connection_error_title</item>
+    <item name="android:textColor">@color/com_braze_title</item>
     <item name="android:textSize">19.0sp</item>
     <item name="android:textStyle">bold</item>
   </style>
   <style name="Braze.Feed.NetworkErrorBody">
     <item name="android:gravity">center_horizontal</item>
-    <item name="android:text">@string/com_appboy_feed_connection_error_body</item>
-    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:text">@string/com_braze_feed_connection_error_body</item>
+    <item name="android:textColor">@color/com_braze_title</item>
     <item name="android:textSize">15.0sp</item>
   </style>
 
@@ -430,22 +430,22 @@
     <item name="android:layout_height">wrap_content</item>
   </style>
   <style name="Braze.Cards.CaptionedImage.Title.Container">
-    <item name="android:background">@color/com_appboy_card_title_container</item>
+    <item name="android:background">@color/com_braze_card_title_container</item>
   </style>
   <style name="Braze.Cards.CaptionedImage.Title">
-    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textColor">@color/com_braze_title</item>
     <item name="android:textSize">17.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
   </style>
   <style name="Braze.Cards.CaptionedImage.Description">
-    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textColor">@color/com_braze_description</item>
     <item name="android:textSize">15.0sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:paddingBottom">8.0dp</item>
   </style>
   <style name="Braze.Cards.CaptionedImage.Domain">
-    <item name="android:textColor">@color/com_appboy_domain</item>
+    <item name="android:textColor">@color/com_braze_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
@@ -456,7 +456,7 @@
   <style name="Braze.Cards.TextAnnouncement"/>
   <style name="Braze.Cards.TextAnnouncement.Title">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textColor">@color/com_braze_title</item>
     <item name="android:textSize">16.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
@@ -464,13 +464,13 @@
   </style>
   <style name="Braze.Cards.TextAnnouncement.Description">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textColor">@color/com_braze_description</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:paddingBottom">8.0dp</item>
   </style>
   <style name="Braze.Cards.TextAnnouncement.Domain">
-    <item name="android:textColor">@color/com_appboy_domain</item>
+    <item name="android:textColor">@color/com_braze_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
@@ -490,7 +490,7 @@
   </style>
   <style name="Braze.Cards.ShortNews.Title">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_title</item>
+    <item name="android:textColor">@color/com_braze_title</item>
     <item name="android:textSize">16.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:singleLine">true</item>
@@ -498,14 +498,14 @@
   </style>
   <style name="Braze.Cards.ShortNews.Description">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:textColor">@color/com_appboy_description</item>
+    <item name="android:textColor">@color/com_braze_description</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:paddingTop">8.0dp</item>
     <item name="android:paddingBottom">8.0dp</item>
   </style>
   <style name="Braze.Cards.ShortNews.Domain">
-    <item name="android:textColor">@color/com_appboy_domain</item>
+    <item name="android:textColor">@color/com_braze_domain</item>
     <item name="android:textSize">13.0sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:includeFontPadding">false</item>
@@ -522,7 +522,7 @@
   </style>
   <style name="Braze.ContentCardsDisplay.Empty">
     <item name="android:lineSpacingExtra">1.5dp</item>
-    <item name="android:text">@string/com_appboy_feed_empty</item>
+    <item name="android:text">@string/com_braze_feed_empty</item>
     <item name="android:textColor">@color/com_braze_content_card_empty_text_color</item>
     <item name="android:textSize">18.0sp</item>
     <item name="android:gravity">center</item>

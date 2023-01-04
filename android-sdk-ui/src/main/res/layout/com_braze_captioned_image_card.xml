@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <ViewStub
+      android:id="@+id/com_braze_captioned_image_card_imageview_stub"
+      android:layout="@layout/com_braze_stubbed_feed_image_view"
+      android:inflatedId="@+id/com_braze_captioned_image_card_image"
+      style="@style/Braze.Cards.CaptionedImage.Image"/>
+
+    <RelativeLayout
+        android:id="@+id/com_braze_captioned_image_card_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/com_braze_captioned_image_card_image"
+        style="@style/Braze.Cards.CaptionedImage.Title.Container">
+        <include layout="@layout/com_braze_feed_read_indicator_holder"/>
+
+        <TextView
+            android:id="@+id/com_braze_captioned_image_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dp"
+            android:layout_marginRight="10.0dp"
+            android:layout_marginTop="11.0dp"
+            android:layout_marginBottom="11.0dp"
+            style="@style/Braze.Cards.CaptionedImage.Title"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/com_braze_captioned_image_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/com_braze_captioned_image_card_title_container"
+        android:layout_marginLeft="10.0dp"
+        android:layout_marginRight="10.0dp"
+        android:layout_marginTop="8.0dp"
+        style="@style/Braze.Cards.CaptionedImage.Description"/>
+
+    <!-- Optional -->
+    <TextView
+        android:id="@+id/com_braze_captioned_image_card_domain"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/com_braze_captioned_image_description"
+        android:layout_marginLeft="10.0dp"
+        android:layout_marginRight="10.0dp"
+        style="@style/Braze.Cards.CaptionedImage.Domain"/>
+</merge>

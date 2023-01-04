@@ -24,7 +24,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.appboy.enums.CardCategory
 import com.appboy.sample.FeedCategoriesFragment
 import com.appboy.sample.FeedCategoriesFragment.NoticeDialogListener
 import com.appboy.sample.InAppMessageTesterFragment
@@ -34,16 +33,17 @@ import com.appboy.sample.R
 import com.appboy.sample.activity.settings.SettingsFragment
 import com.appboy.sample.util.RuntimePermissionUtils.requestLocationPermissions
 import com.appboy.sample.util.ViewUtils
-import com.appboy.ui.AppboyFeedFragment
 import com.braze.Braze
 import com.braze.Constants
 import com.braze.configuration.BrazeConfigurationProvider
+import com.braze.enums.CardCategory
 import com.braze.events.IEventSubscriber
 import com.braze.events.NoMatchingTriggerEvent
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.hasPermission
+import com.braze.ui.BrazeFeedFragment
 import com.braze.ui.contentcards.ContentCardsFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -69,12 +69,12 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
         }
     }
 
-    private val feedFragment: AppboyFeedFragment?
+    private val feedFragment: BrazeFeedFragment?
         get() {
             val fragments = supportFragmentManager.fragments
             for (i in fragments.indices) {
-                if (fragments[i] is AppboyFeedFragment) {
-                    return fragments[i] as AppboyFeedFragment?
+                if (fragments[i] is BrazeFeedFragment) {
+                    return fragments[i] as BrazeFeedFragment?
                 }
             }
             return null
@@ -306,7 +306,7 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
         // Check to see if the Activity was opened by the Broadcast Receiver. If it was, navigate to the
         // correct fragment.
         val extras = intent.extras
-        if (extras != null && Constants.APPBOY == extras.getString(resources.getString(R.string.source_key))) {
+        if (extras != null && Constants.BRAZE == extras.getString(resources.getString(R.string.source_key))) {
             navigateToDestination(extras)
             val bundleLogString = bundleToLogString(extras)
             showToast(bundleLogString)
@@ -321,7 +321,7 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
         // DESTINATION_VIEW holds the name of the fragment we're trying to visit.
         val destination = extras.getString(resources.getString(R.string.destination_view))
         if (resources.getString(R.string.feed_key) == destination) {
-            val feedFragment = AppboyFeedFragment()
+            val feedFragment = BrazeFeedFragment()
             feedFragment.categories = feedCategories
             replaceCurrentFragment(feedFragment)
         } else if (resources.getString(R.string.home) == destination) {

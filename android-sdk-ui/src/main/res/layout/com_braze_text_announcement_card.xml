@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
+  <include layout="@layout/com_braze_feed_read_indicator_holder"/>
+  <TextView
+      android:id="@+id/com_braze_text_announcement_card_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentLeft="true"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
+      android:layout_marginTop="10.0dp"
+      style="@style/Braze.Cards.TextAnnouncement.Title"
+      tools:ignore="RtlHardcoded"/>
+
+  <TextView
+      android:id="@+id/com_braze_text_announcement_card_description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_below="@id/com_braze_text_announcement_card_title"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
+      style="@style/Braze.Cards.TextAnnouncement.Description"
+      tools:ignore="RtlHardcoded"/>
+
+  <!-- Optional -->
+  <TextView
+      android:id="@+id/com_braze_text_announcement_card_domain"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_below="@id/com_braze_text_announcement_card_description"
+      android:layout_marginLeft="10.0dp"
+      android:layout_marginRight="10.0dp"
+      style="@style/Braze.Cards.TextAnnouncement.Domain"
+      tools:ignore="RtlHardcoded"/>
+</merge>

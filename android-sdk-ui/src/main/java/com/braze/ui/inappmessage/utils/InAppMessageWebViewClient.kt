@@ -124,7 +124,7 @@ open class InAppMessageWebViewClient(
         }
         val uri = Uri.parse(url)
         val queryBundle = getBundleFromUrl(url)
-        if (uri.scheme != null && uri.scheme == APPBOY_INAPP_MESSAGE_SCHEME) {
+        if (uri.scheme != null && uri.scheme == BRAZE_INAPP_MESSAGE_SCHEME) {
             // Check the authority
             when (uri.authority) {
                 null -> brazelog { "Uri authority was null. Uri: $uri" }
@@ -162,7 +162,7 @@ open class InAppMessageWebViewClient(
     companion object {
         private const val BRIDGE_JS_FILE = "braze-html-in-app-message-bridge.js"
 
-        private const val APPBOY_INAPP_MESSAGE_SCHEME = "appboy"
+        private const val BRAZE_INAPP_MESSAGE_SCHEME = "appboy"
         private const val AUTHORITY_NAME_CLOSE = "close"
         private const val AUTHORITY_NAME_NEWSFEED = "feed"
         private const val AUTHORITY_NAME_CUSTOM_EVENT = "customEvent"

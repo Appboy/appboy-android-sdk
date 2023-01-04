@@ -23,7 +23,6 @@ import android.webkit.WebView
 import androidx.annotation.RequiresApi
 import androidx.multidex.MultiDex
 import com.appboy.sample.util.BrazeActionTestingUtil
-import com.appboy.support.PackageUtils
 import com.braze.Braze
 import com.braze.BrazeActivityLifecycleCallbackListener
 import com.braze.configuration.BrazeConfig
@@ -34,6 +33,7 @@ import com.braze.support.BrazeLogger
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
 import com.braze.support.BrazeLogger.brazelog
+import com.braze.support.PackageUtils
 import com.braze.support.getPrettyPrintedString
 import com.braze.support.hasPermission
 import com.braze.ui.inappmessage.BrazeInAppMessageManager

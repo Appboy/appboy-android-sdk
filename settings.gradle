@@ -1,3 +1,4 @@
+include ':android-sdk-location'
 include ':android-sdk-ui'
 include ':android-sdk-unity'
 include ':droidboy'

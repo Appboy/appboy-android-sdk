@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.appboy.models.cards.Card
-import com.appboy.models.cards.ShortNewsCard
-import com.appboy.ui.R
+import com.braze.models.cards.Card
+import com.braze.models.cards.ShortNewsCard
+import com.braze.ui.R
 
 open class ShortNewsContentCardView(context: Context) : BaseContentCardView<ShortNewsCard>(
     context

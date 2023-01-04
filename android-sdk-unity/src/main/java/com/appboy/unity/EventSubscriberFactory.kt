@@ -1,6 +1,6 @@
 package com.appboy.unity
 
-import com.appboy.events.FeedUpdatedEvent
+import com.braze.events.FeedUpdatedEvent
 import com.appboy.unity.configuration.UnityConfigurationProvider
 import com.braze.enums.BrazePushEventType
 import com.braze.events.BrazePushEvent

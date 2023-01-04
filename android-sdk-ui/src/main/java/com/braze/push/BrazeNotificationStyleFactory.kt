@@ -15,9 +15,9 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationCompat
 import com.braze.Constants
-import com.appboy.models.push.BrazeNotificationPayload
-import com.appboy.models.push.BrazeNotificationPayload.PushStoryPage
-import com.appboy.ui.R
+import com.braze.models.push.BrazeNotificationPayload
+import com.braze.models.push.BrazeNotificationPayload.PushStoryPage
+import com.braze.ui.R
 import com.braze.Braze
 import com.braze.IBrazeDeeplinkHandler.IntentFlagPurpose
 import com.braze.configuration.BrazeConfigurationProvider

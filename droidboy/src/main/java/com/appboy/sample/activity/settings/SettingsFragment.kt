@@ -24,7 +24,6 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.appboy.models.outgoing.AttributionData
 import com.appboy.sample.BuildConfig
 import com.appboy.sample.CustomFeedClickActionListener
 import com.appboy.sample.DroidboyApplication
@@ -43,15 +42,16 @@ import com.appboy.sample.util.EnvironmentUtils
 import com.appboy.sample.util.LifecycleUtils
 import com.appboy.sample.util.LogcatExportUtil.Companion.exportLogcatToFile
 import com.appboy.sample.util.RuntimePermissionUtils
-import com.appboy.ui.feed.AppboyFeedManager
 import com.braze.Braze
 import com.braze.BrazeInternal
 import com.braze.BrazeUser
 import com.braze.Constants
 import com.braze.images.DefaultBrazeImageLoader
 import com.braze.images.IBrazeImageLoader
+import com.braze.models.outgoing.AttributionData
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.brazelog
+import com.braze.ui.feed.BrazeFeedManager
 import java.io.File
 
 @SuppressLint("ApplySharedPref")
@@ -59,7 +59,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private lateinit var glideImageLoader: IBrazeImageLoader
     private lateinit var imageLoader: IBrazeImageLoader
     private lateinit var sharedPreferences: SharedPreferences
-    private var requestPermissionLauncher =
+    private val requestPermissionLauncher =
         registerForActivityResult(RequestPermission()) { result ->
             Toast.makeText(
                 context,
@@ -261,7 +261,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             editor.apply()
         }
         setSwitchPreference("set_custom_news_feed_card_click_action_listener") { newValue: Boolean ->
-            AppboyFeedManager.getInstance().feedCardClickActionListener = if (newValue) CustomFeedClickActionListener() else null
+            BrazeFeedManager.getInstance().feedCardClickActionListener = if (newValue) CustomFeedClickActionListener() else null
         }
     }
 
@@ -369,6 +369,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun changeEndpointToDevelopment() {
+        Braze.wipeData(requireContext())
+        Braze.enableSdk(requireContext())
         val sharedPreferencesEditor: SharedPreferences.Editor = sharedPreferences.edit()
         if (Constants.isAmazonDevice) {
             sharedPreferencesEditor.putString(DroidboyApplication.OVERRIDE_API_KEY_PREF_KEY, DEV_FIREOS_DROIDBOY_API_KEY)

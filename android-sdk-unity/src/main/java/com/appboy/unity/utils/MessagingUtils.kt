@@ -1,7 +1,7 @@
 package com.appboy.unity.utils
 
 import android.os.Bundle
-import com.appboy.events.FeedUpdatedEvent
+import com.braze.events.FeedUpdatedEvent
 import com.braze.events.BrazePushEvent
 import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.events.ContentCardsUpdatedEvent
@@ -25,18 +25,18 @@ object MessagingUtils {
     }
 
     fun sendInAppMessageReceivedMessage(
-        unityGameObjectName: String,
-        unityCallbackFunctionName: String,
+        unityGameObjectName: String?,
+        unityCallbackFunctionName: String?,
         inAppMessage: IInAppMessage
     ): Boolean {
-        if (unityGameObjectName.isBlank()) {
+        if (unityGameObjectName.isNullOrBlank()) {
             brazelog(TAG) {
                 "There is no Unity GameObject configured to receive" +
                     " in app messages. Not sending the message to Unity."
             }
             return false
         }
-        if (unityCallbackFunctionName.isBlank()) {
+        if (unityCallbackFunctionName.isNullOrBlank()) {
             brazelog(TAG) {
                 "There is no Unity callback method name registered to receive in app messages in " +
                     "the braze.xml configuration file. Not sending the message to Unity."

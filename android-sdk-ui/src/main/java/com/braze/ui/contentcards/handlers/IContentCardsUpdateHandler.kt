@@ -1,7 +1,7 @@
 package com.braze.ui.contentcards.handlers
 
 import android.os.Parcelable
-import com.appboy.models.cards.Card
+import com.braze.models.cards.Card
 import com.braze.events.ContentCardsUpdatedEvent
 
 /**

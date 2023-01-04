@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.appboy.ui.R
+import com.braze.ui.R
 
 /**
  * This adapter displays a single, full width/height item. This item

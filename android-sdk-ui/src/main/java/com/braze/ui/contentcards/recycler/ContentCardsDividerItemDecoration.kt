@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.appboy.ui.R
+import com.braze.ui.R
 import com.braze.ui.contentcards.adapters.ContentCardAdapter
 
 /**

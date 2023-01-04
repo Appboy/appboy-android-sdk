@@ -16,20 +16,20 @@
   <color name="com_braze_inappmessage_button_bg_light">#1B78CF</color>
   <color name="com_braze_inappmessage_button_ripple">#5f000000</color>
 
-  <color name="com_appboy_title">#3F3F3F</color>
-  <color name="com_appboy_description">#666565</color>
-  <color name="com_appboy_domain">#3F3F3F</color>
+  <color name="com_braze_title">#3F3F3F</color>
+  <color name="com_braze_description">#666565</color>
+  <color name="com_braze_domain">#3F3F3F</color>
 
-  <color name="com_appboy_card_title_container">#F5F5F5</color>
+  <color name="com_braze_card_title_container">#F5F5F5</color>
 
-  <color name="com_appboy_card_background_border">#50CCCCCC</color>
-  <color name="com_appboy_card_background_shadow">#30CCCCCC</color>
-  <color name="com_appboy_card_background">@android:color/white</color>
+  <color name="com_braze_card_background_border">#50CCCCCC</color>
+  <color name="com_braze_card_background_shadow">#30CCCCCC</color>
+  <color name="com_braze_card_background">@android:color/white</color>
 
-  <color name="com_appboy_newsfeed_swipe_refresh_color_1">#f33e3e</color>
-  <color name="com_appboy_newsfeed_swipe_refresh_color_2">#1bbdf2</color>
-  <color name="com_appboy_newsfeed_swipe_refresh_color_3">#2f3436</color>
-  <color name="com_appboy_newsfeed_swipe_refresh_color_4">#ffffff</color>
+  <color name="com_braze_newsfeed_swipe_refresh_color_1">#f33e3e</color>
+  <color name="com_braze_newsfeed_swipe_refresh_color_2">#1bbdf2</color>
+  <color name="com_braze_newsfeed_swipe_refresh_color_3">#2f3436</color>
+  <color name="com_braze_newsfeed_swipe_refresh_color_4">#ffffff</color>
 
   <color name="com_braze_content_card_empty_text_color">#3F3F3F</color>
   <color name="com_braze_content_card_background_border">#50CCCCCC</color>

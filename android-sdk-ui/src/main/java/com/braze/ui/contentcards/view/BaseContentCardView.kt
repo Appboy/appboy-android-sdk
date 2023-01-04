@@ -6,9 +6,9 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.appboy.models.cards.Card
-import com.appboy.ui.R
-import com.appboy.ui.widget.BaseCardView
+import com.braze.models.cards.Card
+import com.braze.ui.R
+import com.braze.ui.widget.BaseCardView
 import com.braze.ui.actions.IAction
 import com.braze.ui.contentcards.managers.BrazeContentCardsManager.Companion.instance
 
