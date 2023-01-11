@@ -6,10 +6,18 @@
     <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
 <script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../../../styles/style.css" rel="Stylesheet">
 <link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
@@ -21,6 +29,7 @@ if(savedDarkMode === true){
 <script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
 <div class="navigation-wrapper" id="navigation-wrapper">
@@ -31,7 +40,7 @@ if(savedDarkMode === true){
             </a>
     </div>
     <div>
-24.0.0    </div>
+24.1.0    </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
@@ -43,11 +52,11 @@ if(savedDarkMode === true){
     </div>
     <div id="main">
 <div class="main-content" id="content" pageIds="braze-android-sdk::com.braze/Braze.Companion/outboundNetworkRequestsOffline/#/PointingToDeclaration//-1725759721">
-  <div class="breadcrumbs"><a href="../../../../index.html">braze-android-sdk</a><span class="delimiter">/</span><a href="../../index.html">com.braze</a><span class="delimiter">/</span><a href="../index.html">Braze</a><span class="delimiter">/</span><a href="index.html">Companion</a><span class="delimiter">/</span><a href="outbound-network-requests-offline.html">outboundNetworkRequestsOffline</a></div>
+  <div class="breadcrumbs"><a href="../../../../index.html">braze-android-sdk</a><span class="delimiter">/</span><a href="../../index.html">com.braze</a><span class="delimiter">/</span><a href="../index.html">Braze</a><span class="delimiter">/</span><a href="index.html">Companion</a><span class="delimiter">/</span><span class="current">outboundNetworkRequestsOffline</span></div>
   <div class="cover ">
     <h1 class="cover"><span>outbound</span><wbr></wbr><span>Network</span><wbr></wbr><span>Requests</span><wbr></wbr><span><span>Offline</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">var </span><a href="outbound-network-requests-offline.html">outboundNetworkRequestsOffline</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Pauses or resumes outbound network requests from the Braze SDK at any point during runtime. Events are not lost during the offline state. Manual requests made from the Braze singleton will also be offline. Single shot requests in offline mode, (such as templating, image, and file requests) are lost and will not be repeated later. Basically, everything that is not an event logged to a session will be lost.</p><p class="paragraph">Offline mode defaults to false, meaning outbound network requests are enabled by default.</p><p class="paragraph">The following is a breakdown of network behavior for various facets of the Braze SDK.</p><p class="paragraph">For push, inbound push messages will still be received, but any network requests required to display the notification will not download. For example, if a push message contains a remote image url and text, only the text will display on the notification since the remote image won't be downloaded in offline mode.</p><p class="paragraph">For in-app messages, any outbound network request for a non-cached image will not download and the in-app message will not display. Images that are locally cached will display normally in the in-app message. The Braze SDK does not display any in-app message where the required assets are not available. In offline mode, this means that any in-app message with images not cached locally will not display.</p><p class="paragraph">For HTML in-app messages, zip asset files can't be downloaded in offline mode and thus the HTML in-app message won't be displayed. However, if the assets have already been downloaded, then the message will be displayed. Additionally, the WebView displaying the HTML in-app message will not respect the offline mode value. I.e., any outbound network requests originating from inside the HTML in-app message itself will proceed with no respect to the offline state. This is because these network requests are not handled by Braze.</p><p class="paragraph">For the News Feed, non-cached images will not be downloaded in offline mode. Images that are locally cached will display normally. Any WebView opened from a News Feed card will not respect the offline mode value. Thus network requests from inside a WebView opened from the News Feed will proceed without respect to the offline state.</p></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">var </span><a href="outbound-network-requests-offline.html">outboundNetworkRequestsOffline</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><p class="paragraph">Pauses or resumes outbound network requests from the Braze SDK at any point during runtime. Events are not lost during the offline state. Manual requests made from the Braze singleton will also be offline. Single shot requests in offline mode, (such as templating, image, and file requests) are lost and will not be repeated later. Basically, everything that is not an event logged to a session will be lost.</p><p class="paragraph">Offline mode defaults to false, meaning outbound network requests are enabled by default.</p><p class="paragraph">The following is a breakdown of network behavior for various facets of the Braze SDK.</p><p class="paragraph">For push, inbound push messages will still be received, but any network requests required to display the notification will not download. For example, if a push message contains a remote image url and text, only the text will display on the notification since the remote image won't be downloaded in offline mode.</p><p class="paragraph">For in-app messages, any outbound network request for a non-cached image will not download and the in-app message will not display. Images that are locally cached will display normally in the in-app message. The Braze SDK does not display any in-app message where the required assets are not available. In offline mode, this means that any in-app message with images not cached locally will not display.</p><p class="paragraph">For HTML in-app messages, zip asset files can't be downloaded in offline mode and thus the HTML in-app message won't be displayed. However, if the assets have already been downloaded, then the message will be displayed. Additionally, the WebView displaying the HTML in-app message will not respect the offline mode value. I.e., any outbound network requests originating from inside the HTML in-app message itself will proceed with no respect to the offline state. This is because these network requests are not handled by Braze.</p><p class="paragraph">For the News Feed, non-cached images will not be downloaded in offline mode. Images that are locally cached will display normally. Any WebView opened from a News Feed card will not respect the offline mode value. Thus network requests from inside a WebView opened from the News Feed will proceed without respect to the offline state.</p></div></div>
 </div>
       <div class="footer">
         <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span

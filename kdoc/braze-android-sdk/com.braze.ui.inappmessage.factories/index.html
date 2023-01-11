@@ -6,10 +6,18 @@
     <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
 <script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../styles/style.css" rel="Stylesheet">
 <link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
@@ -21,6 +29,7 @@ if(savedDarkMode === true){
 <script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
 <div class="navigation-wrapper" id="navigation-wrapper">
@@ -31,7 +40,7 @@ if(savedDarkMode === true){
             </a>
     </div>
     <div>
-24.0.0    </div>
+24.1.0    </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
@@ -43,9 +52,9 @@ if(savedDarkMode === true){
     </div>
     <div id="main">
 <div class="main-content" id="content" pageIds="braze-android-sdk::com.braze.ui.inappmessage.factories////PointingToDeclaration//-1725759721">
-  <div class="breadcrumbs"><a href="../../index.html">braze-android-sdk</a><span class="delimiter">/</span><a href="index.html">com.braze.ui.inappmessage.factories</a></div>
+  <div class="breadcrumbs"><a href="../../index.html">braze-android-sdk</a><span class="delimiter">/</span><span class="current">com.braze.ui.inappmessage.factories</span></div>
   <div class="cover ">
-    <h1 class="cover"><span><span>Package</span></span> <span>com.</span><wbr></wbr><span>braze.</span><wbr></wbr><span>ui.</span><wbr></wbr><span>inappmessage.</span><wbr></wbr><span>factories</span></h1>
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
@@ -61,7 +70,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-animation-factory/index.html">DefaultInAppMessageAnimationFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-animation-factory/index.html">IInAppMessageAnimationFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-animation-factory/index.html">DefaultInAppMessageAnimationFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-animation-factory/index.html">IInAppMessageAnimationFactory</a></div></div></div>
               </div>
             </div>
           </div>
@@ -76,7 +85,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-full-view-factory/index.html">DefaultInAppMessageFullViewFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-full-view-factory/index.html">DefaultInAppMessageFullViewFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a></div></div></div>
               </div>
             </div>
           </div>
@@ -91,7 +100,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-html-full-view-factory/index.html">DefaultInAppMessageHtmlFullViewFactory</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">inAppMessageWebViewClientListener<span class="token operator">: </span><a href="../com.braze.ui.inappmessage.listeners/-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a></span></span><span class="token punctuation">)</span> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-html-full-view-factory/index.html">DefaultInAppMessageHtmlFullViewFactory</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">inAppMessageWebViewClientListener<span class="token operator">: </span><a href="../com.braze.ui.inappmessage.listeners/-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a></span></span><span class="token punctuation">)</span> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a></div></div></div>
               </div>
             </div>
           </div>
@@ -106,7 +115,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-html-view-factory/index.html">DefaultInAppMessageHtmlViewFactory</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">inAppMessageWebViewClientListener<span class="token operator">: </span><a href="../com.braze.ui.inappmessage.listeners/-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a></span></span><span class="token punctuation">)</span> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">An <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a> for <a href="../com.braze.models.inappmessage/-in-app-message-html/index.html">InAppMessageHtml</a> messages.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-html-view-factory/index.html">DefaultInAppMessageHtmlViewFactory</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">inAppMessageWebViewClientListener<span class="token operator">: </span><a href="../com.braze.ui.inappmessage.listeners/-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a></span></span><span class="token punctuation">)</span> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a></div><div class="brief "><p class="paragraph">An <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a> for <a href="../com.braze.models.inappmessage/-in-app-message-html/index.html">InAppMessageHtml</a> messages.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -121,7 +130,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-modal-view-factory/index.html">DefaultInAppMessageModalViewFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-modal-view-factory/index.html">DefaultInAppMessageModalViewFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a></div></div></div>
               </div>
             </div>
           </div>
@@ -136,7 +145,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-slideup-view-factory/index.html">DefaultInAppMessageSlideupViewFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-slideup-view-factory/index.html">DefaultInAppMessageSlideupViewFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-factory/index.html">IInAppMessageViewFactory</a></div></div></div>
               </div>
             </div>
           </div>
@@ -151,7 +160,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-view-wrapper-factory/index.html">DefaultInAppMessageViewWrapperFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-wrapper-factory/index.html">IInAppMessageViewWrapperFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The default <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-wrapper-factory/index.html">IInAppMessageViewWrapperFactory</a> that returns an instance of <a href="../com.braze.ui.inappmessage/-default-in-app-message-view-wrapper/index.html">DefaultInAppMessageViewWrapper</a>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-view-wrapper-factory/index.html">DefaultInAppMessageViewWrapperFactory</a> : <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-wrapper-factory/index.html">IInAppMessageViewWrapperFactory</a></div><div class="brief "><p class="paragraph">The default <a href="../com.braze.ui.inappmessage/-i-in-app-message-view-wrapper-factory/index.html">IInAppMessageViewWrapperFactory</a> that returns an instance of <a href="../com.braze.ui.inappmessage/-default-in-app-message-view-wrapper/index.html">DefaultInAppMessageViewWrapper</a>.</p></div></div></div>
               </div>
             </div>
           </div>

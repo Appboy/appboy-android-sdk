@@ -6,10 +6,18 @@
     <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
 <script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../styles/style.css" rel="Stylesheet">
 <link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
@@ -21,6 +29,7 @@ if(savedDarkMode === true){
 <script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
 <div class="navigation-wrapper" id="navigation-wrapper">
@@ -31,7 +40,7 @@ if(savedDarkMode === true){
             </a>
     </div>
     <div>
-24.0.0    </div>
+24.1.0    </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
@@ -43,9 +52,9 @@ if(savedDarkMode === true){
     </div>
     <div id="main">
 <div class="main-content" id="content" pageIds="braze-android-sdk::com.braze.ui.inappmessage.listeners////PointingToDeclaration//-1725759721">
-  <div class="breadcrumbs"><a href="../../index.html">braze-android-sdk</a><span class="delimiter">/</span><a href="index.html">com.braze.ui.inappmessage.listeners</a></div>
+  <div class="breadcrumbs"><a href="../../index.html">braze-android-sdk</a><span class="delimiter">/</span><span class="current">com.braze.ui.inappmessage.listeners</span></div>
   <div class="cover ">
-    <h1 class="cover"><span><span>Package</span></span> <span>com.</span><wbr></wbr><span>braze.</span><wbr></wbr><span>ui.</span><wbr></wbr><span>inappmessage.</span><wbr></wbr><span>listeners</span></h1>
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
@@ -61,7 +70,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-html-in-app-message-action-listener/index.html">DefaultHtmlInAppMessageActionListener</a> : <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-html-in-app-message-action-listener/index.html">DefaultHtmlInAppMessageActionListener</a> : <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a></div></div></div>
               </div>
             </div>
           </div>
@@ -76,7 +85,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-manager-listener/index.html">DefaultInAppMessageManagerListener</a> : <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Default implementation of <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a></p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-manager-listener/index.html">DefaultInAppMessageManagerListener</a> : <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a></div><div class="brief "><p class="paragraph">Default implementation of <a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a></p></div></div></div>
               </div>
             </div>
           </div>
@@ -91,7 +100,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-view-lifecycle-listener/index.html">DefaultInAppMessageViewLifecycleListener</a> : <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-view-lifecycle-listener/index.html">DefaultInAppMessageViewLifecycleListener</a> : <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a></div></div></div>
               </div>
             </div>
           </div>
@@ -106,7 +115,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-web-view-client-listener/index.html">DefaultInAppMessageWebViewClientListener</a> : <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-default-in-app-message-web-view-client-listener/index.html">DefaultInAppMessageWebViewClientListener</a> : <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a></div></div></div>
               </div>
             </div>
           </div>
@@ -121,7 +130,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a> allows for the overriding of the default Braze display handling and setting custom behavior during the display of HTML In-App Messages.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a></div><div class="brief "><p class="paragraph">The <a href="-i-html-in-app-message-action-listener/index.html">IHtmlInAppMessageActionListener</a> allows for the overriding of the default Braze display handling and setting custom behavior during the display of HTML In-App Messages.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -136,7 +145,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The IInAppMessageManagerListener returns the in-app message at specific events in its control flow and gives the host app the option of overriding Braze's default display handling and implementing its own custom behavior.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-manager-listener/index.html">IInAppMessageManagerListener</a></div><div class="brief "><p class="paragraph">The IInAppMessageManagerListener returns the in-app message at specific events in its control flow and gives the host app the option of overriding Braze's default display handling and implementing its own custom behavior.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -151,7 +160,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph"><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a> returns the in-app message view at specific events in its display lifecycle for potential further processing and modification.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a></div><div class="brief "><p class="paragraph"><a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a> returns the in-app message view at specific events in its display lifecycle for potential further processing and modification.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -166,7 +175,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a> is called at specific events during the display of an Html In-App Message. Button clicks that occur inside an HTML In-App Message are routed to this listener and not the <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a>. However, the display lifecycle of the HTML In-App Message is still handled by the <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a></div><div class="brief "><p class="paragraph">The <a href="-i-in-app-message-web-view-client-listener/index.html">IInAppMessageWebViewClientListener</a> is called at specific events during the display of an Html In-App Message. Button clicks that occur inside an HTML In-App Message are routed to this listener and not the <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a>. However, the display lifecycle of the HTML In-App Message is still handled by the <a href="-i-in-app-message-view-lifecycle-listener/index.html">IInAppMessageViewLifecycleListener</a>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -181,7 +190,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-i-web-view-client-state-listener/index.html">IWebViewClientStateListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-i-web-view-client-state-listener/index.html">IWebViewClientStateListener</a></div></div></div>
               </div>
             </div>
           </div>
@@ -196,7 +205,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">A <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">android.view.View.OnTouchListener</a> that makes any <a href="https://developer.android.com/reference/kotlin/android/view/View.html">android.view.View</a> dismissable when the user swipes (drags her finger) horizontally across the view.</div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a></div><div class="brief ">A <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">android.view.View.OnTouchListener</a> that makes any <a href="https://developer.android.com/reference/kotlin/android/view/View.html">android.view.View</a> dismissable when the user swipes (drags her finger) horizontally across the view.</div></div></div>
               </div>
             </div>
           </div>
@@ -211,7 +220,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-touch-aware-swipe-dismiss-touch-listener/index.html">TouchAwareSwipeDismissTouchListener</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;token<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;callbacks<span class="token operator">: </span><a href="-swipe-dismiss-touch-listener/-dismiss-callbacks/index.html">SwipeDismissTouchListener.DismissCallbacks</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Adds touch events to the SwipeDismissTouchListener.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-touch-aware-swipe-dismiss-touch-listener/index.html">TouchAwareSwipeDismissTouchListener</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">token<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">callbacks<span class="token operator">: </span><a href="-swipe-dismiss-touch-listener/-dismiss-callbacks/index.html">SwipeDismissTouchListener.DismissCallbacks</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-swipe-dismiss-touch-listener/index.html">SwipeDismissTouchListener</a></div><div class="brief "><p class="paragraph">Adds touch events to the SwipeDismissTouchListener.</p></div></div></div>
               </div>
             </div>
           </div>

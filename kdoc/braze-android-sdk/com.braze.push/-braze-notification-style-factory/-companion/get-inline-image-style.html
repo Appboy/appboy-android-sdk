@@ -6,10 +6,18 @@
     <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
 <script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../../../styles/style.css" rel="Stylesheet">
 <link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
@@ -21,6 +29,7 @@ if(savedDarkMode === true){
 <script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
 <div class="navigation-wrapper" id="navigation-wrapper">
@@ -31,7 +40,7 @@ if(savedDarkMode === true){
             </a>
     </div>
     <div>
-24.0.0    </div>
+24.1.0    </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
@@ -43,11 +52,11 @@ if(savedDarkMode === true){
     </div>
     <div id="main">
 <div class="main-content" id="content" pageIds="braze-android-sdk::com.braze.push/BrazeNotificationStyleFactory.Companion/getInlineImageStyle/#com.braze.models.push.BrazeNotificationPayload#androidx.core.app.NotificationCompat.Builder/PointingToDeclaration//-1725759721">
-  <div class="breadcrumbs"><a href="../../../../index.html">braze-android-sdk</a><span class="delimiter">/</span><a href="../../index.html">com.braze.push</a><span class="delimiter">/</span><a href="../index.html">BrazeNotificationStyleFactory</a><span class="delimiter">/</span><a href="index.html">Companion</a><span class="delimiter">/</span><a href="get-inline-image-style.html">getInlineImageStyle</a></div>
+  <div class="breadcrumbs"><a href="../../../../index.html">braze-android-sdk</a><span class="delimiter">/</span><a href="../../index.html">com.braze.push</a><span class="delimiter">/</span><a href="../index.html">BrazeNotificationStyleFactory</a><span class="delimiter">/</span><a href="index.html">Companion</a><span class="delimiter">/</span><span class="current">getInlineImageStyle</span></div>
   <div class="cover ">
     <h1 class="cover"><span>get</span><wbr></wbr><span>Inline</span><wbr></wbr><span>Image</span><wbr></wbr><span><span>Style</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation">RequiresApi</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">23</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-inline-image-style.html"><span class="token function">getInlineImageStyle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">payload<span class="token operator">: </span><a href="../../../com.braze.models.push/-braze-notification-payload/index.html">BrazeNotificationPayload</a><span class="token punctuation">, </span></span><span class="parameter ">notificationBuilder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/NotificationCompat.Builder.html">NotificationCompat.Builder</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/NotificationCompat.Style.html">NotificationCompat.Style</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This method sets a fully custom <a href="https://developer.android.com/reference/kotlin/android/widget/RemoteViews.RemoteView.html">android.widget.RemoteViews.RemoteView</a> to render the notification.</p><p class="paragraph">In the successful case, a <span data-unresolved-link="com.braze.push/BrazeNotificationStyleFactory.NoOpSentinelStyle///PointingToDeclaration/">NoOpSentinelStyle</span> is returned. In the failure case (image bitmap is null, system information not found, etc.), a null style is returned.</p></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android-sdk-ui:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">23</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-inline-image-style.html"><span class="token function">getInlineImageStyle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">payload<span class="token operator">: </span><a href="../../../com.braze.models.push/-braze-notification-payload/index.html">BrazeNotificationPayload</a><span class="token punctuation">, </span></span><span class="parameter ">notificationBuilder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/NotificationCompat.Builder.html">NotificationCompat.Builder</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/NotificationCompat.Style.html">NotificationCompat.Style</a><span class="token operator">?</span></div><p class="paragraph">This method sets a fully custom <a href="https://developer.android.com/reference/kotlin/android/widget/RemoteViews.RemoteView.html">android.widget.RemoteViews.RemoteView</a> to render the notification.</p><p class="paragraph">In the successful case, a <span data-unresolved-link="com.braze.push/BrazeNotificationStyleFactory.NoOpSentinelStyle///PointingToDeclaration/">NoOpSentinelStyle</span> is returned. In the failure case (image bitmap is null, system information not found, etc.), a null style is returned.</p></div></div>
 </div>
       <div class="footer">
         <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
