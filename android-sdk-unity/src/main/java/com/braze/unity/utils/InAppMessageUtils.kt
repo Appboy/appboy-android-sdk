@@ -1,4 +1,4 @@
-package com.appboy.unity.utils
+package com.braze.unity.utils
 
 import android.content.Context
 import com.braze.Braze.Companion.getInstance

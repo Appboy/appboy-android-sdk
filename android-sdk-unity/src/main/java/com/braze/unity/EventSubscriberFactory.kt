@@ -1,7 +1,7 @@
-package com.appboy.unity
+package com.braze.unity
 
 import com.braze.events.FeedUpdatedEvent
-import com.appboy.unity.configuration.UnityConfigurationProvider
+import com.braze.unity.configuration.UnityConfigurationProvider
 import com.braze.enums.BrazePushEventType
 import com.braze.events.BrazePushEvent
 import com.braze.events.BrazeSdkAuthenticationErrorEvent
@@ -10,11 +10,11 @@ import com.braze.events.IEventSubscriber
 import com.braze.events.InAppMessageEvent
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.BrazeLogger.getBrazeLogTag
-import com.appboy.unity.utils.MessagingUtils.sendContentCardsUpdatedEventToUnity
-import com.appboy.unity.utils.MessagingUtils.sendFeedUpdatedEventToUnity
-import com.appboy.unity.utils.MessagingUtils.sendInAppMessageReceivedMessage
-import com.appboy.unity.utils.MessagingUtils.sendPushEventToUnity
-import com.appboy.unity.utils.MessagingUtils.sendSdkAuthErrorEventToUnity
+import com.braze.unity.utils.MessagingUtils.sendContentCardsUpdatedEventToUnity
+import com.braze.unity.utils.MessagingUtils.sendFeedUpdatedEventToUnity
+import com.braze.unity.utils.MessagingUtils.sendInAppMessageReceivedMessage
+import com.braze.unity.utils.MessagingUtils.sendPushEventToUnity
+import com.braze.unity.utils.MessagingUtils.sendSdkAuthErrorEventToUnity
 
 object EventSubscriberFactory {
     private val TAG = getBrazeLogTag(EventSubscriberFactory::class.java)

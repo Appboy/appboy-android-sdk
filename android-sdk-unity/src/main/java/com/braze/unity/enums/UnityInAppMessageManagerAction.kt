@@ -1,4 +1,4 @@
-package com.appboy.unity.enums
+package com.braze.unity.enums
 
 import com.braze.ui.inappmessage.InAppMessageOperation
 

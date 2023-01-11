@@ -1,4 +1,4 @@
-package com.appboy.unity.utils
+package com.braze.unity.utils
 
 import android.os.Bundle
 import com.braze.events.FeedUpdatedEvent

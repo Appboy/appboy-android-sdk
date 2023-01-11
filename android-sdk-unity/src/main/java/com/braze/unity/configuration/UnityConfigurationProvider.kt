@@ -1,7 +1,7 @@
-package com.appboy.unity.configuration
+package com.braze.unity.configuration
 
 import android.content.Context
-import com.appboy.unity.enums.UnityMessageType
+import com.braze.unity.enums.UnityMessageType
 import com.braze.configuration.CachedConfigurationProvider
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.ui.inappmessage.InAppMessageOperation

@@ -1,20 +1,20 @@
-package com.appboy.unity.prime31compatible
+package com.braze.unity.prime31compatible
 
 import android.content.Intent
 import android.os.Bundle
-import com.appboy.unity.BrazeUnityActivityWrapper
+import com.braze.unity.BrazeUnityActivityWrapper
 import com.prime31.UnityPlayerActivity
 
 /**
- * Classes in the com.appboy.unity.prime31compatible package provide support for Prime31 plugins. If you
+ * Classes in the com.braze.unity.prime31compatible package provide support for Prime31 plugins. If you
  * are using any Prime31 plugins, you must use the classes in this package INSTEAD of the classes used
- * in the com.appboy.unity package.
+ * in the com.braze.unity package.
  *
  * This is a wrapper subclass of the [UnityPlayerActivity] class. It calls the necessary Braze methods
  * to ensure that analytics are collected and that push notifications are properly forwarded to
  * the Unity application.
  */
-open class AppboyUnityPlayerActivity : UnityPlayerActivity() {
+open class BrazeUnityPlayerActivity : UnityPlayerActivity() {
     private lateinit var brazeUnityActivityWrapper: BrazeUnityActivityWrapper
 
     override fun onCreate(savedInstanceState: Bundle?) {

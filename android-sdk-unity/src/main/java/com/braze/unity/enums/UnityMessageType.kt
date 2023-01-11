@@ -1,4 +1,4 @@
-package com.appboy.unity.enums
+package com.braze.unity.enums
 
 /**
  * Types of messages that Braze can be configured to send to a GameObject method at runtime.

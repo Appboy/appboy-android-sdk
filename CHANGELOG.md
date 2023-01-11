@@ -1,3 +1,10 @@
+## 24.1.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.1.0)
+
+##### Added
+- Added `BrazeActivityLifecycleCallbackListener.registerOnApplication()` which allows for registering the lifecycle callback listener from any `Context`.
+
 ## 24.0.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.0.0)

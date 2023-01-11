@@ -1,4 +1,4 @@
-package com.appboy.unity
+package com.braze.unity
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +10,9 @@ import com.unity3d.player.UnityPlayerActivity
  * the Unity application.
  *
  * NOTE: This Activity is not compatible with Prime31 plugins. If you are using any Prime31 plugins, you
- * must use the [AppboyUnityPlayerActivity] in the com.appboy.unity.prime31compatible package instead.
+ * must use the [BrazeUnityPlayerActivity] in the com.braze.unity.prime31compatible package instead.
  */
-open class AppboyUnityPlayerActivity : UnityPlayerActivity() {
+open class BrazeUnityPlayerActivity : UnityPlayerActivity() {
     private lateinit var unityActivityWrapper: BrazeUnityActivityWrapper
 
     override fun onCreate(savedInstanceState: Bundle?) {

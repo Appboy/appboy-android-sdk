@@ -1,13 +1,13 @@
-package com.appboy.unity
+package com.braze.unity
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.appboy.unity.configuration.UnityConfigurationProvider
-import com.appboy.unity.enums.UnityInAppMessageManagerAction
-import com.appboy.unity.utils.MessagingUtils
-import com.appboy.unity.utils.MessagingUtils.BrazeInternalComponentMethod
+import com.braze.unity.configuration.UnityConfigurationProvider
+import com.braze.unity.enums.UnityInAppMessageManagerAction
+import com.braze.unity.utils.MessagingUtils
+import com.braze.unity.utils.MessagingUtils.BrazeInternalComponentMethod
 import com.braze.Braze
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.models.inappmessage.MessageButton
@@ -37,10 +37,22 @@ class BrazeUnityActivityWrapper {
         val applicationContext = activity.applicationContext
         val braze = Braze.getInstance(applicationContext)
         val config = getUnityConfigurationProvider(applicationContext)
-        braze.subscribeToNewInAppMessages(EventSubscriberFactory.createInAppMessageEventSubscriber(config))
+        braze.subscribeToNewInAppMessages(
+            EventSubscriberFactory.createInAppMessageEventSubscriber(
+                config
+            )
+        )
         braze.subscribeToFeedUpdates(EventSubscriberFactory.createFeedUpdatedEventSubscriber(config))
-        braze.subscribeToContentCardsUpdates(EventSubscriberFactory.createContentCardsEventSubscriber(config))
-        braze.subscribeToPushNotificationEvents(EventSubscriberFactory.createPushEventSubscriber(config))
+        braze.subscribeToContentCardsUpdates(
+            EventSubscriberFactory.createContentCardsEventSubscriber(
+                config
+            )
+        )
+        braze.subscribeToPushNotificationEvents(
+            EventSubscriberFactory.createPushEventSubscriber(
+                config
+            )
+        )
         braze.subscribeToSdkAuthenticationFailures(
             EventSubscriberFactory.createSdkAuthenticationFailureSubscriber(config)
         )

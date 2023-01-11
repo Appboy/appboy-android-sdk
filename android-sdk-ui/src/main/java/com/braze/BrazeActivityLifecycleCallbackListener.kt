@@ -3,9 +3,11 @@ package com.braze
 import android.app.Activity
 import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
+import android.content.Context
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import com.braze.push.NotificationTrampolineActivity
+import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.V
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.ui.inappmessage.BrazeInAppMessageManager
@@ -28,6 +30,7 @@ import com.braze.ui.inappmessage.BrazeInAppMessageManager
  * will not occur. Each class should be retrieved via [Activity.getClass].
  * If null, an empty set is used instead.
  */
+@Suppress("TooManyFunctions")
 open class BrazeActivityLifecycleCallbackListener @JvmOverloads constructor(
     private val sessionHandlingEnabled: Boolean = true,
     private val registerInAppMessageManager: Boolean = true,
@@ -153,6 +156,22 @@ open class BrazeActivityLifecycleCallbackListener @JvmOverloads constructor(
             !sessionHandlingBlocklist.contains(activityClass)
         } else {
             !inAppMessagingRegistrationBlocklist.contains(activityClass)
+        }
+    }
+
+    /**
+     * Registers this listener directly against the Application.
+     * Equivalent to:
+     *
+     * ```
+     * applicationInstance.registerActivityLifecycleCallbacks(thisListener)
+     * ```
+     */
+    fun registerOnApplication(context: Context) {
+        try {
+            (context.applicationContext as Application).registerActivityLifecycleCallbacks(this)
+        } catch (e: Exception) {
+            brazelog(priority = E, e) { "Failed to register this lifecycle callback listener directly against application class" }
         }
     }
 }
