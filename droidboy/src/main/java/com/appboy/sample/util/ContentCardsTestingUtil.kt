@@ -1,10 +1,10 @@
 package com.appboy.sample.util
 
 import android.content.Context
+import com.braze.Braze
 import com.braze.enums.CardKey
 import com.braze.enums.CardType
 import com.braze.models.cards.Card
-import com.braze.Braze
 import org.json.JSONObject
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -13,6 +13,15 @@ import java.util.concurrent.TimeUnit
 class ContentCardsTestingUtil private constructor() {
     companion object {
         private const val CARD_URL = "https://braze.com"
+
+        /**
+         * https://effigis.com/en/solutions/satellite-images/satellite-image-samples/
+         */
+        private val SUPER_HIGH_RESOLUTION_IMAGES = listOf(
+            "https://effigis.com/wp-content/uploads/2015/02/Airbus_Pleiades_50cm_8bit_RGB_Yogyakarta.jpg",
+            "https://effigis.com/wp-content/uploads/2015/02/DigitalGlobe_WorldView2_50cm_8bit_Pansharpened_RGB_DRA_Rome_Italy_2009DEC10_8bits_sub_r_1.jpg",
+            "https://effigis.com/wp-content/uploads/2015/02/GeoEye_Ikonos_1m_8bit_RGB_DRA_Oil_2005NOV25_8bits_r_1.jpg"
+        )
         private val random = Random()
 
         fun createRandomCards(context: Context, numCardsOfEachType: Int): List<Card> {
@@ -125,14 +134,24 @@ class ContentCardsTestingUtil private constructor() {
 
         private fun getRandomBoolean(): Boolean = random.nextBoolean()
 
-        private fun getNow(): Long = getNowPlusDelta(TimeUnit.MILLISECONDS, 0)
+        // Get now plus some random delta a minute into the future
+        private fun getNow(): Long = getNowPlusDelta(TimeUnit.MILLISECONDS, random.nextInt(60000).toLong())
 
         private fun getNowPlusDelta(deltaUnits: TimeUnit, delta: Long): Long = System.currentTimeMillis() + deltaUnits.toMillis(delta)
 
+        /**
+         * @return Pair of url to aspect ratio
+         */
         private fun getRandomImageUrl(): Pair<String, Double> {
-            val height = random.nextInt(500) + 200
-            val width = random.nextInt(500) + 200
-            return Pair("https://picsum.photos/seed/${System.nanoTime()}/$width/$height", width.toDouble() / height.toDouble())
+            return if (random.nextInt(100) < 40) {
+                // Return a SUPER high resolution image
+                val url = "${SUPER_HIGH_RESOLUTION_IMAGES.shuffled(random).first()}?q=${System.nanoTime()}"
+                Pair(url, 1.0)
+            } else {
+                val height = random.nextInt(500) + 200
+                val width = random.nextInt(500) + 200
+                Pair("https://picsum.photos/seed/${System.nanoTime()}/$width/$height", width.toDouble() / height.toDouble())
+            }
         }
 
         /**

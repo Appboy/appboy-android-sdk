@@ -1,3 +1,13 @@
+## 24.2.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.2.0)
+
+##### Changed
+- Changed the default behavior for images to more aggressively sample large images.
+  - Images will be sampled until their effective bitmap size (i.e. W x H x 4 bytes) is below 16 MB.
+  - Images will be sampled until both (and not either) the half-width and half-height of the image is less than or equal to the image destination dimensions.
+- Changed the behavior of failed Content Card requests to automatically retry on server 500 errors and SDK Authentication errors.
+
 ## 24.1.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.1.0)

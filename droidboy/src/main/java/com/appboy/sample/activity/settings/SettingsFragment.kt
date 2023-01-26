@@ -334,7 +334,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
         setClickPreference("content_card_populate_random_cards_setting_key") {
-            val randomCards = createRandomCards(context, 3)
+            val randomCards = createRandomCards(context, 5)
             Braze.getInstance(context).currentUser?.userId?.let { userId ->
                 randomCards.forEach { card ->
                     BrazeInternal.addSerializedContentCardToStorage(context, card.forJsonPut().toString(), userId)
