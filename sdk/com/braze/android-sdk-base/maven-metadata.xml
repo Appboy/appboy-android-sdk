@@ -3,8 +3,8 @@
   <groupId>com.braze</groupId>
   <artifactId>android-sdk-base</artifactId>
   <versioning>
-    <latest>24.1.0</latest>
-    <release>24.1.0</release>
+    <latest>24.2.0</latest>
+    <release>24.2.0</release>
     <versions>
       <version>14.0.0</version>
       <version>14.0.1</version>
@@ -27,7 +27,8 @@
       <version>23.3.0</version>
       <version>24.0.0</version>
       <version>24.1.0</version>
+      <version>24.2.0</version>
     </versions>
-    <lastUpdated>20230111190939</lastUpdated>
+    <lastUpdated>20230126180949</lastUpdated>
   </versioning>
 </metadata>
