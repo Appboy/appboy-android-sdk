@@ -19,6 +19,7 @@ $dokka.location:com.braze.configuration/BrazeConfig.Builder/setDeviceObjectAllow
 $dokka.location:com.braze.configuration/BrazeConfig.Builder/setDeviceObjectAllowlistEnabled/#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/-builder/set-device-object-allowlist-enabled.html
 $dokka.location:com.braze.configuration/BrazeConfig.Builder/setDeviceObjectWhitelist/#java.util.EnumSet[com.braze.enums.DeviceKey]/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/-builder/set-device-object-whitelist.html
 $dokka.location:com.braze.configuration/BrazeConfig.Builder/setDeviceObjectWhitelistEnabled/#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/-builder/set-device-object-whitelist-enabled.html
+$dokka.location:com.braze.configuration/BrazeConfig.Builder/setDoesPushStoryDismissOnClick/#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/-builder/set-does-push-story-dismiss-on-click.html
 $dokka.location:com.braze.configuration/BrazeConfig.Builder/setFirebaseCloudMessagingSenderIdKey/#kotlin.String/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/-builder/set-firebase-cloud-messaging-sender-id-key.html
 $dokka.location:com.braze.configuration/BrazeConfig.Builder/setGeofencesEnabled/#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/-builder/set-geofences-enabled.html
 $dokka.location:com.braze.configuration/BrazeConfig.Builder/setGoodNetworkDataFlushInterval/#kotlin.Int/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/-builder/set-good-network-data-flush-interval.html
@@ -59,6 +60,7 @@ $dokka.location:com.braze.configuration/BrazeConfig/defaultNotificationAccentCol
 $dokka.location:com.braze.configuration/BrazeConfig/defaultNotificationChannelDescription/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/default-notification-channel-description.html
 $dokka.location:com.braze.configuration/BrazeConfig/defaultNotificationChannelName/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/default-notification-channel-name.html
 $dokka.location:com.braze.configuration/BrazeConfig/deviceObjectAllowlist/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/device-object-allowlist.html
+$dokka.location:com.braze.configuration/BrazeConfig/doesPushStoryDismissOnClick/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/does-push-story-dismiss-on-click.html
 $dokka.location:com.braze.configuration/BrazeConfig/firebaseCloudMessagingSenderIdKey/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/firebase-cloud-messaging-sender-id-key.html
 $dokka.location:com.braze.configuration/BrazeConfig/goodNetworkInterval/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/good-network-interval.html
 $dokka.location:com.braze.configuration/BrazeConfig/greatNetworkInterval/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-config/great-network-interval.html
@@ -108,6 +110,7 @@ $dokka.location:com.braze.configuration/BrazeConfigurationProvider/defaultNotifi
 $dokka.location:com.braze.configuration/BrazeConfigurationProvider/deviceObjectAllowlist/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-configuration-provider/device-object-allowlist.html
 $dokka.location:com.braze.configuration/BrazeConfigurationProvider/deviceObjectWhitelist/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-configuration-provider/device-object-whitelist.html
 $dokka.location:com.braze.configuration/BrazeConfigurationProvider/doesHandlePushDeepLinksAutomatically/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-configuration-provider/does-handle-push-deep-links-automatically.html
+$dokka.location:com.braze.configuration/BrazeConfigurationProvider/doesPushStoryDismissOnClick/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-configuration-provider/does-push-story-dismiss-on-click.html
 $dokka.location:com.braze.configuration/BrazeConfigurationProvider/ephemeralEventKeys/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-configuration-provider/ephemeral-event-keys.html
 $dokka.location:com.braze.configuration/BrazeConfigurationProvider/firebaseCloudMessagingSenderIdKey/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-configuration-provider/firebase-cloud-messaging-sender-id-key.html
 $dokka.location:com.braze.configuration/BrazeConfigurationProvider/inAppMessageWebViewClientOnPageFinishedMaxWaitMs/#/PointingToDeclaration/braze-android-sdk/com.braze.configuration/-braze-configuration-provider/in-app-message-web-view-client-on-page-finished-max-wait-ms.html
@@ -2149,7 +2152,7 @@ $dokka.location:com.braze/BrazeUser/removeFromCustomAttributeArray/#kotlin.Strin
 $dokka.location:com.braze/BrazeUser/removeFromSubscriptionGroup/#kotlin.String/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/remove-from-subscription-group.html
 $dokka.location:com.braze/BrazeUser/setAttributionData/#com.braze.models.outgoing.AttributionData?/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-attribution-data.html
 $dokka.location:com.braze/BrazeUser/setCountry/#kotlin.String?/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-country.html
-$dokka.location:com.braze/BrazeUser/setCustomAttribute/#kotlin.String#kotlin.Any/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-attribute.html
+$dokka.location:com.braze/BrazeUser/setCustomAttribute/#kotlin.String#kotlin.Any#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-attribute.html
 $dokka.location:com.braze/BrazeUser/setCustomAttributeArray/#kotlin.String#kotlin.Array[kotlin.String?]/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-attribute-array.html
 $dokka.location:com.braze/BrazeUser/setCustomAttributeToSecondsFromEpoch/#kotlin.String#kotlin.Long/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-attribute-to-seconds-from-epoch.html
 $dokka.location:com.braze/BrazeUser/setCustomUserAttribute/#kotlin.String#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute.html
@@ -2158,6 +2161,8 @@ $dokka.location:com.braze/BrazeUser/setCustomUserAttribute/#kotlin.String#kotlin
 $dokka.location:com.braze/BrazeUser/setCustomUserAttribute/#kotlin.String#kotlin.Int/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute.html
 $dokka.location:com.braze/BrazeUser/setCustomUserAttribute/#kotlin.String#kotlin.Long/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute.html
 $dokka.location:com.braze/BrazeUser/setCustomUserAttribute/#kotlin.String#kotlin.String/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute.html
+$dokka.location:com.braze/BrazeUser/setCustomUserAttribute/#kotlin.String#org.json.JSONArray/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute.html
+$dokka.location:com.braze/BrazeUser/setCustomUserAttribute/#kotlin.String#org.json.JSONObject#kotlin.Boolean/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute.html
 $dokka.location:com.braze/BrazeUser/setCustomUserAttributeToNow/#kotlin.String/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute-to-now.html
 $dokka.location:com.braze/BrazeUser/setCustomUserAttributeToSecondsFromEpoch/#kotlin.String#kotlin.Long/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-custom-user-attribute-to-seconds-from-epoch.html
 $dokka.location:com.braze/BrazeUser/setDateOfBirth/#kotlin.Int#com.braze.enums.Month#kotlin.Int/PointingToDeclaration/braze-android-sdk/com.braze/-braze-user/set-date-of-birth.html
