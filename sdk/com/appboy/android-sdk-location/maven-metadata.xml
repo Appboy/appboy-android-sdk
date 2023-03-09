@@ -3,13 +3,14 @@
   <groupId>com.appboy</groupId>
   <artifactId>android-sdk-location</artifactId>
   <versioning>
-    <latest>24.2.0</latest>
-    <release>24.2.0</release>
+    <latest>24.3.0</latest>
+    <release>24.3.0</release>
     <versions>
       <version>24.0.0</version>
       <version>24.1.0</version>
       <version>24.2.0</version>
+      <version>24.3.0</version>
     </versions>
-    <lastUpdated>20230126181006</lastUpdated>
+    <lastUpdated>20230309194709</lastUpdated>
   </versioning>
 </metadata>
