@@ -5,6 +5,7 @@ import com.braze.events.FeedUpdatedEvent
 import com.braze.events.BrazePushEvent
 import com.braze.events.BrazeSdkAuthenticationErrorEvent
 import com.braze.events.ContentCardsUpdatedEvent
+import com.braze.events.FeatureFlagsUpdatedEvent
 import com.braze.models.inappmessage.IInAppMessage
 import com.braze.support.BrazeLogger.brazelog
 import com.braze.support.BrazeLogger.getBrazeLogTag
@@ -126,6 +127,32 @@ object MessagingUtils {
             .put("mContentCards", contentCardsUpdatedEvent.allCards.constructJsonArray())
             .put("mFromOfflineStorage", contentCardsUpdatedEvent.isFromOfflineStorage)
         brazelog(TAG) { "Sending a Content Cards update message to $unityGameObjectName:$unityCallbackFunctionName." }
+        UnityPlayer.UnitySendMessage(unityGameObjectName, unityCallbackFunctionName, json.toString())
+        return true
+    }
+
+    fun sendFeatureFlagsUpdatedEventToUnity(
+        unityGameObjectName: String?,
+        unityCallbackFunctionName: String?,
+        featureFlagsUpdatedEvent: FeatureFlagsUpdatedEvent
+    ): Boolean {
+        if (unityGameObjectName.isNullOrBlank()) {
+            brazelog(TAG) {
+                "There is no Unity GameObject configured " +
+                    "to receive Feature Flags updated event messages. Not sending the message to Unity."
+            }
+            return false
+        }
+        if (unityCallbackFunctionName.isNullOrBlank()) {
+            brazelog(TAG) {
+                "There is no Unity callback method name registered to receive Feature " +
+                    "Flags updated event messages in the braze.xml configuration file. Not sending the message to Unity."
+            }
+            return false
+        }
+        val json = JSONObject()
+            .put("featureFlags", featureFlagsUpdatedEvent.featureFlags.constructJsonArray())
+        brazelog(TAG) { "Sending Feature Flags update message to $unityGameObjectName:$unityCallbackFunctionName." }
         UnityPlayer.UnitySendMessage(unityGameObjectName, unityCallbackFunctionName, json.toString())
         return true
     }

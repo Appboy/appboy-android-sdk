@@ -37,6 +37,10 @@ class UnityConfigurationProvider(context: Context) : CachedConfigurationProvider
         get() = getStringValue(CONTENT_CARDS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY, null)
     val contentCardsUpdatedListenerCallbackMethodName: String?
         get() = getStringValue(CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY, null)
+    val featureFlagsUpdatedListenerGameObjectName: String?
+        get() = getStringValue(FEATURE_FLAGS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY, null)
+    val featureFlagsUpdatedListenerCallbackMethodName: String?
+        get() = getStringValue(FEATURE_FLAGS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY, null)
     val sdkAuthenticationFailureListenerGameObjectName: String?
         get() = getStringValue(SDK_AUTHENTICATION_FAILURE_LISTENER_GAME_OBJECT_NAME_KEY, null)
     val sdkAuthenticationFailureListenerCallbackMethodName: String?
@@ -51,6 +55,7 @@ class UnityConfigurationProvider(context: Context) : CachedConfigurationProvider
             return operation ?: InAppMessageOperation.DISPLAY_NOW
         }
 
+    @Suppress("LongMethod")
     fun configureListener(messageTypeValue: Int, gameObject: String, methodName: String) {
         val messageType = UnityMessageType.getTypeFromValue(messageTypeValue)
         if (messageType == null) {
@@ -108,6 +113,14 @@ class UnityConfigurationProvider(context: Context) : CachedConfigurationProvider
                     SDK_AUTHENTICATION_FAILURE_LISTENER_CALLBACK_METHOD_NAME_KEY, methodName
                 )
             }
+            UnityMessageType.FEATURE_FLAGS_UPDATED -> {
+                putStringIntoRuntimeConfiguration(
+                    FEATURE_FLAGS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY, gameObject
+                )
+                putStringIntoRuntimeConfiguration(
+                    FEATURE_FLAGS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY, methodName
+                )
+            }
         }
     }
 
@@ -160,6 +173,12 @@ class UnityConfigurationProvider(context: Context) : CachedConfigurationProvider
             "com_braze_content_cards_updated_listener_game_object_name"
         private const val CONTENT_CARDS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY =
             "com_braze_content_cards_updated_listener_callback_method_name"
+
+        // Feature Flags
+        private const val FEATURE_FLAGS_UPDATED_LISTENER_GAME_OBJECT_NAME_KEY =
+            "com_braze_feature_flags_updated_listener_game_object_name"
+        private const val FEATURE_FLAGS_UPDATED_LISTENER_CALLBACK_METHOD_NAME_KEY =
+            "com_braze_feature_flags_updated_listener_callback_method_name"
 
         // SDK Authentication Failure
         private const val SDK_AUTHENTICATION_FAILURE_LISTENER_GAME_OBJECT_NAME_KEY =

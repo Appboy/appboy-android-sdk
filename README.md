@@ -40,8 +40,8 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:24.2.+'
-  implementation 'com.appboy:android-sdk-location:24.2.+'
+  implementation 'com.appboy:android-sdk-ui:24.3.+'
+  implementation 'com.appboy:android-sdk-location:24.3.+'
   ...
 }
 ```
@@ -60,7 +60,7 @@ repositories {
 
 ```
 dependencies {
-  implementation 'com.appboy:android-sdk-ui:24.2.+'
+  implementation 'com.appboy:android-sdk-ui:24.3.+'
 }
 ```
 

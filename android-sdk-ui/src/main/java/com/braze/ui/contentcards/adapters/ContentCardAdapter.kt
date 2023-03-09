@@ -61,6 +61,10 @@ class ContentCardAdapter(
         // Note that the ordering of these operations is important. We can't notify of item removal until the item has
         // actually been removed. Additionally, we can only call the card action listener after the card removal
         // as per the onContentCardDismissed() specification.
+        if (isInvalidIndex(position)) {
+            brazelog { "Cannot dismiss card at index: $position in cards list of size: ${cardData.size}" }
+            return
+        }
         val removedCard = cardData.removeAt(position)
         removedCard.isDismissed = true
         notifyItemRemoved(position)
@@ -68,7 +72,7 @@ class ContentCardAdapter(
     }
 
     override fun isItemDismissable(position: Int): Boolean {
-        return if (cardData.isEmpty()) {
+        return if (cardData.isEmpty() || isInvalidIndex(position)) {
             false
         } else {
             cardData[position].isDismissibleByUser
@@ -200,7 +204,7 @@ class ContentCardAdapter(
 
     @VisibleForTesting
     fun getCardAtIndex(index: Int): Card? {
-        if (index < 0 || index >= cardData.size) {
+        if (isInvalidIndex(index)) {
             brazelog { "Cannot return card at index: $index in cards list of size: ${cardData.size}" }
             return null
         }
@@ -243,6 +247,9 @@ class ContentCardAdapter(
             card.viewed = true
         }
     }
+
+    private fun isInvalidIndex(index: Int) =
+        index < 0 || index >= cardData.size
 
     /**
      * A [Card] based implementation of the [DiffUtil.Callback]. This implementation assumes cards with the same id

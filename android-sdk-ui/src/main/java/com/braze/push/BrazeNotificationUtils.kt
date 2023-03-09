@@ -928,6 +928,14 @@ object BrazeNotificationUtils {
                     intent.getStringExtra(Constants.BRAZE_CAMPAIGN_ID),
                     intent.getStringExtra(Constants.BRAZE_STORY_PAGE_ID)
                 )
+
+            val appConfigurationProvider = BrazeConfigurationProvider(context)
+
+            val notificationId = intent.getIntExtra(Constants.BRAZE_PUSH_NOTIFICATION_ID, 0)
+            if (appConfigurationProvider.doesPushStoryDismissOnClick && notificationId != 0) {
+                cancelNotification(context, notificationId)
+            }
+
             val deepLink = intent.getStringExtra(Constants.BRAZE_ACTION_URI_KEY)
             if (!deepLink.isNullOrBlank()) {
                 // Set the global deep link value to the correct action's deep link.
@@ -941,7 +949,7 @@ object BrazeNotificationUtils {
                 intent.removeExtra(Constants.BRAZE_PUSH_DEEP_LINK_KEY)
             }
             sendNotificationOpenedBroadcast(context, intent)
-            val appConfigurationProvider = BrazeConfigurationProvider(context)
+
             if (appConfigurationProvider.doesHandlePushDeepLinksAutomatically) {
                 routeUserWithNotificationOpenedIntent(context, intent)
             } else {

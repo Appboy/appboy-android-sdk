@@ -1,6 +1,22 @@
+## 24.3.0
+
+[Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.3.0)
+
+##### Fixed
+- Fixed an issue where the SDK would attempt to to access the visual service WindowManager from non-visual contexts, resulting in benign StrictMode errors.
+- Added `@JvmStatic` to `com.braze.push.BrazeHuaweiPushHandler.handleHmsRemoteMessageData()`.
+- Fixed an issue where notification extra data was not being passed along in Push Story main image clicks.
+- Fixed an issue where ContentCardAdapter was not properly handling bad indexes being passed in.
+
+##### Added
+- Added the ability to configure dismissal of Push Stories on click by adding `BrazeConfig.setDoesPushStoryDismissOnClick()` or `<bool name="com_braze_does_push_story_dismiss_on_click">true</bool>` to your `braze.xml`. Defaults to true.
+
 ## 24.2.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.2.0)
+
+##### Added
+- Added support for the upcoming Braze Feature Flags product.
 
 ##### Changed
 - Changed the default behavior for images to more aggressively sample large images.

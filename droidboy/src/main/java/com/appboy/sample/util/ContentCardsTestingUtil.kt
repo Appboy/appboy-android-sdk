@@ -40,23 +40,61 @@ class ContentCardsTestingUtil private constructor() {
             return cards
         }
 
+        fun getRemovedCardJson(id: String): JSONObject {
+            val ccp = CardKey.Provider(true)
+            return JSONObject(
+                mapOf(
+                    ccp.getKey(CardKey.ID) to id,
+                    ccp.getKey(CardKey.REMOVED) to true,
+                )
+            )
+        }
+
+        fun createCaptionedImageCardJson(
+            id: String,
+            title: String,
+            description: String,
+            imageUrl: String
+        ): JSONObject {
+            val ccp = CardKey.Provider(true)
+
+            // Get the default fields
+            val defaultMapping = getDefaultCardFields(ccp, CardType.CAPTIONED_IMAGE)
+
+            defaultMapping.mergeWith(
+                mapOf(
+                    ccp.getKey(CardKey.ID) to id,
+                    ccp.getKey(CardKey.CAPTIONED_IMAGE_IMAGE) to imageUrl,
+                    ccp.getKey(CardKey.CAPTIONED_IMAGE_ASPECT_RATIO) to 1.0,
+                    ccp.getKey(CardKey.CAPTIONED_IMAGE_TITLE) to title,
+                    ccp.getKey(CardKey.CAPTIONED_IMAGE_DESCRIPTION) to description,
+                    ccp.getKey(CardKey.PINNED) to true,
+                    ccp.getKey(CardKey.DISMISSIBLE) to false,
+                    ccp.getKey(CardKey.CREATED) to System.currentTimeMillis()
+                )
+            )
+            return JSONObject(defaultMapping.toMap())
+        }
+
+        private fun getDefaultCardFields(ccp: CardKey.Provider, cardType: CardType): MutableMap<String, Any> = mutableMapOf(
+            ccp.getKey(CardKey.ID) to getRandomString(),
+            ccp.getKey(CardKey.TYPE) to ccp.getServerKeyFromCardType(cardType)!!,
+            ccp.getKey(CardKey.VIEWED) to getRandomBoolean(),
+            ccp.getKey(CardKey.CREATED) to getNow(),
+            ccp.getKey(CardKey.EXPIRES_AT) to getNowPlusDelta(TimeUnit.DAYS, 30),
+            ccp.getKey(CardKey.OPEN_URI_IN_WEBVIEW) to getRandomBoolean(),
+            ccp.getKey(CardKey.DISMISSED) to false,
+            ccp.getKey(CardKey.REMOVED) to false,
+            ccp.getKey(CardKey.PINNED) to getRandomBoolean(),
+            ccp.getKey(CardKey.DISMISSIBLE) to getRandomBoolean(),
+            ccp.getKey(CardKey.IS_TEST) to true
+        )
+
         private fun createRandomCard(context: Context, cardType: CardType): Card? {
             val ccp = CardKey.Provider(true)
 
             // Set the default fields
-            val defaultMapping = mutableMapOf<String, Any>(
-                ccp.getKey(CardKey.ID) to getRandomString(),
-                ccp.getKey(CardKey.TYPE) to ccp.getServerKeyFromCardType(cardType)!!,
-                ccp.getKey(CardKey.VIEWED) to getRandomBoolean(),
-                ccp.getKey(CardKey.CREATED) to getNow(),
-                ccp.getKey(CardKey.EXPIRES_AT) to getNowPlusDelta(TimeUnit.DAYS, 30),
-                ccp.getKey(CardKey.OPEN_URI_IN_WEBVIEW) to getRandomBoolean(),
-                ccp.getKey(CardKey.DISMISSED) to false,
-                ccp.getKey(CardKey.REMOVED) to false,
-                ccp.getKey(CardKey.PINNED) to getRandomBoolean(),
-                ccp.getKey(CardKey.DISMISSIBLE) to getRandomBoolean(),
-                ccp.getKey(CardKey.IS_TEST) to true
-            )
+            val defaultMapping = getDefaultCardFields(ccp, cardType)
 
             // Based on the card type, add new fields
             val title = "Title"

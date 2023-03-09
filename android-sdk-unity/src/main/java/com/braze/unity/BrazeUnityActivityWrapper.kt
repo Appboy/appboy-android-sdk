@@ -48,6 +48,11 @@ class BrazeUnityActivityWrapper {
                 config
             )
         )
+        braze.subscribeToFeatureFlagsUpdates(
+            EventSubscriberFactory.createFeatureFlagsEventSubscriber(
+                config
+            )
+        )
         braze.subscribeToPushNotificationEvents(
             EventSubscriberFactory.createPushEventSubscriber(
                 config

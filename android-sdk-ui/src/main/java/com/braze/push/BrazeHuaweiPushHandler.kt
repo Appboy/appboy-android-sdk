@@ -20,6 +20,7 @@ object BrazeHuaweiPushHandler {
      * @return true iff the Huawei data payload originated from Braze and was consumed. Returns false
      * if the data payload did not originate from Braze or otherwise could not be forwarded or processed.
      */
+    @JvmStatic
     fun handleHmsRemoteMessageData(
         context: Context,
         hmsRemoteMessageData: Map<String, String>?

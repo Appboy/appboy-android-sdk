@@ -22,7 +22,7 @@ ext {
   buildToolsVersion = '33.0.0'
   minSdkVersion = 16
   targetSdkVersion = 33
-  appVersionName = '24.2.0'
+  appVersionName = '24.3.0'
 }
 
 subprojects {
@@ -34,5 +34,5 @@ subprojects {
   }
 
   group = 'com.appboy'
-  version = '24.2.0'
+  version = '24.3.0'
 }

@@ -23,8 +23,10 @@ import android.webkit.WebView
 import androidx.annotation.RequiresApi
 import androidx.multidex.MultiDex
 import com.appboy.sample.util.BrazeActionTestingUtil
+import com.appboy.sample.util.ContentCardsTestingUtil
 import com.braze.Braze
 import com.braze.BrazeActivityLifecycleCallbackListener
+import com.braze.BrazeInternal
 import com.braze.configuration.BrazeConfig
 import com.braze.coroutine.BrazeCoroutineScope
 import com.braze.enums.BrazeSdkMetadata
@@ -51,6 +53,9 @@ class DroidboyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if (BuildConfig.DEBUG && BuildConfig.STRICTMODE_ENABLED) {
+            activateStrictMode()
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true)
         }
@@ -78,9 +83,6 @@ class DroidboyApplication : Application() {
             .getInt(getString(R.string.current_log_level), Log.VERBOSE)
         val sharedPreferences = applicationContext.getSharedPreferences(getString(R.string.shared_prefs_location), Context.MODE_PRIVATE)
 
-        if (BuildConfig.DEBUG && BuildConfig.STRICTMODE_ENABLED) {
-            activateStrictMode()
-        }
         Braze.configure(this, null)
         val brazeConfigBuilder = BrazeConfig.Builder()
         brazeConfigBuilder.setSdkMetadata(EnumSet.of(BrazeSdkMetadata.MANUAL))
@@ -109,6 +111,7 @@ class DroidboyApplication : Application() {
                 """.trimIndent()
             }
         }
+        listenForSpecialTabFeatureFlag()
     }
 
     override fun attachBaseContext(context: Context?) {
@@ -255,7 +258,7 @@ class DroidboyApplication : Application() {
         // The okhttp library used on most https calls trips the detectUntaggedSockets() check
         // com.google.android.gms.internal trips both the detectLeakedClosableObjects() and detectLeakedSqlLiteObjects() checks
         val vmPolicyBuilder = VmPolicy.Builder()
-            .detectActivityLeaks()
+            .detectAll()
             .penaltyLog()
 
         // Note that some detections require a specific sdk version or higher to enable.
@@ -314,6 +317,35 @@ class DroidboyApplication : Application() {
         firebaseCrashlytics.setCustomKey("build_time", BuildConfig.BUILD_TIME)
         firebaseCrashlytics.setCustomKey("version_code", BuildConfig.VERSION_CODE)
         firebaseCrashlytics.setCustomKey("version_name", BuildConfig.VERSION_NAME)
+    }
+
+    /**
+     * Listens for any important Feature Flag updates to this application.
+     */
+    private fun listenForSpecialTabFeatureFlag() {
+        Braze.getInstance(applicationContext).subscribeToFeatureFlagsUpdates {
+            val specialTabFeatureFlagId = "helpful_office_tool_droidboy_tab"
+            val specialTabFlag = Braze.getInstance(applicationContext).getFeatureFlag(specialTabFeatureFlagId)
+
+            if (specialTabFlag.enabled) {
+                val imageUrl = specialTabFlag.getStringProperty("image_url")
+                    ?: "https://raw.githubusercontent.com/Appboy/appboy-android-sdk/master/braze-logo.png"
+                val title = specialTabFlag.getStringProperty("helpful_title") ?: "title"
+                val desc = specialTabFlag.getStringProperty("helpful_description") ?: "description"
+                val card = ContentCardsTestingUtil.createCaptionedImageCardJson(specialTabFlag.id, title, desc, imageUrl)
+
+                // Add our data to the Content Card feed
+                Braze.getInstance(applicationContext).getCurrentUser { brazeUser ->
+                    BrazeInternal.addSerializedContentCardToStorage(applicationContext, card.toString(), brazeUser.userId)
+                }
+            } else {
+                // Remove the card if disabled
+                val card = ContentCardsTestingUtil.getRemovedCardJson(specialTabFlag.id)
+                Braze.getInstance(applicationContext).getCurrentUser { brazeUser ->
+                    BrazeInternal.addSerializedContentCardToStorage(applicationContext, card.toString(), brazeUser.userId)
+                }
+            }
+        }
     }
 
     companion object {

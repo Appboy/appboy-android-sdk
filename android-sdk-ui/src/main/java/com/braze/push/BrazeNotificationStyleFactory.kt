@@ -14,15 +14,15 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationCompat
-import com.braze.Constants
-import com.braze.models.push.BrazeNotificationPayload
-import com.braze.models.push.BrazeNotificationPayload.PushStoryPage
-import com.braze.ui.R
 import com.braze.Braze
+import com.braze.Constants
 import com.braze.IBrazeDeeplinkHandler.IntentFlagPurpose
 import com.braze.configuration.BrazeConfigurationProvider
 import com.braze.enums.BrazeDateFormat
 import com.braze.enums.BrazeViewBounds
+import com.braze.models.push.BrazeNotificationPayload
+import com.braze.models.push.BrazeNotificationPayload.PushStoryPage
+import com.braze.push.BrazeNotificationUtils.getNotificationId
 import com.braze.push.support.getHtmlSpannedTextIfEnabled
 import com.braze.support.BrazeLogger.Priority.E
 import com.braze.support.BrazeLogger.Priority.I
@@ -35,6 +35,7 @@ import com.braze.support.getDensityDpi
 import com.braze.support.getDisplayWidthPixels
 import com.braze.support.getPixelsFromDensityAndDp
 import com.braze.ui.BrazeDeeplinkHandler.Companion.getInstance
+import com.braze.ui.R
 
 open class BrazeNotificationStyleFactory {
     /**
@@ -414,12 +415,16 @@ open class BrazeNotificationStyleFactory {
 
         private fun createStoryPageClickedPendingIntent(
             context: Context,
+            payload: BrazeNotificationPayload,
             pushStoryPage: PushStoryPage
         ): PendingIntent {
             val storyClickedIntent = Intent(Constants.BRAZE_STORY_CLICKED_ACTION)
                 .setClass(context, NotificationTrampolineActivity::class.java)
             storyClickedIntent.flags =
                 storyClickedIntent.flags or getInstance().getIntentFlags(IntentFlagPurpose.NOTIFICATION_PUSH_STORY_PAGE_CLICK)
+            payload.notificationExtras.let {
+                storyClickedIntent.putExtras(it)
+            }
             storyClickedIntent.putExtra(Constants.BRAZE_ACTION_URI_KEY, pushStoryPage.deeplink)
             storyClickedIntent.putExtra(
                 Constants.BRAZE_ACTION_USE_WEBVIEW_KEY,
@@ -427,6 +432,8 @@ open class BrazeNotificationStyleFactory {
             )
             storyClickedIntent.putExtra(Constants.BRAZE_STORY_PAGE_ID, pushStoryPage.storyPageId)
             storyClickedIntent.putExtra(Constants.BRAZE_CAMPAIGN_ID, pushStoryPage.campaignId)
+            val notificationId = getNotificationId(payload)
+            storyClickedIntent.putExtra(Constants.BRAZE_PUSH_NOTIFICATION_ID, notificationId)
             return PendingIntent.getActivity(
                 context,
                 getRequestCode(),
@@ -542,7 +549,7 @@ open class BrazeNotificationStyleFactory {
 
             // Set up story clicked intent
             val storyClickedPendingIntent =
-                createStoryPageClickedPendingIntent(context, pushStoryPage)
+                createStoryPageClickedPendingIntent(context, payload, pushStoryPage)
             view.setOnClickPendingIntent(
                 R.id.com_braze_story_relative_layout,
                 storyClickedPendingIntent

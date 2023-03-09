@@ -24,6 +24,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.appboy.sample.featureflag.view.FeatureFlagFragment
 import com.appboy.sample.FeedCategoriesFragment
 import com.appboy.sample.FeedCategoriesFragment.NoticeDialogListener
 import com.appboy.sample.InAppMessageTesterFragment
@@ -364,6 +365,10 @@ class DroidBoyActivity : AppCompatActivity(), NoticeDialogListener {
             FragmentInfo(
                 { MainFragment() },
                 "Main"
+            ),
+            FragmentInfo(
+                { FeatureFlagFragment() },
+                "Flags"
             ),
             FragmentInfo(
                 { InAppMessageTesterFragment() },
