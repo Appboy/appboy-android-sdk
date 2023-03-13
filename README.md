@@ -1,3 +1,8 @@
+This repository has been permanently moved to https://github.com/braze-inc/braze-android-sdk.
+
+-----
+
+
 ![Braze Logo](https://github.com/Appboy/appboy-android-sdk/blob/master/braze-logo.png)
 
 # Android SDK
