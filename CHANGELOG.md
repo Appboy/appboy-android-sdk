@@ -1,3 +1,5 @@
+# :warning: This repository has been permanently moved to [https://github.com/braze-inc/braze-android-sdk](https://github.com/braze-inc/android-sdk/blob/develop/public/root-directory-files/CHANGELOG.md)
+
 ## 24.3.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.3.0)
@@ -7,6 +9,7 @@
 - Added `@JvmStatic` to `com.braze.push.BrazeHuaweiPushHandler.handleHmsRemoteMessageData()`.
 - Fixed an issue where notification extra data was not being passed along in Push Story main image clicks.
 - Fixed an issue where ContentCardAdapter was not properly handling bad indexes being passed in.
+- Fixed an issue where a user's push subscription state would not change to "opted in" upon accepting the Android 13+ push prompt.
 
 ##### Added
 - Added the ability to configure dismissal of Push Stories on click by adding `BrazeConfig.setDoesPushStoryDismissOnClick()` or `<bool name="com_braze_does_push_story_dismiss_on_click">true</bool>` to your `braze.xml`. Defaults to true.
