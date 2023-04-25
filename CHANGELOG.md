@@ -1,3 +1,5 @@
+# :warning: This repository has been permanently moved to [https://github.com/braze-inc/braze-android-sdk](https://github.com/braze-inc/android-sdk/blob/develop/public/root-directory-files/CHANGELOG.md)
+
 ## 24.3.0
 
 [Release Date](https://github.com/Appboy/appboy-android-sdk/releases/tag/v24.3.0)
